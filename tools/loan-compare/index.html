@@ -71,6 +71,11 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .remove-loan{position:absolute;top:8px;right:8px;width:24px;height:24px;background:#fee2e2;color:#ef4444;border:none;border-radius:50%;cursor:pointer;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
 #results{display:none}
 .insight{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;margin-top:18px;font-size:.85rem;color:#166534;line-height:1.7}
+.loan-export-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.loan-export-row button{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:800;color:#0f172a;cursor:pointer}
+.loan-export-row button:hover{border-color:var(--afro-blue);color:var(--afro-blue);background:#f8fbff}
+.loan-result-note{margin-top:12px;border:1px solid #dbeafe;background:#eff6ff;border-radius:8px;padding:12px 14px;color:#1e3a8a;font-size:.78rem;line-height:1.6}
+.loan-export-status{margin-top:8px;color:#64748b;font-size:.76rem;min-height:1.2em}
 .seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
 .seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
 .seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
@@ -127,7 +132,6 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/comparateur-prets/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kilinganisha-mikopo/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/loan-compare/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -206,6 +210,13 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <table class="compare-table" id="compareTable"></table>
 </div>
 <div class="insight" id="insight"></div>
+<div class="loan-export-row" aria-label="Loan comparison actions">
+<button type="button" onclick="copyLoanSummary()">Copy summary</button>
+<button type="button" onclick="downloadLoanCsv()">Download CSV</button>
+<button type="button" onclick="window.print()">Print</button>
+</div>
+<p class="loan-export-status" id="loanExportStatus" aria-live="polite"></p>
+<p class="loan-result-note"><strong>Planning estimate.</strong> This compares user-entered rate, term, fee, and amount fields. Confirm APR, insurance, penalties, disbursement fees, and final lender terms before signing.</p>
 </div>
 </div>
 
@@ -230,30 +241,6 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 
 
-<section class="df-upgrade" data-df-upgrade="loan-compare">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Loan Comparison Tool decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for loan comparison tool so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Loan Comparison Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, officialSource, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="loan-compare">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="loan-compare" data-df-base="Loan Comparison Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Loan Comparison Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="loan-compare">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="loan-compare-faq-title">
-  <h2 id="loan-compare-faq-title">Loan Comparison Tool FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="budget"></wise-cta>
 </div>
@@ -273,6 +260,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <script>
 const COLORS=['#3b82f6','#10b981','#f59e0b','#8b5cf6'];
 let loanCount=0;
+let lastLoanComparison=null;
 function visibleLoans(){return document.querySelectorAll('#loansGrid .loan-card').length}
 
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
@@ -419,9 +407,59 @@ function compare(){
   const savings=loans.filter((_,i)=>i!==bestIdx).map(l=>l.totalCost-best.totalCost);
   const maxSaving=Math.max(...savings);
   document.getElementById('insight').innerHTML=`<strong>${best.name}</strong> offers the best deal with a total cost of <strong>${fmt(Math.round(best.totalCost),cur)}</strong>. Choosing this over the most expensive option saves you <strong>${fmt(Math.round(maxSaving),cur)}</strong> over the life of the loan. The monthly payment is <strong>${fmt(Math.round(best.monthly),cur)}</strong>.`;
+  lastLoanComparison={currency:cur,bestName:best.name,maxSaving:maxSaving,loans:loans.map(l=>({name:l.name,amount:l.amount,rate:l.rate,term:l.term,fees:l.fees,monthly:l.monthly,totalInterest:l.totalInterest,totalCost:l.totalCost,isBest:l.isBest})),createdAt:new Date().toISOString()};
+  setLoanExportStatus('Comparison ready. Copy or download the lender comparison before you negotiate.');
 
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function loanSummaryText(){
+  if(!lastLoanComparison)return '';
+  const cur=lastLoanComparison.currency;
+  const best=lastLoanComparison.loans.find(l=>l.isBest)||lastLoanComparison.loans[0];
+  return [
+    'AfroTools loan comparison',
+    'Best offer: '+best.name,
+    'Monthly payment: '+fmt(Math.round(best.monthly),cur),
+    'Total cost: '+fmt(Math.round(best.totalCost),cur),
+    'Savings versus most expensive option: '+fmt(Math.round(lastLoanComparison.maxSaving),cur),
+    '',
+    'Offers:',
+    ...lastLoanComparison.loans.map(l=>'- '+l.name+': amount '+fmt(Math.round(l.amount),cur)+', rate '+l.rate.toFixed(1)+'%, term '+l.term+' months, fees '+fmt(Math.round(l.fees),cur)+', total cost '+fmt(Math.round(l.totalCost),cur)),
+    '',
+    'Planning estimate only. Confirm APR, insurance, penalties, disbursement fees, and final lender terms before signing.'
+  ].join('\n');
+}
+
+function copyLoanSummary(){
+  if(!lastLoanComparison){setLoanExportStatus('Run a comparison first.');return}
+  const text=loanSummaryText();
+  const done=()=>setLoanExportStatus('Loan comparison copied.');
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(()=>{window.prompt('Copy loan comparison',text);done();});}
+  else{window.prompt('Copy loan comparison',text);done();}
+}
+
+function downloadLoanCsv(){
+  if(!lastLoanComparison){setLoanExportStatus('Run a comparison first.');return}
+  const rows=[['Loan','Amount','Annual rate %','Term months','Upfront fees','Monthly payment','Total interest','Total cost','Best deal']];
+  lastLoanComparison.loans.forEach(l=>rows.push([l.name,Math.round(l.amount),l.rate.toFixed(2),l.term,Math.round(l.fees),Math.round(l.monthly),Math.round(l.totalInterest),Math.round(l.totalCost),l.isBest?'yes':'no']));
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='loan-comparison.csv';
+  a.dataset.noPdfGate='true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+  setLoanExportStatus('CSV downloaded.');
+}
+
+function setLoanExportStatus(message){
+  const el=document.getElementById('loanExportStatus');
+  if(el)el.textContent=message;
 }
 
 // Initialize with 2 loans
@@ -442,6 +480,5 @@ initPresets();
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

@@ -905,7 +905,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/editeur-markdown/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kihariri-markdown/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/markdown-editor/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -1050,26 +1050,26 @@
 <section class="df-upgrade" data-df-upgrade="markdown-editor">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Markdown Editor decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for markdown editor so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Markdown Editor: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Markdown publish brief</span>
+      <h2>Draft, preview, then export clean Markdown</h2>
+      <p>Use the editor above to write and preview Markdown, then capture the export and publishing checks before sharing the document.</p>
+      <ul class="df-upgrade__bullets"><li>Primary task: edit Markdown, preview rendered HTML and copy or download the output.</li><li>Result output: a publishing brief with document type, word count, export format and review focus.</li><li>Quality checks: headings, links, tables, code blocks, images, HTML safety and whether private notes should be removed.</li><li>Privacy note: drafts stay in the browser unless you copy, download or save them using the page controls.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local editor only. Review rendered output in the target CMS or documentation system before publishing.</p>
     </div>
     <form class="df-form" data-df-form="markdown-editor">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="markdown-editor" data-df-base="Markdown Editor: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Markdown Editor: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="markdown-editor">Copy summary</button></div>
+      <label>Document type<select name="type" aria-label="Document type"><option value="README">README</option><option value="blog draft">blog draft</option><option value="release notes">release notes</option><option value="proposal">proposal</option></select></label>
+      <label>Word count<input name="words" type="number" value="250" min="0" step="1" aria-label="Word count"></label>
+      <label>Export format<select name="format" aria-label="Export format"><option value="Markdown">Markdown</option><option value="HTML preview">HTML preview</option><option value="plain text">plain text</option><option value="clipboard handoff">clipboard handoff</option></select></label>
+      <label>Review focus<select name="focus" aria-label="Review focus"><option value="links">links</option><option value="headings">headings</option><option value="tables">tables</option><option value="private notes">private notes</option></select></label>
+      <button type="submit">Create Markdown brief</button>
+      <output class="df-result" data-df-result="markdown-editor" data-df-base="Markdown publish brief ready. Preview above, then verify headings, links, tables, code blocks, images, HTML safety, export format, and private notes before sharing." aria-live="polite">Markdown publish brief ready. Preview above, then verify headings, links, tables, code blocks, images, HTML safety, export format, and private notes before sharing.</output>
+      <div class="df-actions"><button type="button" data-df-copy="markdown-editor">Copy Markdown brief</button><a href="#preview">Review preview</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="markdown-editor-faq-title">
   <h2 id="markdown-editor-faq-title">Markdown Editor FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Write or paste Markdown, preview the rendered result, then copy or download the format you need.</p></details><details><summary>What should I verify?</summary><p>Check headings, links, tables, code blocks, images, HTML safety, export format and private notes before publishing.</p></details><details><summary>Does it publish my document?</summary><p>No. It is a local editor and previewer; review the output in your target CMS or documentation system.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -1354,8 +1354,31 @@
 
   downloadHtmlBtn.addEventListener('click', function() {
     const exportBody = DOMPurify.sanitize(marked.parse(editor.value));
-    const html = '<!DOCTYPE html>\n<html>\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Document</title>\n  <style>\n    body { font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }\n    h1, h2, h3 { color: #0063D1; }\n    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: \'Courier New\', monospace; }\n    pre { background: #f0f0f0; padding: 12px; border-radius: 6px; overflow-x: auto; }\n    pre code { background: none; padding: 0; }\n    blockquote { border-left: 3px solid #007AFF; margin: 12px 0; padding-left: 12px; }\n    table { border-collapse: collapse; width: 100%; }\n    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\n    th { background: #f0f0f0; }\n    del { text-decoration: line-through; color: #999; }\n  </style>\n</head>\n<body>\n' + exportBody + '\n<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
-</body>\n</html>';
+    const html = [
+      '<!DOCTYPE html>',
+      '<html>',
+      '<head>',
+      '  <meta charset="UTF-8">',
+      '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+      '  <title>Document</title>',
+      '  <style>',
+      '    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }',
+      '    h1, h2, h3 { color: #0063D1; }',
+      '    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: "Courier New", monospace; }',
+      '    pre { background: #f0f0f0; padding: 12px; border-radius: 6px; overflow-x: auto; }',
+      '    pre code { background: none; padding: 0; }',
+      '    blockquote { border-left: 3px solid #007AFF; margin: 12px 0; padding-left: 12px; }',
+      '    table { border-collapse: collapse; width: 100%; }',
+      '    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }',
+      '    th { background: #f0f0f0; }',
+      '    del { text-decoration: line-through; color: #999; }',
+      '  </style>',
+      '</head>',
+      '<body>',
+      exportBody,
+      '</body>',
+      '</html>'
+    ].join('\n');
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -1473,6 +1496,7 @@
 </script>
 <script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
 <script src="/tools/markdown-editor/js/markdown-workspace-sync.js?v=1b9390c0" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 </body>

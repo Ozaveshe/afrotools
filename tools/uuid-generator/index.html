@@ -140,7 +140,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-uuid/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-uuid/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/uuid-generator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -151,7 +151,7 @@
       "name": "How should I use UUID Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Choose UUID, ULID, or NanoID-style output, generate IDs locally, inspect tradeoffs, then copy or download the result."
       }
     },
     {
@@ -159,7 +159,7 @@
       "name": "What should I verify before acting on UUID Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify ID type, sort behavior, timestamp leakage, random bits, collision estimate, database format, and whether prefixes expose business data."
       }
     },
     {
@@ -167,7 +167,7 @@
       "name": "Is UUID Generator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a local generator and estimator. Confirm the identifier strategy in your database, API, and security model."
       }
     }
   ],
@@ -382,26 +382,26 @@
 <section class="df-upgrade" data-df-upgrade="uuid-generator">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>UUID Generator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for uuid generator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: UUID Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Identifier handoff brief</span>
+      <h2>Generate IDs, then document the tradeoff</h2>
+      <p>Generate UUID v4, UUID v7, ULID or NanoID-style values above, then capture the format, collision and sortability checks for implementation review.</p>
+      <ul class="df-upgrade__bullets"><li>Primary task: create local identifiers, inspect format facts, calculate collision risk and copy/download output.</li><li>Result output: an identifier brief with type, count, storage format and risk focus.</li><li>Quality checks: random bits, timestamp leakage, database indexing, sort behavior, prefix privacy and collision estimate.</li><li>Source note: RFC 9562, MDN Web Crypto, ULID and Nano ID references are linked above.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local generation only. Confirm ID strategy with your database, API and security requirements.</p>
     </div>
     <form class="df-form" data-df-form="uuid-generator">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="uuid-generator" data-df-base="UUID Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">UUID Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="uuid-generator">Copy summary</button></div>
+      <label>ID type<select name="type" aria-label="ID type"><option value="UUID v7">UUID v7</option><option value="UUID v4">UUID v4</option><option value="ULID">ULID</option><option value="NanoID-style">NanoID-style</option></select></label>
+      <label>Count<input name="count" type="number" value="25" min="1" step="1" aria-label="Count"></label>
+      <label>Implementation focus<select name="focus" aria-label="Implementation focus"><option value="database primary key">database primary key</option><option value="public API id">public API id</option><option value="sortable event id">sortable event id</option><option value="short invite code">short invite code</option></select></label>
+      <label>Risk focus<select name="risk" aria-label="Risk focus"><option value="collision estimate">collision estimate</option><option value="timestamp leakage">timestamp leakage</option><option value="index performance">index performance</option><option value="prefix privacy">prefix privacy</option></select></label>
+      <button type="submit">Create ID brief</button>
+      <output class="df-result" data-df-result="uuid-generator" data-df-base="Identifier brief ready. Generate above, then verify ID type, random bits, timestamp leakage, database indexing, sort behavior, prefix privacy, and collision estimate." aria-live="polite">Identifier brief ready. Generate above, then verify ID type, random bits, timestamp leakage, database indexing, sort behavior, prefix privacy, and collision estimate.</output>
+      <div class="df-actions"><button type="button" data-df-copy="uuid-generator">Copy ID brief</button><a href="#idList">Review IDs</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="uuid-generator-faq-title">
   <h2 id="uuid-generator-faq-title">UUID Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Choose an ID type and count, generate locally, inspect format facts, then copy or download IDs for development use.</p></details><details><summary>What should I verify?</summary><p>Check random bits, sort behavior, timestamp leakage, database indexing, collision estimate and prefix privacy.</p></details><details><summary>Is it a production ID strategy?</summary><p>No. It helps generate and compare IDs locally; confirm the strategy in your real database, API and security model.</p></details></div>
 </section>
 </main>
 

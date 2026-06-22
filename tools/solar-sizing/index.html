@@ -47,7 +47,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/dimensionnement-solaire/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ukubwa-wa-mfumo-wa-solar/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/solar-sizing/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -58,7 +58,7 @@
       "name": "How should I use Solar Sizing Calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn power assumptions into a practical estimate with load, runtime, tariff, and backup caveats. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Add the appliances you need during outages, calculate panel, battery, and inverter size, then copy the installer brief with runtime and safety checks."
       }
     },
     {
@@ -66,7 +66,7 @@
       "name": "What should I verify before acting on Solar Sizing Calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Energy estimate only. Confirm real appliance draw, tariff class, fuel price, battery health, installer advice, and safety rules."
+        "text": "Confirm appliance wattage, surge load, runtime target, battery depth of discharge, local solar yield, shading, wiring, inverter quality, installer warranty, and safety rules."
       }
     },
     {
@@ -74,7 +74,7 @@
       "name": "Is Solar Sizing Calculator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is an energy planning estimate, not an installer quote, electrical certificate, warranty, grant approval, or safety sign-off."
       }
     }
   ],
@@ -123,26 +123,26 @@
 <section class="df-upgrade" data-df-upgrade="solar-sizing">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Energy planning workflow</span>
-      <h2>Solar Sizing Calculator decision workspace</h2>
-      <p>Turn power assumptions into a practical estimate with load, runtime, tariff, and backup caveats. This panel is tuned for solar sizing calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Solar Sizing Calculator: energy planning summary ready with load, runtime, tariff, buffer, and equipment notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: sources, currentYear, saveExport, browserOk.</li><li>Source note: utility tariff, fuel, manufacturer, installer, and energy-efficiency references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Energy estimate only. Confirm real appliance draw, tariff class, fuel price, battery health, installer advice, and safety rules. Source/reference: utility tariff, fuel, manufacturer, installer, and energy-efficiency references.</p>
+      <span class="df-upgrade__kicker">Installer brief</span>
+      <h2>Turn appliance load into a solar quote request</h2>
+      <p>Calculate the system size above, then copy a compact installer brief that captures load, runtime, battery autonomy, inverter headroom, and verification questions.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: a solar sizing brief with load, daily runtime, backup target, headroom, and safety checks.</li><li>Use the appliance list to separate essential outage loads from nice-to-have loads before asking for quotes.</li><li>Verify panel wattage, battery chemistry, inverter surge, warranty, roof/shading, wiring, earthing, and installer credentials.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Solar yield, tariff, battery health, and equipment prices change by location. This is an energy planning estimate, not an installer quote, electrical certificate, or safety sign-off.</p>
     </div>
     <form class="df-form" data-df-form="solar-sizing">
-      <label>Load watts<input name="loadWatts" type="number" value="800" min="0" step="any" aria-label="Load watts"></label>
-      <label>Hours per day<input name="hours" type="number" value="6" min="0" step="any" aria-label="Hours per day"></label>
-      <label>Tariff or fuel cost<input name="tariff" type="number" value="85" min="0" step="any" aria-label="Tariff or fuel cost"></label>
-      <label>Sizing buffer percent<input name="buffer" type="number" value="20" min="0" step="any" aria-label="Sizing buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="solar-sizing" data-df-base="Solar Sizing Calculator: energy planning summary ready with load, runtime, tariff, buffer, and equipment notes." aria-live="polite">Solar Sizing Calculator: energy planning summary ready with load, runtime, tariff, buffer, and equipment notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="solar-sizing">Copy summary</button></div>
+      <label>Essential load watts<input name="loadWatts" type="number" value="800" min="0" step="any" aria-label="Essential load watts"></label>
+      <label>Backup hours per day<input name="hours" type="number" value="6" min="0" step="any" aria-label="Backup hours per day"></label>
+      <label>Battery autonomy hours<input name="autonomy" type="number" value="8" min="0" step="any" aria-label="Battery autonomy hours"></label>
+      <label>Installer headroom percent<input name="buffer" type="number" value="25" min="0" step="any" aria-label="Installer headroom percent"></label>
+      <button type="submit">Create solar brief</button>
+      <output class="df-result" data-df-result="solar-sizing" data-df-base="Solar installer brief ready. Calculate above, then verify real appliance draw, surge load, roof shading, battery depth of discharge, inverter quality, wiring, earthing, warranty, and installer credentials." aria-live="polite">Solar installer brief ready. Calculate above, then verify real appliance draw, surge load, roof shading, battery depth of discharge, inverter quality, wiring, earthing, warranty, and installer credentials.</output>
+      <div class="df-actions"><button type="button" data-df-copy="solar-sizing">Copy solar brief</button><a class="df-action-link" href="#results">View system size</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="solar-sizing-faq-title">
   <h2 id="solar-sizing-faq-title">Solar Sizing Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn power assumptions into a practical estimate with load, runtime, tariff, and backup caveats. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Energy estimate only. Confirm real appliance draw, tariff class, fuel price, battery health, installer advice, and safety rules.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Add essential appliances, calculate the system size, then copy the solar brief for an installer quote or internal budget review.</p></details><details><summary>What should I verify?</summary><p>Confirm appliance wattage, surge load, autonomy target, local solar yield, roof/shading, battery chemistry, inverter surge, wiring, warranty, and installer credentials.</p></details><details><summary>Is this official?</summary><p>No. It is an energy planning estimate, not an installer quote, electrical certificate, warranty, grant approval, or safety sign-off.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>

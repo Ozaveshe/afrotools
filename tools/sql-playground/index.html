@@ -156,7 +156,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/bac-a-sable-sql/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/uwanja-wa-sql/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sql-playground/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -167,7 +167,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
       "name": "How should I use SQL Playground?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Choose a dataset, run SQL, inspect results or query plans, then copy or export the output for practice or review."
       }
     },
     {
@@ -175,7 +175,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
       "name": "What should I verify before acting on SQL Playground?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify the selected dataset, mutating queries, result rows, explain plan, challenge feedback and exported files."
       }
     },
     {
@@ -183,7 +183,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
       "name": "Is SQL Playground an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It runs SQLite locally in your browser against bundled or imported data."
       }
     }
   ],
@@ -313,26 +313,26 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 <section class="df-upgrade" data-df-upgrade="sql-playground">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>SQL Playground decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for sql playground so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: SQL Playground: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Query lab brief</span>
+      <h2>Run a local SQL query, then export what changed</h2>
+      <p>Use the SQLite playground above for sample datasets, challenges and query plans, then capture a brief for learning or handoff.</p>
+      <ul class="df-upgrade__bullets"><li>Primary task: run SQL locally against bundled datasets, inspect results, explain plans and export CSV or SQLite files.</li><li>Result output: a query lab brief that records dataset, query goal, result size and next check.</li><li>Quality checks: selected dataset, read-only versus mutating query, result rows, explain plan, exported CSV and challenge feedback.</li><li>Privacy note: imported CSV data stays in this browser session unless you export it yourself.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local SQLite learning tool only. Results reflect the sample/imported data, not live production databases.</p>
     </div>
     <form class="df-form" data-df-form="sql-playground">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="sql-playground" data-df-base="SQL Playground: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">SQL Playground: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="sql-playground">Copy summary</button></div>
+      <label>Dataset<select name="dataset" aria-label="Dataset"><option value="commerce sample">commerce sample</option><option value="school sample">school sample</option><option value="clinic sample">clinic sample</option><option value="imported CSV">imported CSV</option></select></label>
+      <label>Result rows<input name="rows" type="number" value="10" min="0" step="1" aria-label="Result rows"></label>
+      <label>Query goal<select name="goal" aria-label="Query goal"><option value="explore table">explore table</option><option value="join and aggregate">join and aggregate</option><option value="interview practice">interview practice</option><option value="export result">export result</option></select></label>
+      <label>Next check<select name="check" aria-label="Next check"><option value="copy results">copy results</option><option value="export CSV">export CSV</option><option value="explain plan">explain plan</option><option value="challenge feedback">challenge feedback</option></select></label>
+      <button type="submit">Create query brief</button>
+      <output class="df-result" data-df-result="sql-playground" data-df-base="SQL query lab brief ready. Run the playground above, then verify dataset, read-only versus mutating query, result rows, explain plan, exported CSV, and challenge feedback." aria-live="polite">SQL query lab brief ready. Run the playground above, then verify dataset, read-only versus mutating query, result rows, explain plan, exported CSV, and challenge feedback.</output>
+      <div class="df-actions"><button type="button" data-df-copy="sql-playground">Copy query brief</button><a href="#results">Review results</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="sql-playground-faq-title">
   <h2 id="sql-playground-faq-title">SQL Playground FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Choose a dataset, run SQL, inspect results or query plans, then copy or export the output for practice or review.</p></details><details><summary>What should I verify?</summary><p>Check the selected dataset, mutating queries, result rows, explain plan, challenge feedback and exported files.</p></details><details><summary>Is this connected to a live database?</summary><p>No. It runs SQLite locally in your browser against bundled or imported data.</p></details></div>
 </section>
 </main>
 

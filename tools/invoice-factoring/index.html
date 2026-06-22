@@ -208,7 +208,7 @@ details[open] summary::after{content:'\2212'}
     <div class="button-row">
       <button type="button" class="btn-calc" id="if-calc">Calculate cost</button>
       <button type="button" class="btn-secondary" id="if-copy">Copy summary</button>
-      <button type="button" class="btn-secondary" id="if-csv">Download CSV</button>
+      <button type="button" class="btn-secondary" id="if-csv" data-no-gate="true">Download CSV</button>
     </div>
     <p class="status-line" id="if-status" aria-live="polite"></p>
     <div class="button-row" style="grid-template-columns:auto auto;justify-content:start;margin-top:.25rem">
@@ -329,6 +329,8 @@ function downloadFactoringCsv(){
   var a=document.createElement('a');
   a.href=url;
   a.download='afrotools-invoice-factoring.csv';
+  a.dataset.noGate='true';
+  a.dataset.noPdfGate='true';
   document.body.appendChild(a);
   a.click();
   a.remove();

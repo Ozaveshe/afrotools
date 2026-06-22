@@ -144,7 +144,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/constructeur-cron/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/cron/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cron-builder/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -155,7 +155,7 @@
       "name": "How should I use Cron Expression Builder?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Build a cron expression, preview upcoming runs, choose a deployment target, then copy the expression, snippet, or schedule brief."
       }
     },
     {
@@ -163,7 +163,7 @@
       "name": "What should I verify before acting on Cron Expression Builder?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify timezone, platform syntax, DST behavior, minimum interval, concurrency policy, and whether the target scheduler uses UTC."
       }
     },
     {
@@ -171,7 +171,7 @@
       "name": "Is Cron Expression Builder an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a local schedule builder. Confirm behavior in Linux, GitHub Actions, Kubernetes, EventBridge, or your actual scheduler before deploying."
       }
     }
   ],
@@ -351,26 +351,26 @@
 <section class="df-upgrade" data-df-upgrade="cron-builder">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Cron Expression Builder decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for cron expression builder so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Cron Expression Builder: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Schedule handoff brief</span>
+      <h2>Build the schedule, then verify the deployment target</h2>
+      <p>Preview the cron expression above, choose the platform snippet, and capture the timezone and scheduler caveats before deployment.</p>
+      <ul class="df-upgrade__bullets"><li>Primary task: compose five-field cron, preview next runs and copy platform-specific snippets.</li><li>Result output: a schedule brief with platform, timezone, cadence and deployment checks.</li><li>Quality checks: UTC/local time, DST, GitHub delay, Kubernetes concurrency, EventBridge field differences and minimum interval.</li><li>Source note: linked Linux, GitHub, Kubernetes and AWS docs are the references for platform warnings.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local schedule helper only. Test in your target scheduler before relying on a production job.</p>
     </div>
     <form class="df-form" data-df-form="cron-builder">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="cron-builder" data-df-base="Cron Expression Builder: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Cron Expression Builder: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="cron-builder">Copy summary</button></div>
+      <label>Target platform<select name="platform" aria-label="Target platform"><option value="Linux crontab">Linux crontab</option><option value="GitHub Actions">GitHub Actions</option><option value="Kubernetes CronJob">Kubernetes CronJob</option><option value="AWS EventBridge">AWS EventBridge</option></select></label>
+      <label>Runs to inspect<input name="runs" type="number" value="5" min="1" step="1" aria-label="Runs to inspect"></label>
+      <label>Timezone check<select name="timezone" aria-label="Timezone check"><option value="UTC confirmed">UTC confirmed</option><option value="Africa local time">Africa local time</option><option value="browser local time">browser local time</option><option value="DST risk">DST risk</option></select></label>
+      <label>Deployment risk<select name="risk" aria-label="Deployment risk"><option value="low">low</option><option value="minimum interval">minimum interval</option><option value="concurrency">concurrency</option><option value="platform syntax">platform syntax</option></select></label>
+      <button type="submit">Create schedule brief</button>
+      <output class="df-result" data-df-result="cron-builder" data-df-base="Cron schedule brief ready. Preview above, then verify timezone, platform syntax, DST behavior, minimum interval, concurrency policy, and copied snippet before deployment." aria-live="polite">Cron schedule brief ready. Preview above, then verify timezone, platform syntax, DST behavior, minimum interval, concurrency policy, and copied snippet before deployment.</output>
+      <div class="df-actions"><button type="button" data-df-copy="cron-builder">Copy schedule brief</button><a href="#snippetOutput">Review snippet</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="cron-builder-faq-title">
   <h2 id="cron-builder-faq-title">Cron Expression Builder FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Enter or build a cron expression, preview next runs, choose a platform, then copy the expression or snippet.</p></details><details><summary>What should I verify?</summary><p>Check timezone, UTC assumptions, DST behavior, platform syntax, minimum interval and concurrency behavior.</p></details><details><summary>Is it deployment proof?</summary><p>No. It is a local builder; confirm behavior in your actual scheduler before production use.</p></details></div>
 </section>
 </main>
 

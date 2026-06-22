@@ -92,7 +92,7 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/payment-comparator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/comparateur-paiements/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/payment-comparator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -160,6 +160,11 @@
       <h3 style="font-size:14px;font-weight:800;margin-bottom:4px">Ranked by Lowest Fee</h3>
       <div id="rankList"></div>
       <div id="compareObs" style="margin-top:16px"></div>
+      <div class="df-actions" style="margin-top:14px">
+        <button type="button" onclick="copyPaymentBrief()">Copy payment brief</button>
+        <button type="button" onclick="downloadPaymentCsv()">Download CSV</button>
+      </div>
+      <p id="paymentStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
     </div>
   </div>
 
@@ -200,6 +205,10 @@
       </div>
       <div id="scenarioResult"></div>
       <div id="scenarioCompare" style="margin-top:20px"></div>
+      <div class="df-actions" style="margin-top:14px">
+        <button type="button" onclick="copyPaymentBrief()">Copy scenario brief</button>
+        <button type="button" onclick="downloadPaymentCsv()">Download CSV</button>
+      </div>
     </div>
   </div>
 
@@ -248,6 +257,8 @@ function setTab(id, btn) {
 
 function fmtUSD2(n){ return '$' + Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function fmtUSD(n){ return '$' + Number(n).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+var latestPaymentCompare = null;
+var latestPaymentScenario = null;
 
 /* ── Compare ──────────────────────────────────────────── */
 function runCompare() {
@@ -255,6 +266,7 @@ function runCompare() {
   document.getElementById('amountSlider').value = Math.min(amount, 500000);
   var results = PaymentComparatorEngine.compareAll(amount);
   var maxFee  = results.length ? results[results.length-1].estimatedFee : 1;
+  latestPaymentCompare = { amount: amount, results: results };
 
   document.getElementById('rankList').innerHTML = results.map(function(r, idx) {
     var barWidth = (r.estimatedFee / maxFee * 100).toFixed(1);
@@ -275,6 +287,8 @@ function runCompare() {
 
   var obs = PaymentComparatorEngine.getObservations(amount, results);
   document.getElementById('compareObs').innerHTML = obs.map(function(o){ return '<div class="obs-box">' + o + '</div>'; }).join('');
+  var status = document.getElementById('paymentStatus');
+  if(status) status.textContent = 'Comparison ready. Copy the brief or download CSV before asking providers for current quotes.';
 }
 
 /* ── Providers ────────────────────────────────────────── */
@@ -330,6 +344,7 @@ function runScenario() {
   var res = PaymentComparatorEngine.calculateScenario(amount, freq, provider);
   if (!res) return;
   var txnsPerYear = freq === 'weekly' ? 48 : 12;
+  latestPaymentScenario = { amount: amount, frequency: freq, provider: provider, transactionsPerYear: txnsPerYear, result: res };
   var html = '<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:20px">';
   html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">';
   html += '<div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--brand)">' + fmtUSD2(res.perTxnFee) + '</div><div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800">Per Transaction</div></div>';
@@ -350,6 +365,61 @@ function runScenario() {
   });
   tableHtml += '</tbody></table>';
   document.getElementById('scenarioCompare').innerHTML = tableHtml;
+}
+
+function paymentBriefText() {
+  if(!latestPaymentCompare) runCompare();
+  if(!latestPaymentScenario) runScenario();
+  var top = latestPaymentCompare && latestPaymentCompare.results ? latestPaymentCompare.results.slice(0,3) : [];
+  var scenario = latestPaymentScenario;
+  var lines = [
+    'AfroTools B2B payment comparison brief',
+    'Transfer amount: '+fmtUSD(latestPaymentCompare.amount),
+    'Lowest fee options: '+top.map(function(r){ return r.shortName+' '+fmtUSD2(r.estimatedFee)+' ('+r.speed.min+'-'+r.speed.max+' '+r.speed.unit+')'; }).join('; ')
+  ];
+  if(scenario && scenario.result) {
+    lines.push('Scenario: '+scenario.transactionsPerYear+' payments/year of '+fmtUSD(scenario.amount)+' via '+scenario.result.providerName);
+    lines.push('Estimated annual fee: '+fmtUSD(scenario.result.annualFee)+'; per transaction: '+fmtUSD2(scenario.result.perTxnFee));
+  }
+  lines.push('Planning note: confirm live FX spread, payout corridor, settlement time, compliance checks, chargeback/reversal rules, and provider availability before sending money.');
+  return lines.join('\n');
+}
+
+function copyPaymentBrief() {
+  var text = paymentBriefText();
+  var status = document.getElementById('paymentStatus');
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ if(status) status.textContent = 'Payment brief copied.'; }).catch(function(){ if(status) status.textContent = text; });
+  } else if(status) status.textContent = text;
+}
+
+function downloadPaymentCsv() {
+  if(!latestPaymentCompare) runCompare();
+  if(!latestPaymentScenario) runScenario();
+  var rows = [['rank','provider','estimated_fee_usd','fee_percent','speed','coverage','planning_note']];
+  latestPaymentCompare.results.forEach(function(r, idx){
+    rows.push([idx+1,r.name,r.estimatedFee.toFixed(2),r.feePct,r.speed.min+'-'+r.speed.max+' '+r.speed.unit,r.africaCoverage,'Verify live FX, fees, corridor, compliance, and settlement time.']);
+  });
+  if(latestPaymentScenario && latestPaymentScenario.result) {
+    rows.push([]);
+    rows.push(['scenario_provider',latestPaymentScenario.result.providerName]);
+    rows.push(['scenario_amount_usd',latestPaymentScenario.amount]);
+    rows.push(['scenario_frequency',latestPaymentScenario.frequency]);
+    rows.push(['scenario_annual_fee_usd',latestPaymentScenario.result.annualFee.toFixed(2)]);
+  }
+  var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'afrotools-payment-comparison.csv';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  var status = document.getElementById('paymentStatus');
+  if(status) status.textContent = 'CSV downloaded. Replace estimates with current written provider terms before acting.';
 }
 
 /* ── init ─────────────────────────────────────────────── */

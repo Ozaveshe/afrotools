@@ -106,7 +106,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/impact-fx-import/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/athari-forex-kuagiza/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fx-import-impact/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -117,7 +117,7 @@
       "name": "How should I use FX Import Cost Impact?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter the import amount, country, current exchange rate, and cost assumptions, then compare current cost, FX scenarios, and breakeven rate before paying or repricing."
       }
     },
     {
@@ -125,7 +125,7 @@
       "name": "What should I verify before acting on FX Import Cost Impact?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify bank or card rate, customs valuation rate, quote expiry, freight timing, duty exposure, resale price tolerance, and whether a deposit locks price or only stock."
       }
     },
     {
@@ -133,7 +133,7 @@
       "name": "Is FX Import Cost Impact an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a planning estimate, not a live FX quote, customs valuation, hedging recommendation, or financial advice."
       }
     }
   ],
@@ -261,26 +261,26 @@
 <section class="df-upgrade" data-df-upgrade="fx-import-impact">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>FX Import Cost Impact decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for fx import cost impact so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: FX Import Cost Impact: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, officialSource, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">FX risk checkpoint</span>
+      <h2>Turn exchange movement into a pricing decision</h2>
+      <p>Use the calculator above to test today's import cost, then create a copyable risk note for supplier payment timing, margin buffers, and breakeven FX rate.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: an FX exposure brief with country, invoice amount, current rate, buffer, and repricing trigger.</li><li>Use scenario rows to decide when to pay, hedge, renegotiate, or pause an order.</li><li>Verify bank rate, card rate, parallel-market assumptions, duties, freight, and customer price tolerance before acting.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Exchange rates can move between quote, payment, customs valuation, and resale. This is a planning estimate, not a live FX quote, customs value, or financial advice.</p>
     </div>
     <form class="df-form" data-df-form="fx-import-impact">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="fx-import-impact" data-df-base="FX Import Cost Impact: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">FX Import Cost Impact: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="fx-import-impact">Copy summary</button></div>
+      <label>Import market<select name="country" aria-label="Import market"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Supplier invoice in USD<input name="invoiceUsd" type="number" value="2500" min="0" step="any" aria-label="Supplier invoice in USD"></label>
+      <label>FX movement to test<select name="scenario" aria-label="FX movement to test"><option value="+5 percent">+5 percent</option><option value="+10 percent">+10 percent</option><option value="-5 percent">-5 percent</option><option value="breakeven">breakeven</option></select></label>
+      <label>Margin buffer percent<input name="buffer" type="number" value="15" min="0" step="any" aria-label="Margin buffer percent"></label>
+      <button type="submit">Create FX brief</button>
+      <output class="df-result" data-df-result="fx-import-impact" data-df-base="FX import brief ready. Calculate above, compare current cost with scenarios, then verify bank/card rate, customs valuation rate, freight, duty, and customer repricing room before paying the supplier." aria-live="polite">FX import brief ready. Calculate above, compare current cost with scenarios, then verify bank/card rate, customs valuation rate, freight, duty, and customer repricing room before paying the supplier.</output>
+      <div class="df-actions"><button type="button" data-df-copy="fx-import-impact">Copy FX brief</button><a class="df-action-link" href="#tabScenario">View scenarios</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="fx-import-impact-faq-title">
   <h2 id="fx-import-impact-faq-title">FX Import Cost Impact FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Calculate the import cost at today's rate, test a weaker-currency scenario, then copy the FX brief before paying or repricing.</p></details><details><summary>What should I verify?</summary><p>Check bank or card rate, customs valuation rate, supplier quote expiry, freight timing, duty exposure, resale price tolerance, and whether a deposit locks price or only stock.</p></details><details><summary>Is this official?</summary><p>No. It is a planning estimate, not a live FX quote, customs valuation, hedging recommendation, or financial advice.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="currency"></wise-cta>

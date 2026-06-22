@@ -130,6 +130,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.payslip-status{font-size:.74rem;color:#475569;text-align:center;margin-top:10px;min-height:1.2em}
+.payslip-privacy-note{font-size:.72rem;color:#64748b;text-align:center;margin-top:10px;line-height:1.55}
 @media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.action-row{flex-direction:column}}
 @media(max-width:600px){.row,.row-3{grid-template-columns:1fr}}
 /* ── Hover & Active States ── */
@@ -170,13 +172,13 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 ]}
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Is a payslip legally required in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, in virtually all African countries. Nigeria's Labour Act, Kenya's Employment Act, South Africa's BCEA, Ghana's Labour Act, and equivalent laws across all 54 African nations require employers to provide employees with itemised pay statements."}},
+{"@type":"Question","name":"Is a payslip legally required in Africa?","acceptedAnswer":{"@type":"Answer","text":"Many African labour laws require itemised pay statements, but the exact rule and required fields vary by country and worker type. Verify the current local rule before issuing a final payslip."}},
 {"@type":"Question","name":"Can I generate payslips in bulk?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use Batch Generate mode — upload a CSV with columns for Name, BasicSalary, Housing, Transport, Bonus, etc. The tool generates a PDF for each employee and bundles them into a ZIP file for download."}},
-{"@type":"Question","name":"Which deductions are included for each country?","acceptedAnswer":{"@type":"Answer","text":"All 54 African countries are supported with country-specific PAYE tax bands, pension contributions, health insurance, and social security deductions. Examples: Nigeria (PAYE, Pension 8%, NHF 2.5%), Kenya (PAYE, NSSF, SHIF 2.75%, AHL 1.5%), South Africa (PAYE, UIF 1%)."}},
+{"@type":"Question","name":"Which deductions are included for each country?","acceptedAnswer":{"@type":"Answer","text":"The tool models common payroll deductions such as PAYE, pension, health insurance, social security, and custom deductions where supported. Treat the output as a payroll draft and verify rates before filing or issuing final records."}},
 {"@type":"Question","name":"Can I add custom deductions like staff loans?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the Custom Deductions section to add staff loans, salary advances, canteen deductions, uniform costs, or any other deduction. Each shows as a separate labelled line on the payslip."}},
 {"@type":"Question","name":"Does it support multi-currency payslips?","acceptedAnswer":{"@type":"Answer","text":"Yes. Enable Multi-currency in the Options section. Enter the base currency (USD/GBP/EUR) and exchange rate. The payslip will show gross in both currencies and all deductions in local currency."}},
 {"@type":"Question","name":"How does the housing allowance optimizer work?","acceptedAnswer":{"@type":"Answer","text":"Click 'Optimize for Tax Savings' in the Earnings section. The tool tests different basic/housing salary splits and finds the combination that minimises your monthly PAYE. In many countries, a higher housing allowance reduces taxable income."}},
-{"@type":"Question","name":"What is the payslip serial number?","acceptedAnswer":{"@type":"Answer","text":"Each generated payslip gets a unique serial number for authentication purposes. This can be used to verify the payslip is genuine — useful when employees need to provide proof of income to banks or landlords."}}
+{"@type":"Question","name":"What is the payslip serial number?","acceptedAnswer":{"@type":"Answer","text":"Each generated payslip gets a local serial number to help match the PDF to the draft you generated. It is not proof of issue, employer approval, or a government record."}}
 ]}</script>
 <meta property="article:modified_time" content="2026-04-03">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
@@ -201,7 +203,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Payslip Generator</span></div>
     <h1>African <em>Payslip Generator</em></h1>
-    <p class="hero-sub">Professional payslips for all 54 African countries. Automatic PAYE, pension, and social security deductions. Batch generate, custom deductions, multi-currency.</p>
+    <p class="hero-sub">Professional payslip drafts for African payroll workflows. Model PAYE, pension, social security, custom deductions, batch output, and multi-currency notes before final payroll review.</p>
     <div class="hero-badges">
       <span class="badge b-em">54 Countries</span>
       <span class="badge b-em">Auto Deductions</span>
@@ -534,7 +536,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     <div style="position:sticky;top:20px">
       <div class="payslip" id="payslipPreview"></div>
       <div class="action-row">
-        <button type="button" class="action-btn btn-pdf" id="pdfBtn" onclick="downloadPayslipPdf()" aria-label="Download payslip as PDF">
+        <button type="button" class="action-btn btn-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPayslipPdf()" aria-label="Download payslip as PDF">
           <svg id="pdfBtnIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           <span id="pdfBtnText">Download PDF</span>
         </button>
@@ -542,10 +544,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
           Save to Vault
         </button>
+        <button type="button" class="action-btn btn-vault" onclick="copyPayslipSummary()">Copy summary</button>
       </div>
-      <p style="font-size:.72rem;color:#94a3b8;text-align:center;margin-top:10px">
-        Deductions are estimates. Consult a payroll professional for exact figures.
-      </p>
+      <p class="payslip-status" id="payslipStatus" role="status" aria-live="polite"></p>
+      <p class="payslip-privacy-note">Local-first payroll draft. Pasted details stay in this browser unless you choose PDF, batch ZIP, copy, save, or export. Verify tax, deductions, identity fields, and employer records before issuing a final payslip.</p>
       <div class="payroll-pro-cta" aria-label="AfroPayroll Pro workspace">
         <strong>Save this into a monthly payroll workspace</strong>
         Reuse this payslip setup, review deductions, and export handoff files for accountant review. AfroPayroll Pro does not disburse salaries, handle statutory filing, or provide a compliance guarantee.
@@ -559,19 +561,19 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <!-- SEO / FAQ -->
 <section class="seo-section">
   <h2>Payslips for All 54 African Countries</h2>
-  <p>Every African employee is legally entitled to a payslip showing their earnings and deductions. This generator covers all 54 African Union member states — from Nigeria's PITA-based PAYE system to Morocco's IR tax, from Kenya's new SHIF health deduction to Rwanda's RSSB pension. The correct tax bands, pension rates, and social security contributions are applied automatically.</p>
+  <p>Many African payroll regimes require itemised pay statements, but the required fields and deductions vary by country, worker type, contract, and current law. This generator creates a reviewable payslip draft with common earnings and deduction lines; verify the current payroll treatment before issuing the final staff copy.</p>
   <p>For <strong>batch payroll</strong>, upload a CSV with your employee roster. The tool calculates deductions for each employee, generates individual PDFs, and delivers a ZIP file. Perfect for SMEs running monthly payroll without expensive payroll software.</p>
   <p>The <strong>housing allowance optimizer</strong> finds the basic/housing split that minimises PAYE in countries where housing allowances are tax-advantaged (e.g. Nigeria, Kenya, Uganda). This is one of the most underused legal tax savings tools available to African employees.</p>
 
   <h2>Frequently Asked Questions</h2>
   <details class="faq-item"><summary>Is a payslip legally required in Africa?</summary><p>Yes, across all major African economies. Nigeria's Labour Act, Kenya's Employment Act, South Africa's BCEA, Ghana's Labour Act, Tanzania's Employment and Labour Relations Act, and equivalent legislation across the continent require employers to provide itemised pay statements. Failure to provide payslips can result in penalties during labour inspections.</p></details>
   <details class="faq-item"><summary>How do I generate payslips in bulk?</summary><p>Switch to "Batch Generate" mode. Prepare a CSV with columns: Name, BasicSalary (required). Optional: ID, Department, JobTitle, Housing, Transport, Other, Overtime, Bonus, Country, Period. Upload the file, set default country and period, then click Generate. Individual PDFs are bundled into a ZIP download. Row errors are reported in the error log.</p></details>
-  <details class="faq-item"><summary>Which statutory deductions are included?</summary><p>Nigeria: PAYE (PITA 7-24%), Pension 8%, NHF 2.5%. Kenya: PAYE (KRA 10-35%), NSSF, SHIF 2.75%, AHL 1.5%. South Africa: PAYE (SARS 18-45%), UIF 1%. Ghana: PAYE, SSNIT 5.5%. Tanzania: PAYE, NSSF 10%. Uganda: PAYE, NSSF 5%. All 54 countries have their primary deductions implemented.</p></details>
+  <details class="faq-item"><summary>Which statutory deductions are included?</summary><p>The tool models common payroll deductions such as PAYE, pension, social security, health insurance, housing-related deductions, and custom deduction lines where supported. Treat the numbers as a draft and confirm current statutory rates, caps, reliefs, employee eligibility, and employer policy before final payroll use.</p></details>
   <details class="faq-item"><summary>How does the tax optimizer work?</summary><p>Click "Optimize for Tax Savings" in the Earnings section. The tool tests different basic/housing salary splits across 17 combinations and finds the one that minimises your PAYE. In Nigeria, increasing the housing allowance reduces the taxable base under PITA. Monthly savings of 5-15% are common for mid-senior employees.</p></details>
   <details class="faq-item"><summary>Can I add custom deductions like staff loans?</summary><p>Yes. Use the Custom Deductions section to add any number of extra deduction lines. Staff loans, salary advances, canteen fees, uniform costs — each appears on the payslip with your chosen label and is included in the net pay calculation.</p></details>
   <details class="faq-item"><summary>What is multi-currency mode?</summary><p>Enables payslips for employees paid in a foreign currency (USD, GBP, EUR, AED, CAD, AUD). Enter the exchange rate and the payslip shows gross earnings in both the base currency and the local currency equivalent. All deductions are calculated in local currency.</p></details>
-  <details class="faq-item"><summary>What is the payslip serial number?</summary><p>Each generated payslip receives a unique serial number (e.g. PS-A3F9-2026-04). This is printed on the payslip footer. Employees can quote this number when presenting payslips to banks, landlords, or visa offices. A full verification endpoint is coming to afrotools.com/verify/.</p></details>
-  <details class="faq-item"><summary>Are these calculations exact?</summary><p>Calculations use current published tax bands and contribution rates for each country. For complex situations — multiple income sources, special allowances, dependant reliefs, or employment benefits — actual deductions may differ. Always verify with a licensed payroll professional or your country's revenue authority before using for compliance purposes.</p></details>
+  <details class="faq-item"><summary>What is the payslip serial number?</summary><p>Each generated payslip receives a local serial number (e.g. PS-A3F9-2026-04) printed on the footer. It helps identify the generated draft, but it is not proof of issue, employer approval, or a government record.</p></details>
+  <details class="faq-item"><summary>Are these calculations exact?</summary><p>No. The payslip reflects the values entered and the calculator logic available on this page. Actual deductions can differ because of current law, caps, reliefs, benefits, multiple income sources, or payroll policy. Verify with a payroll professional or revenue authority before compliance use.</p></details>
 </section>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
@@ -792,6 +794,7 @@ function gen() {
   var R = PE.calculate(inputs);
   if (!R) return;
   LAST_CALC = R;
+  setPayslipStatus('Payslip draft ready to copy, save, or download.');
   var fmt = R.fmt;
 
   // Build preview HTML
@@ -832,7 +835,7 @@ function gen() {
   }
 
   // Serial
-  html += '<div class="ps-serial">AfroTools Payslip · afrotools.com · Verify: ' + genSerial() + '</div>';
+  html += '<div class="ps-serial">AfroTools Payslip · afrotools.com · Draft ID: ' + genSerial() + '</div>';
 
   document.getElementById('payslipPreview').innerHTML = html;
 }
@@ -980,13 +983,13 @@ function buildPdf(R, serial) {
   doc.setFillColor.apply(doc,C.accent); doc.rect(0, H-18, W, 0.8,'F');
   doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(148,163,184);
   doc.text('Generated by AfroTools · afrotools.com/tools/payslip-generator/', W/2, H-12, {align:'center'});
-  doc.text('Serial: ' + serial + ' · For informational purposes only.', W/2, H-8, {align:'center'});
+  doc.text('Draft ID: ' + serial + ' · For informational purposes only.', W/2, H-8, {align:'center'});
 
   return doc;
 }
 
 function downloadPayslipPdf() {
-  if (!LAST_CALC) { if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('Generate a payslip first'); return; }
+  if (!LAST_CALC) { setPayslipStatus('Generate a payslip first.'); if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('Generate a payslip first'); return; }
   var btn = document.getElementById('pdfBtn');
   var icon = document.getElementById('pdfBtnIcon');
   var txt  = document.getElementById('pdfBtnText');
@@ -999,15 +1002,50 @@ function downloadPayslipPdf() {
     var doc = buildPdf(LAST_CALC, serial);
     var fname = 'payslip-' + LAST_CALC.empName.replace(/\s+/g,'-').toLowerCase() + '-' + LAST_CALC.period.replace(/\s+/g,'-').toLowerCase() + '.pdf';
     doc.save(fname);
+    setPayslipStatus('PDF downloaded. Verify payroll details before issuing.');
     if (window.gtag) gtag('event','pdf_download',{tool_name:'payslip-generator',country:LAST_CALC.country});
     if (window.AfroTools && AfroTools.toast) AfroTools.toast.success('PDF downloaded');
   }).catch(function(){
+    setPayslipStatus('Could not load the PDF library. Check your connection and try again.');
     if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Could not load PDF library. Check your connection and try again.');
   }).finally(function(){
     if (btn) btn.classList.remove('btn-loading');
     if (icon) { icon.innerHTML = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>'; }
     if (txt) txt.textContent = 'Download PDF';
   });
+}
+
+function buildPayslipSummary() {
+  if (!LAST_CALC) return '';
+  var R = LAST_CALC;
+  return [
+    'AfroTools payslip draft summary',
+    'Employee: ' + R.empName + (R.empId ? ' (' + R.empId + ')' : ''),
+    'Company: ' + R.company,
+    'Country: ' + (R.countryName || R.country),
+    'Period: ' + R.period,
+    'Gross earnings: ' + R.fmt(R.gross),
+    'Total deductions: ' + R.fmt(R.totalDeductions),
+    'Net pay: ' + R.fmt(R.net),
+    'Deductions: ' + R.deductions.map(function(d){ return d.name + ' ' + R.fmt(d.amount); }).join('; '),
+    '',
+    'Assumptions: local-first payroll draft. Verify current tax, statutory deductions, employee eligibility, identity fields, employer records, and payslip requirements before issuing or filing.'
+  ].join('\n');
+}
+
+function setPayslipStatus(message) {
+  var el = document.getElementById('payslipStatus');
+  if (el) el.textContent = message || '';
+}
+
+function copyPayslipSummary() {
+  var text = buildPayslipSummary();
+  if (!text) { setPayslipStatus('Generate a payslip first.'); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ setPayslipStatus('Payslip summary copied.'); }).catch(function(){ setPayslipStatus(text); });
+  } else {
+    setPayslipStatus(text);
+  }
 }
 
 // ─── VAULT SAVE ───────────────────────────────────────────────────────────────
@@ -1197,6 +1235,8 @@ function generateBatch() {
           var a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
           a.download = 'payslips-' + defPeriod.replace(/\s+/g,'-').toLowerCase() + '.zip';
+          a.dataset.noGate = 'true';
+          a.dataset.noPdfGate = 'true';
           document.body.appendChild(a); a.click(); document.body.removeChild(a);
           setTimeout(function(){ URL.revokeObjectURL(a.href); }, 5000);
           btn.disabled = false;

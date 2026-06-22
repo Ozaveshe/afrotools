@@ -51,23 +51,28 @@ function verticalNav(data, activeSlug) {
 
 function renderStructuredData(page, data) {
   const canonical = BASE_URL + page.path;
+  const pageId = canonical + "#webpage";
+  const breadcrumbId = canonical + "#breadcrumb";
+  const faqId = canonical + "#faq";
+  const toolsId = canonical + "#tools";
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebPage",
-        "@id": canonical,
+        "@id": pageId,
         "url": canonical,
         "name": page.metaTitle,
         "description": page.description,
         "isPartOf": { "@id": BASE_URL + "/" },
         "primaryImageOfPage": { "@type": "ImageObject", "url": BASE_URL + page.heroImage },
         "about": page.title,
-        "mainEntity": { "@id": canonical }
+        "breadcrumb": { "@id": breadcrumbId },
+        "mainEntity": { "@id": toolsId }
       },
       {
         "@type": "BreadcrumbList",
-        "@id": canonical,
+        "@id": breadcrumbId,
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL + "/" },
           { "@type": "ListItem", "position": 2, "name": "AfroTools AI", "item": BASE_URL + "/ai/" },
@@ -76,7 +81,7 @@ function renderStructuredData(page, data) {
       },
       {
         "@type": "FAQPage",
-        "@id": canonical,
+        "@id": faqId,
         "mainEntity": page.faqs.map((item) => ({
           "@type": "Question",
           "name": item.question,
@@ -88,12 +93,13 @@ function renderStructuredData(page, data) {
       },
       {
         "@type": "ItemList",
-        "@id": canonical,
+        "@id": toolsId,
         "name": page.title + " tools",
         "itemListElement": page.tools.map((tool, index) => ({
           "@type": "ListItem",
           "position": index + 1,
           "url": BASE_URL + tool.href,
+          "item": BASE_URL + tool.href,
           "name": tool.label
         }))
       }

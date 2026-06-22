@@ -211,7 +211,7 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/canza-pdf/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-format-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-convert/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -529,26 +529,26 @@
 <section class="df-upgrade" data-df-upgrade="pdf-convert">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF Format Converter decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for pdf format converter so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: PDF Format Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Conversion plan</span>
+      <h2>Choose the right private PDF workflow</h2>
+      <p>Plan the file type, output format, page range, and compatibility checks before converting a document in the browser.</p>
+      <ul class="df-upgrade__bullets"><li>Best for: DOCX to PDF, spreadsheets to PDF, selectable PDF text extraction, or PDF pages to images.</li><li>Result output: a short conversion brief you can copy before using the main upload panel above.</li><li>Local-first note: files are processed in your browser; avoid uploading confidential documents on shared devices.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Conversion fidelity depends on browser libraries, source file structure, fonts, images, and device memory. Check the downloaded file before sending it as an official record.</p>
     </div>
     <form class="df-form" data-df-form="pdf-convert">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-convert" data-df-base="PDF Format Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">PDF Format Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-convert">Copy summary</button></div>
+      <label>Source file type<select name="sourceType" aria-label="Source file type"><option value="DOCX document">DOCX document</option><option value="Excel or CSV sheet">Excel or CSV sheet</option><option value="Selectable PDF">Selectable PDF</option><option value="PDF pages">PDF pages</option></select></label>
+      <label>Needed output<select name="outputType" aria-label="Needed output"><option value="PDF download">PDF download</option><option value="plain text copy or TXT">plain text copy or TXT</option><option value="PNG or JPG image ZIP">PNG or JPG image ZIP</option></select></label>
+      <label>Page range or sheet<input name="pageRange" type="text" value="All pages" aria-label="Page range or sheet"></label>
+      <label>Priority<select name="priority" aria-label="Priority"><option value="privacy">privacy</option><option value="layout fidelity">layout fidelity</option><option value="small file size">small file size</option><option value="portal compatibility">portal compatibility</option></select></label>
+      <button type="submit">Create conversion brief</button>
+      <output class="df-result" data-df-result="pdf-convert" data-df-base="PDF conversion brief ready. Use the upload panel above, check the downloaded output, and keep sensitive files local." aria-live="polite">PDF conversion brief ready. Use the upload panel above, check the downloaded output, and keep sensitive files local.</output>
+      <div class="df-actions"><button type="button" data-df-copy="pdf-convert">Copy brief</button><a class="df-action-link" href="#word2pdf-panel">Go to converter</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="pdf-convert-faq-title">
   <h2 id="pdf-convert-faq-title">PDF Format Converter FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>Which mode should I use?</summary><p>Use Word to PDF for DOCX, Excel to PDF for sheets, PDF to Text for selectable text, and PDF to Images when you need page screenshots.</p></details><details><summary>What should I verify?</summary><p>Open the exported file and check layout, page breaks, tables, images, and text order before using it for contracts, applications, filings, or client delivery.</p></details><details><summary>Is my file uploaded?</summary><p>No upload is required for the converter. Processing runs in the browser, but you should still avoid shared devices for private documents.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -636,6 +636,7 @@ function downloadBlob(blob, filename) {
   var a = document.createElement('a');
   a.href = url;
   a.download = filename;
+  a.dataset.noPdfGate = 'true';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -855,9 +856,7 @@ async function convertWord() {
 
     var dlBtn = document.getElementById('wordDownloadBtn');
     dlBtn.onclick = function() {
-      function doWordDl() { downloadBlob(wordPdfBlob, outputName); }
-      var gate = document.querySelector('email-gate-modal');
-      if (gate) { gate.show(doWordDl); } else { doWordDl(); }
+      downloadBlob(wordPdfBlob, outputName);
     };
 
     fill.style.width = '100%';
@@ -1104,9 +1103,7 @@ async function convertExcel() {
 
     var dlBtn = document.getElementById('excelDownloadBtn');
     dlBtn.onclick = function() {
-      function doExcelDl() { downloadBlob(excelPdfBlob, outputName); }
-      var gate = document.querySelector('email-gate-modal');
-      if (gate) { gate.show(doExcelDl); } else { doExcelDl(); }
+      downloadBlob(excelPdfBlob, outputName);
     };
 
     fill.style.width = '100%';
@@ -1305,14 +1302,10 @@ function copyText() {
 }
 
 function downloadText() {
-  function doTextDl() {
-    var output = document.getElementById('textOutput');
-    var blob = new Blob([output.value], { type: 'text/plain' });
-    var name = document.getElementById('textFileName').textContent.replace(/\.pdf$/i, '') + '.txt';
-    downloadBlob(blob, name);
-  }
-  var gate = document.querySelector('email-gate-modal');
-  if (gate) { gate.show(doTextDl); } else { doTextDl(); }
+  var output = document.getElementById('textOutput');
+  var blob = new Blob([output.value], { type: 'text/plain' });
+  var name = document.getElementById('textFileName').textContent.replace(/\.pdf$/i, '') + '.txt';
+  downloadBlob(blob, name);
 }
 
 // ============================================================
@@ -1466,9 +1459,7 @@ async function convertImages() {
 
     var dlBtn = document.getElementById('imageDownloadBtn');
     dlBtn.onclick = function() {
-      function doImageDl() { downloadBlob(imageZipBlob, imageOutputName); }
-      var gate = document.querySelector('email-gate-modal');
-      if (gate) { gate.show(doImageDl); } else { doImageDl(); }
+      downloadBlob(imageZipBlob, imageOutputName);
     };
 
     fill.style.width = '100%';

@@ -139,7 +139,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/decodeur-jwt/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kisimbuzi-jwt/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/jwt-decoder/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -150,7 +150,7 @@
       "name": "How should I use JWT Decoder?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Paste a JWT, inspect decoded header and payload, review registered claims and timeline status, then copy a safe debugging note."
       }
     },
     {
@@ -158,7 +158,7 @@
       "name": "What should I verify before acting on JWT Decoder?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify issuer, audience, expiration, not-before, algorithm, key id, signature validation in your backend, and redact tokens before sharing."
       }
     },
     {
@@ -166,7 +166,7 @@
       "name": "Is JWT Decoder an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It decodes token contents locally but does not prove the signature, authorize a request, or replace backend validation."
       }
     }
   ],
@@ -372,26 +372,26 @@
 <section class="df-upgrade" data-df-upgrade="jwt-decoder">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>JWT Decoder decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for jwt decoder so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: JWT Decoder: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: download, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Token debug brief</span>
+      <h2>Decode the token, then verify it in the right system</h2>
+      <p>Use the decoder for header, payload, and claim-timeline inspection, then copy a safe debugging brief without exposing the raw token.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: a JWT debug brief with algorithm, issuer/audience checks, expiry state, key id, and backend validation reminder.</li><li>Use this for local troubleshooting before opening logs, API gateway rules, or auth provider settings.</li><li>Never paste production bearer tokens into tickets, screenshots, chat, or analytics.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Decoding is local, but decoding is not verification. Always validate signatures, issuer, audience, expiry, and scopes server-side.</p>
     </div>
     <form class="df-form" data-df-form="jwt-decoder">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="jwt-decoder" data-df-base="JWT Decoder: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">JWT Decoder: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="jwt-decoder">Copy summary</button></div>
+      <label>Token source<select name="source" aria-label="Token source"><option value="local test">local test</option><option value="staging API">staging API</option><option value="auth provider">auth provider</option><option value="production redacted">production redacted</option></select></label>
+      <label>Token age minutes<input name="tokenAge" type="number" value="5" min="0" step="any" aria-label="Token age minutes"></label>
+      <label>Debug focus<select name="focus" aria-label="Debug focus"><option value="expiry">expiry</option><option value="audience">audience</option><option value="issuer">issuer</option><option value="scopes">scopes</option></select></label>
+      <label>Claims to verify<input name="claims" type="number" value="4" min="0" step="any" aria-label="Claims to verify"></label>
+      <button type="submit">Create JWT brief</button>
+      <output class="df-result" data-df-result="jwt-decoder" data-df-base="JWT debug brief ready. Decode above, then verify algorithm, issuer, audience, expiry, not-before, key id, scopes, and server-side signature validation before trusting the token." aria-live="polite">JWT debug brief ready. Decode above, then verify algorithm, issuer, audience, expiry, not-before, key id, scopes, and server-side signature validation before trusting the token.</output>
+      <div class="df-actions"><button type="button" data-df-copy="jwt-decoder">Copy JWT brief</button><a class="df-action-link" href="#timelineOutput">View claims</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="jwt-decoder-faq-title">
   <h2 id="jwt-decoder-faq-title">JWT Decoder FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste a test or redacted token, inspect claims and timeline status, then copy a debugging brief without exposing the raw token.</p></details><details><summary>What should I verify?</summary><p>Check issuer, audience, expiration, not-before, algorithm, key id, scopes, backend signature validation, and token redaction before sharing.</p></details><details><summary>Does decoding prove the token is valid?</summary><p>No. It decodes token contents locally but does not prove the signature, authorize a request, or replace backend validation.</p></details></div>
 </section>
 </main>
 

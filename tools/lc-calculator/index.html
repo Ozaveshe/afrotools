@@ -101,7 +101,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-credit-documentaire/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-lc/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/lc-calculator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -220,6 +220,15 @@
     </div>
 
     <div class="obs-panel" id="obsPanel"></div>
+    <div class="card" id="lcExportCard" style="display:none;">
+      <div class="card-head">Export LC Brief</div>
+      <p style="font-size:.86rem;color:#475569;line-height:1.6;margin:0 0 .75rem;">Copy or download the fee breakdown for a bank, supplier, broker, or finance review. Treat this as a planning estimate until your bank confirms current charges and margin rules.</p>
+      <div class="df-actions">
+        <button type="button" onclick="copyLcBrief()">Copy LC brief</button>
+        <button type="button" onclick="downloadLcCsv()">Download CSV</button>
+      </div>
+      <p id="lcStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
+    </div>
   </div>
 
   <!-- TAB 2: Payment Methods Comparison -->
@@ -402,6 +411,76 @@ function calculateLC() {
   var icons = { info:'ℹ️', warn:'⚠️', tip:'💡' };
   var html = obs.map(function(o){ return '<div class="obs-item ' + o.type + '"><span class="obs-icon">' + (icons[o.type]||'ℹ️') + '</span><span>' + o.text + '</span></div>'; }).join('');
   document.getElementById('obsPanel').innerHTML = html;
+  document.getElementById('lcExportCard').style.display = 'block';
+  document.getElementById('lcStatus').textContent = 'LC estimate ready. Copy the brief or download CSV for bank review.';
+}
+
+function lcSelectionText(id) {
+  var el = document.getElementById(id);
+  return el && el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : '';
+}
+
+function lcBriefText() {
+  if(!currentResult) calculateLC();
+  var r = currentResult;
+  if(!r) return '';
+  var lines = [
+    'AfroTools LC fee brief',
+    'Country: '+lcSelectionText('lcCountry'),
+    'LC type: '+lcSelectionText('lcType'),
+    'LC value: $'+Math.round(r.lcValue).toLocaleString(),
+    'Total fees: $'+Math.round(r.totalFees).toLocaleString()+' ('+r.feePercentage+'% of LC)',
+    'Margin deposit: $'+Math.round(r.marginDeposit || 0).toLocaleString(),
+    'Total cash needed: $'+Math.round(r.totalCashRequired).toLocaleString(),
+    'Country notes: '+r.countryNotes,
+    'Planning note: confirm issuing bank tariff, confirmation bank charge, SWIFT, amendment fees, margin deposit, Form M/import permit, FX, and document wording before opening the LC.'
+  ];
+  return lines.join('\n');
+}
+
+function copyLcBrief() {
+  var text = lcBriefText();
+  var status = document.getElementById('lcStatus');
+  if(!text) return;
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ status.textContent = 'LC brief copied.'; }).catch(function(){ status.textContent = text; });
+  } else status.textContent = text;
+}
+
+function downloadLcCsv() {
+  if(!currentResult) calculateLC();
+  var r = currentResult;
+  var status = document.getElementById('lcStatus');
+  if(!r) return;
+  var rows = [
+    ['field','value'],
+    ['country',lcSelectionText('lcCountry')],
+    ['lc_type',lcSelectionText('lcType')],
+    ['lc_value_usd',r.lcValue],
+    ['confirmed',document.getElementById('lcConfirmed').checked ? 'yes' : 'no'],
+    ['amendments',document.getElementById('lcAmendments').value || '0'],
+    ['total_fees_usd',r.totalFees.toFixed(2)],
+    ['fee_percentage',r.feePercentage],
+    ['margin_deposit_usd',(r.marginDeposit || 0).toFixed(2)],
+    ['total_cash_required_usd',r.totalCashRequired.toFixed(2)],
+    ['country_notes',r.countryNotes],
+    ['planning_note','Verify bank tariff, confirmation charge, SWIFT, amendment fees, margin, import permits, FX, and document wording before acting.'],
+    [],
+    ['breakdown_label','basis','amount_usd']
+  ];
+  r.breakdown.forEach(function(row){ rows.push([row.label,row.basis,(row.amount || 0).toFixed(2)]); });
+  var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'afrotools-lc-fee-brief.csv';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  status.textContent = 'CSV downloaded. Replace estimates with current written bank charges.';
 }
 
 function showComparison() {

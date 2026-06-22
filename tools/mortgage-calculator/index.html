@@ -201,6 +201,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-hypothecaire/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-mkopo-wa-nyumba/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mortgage-calculator/" />
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -514,6 +515,31 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   </div>
 </div>
 
+<section class="df-upgrade" data-df-upgrade="mortgage-calculator">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Mortgage stress test</span>
+      <h2>Turn the repayment into a buying checklist</h2>
+      <p>Use the calculator for monthly repayments and amortisation, then copy a home-buying brief before comparing lenders or making an offer.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: a mortgage brief with property price, deposit, rate, affordability, and verification tasks.</li><li>Use saved scenarios above when comparing neighbourhoods, lenders, or rent-versus-buy options.</li><li>Freshness note: mortgage rates, taxes, insurance, service charges, valuation fees, and transfer costs change by market and lender.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning estimate only. Confirm the lender quote, APR, fees, taxes, title checks, insurance, valuation, and legal process before committing.</p>
+    </div>
+    <form class="df-form" data-df-form="mortgage-calculator">
+      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="South Africa">South Africa</option><option value="Ghana">Ghana</option></select></label>
+      <label>Property price<input name="propertyPrice" type="number" value="45000000" min="0" step="any" aria-label="Property price"></label>
+      <label>Deposit percent<input name="deposit" type="number" value="20" min="0" max="100" step="any" aria-label="Deposit percent"></label>
+      <label>Annual rate percent<input name="rate" type="number" value="15" min="0" step="any" aria-label="Annual rate percent"></label>
+      <button type="submit">Create mortgage brief</button>
+      <output class="df-result" data-df-result="mortgage-calculator" data-df-base="Mortgage brief ready. Calculate above, then verify lender quote, fees, taxes, title checks, insurance, valuation, and legal process before committing." aria-live="polite">Mortgage brief ready. Calculate above, then verify lender quote, fees, taxes, title checks, insurance, valuation, and legal process before committing.</output>
+      <div class="df-actions"><button type="button" data-df-copy="mortgage-calculator">Copy brief</button><a class="df-action-link" href="#results">View repayment</a></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="mortgage-calculator-faq-title">
+  <h2 id="mortgage-calculator-faq-title">Mortgage Calculator FAQ</h2>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Calculate repayments, compare saved scenarios, and copy the mortgage brief before speaking to a lender, estate agent, or lawyer.</p></details><details><summary>What should I verify?</summary><p>Confirm APR, arrangement fees, valuation, legal fees, property tax, title status, insurance, service charges, and early-repayment rules.</p></details><details><summary>Is this official?</summary><p>No. It is a planning estimate, not a lender quote, property valuation, legal advice, tax advice, or mortgage approval.</p></details></div>
+</section>
+
 <afro-related-tools category="legal" current="mortgage-calculator"></afro-related-tools>
 <afro-footer></afro-footer>
 
@@ -731,8 +757,7 @@ function calculate() {
 
   document.getElementById('results').classList.add('show');
 
-  // AI analysis (if available)
-  showAiInsight(P, monthly, totalInterest, c, totalPaid);
+  // Keep the calculator local-first. AI advisor calls only run from explicit user input.
 }
 
 async function showAiInsight(P, monthly, interest, c, total) {
@@ -845,5 +870,6 @@ async function sendAI(){
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

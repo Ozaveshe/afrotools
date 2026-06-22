@@ -28,6 +28,12 @@
 .waterfall-row.wf-oh { background:#f3e8ff; }
 .waterfall-row.wf-total { background:#dcfce7; font-weight:700; font-size:.95rem; }
 .waterfall-row.wf-price { background:#0f172a; color:white; font-weight:700; }
+.pc-result-note { margin-top:.9rem; font-size:.82rem; color:#57534e; line-height:1.55; background:#fafaf9; border:1px solid #d6d3d1; border-radius:8px; padding:.85rem; }
+.pc-actions { display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1rem; }
+.pc-action-btn { border:1px solid #d6d3d1; background:#fff; color:#44403c; border-radius:8px; padding:.65rem .9rem; font-weight:800; cursor:pointer; font-family:inherit; }
+.pc-action-btn:hover { background:#f5f5f4; }
+.pc-action-btn:focus-visible { outline:2px solid var(--en-accent); outline-offset:2px; }
+.pc-status { min-height:1.2em; font-size:.8rem; color:#57534e; margin-top:.5rem; }
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Manufacturing","item":"https://afrotools.com/manufacturing/"},{"@type":"ListItem","position":3,"name":"Production Cost Calculator","item":"https://afrotools.com/tools/production-cost/"}]}
@@ -42,40 +48,7 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/production-cost/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-production/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/production-cost/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use Production Cost Calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on Production Cost Calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Production Cost Calculator an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/production-cost/"
-}
-</script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 </head>
 <body>
 <afro-navbar theme="dark" active="engineering"></afro-navbar>
@@ -178,34 +151,18 @@
         <h3 style="margin-bottom:.5rem">Cost Reduction Opportunities</h3>
         <ul id="pc-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
       </div>
+      <div class="pc-result-note">
+        Local-first production estimate. Costs stay in your browser. Confirm live supplier quotes, power/fuel costs, taxes, and wastage with current records before changing prices or production volumes.
+      </div>
+      <div class="pc-actions">
+        <button type="button" class="pc-action-btn" onclick="copyProductionSummary()">Copy summary</button>
+        <button type="button" class="pc-action-btn" data-no-gate="true" onclick="downloadProductionSummary()">Download TXT</button>
+      </div>
+      <div class="pc-status" id="pc-status" role="status" aria-live="polite"></div>
     </div>
   </div>
 
 
-<section class="df-upgrade" data-df-upgrade="production-cost">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Production Cost Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for production cost calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Production Cost Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="production-cost">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="production-cost" data-df-base="Production Cost Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Production Cost Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="production-cost">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="production-cost-faq-title">
-  <h2 id="production-cost-faq-title">Production Cost Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -213,6 +170,7 @@
 <afro-footer></afro-footer>
 <script>
 var CURR_SYM = { NGN:'₦', KES:'KES ', ZAR:'R', GHS:'GHS ', USD:'$', EUR:'€' };
+var LAST_PRODUCTION_RESULT = null;
 
 function fmtCur(sym,n){ return sym + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 
@@ -241,6 +199,28 @@ function calcProduction(){
   var grossMargin = price > 0 ? (price - unitCost) / price * 100 : 0;
   var monthlyRevenue = price * effectiveUnits;
   var grossProfit = monthlyRevenue - totalCOGM;
+  LAST_PRODUCTION_RESULT = {
+    currency: currency,
+    symbol: sym,
+    units: units,
+    effectiveUnits: effectiveUnits,
+    raw: raw,
+    pack: pack,
+    labour: labour,
+    energy: energy,
+    rent: rent,
+    deprec: deprec,
+    transport: transport,
+    other: other,
+    wastePct: waste * 100,
+    totalCOGM: totalCOGM,
+    unitCost: unitCost,
+    price: price,
+    grossMargin: grossMargin,
+    monthlyRevenue: monthlyRevenue,
+    grossProfit: grossProfit,
+    tips: []
+  };
 
   document.getElementById('pc-headline').textContent = 'COGM for ' + units.toLocaleString() + ' units / month';
   document.getElementById('pc-unit-cost').textContent = fmtCur(sym, unitCost);
@@ -284,9 +264,71 @@ function calcProduction(){
   if (waste > 0.08) tips.push('Waste rate of ' + (waste*100).toFixed(0) + '% is high — improving this by 50% would save ' + fmtCur(sym, (totalCOGM*waste*0.5/units)) + ' per unit.');
   tips.push('Review overhead allocation quarterly — fixed costs should reduce as a % as volume increases.');
   if (grossMargin < 20 && price > 0) tips.push('Gross margin of ' + grossMargin.toFixed(0) + '% is below the 30% minimum recommended for manufacturing businesses.');
+  LAST_PRODUCTION_RESULT.tips = tips.slice();
   document.getElementById('pc-tips').innerHTML = tips.map(function(t){ return '<li>'+t+'</li>'; }).join('');
   document.getElementById('pc-results').classList.add('on');
+  document.getElementById('pc-status').textContent = 'Summary ready to copy or download.';
   document.getElementById('pc-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function buildProductionSummary() {
+  if (!LAST_PRODUCTION_RESULT) return '';
+  var r = LAST_PRODUCTION_RESULT;
+  return [
+    'AfroTools Production Cost Summary',
+    'Currency: ' + r.currency,
+    'Planned units: ' + r.units.toLocaleString(),
+    'Effective units after waste: ' + Math.round(r.effectiveUnits).toLocaleString(),
+    'Waste rate: ' + r.wastePct.toFixed(1) + '%',
+    'Raw materials: ' + fmtCur(r.symbol, r.raw),
+    'Packaging: ' + fmtCur(r.symbol, r.pack),
+    'Direct labour: ' + fmtCur(r.symbol, r.labour),
+    'Overhead total: ' + fmtCur(r.symbol, r.energy + r.rent + r.deprec + r.transport + r.other),
+    'Monthly COGM: ' + fmtCur(r.symbol, r.totalCOGM),
+    'Unit cost: ' + fmtCur(r.symbol, r.unitCost),
+    r.price > 0 ? 'Target price: ' + fmtCur(r.symbol, r.price) : 'Target price: not set',
+    r.price > 0 ? 'Gross margin: ' + r.grossMargin.toFixed(1) + '%' : 'Gross margin: not calculated',
+    r.price > 0 ? 'Monthly gross profit: ' + fmtCur(r.symbol, r.grossProfit) : 'Monthly gross profit: not calculated',
+    '',
+    'Cost reduction notes:',
+    r.tips.length ? r.tips.map(function(t){ return '- ' + t; }).join('\n') : '- No specific cost notes generated.',
+    '',
+    'Assumptions: local-first planning estimate. Confirm supplier quotes, power/fuel prices, taxes, and wastage before acting.'
+  ].join('\n');
+}
+
+function copyProductionSummary() {
+  var text = buildProductionSummary();
+  var status = document.getElementById('pc-status');
+  if (!text) { status.textContent = 'Run a calculation first.'; return; }
+  navigator.clipboard.writeText(text).then(function() {
+    status.textContent = 'Summary copied.';
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    status.textContent = 'Summary copied.';
+  });
+}
+
+function downloadProductionSummary() {
+  var text = buildProductionSummary();
+  var status = document.getElementById('pc-status');
+  if (!text) { status.textContent = 'Run a calculation first.'; return; }
+  var blob = new Blob([text], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'production-cost-summary.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  status.textContent = 'TXT summary downloaded.';
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>

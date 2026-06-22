@@ -138,7 +138,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/facture-proforma/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ankara-proforma/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/proforma-invoice/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -198,6 +198,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       <div class="action-bar" style="margin-bottom:1rem;margin-top:0">
         <button type="button" class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
         <button type="button" class="btn-secondary" onclick="copyTradeSummary()">Copy trade summary</button>
+        <button type="button" class="btn-secondary" id="piCsvBtn">Download CSV</button>
+        <button type="button" class="btn-secondary" id="piJsonBtn">Backup JSON</button>
         <button type="button" class="btn-secondary" onclick="copyLast()">Restore last draft</button>
         <button type="button" class="btn-secondary" onclick="resetForm()">Reset Form</button>
         <div class="pi-status" id="piStatus" role="status" aria-live="polite"></div>
@@ -671,6 +673,35 @@ function proformaTotals(){
   return {subtotal,freight,insurance,fob:subtotal+freight,cif:subtotal+freight+insurance,itemCount};
 }
 
+function proformaItems(){
+  const items=[];
+  document.querySelectorAll('#itemsBody tr').forEach(tr=>{
+    const inputs=tr.querySelectorAll('input');
+    const selects=tr.querySelectorAll('select');
+    items.push({
+      description:inputs[0]?inputs[0].value:'',
+      hsCode:inputs[1]?inputs[1].value:'',
+      quantity:parseFloat(inputs[2]?inputs[2].value:0)||0,
+      unit:selects[0]?selects[0].value:'pcs',
+      unitPrice:parseFloat(inputs[3]?inputs[3].value:0)||0
+    });
+  });
+  return items;
+}
+
+function proformaDraftData(){
+  const fields={};
+  ['sellerName','sellerAddr','sellerPhone','sellerEmail','sellerReg','sellerExportLicense',
+   'buyerName','buyerAddr','buyerPhone','buyerEmail','buyerImportLicense',
+   'piNumber','piDate','piValidUntil','piIncoterm','piPOL','piPOD','piOriginCountry',
+   'piCurrency','piPaymentTerms','piDelivery','piFreight','piInsurance',
+   'piPackaging','piInspection','piMarks','piConditions','sellerCountry','buyerCountry'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) fields[id]=el.value;
+  });
+  return {tool:'proforma-invoice',exportedAt:new Date().toISOString(),fields,items:proformaItems(),totals:proformaTotals()};
+}
+
 function tradeSummaryText(){
   const totals=proformaTotals();
   const cur=v('piCurrency').split(' ')[0]||'USD';
@@ -686,6 +717,38 @@ function tradeSummaryText(){
     'CIF total: '+cur+' '+fmt(totals.cif),
     'Review before sending: HS codes, permits, bank wording, inspection, freight, insurance, validity date, and final commercial invoice requirements.'
   ].join('\n');
+}
+
+function downloadProformaCsv(){
+  const data=proformaDraftData();
+  const cur=v('piCurrency').split(' ')[0]||'USD';
+  const rows=[['description','hs_code','quantity','unit','unit_price_'+cur.toLowerCase(),'line_total_'+cur.toLowerCase()]];
+  data.items.forEach(item=>rows.push([item.description,item.hsCode,item.quantity,item.unit,item.unitPrice.toFixed(2),(item.quantity*item.unitPrice).toFixed(2)]));
+  rows.push([]);
+  rows.push(['field','value'],['proforma_number',v('piNumber')],['seller',v('sellerName')],['buyer',v('buyerName')],['incoterm',v('piIncoterm')],['payment_terms',v('piPaymentTerms')],['port_of_loading',v('piPOL')],['port_of_discharge',v('piPOD')],['fob_total',data.totals.fob.toFixed(2)],['cif_total',data.totals.cif.toFixed(2)],['assumption_note','Draft proforma only. Verify HS codes, permits, bank wording, freight, insurance, tax, and final commercial invoice requirements before sending.']);
+  var csv=rows.map(row=>row.map(cell=>'"'+String(cell == null ? '' : cell).replace(/"/g,'""')+'"').join(',')).join('\n');
+  var blob=new Blob([csv],{type:'text/csv'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(v('piNumber')||'afrotools-proforma')+'.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  setPiStatus('CSV downloaded for broker, buyer, or accounting review.');
+}
+
+function downloadProformaJson(){
+  saveToLocal();
+  var blob=new Blob([JSON.stringify(proformaDraftData(),null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(v('piNumber')||'afrotools-proforma')+'.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  setPiStatus('JSON backup downloaded. It stays local until you share it.');
 }
 
 function copyTradeSummary(){
@@ -712,6 +775,8 @@ function saveToLocal(){
 }
 
 window.addEventListener('beforeprint',saveToLocal);
+document.getElementById('piCsvBtn').addEventListener('click',downloadProformaCsv);
+document.getElementById('piJsonBtn').addEventListener('click',downloadProformaJson);
 window.addEventListener('load',initDefaults);
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

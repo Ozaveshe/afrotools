@@ -102,6 +102,13 @@
     .lc-pro-cta strong{color:var(--color-text,#111827)}
     .lc-pro-cta a{display:inline-flex;color:#0056b3;font-weight:800;text-decoration:none;font-size:.82rem}
     .lc-pro-cta a:hover{text-decoration:underline}
+    .lc-export-card{width:min(1160px,calc(100% - 32px));box-sizing:border-box}
+    .lc-export-card .lc-export-note{font-size:.82rem;color:var(--color-text-muted,#6b7280);line-height:1.55;margin:0 0 12px}
+    .lc-export-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .lc-export-btn{border:1px solid #bfdbfe;background:#fff;color:#0056b3;border-radius:10px;padding:10px 14px;font-size:.84rem;font-weight:800;cursor:pointer;font-family:inherit;touch-action:manipulation}
+    .lc-export-btn:hover{background:#eff6ff}
+    .lc-export-btn:focus-visible{outline:2px solid var(--color-primary,#007AFF);outline-offset:2px}
+    .lc-export-status{font-size:.78rem;color:var(--color-text-muted,#6b7280);min-height:1.2em;margin-top:8px}
     /* ── lc- tabs ── */
     .lc-tabs{display:flex;gap:3px;background:var(--color-bg-subtle,#f8fafc);border-radius:12px;padding:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;scrollbar-width:none;overscroll-behavior:contain}
     .lc-tabs::-webkit-scrollbar{display:none}
@@ -180,40 +187,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-conges-pto/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-likizo/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/leave-calculator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use Leave & PTO Calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on Leave & PTO Calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Leave & PTO Calculator an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/leave-calculator/"
-}
-</script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -521,9 +495,9 @@
 
   <div class="tl-sidebar">
     <div class="tl-ai-panel">
-      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-badge">LOCAL RULE NOTES</div>
       <div class="tl-ai-title">Smart Insights</div>
-      <div class="tl-ai-body" id="ai-obs">Select a country to get AI-powered insights on leave entitlements and how they compare across the continent.</div>
+      <div class="tl-ai-body" id="ai-obs">Select a country to get local rule notes on leave entitlements and how they compare across the continent.</div>
     </div>
     <div class="tl-info-card">
       <div class="tl-info-title">&#128270; THINGS TO KNOW</div>
@@ -560,29 +534,20 @@
 </div>
 <afro-related-tools category="financial" current="leave-calculator"></afro-related-tools>
 
-<section class="df-upgrade" data-df-upgrade="leave-calculator">
-  <div class="df-upgrade__card">
+<section class="tl-card lc-export-card" style="max-width:1160px;margin:24px auto">
+  <div class="tl-card-header">
+    <span class="tl-card-icon" aria-hidden="true">&#128203;</span>
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Leave &amp; PTO Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for leave &amp; pto calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Leave &amp;amp; PTO Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, officialSource, businessCta, verificationPanel.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <div class="tl-card-title">Export Leave Summary</div>
+      <div class="tl-card-sub">Copy or download the active tab result for HR review</div>
     </div>
-    <form class="df-form" data-df-form="leave-calculator">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="leave-calculator" data-df-base="Leave &amp;amp; PTO Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Leave &amp;amp; PTO Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="leave-calculator">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="leave-calculator-faq-title">
-  <h2 id="leave-calculator-faq-title">Leave &amp; PTO Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <p class="lc-export-note">Local-first planning notes only. Leave rules, public holidays, payroll policy, and social security requirements can change. Confirm the current law, contract, and employer policy before acting.</p>
+  <div class="lc-export-actions">
+    <button type="button" class="lc-export-btn" onclick="lcCopySummary()">Copy active summary</button>
+    <button type="button" class="lc-export-btn" data-no-gate="true" onclick="lcDownloadSummary()">Download TXT</button>
+  </div>
+  <div class="lc-export-status" id="lc-export-status" role="status" aria-live="polite"></div>
 </section>
 <afro-footer></afro-footer>
 
@@ -705,7 +670,7 @@ function lcOnCountry() {
   if (!cc || !LEAVE_DATA[cc]) {
     document.getElementById('lc-results').style.display = 'none';
     document.getElementById('lc-empty').style.display = '';
-    document.getElementById('ai-obs').textContent = 'Select a country to get AI-powered insights on leave entitlements and how they compare across the continent.';
+    document.getElementById('ai-obs').textContent = 'Select a country to get local rule notes on leave entitlements and how they compare across the continent.';
     return;
   }
   var d = LEAVE_DATA[cc];
@@ -945,6 +910,94 @@ function lwShare(idx) {
   var text = lcShareTexts[idx];
   if (!text) return;
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+}
+
+function lcActiveTabId() {
+  var active = document.querySelector('.lc-tab.active');
+  return active ? active.id.replace('lc-tab-', '') : 'rights';
+}
+
+function lcPlainTextFrom(el) {
+  return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+}
+
+function lcBuildSummary() {
+  var tab = lcActiveTabId();
+  var lines = ['AfroTools Leave & PTO Summary', 'Active view: ' + tab];
+  if (tab === 'rights') {
+    var cc = document.getElementById('lc-country').value;
+    if (!cc || !LEAVE_DATA[cc]) return '';
+    var d = LEAVE_DATA[cc];
+    lines.push('Country: ' + d.name);
+    lines.push('Annual leave: ' + d.annual + ' ' + d.annualUnit + ' (' + d.annualNote + ')');
+    lines.push('Sick leave: ' + d.sickNote);
+    lines.push('Maternity: ' + d.matWeeks + ' weeks, pay ' + d.matPay + (d.matPaySource ? ' via ' + d.matPaySource : ''));
+    lines.push('Paternity: ' + (d.patDays > 0 ? d.patDays + ' days' : 'Not legislated'));
+    lines.push('Public holidays: ' + d.holidays + ' typical per year');
+    lines.push('Law/reference: ' + d.law);
+    if (d.obs) lines.push('Local note: ' + d.obs);
+  } else if (tab === 'accrual') {
+    var acText = lcPlainTextFrom(document.getElementById('ac-result'));
+    if (!acText) return '';
+    lines.push(acText);
+  } else if (tab === 'payout') {
+    var poText = lcPlainTextFrom(document.getElementById('po-result'));
+    if (!poText) return '';
+    lines.push(poText);
+  } else if (tab === 'parental') {
+    var ppText = lcPlainTextFrom(document.getElementById('pp-result'));
+    if (!ppText) return '';
+    lines.push(ppText);
+    if (lcCurrentPP) lines.push('Calendar dates: start ' + lcCurrentPP.start + ', end ' + lcCurrentPP.end + ', return ' + lcCurrentPP.returnDate);
+  } else if (tab === 'weekends') {
+    var lwText = lcPlainTextFrom(document.getElementById('lw-result'));
+    if (!lwText) return '';
+    lines.push(lwText);
+  } else if (tab === 'compare') {
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#lc-tbody tr'), 0, 8).map(function(row) {
+      return Array.prototype.map.call(row.children, function(td) { return td.textContent.trim(); }).join(' | ');
+    });
+    if (!rows.length) return '';
+    lines.push('Top visible comparison rows:');
+    lines = lines.concat(rows);
+  }
+  lines.push('');
+  lines.push('Assumptions: planning estimate only. Confirm current labour law, public holidays, contract terms, and employer policy before acting.');
+  return lines.join('\n');
+}
+
+function lcCopySummary() {
+  var text = lcBuildSummary();
+  var status = document.getElementById('lc-export-status');
+  if (!text) { status.textContent = 'Open a tab and generate a result first.'; return; }
+  navigator.clipboard.writeText(text).then(function() {
+    status.textContent = 'Summary copied.';
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    status.textContent = 'Summary copied.';
+  });
+}
+
+function lcDownloadSummary() {
+  var text = lcBuildSummary();
+  var status = document.getElementById('lc-export-status');
+  if (!text) { status.textContent = 'Open a tab and generate a result first.'; return; }
+  var blob = new Blob([text], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'leave-pto-summary.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  status.textContent = 'TXT summary downloaded.';
 }
 
 // ── Tab 6: Compare ──

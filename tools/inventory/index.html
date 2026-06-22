@@ -63,6 +63,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
 .faq details[open] summary::after{content:'-'}
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+.inventory-workflow-note{margin:.75rem 0 1rem;padding:.85rem 1rem;border:1px solid #bbf7d0;border-radius:10px;background:#f0fdf4;color:#14532d;font-size:.86rem;line-height:1.55}
 </style>
 <script src="/assets/js/bundles/core.c3deb143.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -108,40 +109,6 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/gestion-stocks/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kifuatiliaji-inventory/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/inventory/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use Inventory Tracker?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on Inventory Tracker?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Inventory Tracker an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/inventory/"
-}
-</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -157,12 +124,13 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <button type="button" class="btn btn-primary" onclick="openModal()">+ Add Product</button>
 <input aria-label="Search products" type="text" class="search-input" id="searchInput" placeholder="Search products..." oninput="renderTable()">
 <button type="button" class="btn btn-outline" onclick="copyInventorySummary()">Copy Summary</button>
-<button type="button" class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
-<button type="button" class="btn btn-outline" onclick="exportJSON()">Backup JSON</button>
+<button type="button" class="btn btn-outline" data-no-gate="true" onclick="exportCSV()">Export CSV</button>
+<button type="button" class="btn btn-outline" data-no-gate="true" onclick="exportJSON()">Backup JSON</button>
 <label class="btn btn-outline" for="importJson" style="cursor:pointer">Import JSON</label>
 <input id="importJson" type="file" accept="application/json,.json" style="position:absolute;left:-9999px" onchange="importJSON(this)">
 </div>
 <p id="inventoryStatus" style="min-height:22px;margin:0 0 10px;color:#475569;font-size:.85rem" aria-live="polite"></p>
+<p class="inventory-workflow-note">Local-first stock tracker. Product names, quantities, margins, and supplier-sensitive details stay in this browser unless you choose copy, CSV export, JSON backup, save, or share. Recount physical stock and verify supplier prices before using exports for purchasing or bookkeeping.</p>
 <div style="overflow-x:auto">
 <table class="inv-table">
 <thead><tr><th>Product</th><th>Category</th><th>Cost Price</th><th>Sell Price</th><th>Stock</th><th>Min Stock</th><th>Status</th><th>Value</th><th>Actions</th></tr></thead>
@@ -198,25 +166,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="inventory">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Stock control workflow</span>
-      <h2>Turn the stock list into a restock plan</h2>
-      <p>Add products with cost, selling price, stock on hand, and minimum stock. The dashboard turns those rows into stock value, potential revenue, low-stock alerts, and a downloadable handoff for your accountant or next buying trip.</p>
-      <ul class="df-upgrade__bullets"><li>Use low-stock rows as the reorder list before market day, delivery day, or supplier calls.</li><li>Export CSV for spreadsheet review and JSON as a browser-local backup you can re-import later.</li><li>Copy the summary when you need a quick WhatsApp or notes handoff without sharing raw product details.</li><li>Verify live supplier prices, expiry dates, damaged stock, and cash collection before buying more inventory.</li></ul>
-      <p class="df-upgrade__note"><strong>Local-first.</strong> Product rows stay in this browser unless you export or share them. This is a planning tracker, not a POS system, accounting ledger, or cloud inventory service.</p>
-    </div>
-    <div class="df-form" aria-label="Inventory workflow outputs">
-      <label>Primary result<output class="df-result" id="inventoryWorkflowResult" aria-live="polite">Add products to see stock value, potential revenue, low-stock count, and backup actions.</output></label>
-      <div class="df-actions"><button type="button" onclick="copyInventorySummary()">Copy summary</button><button type="button" onclick="exportJSON()">Backup JSON</button></div>
-    </div>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="inventory-faq-title">
-  <h2 id="inventory-faq-title">Inventory Tracker FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
+
+
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -319,7 +270,7 @@ function adjustStock(id,delta){const p=products.find(x=>x.id===id);if(p){p.stock
 function exportCSV(){
   let csv='Product,Category,Cost Price,Sell Price,Stock,Min Stock,Stock Value\n';
   products.forEach(p=>{csv+=`"${p.name}","${p.category}",${p.cost},${p.sell},${p.stock},${p.minStock},${p.cost*p.stock}\n`;});
-  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inventory-export.csv';a.click();
+  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inventory-export.csv';a.dataset.noGate='true';a.dataset.noPdfGate='true';a.click();
   setInventoryStatus('CSV exported. Review supplier prices and stock counts before sharing.');
 }
 function inventorySummary(){
@@ -335,7 +286,7 @@ function copyInventorySummary(){
 function exportJSON(){
   const payload={exportedAt:new Date().toISOString(),tool:'inventory',products:products};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='afrotools-inventory-backup.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='afrotools-inventory-backup.json';a.dataset.noGate='true';a.dataset.noPdfGate='true';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);
   setInventoryStatus('JSON backup exported. Keep it private; it contains your product list.');
 }
 function importJSON(input){
@@ -358,6 +309,5 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
 renderTable();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

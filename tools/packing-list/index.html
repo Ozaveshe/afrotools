@@ -45,8 +45,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 .badge-gray{background:rgba(255,255,255,.12);color:#fff}
 .pl-wrap{max-width:1300px;margin:0 auto;padding:1.5rem}
 .pl-grid{display:grid;grid-template-columns:42% 1fr;gap:1.5rem;align-items:start}
+.pl-grid>*{min-width:0}
 @media(max-width:900px){.pl-grid{grid-template-columns:1fr}}
-.form-panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;position:sticky;top:1rem;max-height:calc(100vh - 2rem);overflow-y:auto}
+.form-panel{box-sizing:border-box;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;position:sticky;top:1rem;max-height:calc(100vh - 2rem);overflow-y:auto}
 @media(max-width:900px){.form-panel{position:static;max-height:none}}
 .form-section{margin-bottom:1.25rem}
 .section-title{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#007AFF;margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1.5px solid #E8F2FF}
@@ -56,7 +57,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 @media(max-width:600px){.form-row-2,.form-row-3{grid-template-columns:1fr}}
 .fg{display:flex;flex-direction:column;gap:.25rem}
 .fg label{font-size:.78rem;font-weight:700;color:#475569}
-.fg input,.fg select,.fg textarea{padding:.5rem .7rem;border:1.5px solid #cbd5e1;border-radius:9px;font-size:.88rem;font-family:inherit;background:#F8FAFD;color:#0f172a;transition:border-color .2s,box-shadow .2s}
+.fg input,.fg select,.fg textarea{box-sizing:border-box;width:100%;padding:.5rem .7rem;border:1.5px solid #cbd5e1;border-radius:9px;font-size:.88rem;font-family:inherit;background:#F8FAFD;color:#0f172a;transition:border-color .2s,box-shadow .2s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:#007AFF;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
 .fg textarea{resize:vertical;min-height:56px}
 .items-table-wrap{overflow-x:auto;margin-top:.5rem}
@@ -88,6 +89,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 .bar-fill.over{background:#ef4444}
 .vol-weight{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:.6rem .75rem;font-size:.82rem;color:#92400e}
 .action-bar{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}
+@media(max-width:600px){.pl-wrap{padding:1rem}.action-bar{display:grid;grid-template-columns:1fr}.action-bar button{width:100%}}
 .btn-primary{padding:.6rem 1.25rem;background:#007AFF;color:#fff;border:none;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;transition:background .2s}
 .btn-primary:hover{background:#0063D1}
 .btn-secondary{padding:.6rem 1.25rem;background:#fff;color:#475569;border:1.5px solid #e2e8f0;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s}
@@ -137,7 +139,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/liste-colisage/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/orodha-ya-kupakia/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/packing-list/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -196,8 +198,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
     <div class="form-panel">
       <div class="action-bar">
         <button type="button" class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
+        <button type="button" class="btn-secondary" onclick="copyPackingBrief()">Copy brief</button>
+        <button type="button" class="btn-secondary" onclick="downloadPackingCsv()">Download CSV</button>
+        <button type="button" class="btn-secondary" onclick="downloadPackingJson()">Backup JSON</button>
         <button type="button" class="btn-secondary" onclick="resetForm()">Reset Form</button>
       </div>
+      <p id="packingStatus" role="status" aria-live="polite" style="min-height:22px;margin:0 0 10px;color:#475569;font-size:.85rem"></p>
 
       <!-- Shipper -->
       <div class="form-section">
@@ -459,6 +465,116 @@ function calcPkg(){
 }
 
 function v(id){return(document.getElementById(id)||{}).value||''}
+
+function packingRows(){
+  const rows=[];
+  document.querySelectorAll('#pkgBody tr').forEach(tr=>{
+    const inputs=tr.querySelectorAll('input');
+    const sels=tr.querySelectorAll('select');
+    if(!inputs.length) return;
+    rows.push({
+      marks: inputs[0]?.value || '',
+      packageNo: inputs[1]?.value || '',
+      type: sels[0]?.value || 'Carton',
+      description: inputs[2]?.value || '',
+      quantity: parseFloat(inputs[3]?.value) || 0,
+      netKg: parseFloat(inputs[4]?.value) || 0,
+      grossKg: parseFloat(inputs[5]?.value) || 0,
+      lengthCm: parseFloat(inputs[6]?.value) || 0,
+      widthCm: parseFloat(inputs[7]?.value) || 0,
+      heightCm: parseFloat(inputs[8]?.value) || 0,
+      cbm: parseFloat((tr.querySelector('[id^="cbm-"]') || {}).textContent) || 0
+    });
+  });
+  return rows;
+}
+
+function packingDraftData(){
+  const rows=packingRows();
+  const totals=rows.reduce((acc,row)=>{
+    acc.packages += row.quantity;
+    acc.netKg += row.netKg;
+    acc.grossKg += row.grossKg;
+    acc.cbm += row.cbm;
+    return acc;
+  },{packages:0,netKg:0,grossKg:0,cbm:0});
+  return {
+    tool:'packing-list',
+    exportedAt:new Date().toISOString(),
+    document:{
+      number:v('plNumber'),
+      date:v('plDate'),
+      invoiceReference:v('plInvRef'),
+      vessel:v('plVessel'),
+      portOfLoading:v('plPOL'),
+      portOfDischarge:v('plPOD'),
+      origin:v('plOrigin')
+    },
+    shipper:{name:v('shipperName'),address:v('shipperAddr'),country:v('shipperCountry')},
+    consignee:{name:v('consigneeName'),address:v('consigneeAddr'),country:v('consigneeCountry')},
+    notify:{name:v('notifyName'),address:v('notifyAddr')},
+    packages:rows,
+    totals:totals
+  };
+}
+
+function setPackingStatus(message){
+  const status=document.getElementById('packingStatus');
+  if(status) status.textContent=message || '';
+}
+
+function packingBriefText(){
+  const data=packingDraftData();
+  return [
+    'AfroTools packing list brief',
+    'Packing list: '+(data.document.number || 'not set')+' dated '+(data.document.date || 'not set'),
+    'Shipper: '+(data.shipper.name || 'not set')+'; Consignee: '+(data.consignee.name || 'not set'),
+    'Route: '+(data.document.portOfLoading || 'POL not set')+' to '+(data.document.portOfDischarge || 'POD not set'),
+    'Packages: '+data.totals.packages+'; net '+data.totals.netKg.toFixed(3)+' kg; gross '+data.totals.grossKg.toFixed(3)+' kg; CBM '+data.totals.cbm.toFixed(3),
+    'Container use: 20ft '+Math.round((data.totals.cbm/33)*100)+'%, 40ft '+Math.round((data.totals.cbm/67)*100)+'%, 40ft HC '+Math.round((data.totals.cbm/76)*100)+'%',
+    'Planning note: confirm marks, package counts, dimensions, weights, HS/invoice match, carrier instructions, and destination requirements before shipment.'
+  ].join('\n');
+}
+
+function copyPackingBrief(){
+  const text=packingBriefText();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>setPackingStatus('Packing brief copied.')).catch(()=>setPackingStatus(text));
+  } else setPackingStatus(text);
+}
+
+function downloadPackingCsv(){
+  const data=packingDraftData();
+  const rows=[['marks','package_no','type','description','quantity','net_kg','gross_kg','length_cm','width_cm','height_cm','cbm']];
+  data.packages.forEach(row=>rows.push([row.marks,row.packageNo,row.type,row.description,row.quantity,row.netKg,row.grossKg,row.lengthCm,row.widthCm,row.heightCm,row.cbm.toFixed(3)]));
+  rows.push([]);
+  rows.push(['field','value']);
+  rows.push(['packing_list_number',data.document.number],['invoice_reference',data.document.invoiceReference],['shipper',data.shipper.name],['consignee',data.consignee.name],['port_of_loading',data.document.portOfLoading],['port_of_discharge',data.document.portOfDischarge],['total_packages',data.totals.packages],['total_net_kg',data.totals.netKg.toFixed(3)],['total_gross_kg',data.totals.grossKg.toFixed(3)],['total_cbm',data.totals.cbm.toFixed(3)],['planning_note','Verify package marks, counts, dimensions, weights, invoice match, carrier instructions, and destination requirements.']);
+  const csv=rows.map(row=>row.map(cell=>'"'+String(cell==null?'':cell).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='afrotools-packing-list.csv';
+  a.dataset.noPdfGate='true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  setPackingStatus('CSV downloaded for shipment review.');
+}
+
+function downloadPackingJson(){
+  const blob=new Blob([JSON.stringify(packingDraftData(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='afrotools-packing-list-backup.json';
+  a.dataset.noPdfGate='true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  setPackingStatus('JSON backup downloaded. Keep it private; it contains shipment details.');
+}
 
 function renderDoc(){
   let totalPkgs=0, totalNet=0, totalGross=0, totalCBM=0;

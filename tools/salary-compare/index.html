@@ -78,6 +78,11 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 
 /* ── SUMMARY GRID ── */
 .sb-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.sb-export-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.sb-export-actions button{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:9px 12px;color:#0f172a;font-size:.78rem;font-weight:800;font-family:inherit;cursor:pointer}
+.sb-export-actions button:hover{border-color:var(--sb-green);color:var(--sb-green);background:#f7fff9}
+.sb-export-status{margin-top:8px;color:var(--sb-muted);font-size:.76rem;min-height:1.2em}
+.sb-verify-note{margin-top:12px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:8px;padding:12px 14px;color:#166534;font-size:.78rem;line-height:1.6}
 .sb-stat{background:#f8fafc;border:1px solid var(--sb-border);border-radius:8px;padding:14px;text-align:center}
 .sb-stat-val{font-size:1.15rem;font-weight:800;color:var(--sb-green)}
 .sb-stat-lbl{font-size:.66rem;color:var(--sb-muted);font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
@@ -344,7 +349,6 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/comparateur-salaires/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kilinganisha-mishahara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/salary-compare/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -532,6 +536,13 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 <div class="sb-card-body">
 <div class="sb-summary" id="summaryGrid"></div>
 <div id="userPercentile" style="display:none"></div>
+<div class="sb-export-actions" aria-label="Salary benchmark actions">
+<button type="button" onclick="window.SalaryCompareExport.copy()">Copy benchmark</button>
+<button type="button" onclick="window.SalaryCompareExport.downloadCsv()">Download CSV</button>
+<button type="button" onclick="window.print()">Print</button>
+</div>
+<p class="sb-export-status" id="salaryExportStatus" aria-live="polite"></p>
+<p class="sb-verify-note"><strong>Planning estimate.</strong> Salary bands, FX, and cost-of-living assumptions can move quickly. Use this as a negotiation benchmark, then verify current employer, recruiter, and market data before making career or relocation decisions.</p>
 </div>
 </div>
 
@@ -661,30 +672,6 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 </div>
 
 
-<section class="df-upgrade" data-df-upgrade="salary-compare">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>African Salary Benchmarker decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for african salary benchmarker so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: African Salary Benchmarker: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, officialSource, businessCta, verificationPanel, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="salary-compare">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="salary-compare" data-df-base="African Salary Benchmarker: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">African Salary Benchmarker: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="salary-compare">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="salary-compare-faq-title">
-  <h2 id="salary-compare-faq-title">African Salary Benchmarker FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="paye"></wise-cta>
 </div>
@@ -1251,6 +1238,7 @@ function renderResults() {
   // Show negotiation card
   document.getElementById('negotCard').style.display = 'block';
   updateRemotePremium();
+  setSalaryExportStatus('Benchmark ready. Copy or download a salary table before you negotiate.');
 }
 
 function renderSummary(results, d, showLocal, showPPP) {
@@ -1731,6 +1719,78 @@ function ordinal(n) {
 /* ════════════════════════════════════════
    NEGOTIATION CALCULATOR
    ════════════════════════════════════════ */
+function salaryExportRows() {
+  if (!currentResults) return [];
+  return currentResults.results.map(function(r) {
+    return {
+      country: r.name,
+      annualUsd: Math.round(r.usd),
+      localAnnual: Math.round(r.localAnnual),
+      localMonthly: Math.round(r.localMonthly),
+      pppAdjustedUsd: Math.round(r.pppAdj),
+      currency: r.cur
+    };
+  });
+}
+
+function salarySummaryText() {
+  if (!currentResults) return '';
+  var rows = salaryExportRows().sort(function(a,b){ return b.annualUsd - a.annualUsd; });
+  var top = rows[0];
+  var avg = Math.round(rows.reduce(function(sum,r){ return sum + r.annualUsd; }, 0) / Math.max(1, rows.length));
+  return [
+    'AfroTools salary benchmark',
+    'Role: ' + currentResults.roleName,
+    'Experience: ' + EXP_LABELS[currentResults.expIdx],
+    'Average annual benchmark: ' + fmtUSD(avg),
+    'Highest market in this run: ' + (top ? top.country + ' at ' + fmtUSD(top.annualUsd) : 'n/a'),
+    'Skill premium: ' + Math.round((currentResults.skillMult - 1) * 100) + '%',
+    '',
+    'Country rows:',
+    rows.slice(0, 8).map(function(r){ return '- ' + r.country + ': ' + fmtUSD(r.annualUsd) + '/year, approx ' + r.currency + ' ' + r.localMonthly.toLocaleString('en') + '/month'; }).join('\n'),
+    '',
+    'Planning estimate only. Verify current employer, recruiter, FX, and local market data before making career or relocation decisions.'
+  ].join('\n');
+}
+
+function copySalarySummary() {
+  if (!currentResults) { setSalaryExportStatus('Run a benchmark first.'); return; }
+  var text = salarySummaryText();
+  var done = function(){ setSalaryExportStatus('Salary benchmark copied.'); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(function(){ window.prompt('Copy salary benchmark', text); done(); });
+  } else {
+    window.prompt('Copy salary benchmark', text);
+    done();
+  }
+}
+
+function downloadSalaryCsv() {
+  if (!currentResults) { setSalaryExportStatus('Run a benchmark first.'); return; }
+  var rows = [['Country','Annual USD','Local annual','Local monthly','PPP adjusted USD','Currency']];
+  salaryExportRows().forEach(function(r){ rows.push([r.country,r.annualUsd,r.localAnnual,r.localMonthly,r.pppAdjustedUsd,r.currency]); });
+  var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'salary-benchmark.csv';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1500);
+  setSalaryExportStatus('CSV downloaded.');
+}
+
+function setSalaryExportStatus(message) {
+  var el = document.getElementById('salaryExportStatus');
+  if (el) el.textContent = message;
+}
+
+window.SalaryCompareExport = {
+  copy: copySalarySummary,
+  downloadCsv: downloadSalaryCsv
+};
 function calculateNegotiation() {
   var d = currentResults;
   if (!d) return;
@@ -1887,6 +1947,5 @@ async function sendAI(){
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

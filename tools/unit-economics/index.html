@@ -94,6 +94,12 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 .ltv-bad{background:#fef2f2;border-color:#fca5a5}
 .ltv-bad .big{color:#dc2626}
 .ltv-bad .lbl{color:#991b1b}
+.result-note{margin-top:12px;font-size:.75rem;color:#78350f;line-height:1.6;background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:12px}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.action-btn{border:1px solid #fed7aa;background:#fff;color:#9a3412;border-radius:8px;padding:9px 13px;font-size:.8rem;font-weight:800;cursor:pointer;font-family:inherit}
+.action-btn:hover{background:#fff7ed}
+.action-btn:focus-visible{outline:2px solid #ea580c;outline-offset:2px}
+.status-line{min-height:1.2em;font-size:.75rem;color:#64748b;margin-top:8px}
 .info-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:16px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7c2d12;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#9a3412;line-height:1.6}
@@ -237,6 +243,14 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
               </div>
             </div>
           </div>
+          <div class="result-note">
+            Local-first planning estimate. Uses only the numbers entered on this device; no customer, price, or cost data is sent to a server. Benchmarks and market conditions can change, so confirm with current supplier, tax, and accountant inputs before pricing.
+          </div>
+          <div class="result-actions">
+            <button type="button" class="action-btn" onclick="copyUnitEconomics()">Copy summary</button>
+            <button type="button" class="action-btn" data-no-gate="true" onclick="downloadUnitEconomics()">Download TXT</button>
+          </div>
+          <div class="status-line" id="unit-status" role="status" aria-live="polite"></div>
         </div>
       </div>
 
@@ -311,6 +325,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 
 <script>
 var CURR_SYMS = {NGN:"₦",KES:"KSh",ZAR:"R",GHS:"GH₵",USD:"$"};
+var LAST_UNIT_ECONOMICS = null;
 
 function sym() { return CURR_SYMS[document.getElementById('currency').value] || ""; }
 
@@ -341,6 +356,29 @@ function calculate() {
   var monthlyCOGS = units * vcost;
   var monthlyGross = monthlyRevenue - monthlyCOGS;
   var monthlyNetProfit = monthlyGross - fixed;
+  var ltv = cac > 0 && contribUnit > 0 ? contribUnit * 12 : 0;
+  var ratio = cac > 0 && contribUnit > 0 ? ltv / cac : 0;
+
+  LAST_UNIT_ECONOMICS = {
+    currency: document.getElementById('currency').value,
+    price: effPrice,
+    variableCost: vcost,
+    fixedCosts: fixed,
+    units: units,
+    refundPct: refundPct * 100,
+    grossUnit: grossUnit,
+    grossMarginPct: grossMarginPct,
+    contributionUnit: contribUnit,
+    breakEvenUnits: bep,
+    breakEvenRevenue: bepRev,
+    monthlyRevenue: monthlyRevenue,
+    monthlyCOGS: monthlyCOGS,
+    monthlyGross: monthlyGross,
+    monthlyNetProfit: monthlyNetProfit,
+    cac: cac,
+    ltv: ltv,
+    ltvCacRatio: ratio
+  };
 
   document.getElementById('results-section').style.display = 'block';
 
@@ -366,8 +404,6 @@ function calculate() {
   if (cac > 0 && contribUnit > 0) {
     document.getElementById('ltv-cac-section').style.display = 'block';
     // Assume avg customer life = 12 months for simple LTV
-    var ltv = contribUnit * 12;
-    var ratio = ltv / cac;
     document.getElementById('r-ltv').textContent = fmt(ltv);
     document.getElementById('r-cac-show').textContent = fmt(cac);
     document.getElementById('ltv-cac-ratio').textContent = ratio.toFixed(2) + "x";
@@ -377,7 +413,65 @@ function calculate() {
     document.getElementById('ltv-cac-section').style.display = 'none';
   }
 
+  document.getElementById('unit-status').textContent = 'Summary ready to copy or download.';
   document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function buildUnitEconomicsSummary() {
+  if (!LAST_UNIT_ECONOMICS) return '';
+  var r = LAST_UNIT_ECONOMICS;
+  return [
+    'AfroTools Unit Economics Summary',
+    'Currency: ' + r.currency,
+    'Effective selling price: ' + fmt(r.price),
+    'Variable cost per unit: ' + fmt(r.variableCost),
+    'Gross profit per unit: ' + fmt(r.grossUnit),
+    'Gross margin: ' + r.grossMarginPct.toFixed(1) + '%',
+    'Monthly units sold: ' + r.units.toLocaleString(),
+    'Monthly revenue: ' + fmt(r.monthlyRevenue),
+    'Monthly COGS: ' + fmt(r.monthlyCOGS),
+    'Monthly gross profit: ' + fmt(r.monthlyGross),
+    'Monthly fixed costs: ' + fmt(r.fixedCosts),
+    'Monthly net ' + (r.monthlyNetProfit >= 0 ? 'profit: ' : 'loss: ') + fmt(r.monthlyNetProfit),
+    'Break-even: ' + (isFinite(r.breakEvenUnits) ? r.breakEvenUnits.toLocaleString() + ' units / ' + fmt(r.breakEvenRevenue) + ' revenue' : 'N/A'),
+    r.cac > 0 ? 'LTV/CAC: ' + r.ltvCacRatio.toFixed(2) + 'x (LTV ' + fmt(r.ltv) + ', CAC ' + fmt(r.cac) + ')' : 'LTV/CAC: not calculated',
+    '',
+    'Assumptions: local-first planning estimate based only on entered inputs. Confirm current supplier costs, taxes, and accountant advice before acting.'
+  ].join('\n');
+}
+
+function copyUnitEconomics() {
+  var text = buildUnitEconomicsSummary();
+  var status = document.getElementById('unit-status');
+  if (!text) { status.textContent = 'Run a calculation first.'; return; }
+  navigator.clipboard.writeText(text).then(function() {
+    status.textContent = 'Summary copied.';
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    status.textContent = 'Summary copied.';
+  });
+}
+
+function downloadUnitEconomics() {
+  var text = buildUnitEconomicsSummary();
+  var status = document.getElementById('unit-status');
+  if (!text) { status.textContent = 'Run a calculation first.'; return; }
+  var blob = new Blob([text], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'unit-economics-summary.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  status.textContent = 'TXT summary downloaded.';
 }
 </script>
 </body>

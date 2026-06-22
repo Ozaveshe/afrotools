@@ -135,6 +135,14 @@
     grid-template-columns: 1fr 300px;
     gap: 22px;
     align-items: start;
+    box-sizing: border-box;
+  }
+
+  .tool-main-inner > *,
+  .card,
+  .sidebar,
+  .info-card {
+    min-width: 0;
   }
 
   .card {
@@ -194,6 +202,7 @@
 
   .f-input, .f-textarea, .f-select {
     width: 100%;
+    box-sizing: border-box;
     padding: 11px 13px;
     background: #EFF6FF;
     border: 1.5px solid #BFDBFE;
@@ -652,6 +661,10 @@
 
   @media (max-width: 768px) {
     .tool-main-inner {
+      padding: 0 16px;
+    }
+
+    .tool-main-inner {
       grid-template-columns: 1fr;
     }
 
@@ -799,7 +812,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/encodeur-base64/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/base64/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/base64/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -1057,26 +1070,26 @@
 <section class="df-upgrade" data-df-upgrade="base64">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Base64 Encoder/Decoder decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for base64 encoder/decoder so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Base64 Encoder/Decoder: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Encoding handoff brief</span>
+      <h2>Encode or decode, then verify what the bytes mean</h2>
+      <p>Use the text, file or image tabs above, then capture the mode, output type and share-safety checks before copying or downloading encoded data.</p>
+      <ul class="df-upgrade__bullets"><li>Primary task: convert text, files or images to and from Base64 in the browser.</li><li>Result output: a local encoding brief that records mode, data type and verification checks.</li><li>Quality checks: text encoding, URL-safe mode, MIME prefix, file size expansion and whether the data is safe to share.</li><li>Privacy note: Base64 is not encryption. Do not paste passwords, tokens, secrets or private records unless you intend to decode or expose them locally.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local encoding utility only. It does not protect sensitive data or prove file authenticity.</p>
     </div>
     <form class="df-form" data-df-form="base64">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="base64" data-df-base="Base64 Encoder/Decoder: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Base64 Encoder/Decoder: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="base64">Copy summary</button></div>
+      <label>Data type<select name="type" aria-label="Data type"><option value="plain text">plain text</option><option value="JSON payload">JSON payload</option><option value="image data URI">image data URI</option><option value="file download">file download</option></select></label>
+      <label>Input size KB<input name="size" type="number" value="1" min="0" step="0.1" aria-label="Input size KB"></label>
+      <label>Mode<select name="mode" aria-label="Mode"><option value="encode">encode</option><option value="decode">decode</option><option value="URL-safe encode">URL-safe encode</option><option value="decode to file">decode to file</option></select></label>
+      <label>Share safety<select name="safety" aria-label="Share safety"><option value="safe sample">safe sample</option><option value="contains token or secret">contains token or secret</option><option value="private customer data">private customer data</option><option value="public asset">public asset</option></select></label>
+      <button type="submit">Create Base64 brief</button>
+      <output class="df-result" data-df-result="base64" data-df-base="Base64 handoff brief ready. Encode or decode above, then verify text encoding, URL-safe mode, MIME prefix, file size expansion, and whether the data is safe to share." aria-live="polite">Base64 handoff brief ready. Encode or decode above, then verify text encoding, URL-safe mode, MIME prefix, file size expansion, and whether the data is safe to share.</output>
+      <div class="df-actions"><button type="button" data-df-copy="base64">Copy Base64 brief</button><a href="#text-output">Review output</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="base64-faq-title">
   <h2 id="base64-faq-title">Base64 Encoder/Decoder FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Choose text, file, image or decode mode, run the conversion locally, then copy or download the output you need.</p></details><details><summary>What should I verify?</summary><p>Check text encoding, URL-safe mode, MIME prefix, file size expansion, and whether the Base64 content exposes sensitive data.</p></details><details><summary>Is this official?</summary><p>No. It is a local encoding utility. Base64 is not encryption and does not protect or verify data.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>

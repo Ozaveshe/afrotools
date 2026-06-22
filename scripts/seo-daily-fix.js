@@ -169,8 +169,16 @@ function normalizeKnownSiteUrl(url) {
     return url;
   }
 
+  let hash = '';
+  try {
+    hash = new URL(url, SITE_ORIGIN).hash;
+  } catch {
+    hash = '';
+  }
+
   const preferred = preferredPageUrls.get(normalizeSiteUrl(url));
-  return preferred || url;
+  if (!preferred) return url;
+  return hash && !preferred.includes('#') ? `${preferred}${hash}` : preferred;
 }
 
 function normalizeJsonLdValue(value, key = '') {

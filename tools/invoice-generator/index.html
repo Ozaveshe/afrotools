@@ -766,14 +766,14 @@
       </div>
 
       <div class="btn-row inv-actions-primary" role="group" aria-label="Invoice actions">
-        <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Download invoice as PDF">Download PDF</button>
+        <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Download invoice as PDF" data-no-pdf-gate="true">Download PDF</button>
         <button class="btn" id="btnShare" type="button" aria-label="Share invoice link">Share Link</button>
         <button class="btn" id="btnSaveInvoice" type="button" aria-label="Save invoice draft">Save Invoice</button>
         <details class="action-more">
           <summary class="btn" aria-label="More invoice actions">More</summary>
           <div class="action-menu">
             <button class="btn" id="btnPrint" type="button" aria-label="Print invoice">Print</button>
-            <button class="btn" id="btnExportJson" type="button" aria-label="Export invoice JSON">Export JSON</button>
+            <button class="btn" id="btnExportJson" type="button" aria-label="Export invoice JSON" data-no-pdf-gate="true" onclick="return window.exportInvoiceJsonFallback && window.exportInvoiceJsonFallback(event)">Export JSON</button>
             <button class="btn" id="btnImportJson" type="button" aria-label="Import invoice JSON">Import JSON</button>
             <button class="btn" id="btnSaveTemplate" type="button" aria-label="Save current invoice as template">Save Template</button>
             <button class="btn" id="btnReminder" type="button" aria-label="Copy payment reminder">Copy Reminder</button>
@@ -782,6 +782,7 @@
         </details>
         <input aria-label="ImportJsonInput" class="import-json-input" id="importJsonInput" type="file" accept="application/json,.json">
         <p class="action-hint" id="invoiceActionHint" aria-live="polite"></p>
+        <p class="action-hint">Local-first by default: PDF, print, reminders, JSON export, and unsigned saved drafts run in this browser. Verify VAT, withholding, invoice numbering, and local invoicing rules before using an invoice for compliance.</p>
       </div>
     </div>
   </div>
@@ -913,7 +914,7 @@
 </main>
 
 <div class="mobile-primary-bar" aria-label="Primary invoice action">
-  <button class="btn btn-primary" id="btnPDFMobile" type="button">Download PDF</button>
+  <button class="btn btn-primary" id="btnPDFMobile" type="button" data-no-pdf-gate="true">Download PDF</button>
   <span class="mobile-primary-hint" id="invoiceMobileHint"></span>
 </div>
 
@@ -2086,6 +2087,37 @@ init();
 })();
 </script>
 <script src="/assets/js/pages/invoice-generator-enhancements.js?v=b3e86762"></script>
+<script>
+(function(){
+  window.exportInvoiceJsonFallback = function(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    var state = {};
+    if (window.AfroInvoiceState && typeof window.AfroInvoiceState.gatherState === 'function') {
+      state = window.AfroInvoiceState.gatherState() || {};
+    }
+    state.exportedAt = new Date().toISOString();
+    state.exportNote = 'Local browser JSON export from AfroTools Invoice Generator.';
+    var invoiceNumber = (document.getElementById('invoiceNumber') || {}).value || 'draft';
+    var safeName = String(invoiceNumber).replace(/[^a-z0-9_-]+/gi, '-').replace(/^-|-$/g, '') || 'draft';
+    var blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'invoice-' + safeName + '.json';
+    link.dataset.noPdfGate = 'true';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(function(){ URL.revokeObjectURL(link.href); }, 3000);
+    if (window.AfroTools && window.AfroTools.toast && typeof window.AfroTools.toast.success === 'function') {
+      window.AfroTools.toast.success('Invoice JSON exported');
+    }
+    return false;
+  };
+})();
+</script>
 <script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=47d5871b" defer></script>
 <script>
 // Invoice Generator — saved invoices

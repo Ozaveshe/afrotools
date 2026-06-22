@@ -99,7 +99,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/estimateur-fret/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/makisio-ya-usafirishaji-wa-biashara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/shipping-estimator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -110,7 +110,7 @@
       "name": "How should I use Shipping Cost Estimator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Select the origin, destination, shipment mode, weight or CBM, then use the estimate to prepare a freight brief for forwarders, agents, and buyers."
       }
     },
     {
@@ -118,7 +118,7 @@
       "name": "What should I verify before acting on Shipping Cost Estimator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify current freight quote validity, bunker and peak-season surcharges, Incoterms, insurance, destination charges, customs broker fees, port storage, and delivery terms."
       }
     },
     {
@@ -126,7 +126,7 @@
       "name": "Is Shipping Cost Estimator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a freight planning estimate, not a live carrier quote, customs assessment, delivery promise, or legal advice."
       }
     }
   ],
@@ -201,6 +201,11 @@
             <div class="card-body">
               <div class="res-route" id="resRoute"></div>
               <div class="mode-cards" id="modeCards"></div>
+              <div class="df-actions" style="margin-top:12px">
+                <button type="button" onclick="copyShippingEstimate()">Copy freight brief</button>
+                <button type="button" id="shippingEstimatorCsvBtn">Download CSV</button>
+              </div>
+              <p class="export-status" id="shippingEstimatorStatus" role="status" aria-live="polite" style="min-height:22px;margin-top:8px;color:#475569;font-size:.82rem"></p>
               <div style="font-size:.75rem;color:#94A3B8;margin-top:8px">
                 💡 Rates exclude: origin charges, B/L fees, destination charges, port handling, customs clearance.<br>
                 Add 15–25% for all-in landed freight cost.
@@ -229,26 +234,26 @@
 <section class="df-upgrade" data-df-upgrade="shipping-estimator">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Shipping Cost Estimator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for shipping cost estimator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Shipping Cost Estimator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, saveExport, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Freight quote brief</span>
+      <h2>Turn the route estimate into a forwarder-ready request</h2>
+      <p>Use the calculator above for a route estimate, then copy a short brief that captures shipment mode, cargo volume, risk buffer, and quote checks before you ask carriers or clearing agents.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: a freight request brief with origin, destination, shipment type, cargo size, buffer, and verification checklist.</li><li>Use the route table to compare sea, LCL, and air before committing to a quote.</li><li>Verify surcharges, destination charges, storage, insurance, customs broker costs, and inland delivery before paying.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Rates and transit times change quickly. This is a planning estimate, not a live quote, customs decision, delivery guarantee, or legal advice.</p>
     </div>
     <form class="df-form" data-df-form="shipping-estimator">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="shipping-estimator" data-df-base="Shipping Cost Estimator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Shipping Cost Estimator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="shipping-estimator">Copy summary</button></div>
+      <label>Destination market<select name="destination" aria-label="Destination market"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Shipment mode<select name="mode" aria-label="Shipment mode"><option value="20ft container">20ft container</option><option value="40ft container">40ft container</option><option value="LCL cargo">LCL cargo</option><option value="Air freight">Air freight</option></select></label>
+      <label>Cargo size<input name="cargoSize" type="number" value="5" min="0" step="any" aria-label="Cargo size"></label>
+      <label>Quote buffer percent<input name="buffer" type="number" value="20" min="0" step="any" aria-label="Quote buffer percent"></label>
+      <button type="submit">Create freight brief</button>
+      <output class="df-result" data-df-result="shipping-estimator" data-df-base="Freight brief ready. Compare the route estimate above, add a quote buffer, then verify surcharges, destination charges, insurance, customs broker fees, port storage, and inland delivery." aria-live="polite">Freight brief ready. Compare the route estimate above, add a quote buffer, then verify surcharges, destination charges, insurance, customs broker fees, port storage, and inland delivery.</output>
+      <div class="df-actions"><button type="button" data-df-copy="shipping-estimator">Copy freight brief</button><a class="df-action-link" href="#resultsPanel">View estimate</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="shipping-estimator-faq-title">
   <h2 id="shipping-estimator-faq-title">Shipping Cost Estimator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Select a route and shipment mode, estimate the cost, then copy the brief when requesting written quotes from forwarders or carriers.</p></details><details><summary>What should I verify?</summary><p>Check quote date, Incoterms, fuel and peak-season surcharges, destination charges, port storage, customs broker fees, insurance, and inland delivery.</p></details><details><summary>Is this official?</summary><p>No. It is a freight planning estimate, not a live carrier quote, customs assessment, delivery promise, or legal advice.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -258,6 +263,7 @@
 <script src="/engines/shipping-engine.js?v=3417f576"></script>
 <script>
 var selectedCT = '20ft';
+var latestShippingEstimate = null;
 
 // Init selects
 (function init(){
@@ -362,6 +368,23 @@ function estimate() {
   }
   if (!modeHtml) modeHtml = '<div style="color:#94A3B8;padding:12px">No rate data for selected container type on this route.</div>';
   document.getElementById('modeCards').innerHTML = modeHtml;
+  latestShippingEstimate = {
+    origin: op.name + (op.country ? ', ' + op.country : ''),
+    destination: dp.name + (dp.country ? ', ' + dp.country : ''),
+    containerType: selectedCT,
+    cbm: cbm,
+    weightKg: weight,
+    sea: result.sea ? {
+      minUSD: result.sea.minUSD,
+      maxUSD: result.sea.maxUSD,
+      transit: result.sea.transitDays ? result.sea.transitDays.min + '-' + result.sea.transitDays.max + ' days' : ''
+    } : null,
+    air: result.air ? {
+      minUSD: result.air.minUSD,
+      maxUSD: result.air.maxUSD,
+      transit: result.air.transitDays ? result.air.transitDays.min + '-' + result.air.transitDays.max + ' days' : ''
+    } : null
+  };
   // AI obs
   var obs = ShippingEngine.getObservations(originCode, destCode, selectedCT, result);
   var aiHtml = '';
@@ -369,6 +392,50 @@ function estimate() {
   document.getElementById('aiObs').innerHTML = aiHtml;
   document.getElementById('resultsPanel').classList.add('on');
 }
+function shippingEstimateSummary(){
+  if(!latestShippingEstimate){estimate();}
+  var r = latestShippingEstimate;
+  if(!r)return 'No freight estimate is ready yet.';
+  var lines = [
+    'AfroTools freight planning brief',
+    'Route: ' + r.origin + ' to ' + r.destination,
+    'Shipment type: ' + r.containerType,
+    'Volume/weight: ' + r.cbm + ' CBM / ' + r.weightKg + ' kg'
+  ];
+  if(r.sea) lines.push('Sea freight: $' + r.sea.minUSD.toLocaleString() + '-$' + r.sea.maxUSD.toLocaleString() + (r.sea.transit ? ' (' + r.sea.transit + ')' : ''));
+  if(r.air) lines.push('Air freight: $' + r.air.minUSD.toLocaleString() + '-$' + r.air.maxUSD.toLocaleString() + (r.air.transit ? ' (' + r.air.transit + ')' : ''));
+  lines.push('Verify origin charges, B/L fees, destination charges, port handling, customs clearance, free days, and carrier quote expiry before booking.');
+  return lines.join('\n');
+}
+function copyShippingEstimate(){
+  var text = shippingEstimateSummary();
+  var status = document.getElementById('shippingEstimatorStatus');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){status.textContent='Freight brief copied. No shipment data was sent.';}).catch(function(){status.textContent=text;});
+  } else {
+    status.textContent=text;
+  }
+}
+function downloadShippingEstimateCsv(){
+  if(!latestShippingEstimate){estimate();}
+  var r = latestShippingEstimate;
+  if(!r)return;
+  var rows=[['field','value'],['origin',r.origin],['destination',r.destination],['shipment_type',r.containerType],['cbm',r.cbm],['weight_kg',r.weightKg]];
+  if(r.sea){rows.push(['sea_min_usd',r.sea.minUSD],['sea_max_usd',r.sea.maxUSD],['sea_transit',r.sea.transit]);}
+  if(r.air){rows.push(['air_min_usd',r.air.minUSD],['air_max_usd',r.air.maxUSD],['air_transit',r.air.transit]);}
+  rows.push(['assumption_note','Planning estimate only. Verify origin, destination, carrier, customs, port, and broker charges before booking.']);
+  var csv=rows.map(function(row){return row.map(function(cell){return '"'+String(cell == null ? '' : cell).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob=new Blob([csv],{type:'text/csv'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='afrotools-freight-estimate.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  document.getElementById('shippingEstimatorStatus').textContent='CSV downloaded for carrier quote comparison.';
+}
+document.getElementById('shippingEstimatorCsvBtn').addEventListener('click',downloadShippingEstimateCsv);
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script src="/assets/js/trade-toolkit.js?v=cadfd9a1" defer></script>

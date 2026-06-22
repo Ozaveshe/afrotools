@@ -117,7 +117,6 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/prevision-tresorerie/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/makisio-mtiririko-wa-fedha/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cash-flow-forecast/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -304,7 +303,7 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
           </div>
           <div class="export-actions" aria-label="Cash flow forecast export actions">
             <button type="button" class="btn btn-secondary" onclick="copyForecastSummary()">Copy lender summary</button>
-            <button type="button" class="btn btn-secondary" onclick="downloadCsv()">Download CSV</button>
+            <button type="button" class="btn btn-secondary" data-no-gate="true" onclick="downloadCsv()">Download CSV</button>
             <button type="button" class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
           </div>
           <div class="export-status" id="export-status" role="status" aria-live="polite"></div>
@@ -338,22 +337,7 @@ td:first-child{text-align:left;font-weight:600;color:#0f172a}
 
 
 
-<section class="df-upgrade" data-df-upgrade="cash-flow-forecast">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Cash control workflow</span>
-      <h2>Turn the forecast into a working-capital plan</h2>
-      <p>Use the calculator first, then export the result for the next money conversation: supplier terms, overdraft request, investor update, or internal cost review.</p>
-      <ul class="df-upgrade__bullets"><li>Run at least two scenarios: expected sales and slower collections.</li><li>Use negative months as the funding-gap list, not as a final accounting answer.</li><li>Export CSV for a spreadsheet review or copy the summary for a lender or partner note.</li><li>Verify tax, stock, FX, debt-service, and payment timing against current records before acting.</li></ul>
-      <p class="df-upgrade__note"><strong>Planning estimate.</strong> The tool does not file tax, approve credit, or replace bookkeeping. Keep source documents and accountant review for final decisions.</p>
-    </div>
-    <div class="cashflow-next-grid" aria-label="Cash flow next steps">
-      <div class="cashflow-next-card"><strong>1. Choose assumptions</strong><span>Opening cash, revenue pattern, COGS, fixed costs, tax estimate, and one-time costs.</span></div>
-      <div class="cashflow-next-card"><strong>2. Find pressure months</strong><span>Look for the first negative month, the lowest balance, and the largest cost trigger.</span></div>
-      <div class="cashflow-next-card"><strong>3. Export and review</strong><span>Download CSV, copy the summary, and verify records before sharing externally.</span></div>
-    </div>
-  </div>
-</section>
+
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -580,6 +564,8 @@ function downloadCsv() {
   var link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = 'afrotools-cash-flow-forecast.csv';
+  link.dataset.noGate = 'true';
+  link.dataset.noPdfGate = 'true';
   document.body.appendChild(link);
   link.click();
   setTimeout(function() { URL.revokeObjectURL(link.href); link.remove(); }, 0);
@@ -609,6 +595,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script src="/assets/js/ai/prefill-adapters.js?v=456f4dfc" defer></script>
 <script src="/assets/js/ai/prefill-consumer.js?v=e6054dc4" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

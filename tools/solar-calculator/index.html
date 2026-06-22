@@ -108,7 +108,7 @@ select.field-input{cursor:pointer;}
 .result-tab{flex:1;padding:8px;text-align:center;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;border-radius:7px;cursor:pointer;border:none;background:none;transition:all .15s;}
 .result-tab.active{background:#fff;color:#111;box-shadow:0 1px 4px rgba(0,0,0,.1);}
 .tab-pane{display:none;}
-.tab-pane.active{display:block;}
+.tab-pane.active{display:block;overflow-x:auto;}
 
 /* ── INFO BOX ── */
 .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;font-size:.8rem;color:#1e40af;line-height:1.6;margin-top:16px;}
@@ -118,6 +118,11 @@ select.field-input{cursor:pointer;}
 .solar-source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
 .solar-source-links a{border:1px solid #cbd5e1;border-radius:999px;color:#0f5cc0;font-size:.78rem;font-weight:800;padding:7px 10px;text-decoration:none;}
 .solar-source-links a:hover{background:#eef5ff;border-color:#9ec5ff;}
+.solar-export-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.solar-export-actions button{border:1px solid #cbd5e1;background:#fff;border-radius:8px;color:#0f172a;font-family:inherit;font-size:.78rem;font-weight:800;padding:9px 12px;cursor:pointer}
+.solar-export-actions button:hover{border-color:#2563EB;color:#2563EB;background:#eff6ff}
+.solar-export-status{margin-top:8px;color:#64748b;font-size:.76rem;min-height:1.2em}
+.solar-export-note{margin-top:12px;border:1px solid #fde68a;background:#fffbeb;border-radius:8px;padding:12px 14px;color:#78350f;font-size:.78rem;line-height:1.6}
 .site-qa-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
 @media(max-width:680px){.site-qa-grid{grid-template-columns:1fr;}}
 .site-qa-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:13px;}
@@ -145,6 +150,11 @@ select.field-input{cursor:pointer;}
 
 /* AI Advisor floating section */
 .ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
+@media(max-width:680px){
+  .system-diagram{justify-content:flex-start;overflow-x:auto;max-width:100%;padding-bottom:14px}
+  .result-tabs{overflow-x:auto;align-items:stretch}
+  .result-tab{min-width:108px;flex:0 0 auto}
+}
 </style>
 
 <script type="application/ld+json">
@@ -515,6 +525,13 @@ select.field-input{cursor:pointer;}
         <a href="https://www.energy.gov/energysaver/planning-home-solar-electric-system" target="_blank" rel="noopener">DOE solar planning</a>
       </div>
     </div>
+    <div class="solar-export-actions" aria-label="Solar result actions">
+      <button type="button" onclick="copySolarPlan()">Copy solar plan</button>
+      <button type="button" onclick="downloadSolarCsv()">Download CSV</button>
+      <button type="button" onclick="window.print()">Print</button>
+    </div>
+    <p class="solar-export-status" id="solarExportStatus" aria-live="polite"></p>
+    <p class="solar-export-note"><strong>Planning estimate.</strong> Solar prices, FX rates, utility rules, roof shading, and installer specs change. Use this for shortlist planning, then confirm final design, protection, and warranties with a certified installer.</p>
   </div>
 </div>
 
@@ -864,6 +881,29 @@ function calculate(){
   };
   const rate = USD_RATES[curr] || 1;
   const sysLocalCost = totalCostUSD * rate;
+  window.__solarLatest = {
+    country: selectedCountry.name,
+    currency: curr,
+    currencySymbol: currSym,
+    totalWh: totalWh,
+    peakW: peakW,
+    systemType: systemType,
+    panelWatts: panelW,
+    panels: numPanels,
+    arrayKwp: actualKWp,
+    batteries: numBatteries,
+    batteryType: battType,
+    batteryKwh: actualBattKWh,
+    inverterKva: invKVA,
+    mpptA: mpptA,
+    effectiveSunHours: siteProfile.effectivePsh,
+    roofNeeded: siteProfile.roofNeeded,
+    systemCostLocal: sysLocalCost,
+    monthlyGeneratorCost: monthlyGenCost,
+    annualGeneratorCost: annualGenCost,
+    lossPercent: siteProfile.totalLossPct,
+    generatedAt: new Date().toISOString()
+  };
 
   // ── UPDATE UI ──
   document.getElementById('rPanels').textContent = numPanels;
@@ -902,6 +942,7 @@ function calculate(){
   buildSiteQA(siteProfile, systemType, totalWh, peakW);
 
   document.getElementById('resultsSection').style.display = 'block';
+  setSolarExportStatus('Solar sizing ready. Copy or download the plan before requesting quotes.');
   document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -1029,14 +1070,87 @@ function showTab(id){
 }
 
 // ── UTIL ──
+function solarPlanText(){
+  const d = window.__solarLatest;
+  if(!d) return '';
+  return [
+    'AfroTools solar sizing plan',
+    'Country: ' + d.country,
+    'Daily load: ' + (d.totalWh/1000).toFixed(1) + ' kWh',
+    'Peak load: ' + Math.round(d.peakW).toLocaleString('en') + ' W',
+    'System mode: ' + d.systemType,
+    'Panels: ' + d.panels + ' x ' + d.panelWatts + 'W (' + d.arrayKwp.toFixed(1) + ' kWp)',
+    'Battery bank: ' + d.batteries + ' batteries, approx ' + d.batteryKwh.toFixed(1) + ' kWh (' + d.batteryType + ')',
+    'Inverter: ' + d.inverterKva + ' kVA',
+    'MPPT: ' + d.mpptA + 'A',
+    'Effective sun: ' + d.effectiveSunHours.toFixed(1) + ' hours after ' + d.lossPercent + '% losses',
+    'Roof area needed: ' + Math.ceil(d.roofNeeded) + ' m2',
+    'Estimated system cost: ' + d.currencySymbol + formatNum(Math.round(d.systemCostLocal)),
+    'Monthly generator cost entered: ' + d.currencySymbol + formatNum(Math.round(d.monthlyGeneratorCost)),
+    '',
+    'Planning estimate only. Confirm final design, roof shade, protection, utility rules, FX, pricing, and warranty terms with a certified installer.'
+  ].join('\n');
+}
+
+function copySolarPlan(){
+  if(!window.__solarLatest){setSolarExportStatus('Run the solar calculator first.');return}
+  const text = solarPlanText();
+  const done = () => setSolarExportStatus('Solar plan copied.');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>{window.prompt('Copy solar plan', text);done();});
+  } else {
+    window.prompt('Copy solar plan', text);
+    done();
+  }
+}
+
+function downloadSolarCsv(){
+  const d = window.__solarLatest;
+  if(!d){setSolarExportStatus('Run the solar calculator first.');return}
+  const rows = [
+    ['Field','Value'],
+    ['Country', d.country],
+    ['Daily load kWh', (d.totalWh/1000).toFixed(2)],
+    ['Peak load W', Math.round(d.peakW)],
+    ['System mode', d.systemType],
+    ['Panels', d.panels],
+    ['Panel watts', d.panelWatts],
+    ['Array kWp', d.arrayKwp.toFixed(2)],
+    ['Batteries', d.batteries],
+    ['Battery type', d.batteryType],
+    ['Battery kWh', d.batteryKwh.toFixed(2)],
+    ['Inverter kVA', d.inverterKva],
+    ['MPPT amps', d.mpptA],
+    ['Effective sun hours', d.effectiveSunHours.toFixed(2)],
+    ['Roof area m2', Math.ceil(d.roofNeeded)],
+    ['System cost local', Math.round(d.systemCostLocal)],
+    ['Currency', d.currency],
+    ['Monthly generator cost', Math.round(d.monthlyGeneratorCost)]
+  ];
+  const csv = rows.map(row=>row.map(cell=>'"'+String(cell).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'solar-sizing-plan.csv';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+  setSolarExportStatus('CSV downloaded.');
+}
+
+function setSolarExportStatus(message){
+  const el = document.getElementById('solarExportStatus');
+  if(el) el.textContent = message;
+}
 function formatNum(n){ return n.toLocaleString('en'); }
 </script>
 
 <script>
 // Save/Share buttons - manual placement needed
 (function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var target = document.getElementById('resultsSection') || document.querySelector('main') || document.body;
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';

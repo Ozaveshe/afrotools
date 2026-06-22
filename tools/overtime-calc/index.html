@@ -153,6 +153,11 @@
     /* ---- Copy button success state ---- */
     .ot-dispute-copy { transition:background .2s,color .2s; }
     .ot-dispute-copy.copied { background:var(--primary,#007AFF);color:#fff;border-color:var(--primary,#007AFF); }
+    .ot-actions { display:flex;gap:10px;flex-wrap:wrap;margin-top:14px; }
+    .ot-action-btn { border:1px solid #bfdbfe;background:#fff;color:#1d4ed8;border-radius:10px;padding:10px 14px;font-size:.84rem;font-weight:800;cursor:pointer;font-family:inherit;touch-action:manipulation; }
+    .ot-action-btn:hover { background:#eff6ff; }
+    .ot-action-btn:focus-visible { outline:2px solid var(--primary,#007AFF);outline-offset:2px; }
+    .ot-status { min-height:1.2em;margin-top:8px;font-size:.78rem;color:var(--text-muted,#64748b); }
 
     /* ---- Responsive ---- */
       @media(max-width:768px){
@@ -168,40 +173,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-heures-supplementaires/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-muda-wa-ziada/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/overtime-calc/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=9a8d1b6b">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use Overtime Calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on Overtime Calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Overtime Calculator an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/overtime-calc/"
-}
-</script>
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -326,6 +298,11 @@
       <a class="ot-wa-btn" id="wa-share-btn" href="#" target="_blank" rel="noopener" style="display:none">
         &#x1F4AC; Share via WhatsApp
       </a>
+      <div class="ot-actions">
+        <button type="button" class="ot-action-btn" onclick="copyOvertimeSummary()">Copy summary</button>
+        <button type="button" class="ot-action-btn" data-no-gate="true" onclick="downloadOvertimeSummary()">Download TXT</button>
+      </div>
+      <div class="ot-status" id="ot-status" role="status" aria-live="polite"></div>
 
       <!-- Dispute letter -->
       <details class="ot-dispute" id="dispute-section" style="display:none">
@@ -368,9 +345,9 @@
   <!-- ── SIDEBAR ── -->
   <div class="tl-sidebar">
     <div class="tl-ai-panel">
-      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-badge">LOCAL RULE NOTES</div>
       <div class="tl-ai-title">Country Insights</div>
-      <div class="tl-ai-body" id="ai-obs">Select a country and calculate overtime to see AI-powered insights on local labour law, maximum OT limits, exemptions and enforcement practices.</div>
+      <div class="tl-ai-body" id="ai-obs">Select a country and calculate overtime to see local rule notes on labour law, maximum OT limits, exemptions and enforcement practices.</div>
     </div>
 
     <div class="tl-info-card">
@@ -397,31 +374,6 @@
 </div>
 
 
-
-<section class="df-upgrade" data-df-upgrade="overtime-calc">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Overtime Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for overtime calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Overtime Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, officialSource, businessCta, verificationPanel, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="overtime-calc">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="overtime-calc" data-df-base="Overtime Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Overtime Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="overtime-calc">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="overtime-calc-faq-title">
-  <h2 id="overtime-calc-faq-title">Overtime Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -578,6 +530,7 @@ function renderResults(result, rule, inputs) {
   var waBtn = document.getElementById('wa-share-btn');
   waBtn.href = 'https://wa.me/?text=' + encodeURIComponent(waText);
   waBtn.style.display = '';
+  document.getElementById('ot-status').textContent = 'Summary ready to copy or download.';
 
   /* Dispute letter */
   var lawRef2 = (rule.standardHours && rule.standardHours.law) ? rule.standardHours.law : '[Labour Act]';
@@ -590,6 +543,68 @@ function renderResults(result, rule, inputs) {
   void resultsEl.offsetWidth; /* force reflow to restart animation */
   resultsEl.classList.add('is-visible');
   resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function buildOvertimeSummary() {
+  if (!lastResult || !lastRule || !lastInputs) return '';
+  var cur = lastRule.symbol || lastRule.currency;
+  var dayLabel = lastInputs.dayType.charAt(0).toUpperCase() + lastInputs.dayType.slice(1);
+  var lawText = (lastRule.standardHours && lastRule.standardHours.law) ? lastRule.standardHours.law : 'Check the current labour law or contract.';
+  var lines = [
+    'AfroTools Overtime Calculation Summary',
+    'Country: ' + lastRule.name,
+    'Monthly salary: ' + cur + ' ' + fmt(lastInputs.monthlySalary, 0),
+    'Overtime hours: ' + lastInputs.overtimeHours,
+    'Day type: ' + dayLabel,
+    'Base hourly rate: ' + cur + ' ' + fmt(lastResult.hourlyRate),
+    'Overtime multiplier: ' + lastResult.otMultiplier + 'x',
+    'Overtime pay: ' + cur + ' ' + fmt(lastResult.overtimePay),
+    'Total monthly pay with OT: ' + cur + ' ' + fmt(lastResult.totalPay),
+    'Effective hourly rate with OT: ' + cur + ' ' + fmt(lastResult.effectiveHourly),
+    'Reference: ' + lawText
+  ];
+  if (payType === 'toil') {
+    lines.push('TOIL hours equivalent: ' + document.getElementById('toil-hours').textContent);
+    lines.push('TOIL days equivalent: ' + document.getElementById('toil-days').textContent);
+    lines.push('TOIL note: ' + document.getElementById('toil-verdict').textContent);
+  }
+  lines.push('');
+  lines.push('Assumptions: planning estimate only. Confirm current law, contract terms, payroll policy, exemptions, and statutory limits before making a claim.');
+  return lines.join('\n');
+}
+
+function copyOvertimeSummary() {
+  var text = buildOvertimeSummary();
+  var status = document.getElementById('ot-status');
+  if (!text) { status.textContent = 'Run a calculation first.'; return; }
+  navigator.clipboard.writeText(text).then(function() {
+    status.textContent = 'Summary copied.';
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    status.textContent = 'Summary copied.';
+  });
+}
+
+function downloadOvertimeSummary() {
+  var text = buildOvertimeSummary();
+  var status = document.getElementById('ot-status');
+  if (!text) { status.textContent = 'Run a calculation first.'; return; }
+  var blob = new Blob([text], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'overtime-calculation-summary.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  status.textContent = 'TXT summary downloaded.';
 }
 
 function copyLetter() {

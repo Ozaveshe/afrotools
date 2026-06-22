@@ -237,7 +237,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
 <button type="button" onclick="window.print()" class="btn-sm">Print</button>
 <button type="button" onclick="shareResult()" class="btn-sm">Share</button>
+<button type="button" onclick="copyElectricalBrief()" class="btn-sm">Copy brief</button>
+<button type="button" onclick="downloadElectricalCsv()" class="btn-sm">Download CSV</button>
 </div>
+<p id="electricalStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
 </div></div>
 </div>
 
@@ -355,6 +358,7 @@ var APPLIANCES = {
 
 var rowId = 0;
 var appList = document.getElementById('applianceList');
+var lastElectricalLoad = null;
 
 function addRow(name, watts, qty, hrs) {
   var id = rowId++;
@@ -492,6 +496,37 @@ function calculate() {
 
   // Monthly cost
   var monthlyCost = Math.round(monthlyKwh * tariff);
+  lastElectricalLoad = {
+    country: opt.textContent.trim(),
+    voltage: voltage,
+    phases: phases,
+    diversity: divFactor,
+    tariff: tariff,
+    currencySymbol: currSym,
+    appliances: Array.from(rows).map(function(row){
+      var inputs = row.querySelectorAll('input');
+      var watts = parseFloat(inputs[1].value) || 0;
+      var qty = parseInt(inputs[2].value) || 1;
+      var hrs = parseFloat(inputs[3].value) || 0;
+      return {
+        name: inputs[0].value || 'Unknown',
+        watts: watts,
+        quantity: qty,
+        hoursPerDay: hrs,
+        connectedWatts: watts * qty,
+        monthlyKwh: (watts * qty * hrs * 30) / 1000
+      };
+    }),
+    totalKW: totalKW,
+    demandKW: demandKW,
+    amps: amps,
+    breaker: breaker,
+    cable: cable,
+    generatorKva: recGen,
+    monthlyKwh: monthlyKwh,
+    monthlyCost: monthlyCost,
+    recommendation: recTitle + ': ' + recText
+  };
 
   // Results grid
   var html = '';
@@ -542,6 +577,8 @@ function calculate() {
   document.getElementById('warnings').innerHTML = warns ? '<div class="warning"><strong>Safety Warning:</strong>' + warns + '</div>' : '';
 
   document.getElementById('resultCard').style.display = 'block';
+  var status = document.getElementById('electricalStatus');
+  if(status) status.textContent = 'Load analysis ready. Copy the brief or download CSV before asking an electrician to verify.';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
 
@@ -550,6 +587,60 @@ function shareResult() {
   var text = 'Electrical Load Analysis:\n' + grid.textContent.replace(/\s+/g, ' ').trim() + '\nCalculated with AfroTools\nhttps://afrotools.com/tools/electrical-load/';
   if (navigator.share) { navigator.share({title:'Electrical Load | AfroTools',text:text}).catch(function(){}); }
   else { navigator.clipboard.writeText(text).then(function(){alert('Copied!');}); }
+}
+
+function ensureElectricalLoad(){
+  if(!lastElectricalLoad) calculate();
+  return lastElectricalLoad;
+}
+
+function electricalBriefText(){
+  var r = ensureElectricalLoad();
+  if(!r) return '';
+  return [
+    'AfroTools electrical load brief',
+    'Country/standard profile: '+r.country,
+    'Supply: '+r.voltage+'V, '+(r.phases===1?'single phase':'three phase')+', diversity '+Math.round(r.diversity*100)+'%',
+    'Connected load: '+r.totalKW.toFixed(1)+' kW; demand load: '+r.demandKW.toFixed(1)+' kW; current draw: '+r.amps.toFixed(1)+' A',
+    'Recommended main breaker: '+r.breaker+'A; main cable: '+r.cable+'; minimum generator: '+r.generatorKva+' kVA',
+    'Estimated monthly use: '+Math.round(r.monthlyKwh)+' kWh; estimated monthly cost: '+r.currencySymbol+r.monthlyCost.toLocaleString(),
+    'Top loads: '+r.appliances.filter(function(a){return a.connectedWatts>0;}).sort(function(a,b){return b.connectedWatts-a.connectedWatts;}).slice(0,5).map(function(a){return a.name+' '+a.connectedWatts+'W';}).join('; '),
+    'Safety note: confirm wiring, earthing, breaker coordination, phase, load balancing, RCDs, generator surge, and local code compliance with a licensed electrician.'
+  ].join('\n');
+}
+
+function copyElectricalBrief(){
+  var text = electricalBriefText();
+  var status = document.getElementById('electricalStatus');
+  if(!text) return;
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ if(status) status.textContent = 'Electrical load brief copied.'; }).catch(function(){ if(status) status.textContent = text; });
+  } else if(status) status.textContent = text;
+}
+
+function downloadElectricalCsv(){
+  var r = ensureElectricalLoad();
+  var status = document.getElementById('electricalStatus');
+  if(!r) return;
+  var rows = [
+    ['appliance','watts','quantity','hours_per_day','connected_watts','monthly_kwh']
+  ];
+  r.appliances.forEach(function(a){ rows.push([a.name,a.watts,a.quantity,a.hoursPerDay,a.connectedWatts,a.monthlyKwh.toFixed(2)]); });
+  rows.push([]);
+  rows.push(['field','value']);
+  rows.push(['country_profile',r.country],['voltage',r.voltage],['phases',r.phases],['diversity_percent',Math.round(r.diversity*100)],['connected_kw',r.totalKW.toFixed(2)],['demand_kw',r.demandKW.toFixed(2)],['amps',r.amps.toFixed(2)],['main_breaker_a',r.breaker],['main_cable',r.cable],['minimum_generator_kva',r.generatorKva],['monthly_kwh',r.monthlyKwh.toFixed(2)],['monthly_cost',r.monthlyCost],['safety_note','Verify wiring, earthing, breaker coordination, phase, load balancing, RCDs, generator surge, and local code compliance.']);
+  var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'afrotools-electrical-load-schedule.csv';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  if(status) status.textContent = 'CSV downloaded. Have a licensed electrician verify the final design.';
 }
 
 // Init with typical home
