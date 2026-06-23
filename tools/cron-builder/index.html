@@ -25,6 +25,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -144,7 +145,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/constructeur-cron/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/cron/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cron-builder/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -178,6 +178,7 @@
   "url": "https://afrotools.com/tools/cron-builder/"
 }
 </script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -348,30 +349,46 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="cron-builder">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Schedule handoff brief</span>
-      <h2>Build the schedule, then verify the deployment target</h2>
-      <p>Preview the cron expression above, choose the platform snippet, and capture the timezone and scheduler caveats before deployment.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: compose five-field cron, preview next runs and copy platform-specific snippets.</li><li>Result output: a schedule brief with platform, timezone, cadence and deployment checks.</li><li>Quality checks: UTC/local time, DST, GitHub delay, Kubernetes concurrency, EventBridge field differences and minimum interval.</li><li>Source note: linked Linux, GitHub, Kubernetes and AWS docs are the references for platform warnings.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local schedule helper only. Test in your target scheduler before relying on a production job.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="cron-builder" aria-labelledby="cron-builder-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Schedule deployment check</span>
+          <h2 class="tool-verification-title" id="cron-builder-verification-title">Build the expression, then verify the scheduler that will run it</h2>
+          <p class="tool-verification-lead">Compose five-field cron, inspect next run times, choose a platform, and copy a handoff snippet with timezone and platform caveats visible.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local schedule builder</span>
+          <p class="tool-verification-note">No production scheduler is configured or tested by this page.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Primary task</h3>
+          <ul class="tool-verification-list"><li>Choose presets or build a minute, hour, day, month, and weekday expression.</li><li>Preview upcoming runs and switch platform notes for Linux, GitHub, Kubernetes, or EventBridge.</li><li>Copy the expression or deployment snippet into your runbook.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Result and export</h3>
+          <ul class="tool-verification-list"><li>Cron expression and plain-English cadence.</li><li>Next-run preview in the selected timezone context.</li><li>Copyable platform snippet and schedule brief.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before you use it</h3>
+          <ul class="tool-verification-list"><li>Confirm UTC versus local time before deployment.</li><li>Review DST, minimum interval, missed-run, and concurrency behavior.</li><li>Use the target platform docs for field count and special character differences.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Assumptions and freshness</h3>
+          <p class="tool-verification-meta">Scheduler behavior varies by platform and may change. Verify with the live scheduler or CI environment before relying on a production job.</p>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="/contact/">Report tool issue</a>
+        <p class="tool-verification-disclaimer">Planning utility only. It is not an official provider, legal, tax, security, filing, compliance, or live-data service. Keep sensitive content local unless you intentionally export or share it.</p>
+      </div>
     </div>
-    <form class="df-form" data-df-form="cron-builder">
-      <label>Target platform<select name="platform" aria-label="Target platform"><option value="Linux crontab">Linux crontab</option><option value="GitHub Actions">GitHub Actions</option><option value="Kubernetes CronJob">Kubernetes CronJob</option><option value="AWS EventBridge">AWS EventBridge</option></select></label>
-      <label>Runs to inspect<input name="runs" type="number" value="5" min="1" step="1" aria-label="Runs to inspect"></label>
-      <label>Timezone check<select name="timezone" aria-label="Timezone check"><option value="UTC confirmed">UTC confirmed</option><option value="Africa local time">Africa local time</option><option value="browser local time">browser local time</option><option value="DST risk">DST risk</option></select></label>
-      <label>Deployment risk<select name="risk" aria-label="Deployment risk"><option value="low">low</option><option value="minimum interval">minimum interval</option><option value="concurrency">concurrency</option><option value="platform syntax">platform syntax</option></select></label>
-      <button type="submit">Create schedule brief</button>
-      <output class="df-result" data-df-result="cron-builder" data-df-base="Cron schedule brief ready. Preview above, then verify timezone, platform syntax, DST behavior, minimum interval, concurrency policy, and copied snippet before deployment." aria-live="polite">Cron schedule brief ready. Preview above, then verify timezone, platform syntax, DST behavior, minimum interval, concurrency policy, and copied snippet before deployment.</output>
-      <div class="df-actions"><button type="button" data-df-copy="cron-builder">Copy schedule brief</button><a href="#snippetOutput">Review snippet</a></div>
-    </form>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="cron-builder-faq-title">
-  <h2 id="cron-builder-faq-title">Cron Expression Builder FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Enter or build a cron expression, preview next runs, choose a platform, then copy the expression or snippet.</p></details><details><summary>What should I verify?</summary><p>Check timezone, UTC assumptions, DST behavior, platform syntax, minimum interval and concurrency behavior.</p></details><details><summary>Is it deployment proof?</summary><p>No. It is a local builder; confirm behavior in your actual scheduler before production use.</p></details></div>
-</section>
+<afro-business-cta tool-name="Cron Expression Builder" prospect-segment="developer-workflows" save-note="Preview next runs, copy the target-platform snippet, then test cadence and timezone behavior in the deployment scheduler."></afro-business-cta>
 </main>
 
 <afro-related-tools category="developer" current="cron-builder"></afro-related-tools>
@@ -782,6 +799,5 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

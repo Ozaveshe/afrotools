@@ -28,6 +28,7 @@
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -74,7 +75,7 @@
 <label>Type de plan<select name="goal"><option>Regular FIRE</option><option>Lean FIRE</option><option>Fat FIRE</option><option>Coast FIRE</option><option>Barista FIRE</option></select></label>
 </div>
 <output class="fr-repair-output" data-fr-repair-output>Ajoutez un pays, un horizon et un type de plan pour préparer votre scénario.</output>
-<div class="fr-trust-grid"><div><strong>Méthode</strong>Clarifie le scénario avant le calcul FIRE et les hypothèses de retrait.</div><div><strong>Source</strong>Le calculateur source applique ses hypothèses; vérifiez inflation, rendement et fiscalité locale.</div><div><strong>Confiance</strong>Projection éducative, pas conseil financier personnalisé.</div></div>
+<div class="fr-trust-grid"><div><strong>Methodologie</strong>Clarifie le scenario avant le calcul FIRE et les hypotheses de retrait.</div><div><strong>Sources et fraicheur 2026</strong>Verifiez inflation, rendement reel, fiscalite locale, pension, devise et source officielle du pays avant decision.</div><div><strong>Avertissement</strong>Projection educative, pas un conseil financier, fiscal ou investissement personnalise.</div></div>
 <div class="fr-repair-actions"><a href="/tools/retirement-planner/">Ouvrir l'outil source</a><button type="button" data-fr-repair-copy>Copier le résumé</button><button type="button" data-fr-repair-download>Télécharger TXT</button><span class="fr-repair-status" data-fr-repair-status aria-live="polite"></span></div>
 </section>
 <afro-navbar></afro-navbar>
@@ -83,7 +84,11 @@
 <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem;font-family:'Instrument Serif','DM Sans',serif;color:#fff">Planificateur de retraite <em style="color:var(--color-primary);font-style:normal">FIRE</em></h1>
 <p style="font-size:1.05rem;opacity:.85;max-width:620px;margin:0 auto;color:rgba(255,255,255,.8)">Calculez votre nombre FIRE et les années jusqu'à l'indépendance financière. 15 pays africains.</p>
 </section>
-<div id="tool-mount" style="min-height:400px"></div>
+<div id="tool-mount" class="fr-repair-panel" style="min-height:auto">
+<h2>Continuer dans l'outil complet</h2>
+<p>Le brief retraite ci-dessus reste local. Ouvrez la version source pour utiliser le calculateur FIRE complet, puis gardez votre resume TXT pour verifier les hypotheses.</p>
+<div class="fr-repair-actions"><a href="/tools/retirement-planner/">Ouvrir l'outil source</a></div>
+</div>
 <section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
 <h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem">L'indépendance financière en Afrique</h2>
 <p style="color:#475569;margin-bottom:1rem">Le mouvement FIRE (Financial Independence, Retire Early) gagne du terrain en Afrique. Malgré une inflation plus élevée et des marchés financiers moins matures, atteindre l'indépendance financière est possible avec discipline et une stratégie adaptée aux réalités africaines.</p>
@@ -97,12 +102,10 @@
 <details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">La règle des 4% fonctionne-t-elle en Afrique ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">La règle des 4% est basée sur les marchés américains. En Afrique, avec une inflation plus élevée, un taux de retrait de 3-3,5% est plus prudent pour assurer la durabilité du portefeuille.</p></details>
 </section>
 <afro-related-tools></afro-related-tools>
+<afro-business-cta tool-name="Planificateur retraite FIRE" save-note="Telechargez votre scenario TXT avant de demander une verification financiere ou RH."></afro-business-cta>
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
-<script>
-(function(){var m=document.getElementById('tool-mount');fetch('/tools/retirement-planner/').then(r=>r.text()).then(h=>{var d=document.createElement('div');d.innerHTML=h;d.querySelectorAll('style').forEach(function(el){document.head.appendChild(el.cloneNode(true))});var main=d.querySelector('.tool-main,.fire-main,main');if(main)m.innerHTML=main.outerHTML;d.querySelectorAll('script:not([src])').forEach(function(sc){if(sc.textContent.indexOf('gtag')>-1||sc.textContent.indexOf('schema.org')>-1)return;var ns=document.createElement('script');ns.textContent=sc.textContent;document.body.appendChild(ns)})}).catch(function(){m.innerHTML='<p style="text-align:center;padding:2rem;color:#64748b">Chargement... <a href="/tools/retirement-planner/">Ouvrir en anglais</a></p>'})})();
-</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script data-fr-repair-script>
 (function(){var panel=document.querySelector('[data-fr-repair]');if(!panel)return;var title="Planificateur de retraite FIRE";var output=panel.querySelector('[data-fr-repair-output]');var status=panel.querySelector('[data-fr-repair-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){return [title,'Pays de base: '+(value('context')||'a preciser'),'Horizon: '+(value('data')||'a preciser'),'Type de plan: '+value('goal'),'A verifier: depenses annuelles, taux de retrait, inflation locale, fiscalite et rendement reel.'].join('\n');}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);render();var copy=panel.querySelector('[data-fr-repair-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var download=panel.querySelector('[data-fr-repair-download]');if(download)download.addEventListener('click',function(){var blob=new Blob([summary()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='scenario-retraite-fire.txt';a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT telecharge.';});})();

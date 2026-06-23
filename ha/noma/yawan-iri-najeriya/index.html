@@ -34,6 +34,24 @@
 <style data-ha-action-planner-style>
 .ha-action-planner{margin:22px 0;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px}.ha-action-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.ha-action-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.ha-action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.ha-action-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.ha-action-grid input,.ha-action-grid select,.ha-action-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.ha-action-grid textarea{min-height:84px;resize:vertical}.ha-action-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.ha-action-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.ha-action-buttons a,.ha-action-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.ha-action-buttons a{background:#0057b8;color:#fff}.ha-action-buttons button{background:#0f172a;color:#fff}.ha-action-status{font-size:.84rem;color:#64748b;align-self:center}.ha-action-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.ha-action-buttons a,.ha-action-buttons button{width:100%}}
 </style>
+<style data-localized-agriculture-batch="style">
+.agri-export-panel{max-width:1100px;margin:1.5rem auto;padding:0 1rem}
+.agri-export-card{background:#fff;border:1px solid #dbeafe;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.07);padding:1.1rem;margin-bottom:1rem}
+.agri-export-kicker{display:block;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#1d4ed8;margin-bottom:.35rem}
+.agri-export-card h2{font-size:1.15rem;line-height:1.25;margin:0 0 .45rem;color:#0f172a}
+.agri-export-card p{color:#475569;line-height:1.58;margin:.35rem 0}
+.agri-export-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.85rem;align-items:center}
+.agri-export-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font:inherit;font-weight:800;padding:.72rem 1rem;cursor:pointer}
+.agri-export-actions button:first-child{background:#0057b8}
+.agri-export-actions button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.agri-export-status{font-size:.86rem;color:#64748b;min-height:1.2em}
+.agri-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:.75rem;margin-top:.85rem}
+.agri-trust-item{border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;padding:.85rem}
+.agri-trust-item strong{display:block;color:#0f172a;margin-bottom:.3rem}
+.agri-local-note{border-left:4px solid #16a34a;background:#f0fdf4;border-radius:10px;padding:.8rem;margin-top:.8rem;color:#365346}
+@media(max-width:640px){.agri-export-actions button{width:100%}.agri-export-card{padding:1rem}}
+</style>
+
 </head>
 <body>
 <a class="skip-link" href="#main">Tsallake zuwa babban abun ciki</a>
@@ -124,6 +142,29 @@
     <section class="ha-note-box">Wannan kiyasi ne kawai. Ka tabbatar da irin da ka saya, yawan tsiro, maganin iri, tazarar shuka da shawarar jami'in fadakar da manoma ko ADP kafin kashe kudi mai yawa.</section>
   </main>
 </div>
+<section class="agri-export-panel" data-localized-agriculture-batch="export" data-agri-page-type="seed">
+  <div class="agri-export-card">
+    <span class="agri-export-kicker">Ajiye sakamako</span>
+    <h2>Fitar da tsarin noma</h2>
+    <p>Bayan ka yi lissafi, kwafi ko sauke takaitaccen sakamakon domin raba shi da mai ba da shawarar noma, abokin kasuwanci ko mai saye.</p>
+    <div class="agri-export-actions">
+      <button type="button" data-agri-copy>Kwafi sakamako</button>
+      <button type="button" data-agri-download>Sauke TXT</button>
+      <span class="agri-export-status" data-agri-status aria-live="polite">A shirye don fitarwa.</span>
+    </div>
+    <p class="agri-local-note"><strong>Sirri:</strong> Bayanan da ka shigar suna aiki a browser dinka. Ba a aika farashin gona, girman gona ko kudin aiki zuwa sabar AfroTools daga wannan panel.</p>
+  </div>
+  <div class="agri-export-card" data-tool-verification-panel>
+    <span class="agri-export-kicker">Tushen bayanai da iyaka</span>
+    <div class="agri-trust-grid">
+      <p class="agri-trust-item"><strong>Source</strong>Bayanan amfanin gona, tazarar shuka da farashin iri daga tsarin noma na AfroTools.</p>
+      <p class="agri-trust-item"><strong>Freshness</strong>An tsara wannan a matsayin kiyasin 2026; farashin kasuwa, yanayi, kwari, kudi da dokokin gida na iya canzawa.</p>
+      <p class="agri-trust-item"><strong>Methodology</strong>Injin lissafi yana hada shigar da mai amfani da bayanan gona da aka ajiye a AfroTools. Sakamako yana taimakawa wajen tsara aiki, ba wai shawarar hukuma ba.</p>
+      <p class="agri-trust-item"><strong>Limitations</strong>Tabbatar da farashi, iri, taki, ruwa, kasar gona, yanayi da shawarar jamiin fadakar da manoma kafin kashe kudi mai yawa.</p>
+    </div>
+  </div>
+</section>
+
 <afro-footer></afro-footer>
 <script src="/data/agriculture/ng-agri-data.js?v=27133035"></script>
 <script src="/data/agriculture/seed-data.js?v=defcdc00"></script>
@@ -307,5 +348,77 @@
 <script data-ha-action-planner-script>
 (function(){document.querySelectorAll('[data-ha-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Tool';var output=panel.querySelector('[data-action-output]');var status=panel.querySelector('[data-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var file=panel.querySelector('[name="file"]');var fileText=file&&file.files&&file.files.length?file.files.length+' file':'';var parts=[];if(scope)parts.push('Yanayi: '+scope);if(task)parts.push('Aiki: '+task);if(details)parts.push('Bayanai: '+details);if(fileText)parts.push(fileText);return parts.length?name+' - '+parts.join(' | '):'Sanya kasa, aiki ko bayanai domin samun takaitawa.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='An kwafi takaitawa.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
 </script>
+<script data-localized-agriculture-batch="export-js">
+(function(){
+  'use strict';
+  var labels = {"title":"Yawan iri Najeriya","fallback":"Sakamako bai bayyana ba tukuna. Yi lissafi ko duba shigar da bayanai.","copied":"An kwafi takaitawa.","downloaded":"An sauke takaitawa."};
+  function text(selector){
+    var node = document.querySelector(selector);
+    return node ? (node.innerText || node.textContent || '').replace(/\s+/g,' ').trim() : '';
+  }
+  function inputs(){
+    return Array.prototype.slice.call(document.querySelectorAll('label')).map(function(label){
+      var id = label.getAttribute('for');
+      if (!id) return '';
+      var field = document.getElementById(id);
+      if (!field) return '';
+      var value = field.options ? field.options[field.selectedIndex].text : field.value;
+      if (value === undefined || value === null || String(value).trim() === '') return '';
+      return label.textContent.replace(/\s+/g,' ').trim() + ': ' + String(value).trim();
+    }).filter(Boolean).slice(0, 14);
+  }
+  function results(){
+    var selectors = ['#resultsPanel', '.results-wrap.on', '.ir-results.visible', '.ha-results.on', '.ha-results', '.ir-results', '.results-wrap'];
+    var out = [];
+    selectors.forEach(function(selector){
+      var value = text(selector);
+      if (value && out.indexOf(value) === -1) out.push(value);
+    });
+    return out.join('\n').slice(0, 2800);
+  }
+  function summary(){
+    var lines = ['AfroTools - ' + labels.title, 'Generated locally in this browser.', ''];
+    var data = inputs();
+    if (data.length) lines.push('Inputs:\n' + data.join('\n'));
+    var result = results();
+    lines.push('', 'Results:', result || labels.fallback);
+    lines.push('', 'Note: planning estimate only. Verify local prices, weather, soil, water, buyer terms and extension advice before spending.');
+    return lines.join('\n');
+  }
+  function setStatus(msg){
+    var status = document.querySelector('[data-agri-status]');
+    if (status) status.textContent = msg;
+  }
+  function downloadText(textValue){
+    var blob = new Blob([textValue], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = labels.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '-afrotools-summary.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+  document.addEventListener('click', function(event){
+    var copyBtn = event.target.closest('[data-agri-copy]');
+    var downloadBtn = event.target.closest('[data-agri-download]');
+    if (!copyBtn && !downloadBtn) return;
+    var value = summary();
+    if (copyBtn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(function(){ setStatus(labels.copied); }).catch(function(){ setStatus(value); });
+      } else {
+        setStatus(value);
+      }
+    }
+    if (downloadBtn) {
+      downloadText(value);
+      setStatus(labels.downloaded);
+    }
+  });
+})();
+</script>
+
 </body>
 </html>

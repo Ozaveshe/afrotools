@@ -65,8 +65,17 @@
     .links span{color:#64748b;font-size:.88rem}
     .warn{border-color:#fed7aa;background:#fff7ed}
     .warn p,.warn li{color:#7c2d12}
+    .staff-mini-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .staff-mini-form label{display:grid;gap:6px;color:#0f172a;font-size:.82rem;font-weight:900}
+    .staff-mini-form input,.staff-mini-form select{width:100%;min-height:44px;border:1.5px solid #cbd5e1;border-radius:8px;padding:9px 11px;background:#fff;font:inherit;color:#0f172a}
+    .staff-mini-form input:focus,.staff-mini-form select:focus{outline:2px solid rgba(20,83,45,.18);border-color:#14532d}
+    .staff-mini-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+    .staff-mini-actions button,.staff-mini-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:0;border-radius:8px;padding:0 14px;background:#14532d;color:#fff;font-weight:900;text-decoration:none;cursor:pointer}
+    .staff-mini-actions button.secondary,.staff-mini-actions a.secondary{background:#0f172a}
+    .staff-mini-result{display:block;margin-top:14px;border:1px solid #bbf7d0;background:#ecfdf5;border-radius:10px;padding:14px;color:#14532d;line-height:1.65;min-height:56px}
+    .staff-mini-note{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.9rem;line-height:1.55}
     @media(max-width:940px){.grid,.layout{grid-template-columns:1fr}}
-    @media(max-width:560px){.wrap{width:min(100% - 24px,1120px)}.actions{display:grid;grid-template-columns:1fr}.btn{width:100%}}
+    @media(max-width:560px){.wrap{width:min(100% - 24px,1120px)}.actions,.staff-mini-form,.staff-mini-actions{display:grid;grid-template-columns:1fr}.btn,.staff-mini-actions button,.staff-mini-actions a{width:100%}}
   </style>
 <style data-ha-p1-planner-style>
 .ha-p1-planner{margin:22px auto;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px;max-width:1040px}.ha-p1-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.ha-p1-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.ha-p1-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.ha-p1-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.ha-p1-grid input,.ha-p1-grid select,.ha-p1-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.ha-p1-grid textarea{min-height:84px;resize:vertical}.ha-p1-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.ha-p1-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.ha-p1-buttons a,.ha-p1-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.ha-p1-buttons a{background:#0057b8;color:#fff}.ha-p1-buttons button{background:#0f172a;color:#fff}.ha-p1-status{font-size:.84rem;color:#64748b;align-self:center}.ha-p1-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.ha-p1-buttons a,.ha-p1-buttons button{width:100%}}
@@ -102,6 +111,28 @@
 <main id="main">
   <div class="wrap layout">
     <section>
+      <section class="card" data-staff-ha-app data-tool-verification-panel>
+        <span class="tag">Kiyasin kudin maikaci</span>
+        <h2>Kiyasta albashi, alawus da karin kudin kamfani</h2>
+        <p>Wannan lissafi na Hausa yana amfani da abin da ka saka da kanka. Ya dace da kasafin daukar ma'aikaci kafin ka bude cikakken shafin Turanci ko ka tura bayanai ga HR.</p>
+        <div class="staff-mini-form">
+          <label for="staffCurrency">Kudi<select id="staffCurrency"><option>NGN</option><option>GHS</option><option>KES</option><option>ZAR</option><option>USD</option><option>XOF</option></select></label>
+          <label for="staffSalary">Albashin wata<input id="staffSalary" type="number" min="0" step="1000" value="250000" inputmode="decimal"></label>
+          <label for="staffAllowances">Alawus na wata<input id="staffAllowances" type="number" min="0" step="1000" value="50000" inputmode="decimal"></label>
+          <label for="staffEmployerPct">Karin kashi na kamfani (%)<input id="staffEmployerPct" type="number" min="0" step="0.1" value="12" inputmode="decimal"></label>
+          <label for="staffOneTime">Kudin farko: kayan aiki, dauka, horo<input id="staffOneTime" type="number" min="0" step="1000" value="100000" inputmode="decimal"></label>
+          <label for="staffMonths">Watannin kasafi<input id="staffMonths" type="number" min="1" step="1" value="12" inputmode="numeric"></label>
+        </div>
+        <div class="staff-mini-actions">
+          <button type="button" id="staffEstimateBtn">Kokoto kudin maikaci</button>
+          <button type="button" id="staffCopyBtn" class="secondary">Kwafi rahoto</button>
+          <button type="button" id="staffDownloadBtn" class="secondary">Sauke CSV</button>
+          <a class="secondary" href="/custom-calculators/">Tambayi AfroTools don custom calculator</a>
+        </div>
+        <output class="staff-mini-result" id="staffHaResult" aria-live="polite">Saka albashi, alawus da kashi domin samun jimillar kudin maikaci.</output>
+        <p class="staff-mini-note"><strong>Hanyar lissafi:</strong> albashi + alawus = gross na wata; gross x karin kashi = kudin kamfani; gross + kudin kamfani = jimillar wata; sannan a ninka da watanni kuma a kara kudin farko. <strong>Sabunta bayanai 2026:</strong> wannan kiyasi ne kawai, ba shafin hukuma ba ne kuma ba shawarar haraji ko doka ba ce. Tabbatar da PAYE, fansho, NHF, inshora, leave, kwangila da dokar jihar daga HR, akawu, hukumar haraji ko mai ba da shawarar da ya dace.</p>
+      </section>
+
       <div class="grid">
       <article class="card"><span class="tag">Abin lura</span><h2>Saka albashin wata ko shekara da alawus</h2><p>Saka albashin wata ko shekara da alawus.</p></article>
       <article class="card"><span class="tag">Abin lura</span><h2>Yi laakari da PAYE, fansho, NHF, inshora ko kayan aiki</h2><p>Yi laakari da PAYE, fansho, NHF, inshora ko kayan aiki.</p></article>
@@ -135,6 +166,48 @@
   </div>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function(){
+  var result=document.getElementById('staffHaResult');
+  var latest=null;
+  function num(id){var el=document.getElementById(id);return el?Number(String(el.value).replace(/,/g,''))||0:0;}
+  function val(id){var el=document.getElementById(id);return el?el.value:'';}
+  function calc(){
+    var cur=val('staffCurrency');
+    var salary=num('staffSalary');
+    var allowances=num('staffAllowances');
+    var pct=num('staffEmployerPct');
+    var oneTime=num('staffOneTime');
+    var months=Math.max(1,Math.round(num('staffMonths')||12));
+    var gross=salary+allowances;
+    var employer=gross*(pct/100);
+    var monthly=gross+employer;
+    var total=monthly*months+oneTime;
+    latest={cur:cur,salary:salary,allowances:allowances,pct:pct,oneTime:oneTime,months:months,gross:gross,employer:employer,monthly:monthly,total:total};
+    return 'Kiyasin kudin maikaci: gross na wata '+gross.toLocaleString('en')+' '+cur+', karin kamfani '+employer.toLocaleString('en',{maximumFractionDigits:2})+' '+cur+', jimillar wata '+monthly.toLocaleString('en',{maximumFractionDigits:2})+' '+cur+', kasafin '+months+' wata tare da kudin farko = '+total.toLocaleString('en',{maximumFractionDigits:2})+' '+cur+'. Tabbatar da rate, dokoki da kwangila kafin daukar aiki.';
+  }
+  function render(){result.textContent=calc();}
+  function copy(){render();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(result.textContent);}}
+  function download(){
+    render();
+    var r=latest;
+    var rows=[['field','value'],['currency',r.cur],['monthly_salary',r.salary],['monthly_allowances',r.allowances],['employer_percent',r.pct],['one_time_costs',r.oneTime],['months',r.months],['monthly_gross',r.gross],['monthly_employer_cost',r.employer],['monthly_total_cost',r.monthly],['budget_total',r.total],['note','Planning estimate only; verify HR, tax, pension, insurance, leave, contract, and official sources before hiring.']];
+    var csv=rows.map(function(row){return row.map(function(cell){return '"'+String(cell).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+    var blob=new Blob([csv],{type:'text/csv'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='kiyasin-kudin-maikaci.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  document.getElementById('staffEstimateBtn').addEventListener('click',render);
+  document.getElementById('staffCopyBtn').addEventListener('click',copy);
+  document.getElementById('staffDownloadBtn').addEventListener('click',download);
+})();
+</script>
 <script data-ha-p1-planner-script>
 (function(){document.querySelectorAll('[data-ha-p1-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'AfroTools';var output=panel.querySelector('[data-p1-output]');var status=panel.querySelector('[data-p1-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var file=panel.querySelector('[name="file"]');var fileText=file&&file.files&&file.files.length?file.files.length+' file':'';var parts=[];if(scope)parts.push('Yanayi: '+scope);if(task)parts.push('Aiki: '+task);if(details)parts.push('Bayanai: '+details);if(fileText)parts.push(fileText);return parts.length?name+' - '+parts.join(' | '):'Sanya kasa, aiki ko bayanai domin samun takaitawa.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-p1-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='An kwafi takaitawa.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
 </script>

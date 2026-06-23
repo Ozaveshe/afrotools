@@ -478,6 +478,7 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/nafasi-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-workspace/" />
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -747,6 +748,39 @@
   </details>
 </section>
 
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-workspace-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Workspace limits</span>
+        <h2 class="tool-verification-title" id="pdf-workspace-verification-title">Use the workspace as a local editing desk, then verify the exported copy</h2>
+        <p class="tool-verification-lead">PDF Workspace organizes, annotates, signs, protects, compresses, and exports documents in this browser. It is not cloud storage, certified e-signature, OCR guarantee, or legal redaction software.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Local-first PDF workspace</span>
+        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the recipient before relying on the exported copy. Local workspace metadata must not store source PDF bytes or document contents.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Uses browser PDF libraries to load pages, track overlays, organize pages, and generate a new exported PDF copy.</li>
+          <li>Signatures, stamps, text, highlights, page order, and visual covers are flattened into the exported file where supported.</li>
+          <li>Saved recipes and report trails should remain metadata-only and local unless the signed-in workspace explicitly syncs metadata.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before sharing</h3>
+        <ul class="tool-verification-list">
+          <li>Open the export in another reader and check page order, overlays, signatures, visual covers, forms, links, file size, and permissions.</li>
+          <li>For sensitive redaction, do not rely on visual covers alone; verify the flattened output and use a specialist workflow when required.</li>
+          <li>For a repeatable route, start from the <a href="/document-pdf/">Document &amp; PDF planner</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 <email-gate-modal></email-gate-modal>
 <afro-related-tools category="document-pdf" current="pdf-workspace"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
@@ -2280,7 +2314,7 @@ function openSig(mode){
     '<div class="sig-tabs"><button type="button" class="sig-tab" data-sig-mode="draw">Draw</button><button type="button" class="sig-tab" data-sig-mode="type">Type</button><button type="button" class="sig-tab" data-sig-mode="upload">Upload</button><button type="button" class="sig-tab" data-sig-mode="saved">Saved</button></div>'+
     '<div class="sig-pane" data-sig-pane="draw"><canvas id="sigPad" width="500" height="180" style="border:2px solid #e5e7eb;border-radius:10px;background:#fff;cursor:crosshair;max-width:100%;touch-action:none;"></canvas><div style="margin-top:10px;display:flex;gap:8px;justify-content:center;"><button type="button" class="wb wb-s" onclick="clearSig()">Clear</button><select id="sigColor" style="padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-family:inherit;" aria-label="Signature color"><option value="#000">Black</option><option value="#001f3f">Navy</option><option value="#007AFF">Blue</option></select></div></div>'+
     '<div class="sig-pane" data-sig-pane="type"><div class="pn-field"><label>Name</label><input id="sigTyped" type="text" placeholder="Type your signature" style="flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px;"></div><div id="sigTypePreview" style="font-family:\'Brush Script MT\',\'Segoe Script\',cursive;font-size:38px;color:#111827;padding:16px;border:1px dashed #cbd5e1;border-radius:10px;background:#fff;">Signature</div></div>'+
-    '<div class="sig-pane" data-sig-pane="upload"><div class="dz" style="padding:28px 18px;" id="sigUploadBox"><div class="dz-emoji">&#9997;</div><h3>Upload signature image</h3><p>PNG or JPG</p><input aria-label="Signature image" type="file" id="sigUpload" accept="image/png,image/jpeg"></div><div id="sigUploadPreview" style="display:none;text-align:center;margin-top:12px;"><img id="sigUploadImg" style="max-width:300px;max-height:150px;border:1px solid #e5e7eb;border-radius:8px;background:#fff"></div></div>'+
+    '<div class="sig-pane" data-sig-pane="upload"><div class="dz" style="padding:28px 18px;" id="sigUploadBox"><div class="dz-emoji">&#9997;</div><h3>Upload signature image</h3><p>PNG or JPG</p><input aria-label="Signature image" type="file" id="sigUpload" accept="image/png,image/jpeg"></div><div id="sigUploadPreview" style="display:none;text-align:center;margin-top:12px;"><img id="sigUploadImg" alt="Uploaded signature preview" style="max-width:300px;max-height:150px;border:1px solid #e5e7eb;border-radius:8px;background:#fff"></div></div>'+
     '<div class="sig-pane" data-sig-pane="saved"><div id="sigSavedState" style="font-size:13px;color:#475569;line-height:1.55;">'+(hasSaved?"Saved signature is available in this browser.":"No saved signature in this browser.")+'</div>'+(hasSaved?'<button type="button" class="wb wb-s" id="useSavedSig" style="margin-top:10px;">Use saved signature</button>':'')+'</div>'+
     '<div style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;justify-content:center;"><div class="pn-field"><label>X</label><input aria-label="SigX" type="number" id="sigX" value="50" min="0" style="width:80px"></div><div class="pn-field"><label>Y</label><input aria-label="SigY" type="number" id="sigY" value="50" min="0" style="width:80px"></div><div class="pn-field"><label>Width</label><input aria-label="SigW" type="number" id="sigW" value="180" min="20" style="width:80px"></div><div class="pn-field"><label>Height</label><input aria-label="SigH" type="number" id="sigH" value="54" min="10" max="220" style="width:80px"></div><label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input aria-label="SigAll" type="checkbox" id="sigAll"> All pages</label><label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input aria-label="Save signature locally" type="checkbox" id="sigSave"> Save locally</label></div>';
   var ft=$("mF");ft.innerHTML="";
@@ -2349,7 +2383,7 @@ function openImg(){
   $("mT").textContent="Add Image";$("mS").textContent="Insert an image on the current page";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
     '<div class="dz" style="padding:30px 20px;" id="imgDz"><div class="dz-emoji">&#128247;</div><h3>Drop an image or click to browse</h3><p>PNG, JPG, or WebP</p><input aria-label="ImgFileIn" type="file" id="imgFileIn" accept="image/png,image/jpeg,image/webp"></div>'+
-    '<div id="imgPreview" style="display:none;text-align:center;"><img id="imgPrev" style="max-width:300px;max-height:200px;border-radius:8px;border:1.5px solid #e5e7eb;"></div>'+
+    '<div id="imgPreview" style="display:none;text-align:center;"><img id="imgPrev" alt="Uploaded image preview" style="max-width:300px;max-height:200px;border-radius:8px;border:1.5px solid #e5e7eb;"></div>'+
     '<div style="display:flex;gap:12px;flex-wrap:wrap;">'+
     '<div class="pn-field"><label>X</label><input aria-label="ImgX" type="number" id="imgX" value="50" min="0"></div>'+
     '<div class="pn-field"><label>Y</label><input aria-label="ImgY" type="number" id="imgY" value="50" min="0"></div>'+

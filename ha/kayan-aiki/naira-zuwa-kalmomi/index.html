@@ -235,6 +235,7 @@
     <div class="actions-row">
       <button type="button" class="btn btn-primary" onclick="copyResult()">Kwafi</button>
       <button type="button" class="btn btn-outline" onclick="copyDocumentLine()">Kwafi layin takarda</button>
+      <button type="button" class="btn btn-outline" onclick="downloadDocumentLine()">Sauke TXT</button>
       <button type="button" class="btn btn-outline" onclick="clearAll()">Goge</button>
     </div>
     <div class="doc-preview" id="docPreview"></div>
@@ -276,6 +277,13 @@
       <summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;background:#f9fafb;font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">Zan iya amfani da shi don voucher na biyan kudi na gwamnati?</summary>
       <div style="padding:.75rem 1.25rem 1rem;font-size:.93rem;color:#555;line-height:1.6">Eh. Voucher na biyan kudi, resit na sayayya, amincewar ofishi da sauran takardun hukuma sau da yawa suna bukatar adadi a lambobi da kalmomi. Sakamakon yana bin tsarin rubutun kudi da aka saba amfani da shi.</div>
     </details>
+  </section>
+
+  <section style="margin-top:2rem;padding:1.5rem;border:1.5px solid #dbeafe;border-radius:14px;background:#eff6ff;" data-tool-verification-panel="naira-to-words-ha">
+    <h2 style="font-size:1.2rem;font-weight:700;margin:0 0 1rem;">Hanya, tushe da tabbatarwa</h2>
+    <p style="font-size:0.88rem;color:#334155;line-height:1.7;margin-bottom:10px;"><strong>Hanyar tsara:</strong> kayan aikin yana karanta adadi a browser, yana raba babban kudi da karamin kudi, sannan yana gina kalmomi da chunk na dubu, miliyan, biliyan da tiriliyan. Sakamakon yana fita a rubutun Turanci da ake saba amfani da shi a cheque da invoice.</p>
+    <p style="font-size:0.88rem;color:#334155;line-height:1.7;margin-bottom:10px;"><strong>Tushen bayani:</strong> tsarin yana bin al'adar rubuta adadi a lambobi da kalmomi a takardun biyan kudi. Atunse kayan aiki: June 2026.</p>
+    <p style="font-size:0.88rem;color:#334155;line-height:1.7;margin:0;"><strong>Bayani mai muhimmanci:</strong> wannan ba tabbacin banki ba ne, ba shawarar doka ba ce, kuma ba ya aika bayananka zuwa AfroTools. Ka duba lambobi, wanda za a biya da dokar ofishin ko bankinka kafin sa hannu.</p>
   </section>
 
   <section style="margin-top:2rem;padding:2rem 0;border-top:1.5px solid #e5e7eb;">
@@ -439,6 +447,24 @@ function copyResult() {
 function copyDocumentLine() {
   convert();
   navigator.clipboard.writeText(lastDocumentLine).then(function(){ showToast('An kwafi layin takarda!'); }).catch(function(){ window.prompt('Kwafi layin takarda', lastDocumentLine); });
+}
+
+function downloadDocumentLine() {
+  convert();
+  if (!lastDocumentLine) {
+    showToast('Saka adadi tukuna.');
+    return;
+  }
+  var blob = new Blob([lastDocumentLine + '\n'], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'adadi-cikin-kalmomi.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('An sauke TXT.');
 }
 
 function clearAll() {

@@ -76,12 +76,21 @@
         <div class="card-body">
           <div class="result-grid" id="resultGrid"></div>
           <div class="breakdown" id="breakdown"></div>
+          <button type="button" class="btn" onclick="copyCit()" style="margin-top:14px;background:#0f172a">Daako akopo CIT</button>
+          <p class="note" id="citCopyStatus" aria-live="polite" style="margin-top:10px"></p>
         </div>
       </div>
       <section class="copy">
         <h2>Bí a ṣe ka abajade</h2>
         <p>CIT ṣiṣẹ́ lórí èrè tí owó-orí kan lẹ́yìn tí a ti yọ capital allowances ati dividend tí kò wọ̀ owó-orí. Ní ẹ̀dà orísun yìí, ilé-iṣẹ́ pẹ̀lú turnover títí dé NGN 100 million jẹ́ 0%, ilé-iṣẹ́ tó ju bẹ́ẹ̀ lọ sì lo 30% àti levy idagbasoke 4%.</p>
         <p>Lo abajade fún ìmúràn ìṣúná, ìjíròrò pẹ̀lú akántà, tàbí àyẹ̀wò ipa capital allowances. Ṣaaju ìfilọlẹ̀ tàbí ìsanwó, jẹ́risi pẹ̀lú FIRS tàbí amòye owó-orí nítorí ipo ilé-iṣẹ́, ìyọkúrò tí a gba, ati ọdún ayẹwo lè yí abajade padà.</p>
+      </section>
+      <section class="copy" data-tool-verification-panel="ng-cit-yo">
+        <h2>Sources &amp; verification - last reviewed 2026</h2>
+        <p><strong>Methodology:</strong> The calculator subtracts capital allowances and exempt dividend inputs from assessable profit, applies the selected or auto-detected company size, then estimates CIT and development levy from the visible assumptions.</p>
+        <p><strong>Source and freshness:</strong> This is a planning model for Nigerian company tax. CIT thresholds, levies, exemptions and filing practice can change, so verify with FIRS guidance, your accountant, or a tax adviser before filing or paying.</p>
+        <p><strong>Disclaimer and privacy:</strong> This is not official tax advice and does not file with FIRS. Values stay in this browser unless you copy them.</p>
+        <p><a href="/tools/ng-cit/">Open the full English CIT calculator</a> or <a href="/business-enquiry/?offer=tax-widget&amp;tool=ng-cit-yo&amp;source=/yo/awon-ise/cit-naijiria/">request a CIT widget or custom calculator</a>.</p>
       </section>
     </section>
     <aside>
@@ -105,6 +114,7 @@
 </main>
 <afro-footer></afro-footer>
 <script>
+var lastCitSummary = '';
 function fmt(n){return 'NGN ' + Math.round(n || 0).toLocaleString('en-NG');}
 function calculate(){
   var turnover = Number(document.getElementById('turnover').value) || 0;
@@ -133,7 +143,18 @@ function calculate(){
     '<div class="line"><span>Dividend tí kò wọ̀ owó-orí</span><strong>- '+fmt(dividends)+'</strong></div>' +
     '<div class="line"><span>Èrè tí owó-orí kan</span><strong>'+fmt(taxableProfit)+'</strong></div>' +
     '<div class="line"><span>Àpapọ̀ fún àyẹ̀wò</span><strong>'+fmt(totalTax)+'</strong></div>';
+  lastCitSummary = 'Nigeria CIT estimate: turnover ' + fmt(turnover) + '; taxable profit ' + fmt(taxableProfit) + '; CIT ' + fmt(cit) + '; development levy ' + fmt(developmentLevy) + '; total estimated tax ' + fmt(totalTax) + '. Verify with FIRS or a tax adviser.';
+  document.getElementById('citCopyStatus').textContent = '';
   document.getElementById('resultCard').style.display='block';
+}
+function copyCit(){
+  var text = lastCitSummary || 'Se isiro CIT tele.';
+  var status = document.getElementById('citCopyStatus');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ status.textContent = 'A ti daako akopo CIT.'; }).catch(function(){ status.textContent = text; });
+  } else {
+    status.textContent = text;
+  }
 }
 calculate();
 </script>

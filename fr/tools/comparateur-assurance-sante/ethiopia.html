@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91"><link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><link rel="stylesheet" href="/assets/css/insurance.css?v=8d691b26">
-<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script><script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/health-insurance-compare.webp">
 <meta property="og:locale" content="fr_FR">
@@ -87,13 +87,24 @@ window.addEventListener('load', function() {
 <p class="ins-tool-hero-sub">Compare health insurance plans in Ethiopia side-by-side. Premium ranges, coverage, network hospitals, and exclusions for top HMOs and medical aid schemes.</p>
 </div></section>
 <main class="ins-main">
-<div class="ins-card"><div class="ins-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>🏥</span><h2>Calculer Your Estimate</h2><span class="ins-card-toggle">&#x25BE;</span></div>
-<div class="ins-card-body"><div class="ins-form-grid"><div class="ins-field"><label class="ins-f-label" for="coverType">Type de couverture</label><select class="ins-f-select" id="coverType"><option value="Individual">Individual</option><option value="Family (couple)">Family (couple)</option><option value="Family (couple + children)">Family (couple + children)</option></select></div><div class="ins-field"><label class="ins-f-label" for="age">Primary Member Age</label><input class="ins-f-input" type="number" id="age" placeholder="e.g. 35" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="dependents">Number of Dependents</label><input class="ins-f-input" type="number" id="dependents" placeholder="e.g. 2" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="budgetLevel">Budget Level</label><select class="ins-f-select" id="budgetLevel"><option value="Basic / Economy">Basic / Economy</option><option value="Standard / Mid-Range">Standard / Mid-Range</option><option value="Premium / Tous risques">Premium / Tous risques</option></select></div><div class="ins-field"><label class="ins-f-label" for="preExisting">Pre-existing Conditions?</label><select class="ins-f-select" id="preExisting"><option value="None">None</option><option value="Mild (managed)">Mild (managed)</option><option value="Significant">Significant</option></select></div></div>
+<div class="ins-card"><div class="ins-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>🏥</span><h2>Calculer votre estimation</h2><span class="ins-card-toggle">&#x25BE;</span></div>
+<div class="ins-card-body"><div class="ins-form-grid"><div class="ins-field"><label class="ins-f-label" for="coverType">Type de couverture</label><select class="ins-f-select" id="coverType"><option value="Individual">Individual</option><option value="Family (couple)">Family (couple)</option><option value="Family (couple + children)">Family (couple + children)</option></select></div><div class="ins-field"><label class="ins-f-label" for="age">Age du membre principal</label><input class="ins-f-input" type="number" id="age" placeholder="e.g. 35" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="dependents">Nombre de personnes a charge</label><input class="ins-f-input" type="number" id="dependents" placeholder="e.g. 2" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="budgetLevel">Niveau de budget</label><select class="ins-f-select" id="budgetLevel"><option value="Basic / Economy">Basic / Economy</option><option value="Standard / Mid-Range">Standard / Mid-Range</option><option value="Premium / Tous risques">Premium / Tous risques</option></select></div><div class="ins-field"><label class="ins-f-label" for="preExisting">Conditions preexistantes ?</label><select class="ins-f-select" id="preExisting"><option value="None">None</option><option value="Mild (managed)">Mild (managed)</option><option value="Significant">Significant</option></select></div></div>
 <button class="ins-calc-btn" id="calcBtn" type="button">Calculer l'estimation</button></div></div>
 <div class="ins-results" id="results">
-<div class="ins-res-hero accent"><div class="ins-res-hero-label">Annuel Premium Range</div><div class="ins-res-hero-amount" id="resAmount">—</div><div class="ins-res-hero-sub" id="resSub">Mensuel: —</div></div>
+<div class="ins-res-hero accent"><div class="ins-res-hero-label">Fourchette de prime annuelle</div><div class="ins-res-hero-amount" id="resAmount">—</div><div class="ins-res-hero-sub" id="resSub">Mensuel: —</div></div>
 <div class="ins-card"><div class="ins-card-body"><div id="resPlans"></div></div></div>
 <div class="ins-info" id="resScheme">—</div></div>
+<section class="ins-workbench" data-fr-insurance-family-batch="result-actions" aria-label="Exporter le resultat assurance">
+<h2>Resume a emporter</h2>
+<p>Copiez ou telechargez un brief local pour comparer des devis. Les donnees saisies restent dans votre browser; aucun age, membre de famille, budget ou condition de sante n'est envoye a un serveur.</p>
+<div class="ins-wb-actions">
+  <button class="ins-wb-btn" type="button" id="copyFamilyInsuranceBrief">Copier le resume</button>
+  <button class="ins-wb-btn secondary" type="button" id="downloadFamilyInsuranceBrief">Telecharger TXT</button>
+  <span class="ins-wb-status" id="familyInsuranceExportStatus" aria-live="polite"></span>
+</div>
+<p class="ins-wb-mini">A utiliser comme preparation de devis seulement. La police, les exclusions, les plafonds et la validation de l'assureur controlent la couverture finale.</p>
+</section>
+
 <section class="ins-seo">
 <h2>Ethiopia Assurance Maladie Plan Comparator — What You Need to Know</h2>
 <p>Compare health insurance plans in Ethiopia side-by-side. Premium ranges, coverage, network hospitals, and exclusions for top HMOs and medical aid schemes. Use this free calculator to get a quick estimate before contacting insurance providers.</p>
@@ -101,6 +112,16 @@ window.addEventListener('load', function() {
 <p><strong>Disclaimer:</strong> These are estimates based on market data and published rates. Actual premiums depend on individual circumstances, insurer assessment, and negotiation. Always get formal quotes from licensed providers.</p>
 </section>
 </main>
+<section class="ins-seo" data-tool-verification-panel data-fr-insurance-family-batch="trust">
+<h2>Methodologie, sources et limites</h2>
+<p><strong>Source et fraicheur:</strong> cette page utilise le jeu de donnees assurance AfroTools charge depuis <code>/data/insurance/country-insurance-index.js</code>, avec verification de page le 22 juin 2026. Les primes, reseaux, exclusions, delais d'attente, taxes et exigences du regulateur peuvent changer.</p>
+<p><strong>Methodologie:</strong> le moteur combine type de couverture, age, personnes a charge, niveau de budget et conditions preexistantes pour produire une fourchette annuelle, mensuelle et une liste de questions a poser au reseau de soins.</p>
+<p><strong>Verification:</strong> comparez ce resultat avec une police ecrite, un assureur ou courtier agree, le regulateur local et les documents de prestations avant paiement. Pour Ethiopia, traitez le resultat comme une estimation de preparation, pas comme un devis officiel.</p>
+<p><strong>Local-first et limites:</strong> les champs restent dans le browser local. Cet outil ne remplace pas un avis medical, juridique, financier ou une decision officielle de couverture assurance sante.</p>
+</section>
+<div class="ins-seo" data-fr-insurance-family-batch="cta">
+<afro-business-cta tool-name="Comparateur assurance sante - Ethiopia" save-note="Copiez ou telechargez le brief local, puis comparez au moins deux devis formels avant paiement."></afro-business-cta>
+</div>
 <afro-footer></afro-footer>
 <script src="/data/insurance/country-insurance-index.js?v=98d7b0e1"></script>
 <script src="/engines/health-insurance-compare-engine.js?v=1e046c80"></script>
@@ -126,11 +147,11 @@ document.getElementById("resAmount").textContent=r.annualPremiumMin+" — "+r.an
 document.getElementById("resSub").textContent="Mensuel: "+r.monthlyPremiumMin+" — "+r.monthlyPremiumMax;
 var ph=document.getElementById("resPlans");ph.innerHTML="";
 if(r.plans&&r.plans.length){
-  var t='<table class="ins-compare-table"><thead><tr><th>Provider</th><th>Annuel Range</th><th>Mensuel Range</th></tr></thead><tbody>';
+  var t='<table class="ins-compare-table"><thead><tr><th>Assureur</th><th>Fourchette annuelle</th><th>Fourchette mensuelle</th></tr></thead><tbody>';
   r.plans.forEach(function(p){t+='<tr><td>'+p.name+'</td><td>'+p.annualMin+' — '+p.annualMax+'</td><td>'+p.monthlyMin+' — '+p.monthlyMax+'</td></tr>';});
   t+='</tbody></table>';ph.innerHTML=t;
 }
-document.getElementById("resScheme").textContent="National scheme: "+r.schemeName+". Contribution: "+r.schemeContribution+". Providers: "+r.providers;
+document.getElementById("resScheme").textContent="Regime national : "+r.schemeName+". Contribution: "+r.schemeContribution+". Providers: "+r.providers;
 document.getElementById("results").classList.add("on");
 document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
 });
@@ -139,5 +160,65 @@ document.getElementById("results").scrollIntoView({behavior:"smooth",block:"star
 <script src="/assets/js/insurance-workbench.js?v=100b7540" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(window.twemoji){twemoji.parse(document.body,{folder:'svg',ext:'.svg'})}</script>
+
+<script data-fr-insurance-family-batch="export-js">
+!function(){
+  "use strict";
+  function value(id){var el=document.getElementById(id);return el?el.value:"";}
+  function text(id){var el=document.getElementById(id);return el?(el.textContent||"").trim():"";}
+  function line(label,id){return "- "+label+": "+(value(id)||"non renseigne");}
+  function result(label,id){return "- "+label+": "+(text(id)||"non calcule");}
+  function buildFamilyInsuranceBrief(){
+    var lines=[
+      "AfroTools - comparateur assurance sante Ethiopia",
+      "Date de preparation: 22 juin 2026",
+      "",
+      "Champs saisis:"
+    ];
+    [["Type de couverture","coverType"],["Age du membre principal","age"],["Personnes a charge","dependents"],["Niveau de budget","budgetLevel"],["Conditions preexistantes","preExisting"]].forEach(function(item){lines.push(line(item[0],item[1]));});
+    lines.push("", "Resultat:");
+    [["Fourchette annuelle","resAmount"],["Fourchette mensuelle","resSub"],["Regime et assureurs","resScheme"]].forEach(function(item){lines.push(result(item[0],item[1]));});
+    lines.push("", "A verifier: police ecrite, exclusions, plafonds, delai d'attente, reseau/prestations, paiement officiel, regulateur local et documents de claim.");
+    lines.push("Limite: estimation de preparation uniquement; pas un devis, pas une couverture active, pas un avis medical, juridique ou financier.");
+    return lines.join("\n");
+  }
+  function setStatus(msg){var el=document.getElementById("familyInsuranceExportStatus");if(el)el.textContent=msg;}
+  function fallbackCopy(text){
+    var ta=document.createElement("textarea");
+    ta.value=text;
+    ta.setAttribute("readonly","");
+    ta.style.position="fixed";
+    ta.style.left="-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    try{document.execCommand("copy");setStatus("Resume copie.");}
+    catch(e){setStatus("Copie indisponible; utilisez le telechargement TXT.");}
+    document.body.removeChild(ta);
+  }
+  function copy(text){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){setStatus("Resume copie.");},function(){fallbackCopy(text);});
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function download(name,text){
+    var blob=new Blob([text],{type:"text/plain"});
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download=name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){URL.revokeObjectURL(a.href);},250);
+  }
+  document.addEventListener("DOMContentLoaded",function(){
+    var c=document.getElementById("copyFamilyInsuranceBrief");
+    var d=document.getElementById("downloadFamilyInsuranceBrief");
+    if(c)c.addEventListener("click",function(){copy(buildFamilyInsuranceBrief());});
+    if(d)d.addEventListener("click",function(){download("comparateur-assurance-sante-ethiopia-resume.txt",buildFamilyInsuranceBrief());setStatus("Fichier TXT prepare.");});
+  });
+}();
+</script>
 </body>
 </html>

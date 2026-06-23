@@ -25,15 +25,18 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/bundles/core.c3deb143.min.js" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -52,6 +55,7 @@
 /* ── Base ─────────────────────────────────────────────────────────────────── */
 :root{--accent:#b45309;--accent-dark:#78350f;--accent-mid:#d97706;--accent-pale:#fffbeb;--accent-light:#fef3c7;--accent-border:#fcd34d;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc}
 *,*::before,*::after{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
 
 /* ── Hero ─────────────────────────────────────────────────────────────────── */
 .ssnit-hero{background:linear-gradient(135deg,#78350f 0%,#d97706 55%,#b45309 100%);padding:44px 0 34px}
@@ -339,9 +343,11 @@ input[type=number]:focus-visible,input[type=text]:focus-visible,select:focus-vis
     <table class="ssnit-table" id="s1BreakdownTable" aria-label="Contribution breakdown by tier"></table>
     <div class="ssnit-result-grid" id="s1ResultGrid" aria-live="polite" aria-atomic="true"></div>
     <div class="ssnit-result-actions">
+      <button type="button" class="ssnit-btn ssnit-btn-secondary" id="ssnit-copy-summary">Copy summary</button>
       <save-result-button tool-slug="gh-ssnit" tool-name="Ghana SSNIT Calculator"></save-result-button>
       <share-result-button tool-name="Ghana SSNIT Calculator" tool-slug="gh-ssnit"></share-result-button>
     </div>
+    <div id="ssnit-export-status" role="status" aria-live="polite" style="min-height:1.2em;margin-top:8px;font-size:.8rem;color:#64748b"></div>
   </div>
 </div>
 
@@ -639,9 +645,23 @@ input[type=number]:focus-visible,input[type=text]:focus-visible,select:focus-vis
   <details class="ssnit-faq"><summary>Is SSNIT available to non-Ghanaian workers?</summary><p>All formal sector workers in Ghana — regardless of nationality — are required to contribute to SSNIT. ECOWAS citizens have portability rights under the ECOWAS social security framework and can in principle transfer contributions to their home country's pension system. Non-ECOWAS nationals from countries without a bilateral social security agreement with Ghana are entitled to a lump sum refund of their contributions (with interest) when they permanently leave Ghana.</p></details>
 </section>
 
-<div style="padding:0 20px;max-width:760px;margin:0 auto">
+  <div style="padding:0 20px;max-width:760px;margin:0 auto">
   <wise-cta context="general"></wise-cta>
 </div>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="gh-ssnit">
+  <div class="tool-verification-card">
+    <span class="tool-verification-kicker">SSNIT and pension source check</span>
+    <h2>Use calculator results beside your SSNIT statement and trustee records</h2>
+    <ul class="tool-verification-list">
+      <li><strong>Inputs:</strong> basic salary, years contributed, current age, retirement age, and optional Tier 3 contribution.</li>
+      <li><strong>Method:</strong> applies the embedded Ghana pension engine to split mandatory contributions and estimate monthly pension eligibility.</li>
+      <li><strong>Verify before acting:</strong> SSNIT statement, NPRA or trustee records, employer remittance, capped earnings, best 36 months, age, and current contribution rules.</li>
+      <li><strong>Privacy:</strong> salary and pension scenarios run locally. Copy, save, or share only the summary you choose.</li>
+    </ul>
+    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not an official SSNIT statement, legal advice, tax advice, or a trustee quote.</p>
+  </div>
+</section>
+<afro-business-cta tool-name="Ghana SSNIT Calculator" prospect-segment="payroll-benefits" headline="Need SSNIT checks in a payroll review workflow?" subhead="AfroPayroll Pro helps teams keep contribution assumptions, employer remittance notes, and accountant handoff files together before payroll close."></afro-business-cta>
 <afro-related-tools category="financial" current="gh-ssnit"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -758,6 +778,44 @@ function calcS1() {
   document.getElementById('s1ResultCard').classList.remove('ssnit-hidden');
   document.getElementById('s1ResultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+
+function buildSsnitSummary() {
+  if (document.getElementById('s1ResultCard').classList.contains('ssnit-hidden')) {
+    calcS1();
+  }
+  var resultBoxes = Array.prototype.map.call(document.querySelectorAll('#s1ResultGrid .ssnit-result-box'), function (box) {
+    return box.textContent.replace(/\s+/g, ' ').trim();
+  });
+  var breakdown = Array.prototype.map.call(document.querySelectorAll('#s1BreakdownTable tr'), function (row) {
+    return row.textContent.replace(/\s+/g, ' ').trim();
+  });
+  return [
+    'Ghana SSNIT estimate summary',
+    'Basic salary input: GHc ' + document.getElementById('s1Basic').value,
+    'Years contributed: ' + document.getElementById('s1Years').value,
+    'Current age: ' + document.getElementById('s1Age').value,
+    'Retirement age: ' + document.getElementById('s1RetireAge').value,
+    'Results: ' + (resultBoxes.length ? resultBoxes.join(' | ') : 'Run the calculator to generate results'),
+    'Contribution breakdown: ' + (breakdown.length ? breakdown.join(' | ') : 'No contribution rows available'),
+    'Note: planning estimate only. Verify SSNIT statement, NPRA or trustee records, employer remittance, capped earnings, best 36 months, age, and current contribution rules before acting.'
+  ].join('\n');
+}
+
+function setSsnitExportStatus(message) {
+  var status = document.getElementById('ssnit-export-status');
+  if (status) status.textContent = message;
+}
+
+function copySsnitSummary() {
+  var text = buildSsnitSummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { setSsnitExportStatus('SSNIT summary copied.'); }).catch(function () { setSsnitExportStatus('Copy failed. Select and copy the summary manually.'); });
+  } else {
+    setSsnitExportStatus(text);
+  }
+}
+
+document.getElementById('ssnit-copy-summary').addEventListener('click', copySsnitSummary);
 
 // ── Section 2: 36 Best Months ─────────────────────────────────────────────
 function buildSalaryHistoryTable() {

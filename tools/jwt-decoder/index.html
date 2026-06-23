@@ -25,6 +25,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -392,6 +393,46 @@
 <section class="df-faq" aria-labelledby="jwt-decoder-faq-title">
   <h2 id="jwt-decoder-faq-title">JWT Decoder FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste a test or redacted token, inspect claims and timeline status, then copy a debugging brief without exposing the raw token.</p></details><details><summary>What should I verify?</summary><p>Check issuer, audience, expiration, not-before, algorithm, key id, scopes, backend signature validation, and token redaction before sharing.</p></details><details><summary>Does decoding prove the token is valid?</summary><p>No. It decodes token contents locally but does not prove the signature, authorize a request, or replace backend validation.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel="jwt-decoder">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Token debug check</span>
+          <h2 class="tool-verification-title">Decoding is not the same as validation</h2>
+          <p class="tool-verification-lead">Decode header and payload locally, inspect registered claims, review timeline status, and copy safe debugging notes without sharing raw tokens.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local decode</span>
+          <p class="tool-verification-note">A pasted token is not sent by the decoder itself.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: split the token locally, base64url-decode header and payload, then compare claim timing and expectations before backend validation.</li>
+            <li>Verify issuer, audience, expiry, not-before, algorithm, key id, scopes, and server-side signature validation.</li>
+            <li>Use only redacted or test tokens in screenshots, support tickets, documentation, and chat.</li>
+            <li>Confirm backend validation behavior with the real auth provider or API gateway before trusting claims.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: local debug utility only. Decoded payload text is not proof that a token is valid or authorized.</li>
+            <li>HS signature checks need the exact development secret and do not cover asymmetric JWKS workflows.</li>
+            <li>Never paste production bearer tokens, refresh tokens, client secrets, or private keys into shared output.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#timelineOutput">Review claim timeline</a>
+        <p class="tool-verification-disclaimer">Source/reference note: verify auth behavior against current identity-provider docs, JWKS metadata, API gateway rules, and backend tests.</p>
+      </div>
+    </div>
+  </div>
 </section>
 </main>
 

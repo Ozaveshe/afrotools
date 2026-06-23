@@ -14,6 +14,12 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
 <link rel="stylesheet" href="style.css?v=a40ada5e">
+<style>
+.ci-app,.ci-app-header,.ci-app-inner,.ci-section,.ci-ai-assist{box-sizing:border-box;max-width:100%}
+.ci-ai-input-row{min-width:0}
+.ci-ai-input{min-width:0}
+@media (max-width:520px){.ci-ai-input-row{display:grid;grid-template-columns:1fr}.ci-ai-send{width:100%}}
+</style>
 <link rel="canonical" href="https://afrotools.com/tools/creator-invoice/quote">
 <meta property="og:url" content="https://afrotools.com/tools/creator-invoice/quote">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
@@ -125,10 +131,10 @@
       <div class="ci-section">
         <div class="ci-section-title">LINE ITEMS</div>
         <div class="ci-ai-assist">
-          <div class="ci-ai-assist-title">🤖 AI Quote Generator</div>
+          <div class="ci-ai-assist-title">Local Quote Helper</div>
           <div class="ci-ai-input-row">
             <input aria-label="Describe the project for a quick quote" type="text" class="ci-ai-input" id="q-ai-describe" placeholder="Describe the project for a quick quote...">
-            <button type="button" class="ci-ai-send" onclick="aiGenerateQuoteItems()">Generate</button>
+            <button type="button" class="ci-ai-send" onclick="localGenerateQuoteItems()">Add Suggestions</button>
           </div>
         </div>
 
@@ -147,7 +153,7 @@
         <div class="ci-field">
           <textarea class="ci-textarea" id="q-cover-letter" rows="5" placeholder="A brief message to the client about this quote..." aria-label="A brief message to the client about this quote..."></textarea>
         </div>
-        <button type="button" class="ci-btn ci-btn-outline ci-btn-sm" onclick="aiGenerateCoverLetter()">🤖 AI Generate Cover Letter</button>
+        <button type="button" class="ci-btn ci-btn-outline ci-btn-sm" onclick="localGenerateCoverLetter()">Create Local Cover Note</button>
       </div>
 
       <!-- Actions -->
@@ -328,53 +334,33 @@
     document.getElementById('q-total').textContent = engine ? engine.formatCurrency(Math.round(total * 100), currency) : total.toLocaleString();
   }
 
-  // AI
-  window.aiGenerateQuoteItems = async function() {
+  // Local quote suggestions; project details stay in this browser.
+  window.localGenerateQuoteItems = function() {
     var desc = document.getElementById('q-ai-describe').value.trim();
     if (!desc) return;
     try {
-      var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : '';
-      var res = await fetch('/.netlify/functions/ai-advisor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tool: 'creator-invoice',
-          question: 'Generate quote line items for this project: ' + desc + '. Return ONLY a JSON array of {description, quantity, unitPrice}. unitPrice in smallest currency unit.',
-          token: token
-        })
+      var parts = desc.split(/,|\band\b|\+|;/i).map(function(part) {
+        return part.trim().replace(/\s+/g, ' ');
+      }).filter(Boolean);
+      if (!parts.length) parts = [desc];
+      parts.slice(0, 6).forEach(function(part) {
+        addQuoteLineItem(part, 1, 0);
       });
-      var data = await res.json();
-      var match = (data.answer || '').match(/\[[\s\S]*\]/);
-      if (match) {
-        JSON.parse(match[0]).forEach(function(item) {
-          addQuoteLineItem(item.description, item.quantity || 1, (item.unitPrice || 0) / 100);
-        });
-        showToast('Line items generated!', 'success');
-      }
-    } catch(e) { showToast('AI generation failed', 'error'); }
+      showToast('Local quote suggestions added', 'success');
+    } catch(e) { showToast('Could not add suggestions', 'error'); }
   };
 
-  window.aiGenerateCoverLetter = async function() {
+  window.localGenerateCoverLetter = function() {
     var clientName = document.getElementById('q-client-name').value.trim();
     var items = quoteLineItems.filter(function(i) { return i && i.description; });
     var desc = items.map(function(i) { return i.description; }).join(', ');
     if (!desc) { showToast('Add line items first', 'error'); return; }
 
     try {
-      var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : '';
-      var res = await fetch('/.netlify/functions/ai-advisor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tool: 'creator-invoice',
-          question: 'Write a brief, compelling cover letter for a quote to ' + (clientName || 'a client') + ' for these services: ' + desc + '. Keep it under 100 words, professional but warm, emphasize value. No subject line, just the body text.',
-          token: token
-        })
-      });
-      var data = await res.json();
-      document.getElementById('q-cover-letter').value = data.answer || '';
-      showToast('Cover letter generated!', 'success');
-    } catch(e) { showToast('AI generation failed', 'error'); }
+      var greeting = clientName ? 'Hello ' + clientName + ',' : 'Hello,';
+      document.getElementById('q-cover-letter').value = greeting + '\n\nPlease find my quote for ' + desc + '. The line items, validity period, and total are included below for your review. I can adjust the scope or payment terms before approval if needed.\n\nThank you.';
+      showToast('Local cover note created', 'success');
+    } catch(e) { showToast('Could not create cover note', 'error'); }
   };
 
   // Save

@@ -5,7 +5,7 @@
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Tester for African Developers | AfroTools</title>
-<meta name="description" content="Test REST APIs in your browser with environments, cURL import, saved requests, assertions, response headers, code export and African API presets for Paystack, Flutterwave, M-Pesa, MTN MoMo and Africa's Talking.">
+<meta name="description" content="Test REST APIs in your browser with environments, cURL import, saved requests, assertions, response headers, JSON export and African API presets.">
 <link rel="canonical" href="https://afrotools.com/tools/api-tester/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="API Tester for African Developers | AfroTools">
@@ -25,6 +25,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -247,6 +248,7 @@
             <button class="mini primary" id="save-request" type="button">Save request</button>
             <button class="mini" id="copy-curl" type="button">Copy cURL</button>
             <button class="mini" id="copy-fetch" type="button">Copy fetch()</button>
+            <button class="mini" id="download-request" type="button">Download JSON</button>
             <button class="mini" id="clear-request" type="button">Clear</button>
           </div>
         </div>
@@ -301,14 +303,15 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="api-tester">
+<section class="df-upgrade" data-df-upgrade="api-tester" data-tool-verification-panel>
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">API request brief</span>
       <h2>Test a request, then hand off the exact replay steps</h2>
       <p>Build a browser request above, inspect the response or CORS failure, then copy a brief with the method, environment and verification checks.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: compose API requests, save local variables, copy cURL or fetch snippets, and review response output.</li><li>Result output: a request brief that records method, endpoint type, expected status and next debugging step.</li><li>Quality checks: secrets redacted, auth header mode, request body format, expected status, CORS behavior and replay snippet.</li><li>Privacy note: requests are sent directly from your browser to the endpoint; AfroTools does not proxy or store request bodies.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local browser tester only. Do not paste production secrets unless you intend the browser to send them to that API endpoint.</p>
+      <p><strong>Sources &amp; verification methodology:</strong> the selected endpoint, browser status, response headers, assertions and exported replay snippets are the source evidence. This is a local browser tester, not an official API monitor.</p>
+      <ul class="df-upgrade__bullets"><li>Primary task: compose API requests, save local variables, copy cURL or fetch snippets, download a request JSON, and review response output.</li><li>Result output: a request brief that records method, endpoint type, expected status and next debugging step.</li><li>Quality checks: secrets redacted, auth header mode, request body format, expected status, CORS behavior, downloaded request JSON and replay snippet.</li><li>Privacy note: requests are sent directly from your browser to the endpoint; AfroTools does not proxy or store request bodies.</li></ul>
+      <p class="df-upgrade__note"><strong>Disclaimer:</strong> reviewed 2026. Local browser tester only, not uptime monitoring, security testing, compliance evidence, or an official provider diagnostic. Do not paste production secrets unless you intend the browser to send them to that API endpoint.</p>
     </div>
     <form class="df-form" data-df-form="api-tester">
       <label>Request type<select name="type" aria-label="Request type"><option value="GET read">GET read</option><option value="POST create">POST create</option><option value="auth check">auth check</option><option value="webhook replay">webhook replay</option></select></label>
@@ -781,6 +784,29 @@
     navigator.clipboard.writeText(text).then(function(){ toast(label + ' copied'); }).catch(function(){ toast('Copy failed'); });
   }
 
+  function downloadRequestJson(){
+    var req = requestState();
+    var safeReq = JSON.parse(JSON.stringify(req));
+    if (safeReq.auth && safeReq.auth.token) safeReq.auth.token = '[redacted]';
+    safeReq.headers = (safeReq.headers || []).map(function(header){
+      var key = String(header.key || '').toLowerCase();
+      var value = /authorization|api[-_]?key|secret|token/.test(key) ? '[redacted]' : header.value;
+      return {key: header.key, value: value};
+    });
+    safeReq.exportedAt = new Date().toISOString();
+    safeReq.note = 'AfroTools API Tester export. Verify secrets, environment variables, CORS behavior and endpoint permissions before replaying.';
+    var blob = new Blob([JSON.stringify(safeReq, null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (safeReq.name || 'api-request').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') + '.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast('Request JSON downloaded');
+  }
+
   function bind(){
     document.querySelectorAll('.tab').forEach(function(tab){
       tab.addEventListener('click', function(){
@@ -798,6 +824,7 @@
     $('import-curl').addEventListener('click', importCurl);
     $('copy-curl').addEventListener('click', function(){ copyText(curlFor(requestState()), 'cURL'); });
     $('copy-fetch').addEventListener('click', function(){ copyText(fetchFor(requestState()), 'fetch snippet'); });
+    $('download-request').addEventListener('click', downloadRequestJson);
     $('copy-response').addEventListener('click', function(){ copyText($('response-body').textContent, 'Response'); });
     $('format-body').addEventListener('click', function(){
       try { $('req-body').value = JSON.stringify(JSON.parse($('req-body').value), null, 2); toast('JSON formatted'); }

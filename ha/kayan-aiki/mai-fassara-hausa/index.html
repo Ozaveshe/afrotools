@@ -75,6 +75,17 @@
         <div class="ha-card-body">
           <div class="ha-field"><label for="query">Rubuta abin da kake nema</label><input id="query" type="text" placeholder="misali: ina kwana, nawa ne, zan dawo" oninput="findPhrase()"></div>
           <div id="phraseResult" class="ha-result" style="display:block">Fara da rubuta kalma ko zabi daga jerin kasa.</div>
+          <div class="ha-actions" style="margin-top:12px"><button class="ha-btn" type="button" onclick="copyPhrase()">Kwafi jimla</button></div>
+        </div>
+      </div>
+      <div class="ha-card">
+        <div class="ha-card-head"><h2>Shirya sakon farko</h2></div>
+        <div class="ha-card-body">
+          <div class="ha-field"><label for="briefUse">Inda za a yi amfani da shi</label><select id="briefUse"><option value="customer">Tallafin abokin ciniki</option><option value="market">Kasuwa da farashi</option><option value="travel">Tafiya</option><option value="official">Takarda mai muhimmanci</option></select></div>
+          <div class="ha-field"><label for="briefText">Abin da kake son fada</label><textarea id="briefText" rows="4" placeholder="Misali: Ina son amsa wa abokin ciniki game da biyan kudi."></textarea></div>
+          <button class="ha-btn" type="button" onclick="buildBrief()">Gina takaitaccen shiri</button>
+          <div id="briefResult" class="ha-result" style="display:block;margin-top:12px">Saka abin da kake son fada domin samun shirin rubutu.</div>
+          <div class="ha-actions" style="margin-top:12px"><button class="ha-btn" type="button" onclick="copyBrief()">Kwafi shiri</button></div>
         </div>
       </div>
       <div class="ha-card">
@@ -100,6 +111,7 @@
         </div>
       </div>
       <div class="ha-note" style="margin-top:18px">AfroTools yana taimaka wajen fahimta da rubutun farko. Ba ya tabbatar da fassarar takarda ta hukuma ko shari'a.</div>
+      <div class="ha-note" style="margin-top:18px" data-tool-verification-panel="hausa-translator-ha"><strong>Hanyar tsara da tushe:</strong> Wannan shafi yana amfani da gajeren kundin jimlolin AfroTools da shirin rubutu na browser. Ba fassarar kai tsaye ba ce, ba takardar hukuma ba ce, kuma ba ya aika rubutunka zuwa uwar garke. Atunse shafin: June 2026. Bayani mai muhimmanci: ka duba shari'a, lafiya, makaranta, gwamnati ko kwangila da kwararren fassara.</div>
     </aside>
   </div>
 </main>
@@ -119,6 +131,9 @@ function card(p){return '<button type="button" class="ha-link-card" onclick="pic
 function render(){document.getElementById('phraseGrid').innerHTML=phrases.map(card).join('')}
 function pickPhrase(i){var p=phrases[i];document.getElementById('phraseResult').innerHTML='<strong>'+p[1]+'</strong><br>'+p[2]}
 function findPhrase(){var q=document.getElementById('query').value.toLowerCase().trim();if(!q){document.getElementById('phraseResult').textContent='Fara da rubuta kalma ko zabi daga jerin kasa.';return}var p=phrases.find(function(item){return item.join(' ').toLowerCase().includes(q)});document.getElementById('phraseResult').innerHTML=p?'<strong>'+p[1]+'</strong><br>'+p[2]:'Ba a samu a cikin wannan gajeren kundin ba. Gwada wata kalma ko bude cikakken shafin Turanci.'}
+function copyPhrase(){var text=document.getElementById('phraseResult').textContent.trim();if(navigator.clipboard)navigator.clipboard.writeText(text)}
+function buildBrief(){var use=document.getElementById('briefUse').value;var raw=document.getElementById('briefText').value.trim();var labels={customer:'tallafin abokin ciniki',market:'kasuwa da farashi',travel:'tafiya',official:'takarda mai muhimmanci'};var out=document.getElementById('briefResult');if(!raw){out.textContent='Saka abin da kake son fada domin samun shirin rubutu.';return}var caution=use==='official'?' A tabbatar da shi da kwararren fassara kafin amfani a takarda mai muhimmanci.':' A duba yanayi da maanar sakon kafin aikawa.';out.textContent='Amfani: '+labels[use]+'\nAbin da za a fada: '+raw+'\nMataki: nemi jimla mafi kusa, gyara ta da Hausa mai sauki, sannan ka sa mutum ya duba.'+caution}
+function copyBrief(){var text=document.getElementById('briefResult').textContent.trim();if(navigator.clipboard)navigator.clipboard.writeText(text)}
 render();
 </script>
 </body>

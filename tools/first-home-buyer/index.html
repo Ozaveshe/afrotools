@@ -242,7 +242,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/premier-achat-immobilier/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mnunuzi-wa-kwanza-wa-nyumba/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/first-home-buyer/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -310,7 +310,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
           </select>
         </div>
         <div class="field">
-          <label>Your Age</label>
+          <label for="age">Your Age</label>
           <input aria-label="E.g. 27" type="number" id="age" placeholder="e.g. 27" min="18" max="60" value="27">
         </div>
       </div>
@@ -319,24 +319,24 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <div class="card-title" style="margin-bottom:16px"><span>&#x1F3E1;</span> Home You Want to Buy</div>
       <div class="grid-2">
         <div class="field">
-          <label>Target Home Price</label>
+          <label for="homePrice">Target Home Price</label>
           <input aria-label="E.g. 1500000" type="number" id="homePrice" placeholder="e.g. 1500000" min="0">
           <div class="hint" id="hint-price">In local currency</div>
         </div>
         <div class="field">
-          <label>Down Payment Required (%)</label>
+          <label for="downPct">Down Payment Required (%)</label>
           <input aria-label="DownPct" type="number" id="downPct" placeholder="10" min="0" max="100" value="10">
           <div class="hint" id="hint-dp">Most African banks: 10-20%</div>
         </div>
       </div>
       <div class="grid-2">
         <div class="field">
-          <label>Mortgage Rate (% per year)</label>
+          <label for="mortRate">Mortgage Rate (% per year)</label>
           <input aria-label="MortRate" type="number" id="mortRate" placeholder="11.75" step="0.25" value="11.75">
           <div class="hint" id="hint-rate"></div>
         </div>
         <div class="field">
-          <label>Loan Term (Years)</label>
+          <label for="loanTerm">Loan Term (Years)</label>
           <select id="loanTerm" aria-label="Loan Term">
             <option value="15">15 years</option>
             <option value="20" selected>20 years</option>
@@ -350,24 +350,24 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <div class="card-title" style="margin-bottom:16px"><span>&#x1F4B0;</span> Your Finances</div>
       <div class="grid-2">
         <div class="field">
-          <label>Net Monthly Income</label>
+          <label for="netIncome">Net Monthly Income</label>
           <input aria-label="E.g. 50000" type="number" id="netIncome" placeholder="e.g. 50000" min="0">
           <div class="hint">Take-home pay after tax</div>
         </div>
         <div class="field">
-          <label>Monthly Savings Capacity</label>
+          <label for="monthlySavings">Monthly Savings Capacity</label>
           <input aria-label="E.g. 8000" type="number" id="monthlySavings" placeholder="e.g. 8000" min="0">
           <div class="hint">How much you can save per month</div>
         </div>
       </div>
       <div class="grid-2">
         <div class="field">
-          <label>Current Savings</label>
+          <label for="currentSavings">Current Savings</label>
           <input aria-label="CurrentSavings" type="number" id="currentSavings" placeholder="0" min="0">
           <div class="hint">Amount already saved</div>
         </div>
         <div class="field">
-          <label>Savings Interest Rate (%)</label>
+          <label for="savingsRate">Savings Interest Rate (%)</label>
           <input aria-label="SavingsRate" type="number" id="savingsRate" placeholder="9" step="0.5" value="9">
           <div class="hint" id="hint-savings">SA fixed deposit / money market ~9%</div>
         </div>
@@ -439,6 +439,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         <div class="result-actions" id="result-actions">
           <save-result-button tool-slug="first-home-buyer" tool-name="First Home Buyer"></save-result-button>
           <share-result-button tool-name="First Home Buyer" tool-slug="first-home-buyer"></share-result-button>
+          <button type="button" class="calc-btn" id="first-home-copy-summary" onclick="copyFirstHomePlan()">Copy plan</button>
         </div>
 
         <button type="button" class="calc-btn pdf-btn" onclick="downloadPDF()">&#x1F4C4; Download PDF Report</button>
@@ -449,11 +450,11 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
           <div class="card-title" style="margin-bottom:12px"><span>&#x1F50D;</span> Compare Two Scenarios</div>
           <div class="grid-2">
             <div class="field">
-              <label>Alternative Home Price</label>
+              <label for="comparePrice">Alternative Home Price</label>
               <input aria-label="E.g. 1000000" type="number" id="comparePrice" placeholder="e.g. 1000000" min="0">
             </div>
             <div class="field">
-              <label>Down Payment (%)</label>
+              <label for="compareDown">Down Payment (%)</label>
               <input aria-label="CompareDown" type="number" id="compareDown" placeholder="10" min="0" max="100">
             </div>
           </div>
@@ -473,7 +474,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         <span class="ai-by">Powered by Claude</span>
       </div>
       <div class="ai-advisor-body">
-        <div class="ai-status" id="aiStatus">Ask me anything about buying your first home in Africa &mdash; savings strategies, mortgage rates, government schemes, credit building.</div>
+        <div class="ai-status" id="aiStatus">Ask me anything about buying your first home in Africa &mdash; savings strategies, mortgage rates, government schemes, credit building.</div><label class="ai-consent" style="display:flex;gap:8px;align-items:flex-start;font-size:.76rem;color:#475569;margin:10px 0"><input type="checkbox" id="aiConsent"> I consent to send my typed question and current scenario summary to the AI advisor. Do not include ID, account, address, or other private details.</label>
         <div class="ai-suggestions" id="aiSuggestions">
           <button type="button" class="ai-suggestion" onclick="askSuggestion(this)">How do I qualify for FLISP?</button>
           <button type="button" class="ai-suggestion" onclick="askSuggestion(this)">Tips to save faster</button>
@@ -517,29 +518,20 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
 
-<section class="df-upgrade" data-df-upgrade="first-home-buyer">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>First Home Buyer Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for first home buyer calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: First Home Buyer Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, officialSource, businessCta, verificationPanel, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="first-home-buyer" aria-labelledby="first-home-buyer-verification-title">
+  <div class="tool-verification-inner">
+    <div class="tool-verification-copy">
+      <span class="tool-verification-kicker">Home buying plan check</span>
+      <h2 class="tool-verification-title" id="first-home-buyer-verification-title">Verify savings timeline, deposit, schemes, and monthly affordability before house hunting</h2>
+      <p class="tool-verification-lead">Use the plan to set a realistic target, then confirm deposit requirements, transfer costs, lender rules, and first-buyer scheme eligibility with current local sources.</p>
+      <div class="tool-verification-grid" aria-label="Home buying plan check checklist"><div class="tool-verification-card"><strong>Inputs to verify</strong><ul><li>Home price, down-payment percent, savings capacity, current savings, mortgage rate, loan term, and net income.</li><li>Government scheme details and lender rates are planning assumptions, not live eligibility checks.</li></ul></div><div class="tool-verification-card"><strong>Outputs to export</strong><ul><li>Save/share the scenario, download the PDF report, or copy a short plan for a partner, broker, or budget review.</li><li>Use the comparison panel to test a cheaper or more expensive property before applying.</li></ul></div><div class="tool-verification-card"><strong>Limits</strong><ul><li>Planning estimate only, not mortgage approval, legal advice, grant approval, or official scheme eligibility.</li><li>Privacy note: home-buying details stay local unless you use the optional AI advisor or export/share the plan.</li></ul></div></div>
     </div>
-    <form class="df-form" data-df-form="first-home-buyer">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="first-home-buyer" data-df-base="First Home Buyer Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">First Home Buyer Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="first-home-buyer">Copy summary</button></div>
-    </form>
+    <div class="tool-verification-actions">
+      <a class="tool-verification-primary" href="#homePrice">Review home target</a>
+      <a class="tool-verification-report" href="#results-section">Review savings plan</a>
+      <p class="tool-verification-disclaimer">Source/freshness note: home prices, rates, deposit requirements, transfer costs, and first-buyer schemes can change; confirm before acting.</p>
+    </div>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="first-home-buyer-faq-title">
-  <h2 id="first-home-buyer-faq-title">First Home Buyer Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -570,9 +562,9 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 
 <afro-related-tools category="legal" current="first-home-buyer"></afro-related-tools>
 
-<section class="df-faq quality-verification-panel" data-quality-proof="First Home Buyer Calculator" aria-label="First Home Buyer Calculator verification and limitations">
+<section class="tool-verification-sec quality-verification-panel" data-quality-proof="First Home Buyer Calculator" aria-label="First Home Buyer Calculator verification and limitations">
   <h2>First Home Buyer Calculator verification and limitations</h2>
-  <div class="df-faq__grid">
+  <div class="tool-verification-grid">
     <details open><summary>Official/source check</summary><p>Mortgage eligibility, deposit rules, grants, property taxes, bank rates, and legal costs change by country and lender. Use this as a planning estimate, then verify with the bank, conveyancer, housing agency, or official programme page.</p></details>
     <details><summary>Export or save path</summary><p>Use the page output, copy, print, download, or saved draft controls where available, and keep a separate record before acting on a money, travel, career, telecom, or document decision.</p></details>
     <details><summary>Related next steps</summary><p><a href="/tools/mortgage-affordability/">Mortgage affordability</a> &middot; <a href="/tools/home-loan-eligibility/">Home loan eligibility</a> &middot; <a href="/tools/rent-vs-buy/">Rent vs buy</a></p></details>
@@ -856,6 +848,25 @@ function renderTips(dsr,years,progressPct,monthlySavings,netIncome,schemes,count
   }).join('');
 }
 
+function copyFirstHomePlan(){
+  if(!CALC_RESULT){alert('Please run the calculation first.');return;}
+  var R=CALC_RESULT;
+  var text=[
+    'First home buyer plan',
+    'Country: '+R.country,
+    'Home price: '+fmt(R.homePrice),
+    'Down payment: '+fmt(R.downPayment),
+    'Transfer costs: '+fmt(R.transferCosts),
+    'Total cash needed: '+fmt(R.totalNeeded),
+    'Monthly savings: '+fmt(R.monthlySavings),
+    'Years to save: '+R.years,
+    'Monthly mortgage: '+fmt(R.monthlyMortgage),
+    'DSR: '+R.dsr.toFixed(1)+'%',
+    'Note: planning estimate only; confirm current rates, lender rules, transfer costs, and scheme eligibility before acting.'
+  ].join('\n');
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).catch(function(){alert(text);});}else{alert(text);}
+}
+
 // Comparison mode
 function toggleCompare(){
   var panel=document.getElementById('compare-panel');
@@ -935,13 +946,7 @@ function downloadPDF(){
   html+='<tr><td style="padding:8px 12px;font-weight:700;">Total Cash Needed</td><td style="padding:8px 12px;font-weight:700;color:#007AFF;">'+fmt(R.totalNeeded)+'</td><td style="padding:8px 12px;font-weight:700;">Loan Term</td><td style="padding:8px 12px;">'+R.loanTerm+' years</td></tr>';
   html+='</table>';
 
-  // Add chart images
-  if(savingsChart){
-    try{html+='<div style="margin-bottom:20px;"><h3 style="font-size:.9rem;font-weight:700;margin-bottom:8px;">Savings Growth Timeline</h3><img src="'+savingsChart.toBase64Image()+'" style="width:100%;border-radius:8px;"></div>';}catch(e){}
-  }
-  if(breakdownChart){
-    try{html+='<div style="margin-bottom:20px;"><h3 style="font-size:.9rem;font-weight:700;margin-bottom:8px;">Cost Breakdown</h3><img src="'+breakdownChart.toBase64Image()+'" style="width:60%;margin:0 auto;display:block;border-radius:8px;"></div>';}catch(e){}
-  }
+  html+='<div style="background:#f8f9fa;border-radius:8px;padding:12px 14px;margin-bottom:20px;font-size:.8rem;color:#6e6e73;line-height:1.5;">Charts remain available in the browser view. This PDF keeps the numeric summary compact so the export works reliably on low-memory mobile browsers.</div>';
 
   // Government schemes
   var schemes=SCHEMES[R.country]||[];
@@ -988,6 +993,8 @@ async function sendAI(){
   var sendBtn=document.getElementById('aiSend');
   var q=input.value.trim();
   if(!q)return;
+  var consent=document.getElementById('aiConsent');
+  if(consent&&!consent.checked){document.getElementById('aiStatus').textContent='Tick the AI consent box before sending a question.';return;}
 
   AI_MSGS.push({role:'user',content:q});
   msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
@@ -1035,7 +1042,6 @@ async function sendAI(){
 onCountryChange();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 </body>
 </html>

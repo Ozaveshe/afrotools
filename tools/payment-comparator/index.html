@@ -89,6 +89,8 @@
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/payment-comparator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/comparateur-paiements/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/payment-comparator/" />
@@ -162,7 +164,7 @@
       <div id="compareObs" style="margin-top:16px"></div>
       <div class="df-actions" style="margin-top:14px">
         <button type="button" onclick="copyPaymentBrief()">Copy payment brief</button>
-        <button type="button" onclick="downloadPaymentCsv()">Download CSV</button>
+        <button type="button" data-no-gate="true" data-no-pdf-gate="true" onclick="downloadPaymentCsv()">Download CSV</button>
       </div>
       <p id="paymentStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
     </div>
@@ -207,7 +209,7 @@
       <div id="scenarioCompare" style="margin-top:20px"></div>
       <div class="df-actions" style="margin-top:14px">
         <button type="button" onclick="copyPaymentBrief()">Copy scenario brief</button>
-        <button type="button" onclick="downloadPaymentCsv()">Download CSV</button>
+        <button type="button" data-no-gate="true" data-no-pdf-gate="true" onclick="downloadPaymentCsv()">Download CSV</button>
       </div>
     </div>
   </div>
@@ -217,26 +219,63 @@
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>B2B Payment Fee Comparator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for b2b payment fee comparator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: B2B Payment Fee Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, officialSource, saveExport, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <h2>Turn a provider comparison into a payment approval brief</h2>
+      <p>Use the tabs above to rank providers by fee, inspect coverage and speed, and model annual payment volume before approving a supplier transfer.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: lowest-fee provider ranking, settlement speed, annual scenario cost, and provider pros/cons.</li><li>Methodology: compare local provider fee assumptions for your amount, then replace estimates with current written provider terms.</li><li>Verification: confirm FX spread, corridor support, compliance review, chargeback rules, limits, and settlement time before sending money.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Fees, FX spreads, corridors, and eligibility can change without notice.</p>
     </div>
     <form class="df-form" data-df-form="payment-comparator">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="payment-comparator" data-df-base="B2B Payment Fee Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">B2B Payment Fee Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="payment-comparator">Copy summary</button></div>
+      <label>Sender market<select name="country" aria-label="Sender market"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Transfer amount USD<input name="amount" type="number" value="10000" min="0" step="any" aria-label="Transfer amount USD"></label>
+      <label>Decision focus<select name="priority" aria-label="Decision focus"><option value="cost">lowest total cost</option><option value="speed">settlement speed</option><option value="risk">payment risk</option><option value="coverage">corridor coverage</option></select></label>
+      <label>FX/spread buffer percent<input name="buffer" type="number" value="3" min="0" step="any" aria-label="FX/spread buffer percent"></label>
+      <button type="submit">Create payment brief</button>
+      <output class="df-result" data-df-result="payment-comparator" data-df-base="Payment comparison brief ready. Compare providers above, then confirm FX spread, payout corridor, settlement time, compliance checks, chargeback rules, limits, and availability before sending money." aria-live="polite">Payment comparison brief ready. Compare providers above, then confirm FX spread, payout corridor, settlement time, compliance checks, chargeback rules, limits, and availability before sending money.</output>
+      <div class="df-actions"><button type="button" data-df-copy="payment-comparator">Copy payment brief</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="payment-comparator-faq-title">
   <h2 id="payment-comparator-faq-title">B2B Payment Fee Comparator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Run the fee comparison, open provider details, then copy or download a brief for finance review before paying a supplier.</p></details><details><summary>What should I verify?</summary><p>Confirm live provider fees, FX spread, corridor support, KYC/compliance checks, payout time, limits, and dispute rules.</p></details><details><summary>Is this official?</summary><p>No. It is a planning workflow, not a payment instruction, bank quote, remittance advice, or guaranteed price.</p></details></div>
 </section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="payment-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Sources &amp; verification</span>
+        <h2 class="tool-verification-title" id="payment-verification-title">Confirm live provider fees before sending money</h2>
+        <p class="tool-verification-lead">This comparator ranks B2B payment options from local fee assumptions and scenario inputs. It does not initiate payments, check eligibility, or guarantee provider pricing.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Provider-fee planning model</span>
+        <p class="tool-verification-note">Reviewed 2026. FX spreads, corridors, settlement times, and compliance rules can change.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Ranks providers by estimated fee for the transfer amount and shows settlement speed context.</li>
+          <li>Scenario tab projects annual cost from per-transaction amount, frequency, and selected provider.</li>
+          <li>Provider details separate cost, speed, coverage, pros, cons, and suitability notes.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before acting</h3>
+        <ul class="tool-verification-list">
+          <li>Confirm live FX spread, payout corridor, settlement time, chargebacks/reversals, compliance checks, limits, and availability.</li>
+          <li>Check whether the provider supports your sender country, receiver country, currency, business type, and invoice size.</li>
+          <li>Copy or download the payment brief before requesting provider quotes or approving supplier payment.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tool-verification-actions">
+      <p class="tool-verification-disclaimer">Planning estimate only. AfroTools is not a payment processor, remittance provider, bank, or financial adviser. No payment data is sent by this page.</p>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="B2B Payment Fee Comparator" prospect-segment="trade-finance" save-note="Compare providers, then copy the payment brief or download CSV for treasury, finance, or supplier review."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>

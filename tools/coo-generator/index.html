@@ -90,7 +90,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-certificat-origine/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/cheti-asili/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/coo-generator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -101,7 +101,7 @@
       "name": "How should I use Certificate of Origin Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Select a trade scheme, fill exporter/importer and goods details, generate the certificate preview, then print or copy the draft for review."
       }
     },
     {
@@ -109,7 +109,7 @@
       "name": "What should I verify before acting on Certificate of Origin Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Confirm the applicable scheme, HS code, origin criterion, issuing chamber or customs authority, signatures, stamps, and current destination rules before shipment."
       }
     },
     {
@@ -117,7 +117,7 @@
       "name": "Is Certificate of Origin Generator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It creates a local draft only. Preferential origin claims and certificates must be checked and issued through the relevant authorized body."
       }
     }
   ],
@@ -234,6 +234,9 @@
     <div class="card preview-card" style="padding:1rem;">
       <div class="card-head">Certificate of Origin Preview</div>
       <button type="button" class="coo-print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button type="button" class="coo-print-btn" id="copyCOODraftBtn" style="margin-left:.5rem;background:#007AFF">Copy draft text</button>
+      <button type="button" class="coo-print-btn" id="saveCOODraftBtn" data-no-pdf-gate="true" style="margin-left:.5rem;background:#fff;color:#0A1628;border:1.5px solid #0A1628">Save .txt</button>
+      <p id="cooStatus" style="font-size:.78rem;color:#64748b;margin-top:.6rem" aria-live="polite"></p>
     </div>
     <div class="coo-preview" id="cooPreview">
       <div class="coo-title">Certificate of Origin</div>
@@ -245,29 +248,25 @@
 
 
 
-<section class="df-upgrade" data-df-upgrade="coo-generator">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Certificate of Origin Generator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for certificate of origin generator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Certificate of Origin Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, officialSource, businessCta, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+
+<section class="tool-verification-sec" data-tool-verification-panel="coo-generator">
+  <div style="max-width:900px;margin:0 auto;padding:0 24px">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Trade document check</span>
+          <h2 class="tool-verification-title">Draft the certificate, then verify authority rules</h2>
+          <p class="tool-verification-lead">Use the template and origin checker as a local draft workspace before preparing the official certificate of origin submission.</p>
+        </div>
+        <div class="tool-verification-status"><span class="tool-verification-badge">Local draft</span><p class="tool-verification-note">Reviewed 2026. Trade rules can change.</p></div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block"><h3>Before you rely on it</h3><ul class="tool-verification-list"><li>Confirm the trade scheme, HS code, origin criterion, and destination-country acceptance.</li><li>Check the issuing chamber, customs, or trade authority process for stamps and signatures.</li><li>Use print/PDF or copy text only as a preparation aid for the official workflow.</li></ul></div>
+        <div class="tool-verification-block"><h3>Limits</h3><ul class="tool-verification-list"><li>This page does not issue certificates, validate exporter eligibility, or file with customs.</li><li>Preferential treatment depends on current rules of origin and documentary proof.</li><li>Form data stays local in the browser unless you print, copy, or save it yourself.</li></ul></div>
+      </div>
+      <div class="tool-verification-actions"><p class="tool-verification-disclaimer">Planning estimate only. Confirm current official certificate requirements before shipping, financing, or clearing goods.</p></div>
     </div>
-    <form class="df-form" data-df-form="coo-generator">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="coo-generator" data-df-base="Certificate of Origin Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Certificate of Origin Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="coo-generator">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="coo-generator-faq-title">
-  <h2 id="coo-generator-faq-title">Certificate of Origin Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -329,7 +328,7 @@ function buildForm(templateId) {
       var fid = fields[j];
       var label = CooEngine.getFieldLabel(fid);
       var isTextarea = fid === 'goods_description' || fid === 'direct_consignment_declaration';
-      html += '<div><div class="f-label">' + label + '</div>';
+      html += '<div><label class="f-label" for="ff_' + fid + '">' + label + '</label>';
       if (isTextarea) html += '<textarea class="f-textarea" id="ff_' + fid + '" placeholder="' + label + '" aria-label="Ff">' + (formValues[fid] || '') + '</textarea>';
       else html += '<input aria-label="' + label + '" type="text" class="f-input" id="ff_' + fid + '" value="' + (formValues[fid] || '') + '" placeholder="' + label + '">';
       html += '</div>';
@@ -338,7 +337,7 @@ function buildForm(templateId) {
   }
   // AfCFTA origin criteria dropdown
   if (templateId === 'afcfta') {
-    html += '<div><div class="f-label">Origin Criteria</div><select class="f-select" id="ff_origin_criteria" aria-label="Ff Origin Criteria">' +
+    html += '<div><label class="f-label" for="ff_origin_criteria">Origin Criteria</label><select class="f-select" id="ff_origin_criteria" aria-label="Ff Origin Criteria">' +
       '<option value="WO">WO — Wholly Obtained</option>' +
       '<option value="CTH">CTH — Change in Tariff Heading</option>' +
       '<option value="VA">VA — Value Added (40%)</option>' +
@@ -391,6 +390,61 @@ function generatePreview() {
   document.querySelectorAll('.coo-tab')[3].classList.add('on');
 }
 
+function cooDraftText() {
+  var preview = document.getElementById('cooPreview');
+  var obs = document.getElementById('obsPanel');
+  return [
+    'Certificate of Origin draft',
+    'Template: ' + (CooEngine.getTemplate(selectedTemplate) || {}).name,
+    '',
+    preview ? preview.innerText.trim() : '',
+    '',
+    obs && obs.innerText.trim() ? 'Review notes:\\n' + obs.innerText.trim() : '',
+    '',
+    'Draft only. Confirm scheme, origin criterion, HS code, issuing authority, stamps, and destination requirements before shipment.'
+  ].filter(Boolean).join('\\n');
+}
+
+function setCOOStatus(message) {
+  var status = document.getElementById('cooStatus');
+  if (!status) return;
+  status.textContent = message;
+  setTimeout(function(){ status.textContent = ''; }, 1800);
+}
+
+function copyCOODraft() {
+  var text = cooDraftText();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ setCOOStatus('Draft copied.'); }).catch(function(){ fallbackCOOCopy(text); });
+    return;
+  }
+  fallbackCOOCopy(text);
+}
+
+function fallbackCOOCopy(text) {
+  var tmp = document.createElement('textarea');
+  tmp.value = text;
+  document.body.appendChild(tmp);
+  tmp.select();
+  document.execCommand('copy');
+  tmp.remove();
+  setCOOStatus('Draft copied.');
+}
+
+function downloadCOODraft() {
+  var blob = new Blob([cooDraftText()], {type:'text/plain'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'certificate-of-origin-draft.txt';
+  a.dataset.noPdfGate = 'true';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setCOOStatus('Text file downloaded.');
+}
+
+document.getElementById('copyCOODraftBtn').addEventListener('click', copyCOODraft);
+document.getElementById('saveCOODraftBtn').addEventListener('click', downloadCOODraft);
+
 function checkOrigin() {
   var params = {
     exWorksPrice: parseFloat(document.getElementById('exWorksPrice').value) || 0,
@@ -425,6 +479,5 @@ updateApplicable();
 buildForm('standard');
 </script>
 <script src="/assets/js/trade-toolkit.js?v=cadfd9a1" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

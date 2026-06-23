@@ -34,6 +34,8 @@
 .pc-action-btn:hover { background:#f5f5f4; }
 .pc-action-btn:focus-visible { outline:2px solid var(--en-accent); outline-offset:2px; }
 .pc-status { min-height:1.2em; font-size:.8rem; color:#57534e; margin-top:.5rem; }
+.pc-methodology { margin-top:.75rem; padding-left:1.1rem; color:#57534e; font-size:.82rem; line-height:1.6; }
+.pc-methodology li { margin-bottom:.25rem; }
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Manufacturing","item":"https://afrotools.com/manufacturing/"},{"@type":"ListItem","position":3,"name":"Production Cost Calculator","item":"https://afrotools.com/tools/production-cost/"}]}
@@ -43,6 +45,7 @@
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/production-cost.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/production-cost.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/production-cost/" />
@@ -82,47 +85,47 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Units Produced per Month</label>
+          <label class="en-label" for="pc-units">Units Produced per Month</label>
           <input aria-label="Pc units" type="number" class="en-input" id="pc-units" value="1000" min="1">
         </div>
         <div class="en-field">
-          <label class="en-label">Raw Materials Cost (total/month)</label>
+          <label class="en-label" for="pc-raw">Raw Materials Cost (total/month)</label>
           <input aria-label="Pc raw" type="number" class="en-input" id="pc-raw" value="0" min="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Packaging Cost (total/month)</label>
+          <label class="en-label" for="pc-pack">Packaging Cost (total/month)</label>
           <input aria-label="Pc pack" type="number" class="en-input" id="pc-pack" value="0" min="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Direct Labour Cost (total/month)</label>
+          <label class="en-label" for="pc-labour">Direct Labour Cost (total/month)</label>
           <input aria-label="Pc labour" type="number" class="en-input" id="pc-labour" value="0" min="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Electricity / Energy (monthly)</label>
+          <label class="en-label" for="pc-energy">Electricity / Energy (monthly)</label>
           <input aria-label="Pc energy" type="number" class="en-input" id="pc-energy" value="0" min="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Factory Rent / Lease (monthly)</label>
+          <label class="en-label" for="pc-rent">Factory Rent / Lease (monthly)</label>
           <input aria-label="Pc rent" type="number" class="en-input" id="pc-rent" value="0" min="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Equipment Depreciation (monthly)</label>
+          <label class="en-label" for="pc-deprec">Equipment Depreciation (monthly)</label>
           <input aria-label="Pc deprec" type="number" class="en-input" id="pc-deprec" value="0" min="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Transport / Logistics (monthly)</label>
+          <label class="en-label" for="pc-transport">Transport / Logistics (monthly)</label>
           <input aria-label="Pc transport" type="number" class="en-input" id="pc-transport" value="0" min="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Other Overheads (monthly)</label>
+          <label class="en-label" for="pc-other">Other Overheads (monthly)</label>
           <input aria-label="Pc other" type="number" class="en-input" id="pc-other" value="0" min="0">
         </div>
         <div class="en-field">
-          <label class="en-label">Waste / Reject Rate (%)</label>
+          <label class="en-label" for="pc-waste">Waste / Reject Rate (%)</label>
           <input aria-label="Pc waste" type="number" class="en-input" id="pc-waste" value="5" min="0" max="50">
         </div>
         <div class="en-field">
-          <label class="en-label">Target Selling Price per Unit</label>
+          <label class="en-label" for="pc-price">Target Selling Price per Unit</label>
           <input aria-label="Pc price" type="number" class="en-input" id="pc-price" value="0" min="0">
         </div>
       </div>
@@ -152,7 +155,14 @@
         <ul id="pc-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
       </div>
       <div class="pc-result-note">
-        Local-first production estimate. Costs stay in your browser. Confirm live supplier quotes, power/fuel costs, taxes, and wastage with current records before changing prices or production volumes.
+        <strong>Disclaimer:</strong> local-first planning estimate only. Costs stay in your browser. Confirm live supplier quotes, power/fuel costs, taxes, production losses, and wastage with current records before changing prices or production volumes.
+        <ul class="pc-methodology">
+          <li><strong>Methodology / how it works:</strong> totals are calculated from the monthly cost fields you enter.</li>
+          <li>COGM = raw materials + packaging + direct labour + monthly overheads.</li>
+          <li>Effective units = planned units after the waste or reject rate.</li>
+          <li>Unit cost = COGM divided by effective units; margin uses your target selling price.</li>
+          <li><strong>Source/reference:</strong> supplier invoices, payroll records, utility bills, rent agreements, depreciation schedules, and production logs are the source of truth.</li>
+        </ul>
       </div>
       <div class="pc-actions">
         <button type="button" class="pc-action-btn" onclick="copyProductionSummary()">Copy summary</button>
@@ -167,6 +177,9 @@
   <wise-cta context="general"></wise-cta>
 </div>
 </main>
+<afro-business-cta
+  tool-name="Production Cost Calculator"
+  save-note="Copy the cost summary before requesting a custom costing, inventory, or manufacturing workflow."></afro-business-cta>
 <afro-footer></afro-footer>
 <script>
 var CURR_SYM = { NGN:'₦', KES:'KES ', ZAR:'R', GHS:'GHS ', USD:'$', EUR:'€' };
@@ -188,6 +201,15 @@ function calcProduction(){
   var other = +document.getElementById('pc-other').value;
   var waste = +document.getElementById('pc-waste').value / 100;
   var price = +document.getElementById('pc-price').value;
+  var status = document.getElementById('pc-status');
+  if (!units || units <= 0) {
+    status.textContent = 'Enter a positive number of units.';
+    return;
+  }
+  if (waste < 0 || waste >= 1) {
+    status.textContent = 'Waste must be between 0% and below 100%.';
+    return;
+  }
 
   // Effective units after waste
   var effectiveUnits = units * (1 - waste);
@@ -196,6 +218,10 @@ function calcProduction(){
   var ohCost = energy + rent + deprec + transport + other;
   var totalCOGM = matCost + labCost + ohCost;
   var unitCost = effectiveUnits > 0 ? totalCOGM / effectiveUnits : 0;
+  if (totalCOGM <= 0) {
+    status.textContent = 'Add at least one monthly cost before calculating.';
+    return;
+  }
   var grossMargin = price > 0 ? (price - unitCost) / price * 100 : 0;
   var monthlyRevenue = price * effectiveUnits;
   var grossProfit = monthlyRevenue - totalCOGM;
@@ -230,16 +256,17 @@ function calcProduction(){
   marginEl.style.color = grossMargin >= 30 ? '#16a34a' : grossMargin >= 15 ? '#2563eb' : '#dc2626';
   document.getElementById('pc-gross-profit').textContent = price > 0 ? fmtCur(sym, grossProfit) + '/mo' : '—';
 
-  var matPct = matCost/totalCOGM*100, labPct = labCost/totalCOGM*100, ohPct = ohCost/totalCOGM*100;
+  function pct(value) { return totalCOGM > 0 ? value / totalCOGM * 100 : 0; }
+  var matPct = pct(matCost), labPct = pct(labCost), ohPct = pct(ohCost);
   var waterfall = [
-    { label:'Raw Materials', val: raw, cls:'wf-mat', pct: raw/totalCOGM*100 },
-    { label:'Packaging', val: pack, cls:'wf-mat', pct: pack/totalCOGM*100 },
-    { label:'Direct Labour', val: labour, cls:'wf-lab', pct: labour/totalCOGM*100 },
-    { label:'Energy / Electricity', val: energy, cls:'wf-oh', pct: energy/totalCOGM*100 },
-    { label:'Rent / Lease', val: rent, cls:'wf-oh', pct: rent/totalCOGM*100 },
-    { label:'Equipment Depreciation', val: deprec, cls:'wf-oh', pct: deprec/totalCOGM*100 },
-    { label:'Transport / Logistics', val: transport, cls:'wf-oh', pct: transport/totalCOGM*100 },
-    { label:'Other Overhead', val: other, cls:'wf-oh', pct: other/totalCOGM*100 },
+    { label:'Raw Materials', val: raw, cls:'wf-mat', pct: pct(raw) },
+    { label:'Packaging', val: pack, cls:'wf-mat', pct: pct(pack) },
+    { label:'Direct Labour', val: labour, cls:'wf-lab', pct: pct(labour) },
+    { label:'Energy / Electricity', val: energy, cls:'wf-oh', pct: pct(energy) },
+    { label:'Rent / Lease', val: rent, cls:'wf-oh', pct: pct(rent) },
+    { label:'Equipment Depreciation', val: deprec, cls:'wf-oh', pct: pct(deprec) },
+    { label:'Transport / Logistics', val: transport, cls:'wf-oh', pct: pct(transport) },
+    { label:'Other Overhead', val: other, cls:'wf-oh', pct: pct(other) },
     { label:'Total COGM ('+units.toLocaleString()+' units, '+(waste*100).toFixed(0)+'% waste)', val: totalCOGM, cls:'wf-total' },
   ];
   if (price > 0) waterfall.push({ label:'Selling Price × Units = Revenue', val: monthlyRevenue, cls:'wf-price' });

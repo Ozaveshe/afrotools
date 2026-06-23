@@ -29,6 +29,9 @@
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=134998d9">
 <script src="../../assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="../../assets/js/components/footer.js?v=c792168a" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;line-height:1.6}
@@ -174,7 +177,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-connaissement/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/bill-of-lading/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/bol-generator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -185,7 +188,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       "name": "How should I use Bill of Lading Template?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter shipper, consignee, vessel, ports, cargo, freight, and B/L type to generate a draft reference document, then print or copy it for review."
       }
     },
     {
@@ -193,7 +196,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       "name": "What should I verify before acting on Bill of Lading Template?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify the final transport document with the carrier, freight forwarder, bank, letter-of-credit terms, port dates, cargo marks, and consignee instructions."
       }
     },
     {
@@ -201,7 +204,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
       "name": "Is Bill of Lading Template an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a draft template only. A real bill of lading must be issued by the carrier, shipping line, or authorized agent."
       }
     }
   ],
@@ -249,8 +252,11 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
     <div class="form-panel">
       <div class="action-bar">
         <button type="button" class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
+        <button type="button" class="btn-secondary" onclick="copyBLDraft()">Copy draft text</button>
+        <button type="button" class="btn-secondary" onclick="downloadBLDraft()">Download .txt</button>
         <button type="button" class="btn-secondary" onclick="resetBLForm()">Reset</button>
       </div>
+      <p id="blStatus" style="font-size:.78rem;color:#64748b;margin:-.4rem 0 1rem" aria-live="polite"></p>
 
       <!-- B/L Type -->
       <div class="form-section">
@@ -542,33 +548,29 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 
 
 
-<section class="df-upgrade" data-df-upgrade="bol-generator">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Bill of Lading Template decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for bill of lading template so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Bill of Lading Template: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, businessCta, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="bol-generator">
+  <div style="max-width:1300px;margin:0 auto;padding:0 24px">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div><span class="tool-verification-kicker">Transport document check</span><h2 class="tool-verification-title">Keep the B/L draft clearly unofficial</h2><p class="tool-verification-lead">Use the generated bill of lading as a reference draft for discussion with your shipper, forwarder, carrier, or bank.</p></div>
+        <div class="tool-verification-status"><span class="tool-verification-badge">Draft template</span><p class="tool-verification-note">Reviewed 2026. Carrier terms control.</p></div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block"><h3>Methodology and checks</h3><ul class="tool-verification-list"><li><strong>Method:</strong> the draft combines the shipper, consignee, vessel, ports, cargo rows, freight term, originals, and B/L type into a reference document.</li><li>Match B/L type, consignee wording, notify party, ports, on-board date, cargo marks, container numbers, and freight terms.</li><li>For LC deals, compare every field against the letter of credit before documents are issued.</li><li>Use print/PDF, copy, or text download as internal prep only.</li></ul></div>
+        <div class="tool-verification-block"><h3>Limits</h3><ul class="tool-verification-list"><li>This draft has no legal standing as a transport document.</li><li>Only the carrier, shipping line, or authorized agent can issue the real B/L.</li><li>Keep commercial details local unless you choose to export or share them.</li></ul></div>
+      </div>
+      <div class="tool-verification-actions"><p class="tool-verification-disclaimer">Planning estimate only. Confirm carrier instructions, port rules, and bank document requirements before shipping or releasing cargo.</p></div>
     </div>
-    <form class="df-form" data-df-form="bol-generator">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="bol-generator" data-df-base="Bill of Lading Template: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Bill of Lading Template: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="bol-generator">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="bol-generator-faq-title">
-  <h2 id="bol-generator-faq-title">Bill of Lading Template FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
+<div style="max-width:960px;margin:0 auto;padding:0 20px 20px">
+  <afro-business-cta tool-name="Bill of Lading Template Generator" save-note="Generate the draft locally, then export or copy it for forwarder, bank, carrier, or importer review."></afro-business-cta>
+</div>
+<afro-related-tools category="trade" current="bol-generator"></afro-related-tools>
 <afro-footer></afro-footer>
 
 <script>
@@ -827,10 +829,58 @@ function resetBLForm(){
   renderBL();
 }
 
+function blDraftText(){
+  var doc = document.getElementById('blDocPreview');
+  return [
+    'Bill of Lading draft template',
+    'DRAFT ONLY - NOT A VALID TRANSPORT DOCUMENT',
+    '',
+    doc ? doc.innerText.trim() : '',
+    '',
+    'Verify the real B/L with the carrier, shipping line, authorized agent, freight forwarder, bank, and letter-of-credit requirements before shipment or cargo release.'
+  ].join('\n');
+}
+
+function setBLStatus(message){
+  var status = document.getElementById('blStatus');
+  if(!status) return;
+  status.textContent = message;
+  setTimeout(function(){ status.textContent = ''; }, 1800);
+}
+
+function copyBLDraft(){
+  var text = blDraftText();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ setBLStatus('Draft copied.'); }).catch(function(){ fallbackBLCopy(text); });
+    return;
+  }
+  fallbackBLCopy(text);
+}
+
+function fallbackBLCopy(text){
+  var tmp = document.createElement('textarea');
+  tmp.value = text;
+  document.body.appendChild(tmp);
+  tmp.select();
+  document.execCommand('copy');
+  tmp.remove();
+  setBLStatus('Draft copied.');
+}
+
+function downloadBLDraft(){
+  var blob = new Blob([blDraftText()], {type:'text/plain'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bill-of-lading-draft.txt';
+  a.dataset.noPdfGate = 'true';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setBLStatus('Text file downloaded.');
+}
+
 window.addEventListener('load', initBL);
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script src="/assets/js/trade-toolkit.js?v=cadfd9a1" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

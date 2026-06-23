@@ -710,6 +710,13 @@ const PAGES = [
       "Les prix, liquidite, fiscalite et risque emetteur doivent etre verifies avec une source officielle ou un courtier.",
     related:
       "A comparer avec depot a terme, rendement dividendes et calculateur DCA.",
+    methodology:
+      "La page prepare coupon, prix, valeur nominale, echeance et devise, puis l'outil source calcule rendement courant, rendement a maturite et hypotheses comparables.",
+    sourceNote:
+      "Controle 2026: verifiez prix de marche, calendrier de coupon, fiscalite, frais de courtage, liquidite et risque emetteur avec l'avis d'emission, la bourse, le Tresor ou votre courtier.",
+    businessCtaNote:
+      "Conservez le brief de comparaison avec prix, coupon, echeance et frais avant de presenter une note de tresorerie, d'investissement ou de conseil client.",
+    iframeEmbed: true,
     terms: [
       ["Government Bond Yield Calculator", "Calculateur rendement obligations"],
       ["Yield-to-Maturity", "Rendement a maturite"],
@@ -736,6 +743,13 @@ const PAGES = [
       "Un dividende passe ne garantit pas un paiement futur; verifiez resultats, fiscalite et liquidite.",
     related:
       "A rapprocher de depot a terme, rendement obligations et DCA investissement.",
+    methodology:
+      "La page prepare prix d'action, dividende annuel, nombre de titres et devise, puis l'outil source calcule rendement, revenu annuel et ratio de distribution indicatif.",
+    sourceNote:
+      "Controle 2026: confirmez dividende declare, ex-date, retenue fiscale, liquidite et derniers resultats avec les annonces de l'emetteur, la bourse, le courtier ou le rapport annuel.",
+    businessCtaNote:
+      "Gardez le resume de rendement, la source du dividende et la date de verification avant toute note d'investissement ou discussion client.",
+    iframeEmbed: true,
     terms: [
       ["Dividend Yield Calculator", "Calculateur rendement dividendes"],
       ["Dividend Yield", "Rendement dividende"],
@@ -761,6 +775,13 @@ const PAGES = [
       "Les rendements sont des scenarios; ils ne prevoient pas la performance reelle ni le risque de perte.",
     related:
       "Comparez avec rendement dividendes, depot a terme et fonds d'urgence avant d'engager l'epargne.",
+    methodology:
+      "La page structure contribution reguliere, duree, prix moyen, rendement scenario et devise, puis l'outil source calcule les valeurs finales et comparaisons de cout moyen.",
+    sourceNote:
+      "Controle 2026: utilisez des prix, frais, spreads, taxes et rendements scenario dates. Le DCA reduit certains risques d'entree, mais ne garantit pas de gain.",
+    businessCtaNote:
+      "Exportez le brief avec contribution, horizon, frais et scenario pour comparer une politique d'epargne, un club d'investissement ou un plan de tresorerie.",
+    iframeEmbed: true,
     terms: [
       ["Dollar-Cost Averaging Calculator", "Calculateur DCA"],
       ["Dollar-Cost Averaging", "Investissement programme"],
@@ -786,6 +807,13 @@ const PAGES = [
       "Le partage reste indicatif; confirmez les montants avec le groupe avant paiement.",
     related:
       "A utiliser avec calculateur pourboire, convertisseur de devises et suivi tontine.",
+    methodology:
+      "La page prepare devise, montant, objectif de partage et contexte, puis l'outil source calcule parts egales, ajustements, pourboire et resume a partager.",
+    sourceNote:
+      "Controle 2026: confirmez taxes, frais de service, arrondis, remboursements et taux de change avec le recu ou le groupe avant paiement.",
+    businessCtaNote:
+      "Conservez le resume pour une equipe, un voyage, une colocation ou une contribution de groupe avant d'envoyer les demandes de paiement.",
+    iframeEmbed: true,
     terms: [
       ["Bill Split Calculator", "Calculateur partage d'addition"],
       ["Split Bills", "Partager les factures"],
@@ -939,6 +967,13 @@ const PAGES = [
       "Ce simulateur n'est pas un score officiel; chaque bureau de credit et preteur applique sa methode.",
     related:
       "A combiner avec consolidation de prets, BNPL et boule de neige des dettes.",
+    methodology:
+      "La page prepare pays, montant, objectif et facteurs de profil, puis l'outil source explique les leviers qui peuvent influencer un score ou une decision de credit.",
+    sourceNote:
+      "Controle 2026: verifiez toujours votre rapport officiel, les criteres du preteur, les bureaux de credit locaux et les droits de correction avant toute demande de credit.",
+    businessCtaNote:
+      "Gardez le brief des facteurs de risque et des actions de correction avant une demande de pret, de location, d'actif ou de financement PME.",
+    iframeEmbed: true,
     terms: [
       ["Credit Score Explainer & Simulator", "Simulateur score credit"],
       ["Credit Score", "Score credit"],
@@ -1520,6 +1555,8 @@ const PAGES = [
       "Les resultats dependent de la densite reelle, retours, temps d'attente et prix carburant.",
     related:
       "A rapprocher de cout livraison, partage cout conteneur et cout rendu.",
+    businessCtaNote:
+      "Gardez le volume, le cout par colis, la zone et les contraintes SLA avant de demander un calculateur livraison ou un widget de devis.",
     terms: [
       ["Last-Mile Delivery Cost Optimizer", "Optimiseur cout dernier kilometre"],
       ["Last-mile", "Dernier kilometre"],
@@ -3384,6 +3421,8 @@ const PAGES = [
       "Les taux et plafonds changent; confirmez avec l'organisme social officiel de votre pays.",
     related:
       "A combiner avec PAYE, cout employeur, pension et contribution sante.",
+    businessCtaNote:
+      "Gardez le salaire, pays, part employe, part employeur et plafond avant de demander un module paie ou un export RH.",
     terms: [
       ["Social Security Calculator", "Calculateur securite sociale"],
       ["Social security", "Securite sociale"],
@@ -6584,6 +6623,13 @@ const PAGES = [
       "Verifiez tarifs reels, taxes, retenues, chargebacks et conditions du prestataire.",
     related:
       "A combiner avec passerelle paiement, comparateur paiement et frais POS.",
+    methodology:
+      "La page prepare pays, devise, volume, panier moyen, objectif et fichier local, puis l'outil source calcule frais fixes, taux variables, remboursements et cout net.",
+    sourceNote:
+      "Controle 2026: verifiez grille tarifaire officielle, taxes, retenues, reserve, chargebacks, frais de retrait et delai de reglement avec le prestataire avant integration.",
+    businessCtaNote:
+      "Exportez le brief de frais, volume et panier moyen avant de negocier une passerelle, choisir un prestataire ou presenter un business case paiement.",
+    iframeEmbed: true,
     terms: [
       ["Merchant Fee Calculator", "Calculateur frais marchand"],
       ["Merchant fee", "Frais marchand"],
@@ -6634,6 +6680,13 @@ const PAGES = [
       "Les rendements changent et le capital peut etre a risque; lisez les documents officiels.",
     related:
       "A combiner avec depot terme, bons tresor et rendement reel inflation.",
+    methodology:
+      "La page prepare montant, devise, objectif de tresorerie, horizon et fichier local, puis l'outil source compare rendement, frais, liquidite, depot minimum et revenu net.",
+    sourceNote:
+      "Controle 2026: confirmez fiche produit, frais de gestion, rendement date, liquidite, fiscalite, risque de capital et documents du gestionnaire avant placement.",
+    businessCtaNote:
+      "Gardez le brief de comparaison et les fiches produits avant une decision de tresorerie PME, club d'investissement ou conseil client.",
+    iframeEmbed: true,
     terms: [
       ["Money Market Fund Comparator", "Comparateur fonds monetaires"],
       ["Money market", "Marche monetaire"],
@@ -6984,6 +7037,13 @@ const PAGES = [
       "Verifiez les tarifs reels, taxes, retenues, litiges et conditions du fournisseur.",
     related:
       "A combiner avec frais marchand, paiement QR et passerelle paiement.",
+    methodology:
+      "La page prepare transactions, volume, devise et objectif, puis l'outil source calcule frais de terminal, taux transactionnels, retraits, chargebacks et cout net.",
+    sourceNote:
+      "Controle 2026: confirmez tarifs POS, frais de terminal, frais de retrait, litiges, taxes et conditions de reglement avec la banque, fintech ou agent avant signature.",
+    businessCtaNote:
+      "Exportez le brief de transactions, volume et cout net avant de choisir un terminal POS, negocier un contrat ou comparer deux prestataires.",
+    iframeEmbed: true,
     terms: [
       ["POS Transaction Fee Calculator", "Calculateur frais POS"],
       ["POS", "POS"],
@@ -7243,65 +7303,12 @@ function htmlFor(page) {
   );
   const toolEmbed = page.iframeEmbed
     ? `<iframe id="tool-mount" src="/tools/${page.enSlug}/" title="${escapeHtml(page.name)}" loading="lazy" style="width:100%;min-height:760px;border:1px solid #dbe4ef;border-radius:8px;background:#fff"></iframe>`
-    : `<div id="tool-mount"><p class="tool-status">Chargement de l'outil...</p></div>`;
-  const sourceImportScript = page.iframeEmbed
-    ? ""
-    : `  <script>
-    fetch('/tools/${page.enSlug}/')
-      .then(function (response) {
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        return response.text();
-      })
-      .then(function (html) {
-        var doc = new DOMParser().parseFromString(html, 'text/html');
-        var main = doc.querySelector('.tool-main') || doc.querySelector('main') || doc.body;
-        doc.querySelectorAll('link[rel="stylesheet"], style').forEach(function (node) {
-          var clone = node.cloneNode(true);
-          if (clone.href) clone.href = new URL(clone.getAttribute('href'), window.location.origin + '/tools/${page.enSlug}/').href;
-          document.head.appendChild(clone);
-        });
-        var mount = document.getElementById('tool-mount');
-        mount.innerHTML = '';
-        mount.appendChild(document.importNode(main, true));
-        window.frToolGapLocalizer.watch(mount);
-        var scripts = Array.prototype.slice.call(doc.querySelectorAll('script'));
-        function shouldLoadExternal(script) {
-          var src = script.getAttribute('src') || '';
-          return src && !/components\\/(navbar|footer)|wise-cta|chat/i.test(src);
-        }
-        function appendExternal(script) {
-          return new Promise(function (resolve) {
-            var next = document.createElement('script');
-            next.async = false;
-            next.src = new URL(script.getAttribute('src'), window.location.origin + '/tools/${page.enSlug}/').href;
-            next.onload = resolve;
-            next.onerror = resolve;
-            document.body.appendChild(next);
-          });
-        }
-        var chain = Promise.resolve();
-        scripts.filter(shouldLoadExternal).forEach(function (script) {
-          chain = chain.then(function () { return appendExternal(script); });
-        });
-        return chain.then(function () {
-          scripts.forEach(function (script) {
-            if (!script.src && script.textContent) {
-              var next = document.createElement('script');
-              next.textContent = script.textContent;
-              document.body.appendChild(next);
-            }
-          });
-          window.frToolGapLocalizer.localize(mount);
-        });
-      })
-      .catch(function () {
-        document.getElementById('tool-mount').innerHTML = '<div class="tool-error">Impossible de charger l\\'outil pour le moment. <a href="/tools/${page.enSlug}/">Ouvrir la version source</a>.</div>';
-      });
-  </script>`;
+    : `<div id="tool-mount" class="source-launch"><h2>Continuer dans l'outil complet</h2><p>Le brief ci-dessus reste local. Ouvrez la version source pour utiliser les controles complets, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir l'outil source</a></div>`;
+  const sourceImportScript = "";
 
   return `<!DOCTYPE html>
 <!-- Generated by scripts/generate-fr-tool-gap-pages.js. Edit source data there. -->
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7333,7 +7340,7 @@ function htmlFor(page) {
     .route-note{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}.route-note span{border:1px solid #dbe4ef;border-radius:999px;padding:7px 11px;background:#f8fafc;color:#334155;font-size:.86rem}
     .action-row{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}.primary-action,.secondary-action{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:11px 16px;font-weight:800;text-decoration:none}.primary-action{background:#0f766e;color:#fff}.secondary-action{border:1px solid #cbd5e1;color:#0f172a;background:#fff}
     .prep-panel{border:1px solid #b6e4dd;background:linear-gradient(135deg,#ecfdf5 0%,#f8fafc 100%);border-radius:8px;padding:18px;margin:0 0 24px}.prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#064e3b}.prep-panel p{margin:0 0 14px;color:#334155;line-height:1.55}
-    .prep-form{display:grid;gap:12px}.prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.prep-form label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.prep-form input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.prep-output{display:block;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:52px}.prep-actions{display:flex;flex-wrap:wrap;gap:8px}.prep-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}.prep-note{font-size:.82rem;color:#64748b}
+    .prep-form{display:grid;gap:12px}.prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.prep-form label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.prep-form input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.prep-output{display:block;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:52px}.prep-actions{display:flex;flex-wrap:wrap;gap:8px}.prep-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}.prep-note{font-size:.82rem;color:#64748b}.privacy-note{margin-top:10px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:8px;padding:10px 12px;color:#365346;font-size:.9rem;line-height:1.55}
     #tool-mount{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}
     .tool-status{color:#64748b}.tool-error{padding:18px;border:1px solid #fecaca;background:#fef2f2;border-radius:8px;color:#991b1b}.tool-error a{color:#1d4ed8}
     .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:26px}.support-grid section{border:1px solid #dbe4ef;border-radius:8px;padding:18px;background:#fff}.support-grid h2{font-size:1rem;margin:0 0 8px;color:#111827}.support-grid p{margin:0;color:#475569;line-height:1.55;font-size:.94rem}
@@ -7365,12 +7372,15 @@ function htmlFor(page) {
           <label>Pays ou devise<input name="country" autocomplete="off" placeholder="Ex: Senegal, XOF"></label>
           <label>Montant ou volume<input name="amount" autocomplete="off" placeholder="Ex: 250000"></label>
           <label>Objectif<input name="goal" autocomplete="off" placeholder="Ex: comparer deux scenarios"></label>
+          <label>Fichier de travail<input name="file" type="file" aria-label="Fichier de travail local"></label>
         </div>
         <output class="prep-output" data-prep-output>Ajoutez un pays, un montant ou un objectif pour preparer votre resume.</output>
         <div class="prep-actions">
           <button type="button" data-copy-prep>Copier le resume</button>
+          <button type="button" data-download-prep>Telecharger le brief</button>
           <span class="prep-note" data-copy-status aria-live="polite"></span>
         </div>
+        <p class="privacy-note"><strong>Confidentialite locale 2026:</strong> le fichier selectionne et le brouillon restent dans votre navigateur; ne collez pas de donnees sensibles dans un service externe sans accord explicite.</p>
       </form>
     </section>
     ${toolEmbed}
@@ -7379,9 +7389,9 @@ function htmlFor(page) {
       <section><h2>Methodologie</h2><p>${escapeHtml(page.methodology || "Nous preparons les entrees cles, chargeons l'outil source conserve et affichons les resultats avec les hypotheses utiles pour une verification locale.")}</p></section>
       <section><h2>Avertissement</h2><p>${escapeHtml(page.safety)} Cette page fournit une estimation generale: elle ne remplace pas un avis juridique, fiscal, medical, financier ou professionnel adapte a votre pays.</p></section>
       <section><h2>Liens utiles</h2><p>${escapeHtml(page.related)}</p></section>
-      ${page.sourceNote ? `<section><h2>Sources et fraicheur</h2><p>${escapeHtml(page.sourceNote)}</p></section>` : ""}
+      <section><h2>Sources et fraicheur</h2><p>${escapeHtml(page.sourceNote || "Controle 2026: comparez le resultat avec le fichier source, les consignes du client, les exigences de depot et les sources officielles ou professionnelles avant envoi.")}</p></section>
     </div>
-    ${page.businessCtaNote ? `<afro-business-cta tool-name="${escapeHtml(page.name)}" prospect-segment="business" save-note="${escapeHtml(page.businessCtaNote)}"></afro-business-cta>` : ""}
+${page.businessCtaNote ? `    <afro-business-cta tool-name="${escapeHtml(page.name)}" prospect-segment="business" save-note="${escapeHtml(page.businessCtaNote)}"></afro-business-cta>` : ""}
   </main>
   <div id="footer"></div>
   <script src="/assets/js/components/navbar.js"></script>
@@ -7448,9 +7458,12 @@ function htmlFor(page) {
     var country = field('country');
     var amount = field('amount');
     var goal = field('goal');
+    var file = form.querySelector('[name="file"]');
+    var fileText = file && file.files && file.files.length ? file.files.length + ' fichier(s) local/localises' : '';
     if (country) parts.push('Pays/devise: ' + country);
     if (amount) parts.push('Montant/volume: ' + amount);
     if (goal) parts.push('Objectif: ' + goal);
+    if (fileText) parts.push(fileText);
     if (!parts.length) return 'Ajoutez un pays, un montant ou un objectif pour preparer votre resume.';
     return pageName + ' - ' + parts.join(' | ') + '. Usage: ' + useCase;
   }
@@ -7472,6 +7485,21 @@ function htmlFor(page) {
       } else if (status) {
         status.textContent = text;
       }
+    });
+  }
+  var download = form.querySelector('[data-download-prep]');
+  if (download) {
+    download.addEventListener('click', function () {
+      var blob = new Blob([summary()], { type: 'text/plain' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = pageName.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-brief.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      if (status) status.textContent = 'Brief telecharge.';
     });
   }
 })();
@@ -7516,7 +7544,19 @@ function ensureEnglishHreflang(page) {
 function main() {
   let pagesWritten = 0;
   let englishUpdated = 0;
-  for (const page of PAGES) {
+  const slugArg = process.argv.find((arg) => arg.startsWith("--slugs="));
+  const selected = slugArg
+    ? new Set(slugArg.slice("--slugs=".length).split(",").map((slug) => slug.trim()).filter(Boolean))
+    : null;
+  const pages = selected
+    ? PAGES.filter((page) => selected.has(page.frSlug) || selected.has(page.enSlug))
+    : PAGES;
+  if (selected && pages.length !== selected.size) {
+    const found = new Set(pages.flatMap((page) => [page.frSlug, page.enSlug]));
+    const missing = Array.from(selected).filter((slug) => !found.has(slug));
+    throw new Error(`Unknown French page slug(s): ${missing.join(", ")}`);
+  }
+  for (const page of pages) {
     const source = path.join("tools", page.enSlug, "index.html");
     if (!fs.existsSync(source)) {
       throw new Error(`Missing English source page: ${source}`);

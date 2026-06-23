@@ -17,6 +17,9 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -200,24 +203,55 @@
 </div>
 
 
-<section class="df-upgrade" data-df-upgrade="commit-message-gen">
+<section class="df-upgrade" data-df-upgrade="commit-message-gen" data-tool-verification-panel data-tool-id="commit-message-gen">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
+      <span class="df-upgrade__kicker">Commit handoff check</span>
       <h2>Commit Message Generator — Conventional Commits decision workspace</h2>
       <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for commit message generator — conventional commits so the user can move from a thin page to a usable first decision.</p>
       <ul class="df-upgrade__bullets"><li>Result output: Commit Message Generator — Conventional Commits: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: download, schema, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
       <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
     </div>
     <form class="df-form" data-df-form="commit-message-gen">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
+      <label>Commit type<select name="type" aria-label="Commit type"><option value="feat">feat</option><option value="fix">fix</option><option value="docs">docs</option><option value="refactor">refactor</option><option value="chore">chore</option></select></label>
+      <label>Scope<input name="scope" value="ui" aria-label="Scope"></label>
+      <label>Change summary<input name="summary" value="add export controls" aria-label="Change summary"></label>
+      <label>Review focus<select name="focus" aria-label="Review focus"><option value="header length">header length</option><option value="breaking change">breaking change</option><option value="issue reference">issue reference</option><option value="repository convention">repository convention</option></select></label>
+      <button type="submit">Create commit brief</button>
       <output class="df-result" data-df-result="commit-message-gen" data-df-base="Commit Message Generator — Conventional Commits: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Commit Message Generator — Conventional Commits: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="commit-message-gen">Copy summary</button></div>
+      <div class="df-actions"><button type="button" data-df-copy="commit-message-gen">Copy commit brief</button><a href="#output">Review generated message</a></div>
     </form>
+  </div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="commit-message-gen-checks" aria-labelledby="commit-message-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Conventional commit check</span>
+          <h2 class="tool-verification-title" id="commit-message-verification-title">Generate the message, then compare it with the real diff</h2>
+          <p class="tool-verification-lead">The tool creates one-line and full commit messages using the fields above. Copy output is local and explicit.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Conventional Commits style</span>
+          <p class="tool-verification-note">Repository policies and issue trackers can add stricter rules.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to verify</h3>
+          <ul class="tool-verification-list"><li>Header type, scope, and imperative wording match the actual diff.</li><li>The 72-character guidance, body, issue reference, and breaking-change footer are appropriate.</li><li>Project-specific commit rules, CI, and reviewer expectations still pass.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <p class="tool-verification-meta">Reference: Conventional Commits 1.0.0 style conventions. This utility does not inspect Git, stage files, run hooks, or guarantee release-note behavior.</p>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#output">Review generated message</a>
+        <p class="tool-verification-disclaimer">Developer writing aid only. Verify against your repository convention and actual change before committing.</p>
+      </div>
+    </div>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="commit-message-gen-faq-title">
@@ -226,6 +260,7 @@
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
+<afro-related-tools category="developer" current="commit-message-gen"></afro-related-tools>
 <afro-footer></afro-footer>
 
 <script>
@@ -335,7 +370,9 @@ function copyMsg(mode){
   var msg=mode==='full'?window._fullMsg||window._onelineMsg:window._onelineMsg||'';
   if(!msg||msg.includes('<description>'))return;
   navigator.clipboard.writeText(msg).then(function(){
-    var btn=event.target;
+    var selector=mode==='full'?'.copy-btn-sec':'.copy-btn:not(.copy-btn-sec)';
+    var btn=document.querySelector(selector);
+    if(!btn)return;
     var orig=btn.textContent;btn.textContent='✅ Copied!';btn.classList.add('copied');
     setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
   });

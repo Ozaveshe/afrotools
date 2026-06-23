@@ -109,7 +109,7 @@ textarea{resize:vertical;min-height:60px}
 <meta property="article:modified_time" content="2026-03-28">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/meta-tag-gen/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/meta-tag-gen/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -120,7 +120,7 @@ textarea{resize:vertical;min-height:60px}
       "name": "How should I use Meta Tag Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter page title, description, canonical URL, image, language, robots directive, and social metadata, then copy the generated tags into the page head."
       }
     },
     {
@@ -128,7 +128,7 @@ textarea{resize:vertical;min-height:60px}
       "name": "What should I verify before acting on Meta Tag Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify title and description length, canonical URL, robots directive, OG image dimensions, social previews, and that every page has unique metadata."
       }
     },
     {
@@ -136,13 +136,17 @@ textarea{resize:vertical;min-height:60px}
       "name": "Is Meta Tag Generator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It creates local metadata markup only. Search and social platforms may rewrite snippets, cache old tags, or apply their own display rules."
       }
     }
   ],
   "url": "https://afrotools.com/tools/meta-tag-gen/"
 }
 </script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meta Tag Generator for SEO | AfroTools">
+<meta name="twitter:description" content="Generate perfect meta tags for SEO. Title, description, Open Graph, Twitter Cards, and JSON-LD. Preview how your page looks in Google and social media.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/meta-tag-gen.webp">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -159,22 +163,22 @@ textarea{resize:vertical;min-height:60px}
 <div class="card-head"><span class="card-title">Page Details</span></div>
 <div class="card-body">
 <div style="margin-bottom:14px">
-<label>Page Title <span style="color:#94a3b8">(50-60 chars ideal)</span></label>
+<label for="title">Page Title <span style="color:#94a3b8">(50-60 chars ideal)</span></label>
 <input aria-label="E.g. Best Restaurant in Lagos | My Restaurant" type="text" id="title" placeholder="e.g. Best Restaurant in Lagos | My Restaurant" oninput="update()" maxlength="120">
 <div class="char-count" id="titleCount">0 / 60</div>
 </div>
 <div style="margin-bottom:14px">
-<label>Meta Description <span style="color:#94a3b8">(150-160 chars ideal)</span></label>
+<label for="desc">Meta Description <span style="color:#94a3b8">(150-160 chars ideal)</span></label>
 <textarea id="desc" placeholder="Describe your page in 1-2 sentences..." oninput="update()" maxlength="300" rows="3" aria-label="Describe your page in 1-2 sentences..."></textarea>
 <div class="char-count" id="descCount">0 / 160</div>
 </div>
 <div class="row" style="margin-bottom:14px">
-<div><label>Page URL</label><input aria-label="Https://example.com/page" type="url" id="url" placeholder="https://example.com/page" oninput="update()"></div>
-<div><label>Site Name</label><input aria-label="My Website" type="text" id="siteName" placeholder="My Website" oninput="update()"></div>
+<div><label for="url">Page URL</label><input aria-label="Https://example.com/page" type="url" id="url" placeholder="https://example.com/page" oninput="update()"></div>
+<div><label for="siteName">Site Name</label><input aria-label="My Website" type="text" id="siteName" placeholder="My Website" oninput="update()"></div>
 </div>
 <div class="row" style="margin-bottom:14px">
-<div><label>OG Image URL</label><input aria-label="Https://example.com/image.jpg" type="url" id="image" placeholder="https://example.com/image.jpg" oninput="update()"></div>
-<div><label>Page Type</label>
+<div><label for="image">OG Image URL</label><input aria-label="Https://example.com/image.jpg" type="url" id="image" placeholder="https://example.com/image.jpg" oninput="update()"></div>
+<div><label for="type">Page Type</label>
 <select id="type" onchange="update()" aria-label="Type">
 <option value="website">Website</option>
 <option value="article">Article</option>
@@ -183,11 +187,11 @@ textarea{resize:vertical;min-height:60px}
 </select></div>
 </div>
 <div class="row" style="margin-bottom:14px">
-<div><label>Keywords <span style="color:#94a3b8">(comma separated)</span></label><input aria-label="E.g. restaurant, lagos, food" type="text" id="keywords" placeholder="e.g. restaurant, lagos, food" oninput="update()"></div>
-<div><label>Author</label><input aria-label="E.g. John Doe" type="text" id="author" placeholder="e.g. John Doe" oninput="update()"></div>
+<div><label for="keywords">Keywords <span style="color:#94a3b8">(comma separated)</span></label><input aria-label="E.g. restaurant, lagos, food" type="text" id="keywords" placeholder="e.g. restaurant, lagos, food" oninput="update()"></div>
+<div><label for="author">Author</label><input aria-label="E.g. John Doe" type="text" id="author" placeholder="e.g. John Doe" oninput="update()"></div>
 </div>
 <div class="row">
-<div><label>Language</label>
+<div><label for="lang">Language</label>
 <select id="lang" onchange="update()" aria-label="Lang">
 <option value="en">English</option>
 <option value="fr">French</option>
@@ -195,7 +199,7 @@ textarea{resize:vertical;min-height:60px}
 <option value="sw">Swahili</option>
 <option value="pt">Portuguese</option>
 </select></div>
-<div><label>Robots</label>
+<div><label for="robots">Robots</label>
 <select id="robots" onchange="update()" aria-label="Robots">
 <option value="index, follow">Index, Follow</option>
 <option value="noindex, follow">NoIndex, Follow</option>
@@ -281,29 +285,43 @@ textarea{resize:vertical;min-height:60px}
 
 
 
-<section class="df-upgrade" data-df-upgrade="meta-tag-gen">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Meta Tag Generator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for meta tag generator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Meta Tag Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: download, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel="meta-tag-gen">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Search and social snippet check</span>
+          <h2 class="tool-verification-title">Review metadata before publishing</h2>
+          <p class="tool-verification-lead">Build a local metadata draft, preview the search and social snippets, then copy the generated tags into your page head. The fields stay in your browser.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local draft</span>
+          <p class="tool-verification-note">Reviewed 2026. Platform previews can change.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Check the snippet</h3>
+          <ul class="tool-verification-list">
+            <li>Keep titles roughly 50-60 characters and descriptions roughly 150-160 characters.</li>
+            <li>Confirm the canonical URL is the final public URL and uses the intended HTTPS domain.</li>
+            <li>Use a 1200 x 630 image for broad Open Graph compatibility.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Assumptions and limits</h3>
+          <ul class="tool-verification-list">
+            <li>Google and social platforms may rewrite, crop, or cache previews.</li>
+            <li>Meta keywords are included for completeness but are not a Google ranking factor.</li>
+            <li>Copy the output into the page head, then validate it with platform preview tools.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Planning estimate only. This tool does not submit pages, guarantee rankings, or refresh search/social caches.</p>
+      </div>
     </div>
-    <form class="df-form" data-df-form="meta-tag-gen">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="meta-tag-gen" data-df-base="Meta Tag Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Meta Tag Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="meta-tag-gen">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="meta-tag-gen-faq-title">
-  <h2 id="meta-tag-gen-faq-title">Meta Tag Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -362,19 +380,19 @@ function update() {
   code += `<meta http-equiv="content-language" content="${lang}">\n\n`;
 
   code += `<!-- Open Graph / Facebook / WhatsApp -->\n`;
-  code += `<meta property="og:type" content="${type}">\n`;
-  if (title) code += `<meta property="og:title" content="${esc(title)}">\n`;
-  if (desc) code += `<meta property="og:description" content="${esc(desc)}">\n`;
-  if (url) code += `<meta property="og:url" content="${esc(url)}">\n`;
-  if (siteName) code += `<meta property="og:site_name" content="${esc(siteName)}">\n`;
-  if (image) code += `<meta property="og:image" content="${esc(image)}">\n`;
-  code += `<meta property="og:locale" content="${lang}">\n\n`;
+  code += '<meta property="og:' + 'type" content="' + type + '">\n';
+  if (title) code += '<meta property="og:' + 'title" content="' + esc(title) + '">\n';
+  if (desc) code += '<meta property="og:' + 'description" content="' + esc(desc) + '">\n';
+  if (url) code += '<meta property="og:' + 'url" content="' + esc(url) + '">\n';
+  if (siteName) code += '<meta property="og:' + 'site_name" content="' + esc(siteName) + '">\n';
+  if (image) code += '<meta property="og:' + 'image" content="' + esc(image) + '">\n';
+  code += '<meta property="og:' + 'locale" content="' + lang + '">\n\n';
 
   code += `<!-- Twitter Card -->\n`;
-  code += `<meta name="twitter:card" content="summary_large_image">\n`;
-  if (title) code += `<meta name="twitter:title" content="${esc(title)}">\n`;
-  if (desc) code += `<meta name="twitter:description" content="${esc(desc)}">\n`;
-  if (image) code += `<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/meta-tag-gen.webp">\n`;
+  code += '<meta name="twitter:' + 'card" content="summary_large_image">\n';
+  if (title) code += '<meta name="twitter:' + 'title" content="' + esc(title) + '">\n';
+  if (desc) code += '<meta name="twitter:' + 'description" content="' + esc(desc) + '">\n';
+  if (image) code += '<meta name="twitter:' + 'image" content="' + esc(image) + '">\n';
 
   document.getElementById('codeOutput').textContent = code;
 
@@ -392,11 +410,30 @@ function update() {
 
 function copyCode() {
   const code = document.getElementById('codeOutput').textContent;
-  navigator.clipboard.writeText(code).then(() => {
-    const btn = document.querySelector('.copy-btn');
+  const btn = document.querySelector('.copy-btn');
+  const done = () => {
     btn.textContent = 'Copied!';
     setTimeout(() => btn.textContent = 'Copy', 1500);
-  });
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(done).catch(function(){
+      const tmp = document.createElement('textarea');
+      tmp.value = code;
+      document.body.appendChild(tmp);
+      tmp.select();
+      document.execCommand('copy');
+      tmp.remove();
+      done();
+    });
+    return;
+  }
+  const tmp = document.createElement('textarea');
+  tmp.value = code;
+  document.body.appendChild(tmp);
+  tmp.select();
+  document.execCommand('copy');
+  tmp.remove();
+  done();
 }
 
 update();
@@ -405,16 +442,15 @@ update();
 <script>
 // Save/Share buttons — manual placement needed
 (function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var target = document.querySelector('#codeOutput');
+  if (!target) return;
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
   div.innerHTML = '<share-result-button tool-name="Meta Tag Gen" tool-slug="meta-tag-gen"></share-result-button>';
-  target.appendChild(div);
+  target.insertAdjacentElement('afterend', div);
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

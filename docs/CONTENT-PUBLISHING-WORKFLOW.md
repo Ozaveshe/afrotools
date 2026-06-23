@@ -173,13 +173,21 @@ For the current content operating model, the default cadence is:
 
 - 2 main blog posts per day
 - 2 AfroStream news posts per day
+- 2 localized content items per day through the language rotation batch
 - creative/news can exceed the baseline when the creator cycle is active
 - 1 post-content image queue after the PM batch, covering newly touched blog posts, AfroStream news items, and any creator/profile media gaps found during that run
 
 A safe operating pattern is two batches per day:
 
 1. Morning batch: 1 main blog post + 1 AfroStream news post
-2. Evening batch: 1 main blog post + 1 AfroStream news post
+2. Midday localized batch: 2 language-surface items, rotating French + Swahili, French + Hausa, then Swahili + Hausa
+3. Evening batch: 1 main blog post + 1 AfroStream news post
+
+### Localized rotation follow-up
+
+The `Localized Content Rotation Batch` automation keeps French, Swahili, and Hausa surfaces moving without forcing every language into the same route shape. French can use `fr/blog/`; Swahili should use `sw/blogu/` or established `sw/` category/tool routes; Hausa should use established `ha/` category/tool routes unless a full Hausa blog surface exists. Yoruba can be used only as a fallback when the route and docs show the surface is ready.
+
+Each localized item should be tool-led, source-aware, and validated with the narrow i18n, hreflang, link, or blog checks required by the touched files. Do not publish translated filler just to satisfy the rotation.
 
 ### Image queue follow-up
 

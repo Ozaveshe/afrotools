@@ -77,6 +77,11 @@
 
 <style>
 /* ── Tax Calculator styles ──────────────────────── */
+.crypto-section {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
 .tax-disclaimer {
   background: rgba(255, 59, 48, 0.06);
   border: 1px solid rgba(255, 59, 48, 0.2);
@@ -236,7 +241,12 @@
 
 /* Trade list table */
 .trade-table-wrap {
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+  min-width: 0;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   margin-bottom: 24px;
@@ -365,6 +375,47 @@
   margin-bottom: 32px;
 }
 .btn-export:hover { opacity: 0.9; }
+.crypto-export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+.crypto-export-actions button {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  min-height: 44px;
+  padding: 10px 16px;
+}
+.crypto-export-actions button:first-child {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #fff;
+}
+.crypto-export-actions button:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.crypto-export-actions button:first-child:hover { color: #fff; opacity: .9; }
+.crypto-export-status {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  min-height: 1.2em;
+  margin: 0 0 24px;
+}
+.crypto-method-note {
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-md);
+  background: #eff6ff;
+  color: #1e3a8a;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  margin: 16px 0 0;
+  padding: 12px 14px;
+}
 
 /* Email gate modal */
 .modal-overlay {
@@ -664,11 +715,17 @@
     <span id="country-note-text"></span>
   </div>
 
-  <!-- Export button -->
-  <button type="button" class="btn-export" id="btn-export">
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    Download Tax Report PDF
-  </button>
+  <div class="crypto-method-note quality-verification-panel" data-tool-verification-panel>
+    <strong>Planning estimate only.</strong> This worksheet uses the trades you enter and the simplified country preset shown above. Tax rules, asset classification, filing treatment, exchange rates, and evidence requirements can change. Verify current tax-authority guidance and use a qualified tax professional before filing.
+  </div>
+
+  <div class="crypto-export-actions" aria-label="Crypto tax export actions">
+    <button type="button" id="btn-copy-summary">Copy summary</button>
+    <button type="button" id="btn-download-csv">Download trade CSV</button>
+    <button type="button" id="btn-download-json">Save JSON backup</button>
+    <button type="button" id="btn-export">PDF report notify</button>
+  </div>
+  <p class="crypto-export-status" id="crypto-export-status" aria-live="polite"></p>
 
 </section>
 
@@ -676,8 +733,8 @@
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-box">
     <span class="coming-soon-badge">Coming Soon</span>
-    <h3>Download Tax Report PDF</h3>
-    <p>We are building a comprehensive PDF tax report with trade-by-trade breakdown, tax summary, and country-specific guidance. Enter your email to be notified when it is ready.</p>
+    <h3>PDF report roadmap</h3>
+    <p>PDF export is not available yet. We are building a report with trade-by-trade breakdown, tax summary, and country-specific notes. Enter your email only if you want a launch notification.</p>
     <input aria-label="You@email.com" type="email" id="modal-email" placeholder="you@email.com">
     <br>
     <button type="button" class="btn-add-trade" id="btn-notify" style="width:100%;">Notify Me</button>
@@ -761,6 +818,10 @@
   var btnCsv = document.getElementById('btn-csv');
   var csvInput = document.getElementById('csv-input');
   var btnExport = document.getElementById('btn-export');
+  var btnCopySummary = document.getElementById('btn-copy-summary');
+  var btnDownloadCsv = document.getElementById('btn-download-csv');
+  var btnDownloadJson = document.getElementById('btn-download-json');
+  var exportStatus = document.getElementById('crypto-export-status');
   var modalOverlay = document.getElementById('modal-overlay');
   var btnModalClose = document.getElementById('btn-modal-close');
   var btnNotify = document.getElementById('btn-notify');
@@ -1137,6 +1198,31 @@
   btnExport.addEventListener('click', function() {
     modalOverlay.classList.add('active');
   });
+  btnCopySummary.addEventListener('click', function() {
+    if (!trades.length) { setExportStatus('Add at least one trade before copying the summary.'); return; }
+    copyText(buildTaxSummaryText(), 'Tax summary copied.');
+  });
+  btnDownloadCsv.addEventListener('click', function() {
+    if (!trades.length) { setExportStatus('Add at least one trade before downloading CSV.'); return; }
+    downloadText(buildTradesCsv(), 'crypto-tax-trades.csv', 'text/csv;charset=utf-8');
+    setExportStatus('Trade CSV downloaded.');
+  });
+  btnDownloadJson.addEventListener('click', function() {
+    if (!trades.length) { setExportStatus('Add at least one trade before saving JSON.'); return; }
+    var r = CRYPTO_TAX_RULES[selectedCountry];
+    var payload = {
+      tool: 'crypto-tax',
+      country: selectedCountry,
+      countryName: r.name,
+      sourceLabel: r.source,
+      exportedAt: new Date().toISOString(),
+      privacy: 'Local browser export. Verify current rules before filing.',
+      trades: trades.slice(),
+      summary: calculateTotals()
+    };
+    downloadText(JSON.stringify(payload, null, 2), 'crypto-tax-backup.json', 'application/json');
+    setExportStatus('JSON backup saved.');
+  });
   btnModalClose.addEventListener('click', function() {
     modalOverlay.classList.remove('active');
   });
@@ -1166,6 +1252,89 @@
   }
 
   // ── Init ──────────────────────────────────────────────
+  function calculateTotals() {
+    var r = CRYPTO_TAX_RULES[selectedCountry];
+    var totalGains = 0;
+    var totalLosses = 0;
+    trades.forEach(function(t) {
+      var gl = calcTradeGainLoss(t);
+      if (gl >= 0) totalGains += gl;
+      else totalLosses += Math.abs(gl);
+    });
+    var netGain = totalGains - totalLosses;
+    var exemptionUsed = Math.min(r.exemption, Math.max(0, netGain));
+    var taxableAmount = Math.max(0, netGain - r.exemption);
+    var estimatedTax = taxableAmount * r.rate;
+    return { totalGains: totalGains, totalLosses: totalLosses, netGain: netGain, exemptionUsed: exemptionUsed, taxableAmount: taxableAmount, estimatedTax: estimatedTax };
+  }
+
+  function buildTaxSummaryText() {
+    var r = CRYPTO_TAX_RULES[selectedCountry];
+    var totals = calculateTotals();
+    return [
+      'AfroTools crypto tax planning summary',
+      'Country: ' + r.name,
+      'Tax preset: ' + r.taxType + ' at ' + (r.rate * 100) + '%',
+      'Source label: ' + r.source,
+      'Trades: ' + trades.length,
+      '',
+      'Total gains: ' + r.symbol + formatNum(totals.totalGains),
+      'Total losses: ' + r.symbol + formatNum(totals.totalLosses),
+      'Net gain: ' + r.symbol + formatNum(totals.netGain),
+      'Exemption used: ' + r.symbol + formatNum(totals.exemptionUsed),
+      'Taxable amount: ' + r.symbol + formatNum(totals.taxableAmount),
+      'Estimated tax: ' + r.symbol + formatNum(totals.estimatedTax),
+      '',
+      'Planning estimate only. Verify current tax-authority guidance, exchange-rate treatment, filing rules, and evidence requirements before filing.'
+    ].join('\n');
+  }
+
+  function buildTradesCsv() {
+    var rows = [['coin','buy_date','buy_price','sell_date','sell_price','quantity','fees','gain_loss']];
+    trades.forEach(function(t) {
+      rows.push([t.coin, t.buyDate, t.buyPrice, t.sellDate, t.sellPrice, t.qty, t.fees, calcTradeGainLoss(t)]);
+    });
+    return rows.map(function(row) {
+      return row.map(function(cell) { return '"' + String(cell).replace(/"/g, '""') + '"'; }).join(',');
+    }).join('\n');
+  }
+
+  function copyText(text, successMessage) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ setExportStatus(successMessage); }).catch(function(){ fallbackCopy(text, successMessage); });
+      return;
+    }
+    fallbackCopy(text, successMessage);
+  }
+
+  function fallbackCopy(text, successMessage) {
+    var tmp = document.createElement('textarea');
+    tmp.value = text;
+    tmp.setAttribute('readonly', '');
+    tmp.style.position = 'fixed';
+    tmp.style.left = '-9999px';
+    document.body.appendChild(tmp);
+    tmp.select();
+    document.execCommand('copy');
+    tmp.remove();
+    setExportStatus(successMessage);
+  }
+
+  function downloadText(text, filename, type) {
+    var blob = new Blob([text], {type: type || 'text/plain'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.dataset.noPdfGate = 'true';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  }
+
+  function setExportStatus(message) {
+    if (exportStatus) exportStatus.textContent = message;
+  }
+
   updateCountryRules();
 })();
 </script>

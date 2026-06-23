@@ -184,6 +184,9 @@
 
 /* Result actions */
 .joe-result-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.joe-action-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--bd);border-radius:6px;background:#fff;color:var(--joe);font-size:.75rem;font-weight:800;cursor:pointer}
+.joe-action-btn:hover{background:var(--joe-pale)}
+.joe-action-btn:focus-visible{outline:2px solid var(--joe);outline-offset:2px}
 
 /* 5-Year */
 .joe-chart-wrap{background:#fff;border:1.5px solid var(--bd);border-radius:10px;padding:20px;margin-bottom:18px}
@@ -614,7 +617,8 @@ button:focus-visible input:focus-visible,select:focus-visible{outline:none}
       <span class="df-upgrade__kicker">Offer decision brief</span>
       <h2>Move from competing offers to a clear next step</h2>
       <p>Compare salary, benefits, equity, culture, commute, relocation, deadline, and counter-offer timing before accepting or negotiating.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: an offer decision brief with ranked offers, cash-equivalent benefits, risk notes, and negotiation questions.</li><li>Use the main comparison first, then copy the brief for a private decision log or advisor conversation.</li><li>Your offer details stay in this browser unless you choose to copy, save, or export them.</li></ul>
+      <p><strong>Sources &amp; verification methodology:</strong> your written offer terms are the source, the calculator applies a compensation and trade-off breakdown, and the disclaimer keeps the output as career planning support only.</p>
+      <ul class="df-upgrade__bullets"><li>Primary task: compare written offers with salary, benefits, equity, culture fit, relocation and five-year career trajectory in one private worksheet.</li><li>Method: rank cash compensation first, then surface non-cash trade-offs, equity risk, deadline pressure and negotiation questions.</li><li>Result output: an offer decision brief with ranked offers, cash-equivalent benefits, risk notes, and negotiation questions.</li><li>Use the main comparison first, then copy the brief for a private decision log or advisor conversation.</li><li>Your offer details stay in this browser unless you choose to copy, save, or export them.</li></ul>
       <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Offer terms, tax treatment, equity value, and employment law vary by employer and country. This is career planning support, not legal, tax, immigration, or financial advice.</p>
     </div>
     <form class="df-form" data-df-form="job-offer-evaluator">
@@ -1118,10 +1122,58 @@ function renderRelocResults(offerData, ranked) {
 function renderResultActions(ranked) {
   var w = ranked[0];
   var el = document.getElementById('joe-result-actions');
+  joe.lastRanked = ranked;
   el.innerHTML = '<save-result-button tool-slug="job-offer-evaluator" tool-name="Job Offer Evaluator"></save-result-button>' +
-    '<share-result-button tool-name="Job Offer Evaluator" tool-slug="job-offer-evaluator"></share-result-button>';
+    '<share-result-button tool-name="Job Offer Evaluator" tool-slug="job-offer-evaluator"></share-result-button>' +
+    '<button type="button" class="joe-action-btn" onclick="copyJobOfferSummary()">Copy summary</button>' +
+    '<button type="button" class="joe-action-btn" data-no-gate="true" onclick="downloadJobOfferSummary()">Download TXT</button>';
   var btn = el.querySelector('save-result-button');
   if (btn && btn.setData) btn.setData({ inputs: { offers: ranked.length, country: joe.country }, outputs: { winner: w.name, winnerComp: w.totalComp } });
+}
+
+function buildJobOfferSummary() {
+  var ranked = joe.lastRanked || [];
+  if (!ranked.length) return '';
+  var lines = ['AfroTools Job Offer Decision Summary', 'Country model: ' + joe.country, ''];
+  ranked.forEach(function(o, i) {
+    lines.push((i + 1) + '. ' + o.name + ' - total compensation ' + fmt(o.totalComp) + '/yr');
+    lines.push('   Net monthly: ' + fmt(o.netMonthly) + ' | Benefits: ' + fmt(o.benefitValue || 0) + ' | Leave: ' + (o.leave || 0) + ' days | Remote score: ' + (o.remote || 0) + '/5');
+    if (o.hasEquity) lines.push('   Equity included: review vesting, strike price, dilution and exit assumptions.');
+  });
+  lines.push('');
+  lines.push('Method: ranks modeled cash compensation first, then compares benefits, leave, remote flexibility, equity risk, relocation and culture inputs.');
+  lines.push('Limit: career planning support only. Verify written offer terms, probation, equity plan documents, tax treatment, work permit needs, non-compete clauses and local employment law before accepting.');
+  lines.push('Privacy: offer details are processed in this browser unless you copy, save, share or export them.');
+  return lines.join('\n');
+}
+
+function copyJobOfferSummary() {
+  var text = buildJobOfferSummary();
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(function(){ alert('Offer summary copied.'); }).catch(function(){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('Offer summary copied.');
+  });
+}
+
+function downloadJobOfferSummary() {
+  var text = buildJobOfferSummary();
+  if (!text) return;
+  var blob = new Blob([text], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'job-offer-decision-summary.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 // ── 5-Year Projection ───────────────────────────────────

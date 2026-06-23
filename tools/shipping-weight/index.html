@@ -54,6 +54,8 @@ input:focus,select:focus{outline:none;border-color:var(--color-primary);box-shad
 select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
 .btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:.5rem}
 .btn-calc:hover{background:#0059B3}
+.btn-secondary{padding:.65rem 1rem;background:#fff;color:#475569;border:1.5px solid #e2e8f0;border-radius:999px;font-size:.84rem;font-weight:700;cursor:pointer}
+.btn-secondary:hover{border-color:var(--color-primary);color:var(--color-primary)}
 .results{display:none;margin-top:1.25rem}
 .results.on{display:block;animation:fadeUp .4s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -91,7 +93,7 @@ details[open] summary::after{content:'\2212'}
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/shipping-weight/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/uzito-wa-usafirishaji/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/shipping-weight/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -102,7 +104,7 @@ details[open] summary::after{content:'\2212'}
       "name": "How should I use Shipping Weight / Volumetric Weight Calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter package dimensions, actual weight, and service type to compare actual versus volumetric chargeable weight, then copy or download the result."
       }
     },
     {
@@ -110,7 +112,7 @@ details[open] summary::after{content:'\2212'}
       "name": "What should I verify before acting on Shipping Weight / Volumetric Weight Calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify the divisor, minimum billing weight, rounding rules, fuel surcharge, route restrictions, and current carrier quote before booking."
       }
     },
     {
@@ -118,7 +120,7 @@ details[open] summary::after{content:'\2212'}
       "name": "Is Shipping Weight / Volumetric Weight Calculator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a planning estimate only. The courier or freight forwarder quote controls the final billable weight and cost."
       }
     }
   ],
@@ -151,25 +153,25 @@ details[open] summary::after{content:'\2212'}
     <h2>&#x1f4e6; Package Dimensions &amp; Weight</h2>
     <div class="form-grid-3">
       <div class="field">
-        <label>Length (cm)</label>
+        <label for="pkgLength">Length (cm)</label>
         <input aria-label="E.g. 40" type="number" id="pkgLength" placeholder="e.g. 40" min="1">
       </div>
       <div class="field">
-        <label>Width (cm)</label>
+        <label for="pkgWidth">Width (cm)</label>
         <input aria-label="E.g. 30" type="number" id="pkgWidth" placeholder="e.g. 30" min="1">
       </div>
       <div class="field">
-        <label>Height (cm)</label>
+        <label for="pkgHeight">Height (cm)</label>
         <input aria-label="E.g. 20" type="number" id="pkgHeight" placeholder="e.g. 20" min="1">
       </div>
     </div>
     <div class="form-grid" style="margin-top:1rem">
       <div class="field">
-        <label>Actual Weight (kg)</label>
+        <label for="pkgWeight">Actual Weight (kg)</label>
         <input aria-label="E.g. 5" type="number" id="pkgWeight" placeholder="e.g. 5" min="0.1" step="0.1">
       </div>
       <div class="field">
-        <label>Shipping Type</label>
+        <label for="pkgShipType">Shipping Type</label>
         <select id="pkgShipType" aria-label="Pkg Ship Type">
           <option value="air">Air Freight (÷5000)</option>
           <option value="courier">Express Courier DHL/FedEx (÷5000)</option>
@@ -203,34 +205,25 @@ details[open] summary::after{content:'\2212'}
         <tbody id="swCourierTable"></tbody>
       </table>
       <div class="info-box" id="swTip"></div>
+      <div class="action-bar" style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
+        <button type="button" class="btn-secondary" onclick="copyShipWeightResult()">Copy result</button>
+        <button type="button" class="btn-secondary" onclick="downloadShipWeightResult()">Download .txt</button>
+      </div>
+      <p id="swStatus" style="font-size:.78rem;color:#64748b;margin-top:.5rem" aria-live="polite"></p>
     </div>
   </div>
 
 
 
-<section class="df-upgrade" data-df-upgrade="shipping-weight">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Shipping Weight / Volumetric Weight Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for shipping weight / volumetric weight calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Shipping Weight / Volumetric Weight Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, officialSource, saveExport, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+
+<section class="tool-verification-sec" data-tool-verification-panel="shipping-weight">
+  <div style="max-width:900px;margin:0 auto;padding:0 24px">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head"><div><span class="tool-verification-kicker">Chargeable weight check</span><h2 class="tool-verification-title">Measure the carton, then confirm the courier divisor</h2><p class="tool-verification-lead">Use the calculator to see whether actual or volumetric weight drives billing before you quote a customer or book freight.</p></div><div class="tool-verification-status"><span class="tool-verification-badge">Local estimate</span><p class="tool-verification-note">Reviewed 2026. Carrier rules vary.</p></div></div>
+      <div class="tool-verification-grid"><div class="tool-verification-block"><h3>Check the result</h3><ul class="tool-verification-list"><li>Measure the packed carton, not the product alone.</li><li>Confirm the divisor, rounding increment, minimum charge, and route surcharges with the courier.</li><li>Copy or download the result before sharing a shipping quote.</li></ul></div><div class="tool-verification-block"><h3>Limits</h3><ul class="tool-verification-list"><li>The estimate does not include insurance, customs, remote-area, pickup, or fuel charges.</li><li>Sea, road, air, and express couriers may use different dimensional rules.</li><li>No package data is uploaded by AfroTools.</li></ul></div></div>
+      <div class="tool-verification-actions"><p class="tool-verification-disclaimer">Planning estimate only. Use the carrier quote as the final billing reference.</p></div>
     </div>
-    <form class="df-form" data-df-form="shipping-weight">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="shipping-weight" data-df-base="Shipping Weight / Volumetric Weight Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Shipping Weight / Volumetric Weight Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="shipping-weight">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="shipping-weight-faq-title">
-  <h2 id="shipping-weight-faq-title">Shipping Weight / Volumetric Weight Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -289,8 +282,57 @@ function calcShipWeight() {
 
   document.getElementById('swResults').classList.add('on');
 }
+
+function shipWeightSummary() {
+  return [
+    'Shipping weight estimate',
+    'Dimensions: ' + (document.getElementById('pkgLength').value || '0') + ' x ' + (document.getElementById('pkgWidth').value || '0') + ' x ' + (document.getElementById('pkgHeight').value || '0') + ' cm',
+    'Actual weight: ' + document.getElementById('swActual').textContent,
+    'Volumetric weight: ' + document.getElementById('swVolume').textContent,
+    'Chargeable weight: ' + document.getElementById('swChargeable').textContent,
+    'Service type: ' + document.getElementById('pkgShipType').selectedOptions[0].textContent,
+    'Note: ' + document.getElementById('swTip').textContent,
+    'Verify divisor, rounding, minimum charge, and route surcharges with the carrier before booking.'
+  ].join('\n');
+}
+
+function setShipWeightStatus(message) {
+  var status = document.getElementById('swStatus');
+  if (!status) return;
+  status.textContent = message;
+  setTimeout(function(){ status.textContent = ''; }, 1800);
+}
+
+function copyShipWeightResult() {
+  var text = shipWeightSummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ setShipWeightStatus('Result copied.'); }).catch(function(){ fallbackCopy(text, setShipWeightStatus); });
+    return;
+  }
+  fallbackCopy(text, setShipWeightStatus);
+}
+
+function downloadShipWeightResult() {
+  var blob = new Blob([shipWeightSummary()], {type:'text/plain'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'shipping-weight-estimate.txt';
+  a.dataset.noPdfGate = 'true';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setShipWeightStatus('Text file downloaded.');
+}
+
+function fallbackCopy(text, done) {
+  var tmp = document.createElement('textarea');
+  tmp.value = text;
+  document.body.appendChild(tmp);
+  tmp.select();
+  document.execCommand('copy');
+  tmp.remove();
+  done('Result copied.');
+}
 </script>
 <script src="/assets/js/trade-toolkit.js?v=cadfd9a1" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

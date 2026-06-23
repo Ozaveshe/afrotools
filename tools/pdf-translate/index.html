@@ -49,6 +49,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -828,6 +829,10 @@
               <input aria-label="PreserveNumbers" type="checkbox" id="preserveNumbers" checked>
               <span>Preserve names, numbers, currencies, dates, phone numbers, and official acronyms where possible.</span>
             </label>
+            <label class="check-row">
+              <input aria-label="Cloud translation consent" type="checkbox" id="cloudConsent">
+              <span>Send extracted PDF text to cloud API/AI translation for this request. Leave unchecked and use local draft mode for private IDs, contracts, health, school, legal, or client documents.</span>
+            </label>
             <div class="option-note" id="engineNote">Balanced mode tries the AfroTools translation API first, uses AI for context when needed, and falls back to a private local glossary draft if cloud translation is unavailable.</div>
           </div>
         </div>
@@ -910,6 +915,46 @@
   <p>Upload your PDF, choose a target language and document type, optionally add a term bank, then review the output side by side. For sensitive or low-connectivity workflows, local draft mode keeps everything in the browser. For production-quality layout-preserving document translation, a dedicated document translation API or hosted NLLB-style model is the next step.</p>
 </div>
 
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="pdf-translate" aria-labelledby="pdf-translate-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Translation review check</span>
+          <h2 class="tool-verification-title" id="pdf-translate-verification-title">Extract locally, translate with consent, then review before official use</h2>
+          <p class="tool-verification-lead">Selectable PDF text is extracted in the browser. Cloud API/AI translation requires explicit consent; local draft mode keeps document text in this browser.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Consent-gated cloud translation</span>
+          <p class="tool-verification-note">Exports are generated only after you choose copy, TXT, PDF, or review pack.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Primary workflow</h3>
+          <ul class="tool-verification-list">
+            <li>Upload a selectable PDF, choose source/target languages, add critical terms, then translate.</li>
+            <li>Use local draft mode for sensitive documents or tick consent before API/AI translation.</li>
+            <li>Review original and translated text side by side, then export PDF, TXT, copy text, or download the review pack.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before sharing</h3>
+          <ul class="tool-verification-list">
+            <li>Check names, dates, amounts, legal clauses, health wording, government labels, and untranslated terms manually.</li>
+            <li>Use PDF OCR first for scanned/image-only documents.</li>
+            <li>This is not a certified translation, legal opinion, immigration advice, or official document service.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#pdfFile">Upload PDF</a>
+        <p class="tool-verification-disclaimer">Local-first document utility. Source freshness depends on your term bank and review process; verify critical translations with a qualified human reviewer before official use.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -954,6 +999,7 @@
   const domainPreset = $('domainPreset');
   const customTerms = $('customTerms');
   const preserveNumbers = $('preserveNumbers');
+  const cloudConsent = $('cloudConsent');
   const engineNote = $('engineNote');
   const creditWarning = $('creditWarning');
   const translateBtn = $('translateBtn');
@@ -1195,12 +1241,16 @@
 
   function updateEngineNote() {
     var notes = {
-      balanced: 'Balanced mode tries the AfroTools translation API first, uses AI for context when needed, and falls back to a private local glossary draft if cloud translation is unavailable.',
-      ai: 'AI mode is best for legal, health, education, and government text where context matters. It sends extracted page text to the AI endpoint.',
-      api: 'API mode is fastest for clean selectable text and short documents. It sends extracted text chunks to the AfroTools translation proxy.',
+      balanced: 'Balanced mode can use the AfroTools translation API and AI context only after cloud consent, then falls back to a private local glossary draft if cloud translation is unavailable.',
+      ai: 'AI mode can help with context only after cloud consent. It sends extracted page text to the AI endpoint.',
+      api: 'API mode is fastest for clean selectable text and short documents, and requires cloud consent because it sends extracted text chunks to the translation proxy.',
       local: 'Local draft mode keeps text in your browser and uses an African document glossary. It is a rough review draft, not a certified translation.'
     };
     engineNote.textContent = notes[engineMode.value] || notes.balanced;
+  }
+
+  function cloudModeSelected(mode) {
+    return mode !== 'local';
   }
 
   function parseTermBank() {
@@ -1499,6 +1549,11 @@
       domain: domainPreset.value,
       preserveNumbers: preserveNumbers.checked
     };
+
+    if (cloudModeSelected(settings.mode) && cloudConsent && !cloudConsent.checked) {
+      showError('Cloud API/AI translation sends extracted PDF text. Tick consent or switch Translation Mode to Local glossary draft only.');
+      return;
+    }
 
     if (src !== 'auto' && src === tgt) {
       showError('Source and target languages are the same. Please select different languages.');

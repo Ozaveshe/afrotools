@@ -5,28 +5,30 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Electricity Bill Estimator | AfroTools</title>
-<meta name="description" content="Estimate your monthly electricity bill for Nigeria, Kenya, South Africa, Ghana, Tanzania, Uganda, Ethiopia, Egypt, Rwanda, Cameroon. Real tariffs, appliance calculator, solar & generator comparison.">
+<meta name="description" content="Estimate monthly electricity bills across 10 African countries with appliance usage, tariff bands, outage planning, generator cost, solar savings, copy and TXT export.">
 <link rel="canonical" href="https://afrotools.com/tools/electricity-estimator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Electricity Bill Estimator | AfroTools">
-<meta property="og:description" content="Calculate electricity costs across 10 African countries with real tariffs, appliance calculator, solar savings and generator comparison.">
+<meta property="og:description" content="Estimate electricity bills across 10 African countries with appliance usage, tariff bands, outage planning, generator cost and solar savings.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/electricity-estimator.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/electricity-estimator/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Electricity Bill Estimator | AfroTools">
-<meta name="twitter:description" content="Estimate electricity costs for 10 African countries with real tariffs and appliance calculator.">
+<meta name="twitter:description" content="Estimate electricity bills with appliance usage, tariff bands, outage planning, generator cost and solar savings.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <meta name="tool-id" content="electricity-estimator">
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -412,6 +414,43 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="electricity-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Sources &amp; verification</span>
+        <h2 class="tool-verification-title" id="electricity-verification-title">Electricity bills need current tariff checks</h2>
+        <p class="tool-verification-lead">This estimator combines your listed appliances, hours, quantity, selected country tariff model, outage hours, fuel assumptions, and solar coverage into a household planning estimate.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Planning estimate</span>
+        <p class="tool-verification-note">Reviewed 2026. Tariffs, bands, VAT, fixed charges, fuel prices, and exchange rates can change.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Daily kWh is calculated from appliance wattage, run hours, and quantity, then multiplied into a monthly estimate.</li>
+          <li>Generator comparison estimates fuel from kWh output, while the solar slider estimates savings and system size from your calculated load.</li>
+          <li>The outage plan separates critical load from whole-home load so backup sizing is not accidentally oversized.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before acting</h3>
+        <ul class="tool-verification-list">
+          <li>Confirm the current utility tariff, service band, prepaid meter rules, fixed charges, taxes, and fuel price.</li>
+          <li>Ask an installer to verify inverter surge, usable battery capacity, wiring, roof condition, and protection devices before purchase.</li>
+          <li>Use copy or TXT download to share the estimate with a landlord, installer, accountant, or facilities reviewer.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tool-verification-actions">
+      <p class="tool-verification-disclaimer">Disclaimer: estimate only. AfroTools is not a utility, regulator, installer, fuel supplier, or lender. Inputs stay in this browser unless you copy or download them.</p>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Electricity Bill Estimator" prospect-segment="energy-utilities" save-note="Calculate the bill and outage plan, then copy or download the estimate for installer, landlord, office, or household budget review."></afro-business-cta>
 <!-- FAQ -->
 <section class="eb-faq">
 <h2>Frequently Asked Questions</h2>
@@ -825,7 +864,7 @@ function renderResiliencePlan(monthlyKwh, dailyKwh, monthlyCost, genCost, genLit
     actions.slice(0, 4).join(' ')
   ].join('\n');
 
-  target.innerHTML = '<div class="eb-resilience-head"><div class="eb-resilience-title">Outage and token plan</div><button type="button" class="eb-copy" onclick="copyEnergyPlan(this)">Copy plan</button></div>' +
+  target.innerHTML = '<div class="eb-resilience-head"><div class="eb-resilience-title">Outage and token plan</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="eb-copy" onclick="copyEnergyPlan(this)">Copy plan</button><button type="button" class="eb-copy" onclick="downloadEnergyPlan(this)">Download TXT</button></div></div>' +
     '<div class="eb-resilience-body"><div class="eb-resilience-grid">' +
     '<div class="eb-res-card"><div class="eb-res-k">Critical load</div><div class="eb-res-v">' + Math.max(critical.watts, 0).toLocaleString() + 'W</div><div class="eb-res-note">' + esc(modeLabels[mode]) + '</div></div>' +
     '<div class="eb-res-card"><div class="eb-res-k">Battery target</div><div class="eb-res-v">' + batteryKwh.toFixed(1) + 'kWh</div><div class="eb-res-note">Usable capacity for outages</div></div>' +
@@ -860,6 +899,23 @@ function fallbackCopyEnergyPlan(done) {
   area.select();
   try { document.execCommand('copy'); done(); } catch(e) {}
   document.body.removeChild(area);
+}
+
+function downloadEnergyPlan(btn) {
+  if (!lastEnergyPlanText) return;
+  var blob = new Blob([lastEnergyPlanText + '\n\nPlanning estimate only. Verify current tariffs, fuel prices, taxes, fixed charges, and supplier quotes before acting.'], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'afrotools-electricity-plan.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  if (btn) {
+    var old = btn.textContent;
+    btn.textContent = 'Downloaded';
+    setTimeout(function() { btn.textContent = old; }, 1300);
+  }
 }
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }

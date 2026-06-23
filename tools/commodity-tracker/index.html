@@ -88,6 +88,8 @@
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/commodity-tracker/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/commodity-tracker/" />
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
@@ -198,26 +200,63 @@
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Commodity Trade Tracker decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for commodity trade tracker so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Commodity Trade Tracker: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, officialSource, businessCta, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <h2>Turn country trade data into a procurement briefing</h2>
+      <p>Use the country, commodity, and price-reference tabs to frame where a product is exported, imported, or price-sensitive before contacting suppliers or buyers.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: country trade balance, top export/import categories, partner exposure, commodity search, and price reference notes.</li><li>Methodology: summarise bundled reference data locally, then verify with official statistics, exchange data, buyer contracts, or broker quotes.</li><li>Verification: check product grade, logistics route, export restrictions, taxes, FX, and current market price before pricing a shipment.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Static planning reference only. This page does not provide live market data, brokerage, investment advice, or guaranteed prices.</p>
     </div>
     <form class="df-form" data-df-form="commodity-tracker">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="commodity-tracker" data-df-base="Commodity Trade Tracker: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Commodity Trade Tracker: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="commodity-tracker">Copy summary</button></div>
+      <label>Focus country<select name="country" aria-label="Focus country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
+      <label>Shipment or deal value USD<input name="amount" type="number" value="25000" min="0" step="any" aria-label="Shipment or deal value USD"></label>
+      <label>Decision focus<select name="priority" aria-label="Decision focus"><option value="buyers">buyer demand</option><option value="suppliers">supplier availability</option><option value="price">price risk</option><option value="logistics">logistics risk</option></select></label>
+      <label>Risk buffer percent<input name="buffer" type="number" value="12" min="0" step="any" aria-label="Risk buffer percent"></label>
+      <button type="submit">Create trade brief</button>
+      <output class="df-result" data-df-result="commodity-tracker" data-df-base="Commodity trade brief ready. Explore the tracker above, then verify current export restrictions, quality grade, logistics route, buyer terms, FX, commodity exchange price, and local taxes before pricing a shipment." aria-live="polite">Commodity trade brief ready. Explore the tracker above, then verify current export restrictions, quality grade, logistics route, buyer terms, FX, commodity exchange price, and local taxes before pricing a shipment.</output>
+      <div class="df-actions"><button type="button" data-df-copy="commodity-tracker">Copy trade brief</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="commodity-tracker-faq-title">
   <h2 id="commodity-tracker-faq-title">Commodity Trade Tracker FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Select a country or commodity, review trade concentration and price references, then copy a brief for procurement or trade desk review.</p></details><details><summary>What should I verify?</summary><p>Verify current official statistics, market price, grade, buyer terms, export rules, logistics, taxes, and FX before pricing a shipment.</p></details><details><summary>Is this official?</summary><p>No. It is a static planning reference, not a live market feed, investment recommendation, customs filing, or guaranteed price.</p></details></div>
 </section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="commodity-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Sources &amp; verification</span>
+        <h2 class="tool-verification-title" id="commodity-verification-title">Treat commodity data as a source-dated planning reference</h2>
+        <p class="tool-verification-lead">This tracker helps compare trade composition, partner exposure, and indicative price references. It does not provide live market quotes or trading advice.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Static reference data</span>
+        <p class="tool-verification-note">Reviewed 2026. Volumes, prices, partners, and policy restrictions can move quickly.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Country view summarises export/import categories, trade balance, and partner concentration from bundled reference data.</li>
+          <li>Commodity search finds countries where a product appears in the local trade dataset.</li>
+          <li>Price reference is indicative only and should be replaced with live exchange, auction, buyer, or broker quotes.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before acting</h3>
+        <ul class="tool-verification-list">
+          <li>Verify current export restrictions, quality grade, logistics route, buyer terms, FX, commodity exchange price, and local taxes.</li>
+          <li>Use official statistics, exchange data, port data, buyer contracts, and broker quotes before pricing a shipment.</li>
+          <li>Copy the planning summary for trade desk, procurement, supplier, or finance review.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tool-verification-actions">
+      <p class="tool-verification-disclaimer">Planning reference only. AfroTools does not provide investment advice, live trading data, commodity brokerage, customs filing, or guaranteed market prices.</p>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Commodity Trade Tracker" prospect-segment="trade-market-data" save-note="Explore country and commodity data, then copy the summary for procurement, trade desk, supplier, or finance review."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -434,7 +473,6 @@ function overlayLivePrices() {
 buildCountryGrid();
 buildPriceTable();
 selectCountry('NG');
-overlayLivePrices();
 </script>
 <script src="/assets/js/trade-toolkit.js?v=cadfd9a1" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>

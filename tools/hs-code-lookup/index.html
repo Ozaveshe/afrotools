@@ -205,6 +205,8 @@
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/hs-code-lookup.webp">
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/hs-code-lookup/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/recherche-code-sh/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/utafutaji-msimbo-hs/" />
@@ -272,6 +274,7 @@
             <button type="button" class="btn-primary" onclick="copyCode()" style="font-size:0.75rem;padding:7px 14px;background:#1E2D40;">&#128203; Copy Code</button>
           </div>
         </div>
+        <p id="hsStatus" role="status" aria-live="polite" style="margin:12px 0 0;color:rgba(255,255,255,0.7);font-size:0.82rem"></p>
       </div>
 
       <!-- Duty rates + AI -->
@@ -429,6 +432,45 @@
     </div>
   </div>
 </section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="hs-code-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Sources &amp; verification</span>
+          <h2 class="tool-verification-title" id="hs-code-verification-title">Use HS results as a classification starting point</h2>
+          <p class="tool-verification-lead">This lookup helps you find likely HS headings and compare indicative duty assumptions. It is not a binding tariff classification or official customs ruling.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Indicative tariff workflow</span>
+          <p class="tool-verification-note">Reviewed 2026. Tariff schedules, AfCFTA treatment, and national digits can change.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Methodology</h3>
+          <ul class="tool-verification-list">
+            <li>Search matches product terms to HS chapter and heading data, then displays country-level duty assumptions where available.</li>
+            <li>Saved codes stay in browser storage so importers can collect a short list before asking a broker for confirmation.</li>
+            <li>Country comparison highlights lower duty assumptions, but final treatment depends on product detail, origin, and documents.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before acting</h3>
+          <ul class="tool-verification-list">
+            <li>Confirm six-digit HS heading, national tariff extension, origin rule, exemption, permit, VAT, levy, and valuation basis.</li>
+            <li>Ask the customs authority, official tariff schedule, or licensed broker for binding or written classification where needed.</li>
+            <li>Copy or save the code list before building landed-cost or shipping quotes.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Planning and research aid only. AfroTools does not issue official tariff classifications, customs rulings, legal advice, or tax advice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="HS Code Lookup" prospect-segment="trade-import" save-note="Search and save likely HS codes, then copy the classification brief for customs broker, supplier, or finance review."></afro-business-cta>
 
 <afro-footer></afro-footer>
 
@@ -569,16 +611,31 @@ function renderObservations(item) {
 function saveCurrentCode() {
   if (!currentCode) return;
   var saved = getSaved();
-  if (saved.find(function(s){ return s.code === currentCode.code; })) { alert('Already saved!'); return; }
+  var status = document.getElementById('hsStatus');
+  if (saved.find(function(s){ return s.code === currentCode.code; })) {
+    if(status) status.textContent = currentCode.code + ' is already saved.';
+    return;
+  }
   saved.unshift({ code: currentCode.code, description: currentCode.description, chapter: currentCode.chapter });
   if (saved.length > 30) saved.pop();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
   updateSavedCount();
+  if(status) status.textContent = currentCode.code + ' saved locally.';
+  if (document.getElementById('tabSaved').classList.contains('on')) renderSaved();
 }
 
 function copyCode() {
   if (!currentCode) return;
-  navigator.clipboard.writeText(currentCode.code).then(function(){ alert('Copied: ' + currentCode.code); });
+  var status = document.getElementById('hsStatus');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(currentCode.code).then(function(){
+      if(status) status.textContent = 'Copied ' + currentCode.code + '.';
+    }).catch(function(){
+      if(status) status.textContent = currentCode.code;
+    });
+  } else if(status) {
+    status.textContent = currentCode.code;
+  }
 }
 
 function getSaved() {

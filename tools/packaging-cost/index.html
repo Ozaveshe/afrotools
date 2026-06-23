@@ -35,12 +35,13 @@
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/packaging-cost.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/packaging-cost.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/packaging-cost/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-emballage/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/packaging-cost/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -102,7 +103,7 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Product Category</label>
+          <label class="en-label" for="pk-product">Product Category</label>
           <select class="en-select" id="pk-product" aria-label="Pk Product">
             <option value="food_dry">Dry Food (flour, spice, grain)</option>
             <option value="food_liquid">Liquid Food (juice, oil, sauce)</option>
@@ -113,7 +114,7 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Primary Packaging Type</label>
+          <label class="en-label" for="pk-type">Primary Packaging Type</label>
           <select class="en-select" id="pk-type" aria-label="Pk Type">
             <option value="sachet">Sachet / Pouch (flexible)</option>
             <option value="plastic_bottle">Plastic Bottle (PET/HDPE)</option>
@@ -125,7 +126,7 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Package Size</label>
+          <label class="en-label" for="pk-size">Package Size</label>
           <select class="en-select" id="pk-size" aria-label="Pk Size">
             <option value="mini">Mini (5–50g / 5–50ml)</option>
             <option value="small">Small (51–250g / 51–250ml)</option>
@@ -135,29 +136,29 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Monthly Production Volume (units)</label>
+          <label class="en-label" for="pk-volume">Monthly Production Volume (units)</label>
           <input aria-label="Pk volume" type="number" class="en-input" id="pk-volume" value="10000" min="100">
         </div>
         <div class="en-field">
-          <label class="en-label">Secondary Packaging (outer box)?</label>
+          <label class="en-label" for="pk-secondary">Secondary Packaging (outer box)?</label>
           <select class="en-select" id="pk-secondary" aria-label="Pk Secondary">
             <option value="yes" selected>Yes — corrugated outer carton</option>
             <option value="no">No</option>
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Units per Outer Carton</label>
+          <label class="en-label" for="pk-per-carton">Units per Outer Carton</label>
           <input aria-label="Pk per carton" type="number" class="en-input" id="pk-per-carton" value="24" min="1" max="500">
         </div>
         <div class="en-field">
-          <label class="en-label">Sourcing</label>
+          <label class="en-label" for="pk-source">Sourcing</label>
           <select class="en-select" id="pk-source" aria-label="Pk Source">
             <option value="local" selected>Local supplier</option>
             <option value="import">Imported packaging</option>
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Product Selling Price per Unit</label>
+          <label class="en-label" for="pk-sell-price">Product Selling Price per Unit</label>
           <input aria-label="Pk sell price" type="number" class="en-input" id="pk-sell-price" value="0" min="0">
           <span class="en-hint">Optional — to calculate packaging % of price</span>
         </div>
@@ -185,34 +186,39 @@
         <h3 style="margin-bottom:.5rem">Cost Reduction Tips</h3>
         <ul id="pk-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
       </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Export this packaging scenario</h3>
+        <p style="font-size:.88rem;color:#64748b;margin:0 0 1rem">Copy the per-unit and monthly cost summary for supplier comparison, margin planning, or production meetings. Inputs stay local.</p>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <button type="button" class="en-btn" id="pk-copy-summary">Copy estimate</button>
+          <button type="button" class="en-btn" id="pk-download-json">Download JSON</button>
+        </div>
+        <p id="pk-copy-status" style="font-size:.82rem;color:#64748b;margin:.75rem 0 0" aria-live="polite"></p>
+      </div>
     </div>
   </div>
 
 
-<section class="df-upgrade" data-df-upgrade="packaging-cost">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Packaging Cost Calculator Africa decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for packaging cost calculator africa so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Packaging Cost Calculator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, saveExport, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="packaging-cost" aria-labelledby="packaging-cost-verification-title">
+  <div class="tool-verification-inner">
+    <div class="tool-verification-copy">
+      <span class="tool-verification-kicker">Packaging margin check</span>
+      <h2 class="tool-verification-title" id="packaging-cost-verification-title">Compare unit cost, sourcing, cartons, and margin before production</h2>
+      <p class="tool-verification-lead">Use this as a packaging shortlist tool: estimate per-unit cost, compare formats, then validate supplier MOQ, freight, print plates, taxes, wastage, and lead time.</p>
+      <div class="tool-verification-grid" aria-label="Packaging cost verification checklist">
+        <div class="tool-verification-card"><strong>Inputs to verify</strong><ul><li>Country, package type, size, sourcing route, monthly volume, carton quantity, and selling price.</li><li>Confirm live supplier quotes, print setup fees, import costs, and currency exposure separately.</li></ul></div>
+        <div class="tool-verification-card"><strong>Outputs to export</strong><ul><li>Copy or download the packaging scenario for quote comparison and margin review.</li><li>Use the format comparison to decide which suppliers need a formal RFQ.</li></ul></div>
+        <div class="tool-verification-card"><strong>Limits</strong><ul><li>Planning estimate only, not a supplier quotation, customs calculation, or product compliance certificate.</li><li>Privacy note: product and pricing inputs remain in the browser unless copied or downloaded.</li></ul></div>
+      </div>
     </div>
-    <form class="df-form" data-df-form="packaging-cost">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="packaging-cost" data-df-base="Packaging Cost Calculator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Packaging Cost Calculator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="packaging-cost">Copy summary</button></div>
-    </form>
+    <div class="tool-verification-actions">
+      <a class="tool-verification-primary" href="#pk-country">Review packaging inputs</a>
+      <a class="tool-verification-report" href="#pk-results">Review cost output</a>
+      <p class="tool-verification-disclaimer">Source/freshness note: assumptions can change with resin, paper, glass, freight, FX, supplier MOQ, printing, and import costs.</p>
+    </div>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="packaging-cost-faq-title">
-  <h2 id="packaging-cost-faq-title">Packaging Cost Calculator Africa FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
+<afro-business-cta tool-name="Packaging Cost Calculator" prospect-segment="manufacturing-finance" save-note="Copy or download the packaging estimate, then request a custom calculator or widget for product costing teams."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -328,6 +334,8 @@ function fmtCur(sym,n){
   return sym + n.toFixed(2);
 }
 
+var PK_LAST_RESULT = null;
+
 function calcPackaging(){
   var country = document.getElementById('pk-country').value;
   var product = document.getElementById('pk-product').value;
@@ -353,6 +361,10 @@ function calcPackaging(){
   var monthlyTotal = totalPerUnit * volume;
   var annualTotal = monthlyTotal * 12;
   var pctOfPrice = sellPrice > 0 ? (totalPerUnit / sellPrice * 100).toFixed(1) : 0;
+  PK_LAST_RESULT = {
+    country:country, product:product, packagingType:ptype, size:size, volume:volume, secondary:secondary, perCarton:perCarton, source:source, sellPrice:sellPrice,
+    primaryCost:primaryCost, secondaryCostPerUnit:secCostPerUnit, totalPerUnit:totalPerUnit, monthlyTotal:monthlyTotal, annualTotal:annualTotal, percentOfSellingPrice:pctOfPrice
+  };
 
   document.getElementById('pk-headline').textContent = ptype.replace(/_/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()}) + ' — ' + size.charAt(0).toUpperCase() + size.slice(1) + ' size';
   document.getElementById('pk-primary').textContent = fmtCur(sym, primaryCost);
@@ -386,7 +398,52 @@ function calcPackaging(){
   document.getElementById('pk-results').classList.add('on');
   document.getElementById('pk-results').scrollIntoView({ behavior:'smooth', block:'start' });
 }
+
+function packagingSummary(){
+  if(!PK_LAST_RESULT) return 'Run the Packaging Cost Calculator first.';
+  var d = PK_LAST_RESULT;
+  var sym = PK_BASE[d.country].sym;
+  return [
+    'Packaging cost estimate',
+    'Country: '+d.country,
+    'Product: '+d.product.replace(/_/g,' '),
+    'Package: '+d.packagingType.replace(/_/g,' ')+' / '+d.size,
+    'Volume: '+d.volume.toLocaleString()+' units per month',
+    'Sourcing: '+d.source,
+    'Primary pack per unit: '+fmtCur(sym,d.primaryCost),
+    'Secondary pack per unit: '+(d.secondary?fmtCur(sym,d.secondaryCostPerUnit):'N/A'),
+    'Total packaging per unit: '+fmtCur(sym,d.totalPerUnit),
+    'Monthly packaging cost: '+fmtCur(sym,d.monthlyTotal),
+    'Annual packaging budget: '+fmtCur(sym,d.annualTotal),
+    'Packaging percent of selling price: '+(d.sellPrice>0?d.percentOfSellingPrice+'%':'selling price not entered'),
+    'Note: planning estimate only; verify supplier quotes, MOQ, print setup, freight, FX, and import costs before acting.'
+  ].join('\n');
+}
+
+function copyPackagingSummary(){
+  var status = document.getElementById('pk-copy-status');
+  var text = packagingSummary();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ status.textContent='Packaging estimate copied.'; }).catch(function(){ status.textContent=text; });
+  } else {
+    status.textContent=text;
+  }
+}
+
+function downloadPackagingJson(){
+  if(!PK_LAST_RESULT){ document.getElementById('pk-copy-status').textContent='Run the estimate first.'; return; }
+  var blob = new Blob([JSON.stringify({ tool:'packaging-cost', generatedAt:new Date().toISOString(), result:PK_LAST_RESULT, note:'Planning estimate only. Verify supplier quotes, MOQ, print setup, freight, FX, and import costs.' }, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'packaging-cost-estimate.json';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(a.href);
+  a.remove();
+}
+
+document.getElementById('pk-copy-summary').addEventListener('click', copyPackagingSummary);
+document.getElementById('pk-download-json').addEventListener('click', downloadPackagingJson);
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

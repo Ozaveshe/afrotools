@@ -46,8 +46,8 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .io-area{width:100%;min-height:200px;padding:14px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:8px;font-family:'Courier New',monospace;font-size:.88rem;color:var(--afro-dark);outline:none;resize:vertical;line-height:1.6}
 .io-area:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
 .io-area[readonly]{background:#0f172a;color:#38bdf8;border-color:#1e293b}
-.action-row{display:flex;gap:8px;margin-top:12px}
-.action-btn{flex:1;padding:10px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:7px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.action-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.action-btn{flex:1 1 120px;padding:10px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:7px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
 .action-btn:hover{background:#0059B3}
 .action-btn.secondary{background:#f1f5f9;color:#475569;border:1.5px solid #cbd5e1}
 .action-btn.secondary:hover{border-color:var(--afro-blue);color:var(--afro-blue)}
@@ -145,7 +145,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/entites-html/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/alama-za-html/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/html-entities/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -166,20 +166,22 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
       </div>
       <div class="io-grid">
         <div>
-          <div class="io-label" id="inputLabel">Input (Plain Text)</div>
+          <label class="io-label" id="inputLabel" for="input">Input (Plain Text)</label>
           <textarea class="io-area" id="input" placeholder="Type or paste text here..." aria-label="Type or paste text here...">&lt;div class="hello"&gt;Hello &amp; welcome!&lt;/div&gt;</textarea>
         </div>
         <div>
-          <div class="io-label" id="outputLabel">Output (HTML Entities)</div>
+          <label class="io-label" id="outputLabel" for="output">Output (HTML Entities)</label>
           <textarea class="io-area" id="output" readonly aria-label="Output"></textarea>
         </div>
       </div>
       <div class="action-row">
         <button type="button" class="action-btn" onclick="convert()">Convert</button>
         <button type="button" class="action-btn secondary" onclick="copyOutput()">Copy Output</button>
+        <button type="button" class="action-btn secondary" onclick="downloadOutput()">Download .txt</button>
         <button type="button" class="action-btn secondary" onclick="swapIO()">Swap</button>
         <button type="button" class="action-btn secondary" onclick="clearAll()">Clear</button>
       </div>
+      <p id="copyStatus" style="font-size:.78rem;color:#64748b;margin-top:10px" aria-live="polite"></p>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
   <share-result-button
     tool-name="HTML Entities"
@@ -223,7 +225,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
       <ul style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
         <li><strong>Displaying code:</strong> Show HTML/XML code snippets in web pages</li>
         <li><strong>Special characters:</strong> Use symbols like &copy; &trade; &euro; in your content</li>
-        <li><strong>Preventing XSS:</strong> Encode user input before displaying it in HTML</li>
+        <li><strong>Displaying pasted text:</strong> Encode characters so browsers show them as text instead of markup</li>
         <li><strong>Email templates:</strong> Some email clients require entity-encoded characters</li>
       </ul>
       <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
@@ -236,7 +238,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
   <section style="margin-top:18px">
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The HTML Entity Encoder and Decoder converts special characters to their HTML entity equivalents and back again. This is essential for safely displaying code snippets in web pages, preventing cross-site scripting vulnerabilities, and handling characters that have special meaning in HTML like angle brackets, ampersands, and quotation marks. Paste your text and the tool instantly encodes or decodes all relevant characters. It supports named entities, numeric entities, and hex entities. Web developers, content editors, and security-conscious programmers use this tool daily to sanitise user input and ensure their HTML renders correctly across all browsers.</p>
+    <p>The HTML Entity Encoder and Decoder converts special characters to their HTML entity equivalents and back again. This is useful for displaying code snippets in web pages and handling characters that have special meaning in HTML like angle brackets, ampersands, and quotation marks. Paste your text and the tool instantly encodes or decodes common characters. Web developers, content editors, and template builders can use it to prepare text for display and check how encoded content will render across browsers.</p>
   </div>
 </section>
     <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
@@ -283,7 +285,34 @@ function convert(){
 
 function copyOutput(){
   const output=document.getElementById('output');
-  navigator.clipboard.writeText(output.value);
+  const status=document.getElementById('copyStatus');
+  const done=function(message){
+    if(status) status.textContent=message;
+    setTimeout(function(){ if(status) status.textContent=''; },1800);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(output.value).then(function(){done('Output copied.');}).catch(function(){
+      output.focus();
+      output.select();
+      document.execCommand('copy');
+      done('Output copied.');
+    });
+    return;
+  }
+  output.focus();
+  output.select();
+  document.execCommand('copy');
+  done('Output copied.');
+}
+
+function downloadOutput(){
+  const content=document.getElementById('output').value;
+  const blob=new Blob([content],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=mode==='encode'?'html-entities-output.txt':'html-decoded-output.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 function swapIO(){
@@ -309,34 +338,47 @@ convert();
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 
 
-<section class="df-upgrade" data-df-upgrade="html-entities">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>HTML Entity Encoder decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for html entity encoder so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: HTML Entity Encoder: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: download, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel="html-entities">
+  <div style="max-width:900px;margin:0 auto;padding:0 24px">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Encoding check</span>
+          <h2 class="tool-verification-title">Convert, verify, then copy or download</h2>
+          <p class="tool-verification-lead">Encode text for display in HTML or decode entities back to readable text. The conversion runs locally in your browser.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local conversion</span>
+          <p class="tool-verification-note">Reviewed 2026. Context matters.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Use the result safely</h3>
+          <ul class="tool-verification-list">
+            <li>Preview encoded output in the actual template, CMS, email, or code block where it will appear.</li>
+            <li>Use copy for quick edits or download a plain text backup of the converted output.</li>
+            <li>Decode only content you trust enough to inspect; decoded markup may become executable elsewhere.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Assumptions and limits</h3>
+          <ul class="tool-verification-list">
+            <li>This is an encoder/decoder, not a complete HTML sanitizer or XSS protection library.</li>
+            <li>It focuses on common HTML-sensitive characters and browser entity decoding behavior.</li>
+            <li>No pasted text is uploaded or stored by AfroTools.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Planning estimate only. Security-sensitive apps should still use framework escaping, CSP, and a maintained sanitizer where required.</p>
+      </div>
     </div>
-    <form class="df-form" data-df-form="html-entities">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="html-entities" data-df-base="HTML Entity Encoder: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">HTML Entity Encoder: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="html-entities">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="html-entities-faq-title">
-  <h2 id="html-entities-faq-title">HTML Entity Encoder FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <afro-newsletter-cta></afro-newsletter-cta>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

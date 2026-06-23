@@ -29,10 +29,12 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
 <link rel="stylesheet" href="/assets/css/image-to-text-studio.css?v=d0808f5d">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/bundles/core.c3deb143.min.js" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script src="/assets/js/lib/image-to-text-studio.js?v=fbad673a" defer></script>
@@ -82,7 +84,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/image-en-texte/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kutoa-maandishi-kwenye-picha/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/image-to-text/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -90,26 +91,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use Image to Text OCR Studio?",
+      "name": "Are my images uploaded?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Prepare the visual task with format, dimensions, source assets, and export needs before designing. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "No. The image is decoded and processed in your browser. OCR engine and language files may be downloaded the first time you run a language, but your image is not uploaded to AfroTools."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on Image to Text OCR Studio?",
+      "name": "Which image types work best?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Design workflow only. Confirm image rights, brand rules, readable text, safe zones, and export quality before publishing."
+        "text": "Clear screenshots and sharp document photos work best. Avoid motion blur, deep shadows, curved pages, and tiny text; use crop and contrast controls when needed."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Image to Text OCR Studio an official result?",
+      "name": "Can it read handwriting?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "It may read neat handwriting, but printed text is more reliable. Always manually check names, account numbers, dates, totals, and legal or official text before using the result."
       }
     }
   ],
@@ -377,32 +378,48 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="image-to-text">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Design output workflow</span>
-      <h2>Image to Text OCR Studio decision workspace</h2>
-      <p>Prepare the visual task with format, dimensions, source assets, and export needs before designing. This panel is tuned for image to text ocr studio so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Image to Text OCR Studio: design output brief ready with format, versions, export, rights, and quality checks.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: platform design spec, asset-license, and brand-guideline references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Design workflow only. Confirm image rights, brand rules, readable text, safe zones, and export quality before publishing. Source/reference: platform design spec, asset-license, and brand-guideline references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="image-to-text" aria-labelledby="ocr-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">OCR result check</span>
+          <h2 class="tool-verification-title" id="ocr-verification-title">Review extracted text before copying or exporting</h2>
+          <p class="tool-verification-lead">Run OCR locally, edit the raw result, inspect confidence where available, then export TXT, JSON, CSV, Markdown, or a structured handoff brief.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Reviewed 2026</span>
+          <p class="tool-verification-note">Local-first OCR workflow. Language models may download, but source images are not uploaded to AfroTools.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: browser image cleanup feeds OCR, then the result editor separates raw text, cleaned text, structured fields, and export formats.</li>
+            <li>Manually verify names, totals, dates, account numbers, phone numbers, legal wording, and official references before reuse.</li>
+            <li>Use confidence, extracted fields, copy actions, and export formats to keep the next workflow traceable.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>OCR can misread low contrast, handwriting, rotated text, mixed scripts, stamps, watermarks, and curved pages.</li>
+            <li>Not a legal transcription, identity verification, translation, accounting, or official record system.</li>
+            <li>Privacy note: source images stay in the browser session; avoid pasting sensitive extracted text into third-party tools without consent.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#ocrTextArea">Review extracted text</a>
+        <p class="tool-verification-disclaimer">Source/freshness note: OCR output is a planning extract. Verify against the original image or issuing source before filing, paying, signing, or publishing.</p>
+      </div>
     </div>
-    <form class="df-form" data-df-form="image-to-text">
-      <label>Format<select name="format" aria-label="Format"><option value="social post">social post</option><option value="poster">poster</option><option value="thumbnail">thumbnail</option><option value="document graphic">document graphic</option></select></label>
-      <label>Versions<input name="versions" type="number" value="3" min="0" step="any" aria-label="Versions"></label>
-      <label>Export need<select name="export" aria-label="Export need"><option value="PNG">PNG</option><option value="JPG">JPG</option><option value="PDF">PDF</option><option value="copy brief">copy brief</option></select></label>
-      <label>Rights checked<select name="rights" aria-label="Rights checked"><option value="not yet">not yet</option><option value="partly">partly</option><option value="yes">yes</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="image-to-text" data-df-base="Image to Text OCR Studio: design output brief ready with format, versions, export, rights, and quality checks." aria-live="polite">Image to Text OCR Studio: design output brief ready with format, versions, export, rights, and quality checks.</output>
-      <div class="df-actions"><button type="button" data-df-copy="image-to-text">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="image-to-text-faq-title">
-  <h2 id="image-to-text-faq-title">Image to Text OCR Studio FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Prepare the visual task with format, dimensions, source assets, and export needs before designing. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Design workflow only. Confirm image rights, brand rules, readable text, safe zones, and export quality before publishing.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 </main>
 
+<afro-business-cta tool-name="Image to Text OCR Studio" prospect-segment="document-workflows" save-note="Process the image locally, review sensitive fields, then copy or export TXT, JSON, CSV, Markdown, or a handoff brief."></afro-business-cta>
 <afro-related-tools category="image-design" current="image-to-text"></afro-related-tools>
 
 <section class="ocr-seo" aria-label="Image to text OCR guidance">
@@ -433,6 +450,5 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

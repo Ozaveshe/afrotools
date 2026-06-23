@@ -75,6 +75,7 @@
           <div class="field"><label for="query">Tẹ ohun tí o n wa</label><input id="query" type="text" placeholder="apẹẹrẹ: bawo ni, elo ni, ẹ ṣé, ibi wo ni" oninput="findPhrase()"></div>
           <div id="phraseResult" class="result">Bẹrẹ nipa titẹ ọrọ kan tabi yan gbolohun lati akojọ isalẹ.</div>
         </div>
+        <div class="actions"><button class="btn secondary" type="button" onclick="copyPhrase()">Daako gbolohun</button></div>
 
         <div class="card">
           <h2>Gbolohun tí a maa n lo</h2>
@@ -91,6 +92,7 @@
           </div>
           <div id="draftResult" class="result">Yan awoṣe ìkọ̀wé kan.</div>
         </div>
+        <div class="actions"><button class="btn secondary" type="button" onclick="copyDraft()">Daako akosile</button></div>
       </section>
 
       <aside>
@@ -98,6 +100,8 @@
         <a class="fallback" href="/tools/yoruba-translator/"><small>Ojú ìwé Gẹẹsi</small><strong>Yorùbá phrasebook tó gbooro</strong><br>Ojú Gẹẹsi naa ni akojọ gbolohun diẹ sii.</a>
         <a class="fallback" href="/tools/pdf-translate/"><small>Ojú ìwé Gẹẹsi</small><strong>Ìtumọ̀ PDF</strong><br>Lo fun ìmúrasílẹ̀ nikan, kii ṣe ìtumọ̀ tí a fọwọ́sí.</a>
         <a class="fallback" href="/tools/hausa-translator/"><small>Ojú ìwé Gẹẹsi</small><strong>Hausa translator</strong><br>Phrasebook Hausa fun ìkíni ati ọrọ ojoojumọ.</a>
+        <div class="fallback" data-tool-verification-panel="yoruba-translator-yo"><small>Orisun ati ayewo</small><strong>Ona ise</strong><br>Phrasebook yii n lo akojọ gbolohun ti AfroTools n satunko fun ikini, oja, irinajo ati atileyin alabara. Atunse oju yii: June 2026. Ko se itumo osise, ko si ran oro re si server.</div>
+        <div class="fallback"><small>Methodology cue</small><strong>Ilana</strong><br>Ilana re ni wa gbolohun, yan apere, satunse pelu eniyan, ki o si daako abajade. Ikilo: ko se itumo osise.</div>
       </aside>
     </div>
   </div>
@@ -122,6 +126,50 @@ function pickPhrase(i){var p=phrases[i];document.getElementById('phraseResult').
 function findPhrase(){var q=document.getElementById('query').value.toLowerCase().trim();var box=document.getElementById('phraseResult');if(!q){box.textContent='Bẹrẹ nipa titẹ ọrọ kan tabi yan gbolohun lati akojọ isalẹ.';return}var p=phrases.find(function(item){return item.join(' ').toLowerCase().includes(q)});box.innerHTML=p?'<strong>'+p[1]+'</strong><br>'+p[2]:'A ko ri gbolohun naa ninu akojọ kukuru yii. Ṣayẹwo ojú Gẹẹsi phrasebook tabi beere lọwọ ẹni tó mọ Yorùbá.'}
 function draft(kind){var text={customer:'Ẹ káàbọ̀. Ẹ ṣé fun ìfiranṣẹ yin. A ti gba ibeere yin, a ó si dá yin lóhùn laipẹ.',market:'Ẹ jọ̀ọ́, elo ni iye ikẹhin fun ọja yii? Ti ẹ ba din owo kù, mo le ra loni.',travel:'Ẹ jọ̀ọ́, ibo ni ọkọ yi n lọ, ati elo ni owo irin-ajo naa?'}[kind];document.getElementById('draftResult').textContent=text}
 render();
+</script>
+<script>
+(function(){
+  var lastPhraseText = '';
+  var lastDraftText = '';
+  var originalPick = window.pickPhrase;
+  var originalFind = window.findPhrase;
+  var originalDraft = window.draft;
+  function readText(id){
+    var node = document.getElementById(id);
+    return node ? node.textContent.trim() : '';
+  }
+  window.pickPhrase = function(index){
+    if (originalPick) originalPick(index);
+    lastPhraseText = readText('phraseResult');
+  };
+  window.findPhrase = function(){
+    if (originalFind) originalFind();
+    lastPhraseText = readText('phraseResult');
+  };
+  window.draft = function(kind){
+    if (originalDraft) originalDraft(kind);
+    lastDraftText = readText('draftResult');
+  };
+  function copyValue(value,label){
+    if (!value) {
+      window.alert('Ko si nkan lati daako sibe.');
+      return;
+    }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(value).then(function(){ window.alert(label + ' ti daako.'); });
+    } else {
+      window.prompt(label, value);
+    }
+  }
+  window.copyPhrase = function(){
+    lastPhraseText = readText('phraseResult');
+    copyValue(lastPhraseText, 'Gbolohun');
+  };
+  window.copyDraft = function(){
+    lastDraftText = readText('draftResult');
+    copyValue(lastDraftText, 'Akosile');
+  };
+})();
 </script>
 </body>
 </html>

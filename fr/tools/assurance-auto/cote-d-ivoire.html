@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91"><link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><link rel="stylesheet" href="/assets/css/insurance.css?v=8d691b26">
-<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script><script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/car-insurance.webp">
 <meta property="og:locale" content="fr_FR">
@@ -99,7 +99,7 @@ window.addEventListener('load', function() {
 <tr><td>Franchise typique</td><td id="resExcess">—</td></tr>
 </tbody></table></div></div>
 <div class="ins-metrics"><div class="ins-metric"><div class="ins-metric-val" id="resProviders">—</div><div class="ins-metric-label">Principaux assureurs</div></div></div>
-<div class="ins-tip" id="resTip">—</div></div>
+<div class="ins-tip" id="resTip">-</div><div class="actions" data-fr-legal-batch="insurance-actions" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0"><button class="ins-calc-btn" type="button" id="copyInsuranceBrief" style="width:auto">Copier le resume</button><button class="ins-calc-btn" type="button" id="downloadInsuranceBrief" style="width:auto;background:#fff;color:#1d4ed8;border:1.5px solid #1d4ed8">Telecharger TXT</button><span id="insuranceExportStatus" aria-live="polite" style="align-self:center;color:#475569;font-size:.9rem"></span></div></div>
 <section class="ins-seo">
 <h2>Côte d'Ivoire Estimateur de prime assurance auto — What You Need to Know</h2>
 <p>Free car insurance premium estimator for Côte d'Ivoire. Calculer third-party and comprehensive motor insurance costs with Côte d'Ivoire's top providers. Use this free calculator to get a quick estimate before contacting insurance providers.</p>
@@ -107,6 +107,16 @@ window.addEventListener('load', function() {
 <p><strong>Disclaimer:</strong> These are estimates based on market data and published rates. Actual premiums depend on individual circumstances, insurer assessment, and negotiation. Always get formal quotes from licensed providers.</p>
 </section>
 </main>
+<section class="ins-seo" data-tool-verification-panel data-fr-legal-batch="insurance-trust">
+<h2>Methodologie, sources et limites</h2>
+<p><strong>Source/reference:</strong> l'estimation utilise le jeu de donnees assurance AfroTools et les informations de marche visibles sur cette page. Confirmez toujours les tarifs officiels, garanties obligatoires, taxes, certificat, controle technique et exclusions avec un assureur ou courtier agree avant paiement.</p>
+<p><strong>Methodologie:</strong> le moteur estime une fourchette a partir de la valeur du vehicule, de son age, du type de vehicule, de l'age du conducteur, de l'anciennete du permis et de l'historique de sinistres. Le resultat compare tiers obligatoire, tous risques et franchise typique.</p>
+<p><strong>Derniere verification de la page:</strong> 22 juin 2026. Les primes, penalites, garanties, taxes et exigences de controle technique peuvent changer. Cet outil est local-first et ne transmet pas vos donnees de vehicule ou de conducteur a un serveur.</p>
+<p><strong>Avertissement:</strong> estimation de preparation uniquement; ce n'est pas un devis, une police, une validation CIMA, un conseil juridique ou une garantie de couverture.</p>
+</section>
+<div class="ins-seo" data-fr-legal-batch="insurance-cta">
+<afro-business-cta tool-name="Estimateur assurance auto - Cote d'Ivoire" save-note="Copiez ou telechargez l'estimation, puis demandez des devis formels aux assureurs agrees."></afro-business-cta>
+</div>
 <afro-footer></afro-footer>
 <script src="/data/insurance/country-insurance-index.js?v=98d7b0e1"></script>
 <script src="/engines/car-insurance-engine.js?v=303f7322"></script>
@@ -144,5 +154,60 @@ document.getElementById("results").scrollIntoView({behavior:"smooth",block:"star
 <script src="/assets/js/insurance-workbench.js?v=100b7540" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(window.twemoji){twemoji.parse(document.body,{folder:'svg',ext:'.svg'})}</script>
+
+<script data-fr-legal-batch="insurance-export-js">
+!function(){
+  "use strict";
+  function value(id){var el=document.getElementById(id);return el?el.value:'';}
+  function text(id){var el=document.getElementById(id);return el?(el.textContent||'').trim():'';}
+  function buildInsuranceBrief(){
+    return [
+      "AfroTools - estimation assurance auto Cote d'Ivoire",
+      "Date de preparation: 22 juin 2026",
+      "",
+      "Vehicule:",
+      "- Valeur: "+(value('vehicleValue')||'non renseignee'),
+      "- Age du vehicule: "+(value('vehicleAge')||'non renseigne'),
+      "- Type: "+(value('vehicleType')||'non renseigne'),
+      "- Age conducteur: "+(value('driverAge')||'non renseigne'),
+      "- Annees avec permis: "+(value('yearsLicensed')||'non renseigne'),
+      "- Sinistres: "+(value('claimHistory')||'non renseigne'),
+      "",
+      "Resultat:",
+      "- Prime annuelle estimee: "+(text('resAmount')||'non calculee'),
+      "- Tiers obligatoire: "+(text('resTP')||'non calcule'),
+      "- Tous risques: "+(text('resComp')||'non calcule'),
+      "- Franchise typique: "+(text('resExcess')||'non calculee'),
+      "- Assureurs a consulter: "+(text('resProviders')||'non calcule'),
+      "- Note: "+(text('resTip')||'non calculee'),
+      "",
+      "A verifier: tarifs officiels, garanties, exclusions, controle technique, taxes, certificat et franchise avec un assureur ou courtier agree.",
+      "Limite: estimation de preparation uniquement; pas un devis ni une garantie de couverture."
+    ].join('\n');
+  }
+  function setStatus(msg){var el=document.getElementById('insuranceExportStatus');if(el)el.textContent=msg;}
+  function download(name,text){
+    var blob=new Blob([text],{type:'text/plain'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=name;
+    a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);},250);
+  }
+  function copy(text){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){setStatus('Resume copie.');},function(){setStatus('Copie indisponible; utilisez le telechargement TXT.');});
+    } else {
+      setStatus('Copie indisponible; utilisez le telechargement TXT.');
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var c=document.getElementById('copyInsuranceBrief');
+    var d=document.getElementById('downloadInsuranceBrief');
+    if(c)c.addEventListener('click',function(){copy(buildInsuranceBrief());});
+    if(d)d.addEventListener('click',function(){download('assurance-auto-cote-ivoire-resume.txt',buildInsuranceBrief());setStatus('Fichier TXT prepare.');});
+  });
+}();
+</script>
 </body>
 </html>

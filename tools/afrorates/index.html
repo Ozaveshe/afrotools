@@ -40,6 +40,7 @@
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/africa-map.js?v=abeb0a4d" defer></script>
 <script src="/assets/js/components/api-cta.js?v=fa76abe4" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 
 <style>
 /* ══════════════════════════════════════════════════════════════════
@@ -2503,7 +2504,22 @@ body.afrorates-page {
 <!-- ══════════════════════════════════════════════════════════════
      RELATED TOOLS & FOOTER
      ══════════════════════════════════════════════════════════════ -->
-<afro-related-tools></afro-related-tools>
+<section class="faq-section quality-verification-panel" data-tool-verification-panel aria-labelledby="afrorates-verification-title">
+  <div class="faq-inner">
+    <h2 id="afrorates-verification-title">AfroRates verification notes</h2>
+    <div class="faq-list">
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="true"><h3>Methodology and freshness</h3><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a" style="display:block"><div class="faq-a-inner">AfroRates shows latest available policy rates, inflation, real-rate estimates, treasury yields, and MPC calendar context from stored feeds and cached live-data responses. Treat every figure as a source-labeled planning reference, not financial advice, investment advice, a trading signal, or an official filing.</div></div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false"><h3>What to verify</h3><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Before acting, open the named central bank, statistics office, treasury, or debt-management source and check the release date, unit, currency, auction tenor, meeting date, and whether a newer bulletin has been published.</div></div></div>
+      <div class="faq-item"><button type="button" class="faq-q" aria-expanded="false"><h3>Export path</h3><span class="faq-icon" aria-hidden="true">+</span></button><div class="faq-a"><div class="faq-a-inner">Use the table filters, comparison panel, CSV export, and API handoff as research aids. Keep an internal note of the source timestamp used for any report, forecast, policy memo, or editorial chart.</div></div></div>
+    </div>
+  </div>
+</section>
+<div style="max-width:960px;margin:0 auto 24px;padding:0 20px">
+  <afro-business-cta
+    tool-name="AfroRates"
+    save-note="Filter countries, export CSV, and save the source timestamp before using rate data in a report."></afro-business-cta>
+</div>
+<afro-related-tools category="financial" current="afrorates"></afro-related-tools>
 <afro-footer></afro-footer>
 
 
@@ -3662,6 +3678,9 @@ body.afrorates-page {
       source: 'AfroTools rates API',
       message: 'Checking latest available central bank data'
     });
+    if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') {
+      return loadStaticRatesFallback('local static smoke uses the bundled rates snapshot');
+    }
     return fetchRatesJson('/api/rates').then(function(json) {
       if (!json || !Array.isArray(json.countries) || json.countries.length < 30) {
         var count = json && json.countries ? json.countries.length : 0;

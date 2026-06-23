@@ -24,6 +24,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -1170,6 +1171,46 @@
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
+<section class="tool-verification-sec" data-tool-verification-panel="hash-generator">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Integrity check</span>
+          <h2 class="tool-verification-title">Use hashes for verification, not secret recovery</h2>
+          <p class="tool-verification-lead">Generate text or file hashes locally, compare expected values, verify checksums, and copy results for release or support workflows.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local Web Crypto</span>
+          <p class="tool-verification-note">Text and selected files stay in the browser during hashing.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: hash the exact text or file bytes locally, then compare the resulting digest with a trusted expected value.</li>
+            <li>Use SHA-256 or stronger for modern integrity checks; avoid MD5/SHA-1 for security decisions.</li>
+            <li>Compare hashes from trusted release notes, package registries, or official vendor pages before installing files.</li>
+            <li>Use HMAC/PBKDF2 settings only with test secrets unless your security policy says otherwise.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: this is a local utility, not malware scanning, password cracking, or a complete security audit.</li>
+            <li>A matching hash proves byte-for-byte equality to a known value, not that the source itself is trustworthy.</li>
+            <li>Never paste production passwords, API keys, seed phrases, or private signing secrets into shared output.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#textResults">Review hash output</a>
+        <p class="tool-verification-disclaimer">Source/reference note: verify expected checksums with official release pages, package registries, or internal build artifacts before trusting a download.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <afro-related-tools category="developer" current="hash-generator"></afro-related-tools>
 <afro-footer></afro-footer>
 

@@ -16,7 +16,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -371,23 +375,23 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 
 
-<section class="df-upgrade" data-df-upgrade="microfinance-calc">
+<section class="df-upgrade" data-df-upgrade="microfinance-calc" data-tool-verification-panel data-tool-id="microfinance-calc">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Microfinance Loan Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for microfinance loan calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Microfinance Loan Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, officialSource, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Loan cost check</span>
+      <h2>Compare flat rate, reducing balance, fees, and APR</h2>
+      <p>Model the cash you receive, repayment schedule, fees, total cost, and effective APR before accepting a microfinance, SACCO, cooperative, or digital-lender offer.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: repayment amount, disbursed cash, total cost, APR, comparison method, schedule, save, share, and copyable brief.</li><li>Methodology: local estimate from your principal, term, rate type, processing fee, and other fees; no lender approval or live quote is generated.</li><li>Verification: confirm the lender licence, total repayment, late penalties, insurance, upfront deductions, early-settlement terms, and written contract.</li><li>Privacy: your loan scenario stays in this browser unless you choose save, share, or copy.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning estimate only, not lending approval, legal advice, financial advice, or an official affordability assessment.</p>
     </div>
     <form class="df-form" data-df-form="microfinance-calc">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="microfinance-calc" data-df-base="Microfinance Loan Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Microfinance Loan Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="microfinance-calc">Copy summary</button></div>
+      <label>Loan amount<input name="loanAmount" type="number" value="500000" min="0" step="any" aria-label="Loan amount"></label>
+      <label>Advertised rate percent<input name="advertisedRate" type="number" value="5" min="0" step="any" aria-label="Advertised rate percent"></label>
+      <label>Method to verify<select name="method" aria-label="Method to verify"><option value="flat rate">flat rate</option><option value="reducing balance">reducing balance</option><option value="fees deducted upfront">fees deducted upfront</option><option value="late penalty">late penalty</option></select></label>
+      <label>Review priority<select name="priority" aria-label="Review priority"><option value="lowest APR">lowest APR</option><option value="cash disbursed">cash disbursed</option><option value="shortest term">shortest term</option><option value="penalty risk">penalty risk</option></select></label>
+      <button type="submit">Create loan brief</button>
+      <output class="df-result" data-df-result="microfinance-calc" data-df-base="Loan brief ready. Calculate the true cost above, then verify flat-rate method, upfront fees, penalties, licence, and the written repayment schedule before signing." aria-live="polite">Loan brief ready. Calculate the true cost above, then verify flat-rate method, upfront fees, penalties, licence, and the written repayment schedule before signing.</output>
+      <div class="df-actions"><button type="button" data-df-copy="microfinance-calc">Copy loan brief</button><a class="df-action-link" href="#results">View true-cost result</a></div>
     </form>
   </div>
 </section>
@@ -407,7 +411,8 @@ h1 em{color:var(--afro-blue);font-style:normal}
 </div>
 </section>
 
-<afro-related-tools></afro-related-tools>
+<afro-business-cta tool-name="Microfinance Loan Calculator" prospect-segment="loan-planning" save-note="Calculate true cost locally, then save or share the loan scenario before confirming the written offer."></afro-business-cta>
+<afro-related-tools category="financial" current="microfinance-calc"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
@@ -561,8 +566,14 @@ function calculate(){
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="microfinance-calc" tool-name="Microfinance Calc"></save-result-button><share-result-button tool-name="Microfinance Calc" tool-slug="microfinance-calc"></share-result-button>';
+  div.innerHTML = '<button type="button" class="btn" id="microfinance-copy-summary" style="width:auto;margin-top:0;background:#0f172a;color:#fff">Copy summary</button><save-result-button tool-slug="microfinance-calc" tool-name="Microfinance Calc"></save-result-button><share-result-button tool-name="Microfinance Calc" tool-slug="microfinance-calc"></share-result-button>';
   target.appendChild(div);
+  function microfinanceSummary(){
+    calculate();
+    return 'Microfinance loan estimate: payment '+document.getElementById('rPayment').textContent+', total repayment '+document.getElementById('rTotal').textContent+', total cost '+document.getElementById('rCost').textContent+', effective APR '+document.getElementById('rAPR').textContent+', cash disbursed '+document.getElementById('rDisbursed').textContent+'. Verify lender licence, flat/reducing method, upfront fees, penalties, insurance, early settlement terms, and written repayment schedule before signing.';
+  }
+  var copyBtn=document.getElementById('microfinance-copy-summary');
+  if(copyBtn){copyBtn.addEventListener('click',function(){var text=microfinanceSummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);copyBtn.textContent='Copied';setTimeout(function(){copyBtn.textContent='Copy summary';},1600);}});}
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

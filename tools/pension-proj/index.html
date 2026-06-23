@@ -21,10 +21,12 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{--em:#059669;--em-dark:#047857;--em-darker:#064e3b;--em-light:#a7f3d0;--em-bg:#ecfdf5;--dark:#0f1419;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-300:#cbd5e1;--gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-800:#1e293b;--radius:10px;--shadow:0 1px 8px rgba(0,0,0,.05)}
@@ -48,6 +50,7 @@ h1 em{color:var(--em-light);font-style:normal}
 /* Main Layout */
 .tool-main{padding:28px 0 72px}
 .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+.tool-main-inner>*{min-width:0}
 
 /* Cards */
 .card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
@@ -217,7 +220,7 @@ h1 em{color:var(--em-light);font-style:normal}
 /* Responsive */
 @media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:768px){.result-grid{grid-template-columns:repeat(2,1fr)}.field-row,.field-row-3{grid-template-columns:1fr}.comparison-cards{grid-template-columns:1fr}.mc-stats{grid-template-columns:repeat(3,1fr)}.chart-canvas-wrap{height:220px}.scenario-table{font-size:.7rem}.rates-table{font-size:.66rem}}
-@media(max-width:480px){.result-grid{grid-template-columns:1fr 1fr}.r-value{font-size:1.05rem}.progress-ring-wrap{flex-direction:column;gap:12px}.mc-stats{grid-template-columns:1fr 1fr 1fr}.export-row{flex-direction:column}.export-btn{width:100%;justify-content:center}}
+@media(max-width:480px){.tool-main-inner{padding:0 14px}.card-body,.card-head{padding-left:16px;padding-right:16px}.result-grid{grid-template-columns:1fr 1fr}.r-value{font-size:1.05rem}.progress-ring-wrap{flex-direction:column;gap:12px}.mc-stats{grid-template-columns:1fr 1fr 1fr}.export-row{flex-direction:column}.export-btn{width:100%;justify-content:center}.toggle-group,.chart-tabs{flex-wrap:wrap}.toggle-btn,.chart-tab{min-width:120px}.table-wrap,.scenario-table,.proj-table,.rates-table{max-width:100%;overflow-x:auto}}
 
 /* AI Advisor sidebar */
 .ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
@@ -856,6 +859,46 @@ Share
 </div>
 </section>
 
+<section class="tool-verification-sec" data-tool-verification-panel="pension-proj">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Retirement planning check</span>
+          <h2 class="tool-verification-title">Stress-test the pension projection before changing contributions</h2>
+          <p class="tool-verification-lead">The app models contribution rates, employer match, voluntary saving, inflation, drawdown, and probabilistic outcomes from your assumptions.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Scenario projection</span>
+          <p class="tool-verification-note">No pension provider, employer, or regulator receives your inputs.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Confirm statutory contribution rates, employer policy, fees, vesting, and withdrawal rules for your country and provider.</li>
+            <li>Run at least one lower-return or higher-inflation case before relying on the target probability.</li>
+            <li>Save or export the result for retirement-advisor, HR, or household planning review.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Investment returns, inflation, salary growth, tax relief, and pension regulations can change materially over time.</li>
+            <li>The Monte Carlo output is a planning range, not a guarantee that a target income will be met.</li>
+            <li>Salary and retirement entries are processed locally unless you separately choose a networked feature.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#resultSection">Review projection</a>
+        <p class="tool-verification-disclaimer">Disclaimer: estimate only. Source/freshness note: verify with current pension law, provider fees, tax rules, and fund performance before making retirement decisions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Pension Projection Calculator" prospect-segment="hr-payroll" save-note="Build the projection, then export or save the plan for HR, advisor, payroll, or household retirement review."></afro-business-cta>
 <afro-related-tools category="financial" current="pension-proj"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>

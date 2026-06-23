@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
 <title>Kalkuletan Fansho Najeriya | AfroTools</title>
-<meta name="description" content="Kalkuletan Hausa don fanshon Najeriya: lissafa gudummawar ma'aikaci, gudummawar mai daukar aiki, da kiyasin kudin RSA zuwa ritaya.">
+<meta name="description" content="Kalkuletan Hausa don fanshon Najeriya: lissafa gudummawar ma aikaci, gudummawar mai daukar aiki, kudin RSA da kiyasin ritaya.">
 <link rel="canonical" href="https://afrotools.com/ha/kayan-aiki/fansho-najeriya/">
 <meta name="robots" content="index, follow">
 <meta name="content-language" content="ha">
@@ -84,12 +84,21 @@
         <div class="card-body">
           <div class="result-grid" id="cps-rg"></div>
           <p class="note" id="cps-note"></p>
+          <button type="button" class="btn" onclick="copyCPS()" style="margin-top:12px;background:#0f172a">Kwafi takaitaccen sakamako</button>
+          <p class="note" id="cps-copy-status" aria-live="polite"></p>
         </div>
       </div>
       <section class="copy">
         <h2>Abin da ya kamata ka duba</h2>
         <p>Gudummawar fansho tana dogara da kudin da ake lissafin fansho a kai. Idan mai daukar aiki yana amfani da Basic + Housing + Transport ko wata yarjejeniya daban, ka shigar da adadin da ya fi dacewa da takardar albashinka.</p>
         <p>Kiyasin ritaya ba alkawarin kudi ba ne. Hakikanin kudin RSA ya danganta da abin da PFA ta samu a kasuwa, kudaden gudanarwa, lokacin biyan gudummawa, da dokokin PenCom. Yi amfani da shi don shiri, sannan ka tabbatar da takardar RSA ko PFA dinka.</p>
+      </section>
+      <section class="copy" data-tool-verification-panel="ng-pension-ha">
+        <h2>Sources &amp; verification - last reviewed 2026</h2>
+        <p><strong>Methodology:</strong> The calculator applies the visible employee and employer contribution rates to the pensionable pay you enter, then projects monthly deposits to retirement using your selected annual return assumption.</p>
+        <p><strong>Source and freshness:</strong> The default contribution examples follow common Nigerian CPS guidance associated with PenCom and employer payroll practice. Pension rules, RSA fees and PFA returns can change, so confirm final decisions with PenCom guidance, your PFA statement, HR/payroll, or a licensed adviser.</p>
+        <p><strong>Disclaimer and privacy:</strong> This is an estimate only, not official pension advice or a guaranteed retirement payout. The salary and age values stay in this browser unless you copy or export them yourself.</p>
+        <p><a href="/tools/ng-pension/">Open the full English calculator</a> or <a href="/business-enquiry/?offer=custom-calculator&amp;tool=ng-pension-ha&amp;source=/ha/kayan-aiki/fansho-najeriya/">request a payroll or pension widget</a>.</p>
       </section>
     </section>
     <aside>
@@ -107,6 +116,7 @@
 </main>
 <afro-footer></afro-footer>
 <script>
+var lastPensionSummary = '';
 function fmt(n){return 'NGN ' + Math.round(n || 0).toLocaleString('en-NG');}
 function calcCPS(){
   var E = window.NgPensionEngine;
@@ -130,7 +140,18 @@ function calcCPS(){
     '<div class="rbox"><div class="num">'+fmt(r.monthlyPW20)+'</div><div class="lbl">Kiyasin biya na wata</div></div>' +
     '<div class="rbox"><div class="num">'+r.yearsToRetire+'</div><div class="lbl">Shekaru zuwa ritaya</div></div>';
   document.getElementById('cps-note').innerHTML = 'Kiyasin ya dogara da '+ret+'% na ribar shekara a cikin shekaru '+r.yearsToRetire+'. Biyan wata yana amfani da ragowar 75% na kudin RSA bisa shekara 20. Hakikanin sakamako ya danganta da PFA.';
+  lastPensionSummary = 'Kiyasin fansho: pensionable pay ' + fmt(r.pensionablePay || (basic + housing + transport + other)) + '; ma aikaci ' + fmt(r.empContrib) + '; mai daukar aiki ' + fmt(r.erContrib) + '; jimillar wata ' + fmt(r.totalMonthly) + '; kiyasin RSA a ritaya ' + fmt(r.projected) + '; assumption ' + ret + '% annual return. Verify with PFA/PenCom.';
+  document.getElementById('cps-copy-status').textContent = '';
   document.getElementById('cps-result').style.display='block';
+}
+function copyCPS(){
+  var text = lastPensionSummary || 'Lissafa fansho tukuna.';
+  var status = document.getElementById('cps-copy-status');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ status.textContent = 'An kwafi takaitaccen sakamako.'; }).catch(function(){ status.textContent = text; });
+  } else {
+    status.textContent = text;
+  }
 }
 calcCPS();
 </script>

@@ -39,7 +39,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91"><link rel="stylesheet" href="/assets/css/multi-country.css?v=57434195">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
-<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script><script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
 :root{--blue:#1d4ed8;--blue-light:#eff6ff;--blue-dark:#1e40af}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -188,7 +188,7 @@ window.addEventListener('load', function() {
 
 <div style="text-align:center;margin:1.5rem 0"><button type="button" class="btn btn-primary" id="generateBtn" style="font-size:1.05rem;padding:.75rem 2.5rem">Generate Agreement</button></div>
 <div id="output" style="display:none"><div class="agreement-preview" id="agreementContent"></div>
-<div class="actions"><button type="button" class="btn btn-primary" onclick="window.print()">Print Agreement</button><button type="button" class="btn btn-outline" id="downloadBtn">Telecharger en texte</button></div></div>
+<div class="actions"><button type="button" class="btn btn-primary" onclick="window.print()">Print Agreement</button><button type="button" class="btn btn-outline" id="copyAgreementBtn">Copier le texte</button><button type="button" class="btn btn-outline" id="downloadBtn">Telecharger en texte</button><span id="agreementCopyStatus" aria-live="polite" style="align-self:center;color:#475569;font-size:.9rem"></span></div></div>
 </div>
 
 <section class="seo-section">
@@ -203,6 +203,16 @@ window.addEventListener('load', function() {
 <p><strong>Methodologie:</strong> le generateur combine les donnees du proprietaire, du locataire, du bien, du loyer, du depot, des charges et des clauses choisies pour produire un brouillon de bail relisible avant signature.</p>
 <p><strong>Avertissement:</strong> ce modele est une estimation generale et ne remplace pas un avis juridique local. Verifiez la loi, l'autorite, les frais d'enregistrement et la pratique du tribunal ou du notaire avant de signer.</p>
 </section>
+<section class="seo-section" data-tool-verification-panel data-fr-legal-batch="lease-trust">
+<h2>Verification, sources et limites</h2>
+<p><strong>Source/reference:</strong> la reference juridique visible sur cette page est utilisee comme point de depart. Avant signature, confirmez le texte officiel, les frais d'enregistrement, les delais de preavis, le plafond de caution et la pratique locale avec le registre competent, un notaire, un avocat ou l'autorite du logement.</p>
+<p><strong>Methodologie:</strong> le brouillon assemble les champs saisis pour le bien, le proprietaire, le locataire, le loyer, la caution, la duree, les charges et les clauses optionnelles. Le resultat reste un document de preparation a relire, corriger et faire valider.</p>
+<p><strong>Derniere verification de la page:</strong> 22 juin 2026. Les regles de bail, taxes, timbres, eviction, depot et enregistrement peuvent changer. Cet outil est local-first et ne transmet pas vos noms, adresses, loyers ou clauses a un serveur.</p>
+<p><strong>Avertissement:</strong> estimation documentaire uniquement; ce n'est pas un conseil juridique, un depot officiel, une garantie de conformite ni un remplacement d'un professionnel local.</p>
+</section>
+<div class="seo-section" data-fr-legal-batch="lease-cta">
+<afro-business-cta tool-name="Generateur de contrat de bail - Somalia" save-note="Copiez, imprimez ou telechargez le brouillon localement, puis faites valider le contrat avant signature."></afro-business-cta>
+</div>
 <afro-footer></afro-footer>
 <script src="/data/legal/tenancy-data.js?v=88d50dd5"></script>
 <script src="/engines/tenancy-agreement-engine.js?v=89434273"></script>
@@ -234,6 +244,46 @@ document.getElementById('downloadBtn').addEventListener('click',function(){
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);
   a.download='tenancy-agreement-somalia.txt';a.click();
 });
+}();
+</script>
+
+<script data-fr-legal-batch="lease-copy">
+!function(){
+  "use strict";
+  function agreementText(){
+    var el=document.getElementById('agreementContent');
+    return el ? (el.innerText||el.textContent||'').trim() : '';
+  }
+  function setStatus(msg){
+    var el=document.getElementById('agreementCopyStatus');
+    if(el) el.textContent=msg;
+  }
+  function fallbackCopy(text){
+    var ta=document.createElement('textarea');
+    ta.value=text;
+    ta.setAttribute('readonly','');
+    ta.style.position='fixed';
+    ta.style.left='-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try{document.execCommand('copy');setStatus('Texte copie.');}
+    catch(e){setStatus('Copie indisponible; utilisez le telechargement TXT.');}
+    document.body.removeChild(ta);
+  }
+  function copyAgreementText(){
+    var text=agreementText();
+    if(!text){setStatus('Generez un brouillon avant de copier.');return;}
+    setStatus('Copie en cours...');
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){setStatus('Texte copie.');},function(){fallbackCopy(text);});
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var btn=document.getElementById('copyAgreementBtn');
+    if(btn) btn.addEventListener('click',copyAgreementText);
+  });
 }();
 </script>
 </body>

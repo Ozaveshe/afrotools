@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0e2a4a 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
@@ -110,7 +111,9 @@
 </div>
 
 
-<section data-tool-verification-panel data-sw-sim-export style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:16px 18px;line-height:1.65;color:#334155;"><h2 style="margin:0 0 8px;color:#0f172a;">Muhtasari wa SIM na chanzo</h2><p data-methodology style="margin:0 0 10px;">Chagua nchi, kagua mahitaji ya KYC/SIM, kisha nakili checklist ya hatua inayofuata.</p><p data-official-source data-disclaimer style="margin:0 0 12px;"><strong>Chanzo cha mwisho:</strong> operator, regulator au mamlaka ya kitambulisho. Mahitaji ya SIM, biometric, NIN, ID na deadlines hubadilika.</p><button type="button" id="simCopyBrief" style="border:0;border-radius:10px;background:#1d4ed8;color:#fff;font-weight:900;padding:10px 14px;cursor:pointer">Nakili checklist</button> <span id="simCopyStatus" aria-live="polite" style="font-weight:800;color:#475569"></span></div></section><section class="sw-telecom-limits-note" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #bae6fd;background:#f0f9ff;color:#075985;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Mipaka ya telco:</strong> ISP, LTE, 5G, Starlink, USSD, SIM, SMS, WhatsApp Business na roaming ni istilahi za soko. Bei, coverage, speed, approval, SIM registration na mobile-money fees hubadilika; hakiki kwenye app, USSD, website ya operator au regulator kabla ya kufanya uamuzi.</div></section>
+<section data-tool-verification-panel data-sw-sim-export style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:16px 18px;line-height:1.65;color:#334155;"><h2 style="margin:0 0 8px;color:#0f172a;">Methodology / Mbinu, SIM sources and freshness 2026</h2><p data-methodology style="margin:0 0 10px;"><strong>Methodology:</strong> chagua nchi, kagua mahitaji ya KYC/SIM, deadline, check code na operator list, kisha nakili au pakua checklist ya hatua inayofuata.</p><p data-official-source data-disclaimer style="margin:0 0 12px;"><strong>Sources and freshness 2026:</strong> operator, regulator au mamlaka ya kitambulisho. Mahitaji ya SIM, biometric, NIN, ID na deadlines hubadilika. <strong>Disclaimer:</strong> not official, not legal advice, not telecom advice; verify with the regulator or operator before acting.</p><button type="button" id="simCopyBrief" style="border:0;border-radius:10px;background:#1d4ed8;color:#fff;font-weight:900;padding:10px 14px;cursor:pointer">Nakili checklist</button> <button type="button" id="simDownloadBrief" style="border:0;border-radius:10px;background:#166534;color:#fff;font-weight:900;padding:10px 14px;cursor:pointer">Download TXT</button> <span id="simCopyStatus" aria-live="polite" style="font-weight:800;color:#475569"></span></div></section><section class="sw-telecom-limits-note" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #bae6fd;background:#f0f9ff;color:#075985;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Mipaka ya telco:</strong> ISP, LTE, 5G, Starlink, USSD, SIM, SMS, WhatsApp Business na roaming ni istilahi za soko. Bei, coverage, speed, approval, SIM registration na mobile-money fees hubadilika; hakiki kwenye app, USSD, website ya operator au regulator kabla ya kufanya uamuzi.</div></section>
+<!-- localized-tax-business-cta -->
+<afro-business-cta tool-name="Ukaguzi Usajili wa SIM" save-note="Pakia brief ya SIM/KYC kwa operesheni ya agent, field team au customer onboarding workflow."></afro-business-cta>
 <afro-footer></afro-footer>
 
 <script src="/data/telecom/country-telecom-index.js?v=61207340"></script>
@@ -265,8 +268,9 @@
     var content=document.getElementById('content');
     return 'Ukaguzi wa SIM AfroTools\nNchi: ' + name + '\n\n' + (content ? content.innerText.trim() : 'Chagua nchi kwanza') + '\n\nHakiki operator, regulator au mamlaka ya ID kabla ya kutegemea checklist.';
   }
-  var btn=document.getElementById('simCopyBrief'), status=document.getElementById('simCopyStatus');
+  var btn=document.getElementById('simCopyBrief'), download=document.getElementById('simDownloadBrief'), status=document.getElementById('simCopyStatus');
   if(btn) btn.addEventListener('click', function(){ var text=swSimBrief(); if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ if(status) status.textContent='Checklist imenakiliwa.'; }).catch(function(){ if(status) status.textContent='Nakili kwa mkono ikiwa ruhusa imezuiwa.'; }); } });
+  if(download) download.addEventListener('click', function simDownloadFile(){ var blob=new Blob([swSimBrief()],{type:'text/plain'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='ukaguzi-sim-afrotools.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); if(status) status.textContent='Faili ya TXT imepakuliwa.'; });
 })();
 </script></body>
 </html>

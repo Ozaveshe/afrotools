@@ -111,6 +111,22 @@
     </aside>
   </div>
 </main>
+<section class="card" data-yo-agriculture-batch="export">
+<h2>Gbe abajade jade</h2>
+<p class="muted">Da akopọ tabi gba faili TXT fun ijiroro pẹlu agbẹ, olutaja, ẹgbẹ oko tabi olura. Ohun gbogbo n ṣiṣẹ local-first ninu browser yii.</p>
+<div class="yo-p1-buttons">
+  <button type="button" data-yo-agri-copy>Da abajade kopi</button>
+  <button type="button" data-yo-agri-download>Gba TXT</button>
+  <span class="yo-p1-status" data-yo-agri-status aria-live="polite"></span>
+</div>
+</section>
+<section class="card" data-tool-verification-panel data-yo-agriculture-batch="trust">
+<h2>Orisun, ona isiro ati opin</h2>
+<p><strong>Orisun ati alabapade:</strong> oju-iwe yii lo oju-iwe yii n lo awọn iye ọja ti olumulo tẹ ati eto iṣiro agbegbe oju-iwe. A tun sayewo oju-iwe yii ni 22 June 2026. Owo ọja, ojo, irugbin, ajile, gbigbe, arun, kokoro ati wiwa olura le yipada.</p>
+<p><strong>Ona isiro:</strong> eto naa n darapo iye ohun elo ninu agbon, owo kọọkan ati iye eniyan tabi ọsẹ lati fihan iye lapapọ fun igbaradi rira.</p>
+<p><strong>Sayewo:</strong> fi abajade we iye ọja agbegbe, ADP tabi extension officer, ẹgbẹ agbẹ, olutaja, olura gidi ati iwe adehun ṣaaju ki o to ra ohun elo tabi gba gbese.</p>
+<p><strong>Asiri ati opin:</strong> awọn iye ti o tẹ wa ninu browser yii. AfroTools ko fi data oko rẹ ranṣẹ si server. Eyi jẹ irinṣẹ eto ati afiyesi nikan; kii ṣe idiyele ọja osise, ijẹrisi ijọba, imọran inawo, tabi ileri ere.</p>
+</section>
 <afro-footer></afro-footer>
 <script>
 (function(){
@@ -139,6 +155,43 @@
 </script>
 <script data-yo-p1-planner-script>
 (function(){document.querySelectorAll('[data-yo-p1-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'AfroTools';var output=panel.querySelector('[data-p1-output]');var status=panel.querySelector('[data-p1-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var file=panel.querySelector('[name="file"]');var fileText=file&&file.files&&file.files.length?file.files.length+' file':'';var parts=[];if(scope)parts.push('Ipo: '+scope);if(task)parts.push('Ise: '+task);if(details)parts.push('Alaye: '+details);if(fileText)parts.push(fileText);return parts.length?name+' - '+parts.join(' | '):'Fi ipo, ise tabi alaye kun lati gba akopo.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-p1-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Akopo ti daako.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
+</script>
+<script data-yo-agriculture-batch="export-js">
+(function(){
+  function text(sel){var el=document.querySelector(sel);return el?(el.innerText||el.textContent||'').trim():'';}
+  function values(){
+    return Array.prototype.slice.call(document.querySelectorAll('main input, main select, main textarea')).map(function(el){
+      var label=document.querySelector('label[for="'+el.id+'"]');
+      var name=(label?(label.innerText||label.textContent):el.name||el.id||'Field').trim();
+      var value=el.tagName==='SELECT'&&el.selectedOptions[0]?el.selectedOptions[0].textContent:el.value;
+      return '- '+name+': '+(value||'ko kun');
+    }).slice(0,30);
+  }
+  function resultLines(){
+    var lines=[];
+    ['#resultsPanel','#budgetResult','#result','#fishResult','.result'].forEach(function(sel){
+      var body=text(sel);
+      if(body&&lines.indexOf(body)===-1) lines.push(body);
+    });
+    return lines.join('\n\n').slice(0,4000)||'Abajade ko tii han. Tẹ bọtini isiro ki o tun daakọ.';
+  }
+  function brief(){
+    var lines=["Agbon oja ounje",'Ọjọ igbaradi: 22 June 2026','','Awọn iye ti a tẹ:'];
+    lines=lines.concat(values());
+    lines.push('','Abajade:',resultLines(),'','Orisun: oju-iwe yii n lo awọn iye ọja ti olumulo tẹ ati eto iṣiro agbegbe oju-iwe; engine: inline basket calculator.','Opin: afiyesi eto nikan; kii ṣe idiyele ọja osise, ijẹrisi ijọba, imọran inawo tabi ileri ere.');
+    return lines.join('\n');
+  }
+  function status(msg){var el=document.querySelector('[data-yo-agri-status]');if(el)el.textContent=msg;}
+  function fallbackCopy(value){var ta=document.createElement('textarea');ta.value=value;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');status('Akopo ti daako.');}catch(e){status('Daakọ kuna; lo TXT.');}document.body.removeChild(ta);}
+  function copy(){var value=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(value).then(function(){status('Akopo ti daako.');},function(){fallbackCopy(value);});}else fallbackCopy(value);}
+  function download(){var blob=new Blob([brief()],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download="yo-agriculture-agbon-oja-akopo.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},250);status('Faili TXT ti setan.');}
+  document.addEventListener('DOMContentLoaded',function(){
+    var c=document.querySelector('[data-yo-agri-copy]');
+    var d=document.querySelector('[data-yo-agri-download]');
+    if(c)c.addEventListener('click',copy);
+    if(d)d.addEventListener('click',download);
+  });
+})();
 </script>
 </body>
 </html>

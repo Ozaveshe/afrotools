@@ -30,7 +30,82 @@
 <output class="ha-p1-output" data-p1-output>Sanya kasa, aiki ko bayanai domin samun takaitawa.</output>
 <div class="ha-p1-buttons"><a href="/tools/cover-letter-generator/">Bude cikakken kayan aiki</a><button type="button" data-p1-copy>Kwafi takaitawa</button><span class="ha-p1-status" data-p1-status aria-live="polite"></span></div>
 <div class="ha-p1-method"><strong>2026:</strong> Sirri: ka rike takardu masu muhimmanci a browser kuma ka duba cikakken shafi kafin aikawa ko sauke fayil.</div>
-</section><div class="ha-wrap ha-layout"><section><div class="ha-card"><div class="ha-card-head"><h2>Bayanan wasika</h2></div><div class="ha-card-body"><div class="ha-row"><div class="ha-field"><label for="job">Aikin da ake nema</label><input id="job" value="Jami'in tallafi"></div><div class="ha-field"><label for="company">Sunan kamfani</label><input id="company" value="Kamfani"></div></div><div class="ha-field"><label for="strength">Kwarewar da tafi dacewa</label><textarea id="strength">na iya kula da abokin ciniki, rubuta rahoto, da aiki cikin tsari</textarea></div><button class="ha-btn full" type="button" onclick="draftLetter()">Rubuta daftari</button><div id="letterResult" class="ha-result"></div></div></div><section class="ha-copy"><h2>Kafin aikawa</h2><p>Karanta wasikar da kanka, ka cire kalmomin da ba su dace da aikin ba, sannan ka tabbatar da sunan kamfani da mukamin aiki. Aika takarda mai gajere, mai bayani, kuma mai gaskiya.</p><p>Idan kana son samfurori da fitarwa zuwa PDF ko Word, bude <a href="/tools/cover-letter-generator/">shafin Turanci</a>.</p></section></section><aside><div class="ha-note">Wasika mai kyau tana bayyana dalili da shaida, ba dogon tarihin rayuwa ba. Ka bar cikakken bayani ga CV.</div></aside></div></main><afro-footer></afro-footer><script>function draftLetter(){letterResult.style.display='block';letterResult.innerHTML='<strong>Daftarin wasika</strong><br>Ina neman damar aiki a matsayin '+job.value+' a '+company.value+'. Ina ganin wannan dama ta dace da ni saboda '+strength.value+'. Zan yi farin cikin bayar da karin bayani a hira. Na gode da duba bukata ta.'}</script><script data-ha-p1-planner-script>
+</section>
+<div class="ha-wrap ha-layout">
+<section>
+<div class="ha-card" data-letter-app data-tool-verification-panel>
+<div class="ha-card-head"><h2>Bayanan wasika</h2></div>
+<div class="ha-card-body">
+<div class="ha-row">
+<div class="ha-field"><label for="job">Aikin da ake nema</label><input id="job" value="Jami'in tallafi"></div>
+<div class="ha-field"><label for="company">Sunan kamfani</label><input id="company" value="Kamfani"></div>
+</div>
+<div class="ha-row">
+<div class="ha-field"><label for="manager">Wanda za a gaishe</label><input id="manager" value="Mai daukar ma'aikata"></div>
+<div class="ha-field"><label for="tone">Salon wasika</label><select id="tone"><option value="kai tsaye">Kai tsaye</option><option value="mai ladabi">Mai ladabi</option><option value="mai kuzari">Mai kuzari</option></select></div>
+</div>
+<div class="ha-field"><label for="strength">Kwarewar da tafi dacewa</label><textarea id="strength">na iya kula da abokin ciniki, rubuta rahoto, da aiki cikin tsari</textarea></div>
+<div class="ha-field"><label for="proof">Shaidar aiki ko sakamako</label><textarea id="proof">Na taba taimaka wa kungiya ta rage jinkiri da inganta amsar abokan ciniki.</textarea></div>
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<button class="ha-btn" type="button" id="draftLetterBtn">Rubuta daftari</button>
+<button class="ha-btn secondary" type="button" id="copyLetterBtn">Kwafi wasika</button>
+<button class="ha-btn secondary" type="button" id="downloadLetterBtn">Sauke TXT</button>
+</div>
+<output id="letterResult" class="ha-result" aria-live="polite"></output>
+</div>
+</div>
+<section class="ha-copy">
+<h2>Kafin aikawa</h2>
+<p><strong>Hanyar tsara:</strong> shafin yana hada mukami, kamfani, kwarewa, shaida da rufewa zuwa daftarin farko. Ka gyara kalmomin da kanka kafin aikawa.</p>
+<p><strong>Sirri 2026:</strong> bayanan CV, waya, email ko tarihin aiki suna nan a na'urarka. Babu loda fayil zuwa uwar garke daga wannan shafin Hausa.</p>
+<p><strong>Tushen bayani da iyaka:</strong> yi amfani da bayanin aikin, shafin kamfani da CV dinka a matsayin tushe. Wannan ba tabbacin samun aiki ba ne kuma ba ya maye gurbin shawarar mai daukar ma'aikata.</p>
+<p>Idan kana son samfurori da fitarwa zuwa PDF ko Word, bude <a href="/tools/cover-letter-generator/">shafin Turanci</a>.</p>
+</section>
+</section>
+<aside>
+<div class="ha-note">Wasika mai kyau tana bayyana dalili da shaida, ba dogon tarihin rayuwa ba. Ka bar cikakken bayani ga CV.</div>
+</aside>
+</div>
+</main><afro-footer></afro-footer>
+<script>
+(function(){
+  var result=document.getElementById('letterResult');
+  function value(id){var el=document.getElementById(id);return el&&el.value?el.value.trim():'';}
+  function buildLetter(){
+    var manager=value('manager')||'Mai daukar ma\'aikata';
+    var job=value('job')||'aikin da aka sanar';
+    var company=value('company')||'kamfanin ku';
+    var strength=value('strength')||'kwarewar da ta dace da aikin';
+    var proof=value('proof')||'ina da shaida ta aiki mai amfani';
+    var tone=value('tone')||'kai tsaye';
+    var opener=tone==='mai kuzari'?'Ina matukar shaawar wannan dama':'Ina neman damar aiki';
+    return 'Assalamu alaikum '+manager+',\n\n'+opener+' a matsayin '+job+' a '+company+'. Ina ganin wannan dama ta dace da ni saboda '+strength+'.\n\n'+proof+'\n\nZan yi farin cikin tattaunawa domin in nuna yadda zan taimaka wa '+company+'. Na gode da duba bukata ta.\n\nGaisuwa.';
+  }
+  function render(){
+    result.style.display='block';
+    result.textContent=buildLetter();
+  }
+  function copy(){
+    var text=buildLetter();
+    render();
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
+  }
+  function download(){
+    var blob=new Blob([buildLetter()],{type:'text/plain'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='wasikar-neman-aiki.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  document.getElementById('draftLetterBtn').addEventListener('click',render);
+  document.getElementById('copyLetterBtn').addEventListener('click',copy);
+  document.getElementById('downloadLetterBtn').addEventListener('click',download);
+})();
+</script><script data-ha-p1-planner-script>
 (function(){document.querySelectorAll('[data-ha-p1-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'AfroTools';var output=panel.querySelector('[data-p1-output]');var status=panel.querySelector('[data-p1-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var file=panel.querySelector('[name="file"]');var fileText=file&&file.files&&file.files.length?file.files.length+' file':'';var parts=[];if(scope)parts.push('Yanayi: '+scope);if(task)parts.push('Aiki: '+task);if(details)parts.push('Bayanai: '+details);if(fileText)parts.push(fileText);return parts.length?name+' - '+parts.join(' | '):'Sanya kasa, aiki ko bayanai domin samun takaitawa.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-p1-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='An kwafi takaitawa.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
 </script>
 </body></html>

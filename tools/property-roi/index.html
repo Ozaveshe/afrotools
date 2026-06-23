@@ -59,10 +59,12 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
@@ -75,6 +77,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 .hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#f0f6fc;line-height:1.1;letter-spacing:-0.03em;margin-bottom:12px}
 .hero-sub{font-size:0.95rem;color:rgba(255,255,255,.5);max-width:540px;line-height:1.6}
 .layout{max-width:1160px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
+.layout>*{min-width:0}
 .card{background:#fff;border-radius:20px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.05);margin-bottom:24px}
 .card-title{font-size:1rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:20px;display:flex;align-items:center;gap:8px}
 .card-title span{font-size:1.2rem}
@@ -131,7 +134,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 .faq-q{font-size:0.8rem;font-weight:600;color:#1d1d1f;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .faq-a{font-size:0.78rem;color:#6e6e73;line-height:1.6;margin-top:6px;display:none}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.metrics-grid{grid-template-columns:1fr 1fr}.roi-headline{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.grid-2{grid-template-columns:1fr}.metrics-grid{grid-template-columns:1fr 1fr}.roi-headline{grid-template-columns:1fr}}
+@media(max-width:600px){.layout{padding:28px 14px 64px}.card{padding:20px 16px;border-radius:14px}.grid-2{grid-template-columns:1fr}.metrics-grid{grid-template-columns:1fr 1fr}.roi-headline{grid-template-columns:1fr}.year-table{display:block;max-width:100%;overflow-x:auto}.ai-advisor-head{flex-wrap:wrap}.ai-status,.ai-chat{max-width:100%}}
 
 /* AI Advisor sidebar */
 .ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
@@ -439,6 +442,46 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       </div>
     </div>
 
+    <section class="tool-verification-sec" data-tool-verification-panel="property-roi">
+      <div class="container">
+        <div class="tool-verification-card">
+          <div class="tool-verification-head">
+            <div>
+              <span class="tool-verification-kicker">Investment check</span>
+              <h2 class="tool-verification-title">Pressure-test property ROI with current local costs</h2>
+              <p class="tool-verification-lead">The calculator combines purchase price, leverage, rent, appreciation, holding period, expenses, sale costs, and tax assumptions into a planning ROI.</p>
+            </div>
+            <div class="tool-verification-status">
+              <span class="tool-verification-badge">Scenario estimate</span>
+              <p class="tool-verification-note">No valuation, broker quote, or lender application is created.</p>
+            </div>
+          </div>
+          <div class="tool-verification-grid">
+            <div class="tool-verification-block">
+              <h3>What to check</h3>
+              <ul class="tool-verification-list">
+                <li>Use current rent comparables, vacancy expectations, maintenance, service charges, sale commissions, loan terms, and tax advice.</li>
+                <li>Run downside cases for slower rent growth, currency movement, vacancy, and resale delay.</li>
+                <li>Save or share the output only after removing any private deal details you do not want to circulate.</li>
+              </ul>
+            </div>
+            <div class="tool-verification-block">
+              <h3>Limitations</h3>
+              <ul class="tool-verification-list">
+                <li>Historical benchmarks and default assumptions are not live market data and do not predict future returns.</li>
+                <li>The result is not investment, tax, valuation, title, or legal advice.</li>
+                <li>Deal details are processed in your browser unless you separately choose a networked feature.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tool-verification-actions">
+            <a class="tool-verification-report" href="#results-section">Review ROI result</a>
+            <p class="tool-verification-disclaimer">Disclaimer: estimate only, not legal advice or investment advice. Source/freshness note: verify with local sale prices, rental evidence, tax treatment, title status, and transaction costs before buying.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <afro-business-cta tool-name="Property ROI Calculator" prospect-segment="property-finance" save-note="Build the property return case, then save or share the summary for broker, lender, partner, or investor review."></afro-business-cta>
     <afro-related-tools category="legal" current="property-roi"></afro-related-tools>
   </div>
 </div>

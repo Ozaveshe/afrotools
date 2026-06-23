@@ -726,6 +726,23 @@
     color: #9ca3af;
     text-align: right;
   }
+  .ai-consent {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin: 0 0 12px;
+    padding: 10px 12px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 8px;
+    color: #9a3412;
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+  .ai-consent input {
+    margin-top: 2px;
+    accent-color: var(--afro-green);
+  }
 
   /* Toast */
   .md-toast {
@@ -846,7 +863,7 @@
       "name": "Is my content stored or saved?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Your content is auto-saved locally in your browser. If you sign in, the current draft also syncs to your AfroTools account so you can continue on another device. You can clear the saved content at any time."
+        "text": "Your content is auto-saved locally in your browser. Use the Markdown, HTML, or copy exports when you need to move the draft to another device or publishing system. You can clear the saved content at any time."
       }
     },
     {
@@ -916,7 +933,7 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Markdown <em>Editor</em></h1>
-    <p class="hero-sub">Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.</p>
+    <p class="hero-sub">Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally in this browser.</p>
     <div class="hero-badges">
       <span class="badge b-green">Live Preview</span>
       <span class="badge b-green">GFM Support</span>
@@ -1005,6 +1022,10 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-left:auto"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
       <div class="ai-panel-body">
+        <label class="ai-consent" for="aiConsent">
+          <input id="aiConsent" type="checkbox">
+          <span>Send my current markdown excerpt and question to the AI advisor for this request. Keep this off for private drafts, client notes, resumes, contracts, or unreleased content.</span>
+        </label>
         <div class="ai-suggestions">
           <button type="button" class="ai-suggestion-btn" data-prompt="Fix the formatting in my markdown">Fix formatting</button>
           <button type="button" class="ai-suggestion-btn" data-prompt="Convert this text to well-structured markdown">Convert to markdown</button>
@@ -1016,7 +1037,7 @@
           <button type="button" id="aiSendBtn">Send</button>
         </div>
         <div class="ai-messages" id="aiMessages"></div>
-        <div class="ai-footer">Powered by Claude &middot; Max 3 exchanges per session</div>
+        <div class="ai-footer">Optional AI assist &middot; consent required &middot; max 3 exchanges per session</div>
       </div>
     </div>
   </div>
@@ -1067,6 +1088,14 @@
     </form>
   </div>
 </section>
+<section class="df-faq quality-verification-panel" data-tool-verification-panel data-quality-proof="Markdown Editor" aria-labelledby="markdown-editor-verification-title">
+  <h2 id="markdown-editor-verification-title">Markdown editor sources and verification</h2>
+  <div class="df-faq__grid">
+    <details open><summary>Sources and methodology</summary><p>The preview is generated from the Markdown you type or paste, using local browser rendering rules for headings, lists, tables, links, code blocks, images, task lists, and HTML snippets. The publishing brief records document type, word count, export format, and review focus.</p></details>
+    <details><summary>Before publishing</summary><p>Check heading order, broken links, image paths, code fences, table alignment, embedded HTML, private comments, client details, and how the exported HTML renders in your target CMS, docs site, repository, or email tool.</p></details>
+    <details><summary>Privacy and limitations</summary><p>Drafts are stored locally in this browser unless you copy, download, or explicitly use the optional AI advisor with consent. This editor does not publish to GitHub, CMS platforms, email systems, or documentation hosts, and it is not a security sanitizer for untrusted HTML.</p></details>
+  </div>
+</section>
 <section class="df-faq" aria-labelledby="markdown-editor-faq-title">
   <h2 id="markdown-editor-faq-title">Markdown Editor FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Write or paste Markdown, preview the rendered result, then copy or download the format you need.</p></details><details><summary>What should I verify?</summary><p>Check headings, links, tables, code blocks, images, HTML safety, export format and private notes before publishing.</p></details><details><summary>Does it publish my document?</summary><p>No. It is a local editor and previewer; review the output in your target CMS or documentation system.</p></details></div>
@@ -1100,7 +1129,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Your content is auto-saved locally in your browser. If you sign in, the current draft also syncs to your AfroTools account so you can continue on another device. You can clear the saved content at any time.
+        Your content is auto-saved locally in your browser. Use Markdown, HTML, or copy exports when you need to move the draft to another device or publishing system. You can clear the saved content at any time.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1130,6 +1159,90 @@
 
 <script>
 (function() {
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, function(ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+    });
+  }
+  function fallbackMarkdown(markdown) {
+    var lines = String(markdown || '').split(/\r?\n/);
+    var html = [];
+    var inList = false;
+    var inCode = false;
+    var codeLines = [];
+    function inline(text) {
+      return escapeHtml(text)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" rel="noopener noreferrer">$1</a>');
+    }
+    function closeList() {
+      if (inList) {
+        html.push('</ul>');
+        inList = false;
+      }
+    }
+    lines.forEach(function(line) {
+      if (/^```/.test(line)) {
+        if (inCode) {
+          html.push('<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>');
+          codeLines = [];
+          inCode = false;
+        } else {
+          closeList();
+          inCode = true;
+        }
+        return;
+      }
+      if (inCode) {
+        codeLines.push(line);
+        return;
+      }
+      if (!line.trim()) {
+        closeList();
+        return;
+      }
+      var heading = line.match(/^(#{1,3})\s+(.+)$/);
+      if (heading) {
+        closeList();
+        html.push('<h' + heading[1].length + '>' + inline(heading[2]) + '</h' + heading[1].length + '>');
+        return;
+      }
+      var item = line.match(/^\s*[-*]\s+(.+)$/);
+      if (item) {
+        if (!inList) {
+          html.push('<ul>');
+          inList = true;
+        }
+        html.push('<li>' + inline(item[1]) + '</li>');
+        return;
+      }
+      closeList();
+      html.push('<p>' + inline(line) + '</p>');
+    });
+    closeList();
+    if (inCode) html.push('<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>');
+    return html.join('\n');
+  }
+  if (!window.marked) {
+    window.marked = { setOptions: function(){}, parse: fallbackMarkdown };
+  }
+  if (!window.DOMPurify) {
+    window.DOMPurify = {
+      sanitize: function(html) {
+        var template = document.createElement('template');
+        template.innerHTML = String(html || '');
+        template.content.querySelectorAll('script,iframe,object,embed').forEach(function(node) { node.remove(); });
+        template.content.querySelectorAll('*').forEach(function(node) {
+          Array.from(node.attributes).forEach(function(attr) {
+            if (/^on/i.test(attr.name)) node.removeAttribute(attr.name);
+          });
+        });
+        return template.innerHTML;
+      }
+    };
+  }
   /* ── Configure marked.js with GFM ─────────────────────────────── */
   marked.setOptions({
     gfm: true,
@@ -1402,6 +1515,7 @@
   const aiInput = document.getElementById('aiInput');
   const aiSendBtn = document.getElementById('aiSendBtn');
   const aiMessages = document.getElementById('aiMessages');
+  const aiConsent = document.getElementById('aiConsent');
   let aiExchanges = 0;
   const MAX_AI_EXCHANGES = 3;
   let aiHistory = [];
@@ -1425,6 +1539,10 @@
   function sendAiMessage() {
     const question = aiInput.value.trim();
     if (!question) return;
+    if (!aiConsent || !aiConsent.checked) {
+      showToast('Tick AI consent before sending markdown content.');
+      return;
+    }
     if (aiExchanges >= MAX_AI_EXCHANGES) {
       showToast('AI limit reached (3 exchanges). Refresh to reset.');
       return;

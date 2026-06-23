@@ -95,7 +95,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/compound-interest/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/interet-compose/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/compound-interest/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -129,6 +129,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
   "url": "https://afrotools.com/tools/compound-interest/"
 }
 </script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -170,21 +171,21 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="card-body">
 <div class="two-col">
 <div class="field">
-<label class="f-label">Principal (Starting Amount)</label>
+<label class="f-label" for="principal">Principal (Starting Amount)</label>
 <input aria-label="E.g. 500,000" type="text" class="f-input" id="principal" placeholder="e.g. 500,000" inputmode="numeric">
 </div>
 <div class="field">
-<label class="f-label">Annual Interest Rate (%)</label>
+<label class="f-label" for="rate">Annual Interest Rate (%)</label>
 <input aria-label="E.g. 12" type="number" class="f-input" id="rate" placeholder="e.g. 12" step="0.1" min="0" max="100">
 </div>
 </div>
 <div class="two-col">
 <div class="field">
-<label class="f-label">Investment Period (Years)</label>
+<label class="f-label" for="years">Investment Period (Years)</label>
 <input aria-label="E.g. 10" type="number" class="f-input" id="years" placeholder="e.g. 10" min="1" max="50">
 </div>
 <div class="field">
-<label class="f-label">Compounding Frequency</label>
+<label class="f-label" for="freq">Compounding Frequency</label>
 <select class="f-select" id="freq" aria-label="Freq">
 <option value="12">Monthly</option>
 <option value="4">Quarterly</option>
@@ -195,7 +196,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
 </div>
 </div>
 <div class="field">
-<label class="f-label">Monthly Contribution (Optional)</label>
+<label class="f-label" for="contribution">Monthly Contribution (Optional)</label>
 <input aria-label="E.g. 20,000 (leave blank if none)" type="text" class="f-input" id="contribution" placeholder="e.g. 20,000 (leave blank if none)" inputmode="numeric">
 </div>
 <button type="button" class="calc-btn" onclick="calculate()">Calculate Growth</button>
@@ -248,30 +249,22 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 
 
-<section class="df-upgrade" data-df-upgrade="compound-interest">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Compound Interest Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for compound interest calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Compound Interest Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, officialSource, businessCta, verificationPanel.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="compound-interest" aria-labelledby="compound-interest-verification-title">
+  <div class="tool-verification-inner">
+    <div class="tool-verification-copy">
+      <span class="tool-verification-kicker">Investment growth check</span>
+      <h2 class="tool-verification-title" id="compound-interest-verification-title">Compare nominal growth, contributions, and inflation risk before investing</h2>
+      <p class="tool-verification-lead">Use the year-by-year table as a planning model, then compare the rate against current bank, treasury, money-market, inflation, and product-risk information.</p>
+      <div class="tool-verification-grid" aria-label="Investment growth check checklist"><div class="tool-verification-card"><strong>Inputs to verify</strong><ul><li>Principal, contribution, rate, term, currency, and compounding frequency.</li><li>The calculator does not fetch live bank rates, inflation, taxes, penalties, or product fees.</li></ul></div><div class="tool-verification-card"><strong>Outputs to save</strong><ul><li>Save or share the result after calculating, and copy the summary for a money plan or advisor discussion.</li><li>Keep separate evidence for provider terms, risk, liquidity, and tax treatment.</li></ul></div><div class="tool-verification-card"><strong>Limits</strong><ul><li>Planning estimate only, not investment advice, a guaranteed return, or an offer from a provider.</li><li>Privacy note: amounts remain local unless you save, share, or copy the result.</li></ul></div></div>
     </div>
-    <form class="df-form" data-df-form="compound-interest">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="compound-interest" data-df-base="Compound Interest Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Compound Interest Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="compound-interest">Copy summary</button></div>
-    </form>
+    <div class="tool-verification-actions">
+      <a class="tool-verification-primary" href="#principal">Review investment inputs</a>
+      <a class="tool-verification-report" href="#results">Review growth output</a>
+      <p class="tool-verification-disclaimer">Source/freshness note: rates and inflation can change quickly. Confirm current provider terms, central-bank data, fees, taxes, and withdrawal rules before acting.</p>
+    </div>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="compound-interest-faq-title">
-  <h2 id="compound-interest-faq-title">Compound Interest Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
+<afro-business-cta tool-name="Compound Interest Calculator" prospect-segment="finance-workflows" save-note="Save, share, or copy the investment scenario before comparing live provider terms."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="budget"></wise-cta>
 </div>
@@ -377,11 +370,26 @@ function calculate(){
   var div=document.createElement('div');
   div.className='result-actions';
   div.style.cssText='display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML='<save-result-button tool-slug="compound-interest" tool-name="Compound Interest Calculator"></save-result-button><share-result-button tool-name="Compound Interest Calculator" tool-slug="compound-interest"></share-result-button>';
+  div.innerHTML='<save-result-button tool-slug="compound-interest" tool-name="Compound Interest Calculator"></save-result-button><share-result-button tool-name="Compound Interest Calculator" tool-slug="compound-interest"></share-result-button><button type="button" class="calc-btn" id="compound-copy-summary">Copy summary</button>';
   target.appendChild(div);
+  document.getElementById('compound-copy-summary').addEventListener('click',function(){
+    var text=[
+      'Compound interest scenario',
+      'Currency: '+document.getElementById('currency').value,
+      'Principal: '+document.getElementById('principal').value,
+      'Rate: '+document.getElementById('rate').value+'%',
+      'Years: '+document.getElementById('years').value,
+      'Frequency: '+document.getElementById('freq').selectedOptions[0].textContent,
+      'Monthly contribution: '+(document.getElementById('contribution').value||'0'),
+      'Final balance: '+document.getElementById('rFinal').textContent,
+      'Total contributed: '+document.getElementById('rContributed').textContent,
+      'Interest earned: '+document.getElementById('rInterest').textContent,
+      'Note: planning estimate only; confirm current provider terms, fees, taxes, inflation, and withdrawal rules.'
+    ].join('\n');
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).catch(function(){alert(text);});}else{alert(text);}
+  });
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

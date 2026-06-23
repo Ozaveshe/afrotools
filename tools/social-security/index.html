@@ -309,6 +309,11 @@
   </style>
   <meta property="article:modified_time" content="2026-03-29">
   <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/social-security/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/securite-sociale/" />
@@ -511,6 +516,13 @@
         Repeat this monthly in AfroPayroll Pro, keep employee and employer totals with your payroll draft, and export handoff files for accountant review. AfroPayroll Pro does not disburse salaries, handle statutory filing, or provide a compliance guarantee.
         <a href="/tools/afropayroll-os/workspace">Build a reviewable payroll draft &rarr;</a>
       </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+        <button type="button" class="tl-btn" id="ss-copy-summary" style="width:auto">Copy contribution summary</button>
+        <button type="button" class="tl-btn" id="ss-download-summary" data-no-gate="true" style="width:auto">Download TXT</button>
+        <save-result-button tool-slug="social-security" tool-name="Social Security Contribution Calculator"></save-result-button>
+        <share-result-button tool-name="Social Security Contribution Calculator" tool-slug="social-security"></share-result-button>
+      </div>
+      <div id="ss-export-status" role="status" aria-live="polite" style="min-height:1.2em;margin-top:8px;font-size:.82rem;color:var(--text-muted,#64748b)"></div>
 
       </div><!-- /tab-contributions -->
 
@@ -660,6 +672,20 @@
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="social-security">
+  <div class="tool-verification-card">
+    <span class="tool-verification-kicker">Contribution source check</span>
+    <h2>Confirm rates, caps, and remittance records before payroll action</h2>
+    <ul class="tool-verification-list">
+      <li><strong>Inputs:</strong> selected country and gross monthly salary. Self-employed guidance appears only where the embedded dataset includes it.</li>
+      <li><strong>Method:</strong> applies the local contribution rates, caps, and scheme split available in the AfroTools social security dataset or HR engine.</li>
+      <li><strong>Verify before acting:</strong> current authority rates, salary definition, capped earnings, employer registration, payslip deductions, contribution statement, and payment deadlines.</li>
+      <li><strong>Privacy:</strong> salary scenarios stay in your browser unless you choose to copy, download, save, or share a summary.</li>
+    </ul>
+    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not official payroll filing, legal advice, tax advice, or proof that an employer has remitted contributions.</p>
+  </div>
+</section>
+<afro-business-cta tool-name="Social Security Contribution Calculator" prospect-segment="payroll-compliance" headline="Turn contribution estimates into a payroll review trail" subhead="AfroPayroll Pro helps teams keep salary assumptions, employer costs, and accountant handoff notes together before filing or remittance."></afro-business-cta>
 <afro-related-tools category="financial" current="social-security"></afro-related-tools>
 
 <afro-footer></afro-footer>
@@ -738,7 +764,7 @@ function onCountryChange() {
   var cc = document.getElementById('country').value;
   if (!cc) return;
   clearFieldError('err-country');
-  var cur = (result && result.symbol) || getCurrency(cc);
+  var cur = getCurrency(cc);
   document.getElementById('currency-prefix').textContent = cur;
   document.getElementById('results').style.display = 'none';
   document.getElementById('roi-card').style.display = 'none';
@@ -948,6 +974,59 @@ function calculate() {
   }); /* rAF inner */
   }); /* rAF outer */
 }
+
+function buildSocialSecuritySummary() {
+  var resultsCard = document.getElementById('results');
+  if (!resultsCard || resultsCard.style.display === 'none') {
+    calculate();
+  }
+  var schemes = Array.prototype.map.call(document.querySelectorAll('#r-schemes tr'), function (row) {
+    return row.textContent.replace(/\s+/g, ' ').trim();
+  });
+  return [
+    'Social Security Contribution summary',
+    'Scenario: ' + document.getElementById('result-subtitle').textContent,
+    'Employee total: ' + document.getElementById('r-employee-total').textContent + ' (' + document.getElementById('r-employee-pct').textContent + ')',
+    'Employer total: ' + document.getElementById('r-employer-total').textContent + ' (' + document.getElementById('r-employer-pct').textContent + ')',
+    'Combined contribution: ' + document.getElementById('r-total-contribution').textContent + ' (' + document.getElementById('r-total-pct').textContent + ')',
+    'Estimated net salary: ' + document.getElementById('r-net-salary').textContent,
+    'Estimated employer cost: ' + document.getElementById('r-cost-employer').textContent,
+    'Annual employee contribution: ' + document.getElementById('r-annual-employee').textContent,
+    'Annual employer contribution: ' + document.getElementById('r-annual-employer').textContent,
+    'Scheme breakdown: ' + (schemes.length ? schemes.join(' | ') : 'No scheme rows available'),
+    'Note: planning estimate only. Verify current authority rates, salary definition, capped earnings, payslip deductions, employer remittance, and payment deadlines before acting.'
+  ].join('\n');
+}
+
+function setSocialSecurityExportStatus(message) {
+  var status = document.getElementById('ss-export-status');
+  if (status) status.textContent = message;
+}
+
+function copySocialSecuritySummary() {
+  var text = buildSocialSecuritySummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { setSocialSecurityExportStatus('Contribution summary copied.'); }).catch(function () { setSocialSecurityExportStatus('Copy failed. Select and copy the summary manually.'); });
+  } else {
+    setSocialSecurityExportStatus(text);
+  }
+}
+
+function downloadSocialSecuritySummary() {
+  var blob = new Blob([buildSocialSecuritySummary()], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'social-security-contribution-summary.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setSocialSecurityExportStatus('TXT summary downloaded.');
+}
+
+document.getElementById('ss-copy-summary').addEventListener('click', copySocialSecuritySummary);
+document.getElementById('ss-download-summary').addEventListener('click', downloadSocialSecuritySummary);
 
 /* ── Benefits Data ── */
 var SS_BENEFITS = {

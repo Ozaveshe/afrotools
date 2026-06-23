@@ -97,13 +97,13 @@
 <label>Resultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, verifier, calculer"></label>
 </div>
 <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.</output>
-<div class="fr-prep-actions"><a href="/tools/sitemap-gen/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le resume</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
+<div class="fr-prep-actions"><a href="/tools/sitemap-gen/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le resume</button><button type="button" data-fr-prep-download>Telecharger le brief</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
 </section>
 <div class="fr-tool-frame">
 <iframe src="/tools/sitemap-gen/" title="Générateur de sitemap" loading="lazy"></iframe>
 </div>
 <script>
-(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Générateur de sitemap";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
+(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Generateur de sitemap";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | ')+' | A verifier: URL canoniques, noindex, robots.txt, Search Console et protocole sitemap.':'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}function download(){var blob=new Blob([summary()],{type:'text/plain'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='brief-sitemap.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);if(status)status.textContent='Brief telecharge.';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var dl=panel.querySelector('[data-fr-prep-download]');if(dl)dl.addEventListener('click',download);})();
 </script>
 <div class="fr-seo">
 <h2>Générateur de sitemap XML</h2>
@@ -119,18 +119,11 @@
 </div>
 
 <section data-tool-verification-panel style="max-width:1080px;margin:20px auto;padding:20px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 8px 22px rgba(15,23,42,.05);line-height:1.65">
-  <!-- upgrade-proof-panel:start -->
-  <p style="margin:0 0 6px;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0f766e">Contr?le utile</p>
-  <h2 style="margin:0 0 8px;font-size:1.2rem;color:#0f172a">Sitemap: contr?le avant publication</h2>
-  <p style="margin:.35rem 0;color:#475569"><strong>M?thodologie :</strong> Listez les URL canoniques, excluez les noindex, puis validez le XML avant envoi.</p>
-  <p style="margin:.35rem 0;color:#475569"><strong>Source ? v?rifier :</strong> Routes publi?es du site, canonicals et Search Console si disponible.</p>
-  <p style="margin:.35rem 0;color:#475569"><strong>Avertissement :</strong> Un sitemap aide la d?couverte; il ne garantit pas l?indexation.</p>
-  <form aria-label="Sitemap: contr?le avant publication" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px">
-    <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Montant ou contexte<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" inputmode="decimal" placeholder="Ex : 250000"></label>
-    <label style="display:block;font-weight:850;margin:10px 0 6px;color:#334155">Point ? confirmer<input style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:9px 10px;font:inherit;background:#fff" placeholder="Source, date, autorit?, expert"></label>
-    <button type="button" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;margin-top:12px;padding:10px 14px;border:0;border-radius:8px;background:#0f766e;color:#fff;font-weight:900;text-decoration:none;cursor:pointer">Copier le r?sum?</button>
-  </form>
-  <!-- upgrade-proof-panel:end -->
+  <p style="margin:0 0 6px;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#0f766e">Controle utile</p>
+  <h2 style="margin:0 0 8px;font-size:1.2rem;color:#0f172a">Sitemap: controle avant publication</h2>
+  <p style="margin:.35rem 0;color:#475569"><strong>Methodologie :</strong> listez les URL canoniques, excluez les pages noindex, verifiez les dates utiles, puis validez le XML avant envoi.</p>
+  <p style="margin:.35rem 0;color:#475569"><strong>Source a verifier 2026 :</strong> routes publiees du site, canonicals, robots.txt, Search Console et protocole sitemap officiel.</p>
+  <p style="margin:.35rem 0;color:#475569"><strong>Avertissement :</strong> un sitemap aide la decouverte; il ne garantit pas l'indexation, le classement ou la correction d'un probleme SEO.</p>
 </section>
 <afro-footer></afro-footer>
 </body>

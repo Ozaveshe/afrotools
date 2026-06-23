@@ -95,6 +95,8 @@
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/trade-finance-comparator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/comparateur-financement-commerce/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kilinganisha-fedha-za-biashara/" />
@@ -219,6 +221,11 @@
           <thead><tr><th>Instrument</th><th>Total Fee</th><th>Fee %</th><th>Risk</th></tr></thead>
           <tbody id="compareAllBody"></tbody>
         </table>
+        <div class="df-actions" style="margin-top:14px">
+          <button type="button" onclick="copyTradeFinanceBrief()">Copy finance brief</button>
+          <button type="button" data-no-gate="true" data-no-pdf-gate="true" onclick="downloadTradeFinanceCsv()">Download CSV</button>
+        </div>
+        <p id="tradeFinanceStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
       </div>
     </div>
   </div>
@@ -236,26 +243,60 @@
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Trade Finance Cost Comparator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for trade finance cost comparator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Trade Finance Cost Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, officialSource, saveExport.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <h2>Choose a safer payment structure before committing to a shipment</h2>
+      <p>Use the comparison, advisor, and cost calculator to weigh Letter of Credit, T/T, CAD, Open Account, and standby options before negotiating with a supplier or bank.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: finance-cost brief with instrument, trade value, country, estimated fees, risk level, margin requirement, and verification checklist.</li><li>Methodology: compare local cost assumptions against buyer/seller risk and then confirm current bank, supplier, and compliance terms.</li><li>Verification: check bank tariff, FX, document wording, sanctions screening, shipping documents, insurance, and supplier history before paying.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Trade finance fees, bank margin rules, FX, and import documentation can change.</p>
     </div>
     <form class="df-form" data-df-form="trade-finance-comparator">
       <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="trade-finance-comparator" data-df-base="Trade Finance Cost Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Trade Finance Cost Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="trade-finance-comparator">Copy summary</button></div>
+      <label>Trade value USD<input name="amount" type="number" value="50000" min="0" step="any" aria-label="Trade value USD"></label>
+      <label>Decision priority<select name="priority" aria-label="Decision priority"><option value="risk">buyer/seller risk</option><option value="cost">lowest total cost</option><option value="speed">settlement speed</option><option value="cashflow">cash tied up</option></select></label>
+      <label>Contingency percent<input name="buffer" type="number" value="8" min="0" step="any" aria-label="Contingency percent"></label>
+      <button type="submit">Create finance brief</button>
+      <output class="df-result" data-df-result="trade-finance-comparator" data-df-base="Trade finance brief ready. Use the calculator above, then confirm bank tariff, FX, document wording, supplier history, sanctions screening, insurance, and shipping documents before committing." aria-live="polite">Trade finance brief ready. Use the calculator above, then confirm bank tariff, FX, document wording, supplier history, sanctions screening, insurance, and shipping documents before committing.</output>
+      <div class="df-actions"><button type="button" data-df-copy="trade-finance-comparator">Copy finance brief</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="trade-finance-comparator-faq-title">
   <h2 id="trade-finance-comparator-faq-title">Trade Finance Cost Comparator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Compare the instruments, run the cost calculator, then copy or download a finance brief for bank, supplier, broker, or finance review.</p></details><details><summary>What should I verify?</summary><p>Confirm current bank tariff, FX, margin requirement, document wording, supplier history, sanctions screening, insurance, and shipping documents.</p></details><details><summary>Is this official?</summary><p>No. It is a planning workflow, not a bank quote, payment instruction, customs filing, legal decision, or guaranteed outcome.</p></details></div>
 </section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="trade-finance-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Sources &amp; verification</span>
+        <h2 class="tool-verification-title" id="trade-finance-verification-title">Confirm trade finance terms before accepting risk</h2>
+        <p class="tool-verification-lead">This tool compares cost and risk signals for common trade finance instruments. It does not issue an LC, approve finance, or replace bank advice.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Trade-finance planning model</span>
+        <p class="tool-verification-note">Reviewed 2026. Fees, FX, margin rules, and compliance checks can change by bank and corridor.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Compares instrument cost, processing time, buyer risk, seller risk, and cash-margin impact for a trade value.</li>
+          <li>Advisor answers map supplier trust, order size, credit need, and trade corridor to a suggested instrument.</li>
+          <li>CSV export preserves the local estimate for bank, supplier, broker, or finance review.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before acting</h3>
+        <ul class="tool-verification-list">
+          <li>Verify bank tariff, confirmation charges, FX, margin, document wording, sanctions screening, and insurance.</li>
+          <li>Confirm supplier history, shipping documents, inspection, import permits, and dispute process in writing.</li>
+          <li>Treat the result as an estimate only, not legal advice, tax advice, or a financing approval.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Trade Finance Cost Comparator" prospect-segment="trade-finance" save-note="Run the calculator, then copy or download the finance brief for bank, supplier, broker, or internal approval review."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -352,6 +393,8 @@ function runAdvisor() {
 }
 
 /* ── Calculator ───────────────────────────────────────── */
+var latestTradeFinanceResult = null;
+
 function runCalc() {
   var instrument = document.getElementById('calcInstrument').value;
   var value      = parseFloat(document.getElementById('calcValue').value) || 50000;
@@ -361,6 +404,8 @@ function runCalc() {
 
   var res = TradeFinanceEngine.calculate({ instrumentId: instrument, tradeValue: value, countryCode: country, tenorDays: tenor, confirmed: true });
   if (!res) return;
+  var inst = TradeFinanceData.getById(instrument);
+  latestTradeFinanceResult = { instrument: inst, result: res, value: value, country: country, tenor: tenor, comparison: [] };
 
   var html = '<div class="result-hero">';
   html += '<div style="font-size:13px;opacity:.8;margin-bottom:4px">Total Finance Cost</div>';
@@ -384,6 +429,7 @@ function runCalc() {
 
   // Compare all table
   var comp = TradeFinanceEngine.compareAll(value, country);
+  latestTradeFinanceResult.comparison = comp;
   document.getElementById('compareAllBody').innerHTML = comp.map(function(row) {
     var riskLevel = TradeFinanceData.getById(row.id).riskLevel;
     return '<tr' + (row.id === instrument ? ' style="background:#E8F2FF;font-weight:700"' : '') + '>' +
@@ -393,9 +439,61 @@ function runCalc() {
       '<td><span class="tf-badge ' + (RISK_CLASS[riskLevel]||'badge-medium') + '">' + (RISK_LABELS[riskLevel]||riskLevel) + '</span></td>' +
     '</tr>';
   }).join('');
+  document.getElementById('tradeFinanceStatus').textContent = 'Finance estimate ready. Copy or download the brief before asking for current bank terms.';
 }
 
 /* ── Guide ─────────────────────────────────────────────── */
+function tradeFinanceBriefText() {
+  if (!latestTradeFinanceResult) runCalc();
+  var payload = latestTradeFinanceResult;
+  if (!payload) return '';
+  var inst = payload.instrument || {};
+  var res = payload.result;
+  return [
+    'AfroTools trade finance brief',
+    'Instrument: ' + (inst.name || document.getElementById('calcInstrument').value),
+    'Country: ' + payload.country,
+    'Trade value: ' + fmtUSD(payload.value),
+    'Estimated total fee: ' + fmtUSD2(res.totalFee) + ' (' + res.feePct + '%)',
+    'Cash margin required: ' + fmtUSD(res.marginRequired || 0),
+    'Risk note: ' + (res.riskWarning || inst.description || 'Verify buyer, seller, bank, and document risk.'),
+    'Country note: ' + (res.countryNote || 'Confirm current local bank terms.'),
+    'Planning note: estimate only. Verify bank tariff, FX, margin, document wording, supplier history, sanctions screening, insurance, and shipping documents before committing.'
+  ].join('\n');
+}
+
+function copyTradeFinanceBrief() {
+  var text = tradeFinanceBriefText();
+  var status = document.getElementById('tradeFinanceStatus');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ status.textContent = 'Finance brief copied.'; }).catch(function(){ status.textContent = text; });
+  } else status.textContent = text;
+}
+
+function downloadTradeFinanceCsv() {
+  if (!latestTradeFinanceResult) runCalc();
+  var payload = latestTradeFinanceResult;
+  var status = document.getElementById('tradeFinanceStatus');
+  if (!payload) return;
+  var rows = [['instrument','total_fee_usd','fee_percent','risk_level','planning_note']];
+  payload.comparison.forEach(function(row){
+    var inst = TradeFinanceData.getById(row.id) || {};
+    rows.push([row.name, row.totalFee.toFixed(2), row.feePct, inst.riskLevel || '', 'Verify current bank tariff, FX, margin, supplier history, documents, and compliance checks.']);
+  });
+  var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'afrotools-trade-finance-comparison.csv';
+  a.setAttribute('data-no-pdf-gate','true');
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  status.textContent = 'CSV downloaded. Replace estimates with current written bank terms.';
+}
+
 function buildGuide() {
   var html = '';
   TradeFinanceData.instruments.forEach(function(inst) {

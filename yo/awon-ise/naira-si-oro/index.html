@@ -99,6 +99,7 @@
     <div class="btns" style="margin-top:14px">
       <button type="button" class="btn" id="copyWords">Daakọ ọ̀rọ̀</button>
       <button type="button" class="btn" id="copyLine">Daakọ laini iwe</button>
+      <button type="button" class="btn" id="downloadLine">Gba TXT</button>
     </div>
     <div class="mini">
       <div><b>Nọ́ńbà Naira</b><span id="nairaPart">₦125,000</span></div>
@@ -108,6 +109,7 @@
 </main>
 <section class="faq">
   <div class="note">Diẹ ninu banki tabi ajo le fẹ ki iye Naira wa ni Gẹẹsi lori iwe osise. Oju yii fi Yorùbá si iwaju fun iṣẹ́ agbegbe, risiti ati akọsilẹ iṣowo.</div>
+  <div class="note" data-tool-verification-panel="naira-to-words-yo"><strong>Ilana, orisun ati ikilo:</strong> Irinse yii n ka iye Naira ninu browser, pin Naira ati kobo, ki o si kọ ọrọ Yoruba fun risiti, akọsilẹ isanwo ati iṣẹ agbegbe. Atunse oju yii: June 2026. Ko se idaniloju banki, ko se imọran ofin, ko si ran iye tabi orukọ ẹni ti o tẹ si server. Ṣayẹwo ọna kikọ pẹlu banki, ọfiisi tabi ẹni ti yoo gba iwe naa.</div>
   <details><summary>Ṣe o ṣe atilẹyin kobo?</summary><p>Bẹẹni. Fi iye pẹlu ami aami kékèké bii 125000.75, oju yii yoo fi Naira ati kobo han lọtọ.</p></details>
   <details><summary>Kí ni mo yẹ kí n ṣàyẹ̀wò?</summary><p>Ṣàyẹ̀wò pe nọmba ti o tẹ tọ, pe orukọ ẹni to gba jẹ deede, ati pe ọna kikọ ba ibeere ile-iṣẹ rẹ mu.</p></details>
 </section>
@@ -165,6 +167,7 @@
   document.getElementById('clear').addEventListener('click',()=>{amount.value='';document.getElementById('purpose').value='';document.getElementById('payee').value='';run();});
   document.getElementById('copyWords').addEventListener('click',async()=>{await navigator.clipboard.writeText(wordsBox.innerText.replace('Ọ̀rọ̀ Naira','').trim());document.getElementById('copyWords').textContent='A ti daakọ';});
   document.getElementById('copyLine').addEventListener('click',async()=>{await navigator.clipboard.writeText(docLine.textContent);document.getElementById('copyLine').textContent='A ti daakọ';});
+  document.getElementById('downloadLine').addEventListener('click',()=>{var blob=new Blob([docLine.textContent+'\\n'],{type:'text/plain;charset=utf-8'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='naira-si-oro.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);document.getElementById('downloadLine').textContent='TXT ti gba';});
   document.querySelectorAll('input').forEach((el)=>el.addEventListener('input',run));
   run();
 })();

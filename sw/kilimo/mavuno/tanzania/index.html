@@ -104,6 +104,24 @@
 <meta property="article:modified_time" content="2026-03-29">
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<style data-localized-agriculture-batch="style">
+.agri-export-panel{max-width:1100px;margin:1.5rem auto;padding:0 1rem}
+.agri-export-card{background:#fff;border:1px solid #dbeafe;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.07);padding:1.1rem;margin-bottom:1rem}
+.agri-export-kicker{display:block;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#1d4ed8;margin-bottom:.35rem}
+.agri-export-card h2{font-size:1.15rem;line-height:1.25;margin:0 0 .45rem;color:#0f172a}
+.agri-export-card p{color:#475569;line-height:1.58;margin:.35rem 0}
+.agri-export-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.85rem;align-items:center}
+.agri-export-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font:inherit;font-weight:800;padding:.72rem 1rem;cursor:pointer}
+.agri-export-actions button:first-child{background:#0057b8}
+.agri-export-actions button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.agri-export-status{font-size:.86rem;color:#64748b;min-height:1.2em}
+.agri-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:.75rem;margin-top:.85rem}
+.agri-trust-item{border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;padding:.85rem}
+.agri-trust-item strong{display:block;color:#0f172a;margin-bottom:.3rem}
+.agri-local-note{border-left:4px solid #16a34a;background:#f0fdf4;border-radius:10px;padding:.8rem;margin-top:.8rem;color:#365346}
+@media(max-width:640px){.agri-export-actions button{width:100%}.agri-export-card{padding:1rem}}
+</style>
+
 </head>
 <body class="tool-page">
 <afro-navbar theme="dark" active="tools"></afro-navbar>
@@ -229,6 +247,29 @@
   </div>
 </section>
 
+<section class="agri-export-panel" data-localized-agriculture-batch="export" data-agri-page-type="yield">
+  <div class="agri-export-card">
+    <span class="agri-export-kicker">Hifadhi matokeo</span>
+    <h2>Toa muhtasari wa shamba</h2>
+    <p>Baada ya kukokotoa, nakili au pakua matokeo ili uyashiriki na afisa ugani, mshirika wa biashara au mnunuzi.</p>
+    <div class="agri-export-actions">
+      <button type="button" data-agri-copy>Nakili matokeo</button>
+      <button type="button" data-agri-download>Pakua TXT</button>
+      <span class="agri-export-status" data-agri-status aria-live="polite">Tayari kutoa muhtasari.</span>
+    </div>
+    <p class="agri-local-note"><strong>Faragha:</strong> Taarifa unazoingiza zinachakatwa kwenye browser yako. Paneli hii haitumi bei, ukubwa wa shamba au gharama zako kwa seva ya AfroTools.</p>
+  </div>
+  <div class="agri-export-card" data-tool-verification-panel>
+    <span class="agri-export-kicker">Vyanzo na mipaka</span>
+    <div class="agri-trust-grid">
+      <p class="agri-trust-item"><strong>Source</strong>Data za FAOSTAT, CGIAR, takwimu za kitaifa na kilimo na Tanzania na ndani ya AfroTools.</p>
+      <p class="agri-trust-item"><strong>Freshness</strong>Hii ni makadirio ya kupanga mwaka 2026; bei za soko, hali ya hewa, wadudu, gharama na sheria za eneo zinaweza kubadilika.</p>
+      <p class="agri-trust-item"><strong>Methodology</strong>Injini ya kikokotoo huunganisha taarifa za mtumiaji na data za kilimo zilizohifadhiwa ndani ya AfroTools. Matokeo ni ya kupanga, si ushauri rasmi.</p>
+      <p class="agri-trust-item"><strong>Limitations</strong>Thibitisha bei, mbegu, mbolea, maji, udongo, hali ya hewa na ushauri wa afisa ugani kabla ya kutumia fedha nyingi.</p>
+    </div>
+  </div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
@@ -293,5 +334,77 @@
 <script src="/assets/js/lib/cross-tool-nav.js?v=98f5d16e" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
+<script data-localized-agriculture-batch="export-js">
+(function(){
+  'use strict';
+  var labels = {"title":"Mavuno Tanzania","fallback":"Matokeo hayajaonekana bado. Kokotoa kwanza au angalia taarifa ulizoingiza.","copied":"Muhtasari umenakiliwa.","downloaded":"Muhtasari umepakuliwa."};
+  function text(selector){
+    var node = document.querySelector(selector);
+    return node ? (node.innerText || node.textContent || '').replace(/\s+/g,' ').trim() : '';
+  }
+  function inputs(){
+    return Array.prototype.slice.call(document.querySelectorAll('label')).map(function(label){
+      var id = label.getAttribute('for');
+      if (!id) return '';
+      var field = document.getElementById(id);
+      if (!field) return '';
+      var value = field.options ? field.options[field.selectedIndex].text : field.value;
+      if (value === undefined || value === null || String(value).trim() === '') return '';
+      return label.textContent.replace(/\s+/g,' ').trim() + ': ' + String(value).trim();
+    }).filter(Boolean).slice(0, 14);
+  }
+  function results(){
+    var selectors = ['#resultsPanel', '.results-wrap.on', '.ir-results.visible', '.ha-results.on', '.ha-results', '.ir-results', '.results-wrap'];
+    var out = [];
+    selectors.forEach(function(selector){
+      var value = text(selector);
+      if (value && out.indexOf(value) === -1) out.push(value);
+    });
+    return out.join('\n').slice(0, 2800);
+  }
+  function summary(){
+    var lines = ['AfroTools - ' + labels.title, 'Generated locally in this browser.', ''];
+    var data = inputs();
+    if (data.length) lines.push('Inputs:\n' + data.join('\n'));
+    var result = results();
+    lines.push('', 'Results:', result || labels.fallback);
+    lines.push('', 'Note: planning estimate only. Verify local prices, weather, soil, water, buyer terms and extension advice before spending.');
+    return lines.join('\n');
+  }
+  function setStatus(msg){
+    var status = document.querySelector('[data-agri-status]');
+    if (status) status.textContent = msg;
+  }
+  function downloadText(textValue){
+    var blob = new Blob([textValue], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = labels.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '-afrotools-summary.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+  document.addEventListener('click', function(event){
+    var copyBtn = event.target.closest('[data-agri-copy]');
+    var downloadBtn = event.target.closest('[data-agri-download]');
+    if (!copyBtn && !downloadBtn) return;
+    var value = summary();
+    if (copyBtn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(function(){ setStatus(labels.copied); }).catch(function(){ setStatus(value); });
+      } else {
+        setStatus(value);
+      }
+    }
+    if (downloadBtn) {
+      downloadText(value);
+      setStatus(labels.downloaded);
+    }
+  });
+})();
+</script>
+
 </body>
 </html>

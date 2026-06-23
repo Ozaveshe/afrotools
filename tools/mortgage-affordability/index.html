@@ -203,7 +203,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/capacite-emprunt/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/uwezo-wa-mkopo-wa-nyumba/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mortgage-affordability/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -237,6 +237,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   "url": "https://afrotools.com/tools/mortgage-affordability/"
 }
 </script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -273,7 +274,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
           </select>
         </div>
         <div class="field">
-          <label>Employment Type</label>
+          <label for="empType">Employment Type</label>
           <select id="empType" aria-label="Emp Type">
             <option value="employed">Permanently Employed</option>
             <option value="contract">Contract / Fixed Term</option>
@@ -284,24 +285,24 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       </div>
       <div class="grid-2">
         <div class="field">
-          <label>Gross Monthly Income</label>
+          <label for="grossIncome">Gross Monthly Income</label>
           <input aria-label="E.g. 85000" type="number" id="grossIncome" placeholder="e.g. 85000" min="0">
           <div class="hint">Before tax deductions</div>
         </div>
         <div class="field">
-          <label>Net Monthly Income</label>
+          <label for="netIncome">Net Monthly Income</label>
           <input aria-label="E.g. 62000" type="number" id="netIncome" placeholder="e.g. 62000" min="0">
           <div class="hint">After-tax take-home pay</div>
         </div>
       </div>
       <div class="grid-2">
         <div class="field">
-          <label>Co-Applicant Monthly Income (Net)</label>
+          <label for="coIncome">Co-Applicant Monthly Income (Net)</label>
           <input aria-label="CoIncome" type="number" id="coIncome" placeholder="0" min="0">
           <div class="hint">Spouse / joint applicant income</div>
         </div>
         <div class="field">
-          <label>Other Monthly Income</label>
+          <label for="otherIncome">Other Monthly Income</label>
           <input aria-label="OtherIncome" type="number" id="otherIncome" placeholder="0" min="0">
           <div class="hint">Rental, business, investments</div>
         </div>
@@ -311,21 +312,21 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <div class="card-title" style="margin-bottom:16px"><span>💳</span> Existing Monthly Obligations</div>
       <div class="grid-2">
         <div class="field">
-          <label>Car / Vehicle Loan</label>
+          <label for="carLoan">Car / Vehicle Loan</label>
           <input aria-label="CarLoan" type="number" id="carLoan" placeholder="0" min="0">
         </div>
         <div class="field">
-          <label>Credit Card Min. Payment</label>
+          <label for="creditCard">Credit Card Min. Payment</label>
           <input aria-label="CreditCard" type="number" id="creditCard" placeholder="0" min="0">
         </div>
       </div>
       <div class="grid-2">
         <div class="field">
-          <label>Student / Personal Loan</label>
+          <label for="personalLoan">Student / Personal Loan</label>
           <input aria-label="PersonalLoan" type="number" id="personalLoan" placeholder="0" min="0">
         </div>
         <div class="field">
-          <label>Other Monthly Debts</label>
+          <label for="otherDebts">Other Monthly Debts</label>
           <input aria-label="OtherDebts" type="number" id="otherDebts" placeholder="0" min="0">
         </div>
       </div>
@@ -334,12 +335,12 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <div class="card-title" style="margin-bottom:16px"><span>🏦</span> Loan Parameters</div>
       <div class="grid-2">
         <div class="field">
-          <label>Mortgage Interest Rate (%)</label>
+          <label for="mortRate">Mortgage Interest Rate (%)</label>
           <input aria-label="MortRate" type="number" id="mortRate" placeholder="11.75" step="0.25" value="11.75">
           <div class="hint" id="rate-hint">South Africa prime + 1% avg ~11.75%</div>
         </div>
         <div class="field">
-          <label>Loan Term (Years)</label>
+          <label for="loanTerm">Loan Term (Years)</label>
           <select id="loanTerm" aria-label="Loan Term">
             <option value="10">10 years</option>
             <option value="15">15 years</option>
@@ -351,12 +352,12 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       </div>
       <div class="grid-2">
         <div class="field">
-          <label>Available Down Payment</label>
+          <label for="downPayment">Available Down Payment</label>
           <input aria-label="DownPayment" type="number" id="downPayment" placeholder="0" min="0">
           <div class="hint">Cash available for deposit</div>
         </div>
         <div class="field">
-          <label>Debt Service Ratio Limit (%)</label>
+          <label for="dsrLimit">Debt Service Ratio Limit (%)</label>
           <input aria-label="DsrLimit" type="number" id="dsrLimit" placeholder="30" value="30">
           <div class="hint" id="dsr-hint">SA banks typically allow max 30% of net income</div>
         </div>
@@ -430,7 +431,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         <span class="ai-by">Powered by Claude</span>
       </div>
       <div class="ai-advisor-body">
-        <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+        <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div><label class="ai-consent" style="display:flex;gap:8px;align-items:flex-start;font-size:.76rem;color:#475569;margin:10px 0"><input type="checkbox" id="aiConsent"> I consent to send my typed question to the AI advisor. Do not include private income, debt, ID, account, or address details.</label>
         <div class="ai-chat" id="aiChat">
           <div class="ai-msgs" id="aiMsgs"></div>
           <div class="ai-input-row">
@@ -471,30 +472,22 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 
 
 
-<section class="df-upgrade" data-df-upgrade="mortgage-affordability">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Mortgage Affordability Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for mortgage affordability calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Mortgage Affordability Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, officialSource, businessCta, verificationPanel, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="mortgage-affordability" aria-labelledby="mortgage-affordability-verification-title">
+  <div class="tool-verification-inner">
+    <div class="tool-verification-copy">
+      <span class="tool-verification-kicker">Mortgage affordability check</span>
+      <h2 class="tool-verification-title" id="mortgage-affordability-verification-title">Verify income, debt, rate, and DSR assumptions before applying</h2>
+      <p class="tool-verification-lead">Use the result to understand a borrowing range, then confirm affordability rules, interest rates, property costs, and lender documents with current local providers.</p>
+      <div class="tool-verification-grid" aria-label="Mortgage affordability check checklist"><div class="tool-verification-card"><strong>Inputs to verify</strong><ul><li>Income base, co-applicant income, existing debts, down payment, interest rate, loan term, and DSR limit.</li><li>Country defaults are planning assumptions; lenders may use different rules for self-employed or irregular income.</li></ul></div><div class="tool-verification-card"><strong>Outputs to save</strong><ul><li>Save/share the result and copy the summary for lender pre-screening or a household budget discussion.</li><li>Keep bank pre-approval, valuation, insurance, transfer, and tax costs separate.</li></ul></div><div class="tool-verification-card"><strong>Limits</strong><ul><li>Planning estimate only, not a mortgage approval, credit decision, legal advice, or live lender quote.</li><li>Privacy note: income and debt details stay local unless you use the optional AI advisor or share/export the result.</li></ul></div></div>
     </div>
-    <form class="df-form" data-df-form="mortgage-affordability">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="mortgage-affordability" data-df-base="Mortgage Affordability Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Mortgage Affordability Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="mortgage-affordability">Copy summary</button></div>
-    </form>
+    <div class="tool-verification-actions">
+      <a class="tool-verification-primary" href="#grossIncome">Review affordability inputs</a>
+      <a class="tool-verification-report" href="#results-section">Review borrowing output</a>
+      <p class="tool-verification-disclaimer">Source/freshness note: mortgage rates, DSR rules, subsidy rules, and lender criteria change; confirm with current lender, regulator, or housing-program documents.</p>
+    </div>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="mortgage-affordability-faq-title">
-  <h2 id="mortgage-affordability-faq-title">Mortgage Affordability Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
+<afro-business-cta tool-name="Mortgage Affordability Calculator" prospect-segment="finance-workflows" save-note="Save, share, or copy the affordability scenario before comparing lender terms."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -694,8 +687,25 @@ onCountryChange();
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="mortgage-affordability" tool-name="Mortgage Affordability"></save-result-button><share-result-button tool-name="Mortgage Affordability" tool-slug="mortgage-affordability"></share-result-button>';
+  div.innerHTML = '<save-result-button tool-slug="mortgage-affordability" tool-name="Mortgage Affordability"></save-result-button><share-result-button tool-name="Mortgage Affordability" tool-slug="mortgage-affordability"></share-result-button><button type="button" class="calc-btn" id="mortgage-copy-summary">Copy summary</button>';
   target.appendChild(div);
+  document.getElementById('mortgage-copy-summary').addEventListener('click',function(){
+    var text=[
+      'Mortgage affordability scenario',
+      'Country: '+document.getElementById('country').selectedOptions[0].textContent,
+      'Gross income: '+document.getElementById('grossIncome').value,
+      'Net income: '+document.getElementById('netIncome').value,
+      'Existing debts entered: '+(['carLoan','creditCard','personalLoan','otherDebts'].map(function(id){return document.getElementById(id).value||0;}).join(', ')),
+      'Rate: '+document.getElementById('mortRate').value+'%',
+      'Term: '+document.getElementById('loanTerm').value+' years',
+      'Max loan: '+document.getElementById('res-maxloan').textContent,
+      'Max home price: '+document.getElementById('res-maxprice').textContent,
+      'Monthly payment: '+document.getElementById('res-monthly').textContent,
+      'DSR: '+document.getElementById('res-dsr').textContent,
+      'Note: planning estimate only; confirm current lender rates, DSR rules, fees, taxes, insurance, and approval criteria.'
+    ].join('\n');
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).catch(function(){alert(text);});}else{alert(text);}
+  });
 })();
 </script>
 
@@ -707,6 +717,8 @@ async function sendAI(){
   var sendBtn=document.getElementById('aiSend');
   var q=input.value.trim();
   if(!q)return;
+  var consent=document.getElementById('aiConsent');
+  if(consent&&!consent.checked){document.getElementById('aiStatus').textContent='Tick the AI consent box before sending a question.';return;}
   AI_MSGS.push({role:'user',content:q});
   msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
   input.value='';sendBtn.disabled=true;
@@ -727,6 +739,5 @@ async function sendAI(){
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

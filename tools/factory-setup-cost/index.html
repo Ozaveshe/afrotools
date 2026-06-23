@@ -32,12 +32,13 @@
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/factory-setup-cost.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/factory-setup-cost.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/factory-setup-cost/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-installation-usine/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/factory-setup-cost/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -99,7 +100,7 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Industry Sector</label>
+          <label class="en-label" for="fs-sector">Industry Sector</label>
           <select class="en-select" id="fs-sector" aria-label="Fs Sector">
             <option value="food">Food Processing / Packaging</option>
             <option value="textile">Textile / Garment</option>
@@ -112,7 +113,7 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Factory Size (m²)</label>
+          <label class="en-label" for="fs-size">Factory Size (m²)</label>
           <select class="en-select" id="fs-size" aria-label="Fs Size">
             <option value="200">Small — 200m² (micro)</option>
             <option value="500">Small-Medium — 500m²</option>
@@ -122,7 +123,7 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Location Type</label>
+          <label class="en-label" for="fs-location">Location Type</label>
           <select class="en-select" id="fs-location" aria-label="Fs Location">
             <option value="industrial_park">Industrial Park / EPZ</option>
             <option value="urban_fringe" selected>Urban Fringe</option>
@@ -130,7 +131,7 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Building Structure</label>
+          <label class="en-label" for="fs-structure">Building Structure</label>
           <select class="en-select" id="fs-structure" aria-label="Fs Structure">
             <option value="steel_frame" selected>Steel Frame + Roofing (standard)</option>
             <option value="concrete">Reinforced Concrete</option>
@@ -138,7 +139,7 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Power Connection (kVA required)</label>
+          <label class="en-label" for="fs-power">Power Connection (kVA required)</label>
           <select class="en-select" id="fs-power" aria-label="Fs Power">
             <option value="50">50 kVA (small)</option>
             <option value="150" selected>150 kVA (medium)</option>
@@ -147,14 +148,14 @@
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Include Borehole / Water Supply?</label>
+          <label class="en-label" for="fs-water">Include Borehole / Water Supply?</label>
           <select class="en-select" id="fs-water" aria-label="Fs Water">
             <option value="yes" selected>Yes</option>
             <option value="no">No — municipal supply</option>
           </select>
         </div>
         <div class="en-field">
-          <label class="en-label">Machinery Budget (approx.)</label>
+          <label class="en-label" for="fs-mach">Machinery Budget (approx.)</label>
           <select class="en-select" id="fs-mach" aria-label="Fs Mach">
             <option value="min">Minimal — essential only</option>
             <option value="standard" selected>Standard — mid-spec machines</option>
@@ -188,34 +189,39 @@
         <h3 style="margin-bottom:.5rem">Funding & Incentives Available</h3>
         <ul id="fs-incentives" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
       </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Export this estimate</h3>
+        <p style="font-size:.88rem;color:#64748b;margin:0 0 1rem">Copy the CAPEX summary for a partner, accountant, lender, or internal project note. The numbers stay in this browser.</p>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <button type="button" class="en-btn" id="fs-copy-summary">Copy estimate</button>
+          <button type="button" class="en-btn" id="fs-download-json">Download JSON</button>
+        </div>
+        <p id="fs-copy-status" style="font-size:.82rem;color:#64748b;margin:.75rem 0 0" aria-live="polite"></p>
+      </div>
     </div>
   </div>
 
 
-<section class="df-upgrade" data-df-upgrade="factory-setup-cost">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Factory Setup Cost Estimator Africa decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for factory setup cost estimator africa so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Factory Setup Cost Estimator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="factory-setup-cost" aria-labelledby="factory-setup-cost-verification-title">
+  <div class="tool-verification-inner">
+    <div class="tool-verification-copy">
+      <span class="tool-verification-kicker">Factory CAPEX check</span>
+      <h2 class="tool-verification-title" id="factory-setup-cost-verification-title">Stress-test land, machinery, utilities, and working capital before funding</h2>
+      <p class="tool-verification-lead">Use the estimator for an early feasibility range, then compare each line item with supplier quotes, site conditions, permits, and financing terms before committing capital.</p>
+      <div class="tool-verification-grid" aria-label="Factory setup verification checklist">
+        <div class="tool-verification-card"><strong>Inputs to verify</strong><ul><li>Country, sector, factory area, power load, water needs, machinery tier, and building/lease choice.</li><li>Supplier quotes, industrial-park fees, logistics, installation, tax, and insurance are not live-fed.</li></ul></div>
+        <div class="tool-verification-card"><strong>Outputs to export</strong><ul><li>Copy or download the CAPEX summary for lender discussions, partner review, or a feasibility memo.</li><li>Keep a separate quote pack for equipment, construction, permits, and utility connection costs.</li></ul></div>
+        <div class="tool-verification-card"><strong>Limits</strong><ul><li>Planning estimate only, not an official permit, bank valuation, engineering design, or guaranteed funding result.</li><li>Privacy note: factory details stay local unless you copy or download the summary.</li></ul></div>
+      </div>
     </div>
-    <form class="df-form" data-df-form="factory-setup-cost">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="factory-setup-cost" data-df-base="Factory Setup Cost Estimator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Factory Setup Cost Estimator Africa: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="factory-setup-cost">Copy summary</button></div>
-    </form>
+    <div class="tool-verification-actions">
+      <a class="tool-verification-primary" href="#fs-country">Review factory inputs</a>
+      <a class="tool-verification-report" href="#fs-results">Review CAPEX output</a>
+      <p class="tool-verification-disclaimer">Source/freshness note: base costs are planning assumptions and can change with exchange rates, land policy, tariffs, supplier quotes, incentives, and local permits.</p>
+    </div>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="factory-setup-cost-faq-title">
-  <h2 id="factory-setup-cost-faq-title">Factory Setup Cost Estimator Africa FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
+<afro-business-cta tool-name="Factory Setup Cost Estimator" prospect-segment="manufacturing-finance" save-note="Copy or download the CAPEX estimate, then request a custom calculator or widget for your manufacturing pipeline."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -280,6 +286,8 @@ function fmtCur(sym,n){
   return sym+Math.round(n).toLocaleString();
 }
 
+var FS_LAST_RESULT = null;
+
 function calcFactory(){
   var country = document.getElementById('fs-country').value;
   var sector = document.getElementById('fs-sector').value;
@@ -305,6 +313,10 @@ function calcFactory(){
   var subtotal = landCost + buildCost + machCost + utilCost + permitsCost;
   var workingCap = d.working_monthly * 3;
   var total = subtotal + workingCap;
+  FS_LAST_RESULT = {
+    country:country, sector:sector, size:size, location:loc, structure:structure, powerKva:power, water:water, machineryLevel:machLevel,
+    landCost:landCost, buildCost:buildCost, machineryCost:machCost, utilityCost:utilCost, permitsCost:permitsCost, workingCapital:workingCap, total:total, costPerM2:total / size
+  };
 
   document.getElementById('fs-headline').textContent = size.toLocaleString() + 'm² ' + sector.replace(/_/g,' ') + ' Factory';
   document.getElementById('fs-sub').textContent = country + ' — ' + loc.replace(/_/g,' ');
@@ -333,7 +345,55 @@ function calcFactory(){
   document.getElementById('fs-results').classList.add('on');
   document.getElementById('fs-results').scrollIntoView({ behavior:'smooth', block:'start' });
 }
+
+function factorySummary(){
+  if(!FS_LAST_RESULT) return 'Run the Factory Setup Cost Estimator first.';
+  var d = FS_LAST_RESULT;
+  var sym = FS_DATA[d.country].sym;
+  return [
+    'Factory setup estimate',
+    'Country: '+d.country,
+    'Sector: '+d.sector.replace(/_/g,' '),
+    'Factory size: '+d.size+' m2',
+    'Location: '+d.location.replace(/_/g,' '),
+    'Structure: '+d.structure.replace(/_/g,' '),
+    'Power: '+d.powerKva+' kVA',
+    'Land/site: '+fmtCur(sym,d.landCost),
+    'Building: '+(d.structure==='lease'?'Leased':fmtCur(sym,d.buildCost)),
+    'Machinery: '+fmtCur(sym,d.machineryCost),
+    'Utilities: '+fmtCur(sym,d.utilityCost),
+    'Permits: '+fmtCur(sym,d.permitsCost),
+    'Working capital: '+fmtCur(sym,d.workingCapital),
+    'Total CAPEX: '+fmtCur(sym,d.total),
+    'Cost per m2: '+fmtCur(sym,d.costPerM2),
+    'Note: planning estimate only; verify supplier quotes, permits, tariffs, incentives, and finance terms before acting.'
+  ].join('\n');
+}
+
+function copyFactorySummary(){
+  var status = document.getElementById('fs-copy-status');
+  var text = factorySummary();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ status.textContent='Factory estimate copied.'; }).catch(function(){ status.textContent=text; });
+  } else {
+    status.textContent=text;
+  }
+}
+
+function downloadFactoryJson(){
+  if(!FS_LAST_RESULT){ document.getElementById('fs-copy-status').textContent='Run the estimate first.'; return; }
+  var blob = new Blob([JSON.stringify({ tool:'factory-setup-cost', generatedAt:new Date().toISOString(), result:FS_LAST_RESULT, note:'Planning estimate only. Verify local quotes, permits, incentives, tariffs, and finance terms.' }, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'factory-setup-cost-estimate.json';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(a.href);
+  a.remove();
+}
+
+document.getElementById('fs-copy-summary').addEventListener('click', copyFactorySummary);
+document.getElementById('fs-download-json').addEventListener('click', downloadFactoryJson);
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

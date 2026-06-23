@@ -97,7 +97,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/documents-export/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/orodha-nyaraka-usafirishaji/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/export-docs/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -108,7 +108,7 @@
       "name": "How should I use Export Documentation Checklist?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Choose export country, product category, and destination, then work through the generated document checklist and copy or download your progress."
       }
     },
     {
@@ -116,7 +116,7 @@
       "name": "What should I verify before acting on Export Documentation Checklist?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify current customs rules, export permits, product restrictions, chamber requirements, destination certificates, fees, timelines, and any broker advice."
       }
     },
     {
@@ -124,7 +124,7 @@
       "name": "Is Export Documentation Checklist an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a planning checklist only and does not replace customs, chamber, port, or destination-country requirements."
       }
     }
   ],
@@ -157,15 +157,15 @@
     <div class="card-head">Select Export Details</div>
     <div class="f-row">
       <div>
-        <div class="f-label">Export From Country</div>
+        <label class="f-label" for="exportCountry">Export From Country</label>
         <select id="exportCountry" class="f-select" onchange="generateChecklist()" aria-label="Export Country"></select>
       </div>
       <div>
-        <div class="f-label">Product Category</div>
+        <label class="f-label" for="productCat">Product Category</label>
         <select id="productCat" class="f-select" onchange="generateChecklist()" aria-label="Product Cat"></select>
       </div>
       <div>
-        <div class="f-label">Destination</div>
+        <label class="f-label" for="exportDest">Destination</label>
         <select id="exportDest" class="f-select" onchange="generateChecklist()" aria-label="Export Dest"></select>
       </div>
     </div>
@@ -183,6 +183,11 @@
         <span id="progressLabel" style="font-size:.85rem;font-weight:800;color:var(--ed-blue);">0 / 0</span>
       </div>
       <div class="progress-bar-wrap"><div id="progressFill" class="progress-bar-fill" style="width:0%"></div></div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
+        <button type="button" class="gen-btn" id="copyExportDocsBtn" style="padding:.65rem 1rem">Copy checklist</button>
+        <button type="button" class="gen-btn" id="downloadExportDocsBtn" data-no-pdf-gate="true" style="padding:.65rem 1rem;background:#fff;color:var(--ed-blue);border:1.5px solid var(--ed-blue)">Save .txt</button>
+      </div>
+      <p id="exportDocsStatus" style="font-size:.78rem;color:#64748b;margin-top:.5rem" aria-live="polite"></p>
     </div>
 
     <!-- Country Authority Info -->
@@ -210,29 +215,21 @@
 
 
 
-<section class="df-upgrade" data-df-upgrade="export-docs-trade">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Export Documentation Checklist decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for export documentation checklist so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Export Documentation Checklist: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, officialSource, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+
+<section class="tool-verification-sec" data-tool-verification-panel="export-docs">
+  <div style="max-width:900px;margin:0 auto;padding:0 24px">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div><span class="tool-verification-kicker">Export readiness check</span><h2 class="tool-verification-title">Use the checklist, then confirm live requirements</h2><p class="tool-verification-lead">Build a country/product/destination checklist locally, track document readiness, and export the working list for your broker or operations team.</p></div>
+        <div class="tool-verification-status"><span class="tool-verification-badge">Local checklist</span><p class="tool-verification-note">Reviewed 2026. Rules vary by product.</p></div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block"><h3>Check before dispatch</h3><ul class="tool-verification-list"><li>Confirm customs, chamber, standards, phytosanitary, and destination requirements for the exact HS/product.</li><li>Check restricted goods, permits, timelines, fees, and validity dates.</li><li>Copy or download the checklist for review with a clearing agent or logistics partner.</li></ul></div>
+        <div class="tool-verification-block"><h3>Limits</h3><ul class="tool-verification-list"><li>This page does not file export declarations or guarantee clearance.</li><li>Authorities and destination markets may change document requirements without notice.</li><li>Checklist choices stay local unless you export or share them.</li></ul></div>
+      </div>
+      <div class="tool-verification-actions"><p class="tool-verification-disclaimer">Planning estimate only. Confirm official export requirements before paying suppliers, booking cargo, or submitting documents.</p></div>
     </div>
-    <form class="df-form" data-df-form="export-docs-trade">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="export-docs-trade" data-df-base="Export Documentation Checklist: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Export Documentation Checklist: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="export-docs-trade">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="export-docs-trade-faq-title">
-  <h2 id="export-docs-trade-faq-title">Export Documentation Checklist FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -374,8 +371,76 @@ function updateProgress() {
   document.getElementById('progressLabel').textContent = checked + ' / ' + total + ' (' + pct + '%)';
   document.getElementById('progressFill').style.width = pct + '%';
 }
+
+function exportChecklistSummary() {
+  var lines = [
+    'Export documentation checklist',
+    'Export from: ' + document.getElementById('exportCountry').selectedOptions[0].textContent,
+    'Product category: ' + document.getElementById('productCat').selectedOptions[0].textContent,
+    'Destination: ' + document.getElementById('exportDest').selectedOptions[0].textContent,
+    'Progress: ' + document.getElementById('progressLabel').textContent,
+    ''
+  ];
+  document.querySelectorAll('#checklistSections .checklist-section').forEach(function(section){
+    var title = section.querySelector('.section-title');
+    if (title) lines.push(title.textContent);
+    section.querySelectorAll('.doc-item').forEach(function(item){
+      var checked = item.classList.contains('checked') ? '[x]' : '[ ]';
+      var name = item.querySelector('.doc-name');
+      var desc = item.querySelector('.doc-desc');
+      lines.push(checked + ' ' + (name ? name.textContent.trim() : 'Document'));
+      if (desc) lines.push('    ' + desc.textContent.trim().replace(/\\s+/g, ' '));
+    });
+    lines.push('');
+  });
+  var prohibited = Array.from(document.querySelectorAll('#prohibitedList li')).map(function(li){return li.textContent.trim();});
+  if (prohibited.length) {
+    lines.push('Prohibited or restricted exports');
+    prohibited.forEach(function(item){ lines.push('- ' + item); });
+    lines.push('');
+  }
+  lines.push('Verify current customs, chamber, standards, product, and destination requirements before dispatch.');
+  return lines.join('\\n');
+}
+
+function setExportDocsStatus(message) {
+  var status = document.getElementById('exportDocsStatus');
+  if (!status) return;
+  status.textContent = message;
+  setTimeout(function(){ status.textContent = ''; }, 1800);
+}
+
+function copyExportChecklist() {
+  var text = exportChecklistSummary();
+  fallbackExportDocsCopy(text);
+}
+
+function fallbackExportDocsCopy(text) {
+  var tmp = document.createElement('textarea');
+  tmp.value = text;
+  document.body.appendChild(tmp);
+  tmp.select();
+  document.execCommand('copy');
+  tmp.remove();
+  setExportDocsStatus('Checklist copied.');
+}
+
+function downloadExportChecklist() {
+  var blob = new Blob([exportChecklistSummary()], {type:'text/plain'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'export-documentation-checklist.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(a.href);
+  a.remove();
+  setExportDocsStatus('Text file downloaded.');
+}
+
+document.getElementById('copyExportDocsBtn').addEventListener('click', copyExportChecklist);
+document.getElementById('downloadExportDocsBtn').addEventListener('click', downloadExportChecklist);
 </script>
 <script src="/assets/js/trade-toolkit.js?v=cadfd9a1" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

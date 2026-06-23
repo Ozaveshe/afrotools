@@ -106,7 +106,7 @@ textarea{resize:vertical;font-family:'Fira Code',monospace,Consolas}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-robots-txt/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-robots-txt/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/robots-txt/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -117,7 +117,7 @@ textarea{resize:vertical;font-family:'Fira Code',monospace,Consolas}
       "name": "How should I use Robots.txt Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Choose a preset or enter custom allow, disallow, crawl-delay, sitemap, and bot-specific rules. Review the generated robots.txt file before copying it to your domain root."
       }
     },
     {
@@ -125,7 +125,7 @@ textarea{resize:vertical;font-family:'Fira Code',monospace,Consolas}
       "name": "What should I verify before acting on Robots.txt Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify that the sitemap URL is public, paths start with the right slash, important pages are not blocked, and the final file is tested in your search engine webmaster tools."
       }
     },
     {
@@ -133,7 +133,7 @@ textarea{resize:vertical;font-family:'Fira Code',monospace,Consolas}
       "name": "Is Robots.txt Generator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It creates a local planning file only. Search engines and AI crawlers may interpret or ignore robots.txt differently, and robots.txt is not a security control."
       }
     }
   ],
@@ -169,19 +169,19 @@ textarea{resize:vertical;font-family:'Fira Code',monospace,Consolas}
 <div class="card-head"><span class="card-title">Configuration</span></div>
 <div class="card-body">
 <div style="margin-bottom:14px">
-<label>Sitemap URL</label>
+<label for="sitemap">Sitemap URL</label>
 <input aria-label="Https://example.com/sitemap.xml" type="url" id="sitemap" placeholder="https://example.com/sitemap.xml" oninput="generate()">
 </div>
 <div style="margin-bottom:14px">
-<label>Disallowed Paths (one per line)</label>
+<label for="disallow">Disallowed Paths (one per line)</label>
 <textarea id="disallow" rows="5" placeholder="/admin/&#10;/private/&#10;/tmp/" oninput="generate()" aria-label="/admin/&amp;#10;/private/&amp;#10;/tmp/"></textarea>
 </div>
 <div style="margin-bottom:14px">
-<label>Allowed Paths (one per line, overrides disallow)</label>
+<label for="allow">Allowed Paths (one per line, overrides disallow)</label>
 <textarea id="allow" rows="3" placeholder="/admin/public/&#10;/api/public/" oninput="generate()" aria-label="/admin/public/&amp;#10;/api/public/"></textarea>
 </div>
 <div style="margin-bottom:14px">
-<label>Crawl Delay (seconds, optional)</label>
+<label for="crawlDelay">Crawl Delay (seconds, optional)</label>
 <input aria-label="E.g. 10" type="number" id="crawlDelay" min="0" max="60" placeholder="e.g. 10" oninput="generate()">
 </div>
 <div style="margin-bottom:14px">
@@ -242,29 +242,43 @@ textarea{resize:vertical;font-family:'Fira Code',monospace,Consolas}
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="robots-txt">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Robots.txt Generator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for robots.txt generator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Robots.txt Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel="robots-txt">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Crawl rules check</span>
+          <h2 class="tool-verification-title">Review before publishing robots.txt</h2>
+          <p class="tool-verification-lead">Use the generated file as a local draft, then test it against your live site before upload. The output is created in your browser and is not sent to AfroTools.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local draft</span>
+          <p class="tool-verification-note">Reviewed 2026. Crawler policies can change.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Check the generated file</h3>
+          <ul class="tool-verification-list">
+            <li>Confirm the sitemap URL opens publicly and matches your canonical domain.</li>
+            <li>Make sure disallowed paths start with the intended slash and do not block important pages.</li>
+            <li>Test the final file in Google Search Console or your crawler test tool.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Assumptions and limits</h3>
+          <ul class="tool-verification-list">
+            <li>Robots.txt is not access control; private files still need authentication or server rules.</li>
+            <li>AI and SEO crawlers may update bot names or ignore voluntary directives.</li>
+            <li>Copy or download the result, then place it at <code>/robots.txt</code> on the live domain.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Planning estimate only. This page does not submit files to search engines, guarantee indexing outcomes, or provide a security boundary.</p>
+      </div>
     </div>
-    <form class="df-form" data-df-form="robots-txt">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="robots-txt" data-df-base="Robots.txt Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Robots.txt Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="robots-txt">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="robots-txt-faq-title">
-  <h2 id="robots-txt-faq-title">Robots.txt Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -337,11 +351,31 @@ function generate() {
 }
 
 function copyCode() {
-  navigator.clipboard.writeText(document.getElementById('output').textContent).then(() => {
-    const btn = document.querySelector('.copy-btn');
+  const btn = document.querySelector('.copy-btn');
+  const text = document.getElementById('output').textContent;
+  const done = () => {
     btn.textContent = 'Copied!';
     setTimeout(() => btn.textContent = 'Copy', 1500);
-  });
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(function(){
+      const tmp = document.createElement('textarea');
+      tmp.value = text;
+      document.body.appendChild(tmp);
+      tmp.select();
+      document.execCommand('copy');
+      tmp.remove();
+      done();
+    });
+    return;
+  }
+  const tmp = document.createElement('textarea');
+  tmp.value = text;
+  document.body.appendChild(tmp);
+  tmp.select();
+  document.execCommand('copy');
+  tmp.remove();
+  done();
 }
 
 function download() {
@@ -358,16 +392,15 @@ generate();
 
 <script>
 (function(){
-  var target = document.getElementById('output');
+  var target = document.querySelector('.dl-btn');
   if (!target) return;
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
   div.innerHTML = '<share-result-button tool-name="Robots Txt" tool-slug="robots-txt"></share-result-button>';
-  target.appendChild(div);
+  target.insertAdjacentElement('afterend', div);
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

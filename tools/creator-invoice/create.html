@@ -14,6 +14,12 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
 <link rel="stylesheet" href="style.css?v=a40ada5e">
+<style>
+.ci-app,.ci-app-header,.ci-app-inner,.ci-section,.ci-ai-assist{box-sizing:border-box;max-width:100%}
+.ci-ai-input-row{min-width:0}
+.ci-ai-input{min-width:0}
+@media (max-width:520px){.ci-ai-input-row{display:grid;grid-template-columns:1fr}.ci-ai-send{width:100%}}
+</style>
 <link rel="canonical" href="https://afrotools.com/tools/creator-invoice/create">
 <meta property="og:url" content="https://afrotools.com/tools/creator-invoice/create">
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
@@ -124,14 +130,14 @@
     <div class="ci-step" id="step-2">
       <div class="ci-step-label">Step 2 of 4</div>
       <div class="ci-step-title">What did you do?</div>
-      <div class="ci-step-sub">Add line items for each service or product. Or describe the work and let AI break it down.</div>
+      <div class="ci-step-sub">Add line items for each service or product. Or describe the work and turn it into editable local line suggestions.</div>
 
-      <!-- AI Assist -->
+      <!-- Local assist -->
       <div class="ci-ai-assist">
-        <div class="ci-ai-assist-title">🤖 AI Line Item Generator</div>
+        <div class="ci-ai-assist-title">Local Line Item Helper</div>
         <div class="ci-ai-input-row">
           <input aria-label="E.g. Shot a 2 day wedding, delivered 300 edited photos, 1 highlight reel" type="text" class="ci-ai-input" id="ai-describe" placeholder="e.g. Shot a 2-day wedding, delivered 300 edited photos, 1 highlight reel">
-          <button type="button" class="ci-ai-send" id="ai-generate" onclick="generateLineItems()">Generate</button>
+          <button type="button" class="ci-ai-send" id="ai-generate" onclick="generateLineItems()">Add Suggestions</button>
         </div>
       </div>
 
@@ -158,7 +164,7 @@
     <div class="ci-step" id="step-3">
       <div class="ci-step-label">Step 3 of 4</div>
       <div class="ci-step-title">The Details</div>
-      <div class="ci-step-sub">Invoice number, dates, currency, and tax — most of this is auto-configured for you.</div>
+      <div class="ci-step-sub">Review the invoice number, dates, currency, and tax fields before sending.</div>
 
       <div class="ci-field-row">
         <div class="ci-field">
@@ -574,42 +580,27 @@
     document.getElementById('custom-due-wrap').style.display = val === 'custom' ? '' : 'none';
   };
 
-  // AI line item generation
-  window.generateLineItems = async function() {
+  // Local line item suggestions; sensitive invoice text stays in this browser.
+  window.generateLineItems = function() {
     var desc = document.getElementById('ai-describe').value.trim();
     if (!desc) return;
     var btn = document.getElementById('ai-generate');
-    btn.textContent = 'Generating...';
+    btn.textContent = 'Adding...';
     btn.disabled = true;
 
     try {
-      var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : '';
-      var res = await fetch('/.netlify/functions/ai-advisor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tool: 'creator-invoice',
-          question: 'Generate invoice line items for this work: ' + desc + '. Return ONLY a JSON array of objects with fields: description, quantity, unitPrice (in the smallest currency unit). No markdown, just JSON.',
-          token: token
-        })
+      var parts = desc.split(/,|\band\b|\+|;/i).map(function(part) {
+        return part.trim().replace(/\s+/g, ' ');
+      }).filter(Boolean);
+      if (!parts.length) parts = [desc];
+      parts.slice(0, 6).forEach(function(part) {
+        addLineItem(part, 1, 0);
       });
-      var data = await res.json();
-      var answer = data.answer || data.response || '';
-      // Extract JSON from response
-      var match = answer.match(/\[[\s\S]*\]/);
-      if (match) {
-        var items = JSON.parse(match[0]);
-        items.forEach(function(item) {
-          addLineItem(item.description, item.quantity || 1, (item.unitPrice || 0) / 100);
-        });
-        showToast('AI generated ' + items.length + ' line items', 'success');
-      } else {
-        showToast('Could not parse AI response', 'error');
-      }
+      showToast(parts.slice(0, 6).length + ' local line suggestions added', 'success');
     } catch(e) {
-      showToast('AI generation failed — add items manually', 'error');
+      showToast('Could not add suggestions - add items manually', 'error');
     }
-    btn.textContent = 'Generate';
+    btn.textContent = 'Add Suggestions';
     btn.disabled = false;
   };
 

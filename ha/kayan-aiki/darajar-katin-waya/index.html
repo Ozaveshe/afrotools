@@ -128,6 +128,7 @@ summary{padding:16px 18px;font-weight:900;cursor:pointer;list-style:none}
         <thead><tr><th>Hanya</th><th>Kashi</th><th>Kiyasin da za ka samu</th></tr></thead>
         <tbody id="rateBody"></tbody>
       </table>
+      <div class="ha-grid" style="margin-top:14px"><button class="ha-btn" type="button" id="copyResultBtn">Kwafi sakamako</button><button class="ha-btn" type="button" id="downloadResultBtn">Sauke TXT</button></div>
     </div>
 
     <div id="infoArea" class="ha-info" style="margin-top:20px"></div>
@@ -135,6 +136,11 @@ summary{padding:16px 18px;font-weight:900;cursor:pointer;list-style:none}
     <div class="ha-panel ha-warning">
       <h2>Tsaro kafin ma'amala</h2>
       <p class="ha-note">Darajar katin waya na canzawa bisa kamfani, bukata da dandalin da aka yi amfani da shi. Ka tabbatar da kudin da za a biya, ka guji tayin da ya yi kyau fiye da kima, kuma kada ka aika katin waya ga wanda ba ka amince da shi ba.</p>
+    </div>
+    <div class="ha-panel" data-tool-verification-panel="telecom-airtime-ha">
+      <h2>Hanyar lissafi da tushe</h2>
+      <p class="ha-note"><strong>Hanyar lissafi:</strong> kayan aikin yana daukar darajar katin waya, sannan yana nuna kewayon kashi 60% zuwa 90% bisa nau'in hanyar canji. Wannan yana taimaka maka ka ga abin da zai iya faruwa kafin amincewa da wakili ko manhaja.</p>
+      <p class="ha-note"><strong>Tushen bayani:</strong> bayanan kamfani da kasa suna fitowa daga katalogin telecom na AfroTools, amma farashin canji ba live quote ba ne. Atunse: June 2026. Bayani mai muhimmanci: ka duba farashi, biyan kudi da dokokin kamfanin sadarwa kafin aika katin.</p>
     </div>
 
     <details>
@@ -163,6 +169,7 @@ summary{padding:16px 18px;font-weight:900;cursor:pointer;list-style:none}
   var resultBox = document.getElementById('resultBox');
   var rateBody = document.getElementById('rateBody');
   var infoArea = document.getElementById('infoArea');
+  var lastResultText = '';
 
   var resaleChannels = [
     { name: 'Wakilan kasuwa ko titi', rateMin: 0.60, rateMax: 0.70 },
@@ -225,6 +232,7 @@ summary{padding:16px 18px;font-weight:900;cursor:pointer;list-style:none}
     var lowTotal = Math.round(amount * 0.70);
     var highTotal = Math.round(amount * 0.85);
     document.getElementById('resRange').textContent = sym + lowTotal.toLocaleString() + ' zuwa ' + sym + highTotal.toLocaleString();
+    lastResultText = 'Katin waya: ' + sym + amount.toLocaleString() + ' | Kamfani: ' + operator + ' | Kiyasin karba: ' + sym + lowTotal.toLocaleString() + ' zuwa ' + sym + highTotal.toLocaleString() + '. Tabbatar da farashi da biyan kudi kafin aika katin.';
 
     var html = '';
     resaleChannels.forEach(function(ch){
@@ -240,6 +248,8 @@ summary{padding:16px 18px;font-weight:900;cursor:pointer;list-style:none}
     resultBox.classList.add('show');
     resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
+  document.getElementById('copyResultBtn').addEventListener('click', function(){ calculate(); if (navigator.clipboard) navigator.clipboard.writeText(lastResultText); });
+  document.getElementById('downloadResultBtn').addEventListener('click', function(){ calculate(); if (!lastResultText) return; var blob = new Blob([lastResultText + '\n'], { type: 'text/plain;charset=utf-8' }); var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = 'darajar-katin-waya.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
 
   function renderInfo(code, country) {
     var tips = countryTips[code] || null;

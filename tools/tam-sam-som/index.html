@@ -44,6 +44,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -104,6 +105,10 @@ tr:hover td{background:#f8fafc}
 .disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
 #results-section{display:none}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+.summary-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.summary-actions button{border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;cursor:pointer;font-family:inherit;font-weight:800;min-height:42px;padding:0 14px}.summary-actions button:hover,.summary-actions button:focus-visible{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14);outline:none}.summary-status{color:#64748b;font-size:.78rem;line-height:1.5;margin-top:8px}
+
+.tool-main-inner,.tool-hero-inner,.main-col,.side-col,.card,.tool-verification-sec .container{box-sizing:border-box;min-width:0;max-width:100%}
+@media(max-width:768px){.tool-main-inner{padding-left:16px;padding-right:16px;width:100%}.card,.disclaimer{width:100%}.table-wrap{max-width:100%;overflow-x:auto}}
 </style>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tam-sam-som.webp">
@@ -111,6 +116,7 @@ tr:hover td{background:#f8fafc}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/taille-marche-tam-sam-som/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tam-sam-som/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tam-sam-som/" />
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -248,6 +254,8 @@ tr:hover td{background:#f8fafc}
               </div>
             </div>
           </div>
+          <div class="summary-actions"><button type="button" onclick="copyTamSummary()">Copy summary</button><button type="button" onclick="downloadTamSummary()">Download TXT</button></div>
+          <div class="summary-status" id="tam-summary-status" role="status" aria-live="polite"></div>
         </div>
       </div>
 
@@ -337,6 +345,35 @@ tr:hover td{background:#f8fafc}
     </div>
   </div>
 </section>
+
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="tam-sam-som" aria-labelledby="tam-sam-som-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Market sizing workflow</span>
+          <h2 class="tool-verification-title" id="tam-sam-som-verification-title">Build a defensible market-size story before it enters the deck</h2>
+          <p class="tool-verification-lead">Use country, industry, segment, ARPU, accessibility, market-share, and growth assumptions to estimate TAM, SAM, SOM, customer counts, and five-year market projection.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local market-size estimate</span>
+          <p class="tool-verification-note">Inputs and outputs stay in this browser unless you copy, download, print, save, or share them.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block"><h3>Primary task</h3><ul class="tool-verification-list"><li>Choose country, industry, target segment, and ARPU currency.</li><li>Set accessible market, target share, and growth assumptions.</li><li>Calculate the market size and review the projection table.</li></ul></div>
+        <div class="tool-verification-block"><h3>Result and export</h3><ul class="tool-verification-list"><li>TAM, SAM, SOM, customer counts, and five-year projection.</li><li>Market intelligence card for the selected country.</li><li>Copy and TXT download actions for pitch notes.</li></ul></div>
+        <div class="tool-verification-block"><h3>Before you use it</h3><ul class="tool-verification-list"><li>Support ARPU and segment assumptions with current customer, industry, or public data.</li><li>Be conservative with SOM and explain go-to-market constraints.</li><li>Do not present estimates as official market research.</li></ul></div>
+        <div class="tool-verification-block"><h3>Assumptions and freshness</h3><p class="tool-verification-meta">Population, internet, GDP, FX, and industry assumptions can drift. Verify investor-facing numbers with current sources before publishing a deck.</p></div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="/contact/">Report tool issue</a>
+        <p class="tool-verification-disclaimer">Planning utility only. It is not an official filing, legal, tax, accounting, security, finance, platform, lender, or live-data service.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="TAM SAM SOM Calculator" prospect-segment="startup-finance" save-note="Build the market-size estimate, review assumptions, then copy or download a pitch-deck summary."></afro-business-cta>
 
 <afro-footer></afro-footer>
 
@@ -463,6 +500,25 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('country').addEventListener('change', updateMarketStats);
   document.getElementById('target-segment').addEventListener('change', updateMarketStats);
 });
+
+function textOf(id){ var el=document.getElementById(id); return el ? el.textContent.trim() : ''; }
+function valueOf(id){ var el=document.getElementById(id); return el ? (el.value || el.textContent || '').trim() : ''; }
+function buildToolSummary(title, rows){ return [title, new Date().toISOString().slice(0,10), ''].concat(rows.filter(Boolean)).join('\n'); }
+function copyToolSummary(text, statusId){
+  var s=document.getElementById(statusId);
+  if(s) s.textContent='Summary copied.';
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).catch(function(){ fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+function downloadToolSummary(text, filename, statusId){ var blob=new Blob([text],{type:'text/plain;charset=utf-8'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){URL.revokeObjectURL(a.href);},500); var s=document.getElementById(statusId); if(s) s.textContent='TXT summary downloaded.'; }
+
+function buildTamSummary(){ return buildToolSummary('TAM SAM SOM market-size summary', ['Country: '+valueOf('country'), 'Industry: '+valueOf('industry'), 'Target segment: '+valueOf('target-segment'), 'ARPU: '+valueOf('arpu')+' '+valueOf('arpu-currency'), 'TAM: '+textOf('tam-val'), 'SAM: '+textOf('sam-val'), 'SOM: '+textOf('som-val'), 'TAM customers: '+textOf('tam-customers'), 'SOM customers: '+textOf('som-customers'), 'Note: planning estimate only; verify market, ARPU, segment, FX, and growth assumptions before using in a pitch deck.']); }
+function copyTamSummary(){ copyToolSummary(buildTamSummary(),'tam-summary-status'); }
+function downloadTamSummary(){ downloadToolSummary(buildTamSummary(),'tam-sam-som-summary.txt','tam-summary-status'); }
 </script>
 </body>
 </html>

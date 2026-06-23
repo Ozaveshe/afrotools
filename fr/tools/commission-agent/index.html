@@ -436,7 +436,7 @@ body{margin:0;background:#f4f7fb;color:#0f172a;font-family:'DM Sans',system-ui,-
 
     <aside class="fr-side">
       <div class="fr-section" style="margin-top:0">
-        <h2>Analyse IA</h2>
+        <h2>Analyse du scenario</h2>
         <div class="tool-hint" id="ai-obs">Sélectionnez un pays et renseignez les détails du bien pour obtenir des conseils IA sur les commissions et la négociation.</div>
       </div>
 
@@ -476,6 +476,15 @@ body{margin:0;background:#f4f7fb;color:#0f172a;font-family:'DM Sans',system-ui,-
 
   <section class="fr-caution-note" aria-label="Repère uniquement" style="max-width:1180px;margin:22px auto 34px;padding:16px 18px;border:1px solid #bfdbfe;border-radius:14px;background:#eff6ff;color:#1e3a8a;line-height:1.65">
     <strong>Repère uniquement.</strong> Ces résultats servent à préparer une discussion. Confirmez les taux, frais, clauses, conditions d'assurance et obligations locales avec un professionnel qualifié avant décision ou signature.
+  </section>
+
+  <section class="fr-caution-note" data-fr-legal-batch="commission-export" aria-label="Exporter le resume" style="max-width:1180px;margin:22px auto 0;padding:16px 18px;border:1px solid #dbeafe;border-radius:14px;background:#fff;color:#334155;line-height:1.65">
+    <strong>Exporter le resume.</strong> Copiez ou telechargez un bref recapitulatif local pour comparer un mandat, discuter avec un agent ou garder une trace de vos hypotheses. Aucun prix, loyer ou pays selectionne n'est envoye a un serveur.
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px">
+      <button class="fr-btn fr-btn-primary" type="button" id="copyCommissionBrief">Copier le resume</button>
+      <button class="fr-btn fr-btn-secondary" type="button" id="downloadCommissionBrief" style="color:#0f172a;border-color:#cbd5e1">Telecharger TXT</button>
+      <span id="commissionExportStatus" aria-live="polite" style="align-self:center;color:#475569;font-size:.9rem"></span>
+    </div>
   </section>
 <afro-footer></afro-footer>
 <script>
@@ -586,6 +595,66 @@ body{margin:0;background:#f4f7fb;color:#0f172a;font-family:'DM Sans',system-ui,-
   window.calcSale = calcSale;
   window.calcRental = calcRental;
 })();
+</script>
+
+<script data-fr-legal-batch="commission-export-js">
+!function(){
+  "use strict";
+  function value(id){var el=document.getElementById(id);return el?el.value:'';}
+  function text(id){var el=document.getElementById(id);return el?(el.textContent||'').trim():'';}
+  function countryName(id){
+    var el=document.getElementById(id);
+    return el&&el.options&&el.selectedIndex>=0?el.options[el.selectedIndex].textContent.trim():'';
+  }
+  function buildCommissionBrief(){
+    var saleCountry=countryName('country-sale');
+    var rentalCountry=countryName('country-rental');
+    var lines=[
+      'AfroTools - resume commission agent',
+      'Date de preparation: 22 juin 2026',
+      '',
+      'Vente:',
+      '- Pays: '+(saleCountry||'non selectionne'),
+      '- Valeur du bien: '+(value('prop-value')||'non renseignee'),
+      '- Taux de commission: '+(value('commission-pct')||'non renseigne')+'%',
+      '- Commission totale estimee: '+(text('r-sale-total')||'non calculee'),
+      '- TVA estimee: '+(text('r-sale-vat')||'non calculee'),
+      '- Net vendeur estime: '+(text('r-sale-net')||'non calcule'),
+      '',
+      'Location:',
+      '- Pays: '+(rentalCountry||'non selectionne'),
+      '- Loyer mensuel: '+(value('monthly-rent')||'non renseigne'),
+      '- Frais de location estimes: '+(text('r-rental-total')||'non calcule'),
+      '- Frais de renouvellement: '+(text('r-rental-renewal')||'non calcule'),
+      '',
+      'A verifier: mandat ecrit, taux HT/TTC, partie qui paie, services inclus, facture, enregistrement local et obligations fiscales.',
+      'Limite: estimation de preparation uniquement; pas un avis juridique, fiscal ou immobilier officiel.'
+    ];
+    return lines.join('\n');
+  }
+  function setStatus(msg){var el=document.getElementById('commissionExportStatus');if(el)el.textContent=msg;}
+  function download(name,text){
+    var blob=new Blob([text],{type:'text/plain'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=name;
+    a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);},250);
+  }
+  function copy(text){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){setStatus('Resume copie.');},function(){setStatus('Copie indisponible; utilisez le telechargement TXT.');});
+    } else {
+      setStatus('Copie indisponible; utilisez le telechargement TXT.');
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var c=document.getElementById('copyCommissionBrief');
+    var d=document.getElementById('downloadCommissionBrief');
+    if(c)c.addEventListener('click',function(){copy(buildCommissionBrief());});
+    if(d)d.addEventListener('click',function(){download('commission-agent-resume.txt',buildCommissionBrief());setStatus('Fichier TXT prepare.');});
+  });
+}();
 </script>
 </body>
 </html>

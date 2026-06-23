@@ -18,6 +18,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script type="application/ld+json">
@@ -320,6 +321,46 @@ input[type="file"]{display:none}
 <section class="df-faq" aria-labelledby="json-formatter-faq-title">
   <h2 id="json-formatter-faq-title">JSON Formatter &amp; Validator FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste JSON, format or repair it, inspect errors, run a pointer query if needed, then copy or download only the output you intend to share.</p></details><details><summary>What should I verify?</summary><p>Check schema fit, data types, required fields, array depth, date formats, and remove secrets, tokens, passwords, and personal data before sharing.</p></details><details><summary>Is this official?</summary><p>No. It is a local browser utility, not a production schema validator, security scanner, or API contract guarantee.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel="json-formatter">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Developer safety check</span>
+          <h2 class="tool-verification-title">Validate structure before sharing payloads</h2>
+          <p class="tool-verification-lead">Use formatting, repair, pointer queries, schema/type inference, diffing, copy, and download as a local API-debugging workflow.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Runs in browser</span>
+          <p class="tool-verification-note">Payloads are not uploaded by the formatter itself.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: parse the payload locally, render the selected mode, then compare schema, type, query, or diff output against your real contract.</li>
+            <li>Verify parse status, required fields, date formats, array depth, null handling, and schema or TypeScript fit against the real API contract.</li>
+            <li>Remove tokens, passwords, keys, personal data, and production identifiers before copying output into tickets or docs.</li>
+            <li>Use download only for sanitized examples that are safe to store locally.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: local utility only, not an official schema validator, security scanner, or production API guarantee.</li>
+            <li>Repair and type inference are best-effort helpers; review generated schema/types before committing code.</li>
+            <li>Local-first privacy depends on not pasting sensitive payloads into external chats, logs, or shared screenshots.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#output">Review formatter output</a>
+        <p class="tool-verification-disclaimer">Source/reference note: compare against your current OpenAPI, JSON Schema, backend tests, or provider documentation before shipping changes.</p>
+      </div>
+    </div>
+  </div>
 </section>
 </main>
 

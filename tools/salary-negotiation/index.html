@@ -36,6 +36,12 @@ a{text-decoration:none;color:inherit}
 .pbar-fill{height:10px;border-radius:6px;background:linear-gradient(90deg,var(--en-accent-light),var(--en-accent))}
 .pbar-val{width:80px;font-size:.82rem;font-weight:700;color:var(--en-accent-dark);text-align:right;flex-shrink:0}
 .offer-marker{position:absolute;top:-4px;width:4px;height:18px;background:#ef4444;border-radius:2px}
+.sn-result-note{margin-top:12px;border:1px solid #c7d2fe;background:#eef2ff;border-radius:10px;padding:12px 14px;color:#312e81;font-size:.82rem;line-height:1.6}
+.sn-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.sn-action-btn{border:1px solid #c7d2fe;background:#fff;color:#3730a3;border-radius:10px;padding:10px 14px;font-size:.84rem;font-weight:800;cursor:pointer;font-family:inherit}
+.sn-action-btn:hover{background:#eef2ff}
+.sn-action-btn:focus-visible{outline:2px solid var(--en-accent);outline-offset:2px}
+.sn-status{min-height:1.2em;margin-top:8px;font-size:.78rem;color:#64748b}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Career Tools","item":"https://afrotools.com/career/"},{"@type":"ListItem","position":3,"name":"Salary Negotiation Calculator","item":"https://afrotools.com/tools/salary-negotiation/"}]}</script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
@@ -205,6 +211,12 @@ a{text-decoration:none;color:inherit}
     <div class="en-card">
       <div class="en-card-title"><div class="en-card-title-icon">📝</div>Negotiation Script</div>
       <div class="script-box" id="negotiationScript"></div>
+      <p class="sn-result-note"><strong>Private planning note.</strong> Salary entries stay in this browser. The market table is an internal planning dataset reviewed in 2026, not a live salary survey or guaranteed offer outcome. Verify current market evidence, written benefits, tax effects, and contract terms before negotiating.</p>
+      <div class="sn-actions">
+        <button type="button" class="sn-action-btn" onclick="copyNegotiationSummary()">Copy plan</button>
+        <button type="button" class="sn-action-btn" data-no-gate="true" onclick="downloadNegotiationSummary()">Download TXT</button>
+      </div>
+      <div class="sn-status" id="sn-status" role="status" aria-live="polite"></div>
     </div>
   </div>
 
@@ -326,6 +338,7 @@ var BASE = {
 var COMPANY_MULT={startup:0.85,sme:0.9,large:1,multinational:1.2};
 var LOCATION_MULT={capital:1,major:0.85,other:0.75};
 var P25=0.72; var P50=1; var P75=1.32;
+var LAST_NEGOTIATION_RESULT = null;
 
 function fmtSal(n,sym,div,unit){
   if(n>=1000) return sym+Math.round(n).toLocaleString();
@@ -416,7 +429,89 @@ I'd like to ask: is there flexibility to move the offer to ${sym}${target.toLoca
 
 If the base salary is fixed, I'm open to discussing other elements — such as performance bonus, additional leave days, remote work flexibility, or a performance review after 6 months."`;
 
+  LAST_NEGOTIATION_RESULT = {
+    country: country,
+    industry: industry,
+    role: role,
+    experience: exp,
+    current: current,
+    offer: offer,
+    companyType: companyType,
+    location: loc,
+    symbol: sym,
+    p25: p25,
+    median: median,
+    p75: p75,
+    walkaway: walkaway,
+    counter: counter,
+    target: target,
+    confidence: confidence,
+    assessment: offerAssessment,
+    script: document.getElementById('negotiationScript').textContent
+  };
+  var status = document.getElementById('sn-status');
+  if (status) status.textContent = 'Negotiation plan ready to copy or download.';
   document.getElementById('results').className='en-results on';
+}
+
+function buildNegotiationSummary() {
+  if (!LAST_NEGOTIATION_RESULT) return '';
+  var r = LAST_NEGOTIATION_RESULT;
+  return [
+    'AfroTools Salary Negotiation Plan',
+    'Country: ' + r.country,
+    'Industry: ' + r.industry,
+    'Role: ' + r.role,
+    'Experience: ' + r.experience + ' years',
+    r.current ? 'Current salary: ' + r.symbol + r.current.toLocaleString() : 'Current salary: not entered',
+    r.offer ? 'Offer received: ' + r.symbol + r.offer.toLocaleString() : 'Offer received: not entered',
+    '25th percentile: ' + r.symbol + r.p25.toLocaleString(),
+    'Median target: ' + r.symbol + r.target.toLocaleString(),
+    '75th percentile: ' + r.symbol + r.p75.toLocaleString(),
+    'Walk-away floor: ' + r.symbol + r.walkaway.toLocaleString(),
+    'Counter-offer ask: ' + r.symbol + r.counter.toLocaleString(),
+    'Confidence score: ' + r.confidence + '%',
+    'Assessment: ' + r.assessment.replace(/<[^>]+>/g, ''),
+    '',
+    'Script:',
+    r.script,
+    '',
+    'Assumptions: private planning estimate using a reviewed 2026 internal market table. Verify live market evidence, written benefits, tax effects, contract terms and role scope before negotiating.'
+  ].join('\n');
+}
+
+function copyNegotiationSummary() {
+  var text = buildNegotiationSummary();
+  var status = document.getElementById('sn-status');
+  if (!text) { status.textContent = 'Run the calculator first.'; return; }
+  navigator.clipboard.writeText(text).then(function() {
+    status.textContent = 'Negotiation plan copied.';
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    status.textContent = 'Negotiation plan copied.';
+  });
+}
+
+function downloadNegotiationSummary() {
+  var text = buildNegotiationSummary();
+  var status = document.getElementById('sn-status');
+  if (!text) { status.textContent = 'Run the calculator first.'; return; }
+  var blob = new Blob([text], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'salary-negotiation-plan.txt';
+  a.dataset.noPdfGate = 'true';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  status.textContent = 'TXT plan downloaded.';
 }
 </script>
 
@@ -440,6 +535,14 @@ If the base salary is fixed, I'm open to discussing other elements — such as p
       <output class="df-result" data-df-result="salary-negotiation" data-df-base="Negotiation plan ready. Calculate above, then verify market range, proof points, counter-offer ask, walk-away line, benefits fallback, and contract terms before starting the conversation." aria-live="polite">Negotiation plan ready. Calculate above, then verify market range, proof points, counter-offer ask, walk-away line, benefits fallback, and contract terms before starting the conversation.</output>
       <div class="df-actions"><button type="button" data-df-copy="salary-negotiation">Copy negotiation plan</button><a class="df-action-link" href="#results">View range</a></div>
     </form>
+  </div>
+</section>
+<section class="df-faq quality-verification-panel" data-tool-verification-panel data-quality-proof="Salary Negotiation Calculator" aria-labelledby="salary-negotiation-verification-title">
+  <h2 id="salary-negotiation-verification-title">Salary negotiation sources and verification</h2>
+  <div class="df-faq__grid">
+    <details open><summary>Sources and methodology</summary><p>The calculator combines the country, industry, role level, experience, company size, location, current pay, and offer you enter with an internal planning table reviewed in 2026. It estimates a walk-away floor, counter-offer ask, target range, confidence score, and conversation script for preparation.</p></details>
+    <details><summary>Before negotiating</summary><p>Verify current market evidence from recent offers, recruiter conversations, salary bands, public job posts, professional communities, and written benefits. Confirm bonus rules, equity, remote-work terms, notice period, probation, tax effects, and contract clauses before accepting or rejecting an offer.</p></details>
+    <details><summary>Privacy and limitations</summary><p>Your salary inputs stay in this browser unless you copy or download the plan. This is career planning support, not legal, tax, immigration, financial, employment, union, or HR policy advice, and it does not guarantee a raise, offer, or promotion.</p></details>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="salary-negotiation-faq-title">

@@ -17,7 +17,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -226,10 +230,48 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </section>
 
 
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="za-dividend-tax" aria-labelledby="za-dividend-tax-verification-title">
+  <div class="tool-verification-wrap">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Tax source check</span>
+          <h2 class="tool-verification-title" id="za-dividend-tax-verification-title">Estimate dividends tax, then verify SARS and treaty documents</h2>
+          <p class="tool-verification-lead">The calculator uses the rate and recipient settings shown on the page. It does not file with SARS, issue a withholding certificate, or confirm treaty eligibility.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Planning worksheet</span>
+          <p class="tool-verification-note">Save, share, or copy the result after checking the current SARS guidance and DTA paperwork.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Primary workflow</h3>
+          <ul class="tool-verification-list">
+            <li>Choose dividend type, recipient, gross amount, payment frequency, and treaty rate when relevant.</li>
+            <li>Review tax per payment, net payment, annual tax, annual net, and the explanatory note.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before relying</h3>
+          <ul class="tool-verification-list">
+            <li>Verify SARS dividends tax guidance, DTA declarations, beneficial-owner status, exemption certificates, REIT or foreign-dividend treatment, and payment dates.</li>
+            <li>Ask a tax practitioner when exemptions, treaty rates, cross-border holdings, or trust/company structures are involved.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#resultCard">View estimate</a>
+        <p class="tool-verification-disclaimer">Planning estimate only. Not tax advice, a SARS filing, an official certificate, or a guaranteed withholding treatment.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="vat"></wise-cta>
 </div>
 <afro-related-tools category="financial" current="za-dividend-tax"></afro-related-tools>
+<afro-business-cta tool-name="SA Dividends Tax Calculator" prospect-segment="tax-planning" save-note="Estimate locally, then verify SARS guidance, exemptions, DTA paperwork, and withholding timing before acting."></afro-business-cta>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
@@ -294,6 +336,10 @@ function calculate(){
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
+function dividendTaxSummary(){
+  calculate();
+  return 'South Africa dividends tax estimate: '+document.getElementById('resultGrid').innerText.replace(/\s+/g,' ').trim()+'. '+document.getElementById('notes').innerText+' Verify SARS guidance, DTA documents, exemptions, beneficial owner status, and payment dates before acting.';
+}
 </script>
 
 <script>
@@ -303,8 +349,10 @@ function calculate(){
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="za-dividend-tax" tool-name="South Africa Dividend Tax"></save-result-button><share-result-button tool-name="South Africa Dividend Tax" tool-slug="za-dividend-tax"></share-result-button>';
+  div.innerHTML = '<button type="button" class="btn" id="za-copy-summary" style="width:auto;margin-top:0;background:#0f172a;color:#fff">Copy summary</button><save-result-button tool-slug="za-dividend-tax" tool-name="South Africa Dividend Tax"></save-result-button><share-result-button tool-name="South Africa Dividend Tax" tool-slug="za-dividend-tax"></share-result-button>';
   target.appendChild(div);
+  var copyBtn=document.getElementById('za-copy-summary');
+  if(copyBtn){copyBtn.addEventListener('click',function(){var text=dividendTaxSummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);copyBtn.textContent='Copied';setTimeout(function(){copyBtn.textContent='Copy summary';},1600);}});}
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

@@ -23,7 +23,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-recharge-ev/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-kuchaji-ev/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ev-charging/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -95,6 +95,11 @@
 <tr><td>CO₂ Saved / Month</td><td colspan="2" id="rCO2">—</td></tr>
 </tbody></table>
 <div class="en-observations" id="rObs"></div>
+<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem">
+<button type="button" class="en-btn" style="width:auto;padding:.65rem 1rem" onclick="copyEVResult()">Copy result</button>
+<button type="button" class="en-btn" style="width:auto;padding:.65rem 1rem;background:#fff;color:#007AFF;border:1.5px solid #007AFF" onclick="downloadEVResult()">Download .txt</button>
+</div>
+<p id="evStatus" style="font-size:.78rem;color:#64748b;margin-top:.5rem" aria-live="polite"></p>
 </div>
 <section class="en-seo">
 <h2>EV Adoption in Africa — Cost Analysis</h2>
@@ -103,29 +108,9 @@
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="ev-charging">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">EV charging cost</span>
-      <h2>Estimate charging cost per trip or month</h2>
-      <p>Use battery kWh, tariff, efficiency, and distance to understand EV running cost before comparing fuel spend.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Result: EV charging estimate ready with cost per charge, cost per km, tariff, and charger-loss checks.</li><li>Methodology: use the fields to create a local planning summary with clear assumptions.</li><li>Source note: confirm live prices, official rules, or platform terms before acting.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Energy disclaimer: actual cost depends on tariff, charger efficiency, battery health, driving style, and public charging fees. Sources/reference: <a href="https://www.iea.org/reports/global-ev-outlook-2024/trends-in-electric-vehicle-charging" target="_blank" rel="noopener">IEA EV charging</a></p>
-    </div>
-    <form class="df-form" data-df-form="ev-charging">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Battery kWh charged<input name="batteryKwh" type="number" value="45" min="0" step="any" aria-label="Battery kWh charged"></label>
-      <label>Tariff per kWh<input name="tariff" type="number" value="85" min="0" step="any" aria-label="Tariff per kWh"></label>
-      <label>Distance km<input name="distance" type="number" value="250" min="0" step="any" aria-label="Distance km"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="ev-charging" data-df-base="Result: EV charging estimate ready with cost per charge, cost per km, tariff, and charger-loss checks." aria-live="polite">Result: EV charging estimate ready with cost per charge, cost per km, tariff, and charger-loss checks.</output>
-      <div class="df-actions"><button type="button" data-df-copy="ev-charging">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="ev-charging-faq-title">
-  <h2 id="ev-charging-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>Estimate charging cost per trip or month?</summary><p>Use battery kWh, tariff, efficiency, and distance to understand EV running cost before comparing fuel spend.</p></details><details><summary>What should I verify?</summary><p>Energy disclaimer: actual cost depends on tariff, charger efficiency, battery health, driving style, and public charging fees.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting.</p></details></div>
+
+<section class="tool-verification-sec" data-tool-verification-panel="ev-charging">
+  <div style="max-width:900px;margin:0 auto;padding:0 24px"><div class="tool-verification-card"><div class="tool-verification-head"><div><span class="tool-verification-kicker">EV cost check</span><h2 class="tool-verification-title">Estimate charging cost, then confirm your tariff</h2><p class="tool-verification-lead">Compare EV charging with petrol using local assumptions, then copy or download the result for ownership planning.</p></div><div class="tool-verification-status"><span class="tool-verification-badge">Local estimate</span><p class="tool-verification-note">Reviewed 2026. Prices move often.</p></div></div><div class="tool-verification-grid"><div class="tool-verification-block"><h3>Check the assumptions</h3><ul class="tool-verification-list"><li>Confirm your tariff class, public charger fee, charger losses, and actual vehicle efficiency.</li><li>Compare with current petrol prices and your real daily distance.</li><li>Copy or download the result before choosing a vehicle or charger.</li></ul></div><div class="tool-verification-block"><h3>Limits</h3><ul class="tool-verification-list"><li>It does not include financing, battery degradation, maintenance, tolls, insurance, or charger installation.</li><li>CO2 estimates depend on grid mix and driving conditions.</li><li>No vehicle or trip data is uploaded by AfroTools.</li></ul></div></div><div class="tool-verification-actions"><p class="tool-verification-disclaimer">Planning estimate only. Confirm live electricity and fuel prices before buying, quoting, or budgeting.</p></div></div></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
@@ -171,8 +156,63 @@ if(r.observations&&r.observations.length&&window.AfroEnergyTools&&window.AfroEne
 document.getElementById("results").classList.add("on");
 document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
 });
+
+function evResultSummary(){
+  return [
+    'EV charging cost estimate',
+    'Country: '+document.getElementById('countrySelect').selectedOptions[0].textContent,
+    'Battery: '+document.getElementById('batteryKWh').selectedOptions[0].textContent,
+    'Charging type: '+document.getElementById('chargingLevel').selectedOptions[0].textContent,
+    'Daily distance: '+(document.getElementById('dailyKm').value||'0')+' km',
+    'Monthly EV cost: '+document.getElementById('rMonthly').textContent,
+    document.getElementById('rSaving').textContent,
+    'Cost per 100km: '+document.getElementById('rEvKm').textContent,
+    'Full charge cost: '+document.getElementById('rCharge').textContent,
+    'Charging time: '+document.getElementById('rTime').textContent,
+    'CO2 saved/month: '+document.getElementById('rCO2').textContent,
+    'Verify live tariff, public charging price, vehicle efficiency, battery health, and current fuel price before acting.'
+  ].join('\n');
+}
+
+function setEVStatus(message){
+  var status=document.getElementById('evStatus');
+  if(!status)return;
+  status.textContent=message;
+  setTimeout(function(){status.textContent='';},1800);
+}
+
+function copyEVResult(){
+  var text=evResultSummary();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setEVStatus('Result copied.');}).catch(function(){fallbackCopyEV(text);});
+    return;
+  }
+  fallbackCopyEV(text);
+}
+
+function fallbackCopyEV(text){
+  var tmp=document.createElement('textarea');
+  tmp.value=text;
+  document.body.appendChild(tmp);
+  tmp.select();
+  document.execCommand('copy');
+  tmp.remove();
+  setEVStatus('Result copied.');
+}
+
+function downloadEVResult(){
+  var blob=new Blob([evResultSummary()],{type:'text/plain'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='ev-charging-estimate.txt';
+  a.dataset.noPdfGate='true';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setEVStatus('Text file downloaded.');
+}
+window.copyEVResult=copyEVResult;
+window.downloadEVResult=downloadEVResult;
 }();
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

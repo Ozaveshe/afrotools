@@ -97,6 +97,8 @@
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=1764f982">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/lc-calculator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-credit-documentaire/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-lc/" />
@@ -225,7 +227,7 @@
       <p style="font-size:.86rem;color:#475569;line-height:1.6;margin:0 0 .75rem;">Copy or download the fee breakdown for a bank, supplier, broker, or finance review. Treat this as a planning estimate until your bank confirms current charges and margin rules.</p>
       <div class="df-actions">
         <button type="button" onclick="copyLcBrief()">Copy LC brief</button>
-        <button type="button" onclick="downloadLcCsv()">Download CSV</button>
+        <button type="button" data-no-gate="true" data-no-pdf-gate="true" onclick="downloadLcCsv()">Download CSV</button>
       </div>
       <p id="lcStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
     </div>
@@ -292,26 +294,63 @@
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>LC Fee Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for lc fee calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: LC Fee Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, officialSource, saveExport, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <h2>Turn an LC estimate into a bank-ready fee brief</h2>
+      <p>Use the calculator above to estimate opening charges, confirmation cost, SWIFT, amendments, and margin deposit, then copy a concise brief for your bank or supplier.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: total fees, cash tied up in margin, fee percentage, country notes, and payment-method comparison.</li><li>Methodology: model bank tariff assumptions locally, separate fees from refundable deposits, then confirm with current written bank terms.</li><li>Verification: check import permits, document wording, FX, amendment rules, and confirmation-bank charges before opening the LC.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm current bank tariffs, import rules, eligibility, and source documents before acting.</p>
     </div>
     <form class="df-form" data-df-form="lc-calculator">
       <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="lc-calculator" data-df-base="LC Fee Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">LC Fee Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="lc-calculator">Copy summary</button></div>
+      <label>LC value USD<input name="amount" type="number" value="50000" min="0" step="any" aria-label="LC value USD"></label>
+      <label>Decision focus<select name="priority" aria-label="Decision focus"><option value="cost">lowest fees</option><option value="risk">seller protection</option><option value="cashflow">cash tied up</option><option value="documents">document risk</option></select></label>
+      <label>Contingency percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Contingency percent"></label>
+      <button type="submit">Create LC fee brief</button>
+      <output class="df-result" data-df-result="lc-calculator" data-df-base="LC fee brief ready. Calculate above, then confirm bank tariff, confirmation charge, SWIFT, amendment fees, margin deposit, import permits, FX, and document wording before opening the LC." aria-live="polite">LC fee brief ready. Calculate above, then confirm bank tariff, confirmation charge, SWIFT, amendment fees, margin deposit, import permits, FX, and document wording before opening the LC.</output>
+      <div class="df-actions"><button type="button" data-df-copy="lc-calculator">Copy LC brief</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="lc-calculator-faq-title">
   <h2 id="lc-calculator-faq-title">LC Fee Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Run the LC calculation, copy the brief, then ask your bank to confirm fees, margin, document rules, and import requirements in writing.</p></details><details><summary>What should I verify?</summary><p>Confirm current bank tariff, confirmation charge, SWIFT, amendment fees, margin deposit, import permits, FX, and document wording before acting.</p></details><details><summary>Is this official?</summary><p>No. It is a planning workflow, not a bank quote, official filing, legal decision, or guaranteed outcome.</p></details></div>
 </section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="lc-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Sources &amp; verification</span>
+        <h2 class="tool-verification-title" id="lc-verification-title">Confirm LC fees with your bank before opening</h2>
+        <p class="tool-verification-lead">This calculator models bank charges, confirmation, SWIFT, amendments, and margin cash requirements for planning. It does not open an LC or quote a bank tariff.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Bank-tariff planning model</span>
+        <p class="tool-verification-note">Reviewed 2026. Bank tariffs, FX, margin rules, and import documentation can change.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Total fee estimate combines opening, confirmation, SWIFT, tenor, and amendment assumptions from the selected country and LC type.</li>
+          <li>Margin deposit is shown separately because it is cash tied up, not a bank fee.</li>
+          <li>Payment-method comparison contrasts cost with seller and buyer protection for trade planning.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before acting</h3>
+        <ul class="tool-verification-list">
+          <li>Confirm issuing bank tariff, confirmation bank charge, amendment fees, SWIFT, margin deposit, FX, and document wording.</li>
+          <li>Check import permits, Form M or equivalent requirements, sanctions screening, insurance, inspection, and shipping documents.</li>
+          <li>Copy or download the LC brief before asking your bank, supplier, or broker to quote.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tool-verification-actions">
+      <p class="tool-verification-disclaimer">Planning estimate only. AfroTools is not a bank, trade-finance provider, customs broker, legal adviser, or tax adviser.</p>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="LC Fee Calculator" prospect-segment="trade-finance" save-note="Calculate fees, then copy the LC brief or download CSV for bank, supplier, broker, or finance review."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>

@@ -25,6 +25,22 @@
 .bom-table th { background:var(--en-accent-pale); color:var(--en-accent-dark); padding:.5rem .75rem; text-align:left; }
 .bom-table td { padding:.5rem .75rem; border-bottom:1px solid #e2e8f0; }
 .bom-total td { font-weight:700; background:#f0fdf4; }
+
+.qe-workflow { margin: 1.5rem 0; }
+.qe-card { background:#fff; border:1px solid #d6d3d1; border-radius:8px; padding:1.2rem; box-shadow:0 8px 24px rgba(15,23,42,.06); }
+.qe-card h2 { margin:0 0 .45rem; color:#292524; font-size:1.25rem; }
+.qe-card p { color:#57534e; line-height:1.6; margin:.35rem 0; }
+.qe-actions { display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1rem; }
+.qe-actions button { border:1px solid #a8a29e; background:#fff; color:#292524; border-radius:8px; padding:.7rem 1rem; font-weight:800; cursor:pointer; font-family:inherit; }
+.qe-actions button:first-child { background:#44403c; color:#fff; border-color:#44403c; }
+.qe-actions button:focus-visible { outline:2px solid #78716c; outline-offset:2px; }
+.qe-status { min-height:1.25rem; color:#57534e; font-size:.84rem; margin:.7rem 0 0; }
+.qe-verification { margin-top:1rem; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem; }
+.qe-verification div { background:#fafaf9; border:1px solid #e7e5e4; border-radius:8px; padding:.85rem; }
+.qe-verification strong { display:block; color:#292524; margin-bottom:.35rem; }
+.qe-verification span { color:#57534e; font-size:.86rem; line-height:1.5; }
+@media (max-width: 760px) { .qe-verification { grid-template-columns:1fr; } .qe-actions button { width:100%; } }
+
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Plumbing Material Calculator","item":"https://afrotools.com/tools/plumbing-material/"}]}
@@ -143,6 +159,23 @@
     </div>
   </div>
 
+    <section class="qe-workflow" data-queued-engineering-upgrade="plumbing-material" data-tool-verification-panel data-tool-id="plumbing-material" aria-labelledby="plumbing-material-workflow-title">
+      <div class="qe-card">
+        <h2 id="plumbing-material-workflow-title">Exportable planning brief</h2>
+        <p>Run the calculator, then copy or download a local project brief for quote comparison, client review, or site notes. Nothing is sent to a server by these actions.</p>
+        <div class="qe-actions">
+          <button type="button" data-qe-copy="plumbing-material">Copy brief</button>
+          <button type="button" data-qe-download="plumbing-material" data-no-gate="true">Download TXT</button>
+        </div>
+        <p class="qe-status" id="plumbing-material-qe-status" role="status" aria-live="polite"></p>
+        <div class="qe-verification" aria-label="Plumbing Material Calculator verification notes">
+          <div><strong>Source</strong><span>Planning pipe and fixture rates built into the calculator plus drawings, plumber takeoffs, supplier quotes, pressure tests, and local code checks.</span></div>
+          <div><strong>Freshness</strong><span>Rates are static planning assumptions. Recheck pipe class, fittings, valves, tanks, pumps, sanitaryware, labour, and pressure-test costs before buying.</span></div>
+          <div><strong>Methodology</strong><span>Combines building type, pipe material, bathrooms, tank size, labour choice, and cost tables into a bill of materials.</span></div>
+          <div><strong>Limitations</strong><span>Not a plumbing design, public-health approval, pressure-test certificate, warranty, or guaranteed supplier quote.</span></div>
+        </div>
+      </div>
+    </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -216,6 +249,113 @@ function calcPlumbing(){
   document.getElementById('pm-results').classList.add('on');
   document.getElementById('pm-results').scrollIntoView({ behavior:'smooth', block:'start' });
 }
+</script>
+<script>
+(function(){
+  var config = {
+    title: "Plumbing Material Calculator",
+    slug: "plumbing-material",
+    resultSelector: "#pm-results",
+    primary: "#pm-grand"
+  };
+  function clean(text){ return String(text || '').replace(/\s+/g, ' ').trim(); }
+  function labelFor(field){
+    if (!field) return '';
+    if (field.id) {
+      var direct = document.querySelector('label[for="' + field.id + '"]');
+      if (direct) return clean(direct.textContent);
+    }
+    var wrap = field.closest && field.closest('.en-field');
+    var label = wrap && wrap.querySelector('label, .en-label');
+    return clean(label ? label.textContent : (field.getAttribute('aria-label') || field.id || field.name || 'Input'));
+  }
+  function valueFor(field){
+    if (!field) return '';
+    if (field.tagName && field.tagName.toLowerCase() === 'select') {
+      return clean(field.options[field.selectedIndex] ? field.options[field.selectedIndex].text : field.value);
+    }
+    return clean(field.value);
+  }
+  function captureInputs(){
+    return Array.prototype.slice.call(document.querySelectorAll('.en-field input, .en-field select')).map(function(field){
+      return '- ' + labelFor(field) + ': ' + valueFor(field);
+    }).filter(function(line){ return line.indexOf(':') !== line.length - 1; }).slice(0, 18);
+  }
+  function captureResults(){
+    var result = document.querySelector(config.resultSelector);
+    if (!result || !result.classList.contains('on')) {
+      var button = document.querySelector('button[onclick*="calc"], .en-btn');
+      if (button) button.click();
+      result = document.querySelector(config.resultSelector);
+    }
+    var primary = clean(document.querySelector(config.primary) && document.querySelector(config.primary).textContent);
+    var stats = Array.prototype.slice.call(document.querySelectorAll(config.resultSelector + ' .en-stat-card')).map(function(card){
+      var label = clean(card.querySelector('.en-stat-label') && card.querySelector('.en-stat-label').textContent);
+      var value = clean(card.querySelector('.en-stat-value') && card.querySelector('.en-stat-value').textContent);
+      return label && value ? '- ' + label + ': ' + value : '';
+    }).filter(Boolean).slice(0, 12);
+    return { primary: primary, stats: stats };
+  }
+  function buildBrief(){
+    var result = captureResults();
+    var lines = [
+      config.title + ' - AfroTools planning brief',
+      'Generated locally in this browser.',
+      '',
+      'Headline result: ' + (result.primary || 'Run the calculator to refresh the result.'),
+      '',
+      'Inputs:',
+      captureInputs().join('\n') || '- No inputs captured.',
+      '',
+      'Results:',
+      result.stats.join('\n') || '- No result values captured.',
+      '',
+      'Assumptions and checks:',
+      '- Planning estimate only; confirm current supplier, contractor, professional, permit, safety, and site conditions before acting.',
+      '- The calculator does not send project details to a server when copying or downloading.',
+      '- Keep a quote pack with drawings, photos, measurements, and supplier terms beside this estimate.'
+    ];
+    return lines.join('\n');
+  }
+  function status(message){
+    var el = document.getElementById(config.slug + '-qe-status');
+    if (el) el.textContent = message;
+  }
+  function copyBrief(){
+    var text = buildBrief();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ status('Brief copied.'); }).catch(function(){ fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function fallbackCopy(text){
+    var area = document.createElement('textarea');
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    try { document.execCommand('copy'); status('Brief selected and copied.'); }
+    catch (err) { status('Brief selected. Press Ctrl+C to copy.'); }
+    document.body.removeChild(area);
+  }
+  function downloadBrief(){
+    var text = buildBrief();
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = config.slug + '-planning-brief.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    status('TXT brief downloaded.');
+  }
+  document.addEventListener('click', function(event){
+    if (event.target.closest('[data-qe-copy="' + config.slug + '"]')) copyBrief();
+    if (event.target.closest('[data-qe-download="' + config.slug + '"]')) downloadBrief();
+  });
+}());
 </script>
   <script src="/assets/js/engineering-toolkit.js?v=351db830" defer></script>
 </body>

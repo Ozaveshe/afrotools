@@ -25,6 +25,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -141,7 +142,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/encodeur-url/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kusimba-url/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/url-encoder/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -175,6 +175,7 @@
   "url": "https://afrotools.com/tools/url-encoder/"
 }
 </script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -388,30 +389,46 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="url-encoder">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">URL cleanup brief</span>
-      <h2>Parse, clean, and rebuild URLs without leaking secrets</h2>
-      <p>Use the parser, component lab and query editor above, then capture what changed before copying a rebuilt or cleaned URL.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: encode components, inspect parsed parts, edit query parameters and copy a clean URL.</li><li>Result output: a local URL brief that records purpose, parameter count, cleanup focus and share-safety checks.</li><li>Quality checks: encoded components, duplicate keys, tracking parameters, sensitive tokens, generated snippet and clean URL.</li><li>Source note: implementation follows browser URL APIs, URLSearchParams, RFC 3986 and WHATWG URL references linked above.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local parsing utility only. Test important redirects, callbacks and signed URLs before publishing.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="url-encoder" aria-labelledby="url-encoder-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">URL safety check</span>
+          <h2 class="tool-verification-title" id="url-encoder-verification-title">Encode, inspect, and clean URLs before sharing them</h2>
+          <p class="tool-verification-lead">Use browser URL parsing, component encoding, query editing, tracking cleanup, and copyable snippets to make URL changes visible.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local parser and encoder</span>
+          <p class="tool-verification-note">URLs are parsed in the browser; avoid pasting secrets you do not want stored in local history or screenshots.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Primary task</h3>
+          <ul class="tool-verification-list"><li>Paste a full URL or component and inspect the parsed parts.</li><li>Edit query parameters, remove tracking fields, or encode/decode components.</li><li>Copy the rebuilt URL, clean URL, or language-specific snippet.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Result and export</h3>
+          <ul class="tool-verification-list"><li>Parsed URL parts and query table.</li><li>Rebuilt and cleaned URLs.</li><li>Copyable code snippets for common languages.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before you use it</h3>
+          <ul class="tool-verification-list"><li>Remove access tokens, signed parameters, and private callbacks before sharing.</li><li>Test redirects, OAuth callbacks, and webhooks after editing.</li><li>Confirm percent-encoding behavior for non-ASCII text.</li></ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Assumptions and freshness</h3>
+          <p class="tool-verification-meta">Implementation follows browser URL APIs and linked RFC/WHATWG references. Runtime behavior can differ in backend frameworks, so test critical URLs there too.</p>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="/contact/">Report tool issue</a>
+        <p class="tool-verification-disclaimer">Planning utility only. It is not an official provider, legal, tax, security, filing, compliance, or live-data service. Keep sensitive content local unless you intentionally export or share it.</p>
+      </div>
     </div>
-    <form class="df-form" data-df-form="url-encoder">
-      <label>URL purpose<select name="purpose" aria-label="URL purpose"><option value="API request">API request</option><option value="campaign link">campaign link</option><option value="redirect or callback">redirect or callback</option><option value="share link">share link</option></select></label>
-      <label>Query params count<input name="params" type="number" value="4" min="0" step="1" aria-label="Query params count"></label>
-      <label>Cleanup focus<select name="focus" aria-label="Cleanup focus"><option value="encode components">encode components</option><option value="remove tracking">remove tracking</option><option value="sort query keys">sort query keys</option><option value="check duplicate keys">check duplicate keys</option></select></label>
-      <label>Share safety<select name="safety" aria-label="Share safety"><option value="safe public URL">safe public URL</option><option value="contains token">contains token</option><option value="signed URL">signed URL</option><option value="private callback">private callback</option></select></label>
-      <button type="submit">Create URL brief</button>
-      <output class="df-result" data-df-result="url-encoder" data-df-base="URL cleanup brief ready. Parse above, then verify encoded components, duplicate keys, tracking parameters, sensitive tokens, generated snippet, and clean URL before sharing." aria-live="polite">URL cleanup brief ready. Parse above, then verify encoded components, duplicate keys, tracking parameters, sensitive tokens, generated snippet, and clean URL before sharing.</output>
-      <div class="df-actions"><button type="button" data-df-copy="url-encoder">Copy URL brief</button><a href="#rebuiltUrl">Review rebuilt URL</a></div>
-    </form>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="url-encoder-faq-title">
-  <h2 id="url-encoder-faq-title">URL Encoder/Decoder FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste a URL or value, inspect the parsed pieces, edit query parameters, then copy the rebuilt or cleaned URL.</p></details><details><summary>What should I verify?</summary><p>Check encoded components, duplicate keys, tracking removal, sensitive tokens, generated snippets and important redirects before publishing.</p></details><details><summary>Is this official?</summary><p>No. It is a local URL utility, not an official redirect validator, security scanner or API contract.</p></details></div>
-</section>
+<afro-business-cta tool-name="URL Encoder" prospect-segment="developer-workflows" save-note="Parse and clean locally, copy the rebuilt URL or snippet, then test redirects and callbacks in the target environment."></afro-business-cta>
 </main>
 
 <afro-related-tools category="developer" current="url-encoder"></afro-related-tools>
@@ -737,6 +754,5 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

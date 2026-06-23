@@ -5,18 +5,18 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Base64 Encoder &amp; Decoder &mdash; Encode, Decode, Files | AfroTools</title>
-<meta name="description" content="Free Base64 encoder and decoder. Encode text, files, and images to Base64. Decode Base64 strings. URL-safe mode, drag-and-drop, image preview, and AI analysis.">
+<meta name="description" content="Free Base64 encoder and decoder for text, files and images. URL-safe mode, drag-and-drop, copy/download output, and optional AI analysis with consent.">
 <link rel="canonical" href="https://afrotools.com/tools/base64/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Base64 Encoder & Decoder | AfroTools">
-<meta property="og:description" content="Encode and decode Base64 with text, file, image support. URL-safe mode, drag-and-drop, and AI-powered analysis.">
+<meta property="og:description" content="Encode and decode Base64 with text, file, image support. URL-safe mode, drag-and-drop, and optional AI analysis with consent.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/base64/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/base64.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Base64 Encoder & Decoder | AfroTools">
-<meta name="twitter:description" content="Free Base64 encoder/decoder with file upload, image support, and AI analysis.">
+<meta name="twitter:description" content="Free Base64 encoder/decoder with file upload, image support, and optional AI analysis with consent.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,9 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -632,6 +634,23 @@
     text-align: center;
     margin-top: 6px;
   }
+  .ai-consent {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #fed7aa;
+    background: #fff7ed;
+    border-radius: 8px;
+    color: #9a3412;
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+  .ai-consent input {
+    margin-top: 2px;
+    accent-color: var(--afro-green);
+  }
 
   /* Toast */
   .toast {
@@ -692,7 +711,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Base64 Encoder & Decoder",
-  "description": "Free Base64 encoder and decoder. Encode text, files, and images to Base64. Decode Base64 strings. URL-safe mode, drag-and-drop, image preview, and AI analysis.",
+  "description": "Free Base64 encoder and decoder. Encode text, files, and images to Base64. Decode Base64 strings. URL-safe mode, drag-and-drop, image preview, and optional AI analysis with consent.",
   "url": "https://afrotools.com/tools/base64/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
@@ -717,7 +736,7 @@
   "@type": "WebPage",
   "name": "Base64 Encoder & Decoder",
   "url": "https://afrotools.com/tools/base64/",
-  "description": "Free Base64 encoder and decoder. Encode text, files, and images to Base64. Decode Base64 strings. URL-safe mode, drag-and-drop, image preview, and AI analysis.",
+  "description": "Free Base64 encoder and decoder. Encode text, files, and images to Base64. Decode Base64 strings. URL-safe mode, drag-and-drop, image preview, and optional AI analysis with consent.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -753,7 +772,7 @@
       "name": "Is my data secure when using the Base64 encoder?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. All encoding and decoding happens entirely in your browser. No data is ever sent to any server unless you use the optional AI analysis feature. Important: Base64 is an encoding format, not encryption. It should not be used to protect sensitive data."
+        "text": "Yes. All encoding and decoding happens entirely in your browser. No data is sent to any server unless you explicitly enable optional AI analysis and send a request. Important: Base64 is an encoding format, not encryption. It should not be used to protect sensitive data."
       }
     },
     {
@@ -828,7 +847,7 @@
       <span class="badge b-green">Text &amp; Files</span>
       <span class="badge b-green">URL-safe</span>
       <span class="badge b-green">Image Preview</span>
-      <span class="badge b-green">AI Analysis</span>
+      <span class="badge b-green">Optional AI</span>
     </div>
   </div>
 </div>
@@ -1000,6 +1019,10 @@
         <div class="card-body">
           <button type="button" class="ai-toggle-btn" id="ai-toggle">&#10022; Ask AI about this Base64</button>
           <div class="ai-panel" id="ai-panel">
+            <label class="ai-consent" for="ai-consent">
+              <input id="ai-consent" type="checkbox">
+              <span>Send my current Base64 excerpt and question to the AI advisor for this request. Leave unchecked for tokens, keys, private files, IDs, or client data.</span>
+            </label>
             <div class="ai-suggestions" id="ai-suggestions">
               <button type="button" class="ai-suggest-btn" data-q="What type of data is this Base64?">What type of data is this Base64?</button>
               <button type="button" class="ai-suggest-btn" data-q="Is this a valid JWT token? Decode and explain the parts.">Is this a valid JWT?</button>
@@ -1010,7 +1033,7 @@
               <input aria-label="Ask about your Base64 data" class="ai-input" id="ai-input" type="text" placeholder="Ask about your Base64 data...">
               <button type="button" class="ai-send-btn" id="ai-send">Send</button>
             </div>
-            <div class="ai-powered">Powered by Claude &middot; Max 3 messages per session</div>
+            <div class="ai-powered">Optional AI assist &middot; consent required &middot; max 3 messages per session</div>
           </div>
         </div>
       </div>
@@ -1021,7 +1044,7 @@
       <div class="info-card">
         <div class="info-title">What is Base64?</div>
         <div class="info-text">
-          Base64 encodes binary data into ASCII text using 64 characters (A-Z, a-z, 0-9, +, /). Output is ~33% larger than input.
+          <strong>How it works:</strong> Base64 encodes binary data into ASCII text using 64 characters (A-Z, a-z, 0-9, +, /). Output is ~33% larger than input.
           <div style="margin-top:10px;font-size:0.72rem;color:#6B8CAE">Common uses:</div>
           <div style="margin-top:4px;font-size:0.72rem">&#8226; Embedding images in HTML/CSS</div>
           <div style="margin-top:3px;font-size:0.72rem">&#8226; Email attachments (MIME)</div>
@@ -1043,8 +1066,9 @@
       <div class="info-card">
         <div class="info-title">Security Note</div>
         <div class="info-text" style="font-size:0.75rem">
-          Base64 is <strong>encoding</strong>, not encryption. Anyone can decode it. Never use Base64 to protect passwords, tokens, or sensitive data.
-          <div style="margin-top:8px;font-size:0.7rem;color:#6B8CAE">All processing happens in your browser. Nothing is sent to any server.</div>
+          <strong>Disclaimer:</strong> Base64 is encoding, not encryption. Anyone can decode it. Never use Base64 to protect passwords, tokens, or sensitive data. It is not an official file-authenticity or security check.
+          <div style="margin-top:8px;font-size:0.7rem;color:#6B8CAE">All conversion processing happens in your browser. Content is sent only if you explicitly consent to optional AI analysis.</div>
+          <div style="margin-top:8px;font-size:0.7rem;color:#6B8CAE">Reference: RFC 4648 Base-N Encodings, including standard and URL-safe Base64 alphabets.</div>
         </div>
       </div>
 
@@ -1087,6 +1111,45 @@
     </form>
   </div>
 </section>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="base64" aria-labelledby="base64-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Encoding safety check</span>
+          <h2 class="tool-verification-title" id="base64-verification-title">Convert locally, then confirm what the encoded data exposes</h2>
+          <p class="tool-verification-lead">Text, file, image and decode workflows run in the browser. Copy and download actions are explicit; optional AI analysis sends data only after consent.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">RFC 4648 reference model</span>
+          <p class="tool-verification-note">Base64 is reversible encoding, not encryption or file verification.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Result and export</h3>
+          <ul class="tool-verification-list">
+            <li>Encode or decode text, files, images, and URL-safe strings.</li>
+            <li>Copy input/output, swap text fields, or download encoded and decoded files when you choose.</li>
+            <li>Check MIME prefixes and the expected size increase before embedding output in HTML, CSS, JSON, or APIs.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Privacy and limits</h3>
+          <ul class="tool-verification-list">
+            <li>Do not paste tokens, passwords, secrets, private documents, or customer data unless you intend to reveal them locally.</li>
+            <li>AI analysis is optional and requires the consent checkbox; use the local conversion path for sensitive data.</li>
+            <li>Reference: RFC 4648 Base-N Encodings for standard and URL-safe Base64 alphabets.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#text-input">Start text conversion</a>
+        <p class="tool-verification-disclaimer">Developer utility only. It does not authenticate files, secure data, guarantee parser compatibility, or provide a compliance review.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="df-faq" aria-labelledby="base64-faq-title">
   <h2 id="base64-faq-title">Base64 Encoder/Decoder FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Choose text, file, image or decode mode, run the conversion locally, then copy or download the output you need.</p></details><details><summary>What should I verify?</summary><p>Check text encoding, URL-safe mode, MIME prefix, file size expansion, and whether the Base64 content exposes sensitive data.</p></details><details><summary>Is this official?</summary><p>No. It is a local encoding utility. Base64 is not encryption and does not protect or verify data.</p></details></div>
@@ -1120,7 +1183,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Yes. All encoding and decoding happens entirely in your browser. No data is ever sent to any server unless you use the optional AI analysis feature. Important: Base64 is an encoding format, not encryption. It should not be used to protect sensitive data.
+        Yes. All encoding and decoding happens entirely in your browser. No data is sent to any server unless you explicitly enable optional AI analysis and send a request. Important: Base64 is an encoding format, not encryption. It should not be used to protect sensitive data.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1455,6 +1518,10 @@
   function sendAiMessage(question) {
     if (aiExchanges >= AI_MAX) {
       showToast('AI limit reached (3 per session)');
+      return;
+    }
+    if (!$('ai-consent') || !$('ai-consent').checked) {
+      showToast('Tick AI consent before sending Base64 content.');
       return;
     }
 

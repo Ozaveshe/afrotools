@@ -22,6 +22,7 @@
 <style>
 /* ── UIF tool — sky blue accent, uif- prefix ── */
 :root{--uif-sky:#0369A1;--uif-dark:#075985;--uif-pale:#F0F9FF;--uif-border:#BAE6FD;--uif-text:#0c4a6e}
+html,body{max-width:100%;overflow-x:hidden}
 
 /* Hero */
 .uif-hero{background:linear-gradient(135deg,#0c2a45 0%,#0369A1 55%,#0284C7 100%);padding:44px 0 36px}
@@ -253,6 +254,8 @@
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script src="/engines/za-uif-engine.js?v=3872ffe5"></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -1119,6 +1122,20 @@
 <div style="padding:0 20px;max-width:760px;margin:0 auto">
   <wise-cta context="general"></wise-cta>
 </div>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="za-uif">
+  <div class="tool-verification-card">
+    <span class="tool-verification-kicker">UIF claim source check</span>
+    <h2>Use the estimate with your actual claim documents and current UIF rules</h2>
+    <ul class="tool-verification-list">
+      <li><strong>Inputs:</strong> monthly salary, claim type, employment dates, prior UIF claims, and benefit-cycle assumptions.</li>
+      <li><strong>Method:</strong> applies the UIF engine's insurable salary cap, credit-day rules, and Income Replacement Rate estimate to show monthly and total benefits.</li>
+      <li><strong>Verify before acting:</strong> current Department of Employment and Labour guidance, UI-19, service certificate, bank documents, medical or maternity documents, and uFiling status.</li>
+      <li><strong>Privacy:</strong> salary and dates stay in your browser unless you choose to copy, save, or share the summary.</li>
+    </ul>
+    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not an official UIF decision, legal advice, or a claim submission.</p>
+  </div>
+</section>
+<afro-business-cta tool-name="South Africa UIF Calculator" prospect-segment="payroll-benefits" headline="Need UIF estimates in a payroll review workflow?" subhead="AfroPayroll Pro helps teams keep UIF assumptions, employee handoff notes, and accountant review files together before payroll close."></afro-business-cta>
 <afro-related-tools category="financial" current="za-uif"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -1259,12 +1276,59 @@ function uifCalcRun() {
 
   var actEl = document.getElementById('uif-result-actions');
   if (actEl && !actEl.querySelector('save-result-button')) {
-    actEl.innerHTML = '<save-result-button tool-slug="za-uif" tool-name="South Africa UIF Calculator"></save-result-button><share-result-button tool-name="South Africa UIF Calculator" tool-slug="za-uif"></share-result-button>';
+    actEl.innerHTML = '<button type="button" class="uif-btn uif-btn-secondary" id="uif-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="uif-btn uif-btn-secondary" id="uif-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="za-uif" tool-name="South Africa UIF Calculator"></save-result-button><share-result-button tool-name="South Africa UIF Calculator" tool-slug="za-uif"></share-result-button><span id="uif-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
+    document.getElementById('uif-copy-summary').addEventListener('click', uifCopySummary);
+    document.getElementById('uif-download-summary').addEventListener('click', uifDownloadSummary);
   }
 
   document.getElementById('uif-result-card').style.display = 'block';
   document.getElementById('uif-result-card').scrollIntoView({ behavior: 'smooth' });
   setBusy('btn-calc', false);
+}
+
+function uifBuildSummary() {
+  var claimType = document.getElementById('calc-type').value;
+  var salary = document.getElementById('calc-salary').value;
+  var startDate = document.getElementById('calc-start').value;
+  var endDate = document.getElementById('calc-end').value || new Date().toISOString().split('T')[0];
+  var boxes = Array.prototype.map.call(document.querySelectorAll('#uif-result-grid .uif-result-box'), function (box) {
+    return box.textContent.replace(/\s+/g, ' ').trim();
+  });
+  return [
+    'South Africa UIF estimate summary',
+    'Claim type: ' + claimType,
+    'Monthly gross salary input: R' + salary,
+    'Employment period: ' + startDate + ' to ' + endDate,
+    'Results: ' + (boxes.length ? boxes.join(' | ') : 'Run the calculator to generate results'),
+    'Note: planning estimate only. Verify current UIF guidance, UI-19, service certificate, bank documents, claim type documents, and uFiling status before acting.'
+  ].join('\n');
+}
+
+function uifSetExportStatus(message) {
+  var status = document.getElementById('uif-export-status');
+  if (status) status.textContent = message;
+}
+
+function uifCopySummary() {
+  var text = uifBuildSummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { uifSetExportStatus('UIF summary copied.'); }).catch(function () { uifSetExportStatus('Copy failed. Select and copy the summary manually.'); });
+  } else {
+    uifSetExportStatus(text);
+  }
+}
+
+function uifDownloadSummary() {
+  var blob = new Blob([uifBuildSummary()], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'south-africa-uif-summary.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  uifSetExportStatus('TXT summary downloaded.');
 }
 
 // ── Tab 3: Credits Calculator ──

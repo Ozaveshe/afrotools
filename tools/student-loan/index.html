@@ -17,7 +17,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -270,23 +274,23 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 
 
-<section class="df-upgrade" data-df-upgrade="student-loan">
+<section class="df-upgrade" data-df-upgrade="student-loan" data-tool-verification-panel data-tool-id="student-loan">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Student Loan Repayment Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for student loan repayment calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Student Loan Repayment Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, officialSource, businessCta, verificationPanel.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <span class="df-upgrade__kicker">Repayment planning check</span>
+      <h2>Estimate repayment, then verify scheme rules</h2>
+      <p>Model monthly payment, grace-period interest, total interest, and payoff timing before you choose a repayment plan or compare an education-loan offer.</p>
+      <ul class="df-upgrade__bullets"><li>Result output: monthly payment, total repaid, interest, payoff time, schedule, save, share, and copyable repayment brief.</li><li>Methodology: deterministic local amortisation from your loan balance, rate, repayment years, grace period, and optional extra payment.</li><li>Verification: confirm scheme thresholds, deduction rules, penalties, deferment, interest accrual, and lender statements before paying.</li><li>Privacy: your education-finance scenario stays in this browser unless you choose save, share, or copy.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning estimate only. Not an official NSFAS, HELB, SLF, lender, university, or government repayment statement.</p>
     </div>
     <form class="df-form" data-df-form="student-loan">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="student-loan" data-df-base="Student Loan Repayment Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Student Loan Repayment Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="student-loan">Copy summary</button></div>
+      <label>Loan balance<input name="loanBalance" type="number" value="500000" min="0" step="any" aria-label="Loan balance"></label>
+      <label>Annual rate percent<input name="annualRate" type="number" value="4" min="0" step="any" aria-label="Annual rate percent"></label>
+      <label>Scheme to verify<select name="scheme" aria-label="Scheme to verify"><option value="HELB">HELB</option><option value="NSFAS">NSFAS</option><option value="SLF Ghana">SLF Ghana</option><option value="private lender">private lender</option></select></label>
+      <label>Review priority<select name="priority" aria-label="Review priority"><option value="monthly affordability">monthly affordability</option><option value="total interest">total interest</option><option value="grace period">grace period</option><option value="penalty risk">penalty risk</option></select></label>
+      <button type="submit">Create repayment brief</button>
+      <output class="df-result" data-df-result="student-loan" data-df-base="Repayment brief ready. Calculate the schedule above, then verify scheme rules, interest accrual, deductions, penalties, and statement balance before acting." aria-live="polite">Repayment brief ready. Calculate the schedule above, then verify scheme rules, interest accrual, deductions, penalties, and statement balance before acting.</output>
+      <div class="df-actions"><button type="button" data-df-copy="student-loan">Copy repayment brief</button><a class="df-action-link" href="#resultCard">View repayment result</a></div>
     </form>
   </div>
 </section>
@@ -298,6 +302,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   <wise-cta context="budget"></wise-cta>
 </div>
 <afro-related-tools category="financial" current="student-loan"></afro-related-tools>
+<afro-business-cta tool-name="Student Loan Repayment Calculator" prospect-segment="education-finance" save-note="Calculate repayment locally, then save or share the scenario before confirming scheme or lender rules."></afro-business-cta>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
@@ -382,8 +387,14 @@ function calculate() {
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="student-loan" tool-name="Student Loan"></save-result-button><share-result-button tool-name="Student Loan" tool-slug="student-loan"></share-result-button>';
+  div.innerHTML = '<button type="button" class="btn" id="student-copy-summary" style="width:auto;margin-top:0;background:#0f172a;color:#fff">Copy summary</button><save-result-button tool-slug="student-loan" tool-name="Student Loan"></save-result-button><share-result-button tool-name="Student Loan" tool-slug="student-loan"></share-result-button>';
   target.appendChild(div);
+  function studentLoanSummary(){
+    calculate();
+    return 'Student loan repayment estimate: '+document.getElementById('resultGrid').innerText.replace(/\s+/g,' ').trim()+'. Verify scheme rules, statement balance, interest accrual, grace period, salary deduction threshold, deferment options, penalties, and lender or government guidance before acting.';
+  }
+  var copyBtn=document.getElementById('student-copy-summary');
+  if(copyBtn){copyBtn.addEventListener('click',function(){var text=studentLoanSummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);copyBtn.textContent='Copied';setTimeout(function(){copyBtn.textContent='Copy summary';},1600);}});}
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

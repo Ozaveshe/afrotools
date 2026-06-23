@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
 :root{--ink:#0f172a;--muted:#475569;--line:#dbe4ee;--soft:#f8fafc;--accent:#b45309;--accent-2:#f59e0b;--accent-3:#fef3c7;--shadow:0 18px 50px rgba(15,23,42,.08)}
 body{background:linear-gradient(180deg,#fff7ed 0%,#ffffff 15%,#f8fafc 100%)}
@@ -58,6 +59,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent-2);box-shadow:0 
 .btn{appearance:none;border:0;border-radius:14px;padding:13px 18px;font-weight:800;cursor:pointer}
 .btn-primary{background:linear-gradient(135deg,#92400e,#f59e0b);color:#fff;box-shadow:0 12px 24px rgba(180,83,9,.24)}
 .btn-primary:hover{filter:saturate(1.05) brightness(1.02)}
+.btn-secondary{background:#0f172a;color:#fff}
 .helper{font-size:.82rem;color:var(--muted);line-height:1.6}
 .result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .result-box{background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid var(--line);border-radius:16px;padding:14px 14px 13px;min-height:96px}
@@ -268,6 +270,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent-2);box-shadow:0 
             <div class="result-grid" id="resultGrid"></div>
             <div class="breakdown" id="breakdown"></div>
             <div class="tip" id="tipBox"></div>
+            <div class="cta-row">
+              <button type="button" class="btn btn-secondary" id="copyCryptoTax">Copier l'estimation</button>
+              <button type="button" class="btn btn-secondary" id="downloadCryptoTax">Telecharger TXT</button>
+              <span class="helper" id="cryptoExportStatus" aria-live="polite"></span>
+            </div>
           </div>
         </div>
 
@@ -304,6 +311,13 @@ input:focus,select:focus{outline:none;border-color:var(--accent-2);box-shadow:0 
     <h2 class="section-title">Comprendre l'impôt crypto en Afrique</h2>
     <p class="section-text">La fiscalité des actifs numériques varie fortement d'un pays à l'autre et peut changer. Ce calculateur compare des repères de traitement fiscal par pays afin de préparer vos questions, mais il ne remplace pas une confirmation officielle ou professionnelle.</p>
     <p class="section-text">Le but de cette page est de vous donner une estimation claire, en français, pour préparer un dossier plus propre avant la déclaration. Pour des cas complexes comme le mining professionnel, les échanges fréquents ou les portefeuilles multi-pays, il faut toujours une vérification locale avant soumission.</p>
+  </section>
+
+  <section class="seo" data-tool-verification-panel>
+    <h2 class="section-title">Sources et verification</h2>
+    <p class="section-text"><strong>Sources et fraicheur 2026:</strong> les regles crypto, seuils, definitions de revenus et methodes de depot peuvent changer rapidement. Comparez le resultat avec les notices de l'administration fiscale du pays, votre historique d'echange et un conseiller qualifie avant depot.</p>
+    <p class="section-text"><strong>Methodologie:</strong> le calcul part du prix de cession, de la base de cout, des frais, des autres gains annuels, du type d'operation et du pays choisi pour produire une estimation preparatoire.</p>
+    <p class="section-text"><strong>Avertissement:</strong> ce n'est pas une declaration officielle, un avis fiscal, un conseil financier ou une garantie de traitement par l'administration.</p>
   </section>
 
   <section class="faq">
@@ -347,6 +361,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent-2);box-shadow:0 
       </a>
     </div>
   </section>
+  <afro-business-cta tool-name="Calculateur impot crypto" save-note="Copiez ou telechargez votre estimation avant de demander une verification fiscale locale."></afro-business-cta>
 </main>
 <afro-footer></afro-footer>
 
@@ -423,6 +438,33 @@ function money(n, symbol) {
 function updateInfo() {
   const c = document.getElementById('country').value;
   document.getElementById('countryInfo').innerHTML = TAX_INFO[c].info;
+}
+
+function cryptoTaxSummary() {
+  const c = document.getElementById('country').value;
+  const t = TAX_INFO[c];
+  const result = document.getElementById('resultGrid').innerText.trim();
+  const breakdown = document.getElementById('breakdown').innerText.trim();
+  const tip = document.getElementById('tipBox').innerText.trim();
+  return [
+    'Calculateur impot crypto - AfroTools',
+    'Pays: ' + t.name,
+    'Type operation: ' + document.getElementById('txType').value,
+    'Prix de cession: ' + document.getElementById('salePrice').value + ' ' + t.currency,
+    'Base de cout: ' + document.getElementById('costBasis').value + ' ' + t.currency,
+    'Frais: ' + document.getElementById('fees').value + ' ' + t.currency,
+    '',
+    result,
+    breakdown,
+    tip,
+    '',
+    'A verifier: notices fiscales locales, historique exchange/wallet, TIN/identite fiscale, pertes reportables et conseil qualifie avant depot.'
+  ].filter(Boolean).join('\n');
+}
+
+function setCryptoExportStatus(text) {
+  const status = document.getElementById('cryptoExportStatus');
+  if (status) status.textContent = text;
 }
 
 function calculate() {
@@ -513,6 +555,32 @@ function calculate() {
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
 }
+
+document.getElementById('copyCryptoTax').addEventListener('click', function () {
+  const text = cryptoTaxSummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () {
+      setCryptoExportStatus('Estimation copiee.');
+    }).catch(function () {
+      setCryptoExportStatus(text);
+    });
+  } else {
+    setCryptoExportStatus(text);
+  }
+});
+
+document.getElementById('downloadCryptoTax').addEventListener('click', function () {
+  const blob = new Blob([cryptoTaxSummary()], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'estimation-impot-crypto-afrotools.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setCryptoExportStatus('TXT telecharge.');
+});
 
 updateInfo();
 </script>

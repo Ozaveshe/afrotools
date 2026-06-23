@@ -22,6 +22,7 @@
   <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-medecine-traditionnelle-moderne/" />
   <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/traditional-vs-western/" />
   <link rel="stylesheet" href="/assets/css/global.css?v=b1aadff2">
+  <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
   <style>
     .fr-tool-shell{max-width:1120px;margin:0 auto;padding:92px 20px 58px}
     .breadcrumb{font-size:.92rem;color:#64748b;margin-bottom:18px}.breadcrumb a{color:#2563eb;text-decoration:none}
@@ -31,7 +32,7 @@
     .route-note{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}.route-note span{border:1px solid #dbe4ef;border-radius:999px;padding:7px 11px;background:#f8fafc;color:#334155;font-size:.86rem}
     .action-row{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}.primary-action,.secondary-action{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:11px 16px;font-weight:800;text-decoration:none}.primary-action{background:#0f766e;color:#fff}.secondary-action{border:1px solid #cbd5e1;color:#0f172a;background:#fff}
     .prep-panel{border:1px solid #b6e4dd;background:linear-gradient(135deg,#ecfdf5 0%,#f8fafc 100%);border-radius:8px;padding:18px;margin:0 0 24px}.prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#064e3b}.prep-panel p{margin:0 0 14px;color:#334155;line-height:1.55}
-    .prep-form{display:grid;gap:12px}.prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.prep-form label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.prep-form input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.prep-output{display:block;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:52px}.prep-actions{display:flex;flex-wrap:wrap;gap:8px}.prep-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}.prep-note{font-size:.82rem;color:#64748b}
+    .prep-form{display:grid;gap:12px}.prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.prep-form label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.prep-form input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.prep-output{display:block;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:52px}.prep-actions{display:flex;flex-wrap:wrap;gap:8px}.prep-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}.prep-note{font-size:.82rem;color:#64748b}.privacy-note{margin-top:10px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:8px;padding:10px 12px;color:#365346;font-size:.9rem;line-height:1.55}
     #tool-mount{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}
     .tool-status{color:#64748b}.tool-error{padding:18px;border:1px solid #fecaca;background:#fef2f2;border-radius:8px;color:#991b1b}.tool-error a{color:#1d4ed8}
     .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:26px}.support-grid section{border:1px solid #dbe4ef;border-radius:8px;padding:18px;background:#fff}.support-grid h2{font-size:1rem;margin:0 0 8px;color:#111827}.support-grid p{margin:0;color:#475569;line-height:1.55;font-size:.94rem}
@@ -135,21 +136,26 @@
           <label>Pays ou devise<input name="country" autocomplete="off" placeholder="Ex: Senegal, XOF"></label>
           <label>Montant ou volume<input name="amount" autocomplete="off" placeholder="Ex: 250000"></label>
           <label>Objectif<input name="goal" autocomplete="off" placeholder="Ex: comparer deux scenarios"></label>
+          <label>Fichier de travail<input name="file" type="file" aria-label="Fichier de travail local"></label>
         </div>
         <output class="prep-output" data-prep-output>Ajoutez un pays, un montant ou un objectif pour preparer votre resume.</output>
         <div class="prep-actions">
           <button type="button" data-copy-prep>Copier le resume</button>
+          <button type="button" data-download-prep>Telecharger le brief</button>
           <span class="prep-note" data-copy-status aria-live="polite"></span>
         </div>
+        <p class="privacy-note"><strong>Confidentialite locale 2026:</strong> le fichier selectionne et le brouillon restent dans votre navigateur; ne collez pas de donnees sensibles dans un service externe sans accord explicite.</p>
       </form>
     </section>
-    <div id="tool-mount"><p class="tool-status">Chargement de l'outil...</p></div>
-    <div class="support-grid">
+    <div id="tool-mount" class="source-launch"><h2>Continuer dans l'outil complet</h2><p>Le brief ci-dessus reste local. Ouvrez la version source pour utiliser les controles complets, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/traditional-vs-western/">Ouvrir l'outil source</a></div>
+    <div class="support-grid" data-tool-verification-panel>
       <section><h2>Usage recommande</h2><p>Utile pour familles et agents communautaires qui veulent discuter couts et parcours de soins.</p></section>
-      <section><h2>Methodologie</h2><p>Nous preparons les entrees cles, chargeons l'outil source conserve et affichons les resultats avec les hypotheses utiles pour une verification locale.</p></section>
+      <section><h2>Methodologie</h2><p>Nous preparons les entrees cles, chargeons l&#39;outil source conserve et affichons les resultats avec les hypotheses utiles pour une verification locale.</p></section>
       <section><h2>Avertissement</h2><p>Ne retardez pas une urgence ou un traitement prescrit; demandez conseil a un professionnel de sante. Cette page fournit une estimation generale: elle ne remplace pas un avis juridique, fiscal, medical, financier ou professionnel adapte a votre pays.</p></section>
       <section><h2>Liens utiles</h2><p>A combiner avec couts clinique, prix pharmacie et cout traitement VIH.</p></section>
+      <section><h2>Sources et fraicheur</h2><p>Controle 2026: comparez le resultat avec le fichier source, les consignes du client, les exigences de depot et les sources officielles ou professionnelles avant envoi.</p></section>
     </div>
+
   </main>
   <div id="footer"></div>
   <script src="/assets/js/components/navbar.js?v=465dbcb3"></script>
@@ -178,10 +184,17 @@
     });
     var nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) { node.nodeValue = swapText(node.nodeValue); });
+    nodes.forEach(function (node) {
+      var next = swapText(node.nodeValue);
+      if (next !== node.nodeValue) node.nodeValue = next;
+    });
     root.querySelectorAll('[placeholder],[aria-label],[title],[alt],input[type="button"],input[type="submit"],button').forEach(function (el) {
       ['placeholder', 'aria-label', 'title', 'alt', 'value'].forEach(function (attr) {
-        if (el.hasAttribute && el.hasAttribute(attr)) el.setAttribute(attr, swapText(el.getAttribute(attr)));
+        if (el.hasAttribute && el.hasAttribute(attr)) {
+          var current = el.getAttribute(attr);
+          var next = swapText(current);
+          if (next !== current) el.setAttribute(attr, next);
+        }
       });
     });
   }
@@ -209,9 +222,12 @@
     var country = field('country');
     var amount = field('amount');
     var goal = field('goal');
+    var file = form.querySelector('[name="file"]');
+    var fileText = file && file.files && file.files.length ? file.files.length + ' fichier(s) local/localises' : '';
     if (country) parts.push('Pays/devise: ' + country);
     if (amount) parts.push('Montant/volume: ' + amount);
     if (goal) parts.push('Objectif: ' + goal);
+    if (fileText) parts.push(fileText);
     if (!parts.length) return 'Ajoutez un pays, un montant ou un objectif pour preparer votre resume.';
     return pageName + ' - ' + parts.join(' | ') + '. Usage: ' + useCase;
   }
@@ -235,59 +251,23 @@
       }
     });
   }
+  var download = form.querySelector('[data-download-prep]');
+  if (download) {
+    download.addEventListener('click', function () {
+      var blob = new Blob([summary()], { type: 'text/plain' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = pageName.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-brief.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      if (status) status.textContent = 'Brief telecharge.';
+    });
+  }
 })();
 </script>
-  <script>
-    fetch('/tools/traditional-vs-western/')
-      .then(function (response) {
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        return response.text();
-      })
-      .then(function (html) {
-        var doc = new DOMParser().parseFromString(html, 'text/html');
-        var main = doc.querySelector('.tool-main') || doc.querySelector('main') || doc.body;
-        doc.querySelectorAll('link[rel="stylesheet"], style').forEach(function (node) {
-          var clone = node.cloneNode(true);
-          if (clone.href) clone.href = new URL(clone.getAttribute('href'), window.location.origin + '/tools/traditional-vs-western/').href;
-          document.head.appendChild(clone);
-        });
-        var mount = document.getElementById('tool-mount');
-        mount.innerHTML = '';
-        mount.appendChild(document.importNode(main, true));
-        window.frToolGapLocalizer.watch(mount);
-        var scripts = Array.prototype.slice.call(doc.querySelectorAll('script'));
-        function shouldLoadExternal(script) {
-          var src = script.getAttribute('src') || '';
-          return src && !/components\/(navbar|footer)|wise-cta|chat/i.test(src);
-        }
-        function appendExternal(script) {
-          return new Promise(function (resolve) {
-            var next = document.createElement('script');
-            next.async = false;
-            next.src = new URL(script.getAttribute('src'), window.location.origin + '/tools/traditional-vs-western/').href;
-            next.onload = resolve;
-            next.onerror = resolve;
-            document.body.appendChild(next);
-          });
-        }
-        var chain = Promise.resolve();
-        scripts.filter(shouldLoadExternal).forEach(function (script) {
-          chain = chain.then(function () { return appendExternal(script); });
-        });
-        return chain.then(function () {
-          scripts.forEach(function (script) {
-            if (!script.src && script.textContent) {
-              var next = document.createElement('script');
-              next.textContent = script.textContent;
-              document.body.appendChild(next);
-            }
-          });
-          window.frToolGapLocalizer.localize(mount);
-        });
-      })
-      .catch(function () {
-        document.getElementById('tool-mount').innerHTML = '<div class="tool-error">Impossible de charger l\'outil pour le moment. <a href="/tools/traditional-vs-western/">Ouvrir la version source</a>.</div>';
-      });
-  </script>
+
 </body>
 </html>

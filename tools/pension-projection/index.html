@@ -122,6 +122,11 @@
   </style>
   <meta property="article:modified_time" content="2026-03-29">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pension-projection/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pension-projection/" />
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
@@ -305,6 +310,13 @@
         <ul id="pension-notes-list"></ul>
         <div class="pn-ref" id="pension-ref"></div>
       </div>
+      <div class="df-actions" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+        <button type="button" class="tl-btn" id="pp-copy-summary" style="width:auto">Copy projection summary</button>
+        <button type="button" class="tl-btn" id="pp-download-summary" data-no-gate="true" style="width:auto">Download TXT</button>
+        <save-result-button tool-slug="pension-projection" tool-name="Pension Fund Projection"></save-result-button>
+        <share-result-button tool-name="Pension Fund Projection" tool-slug="pension-projection"></share-result-button>
+      </div>
+      <div id="pp-status" role="status" aria-live="polite" style="min-height:1.2em;margin-top:8px;font-size:.82rem;color:var(--text-muted,#64748b)"></div>
     </div>
   </div>
 
@@ -342,24 +354,17 @@
 
 
 
-<section class="df-upgrade" data-df-upgrade="pension-projection">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Pension Fund Projection decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for pension fund projection so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Pension Fund Projection: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, officialSource, saveExport, businessCta, verificationPanel.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="pension-projection">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pension-projection" data-df-base="Pension Fund Projection: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Pension Fund Projection: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pension-projection">Copy summary</button></div>
-    </form>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="pension-projection">
+  <div class="tool-verification-card">
+    <span class="tool-verification-kicker">Source and assumptions check</span>
+    <h2>Use this as a retirement planning estimate, not an official pension statement</h2>
+    <ul class="tool-verification-list">
+      <li><strong>Inputs:</strong> country, age, salary, current balance, contribution rate, salary growth, investment growth scenario, and retirement age.</li>
+      <li><strong>Method:</strong> compounds monthly contributions and investment growth, then converts the projected balance into an illustrative 4% annual drawdown.</li>
+      <li><strong>Verify before acting:</strong> pension fund statement, employer remittance history, statutory contribution caps, fund fees, tax treatment, and current retirement rules.</li>
+      <li><strong>Privacy:</strong> the projection runs in your browser. Copy, download, save, or share only the summary you choose.</li>
+    </ul>
+    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning guidance only. It is not investment advice, tax advice, a guaranteed pension value, or an official filing.</p>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="pension-projection-faq-title">
@@ -369,6 +374,7 @@
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
+<afro-business-cta tool-name="Pension Fund Projection" prospect-segment="payroll-benefits" headline="Need a repeatable benefits review workflow?" subhead="AfroPayroll Pro can help teams keep pension assumptions, contribution checks, and accountant handoff notes in one reviewable workspace."></afro-business-cta>
 <afro-related-tools category="financial" current="pension-projection"></afro-related-tools>
 <afro-footer></afro-footer>
 
@@ -655,6 +661,59 @@ function calculate() {
   resultsEl.style.display = '';
   resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+function buildPensionSummary() {
+  if (!resultsEl || resultsEl.style.display === 'none') {
+    calculate();
+  }
+  var country = countrySelect.options[countrySelect.selectedIndex] ? countrySelect.options[countrySelect.selectedIndex].textContent.trim() : 'Selected country';
+  var salary = document.getElementById('monthly-salary') ? document.getElementById('monthly-salary').value : '';
+  var lines = [
+    'Pension Fund Projection summary',
+    'Country: ' + country,
+    'Monthly salary input: ' + salary,
+    'Projected balance: ' + document.getElementById('r-projected-balance').textContent,
+    'Estimated monthly pension: ' + document.getElementById('r-monthly-pension').textContent,
+    'Replacement ratio: ' + document.getElementById('r-replacement-ratio').textContent,
+    'Years to retirement: ' + document.getElementById('r-years-left').textContent,
+    'Total contributed: ' + document.getElementById('r-total-contributed').textContent,
+    'Assumptions: ' + document.getElementById('r-balance-sub').textContent,
+    'Note: planning estimate only. Verify fund statement, employer remittance, contribution caps, fees, tax treatment, and current retirement rules before acting.'
+  ];
+  var noteItems = Array.prototype.map.call(document.querySelectorAll('#pension-notes-list li'), function (li) { return li.textContent.trim(); });
+  if (noteItems.length) lines.push('Country notes: ' + noteItems.join(' | '));
+  return lines.join('\n');
+}
+
+function setPensionStatus(message) {
+  var status = document.getElementById('pp-status');
+  if (status) status.textContent = message;
+}
+
+function copyPensionSummary() {
+  var text = buildPensionSummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { setPensionStatus('Projection summary copied.'); }).catch(function () { setPensionStatus('Copy failed. Select and copy the summary manually.'); });
+  } else {
+    setPensionStatus(text);
+  }
+}
+
+function downloadPensionSummary() {
+  var blob = new Blob([buildPensionSummary()], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'pension-projection-summary.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setPensionStatus('TXT summary downloaded.');
+}
+
+document.getElementById('pp-copy-summary').addEventListener('click', copyPensionSummary);
+document.getElementById('pp-download-summary').addEventListener('click', downloadPensionSummary);
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>

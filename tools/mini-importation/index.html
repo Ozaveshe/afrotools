@@ -111,6 +111,8 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/faida-ya-mini-importation/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mini-importation/" />
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -263,6 +265,11 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
             <div class="cost-row" style="margin-top:8px"><span class="cost-label">Landed Cost per Unit</span><span class="cost-value" id="cb-per-unit">—</span></div>
             <div class="cost-row"><span class="cost-label">Revenue (all units)</span><span class="cost-value" id="cb-revenue">—</span></div>
           </div>
+          <div class="df-actions" style="margin-top:14px">
+            <button type="button" onclick="copyMiniImportBrief()">Copy order analysis</button>
+            <button type="button" data-no-gate="true" data-no-pdf-gate="true" onclick="downloadMiniImportCsv()">Download CSV</button>
+          </div>
+          <p id="miniImportStatus" role="status" aria-live="polite" style="margin:.55rem 0 0;color:#64748b;font-size:.86rem"></p>
         </div>
       </div>
 
@@ -292,6 +299,40 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
   <h2 id="mini-importation-faq-title">Mini-Importation Profit Calculator FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Run the landed-cost calculator, compare break-even selling price with real market listings, then copy the order brief before paying a supplier.</p></details><details><summary>What should I verify?</summary><p>Check supplier proof, MOQ, FX rate, payment protection, shipping agent quote, customs duty class, restricted-goods rules, clearing fee, and realistic resale demand.</p></details><details><summary>Is this official?</summary><p>No. It is a business planning estimate, not a customs ruling, supplier guarantee, financing approval, or profit guarantee.</p></details></div>
 </section>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="mini-import-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Sources &amp; verification</span>
+        <h2 class="tool-verification-title" id="mini-import-verification-title">Verify margin before paying a supplier</h2>
+        <p class="tool-verification-lead">This calculator turns source price, FX, shipping, duty, clearing fee, and resale price into a local order estimate. It does not verify suppliers or guarantee customs treatment.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Small-business planning model</span>
+        <p class="tool-verification-note">Reviewed 2026. FX, shipping quotes, duty classes, clearing fees, and market prices can change quickly.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Methodology</h3>
+        <ul class="tool-verification-list">
+          <li>Converts source price to local currency, adds freight, duty, and clearing cost, then compares landed cost with resale revenue.</li>
+          <li>Reports landed cost per unit, gross profit, ROI, profit margin, and break-even selling price.</li>
+          <li>CSV export preserves the estimate for supplier, shipping-agent, finance, or partner review.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Before acting</h3>
+        <ul class="tool-verification-list">
+          <li>Verify supplier history, MOQ, product quality, payment protection, FX rate, freight quote, and delivery terms.</li>
+          <li>Confirm customs duty class, restricted-goods rules, clearing cost, platform protection, return risk, and realistic local demand.</li>
+          <li>Treat the result as an estimate only, not a customs ruling, supplier guarantee, financing approval, or profit guarantee.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="Mini-Importation Profit Calculator" prospect-segment="small-business-import" save-note="Calculate the order, then copy or download the landed-cost brief before paying a supplier."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -384,6 +425,7 @@ var COUNTRY_DATA = {
   GH: { sym: "GH₵", currency: "GHS", fx_usd: 16.5, shipping_per_kg: 80, name: "Ghana" },
   KE: { sym: "KSh", currency: "KES", fx_usd: 138, shipping_per_kg: 600, name: "Kenya" }
 };
+var LAST_MINI_IMPORT_RESULT = null;
 
 function updateCountryDefaults() {
   // Just update the display; calculations use selected country
@@ -437,6 +479,29 @@ function calculate() {
   var marginPct = totalRevenue > 0 ? (grossProfit / totalRevenue) * 100 : 0;
   var profitPerUnit = grossProfit / units;
   var breakEvenPrice = landedCostPerUnit;
+  LAST_MINI_IMPORT_RESULT = {
+    country: d.name,
+    currency: d.currency,
+    symbol: sym,
+    product: document.getElementById('product-name').value || 'Product',
+    sourcePriceUSD: sourcePriceUSD,
+    units: units,
+    weightKg: weightKg,
+    dutyRate: dutyRate * 100,
+    clearingFee: clearingFee,
+    sellingPriceLocal: sellingPriceLocal,
+    productCostLocal: productCostLocal,
+    shippingCost: shippingCost,
+    dutyAmount: dutyAmount,
+    totalLandedCost: totalLandedCost,
+    landedCostPerUnit: landedCostPerUnit,
+    totalRevenue: totalRevenue,
+    grossProfit: grossProfit,
+    roi: roi,
+    marginPct: marginPct,
+    profitPerUnit: profitPerUnit,
+    breakEvenPrice: breakEvenPrice
+  };
 
   document.getElementById('results-section').style.display = 'block';
 
@@ -453,8 +518,73 @@ function calculate() {
   document.getElementById('cb-total').textContent = fmt(totalLandedCost, sym);
   document.getElementById('cb-per-unit').textContent = fmt(landedCostPerUnit, sym);
   document.getElementById('cb-revenue').textContent = sellingPriceLocal > 0 ? fmt(totalRevenue, sym) : "—";
+  document.getElementById('miniImportStatus').textContent = 'Order analysis ready. Copy or download the brief before paying a supplier.';
 
   document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function miniImportBriefText() {
+  if (!LAST_MINI_IMPORT_RESULT) calculate();
+  var r = LAST_MINI_IMPORT_RESULT;
+  if (!r) return '';
+  return [
+    'AfroTools mini-importation order analysis',
+    'Product: ' + r.product,
+    'Destination: ' + r.country + ' (' + r.currency + ')',
+    'Units: ' + r.units,
+    'Source price per unit: $' + r.sourcePriceUSD.toFixed(2),
+    'Total landed cost: ' + fmt(r.totalLandedCost, r.symbol),
+    'Landed cost per unit: ' + fmt(r.landedCostPerUnit, r.symbol),
+    'Gross profit: ' + fmt(r.grossProfit, r.symbol),
+    'ROI: ' + r.roi.toFixed(1) + '%',
+    'Margin: ' + r.marginPct.toFixed(1) + '%',
+    'Break-even price: ' + fmt(r.breakEvenPrice, r.symbol),
+    'Planning note: estimate only. Verify supplier history, MOQ, quality, FX, shipping quote, duty class, restricted-goods rules, clearing cost, returns, and real resale demand before paying.'
+  ].join('\n');
+}
+
+function copyMiniImportBrief() {
+  var text = miniImportBriefText();
+  var status = document.getElementById('miniImportStatus');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ status.textContent = 'Order analysis copied.'; }).catch(function(){ status.textContent = text; });
+  } else {
+    status.textContent = text;
+  }
+}
+
+function downloadMiniImportCsv() {
+  if (!LAST_MINI_IMPORT_RESULT) calculate();
+  var r = LAST_MINI_IMPORT_RESULT;
+  var status = document.getElementById('miniImportStatus');
+  if (!r) return;
+  var rows = [
+    ['field','value'],
+    ['product', r.product],
+    ['destination', r.country],
+    ['currency', r.currency],
+    ['units', r.units],
+    ['source_price_usd', r.sourcePriceUSD.toFixed(2)],
+    ['duty_rate_percent', r.dutyRate.toFixed(1)],
+    ['total_landed_cost', r.totalLandedCost.toFixed(2)],
+    ['landed_cost_per_unit', r.landedCostPerUnit.toFixed(2)],
+    ['gross_profit', r.grossProfit.toFixed(2)],
+    ['roi_percent', r.roi.toFixed(1)],
+    ['margin_percent', r.marginPct.toFixed(1)],
+    ['planning_note', 'Verify supplier, FX, shipping, duty class, restricted goods, clearing, return risk, and demand before paying.']
+  ];
+  var csv = rows.map(function(row){ return row.map(function(cell){ return '"' + String(cell == null ? '' : cell).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'afrotools-mini-importation-order-analysis.csv';
+  a.setAttribute('data-no-pdf-gate','true');
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  status.textContent = 'CSV downloaded. Replace estimates with verified supplier, shipping, and customs values.';
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>

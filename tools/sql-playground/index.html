@@ -243,6 +243,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
             <button class="btn primary" id="run-query" type="button">Run Ctrl+Enter</button>
             <button class="btn" id="explain-query" type="button">Explain plan</button>
             <button class="btn" id="format-query" type="button">Format</button>
+            <button class="btn" id="download-sql" type="button">Download SQL</button>
             <button class="btn warn" id="clear-query" type="button">Clear</button>
           </div>
         </div>
@@ -316,7 +317,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
       <span class="df-upgrade__kicker">Query lab brief</span>
       <h2>Run a local SQL query, then export what changed</h2>
       <p>Use the SQLite playground above for sample datasets, challenges and query plans, then capture a brief for learning or handoff.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: run SQL locally against bundled datasets, inspect results, explain plans and export CSV or SQLite files.</li><li>Result output: a query lab brief that records dataset, query goal, result size and next check.</li><li>Quality checks: selected dataset, read-only versus mutating query, result rows, explain plan, exported CSV and challenge feedback.</li><li>Privacy note: imported CSV data stays in this browser session unless you export it yourself.</li></ul>
+      <p><strong>Sources &amp; verification methodology:</strong> bundled or imported browser data is the source, SQLite query results are the evidence, and explain plans plus exports help verify what ran. This is not connected to a live production database.</p>
+      <ul class="df-upgrade__bullets"><li>Primary task: run SQL locally against bundled datasets, inspect results, explain plans, download the SQL, and export CSV or SQLite files.</li><li>Result output: a query lab brief that records dataset, query goal, result size and next check.</li><li>Quality checks: selected dataset, read-only versus mutating query, result rows, explain plan, downloaded SQL, exported CSV and challenge feedback.</li><li>Privacy note: imported CSV data stays in this browser session unless you export it yourself.</li></ul>
       <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local SQLite learning tool only. Results reflect the sample/imported data, not live production databases.</p>
     </div>
     <form class="df-form" data-df-form="sql-playground">
@@ -494,6 +496,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
     $('run-query').addEventListener('click', runQuery);
     $('explain-query').addEventListener('click', explainQuery);
     $('format-query').addEventListener('click', formatQuery);
+    $('download-sql').addEventListener('click', downloadSql);
     $('clear-query').addEventListener('click', function(){ $('editor').value = ''; $('editor').focus(); lintEditor(); });
     $('editor').addEventListener('input', lintEditor);
     $('editor').addEventListener('keydown', function(e){
@@ -713,6 +716,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
   function copyResults(){
     if (!lastResult) { toast('Run a SELECT query first'); return; }
     navigator.clipboard.writeText(resultToCSV(lastResult)).then(function(){ toast('Results copied as CSV'); });
+  }
+  function downloadSql(){
+    var sql = $('editor').value.trim();
+    if (!sql) { toast('Write a SQL query first'); return; }
+    var header = '-- AfroTools SQL Playground\n-- Dataset: ' + currentDataset + '\n-- Exported: ' + new Date().toISOString() + '\n-- Runs locally against bundled or imported browser data.\n\n';
+    download(header + sql + '\n', currentDataset + '-query.sql', 'text/plain');
+    toast('SQL downloaded');
   }
   function exportDatabase(){
     if (!db) return;

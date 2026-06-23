@@ -25,6 +25,7 @@
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -80,6 +81,7 @@
 </script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
+html,body{overflow-x:hidden}
 :root{--bc-green:#16a34a;--bc-green-dark:#14532d;--bc-green-mid:#15803d;--bc-green-light:#bbf7d0;--bc-green-pale:#f0fdf4;--bc-dark:#0f172a;--bc-bg:#f8fafc;--bc-border:#e2e8f0;--bc-muted:#64748b;--bc-red:#ef4444;--bc-amber:#f59e0b;--bc-radius:10px;--bc-shadow:0 1px 8px rgba(0,0,0,.04)}
 
 /* HERO */
@@ -105,10 +107,11 @@ h1 em{color:var(--bc-green-light);font-style:normal}
 
 /* MAIN */
 .bc-main{padding:32px 0 72px;background:var(--color-bg,#FAFAF8)}
-.bc-grid{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+.bc-grid{width:100%;max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;min-width:0}
+.bc-sidebar,.bc-results{min-width:0;max-width:100%}
 
 /* CARDS */
-.bc-card{background:#fff;border:1px solid var(--bc-border);border-radius:var(--bc-radius);overflow:hidden;box-shadow:var(--bc-shadow)}
+.bc-card{background:#fff;border:1px solid var(--bc-border);border-radius:var(--bc-radius);overflow:hidden;box-shadow:var(--bc-shadow);min-width:0;max-width:100%}
 .bc-card+.bc-card{margin-top:18px}
 .bc-card-head{padding:14px 20px;border-bottom:1px solid #f1f5f9;background:var(--bc-bg);display:flex;align-items:center;gap:8px}
 .bc-card-head svg{width:18px;height:18px;flex-shrink:0}
@@ -250,7 +253,9 @@ h1 em{color:var(--bc-green-light);font-style:normal}
 
 /* RESPONSIVE */
 @media(max-width:960px){
-  .bc-grid{grid-template-columns:1fr}
+  .bc-main{overflow:hidden}
+  .bc-grid{grid-template-columns:minmax(0,1fr);width:100%;max-width:100%;overflow:hidden}
+  .bc-sidebar,.bc-results{width:100%}
   .bc-rank-bar-wrap{max-width:120px}
 }
 @media(max-width:768px){
@@ -295,11 +300,13 @@ h1 em{color:var(--bc-green-light);font-style:normal}
 .ai-msg-u{font-size:.76rem;padding:7px 10px;background:#007AFF;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
 .ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
 .ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
-.ai-input-row{display:flex;gap:6px}
-.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input-row{display:flex;gap:6px;min-width:0}
+.ai-input{flex:1;min-width:0;max-width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
 .ai-input:focus{border-color:#007AFF;background:#fff}
 .ai-send{padding:9px 14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
 .ai-send:disabled{opacity:.5;cursor:not-allowed}
+.ai-consent{display:flex;align-items:flex-start;gap:8px;margin:10px 0 0;font-size:.74rem;line-height:1.45;color:#475569}
+.ai-consent input{margin-top:2px;accent-color:var(--bc-green)}
 
 /* AI Advisor floating section */
 .ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
@@ -591,6 +598,13 @@ Compare Banks
 <details class="bc-faq"><summary>How much do bank charges cost per year in Africa?</summary><p>Annual costs vary widely by country and bank type. A typical Nigerian salaried worker using a traditional bank might pay NGN 15,000-25,000/year, while a digital bank user pays under NGN 3,000. In South Africa, traditional accounts cost R1,200-R3,600/year, while Capitec or TymeBank can be nearly free. Use the annual cost calculator above for your specific profile.</p></details>
 </section>
 
+<section class="bc-seo quality-verification-panel" data-tool-verification-panel aria-labelledby="bank-charges-verification-title">
+<h2 id="bank-charges-verification-title">Bank charge verification notes</h2>
+<details class="bc-faq" open><summary>Methodology and freshness</summary><p>The comparator estimates monthly and annual banking costs from stored tariff assumptions, transaction counts, ATM use, SMS alerts, card costs, and user-selected countries. Treat the result as a planning estimate only. Bank tariffs, account tiers, promotions, regulatory caps, transfer rails, and mobile-money fees can change quickly.</p></details>
+<details class="bc-faq"><summary>What to verify</summary><p>Confirm the current tariff guide, account tier, minimum balance, transfer rail, card fees, cash deposit rules, FX markup, and any promotional waiver directly with the bank, mobile-money provider, or regulator before opening or switching accounts.</p></details>
+<details class="bc-faq"><summary>Export and privacy</summary><p>Use the local result, save, share, or optional AI advisor only when you choose it. Do not paste account numbers, balances, phone numbers, identity documents, bank statements, or private transaction records into the AI prompt.</p></details>
+</section>
+
 <div class="ai-advisor-section">
   <div class="ai-advisor-card" id="aiCard">
     <div class="ai-advisor-head">
@@ -602,6 +616,7 @@ Compare Banks
       <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
       <div class="ai-chat" id="aiChat">
         <div class="ai-msgs" id="aiMsgs"></div>
+        <label class="ai-consent"><input type="checkbox" id="aiConsent"><span>I consent to send this message and recent chat context to the AI advisor. Do not include account numbers, balances, phone numbers, identity documents, bank statements, or private transaction records.</span></label>
         <div class="ai-input-row">
           <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
           <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
@@ -613,6 +628,11 @@ Compare Banks
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
+</div>
+<div style="max-width:960px;margin:0 auto 20px;padding:0 20px">
+  <afro-business-cta
+    tool-name="Bank Charges Comparator"
+    save-note="Compare account costs, then save or share the estimate after checking current tariff guides."></afro-business-cta>
 </div>
 <afro-related-tools category="financial" current="bank-charges"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
@@ -1099,8 +1119,15 @@ async function sendAI(){
   var input=document.getElementById('aiInput');
   var msgsEl=document.getElementById('aiMsgs');
   var sendBtn=document.getElementById('aiSend');
+  var status=document.getElementById('aiStatus');
+  var consent=document.getElementById('aiConsent');
   var q=input.value.trim();
   if(!q)return;
+  if(!consent||!consent.checked){
+    if(status)status.textContent='AI advisor is optional. Tick consent before sending a question, and keep private banking or identity details out of the prompt.';
+    input.focus();
+    return;
+  }
   AI_MSGS.push({role:'user',content:q});
   msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
   input.value='';sendBtn.disabled=true;

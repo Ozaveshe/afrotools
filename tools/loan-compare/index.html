@@ -17,6 +17,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -75,6 +76,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .loan-export-row button{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:800;color:#0f172a;cursor:pointer}
 .loan-export-row button:hover{border-color:var(--afro-blue);color:var(--afro-blue);background:#f8fbff}
 .loan-result-note{margin-top:12px;border:1px solid #dbeafe;background:#eff6ff;border-radius:8px;padding:12px 14px;color:#1e3a8a;font-size:.78rem;line-height:1.6}
+.loan-assumption-note{margin:8px 0 0;border:1px solid #fde68a;background:#fffbeb;border-radius:8px;padding:10px 12px;color:#713f12;font-size:.78rem;line-height:1.55}
 .loan-export-status{margin-top:8px;color:#64748b;font-size:.76rem;min-height:1.2em}
 .seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
 .seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
@@ -86,12 +88,13 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.loans-grid{grid-template-columns:1fr}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Loan Comparison Calculator","description":"Compare up to 4 loan offers side by side. Monthly payments, total interest, and total cost.","url":"https://afrotools.com/tools/loan-compare/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/loan-compare.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Loan Comparison Calculator","description":"Compare up to 4 loan offers side by side. Monthly payments, total interest, and total cost.","url":"https://afrotools.com/tools/loan-compare/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/loan-compare.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Loan Comparison Calculator","url":"https://afrotools.com/tools/loan-compare/","description":"Compare up to 4 loan offers side by side. Monthly payments, total interest, and total cost.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/loan-compare.webp"}</script>
 <script src="/assets/js/bundles/core.c3deb143.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -194,8 +197,9 @@ h1 em{color:var(--afro-blue);font-style:normal}
 </div>
 <div class="card-body">
 <div style="margin-bottom:14px">
-<div style="font-size:.72rem;font-weight:700;color:#64748b;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Quick Fill — African Lender Presets</div>
+<div style="font-size:.72rem;font-weight:700;color:#64748b;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Quick Fill — editable sample presets</div>
 <div style="display:flex;flex-wrap:wrap;gap:6px" id="presetBtns"></div>
+<p class="loan-assumption-note"><strong>Not live lender quotes.</strong> Presets are editable sample scenarios for quick comparison. Replace every rate, term, fee, insurance charge, and APR detail with the written offer from the lender before making a borrowing decision.</p>
 </div>
 <div class="loans-grid" id="loansGrid"></div>
 <button type="button" class="add-loan-btn" id="addLoanBtn" onclick="addLoan()" style="margin-top:14px">+ Add Another Loan</button>
@@ -216,11 +220,36 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <button type="button" onclick="window.print()">Print</button>
 </div>
 <p class="loan-export-status" id="loanExportStatus" aria-live="polite"></p>
-<p class="loan-result-note"><strong>Planning estimate.</strong> This compares user-entered rate, term, fee, and amount fields. Confirm APR, insurance, penalties, disbursement fees, and final lender terms before signing.</p>
+<p class="loan-result-note"><strong>Methodology / how it works:</strong> this uses the standard amortizing-loan formula, then adds user-entered upfront fees to compare total cost. <strong>Source/reference:</strong> use the written lender offer, APR sheet, repayment schedule, and loan agreement as the source of truth. <strong>Disclaimer:</strong> planning estimate only, not an official quote or financial advice. Confirm APR, insurance, penalties, disbursement fees, and final lender terms before signing.</p>
 </div>
 </div>
 
 </div>
+</section>
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="loan-compare-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Sources &amp; verification</span>
+          <h2 class="tool-verification-title" id="loan-compare-verification-title">Compare written offers, not adverts</h2>
+          <p class="tool-verification-lead">The calculator uses your entered principal, interest rate, term, and fees to estimate amortizing repayment cost. Treat lender adverts, sample rates, and presets as placeholders until you have a written offer.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Planning estimate</span>
+          <p class="tool-verification-note">Reviewed 2026. Rates, fees, insurance rules, penalties, and disbursement terms can change by lender and country.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block"><h3>Methodology</h3><ul class="tool-verification-list"><li>Monthly payment uses the standard amortizing-loan formula.</li><li>Total cost adds principal, interest, and user-entered upfront fees for side-by-side ranking.</li></ul></div>
+        <div class="tool-verification-block"><h3>Before signing</h3><ul class="tool-verification-list"><li>Verify APR, flat-vs-reducing balance treatment, insurance, processing fees, penalties, and actual disbursement.</li><li>Compare the exported CSV against the lender repayment schedule and loan agreement.</li></ul></div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Disclaimer: this is not a lender quote, approval, credit advice, or financial advice. Inputs stay local unless you copy, save, share, or export the result.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="seo-content">
@@ -237,7 +266,7 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 <h2>Comparing Loans in Africa</h2>
 <p>African banks often have very different rate structures. In Nigeria, rates between commercial banks can differ by 5-10 percentage points. Microfinance banks may offer faster approval but at significantly higher rates. Digital lenders like Carbon, FairMoney, and Branch offer convenience but typically at 3-5% monthly rates. Always convert monthly rates to annual rates for fair comparison.</p>
-<p>In Kenya, compare SACCOs (often 12% p.a.) with commercial banks (13-18% p.a.) and digital lenders (up to 36% p.a.). In South Africa, compare bank personal loans with vehicle-specific financing. Don't forget to factor in mandatory insurance requirements.</p>
+<p>In Kenya, compare SACCO, bank, employer-backed and digital-credit offers using the written APR and fee schedule you receive. In South Africa, compare bank personal loans with vehicle-specific financing and mandatory insurance requirements. Treat any example rate on this page as a placeholder, not a live lender quote.</p>
 
 
 
@@ -254,6 +283,9 @@ h1 em{color:var(--afro-blue);font-style:normal}
 </section>
 
 <afro-related-tools></afro-related-tools>
+<afro-business-cta
+  tool-name="Loan Comparison Calculator"
+  save-note="Copy or download the lender comparison, then use the written offer terms when requesting a custom finance or credit workflow."></afro-business-cta>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
@@ -266,7 +298,7 @@ function visibleLoans(){return document.querySelectorAll('#loansGrid .loan-card'
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
 function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',TZS:'TSh',UGX:'USh',ETB:'Br',RWF:'RF',XOF:'CFA',USD:'$',GBP:'\u00A3'};return(symbols[cur]||cur+' ')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
 
-// African bank presets: {name, rate (annual %), term (months)}
+// Editable sample presets: {name, rate (annual %), term (months)}. Not live lender quotes.
 var PRESETS=[
   {name:'GTBank NG',rate:28,term:24},{name:'Access NG',rate:25,term:36},
   {name:'FairMoney NG',rate:60,term:12},{name:'Carbon NG',rate:48,term:6},
@@ -306,12 +338,12 @@ function addLoan(name){
     <button type="button" class="remove-loan" onclick="removeLoan(${i})" title="Remove">&times;</button>
     <div class="loan-header">
       <span class="loan-dot" style="background:${COLORS[i]}"></span>
-      <span class="loan-name"><input aria-label="LName$ i" type="text" value="${name||'Loan '+(i+1)}" id="lName${i}"></span>
+      <span class="loan-name"><input aria-label="Loan ${i+1} name" type="text" value="${name||'Loan '+(i+1)}" id="lName${i}"></span>
     </div>
-    <div class="field"><label class="f-label">Loan Amount</label><input aria-label="E.g. 5,000,000" type="text" class="f-input" id="lAmt${i}" placeholder="e.g. 5,000,000" inputmode="numeric"></div>
-    <div class="field"><label class="f-label">Annual Interest Rate (%)</label><input aria-label="LRate$ i" type="number" class="f-input" id="lRate${i}" placeholder="22" step="0.1" min="0" max="200"></div>
-    <div class="field"><label class="f-label">Term (Months)</label><input aria-label="LTerm$ i" type="number" class="f-input" id="lTerm${i}" placeholder="36" min="1" max="360"></div>
-    <div class="field"><label class="f-label">Upfront Fees</label><input aria-label="LFees$ i" type="text" class="f-input" id="lFees${i}" placeholder="0" inputmode="numeric"></div>
+    <div class="field"><label class="f-label" for="lAmt${i}">Loan Amount</label><input aria-label="Loan ${i+1} amount" type="text" class="f-input" id="lAmt${i}" placeholder="e.g. 5,000,000" inputmode="numeric"></div>
+    <div class="field"><label class="f-label" for="lRate${i}">Annual Interest Rate (%)</label><input aria-label="Loan ${i+1} annual interest rate" type="number" class="f-input" id="lRate${i}" placeholder="22" step="0.1" min="0" max="200"></div>
+    <div class="field"><label class="f-label" for="lTerm${i}">Term (Months)</label><input aria-label="Loan ${i+1} term in months" type="number" class="f-input" id="lTerm${i}" placeholder="36" min="1" max="360"></div>
+    <div class="field"><label class="f-label" for="lFees${i}">Upfront Fees</label><input aria-label="Loan ${i+1} upfront fees" type="text" class="f-input" id="lFees${i}" placeholder="0" inputmode="numeric"></div>
   `;
   grid.appendChild(card);
   loanCount++;

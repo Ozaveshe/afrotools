@@ -17,9 +17,12 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#059669}
 .tool-hero{background:linear-gradient(135deg,#064e3b 0%,#059669 50%,#047857 100%);padding:44px 0 36px}
@@ -207,6 +210,20 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="ng-cit">
+  <div class="tool-verification-card">
+    <span class="tool-verification-kicker">Company tax source check</span>
+    <h2>Reconcile the estimate with current FIRS rules and your accounts</h2>
+    <ul class="tool-verification-list">
+      <li><strong>Inputs:</strong> turnover, assessable profit, company size, year, capital allowances, and tax-free dividends.</li>
+      <li><strong>Method:</strong> applies the page's embedded Nigeria company tax logic to estimate CIT, levy items, effective rate, and classification.</li>
+      <li><strong>Verify before acting:</strong> current FIRS guidance, Finance Act transition rules, audited accounts, allowable deductions, capital allowance schedules, loss position, and TaxPro Max filing requirements.</li>
+      <li><strong>Privacy:</strong> company figures run locally. Copy, download, save, or share only the summary you choose.</li>
+    </ul>
+    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not tax advice, a filing instruction, or an official FIRS assessment.</p>
+  </div>
+</section>
+<afro-business-cta tool-name="Nigeria CIT Calculator" prospect-segment="tax-compliance" headline="Need a review trail for company tax estimates?" subhead="AfroTax Pro helps teams keep turnover assumptions, tax breakdown notes, and accountant handoff files together before filing."></afro-business-cta>
 <afro-related-tools category="financial" current="ng-cit"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -269,8 +286,44 @@ function calculate() {
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="ng-cit" tool-name="Nigeria CIT Calculator"></save-result-button><share-result-button tool-name="Nigeria CIT Calculator" tool-slug="ng-cit"></share-result-button>';
+  div.innerHTML = '<button type="button" class="btn" id="tax-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="btn" id="tax-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="ng-cit" tool-name="Nigeria CIT Calculator"></save-result-button><share-result-button tool-name="Nigeria CIT Calculator" tool-slug="ng-cit"></share-result-button><span id="tax-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
   target.appendChild(div);
+  function valueLabel(el) {
+    if (el.tagName === 'SELECT') return el.options[el.selectedIndex] ? el.options[el.selectedIndex].textContent.trim() : el.value;
+    return el.value;
+  }
+  function buildSummary() {
+    var inputs = Array.prototype.map.call(document.querySelectorAll('.calculator .card:first-of-type input,.calculator .card:first-of-type select'), function (el) {
+      var label = el.closest('div') && el.closest('div').querySelector('label') ? el.closest('div').querySelector('label').textContent.trim() : (el.getAttribute('aria-label') || el.id);
+      return label + ': ' + valueLabel(el);
+    });
+    var results = Array.prototype.map.call(document.querySelectorAll('#resultGrid .result-box'), function (box) {
+      return box.textContent.replace(/\s+/g, ' ').trim();
+    });
+    var breakdown = document.getElementById('breakdown') ? document.getElementById('breakdown').textContent.replace(/\s+/g, ' ').trim() : '';
+    return ['Nigeria CIT estimate summary'].concat(inputs, ['Results: ' + (results.length ? results.join(' | ') : 'Run the calculator to generate results'), 'Breakdown: ' + breakdown, 'Planning estimate only. Verify current FIRS guidance, Finance Act transition rules, audited accounts, allowances, losses, and filing requirements before acting.']).join('\n');
+  }
+  function setStatus(message) {
+    var status = document.getElementById('tax-export-status');
+    if (status) status.textContent = message;
+  }
+  document.getElementById('tax-copy-summary').addEventListener('click', function () {
+    var text = buildSummary();
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { setStatus('Tax summary copied.'); }).catch(function () { setStatus('Copy failed. Select and copy manually.'); });
+    else setStatus(text);
+  });
+  document.getElementById('tax-download-summary').addEventListener('click', function () {
+    var blob = new Blob([buildSummary()], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'nigeria-cit-summary.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus('TXT summary downloaded.');
+  });
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

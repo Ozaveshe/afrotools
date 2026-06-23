@@ -24,6 +24,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <style>
 :root{--color-brand:var(--color-primary)}
 
@@ -290,6 +291,7 @@
 </style>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -481,6 +483,10 @@
                 </table>
               </div>
             </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+              <button type="button" class="btn-secondary" id="copyBriefBtn">Copy landed-cost brief</button>
+              <button type="button" class="btn-secondary" id="downloadCsvBtn">Download CSV</button>
+            </div>
           </div>
         </div>
       </div>
@@ -565,6 +571,45 @@
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="eac-cet-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Sources &amp; verification</span>
+          <h2 class="tool-verification-title" id="eac-cet-verification-title">CET planning rates must be confirmed before filing</h2>
+          <p class="tool-verification-lead">This lookup uses a local EAC CET planning dataset to help estimate CIF, duty, national levies, VAT, and effective landed cost. It is not a customs declaration, tariff ruling, or broker quote.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Customs planning model</span>
+          <p class="tool-verification-note">Reviewed 2026. Tariff treatment, national levies, exemptions, and gazette notices can change.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Methodology</h3>
+          <ul class="tool-verification-list">
+            <li>Search selects a product or HS range, then applies the CET planning rate to your CIF value.</li>
+            <li>Country comparison adds country-level levy and VAT assumptions so landed-cost differences are visible.</li>
+            <li>Duty remission and certificate-of-origin notes are shown as planning prompts, not eligibility decisions.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before acting</h3>
+          <ul class="tool-verification-list">
+            <li>Confirm HS classification, origin, customs valuation, CET rate, national levies, VAT, standards permits, and remission eligibility.</li>
+            <li>Ask the relevant revenue authority, licensed clearing agent, or freight forwarder to confirm the current treatment in writing.</li>
+            <li>Copy or download the CSV brief before sending it to a supplier, customer, broker, or finance reviewer.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Disclaimer: estimate only. AfroTools does not file customs entries, issue tariff rulings, approve duty remission, or provide legal/tax advice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-business-cta tool-name="EAC CET Lookup" prospect-segment="trade-import" save-note="Search a product, calculate landed cost, then copy the brief or download CSV for supplier, broker, customs, or bank review."></afro-business-cta>
 <afro-footer></afro-footer>
 
 <script src="../../engines/eac-cet-engine.js?v=618bad00"></script>
@@ -574,6 +619,7 @@
 
   var engine = EacCetEngine;
   var selectedProduct = null;
+  var lastBrief = null;
 
   /* ── Tab switching ─────────────────────────────────── */
   var tabs    = document.querySelectorAll('.tab');
@@ -595,6 +641,32 @@
   }
   function fmtPct(n) {
     return (Math.round(n * 10) / 10).toFixed(1) + '%';
+  }
+  function downloadCsv(rows, filename) {
+    var csv = rows.map(function(row) {
+      return row.map(function(cell) { return '"' + String(cell == null ? '' : cell).replace(/"/g, '""') + '"'; }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+  }
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    var area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.left = '-9999px';
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    document.body.removeChild(area);
+    return Promise.resolve();
   }
   function bandClass(rate) {
     if (rate === 0) return 'band-0';
@@ -697,6 +769,14 @@
     }
 
     var result = engine.calculate({ cifValue: cif, cetRate: rate, countryCode: country });
+    lastBrief = {
+      country: country,
+      cif: cif,
+      rate: rate,
+      total: result.totalLanded,
+      effectiveRate: result.effectiveRate,
+      breakdown: result.breakdown
+    };
 
     document.getElementById('rhLanded').textContent = fmt(result.totalLanded);
     document.getElementById('rhSub').textContent = 'CIF ' + fmt(cif) + '  ·  Duty+Levies+VAT ' + fmt(result.totalLanded - cif);
@@ -722,6 +802,25 @@
 
     tbody.innerHTML = rows;
     document.getElementById('resultBlock').classList.add('on');
+  });
+
+  document.getElementById('copyBriefBtn').addEventListener('click', function () {
+    if (!lastBrief) return;
+    var text = 'EAC CET landed-cost planning brief\nCountry: ' + lastBrief.country + '\nCIF: ' + fmt(lastBrief.cif) + '\nCET rate: ' + lastBrief.rate + '%\nTotal landed cost: ' + fmt(lastBrief.total) + '\nEffective rate above CIF: ' + fmtPct(lastBrief.effectiveRate) + '\nVerify HS classification, origin, valuation, current gazette notices, national levies, VAT, permits, and remission eligibility before filing.';
+    copyText(text).then(function () {
+      document.getElementById('copyBriefBtn').textContent = 'Copied';
+      setTimeout(function () { document.getElementById('copyBriefBtn').textContent = 'Copy landed-cost brief'; }, 1300);
+    });
+  });
+
+  document.getElementById('downloadCsvBtn').addEventListener('click', function () {
+    if (!lastBrief) return;
+    var rows = [['country','cif_usd','cet_rate_pct','line_item','amount_usd']];
+    lastBrief.breakdown.forEach(function (item) {
+      rows.push([lastBrief.country, lastBrief.cif, lastBrief.rate, item.name, item.amount]);
+    });
+    rows.push([lastBrief.country, lastBrief.cif, lastBrief.rate, 'Total landed cost', lastBrief.total]);
+    downloadCsv(rows, 'afrotools-eac-cet-landed-cost.csv');
   });
 
   /* ── Tariff Bands render ───────────────────────────── */

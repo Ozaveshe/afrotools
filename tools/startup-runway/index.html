@@ -44,6 +44,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -114,6 +115,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 .disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
 #results-section{display:none}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+.summary-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.summary-actions button{border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;cursor:pointer;font-family:inherit;font-weight:800;min-height:42px;padding:0 14px}.summary-actions button:hover,.summary-actions button:focus-visible{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14);outline:none}.summary-status{color:#64748b;font-size:.78rem;line-height:1.5;margin-top:8px}
 </style>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/startup-runway.webp">
@@ -121,7 +123,6 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/runway-startup/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/startup-runway/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/startup-runway/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -155,6 +156,7 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
   "url": "https://afrotools.com/tools/startup-runway/"
 }
 </script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -250,6 +252,8 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
               <div class="res-lbl">Revenue Gap</div>
             </div>
           </div>
+          <div class="summary-actions"><button type="button" onclick="copyStartupRunwaySummary()">Copy summary</button><button type="button" onclick="downloadStartupRunwaySummary()">Download TXT</button></div>
+          <div class="summary-status" id="startup-summary-status" role="status" aria-live="polite"></div>
         </div>
       </div>
 
@@ -283,30 +287,34 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 
 
 
-<section class="df-upgrade" data-df-upgrade="startup-runway">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Startup Runway Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for startup runway calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Startup Runway Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: saveExport, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="startup-runway" aria-labelledby="startup-runway-verification-title">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Runway workflow</span>
+          <h2 class="tool-verification-title" id="startup-runway-verification-title">Turn cash balance and burn into a survival plan</h2>
+          <p class="tool-verification-lead">Estimate how many months the company can operate with the current cash balance, monthly revenue, cost base, and growth assumptions, then compare simple cost-cut scenarios.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local runway estimate</span>
+          <p class="tool-verification-note">Inputs and outputs stay in this browser unless you copy, download, print, save, or share them.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block"><h3>Primary task</h3><ul class="tool-verification-list"><li>Enter cash balance, monthly revenue, monthly spend, and growth assumptions.</li><li>Calculate gross burn, net burn, cash-zero timing, and runway status.</li><li>Use scenarios to see how cost cuts or revenue growth change survival time.</li></ul></div>
+        <div class="tool-verification-block"><h3>Result and export</h3><ul class="tool-verification-list"><li>Runway months, burn-rate figures, cash-zero date, revenue gap, and scenario table.</li><li>Copy and TXT download actions for founder updates or investor prep.</li><li>Planning note that keeps the estimate local-first and non-official.</li></ul></div>
+        <div class="tool-verification-block"><h3>Before you use it</h3><ul class="tool-verification-list"><li>Separate booked revenue from collected cash.</li><li>Add payroll taxes, contractor commitments, loan repayments, and founder draw if applicable.</li><li>Re-run after every material hire, layoff, funding event, or revenue miss.</li></ul></div>
+        <div class="tool-verification-block"><h3>Assumptions and freshness</h3><p class="tool-verification-meta">Runway is only as current as the cash and spend inputs. It is not fundraising, accounting, tax, or investment advice.</p></div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="/contact/">Report tool issue</a>
+        <p class="tool-verification-disclaimer">Planning utility only. It is not an official filing, legal, tax, accounting, security, finance, platform, lender, or live-data service.</p>
+      </div>
     </div>
-    <form class="df-form" data-df-form="startup-runway">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="startup-runway" data-df-base="Startup Runway Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Startup Runway Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="startup-runway">Copy summary</button></div>
-    </form>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="startup-runway-faq-title">
-  <h2 id="startup-runway-faq-title">Startup Runway Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
+<afro-business-cta tool-name="Startup Runway Calculator" prospect-segment="startup-finance" save-note="Calculate runway, inspect scenarios, then copy or download a founder/investor-ready TXT summary."></afro-business-cta>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -522,7 +530,26 @@ document.addEventListener('DOMContentLoaded', function() {
   DEFAULT_COSTS.forEach(function(c){ addCostLine(c.name, c.amount); });
   document.getElementById('currency').addEventListener('change', updateCostTotal);
 });
+
+function textOf(id){ var el=document.getElementById(id); return el ? el.textContent.trim() : ''; }
+function valueOf(id){ var el=document.getElementById(id); return el ? (el.value || el.textContent || '').trim() : ''; }
+function buildToolSummary(title, rows){ return [title, new Date().toISOString().slice(0,10), ''].concat(rows.filter(Boolean)).join('\n'); }
+function copyToolSummary(text, statusId){
+  var s=document.getElementById(statusId);
+  if(s) s.textContent='Summary copied.';
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).catch(function(){ fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+function downloadToolSummary(text, filename, statusId){ var blob=new Blob([text],{type:'text/plain;charset=utf-8'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){URL.revokeObjectURL(a.href);},500); var s=document.getElementById(statusId); if(s) s.textContent='TXT summary downloaded.'; }
+
+function buildStartupRunwaySummary(){ return buildToolSummary('Startup runway summary', ['Currency: '+valueOf('currency'), 'Cash balance: '+valueOf('cash-balance'), 'Monthly revenue: '+valueOf('monthly-revenue'), 'Runway: '+textOf('runway-months'), 'Gross burn/month: '+textOf('gross-burn'), 'Net burn/month: '+textOf('net-burn'), 'Cash zero date: '+textOf('zero-date'), 'Revenue gap: '+textOf('months-to-profitable'), 'Status: '+textOf('runway-status-badge'), 'Note: planning estimate only; use current cash, committed expenses, and collected revenue.']); }
+function copyStartupRunwaySummary(){ copyToolSummary(buildStartupRunwaySummary(),'startup-summary-status'); }
+function downloadStartupRunwaySummary(){ downloadToolSummary(buildStartupRunwaySummary(),'startup-runway-summary.txt','startup-summary-status'); }
+
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

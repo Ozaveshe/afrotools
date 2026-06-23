@@ -71,8 +71,17 @@
     .link-list a{display:flex;flex-direction:column;justify-content:center;min-height:44px;border:1px solid #dcfce7;border-radius:8px;padding:12px;background:#fff}
     .link-list strong{display:block;color:#111827}
     .link-list span{display:block;margin-top:4px;color:#64748b;font-size:.88rem}
+    .fx-mini-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .fx-mini-form label{display:grid;gap:6px;color:#0f172a;font-size:.82rem;font-weight:900}
+    .fx-mini-form input,.fx-mini-form select{width:100%;min-height:44px;border:1.5px solid #cbd5e1;border-radius:8px;padding:9px 11px;background:#fff;font:inherit;color:#0f172a}
+    .fx-mini-form input:focus,.fx-mini-form select:focus{outline:2px solid rgba(22,101,52,.18);border-color:#166534}
+    .fx-mini-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+    .fx-mini-actions button{min-height:44px;border:0;border-radius:8px;padding:0 14px;background:#166534;color:#fff;font-weight:900;cursor:pointer}
+    .fx-mini-actions button.secondary{background:#0f172a}
+    .fx-mini-result{display:block;margin-top:14px;border:1px solid #bbf7d0;background:#ecfdf5;border-radius:10px;padding:14px;color:#14532d;line-height:1.65;min-height:56px}
+    .fx-mini-note{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.9rem;line-height:1.55}
     @media(max-width:960px){.layout,.grid{grid-template-columns:1fr}}
-    @media(max-width:560px){.wrap{width:min(100% - 24px,1120px)}.actions{display:grid;grid-template-columns:1fr}.btn{width:100%}}
+    @media(max-width:560px){.wrap{width:min(100% - 24px,1120px)}.actions,.fx-mini-form,.fx-mini-actions{display:grid;grid-template-columns:1fr}.btn,.fx-mini-actions button{width:100%}}
   </style>
 <style data-ha-p1-planner-style>
 .ha-p1-planner{margin:22px auto;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px;max-width:1040px}.ha-p1-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.ha-p1-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.ha-p1-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.ha-p1-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.ha-p1-grid input,.ha-p1-grid select,.ha-p1-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.ha-p1-grid textarea{min-height:84px;resize:vertical}.ha-p1-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.ha-p1-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.ha-p1-buttons a,.ha-p1-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.ha-p1-buttons a{background:#0057b8;color:#fff}.ha-p1-buttons button{background:#0f172a;color:#fff}.ha-p1-status{font-size:.84rem;color:#64748b;align-self:center}.ha-p1-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.ha-p1-buttons a,.ha-p1-buttons button{width:100%}}
@@ -109,6 +118,25 @@
 <main id="main" class="main">
   <div class="wrap layout">
     <section>
+      <article class="card" data-fx-ha-app data-tool-verification-panel>
+        <span class="tag">Kiyasta da farashin da ka tabbatar</span>
+        <h2>Yi lissafin canji da rate din banki ko mai biyan kudi ya baka</h2>
+        <p>Wannan karamin lissafi yana aiki a browser. Ka saka adadi da farashin da ka tabbatar daga banki, BDC, kamfanin biyan kudi ko tushen hukuma kafin ka dogara da sakamako.</p>
+        <div class="fx-mini-form">
+          <label for="fxAmount">Adadi<input id="fxAmount" type="number" min="0" step="0.01" value="1000" inputmode="decimal"></label>
+          <label for="fxRate">Rate da ka tabbatar<input id="fxRate" type="number" min="0" step="0.0001" value="1500" inputmode="decimal"></label>
+          <label for="fxFrom">Daga<select id="fxFrom"><option>USD</option><option>NGN</option><option>GHS</option><option>KES</option><option>ZAR</option><option>XOF</option></select></label>
+          <label for="fxTo">Zuwa<select id="fxTo"><option>NGN</option><option>USD</option><option>GHS</option><option>KES</option><option>ZAR</option><option>XOF</option></select></label>
+        </div>
+        <div class="fx-mini-actions">
+          <button type="button" id="fxEstimateBtn">Kiyasta canji</button>
+          <button type="button" id="fxCopyBtn" class="secondary">Kwafi sakamako</button>
+          <button type="button" id="fxDownloadBtn" class="secondary">Sauke TXT</button>
+        </div>
+        <output class="fx-mini-result" id="fxHaResult" aria-live="polite">Saka adadi da rate domin samun sakamako.</output>
+        <p class="fx-mini-note"><strong>Hanyar lissafi:</strong> adadi x rate = jimillar canji. <strong>Sabunta bayanai 2026:</strong> ba shafin hukuma ba ne kuma ba farashin hukuma ba ne; ka tabbatar da sabbin bayanai daga banki, BDC, provider ko hukumar da ta dace kafin biya, haraji, kwangila ko aika kudi.</p>
+      </article>
+
       <article class="card">
         <span class="tag">Abin da cikakken AfroFX ke yi</span>
         <h2>AfroFX yana taimaka wajen kwatanta kudade</h2>
@@ -159,6 +187,27 @@
   </div>
 </main>
 <afro-footer></afro-footer>
+<script>
+(function(){
+  var result=document.getElementById('fxHaResult');
+  function num(id){var el=document.getElementById(id);return el?Number(String(el.value).replace(/,/g,''))||0:0;}
+  function val(id){var el=document.getElementById(id);return el?el.value:'';}
+  function build(){
+    var amount=num('fxAmount');
+    var rate=num('fxRate');
+    var from=val('fxFrom');
+    var to=val('fxTo');
+    var total=amount*rate;
+    return 'Kiyasin canji: '+amount.toLocaleString('en')+' '+from+' x '+rate.toLocaleString('en')+' = '+total.toLocaleString('en',{maximumFractionDigits:2})+' '+to+'. Tabbatar da rate daga banki, BDC, provider ko tushe na hukuma kafin amfani da sakamakon.';
+  }
+  function render(){result.textContent=build();}
+  function copy(){render();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(result.textContent);}}
+  function download(){render();var blob=new Blob([result.textContent],{type:'text/plain'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='kiyasin-canjin-kudi.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
+  document.getElementById('fxEstimateBtn').addEventListener('click',render);
+  document.getElementById('fxCopyBtn').addEventListener('click',copy);
+  document.getElementById('fxDownloadBtn').addEventListener('click',download);
+})();
+</script>
 <script data-ha-p1-planner-script>
 (function(){document.querySelectorAll('[data-ha-p1-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'AfroTools';var output=panel.querySelector('[data-p1-output]');var status=panel.querySelector('[data-p1-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var file=panel.querySelector('[name="file"]');var fileText=file&&file.files&&file.files.length?file.files.length+' file':'';var parts=[];if(scope)parts.push('Yanayi: '+scope);if(task)parts.push('Aiki: '+task);if(details)parts.push('Bayanai: '+details);if(fileText)parts.push(fileText);return parts.length?name+' - '+parts.join(' | '):'Sanya kasa, aiki ko bayanai domin samun takaitawa.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-p1-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='An kwafi takaitawa.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
 </script>

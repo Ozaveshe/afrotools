@@ -112,7 +112,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/htaccess-gen/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-htaccess/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/htaccess-gen/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -123,7 +123,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
       "name": "How should I use .htaccess Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Select the Apache redirects, security, performance, and error-page rules you need, generate the .htaccess draft, then copy or download it for review."
       }
     },
     {
@@ -131,7 +131,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
       "name": "What should I verify before acting on .htaccess Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify that your host runs Apache with the required modules enabled, backup the current file, and test the generated rules on staging before production."
       }
     },
     {
@@ -139,7 +139,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
       "name": "Is .htaccess Generator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It creates a local Apache configuration draft only. Server support, module availability, and existing hosting rules must be checked with your provider."
       }
     }
   ],
@@ -183,7 +183,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 <div class="toggle-row"><div><div class="toggle-label">CORS Headers</div><div class="toggle-desc">Allow cross-origin requests (Access-Control-Allow-Origin)</div></div><label class="toggle"><input aria-label="Cors" type="checkbox" id="cors"><span class="slider"></span></label></div>
 <div class="toggle-row"><div><div class="toggle-label">PHP Settings</div><div class="toggle-desc">upload_max_filesize, memory_limit, etc.</div></div><label class="toggle"><input aria-label="Php" type="checkbox" id="php"><span class="slider"></span></label></div>
 
-<div class="field" style="margin-top:14px"><label>Your Domain (for hotlink protection)</label><input aria-label="Yourdomain.com" type="text" id="domain" value="example.com" placeholder="yourdomain.com"></div>
+<div class="field" style="margin-top:14px"><label for="domain">Your Domain (for hotlink protection)</label><input aria-label="Yourdomain.com" type="text" id="domain" value="example.com" placeholder="yourdomain.com"></div>
 
 <div class="btn-row">
 <button type="button" class="btn btn-primary" onclick="generate()">Generate .htaccess</button>
@@ -242,29 +242,43 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="htaccess-gen">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>.htaccess Generator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for .htaccess generator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: .htaccess Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="tool-verification-sec" data-tool-verification-panel="htaccess-gen">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Apache config check</span>
+          <h2 class="tool-verification-title">Backup, test, then publish</h2>
+          <p class="tool-verification-lead">The generated .htaccess content is a local draft for Apache hosting. Use it as a starting point, then test in staging because a single invalid rule can break a production site.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local draft</span>
+          <p class="tool-verification-note">Reviewed 2026. Hosting modules vary.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Before upload</h3>
+          <ul class="tool-verification-list">
+            <li>Confirm your host uses Apache and supports <code>mod_rewrite</code>, <code>mod_headers</code>, <code>mod_expires</code>, and <code>mod_deflate</code> if selected.</li>
+            <li>Download or copy the result, then keep a backup of the current live <code>.htaccess</code> file.</li>
+            <li>Test redirects, asset loading, error pages, and login/admin paths on staging first.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Assumptions and limits</h3>
+          <ul class="tool-verification-list">
+            <li>Rules are for Apache-compatible hosts, not Nginx, Netlify, Vercel, or CDN-only routing.</li>
+            <li>Security headers are helpful defaults, not a full application security audit.</li>
+            <li>Hotlink protection depends on the exact domain entered and may need CDN exceptions.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <p class="tool-verification-disclaimer">Planning estimate only. AfroTools does not deploy this file, inspect your server, or guarantee hosting compatibility.</p>
+      </div>
     </div>
-    <form class="df-form" data-df-form="htaccess-gen">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="htaccess-gen" data-df-base=".htaccess Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">.htaccess Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="htaccess-gen">Copy summary</button></div>
-    </form>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="htaccess-gen-faq-title">
-  <h2 id="htaccess-gen-faq-title">.htaccess Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -354,15 +368,20 @@ function generate(){
 
 function copyOutput(){
   const text=document.getElementById('output').value;
-  navigator.clipboard.writeText(text).then(function(){
-    var btn=event.target;
+  const btn=typeof event !== 'undefined' && event.target ? event.target : null;
+  const done=function(){
+    if(!btn) return;
     var orig=btn.textContent;
     btn.textContent='Copied!';
     setTimeout(function(){btn.textContent=orig;},2000);
+  };
+  navigator.clipboard.writeText(text).then(function(){
+    done();
   }).catch(function(){
     var el=document.getElementById('output');
     el.select();
     document.execCommand('copy');
+    done();
   });
 }
 
@@ -373,21 +392,21 @@ function downloadFile(){
   a.href=URL.createObjectURL(blob);
   a.download='.htaccess';
   a.click();
+  URL.revokeObjectURL(a.href);
 }
 </script>
 
 <script>
 (function(){
-  var target = document.getElementById('output');
+  var target = document.querySelector('#outputCard .btn-row');
   if (!target) return;
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
   div.innerHTML = '<share-result-button tool-name="Htaccess Gen" tool-slug="htaccess-gen"></share-result-button>';
-  target.appendChild(div);
+  target.insertAdjacentElement('afterend', div);
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

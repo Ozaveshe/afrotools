@@ -17,9 +17,12 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#16a34a}
 .tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}
@@ -206,6 +209,20 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="ng-cgt">
+  <div class="tool-verification-card">
+    <span class="tool-verification-kicker">CGT source and document check</span>
+    <h2>Confirm the asset treatment and records before filing</h2>
+    <ul class="tool-verification-list">
+      <li><strong>Inputs:</strong> taxpayer type, asset type, sale value, cost base, improvement costs, incidental costs, and acquisition year.</li>
+      <li><strong>Method:</strong> applies the page's embedded Nigeria CGT logic to estimate chargeable gain, allowable cost, tax, and net proceeds.</li>
+      <li><strong>Verify before acting:</strong> current FIRS guidance, CGT Act/Finance Act treatment, share-disposal threshold, exemption status, property documentation, valuations, and filing route.</li>
+      <li><strong>Privacy:</strong> disposal figures run locally. Copy, download, save, or share only the summary you choose.</li>
+    </ul>
+    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not tax advice, legal advice, a filing instruction, or an official FIRS assessment.</p>
+  </div>
+</section>
+<afro-business-cta tool-name="Nigeria CGT Calculator" prospect-segment="tax-compliance" headline="Need a defensible disposal tax workpaper?" subhead="AfroTax Pro helps teams keep cost-base assumptions, exemption notes, and accountant handoff files together before filing."></afro-business-cta>
 <afro-related-tools category="financial" current="ng-cgt"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -264,8 +281,44 @@ function calculate(){
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="ng-cgt" tool-name="Nigeria CGT Calculator"></save-result-button><share-result-button tool-name="Nigeria CGT Calculator" tool-slug="ng-cgt"></share-result-button>';
+  div.innerHTML = '<button type="button" class="btn" id="tax-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="btn" id="tax-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="ng-cgt" tool-name="Nigeria CGT Calculator"></save-result-button><share-result-button tool-name="Nigeria CGT Calculator" tool-slug="ng-cgt"></share-result-button><span id="tax-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
   target.appendChild(div);
+  function valueLabel(el) {
+    if (el.tagName === 'SELECT') return el.options[el.selectedIndex] ? el.options[el.selectedIndex].textContent.trim() : el.value;
+    return el.value;
+  }
+  function buildSummary() {
+    var inputs = Array.prototype.map.call(document.querySelectorAll('.calculator .card:first-of-type input,.calculator .card:first-of-type select'), function (el) {
+      var label = el.closest('div') && el.closest('div').querySelector('label') ? el.closest('div').querySelector('label').textContent.trim() : (el.getAttribute('aria-label') || el.id);
+      return label + ': ' + valueLabel(el);
+    });
+    var results = Array.prototype.map.call(document.querySelectorAll('#resultGrid .result-box'), function (box) {
+      return box.textContent.replace(/\s+/g, ' ').trim();
+    });
+    var notes = document.getElementById('notes') ? document.getElementById('notes').textContent.replace(/\s+/g, ' ').trim() : '';
+    return ['Nigeria CGT estimate summary'].concat(inputs, ['Results: ' + (results.length ? results.join(' | ') : 'Run the calculator to generate results'), 'Notes: ' + notes, 'Planning estimate only. Verify current FIRS guidance, asset treatment, share threshold, exemptions, valuations, and filing route before acting.']).join('\n');
+  }
+  function setStatus(message) {
+    var status = document.getElementById('tax-export-status');
+    if (status) status.textContent = message;
+  }
+  document.getElementById('tax-copy-summary').addEventListener('click', function () {
+    var text = buildSummary();
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { setStatus('Tax summary copied.'); }).catch(function () { setStatus('Copy failed. Select and copy manually.'); });
+    else setStatus(text);
+  });
+  document.getElementById('tax-download-summary').addEventListener('click', function () {
+    var blob = new Blob([buildSummary()], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'nigeria-cgt-summary.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus('TXT summary downloaded.');
+  });
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

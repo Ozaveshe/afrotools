@@ -73,6 +73,9 @@
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/bundles/core.c3deb143.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 
 <style>
@@ -82,12 +85,16 @@
   grid-template-columns: 1fr;
   gap: 24px;
   margin-top: 24px;
+  min-width: 0;
 }
+#stablecoin-tables { min-width: 0; overflow: hidden; }
 .stable-coin-section {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
 }
 .stable-coin-header {
   display: flex;
@@ -141,6 +148,7 @@
   text-transform: uppercase;
   margin-bottom: 2px;
 }
+.platform-row > div { min-width: 0; overflow-wrap: anywhere; }
 .spread-good { color: #34C759; font-weight: 700; }
 .spread-ok { color: #FF9500; font-weight: 700; }
 .spread-bad { color: #FF3B30; font-weight: 700; }
@@ -270,6 +278,7 @@
     gap: 10px;
     border-left: 3px solid var(--color-border-subtle);
     padding: 14px 16px;
+    max-width: 100%;
   }
   .platform-row .plat-name {
     font-size: var(--text-base);
@@ -467,6 +476,20 @@
   <h2 id="crypto-stablecoins-faq-title">Stablecoin Rate Tracker FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
+<section class="df-faq quality-verification-panel" data-tool-verification-panel aria-labelledby="crypto-stablecoins-verification-title">
+  <h2 id="crypto-stablecoins-verification-title">Stablecoin verification notes</h2>
+  <div class="df-faq__grid">
+    <details open><summary>Methodology and freshness</summary><p>The tracker uses reference stablecoin market data, selected fiat currency, provider assumptions, transfer networks, and amount to create a planning comparison. Stablecoin prices, network fees, liquidity, provider availability, and local restrictions can change quickly.</p></details>
+    <details><summary>Safety checks</summary><p>Verify final quote, issuer risk, reserve disclosures, network, wallet address, memo/tag requirements, provider status, and local regulatory restrictions before buying, holding, sending, or earning yield. This is not financial, investment, tax, legal, or custody advice.</p></details>
+    <details><summary>Export and privacy</summary><p>Use the copyable summary for comparison notes only. Never paste seed phrases, private keys, wallet recovery words, account numbers, identity documents, bank records, or private transaction references into the page.</p></details>
+  </div>
+</section>
+<div style="max-width:960px;margin:0 auto 24px;padding:0 20px">
+  <afro-business-cta
+    tool-name="Stablecoin Rate Tracker"
+    save-note="Compare stablecoin routes, copy the summary, then verify quote, network, and wallet details before moving funds."></afro-business-cta>
+</div>
+<afro-related-tools category="financial" current="crypto-stablecoins"></afro-related-tools>
 <afro-footer></afro-footer>
 
 <script>
@@ -546,7 +569,7 @@
       var basePrice = getBasePrice(prices, coin.id);
       html += '<div class="stable-coin-section">';
       html += '<div class="stable-coin-header">';
-      html += '<img src="/assets/img/crypto/' + coin.id + '.svg" alt="' + coin.symbol + '" onerror="this.style.display=\'none\'">';
+      html += '<span aria-hidden="true" style="width:32px;height:32px;border-radius:50%;display:inline-grid;place-items:center;background:var(--color-bg-card);border:1px solid var(--color-border);font-size:11px;font-weight:800;color:var(--color-primary);">' + coin.symbol + '</span>';
       html += '<span>' + coin.symbol + ' &mdash; ' + coin.name + '</span>';
       html += '<span class="base-price">Base: ' + CryptoData.formatPrice(basePrice, selectedCurrency.toUpperCase()) + '</span>';
       html += '</div>';

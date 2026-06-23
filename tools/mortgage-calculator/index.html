@@ -26,6 +26,7 @@
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script src="/assets/js/utils.js?v=869324ac" defer></script>
 
 <style>
@@ -152,6 +153,8 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 .ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
 .ai-advisor-body{padding:14px 18px}
 .ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-consent{display:flex;gap:8px;align-items:flex-start;font-size:.72rem;color:#475569;line-height:1.45;margin:8px 0 10px}
+.ai-consent input{width:auto;margin-top:2px;flex:0 0 auto}
 .ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .ai-msg-u{font-size:.76rem;padding:7px 10px;background:#007AFF;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
 .ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
@@ -403,9 +406,10 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         <span class="ai-by">Powered by Claude</span>
       </div>
       <div class="ai-advisor-body">
-        <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+        <div class="ai-status" id="aiStatus">Optional AI help can explain mortgage terms after you consent to sending your question. The calculator itself stays local.</div>
         <div class="ai-chat" id="aiChat">
           <div class="ai-msgs" id="aiMsgs"></div>
+          <label class="ai-consent"><input type="checkbox" id="aiConsent"> I consent to send this question and recent chat messages to the optional AI advisor. I will not include private lender, property, or identity details.</label>
           <div class="ai-input-row">
             <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
             <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
@@ -539,7 +543,19 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   <h2 id="mortgage-calculator-faq-title">Mortgage Calculator FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Calculate repayments, compare saved scenarios, and copy the mortgage brief before speaking to a lender, estate agent, or lawyer.</p></details><details><summary>What should I verify?</summary><p>Confirm APR, arrangement fees, valuation, legal fees, property tax, title status, insurance, service charges, and early-repayment rules.</p></details><details><summary>Is this official?</summary><p>No. It is a planning estimate, not a lender quote, property valuation, legal advice, tax advice, or mortgage approval.</p></details></div>
 </section>
+<section class="df-upgrade" data-tool-verification-panel="mortgage-calculator" aria-labelledby="mortgage-verification-title">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Verification checklist</span>
+      <h2 id="mortgage-verification-title">Check the quote before you commit</h2>
+      <p>Use the repayment and amortisation output as a planning screen, then verify every lender-specific cost before paying deposits or signing documents.</p>
+      <ul class="df-upgrade__bullets"><li>Confirm APR, arrangement fees, valuation fees, legal fees, transfer taxes, insurance, service charges, and early-repayment rules.</li><li>Check title, survey, development approvals, and affordability buffers with qualified local professionals.</li><li>Privacy note: calculation inputs stay in the browser; avoid putting private property, bank, or identity details into the optional AI prompt.</li></ul>
+      <p class="df-upgrade__note"><strong>Freshness note:</strong> mortgage rates and housing costs change by lender, country, product, and date. This is not a lender quote, mortgage approval, valuation, legal advice, or tax advice.</p>
+    </div>
+  </div>
+</section>
 
+<afro-business-cta tool-name="African Mortgage Calculator" prospect-segment="property-finance" save-note="Calculate and copy a mortgage brief before comparing lenders or requesting a custom housing-finance widget."></afro-business-cta>
 <afro-related-tools category="legal" current="mortgage-calculator"></afro-related-tools>
 <afro-footer></afro-footer>
 
@@ -848,8 +864,17 @@ async function sendAI(){
   var input=document.getElementById('aiInput');
   var msgsEl=document.getElementById('aiMsgs');
   var sendBtn=document.getElementById('aiSend');
+  var status=document.getElementById('aiStatus');
+  var consent=document.getElementById('aiConsent');
   var q=input.value.trim();
   if(!q)return;
+  if(!consent || !consent.checked){
+    if(status) status.textContent='Tick the optional AI consent box before sending a question. The calculator and mortgage brief still work locally.';
+    msgsEl.innerHTML+='<div class="ai-msg-a">Please tick the optional AI consent box before sending. Do not include private property, bank, or identity details.</div>';
+    msgsEl.scrollTop=msgsEl.scrollHeight;
+    input.focus();
+    return;
+  }
   AI_MSGS.push({role:'user',content:q});
   msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
   input.value='';sendBtn.disabled=true;

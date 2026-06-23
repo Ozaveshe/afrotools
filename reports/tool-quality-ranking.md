@@ -1,12 +1,12 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-06-22T00:49:30.298Z
+Generated: 2026-06-22T22:20:05.767Z
 
 ## Scope
 
-- Registry rows scored: 3240
-- Live/new expanded tool instances represented: 2594
-- Unique live/new routes: 3237
+- Registry rows scored: 3245
+- Live/new expanded tool instances represented: 2599
+- Unique live/new routes: 3242
 - Browser smoke: not run
 - Reports: `reports/tool-quality-ranking.json`, `reports/tool-quality-ranking.csv`
 
@@ -22,9 +22,9 @@ Generated: 2026-06-22T00:49:30.298Z
 
 | Rank | Rows | Weighted instances |
 | --- | ---: | ---: |
-| A | 3021 | 4720 |
-| B | 216 | 300 |
-| C | 3 | 3 |
+| A | 3245 | 5028 |
+| B | 0 | 0 |
+| C | 0 | 0 |
 | D | 0 | 0 |
 | F | 0 | 0 |
 
@@ -35,26 +35,26 @@ Repair-first rows below D: 0
 
 | Category | Rows | Instances | Avg score | Low rows | P0 | Browser failures |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Document & PDF | 118 | 118 | 87.1 | 0 | 0 | 0 |
-| Sports & Entertainment | 30 | 30 | 87.4 | 0 | 0 | 0 |
-| Creative Economy | 59 | 59 | 88.3 | 0 | 0 | 0 |
-| Fintech & Banking | 72 | 72 | 88.5 | 0 | 0 | 0 |
-| Travel & Tourism | 20 | 20 | 88.5 | 0 | 0 | 0 |
-| Health & Wellness | 104 | 104 | 88.6 | 0 | 0 | 0 |
-| Climate & Environment | 32 | 35 | 88.6 | 0 | 0 | 0 |
-| Security & Safety | 16 | 16 | 88.9 | 0 | 0 | 0 |
-| Developer Tools | 83 | 83 | 89 | 0 | 0 | 0 |
-| Small Business & SME | 66 | 81 | 89 | 0 | 0 | 0 |
-| Engineering & Construction | 53 | 53 | 89.1 | 0 | 0 | 0 |
-| Transport & Logistics | 46 | 46 | 89.2 | 0 | 0 | 0 |
-| Government & Civic | 38 | 146 | 89.4 | 0 | 0 | 0 |
-| Uniquely African | 118 | 133 | 89.4 | 0 | 0 | 0 |
-| Religious & Cultural | 51 | 51 | 89.5 | 0 | 0 | 0 |
-| Finance, Tax & Market Data | 466 | 466 | 89.8 | 0 | 0 | 0 |
-| Energy & Utilities | 237 | 504 | 89.8 | 0 | 0 | 0 |
-| Personal Finance | 25 | 25 | 90 | 0 | 0 | 0 |
-| Career & Development | 17 | 17 | 90.2 | 0 | 0 | 0 |
-| Agriculture | 507 | 1113 | 90.3 | 0 | 0 | 0 |
+| Engineering & Construction | 58 | 58 | 90.2 | 0 | 0 | 0 |
+| Creative Economy | 59 | 59 | 90.2 | 0 | 0 | 0 |
+| Uniquely African | 118 | 133 | 90.6 | 0 | 0 | 0 |
+| Agriculture | 507 | 1113 | 90.7 | 0 | 0 | 0 |
+| Energy & Utilities | 237 | 504 | 90.9 | 0 | 0 | 0 |
+| Business & ROI | 34 | 34 | 91 | 0 | 0 | 0 |
+| Diaspora | 3 | 3 | 91 | 0 | 0 | 0 |
+| Personal Finance | 25 | 25 | 91.2 | 0 | 0 | 0 |
+| Finance, Tax & Market Data | 466 | 466 | 91.4 | 0 | 0 | 0 |
+| Document & PDF | 118 | 118 | 91.7 | 0 | 0 | 0 |
+| Telecom & Mobile | 52 | 52 | 91.7 | 0 | 0 | 0 |
+| VAT & Business Tax | 242 | 242 | 92.2 | 0 | 0 | 0 |
+| Travel & Tourism | 20 | 20 | 92.2 | 0 | 0 | 0 |
+| Health & Wellness | 104 | 104 | 92.3 | 0 | 0 | 0 |
+| Fintech & Banking | 72 | 72 | 92.4 | 0 | 0 | 0 |
+| Mortgage & Property | 267 | 445 | 92.4 | 0 | 0 | 0 |
+| Transport & Logistics | 46 | 46 | 92.4 | 0 | 0 | 0 |
+| Sports & Entertainment | 30 | 30 | 92.4 | 0 | 0 | 0 |
+| Climate & Environment | 32 | 35 | 92.7 | 0 | 0 | 0 |
+| Trade & Import | 65 | 65 | 92.8 | 0 | 0 | 0 |
 
 ## P0 Queue
 
@@ -70,103 +70,103 @@ No rows in this queue.
 
 | Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 72 | C | P3-monitor | formateur-sql-fr | Developer Tools | Developer utility | no workflow or methodology evidence; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
-| 74 | C | P3-monitor | loan-compare | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 74 | C | P3-monitor | production-cost | Small Business & SME | General online utility | no workflow or methodology evidence; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
-| 75 | B | P3-monitor | leave-calculator | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing disclaimer/limitations |
-| 76 | B | P3-monitor | hospital-cost-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 76 | B | P3-monitor | hospital-cost-yo | Health & Wellness | Health and wellness estimator | unclear primary action; no workflow or methodology evidence; browser smoke not run; missing official/verification evidence |
-| 76 | B | P3-monitor | ng-pension-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; stale or undated assumptions |
-| 76 | B | P3-monitor | encodeur-base64-fr | Developer Tools | Developer utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; stale or undated assumptions |
-| 77 | B | P3-monitor | invoice-generator-yo | Document & PDF | PDF workflow utility | thin visible copy; browser smoke not run; missing source/reference evidence; stale or undated assumptions |
-| 77 | B | P3-monitor | genotype-checker-yo | Health & Wellness | Health and wellness estimator | no workflow or methodology evidence; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
-| 77 | B | P3-monitor | language-translation-yo | Language & Translation | Language and translation utility | weak input surface; no app/script evidence; no input path; browser smoke not run |
-| 77 | B | P3-monitor | yoruba-translator-yo | Language & Translation | Language and translation utility | no workflow or methodology evidence; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
-| 77 | B | P3-monitor | childbirth-cost-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing disclaimer/limitations |
-| 77 | B | P3-monitor | pdf-workspace-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; stale or undated assumptions |
-| 77 | B | P3-monitor | ng-wht-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing source/reference evidence; stale or undated assumptions; missing disclaimer/limitations |
-| 78 | B | P3-monitor | telecom-ussd-yo | Telecom & Mobile | General online utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; stale or undated assumptions |
-| 78 | B | P3-monitor | waec-neco-calculator-yo | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | genotype-checker-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 78 | B | P3-monitor | receipt-generator-yo | Document & PDF | PDF workflow utility | thin visible copy; browser smoke not run; missing source/reference evidence; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-aggregate-yo | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | sickle-cell-ha | Health & Wellness | Health and wellness estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 78 | B | P3-monitor | car-loan-vs-cash | Transport & Logistics | Transport and mobility estimator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 78 | B | P3-monitor | ng-cit-yo | Finance, Tax & Market Data | Tax, salary, finance calculator | unclear primary action; no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown |
-| 78 | B | P3-monitor | nysc-allowance-yo | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | african-meal-plan-ha | Health & Wellness | Health and wellness estimator | missing or duplicate h1; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
-| 78 | B | P3-monitor | telecom-data-usage-ha | Telecom & Mobile | General online utility | thin visible copy; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
-| 78 | B | P3-monitor | jamb-cbt-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | job-offer-evaluator | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 78 | B | P3-monitor | jamb-mathematics-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-tutor-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-biology-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-economics-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-government-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-commerce-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-literature-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-history-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 78 | B | P3-monitor | jamb-crk-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 79 | B | P3-monitor | vat-calculator-ha | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing disclaimer/limitations |
-| 79 | B | P3-monitor | receipt-generator-ha | Document & PDF | PDF workflow utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 79 | B | P3-monitor | pdf-compress-yo | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 79 | B | P3-monitor | inventory | VAT & Business Tax | VAT, invoice, ecommerce calculator | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
-| 79 | B | P3-monitor | telecom-airtime-ha | Telecom & Mobile | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 79 | B | P3-monitor | api-tester | Developer Tools | Developer utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 79 | B | P3-monitor | naira-to-words-ha | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
-| 79 | B | P3-monitor | markdown-editor | Developer Tools | Developer utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 79 | B | P3-monitor | sql-playground | Developer Tools | Developer utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 79 | B | P3-monitor | formateur-json-fr | Developer Tools | Developer utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; stale or undated assumptions |
-| 79 | B | P3-monitor | document-pdf | Document & PDF | PDF workflow utility | unclear primary action; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
-| 80 | B | P3-monitor | cassava-processing-nigeria-ha | Agriculture | Agriculture and market-data tool | missing export/copy/save path; browser smoke not run; missing source/reference evidence; missing official/verification evidence |
-| 80 | B | P3-monitor | payslip-generator-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 80 | B | P3-monitor | remittance-compare-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 80 | B | P3-monitor | tin-guide-nigeria-ha | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
-| 80 | B | P3-monitor | staff-cost-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 81 | B | P3-monitor | vat-calculator-yo | VAT & Business Tax | VAT, invoice, ecommerce calculator | unclear primary action; missing export/copy/save path; browser smoke not run; stale or undated assumptions |
-| 81 | B | P3-monitor | crop-yield-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 81 | B | P3-monitor | fertilizer-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 81 | B | P3-monitor | cassava-processing-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 81 | B | P3-monitor | hausa-translator-ha | Language & Translation | Language and translation utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; stale or undated assumptions |
-| 81 | B | P3-monitor | farm-budget-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 81 | B | P3-monitor | staple-basket-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 81 | B | P3-monitor | commodity-prices-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 81 | B | P3-monitor | fish-farming-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 81 | B | P3-monitor | seed-rate-nigeria-ha | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 81 | B | P3-monitor | naira-to-words-yo | Document & PDF | PDF workflow utility | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 81 | B | P3-monitor | salary-negotiation | Career & Development | Career tool | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 82 | B | P3-monitor | salary-compare | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing disclaimer/limitations; no verification panel |
-| 82 | B | P3-monitor | salary-intelligence | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 82 | B | P3-monitor | farm-profit-nigeria-ha | Agriculture | Agriculture and market-data tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing disclaimer/limitations |
-| 82 | B | P3-monitor | overtime-calc | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing disclaimer/limitations; no verification panel |
-| 82 | B | P3-monitor | currency-converter-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 82 | B | P3-monitor | livestock-feed-nigeria-yo | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing methodology/breakdown |
-| 82 | B | P3-monitor | scholarship-finder-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 82 | B | P3-monitor | jamb-chemistry-ha | Education | Education calculator or guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; missing disclaimer/limitations |
-| 82 | B | P3-monitor | jamb-physics-ha | Education | Education calculator or guide | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
-| 82 | B | P3-monitor | zana-ukaguzi-usajili-wa-sim-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
-| 82 | B | P3-monitor | calculateur-conges-fr | Career & Development | Career tool | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
-| 82 | B | P3-monitor | conformite-dpa-kenya-fr | Government & Civic | Government and civic guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
-| 82 | B | P3-monitor | modele-demande-acces-information-fr | Government & Civic | Government and civic guide | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
-| 82 | B | P3-monitor | contrat-bail-cote-d-ivoire-fr | Mortgage & Property | Legal and compliance workflow | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
-| 82 | B | P3-monitor | suivi-hawala-fr | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 82 | B | P3-monitor | assurance-auto-cote-d-ivoire-fr | Insurance | Insurance estimator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
-| 82 | B | P3-monitor | planificateur-retraite-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; stale or undated assumptions; missing disclaimer/limitations; weak meta description length |
-| 82 | B | P3-monitor | invoice-factoring | Fintech & Banking | Fintech and payments tool | browser smoke not run; missing source/reference evidence; missing official/verification evidence; missing methodology/breakdown |
-| 83 | B | P3-monitor | pdf-convert | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | cover-letter | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | meeting-minutes | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | cd-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
-| 83 | B | P3-monitor | base64 | Developer Tools | Developer utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | gambia-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | mshahara-na-kodi-business-tax-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; missing official/verification evidence; no verification panel |
-| 83 | B | P3-monitor | south-sudan-kikokotoo-kodi-mshahara-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | comparateur-financement-commerce-fr | Trade & Import | Trade and logistics calculator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
-| 83 | B | P3-monitor | afroatlas-fr | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | generateur-recu-fr | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | guide-diaspora-fr | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | budget-album-ep-fr | Personal Finance | Personal finance calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
-| 83 | B | P3-monitor | calendrier-semis-fr | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 83 | B | P3-monitor | comparateur-fonds-monetaires-fr | Fintech & Banking | Fintech and payments tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
-| 83 | B | P3-monitor | frais-marchand-fr | Fintech & Banking | Fintech and payments tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
-| 83 | B | P3-monitor | frais-pos-fr | Fintech & Banking | Fintech and payments tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | pdf-sign-fr | Document & PDF | PDF workflow utility | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | pdf-reorder-fr | Document & PDF | PDF workflow utility | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | pdf-watermark-fr | Document & PDF | PDF workflow utility | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | fertilizer-nigeria-ha | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | pdf-ocr-fr | Document & PDF | PDF workflow utility | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | clinic-costs | Health & Wellness | Health and wellness estimator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | land-size | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | telecom-data-usage-yo | Telecom & Mobile | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | electrical-load | Engineering & Construction | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | pdf-bates-fr | Document & PDF | PDF workflow utility | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | susu-tracker | Uniquely African | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | fertilizer-calc | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | mobile-vs-bank-ha | Telecom & Mobile | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | mshahara-na-kodi-crypto-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; no verification panel; weak title length |
+| 85 | A | P3-monitor | mshahara-na-kodi-francophone-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; missing official/verification evidence; no verification panel |
+| 85 | A | P3-monitor | mshahara-na-kodi-fx-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; missing official/verification evidence; no verification panel |
+| 85 | A | P3-monitor | mshahara-na-kodi-savings-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; missing official/verification evidence; no verification panel |
+| 85 | A | P3-monitor | tiles-calc | Engineering & Construction | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-gharama-za-greenhouse-sw | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | water-tank | Engineering & Construction | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-ankara-ya-mtayarishi-sw | Document & PDF | PDF workflow utility | browser smoke not run; stale or undated assumptions; missing disclaimer/limitations; lags category-required features |
+| 85 | A | P3-monitor | zana-chat-na-pdf-sw | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-hariri-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-html-kwenda-pdf-sw | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-kubadilisha-format-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-kubana-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-kulinda-pdf-kwa-nenosiri-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-kutafsiri-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-mjenzi-cv-sw | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 85 | A | P3-monitor | zana-ocr-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-watermark-nyingi-sw | Document & PDF | PDF workflow utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | malaria-risk | Health & Wellness | Health and wellness estimator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-faida-ya-ufugaji-kuku-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-faida-ya-ufugaji-samaki-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-faida-ya-usindikaji-mihogo-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-faida-ya-uwekezaji-wa-nyumba-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-kikokotoo-kizingiti cha faida-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-benin-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-botswana-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-burundi-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-cameroon-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-central-african-republic-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-chad-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-comoros-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-djibouti-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-equatorial-guinea-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-eritrea-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-guinea-bissau-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-libya-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-madagascar-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-mauritania-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-niger-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-sao-tome-and-principe-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-somalia-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-south-sudan-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mwongozo-tin-togo-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | air-quality | Climate & Environment | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-faida-na-hasara-ya-shamba-sw | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mishahara-ya-wafanyakazi-wa-shamba-sw | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-ustahiki-wa-mkopo-wa-shamba-sw | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | calcul-structure-fr | Engineering & Construction | General online utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-mapato-ya-carbon-credit-sw | Climate & Environment | General online utility | browser smoke not run; stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-ratiba-ya-chanjo-sw | Health & Wellness | Health and wellness estimator | no workflow or methodology evidence; missing export/copy/save path; browser smoke not run; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-ada-pesa-simu-sw | Fintech & Banking | Fintech and payments tool | missing export/copy/save path; browser smoke not run; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-kilinganisha-bei-za-pembejeo-sw | Agriculture | Agriculture and market-data tool | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-gharama-ya-delivery-sw | Trade & Import | Trade and logistics calculator | missing export/copy/save path; browser smoke not run; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-kupakia-lori-sw | Trade & Import | Trade and logistics calculator | missing export/copy/save path; browser smoke not run; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-ada-za-ramani-za-usanifu-sw | Engineering & Construction | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-matumizi-ya-umeme-ya-vifaa-sw | Energy & Utilities | Energy and utility estimator | no workflow or methodology evidence; browser smoke not run; stale or undated assumptions; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-kifuatiliaji-susu-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-kikokotoo-gharama-za-ujenzi-sw | Engineering & Construction | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-kizalishaji-kiapo-sw | Mortgage & Property | Legal and compliance workflow | no workflow or methodology evidence; browser smoke not run; stale or undated assumptions; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-kukodi-dhidi-ya-kununua-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-mjenzi-boq-sw | Engineering & Construction | General online utility | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-riba-ya-ajo-esusu-stokvel-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-tam-sam-som-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser smoke not run; missing official/verification evidence; no verification panel |
+| 85 | A | P3-monitor | zana-ukaguzi-wa-jina-cac-nigeria-sw | Mortgage & Property | Legal and compliance workflow | no workflow or methodology evidence; browser smoke not run; stale or undated assumptions; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-uwezo-wa-kulipa-pango-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | assurance-sante-fr | Insurance | Insurance estimator | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | ml-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser smoke not run; missing methodology/breakdown; no verification panel |
+| 85 | A | P3-monitor | zana-kadi-kusoma-sw | Education | Education calculator or guide | no input path; browser smoke not run; missing source/reference evidence; stale or undated assumptions |
+| 85 | A | P3-monitor | zana-kijaribu-regex-sw | Developer Tools | Developer utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-kisimbuzi-jwt-sw | Developer Tools | Developer utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-kizalishaji-hash-sw-wave8 | Developer Tools | Developer utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-kizalishaji-pwa-manifest-sw | Developer Tools | Developer utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-kizalishaji-sitemap-sw | Developer Tools | Developer utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | zana-kubadilisha-vipimo-sw-finish | Business & ROI | General online utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-mkopo-wa-gari-dhidi-ya-fedha-taslimu-sw-finish | Transport & Logistics | Transport and mobility estimator | missing export/copy/save path; browser smoke not run; stale or undated assumptions; no verification panel |
+| 85 | A | P3-monitor | zana-siku-za-kazi-sw-wave8 | Business & ROI | General online utility | no workflow or methodology evidence; browser smoke not run; missing official/verification evidence; missing methodology/breakdown |
+| 85 | A | P3-monitor | zana-uwanja-wa-sql-sw | Developer Tools | Developer utility | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | farm-loans-uganda | Agriculture | Agriculture and market-data tool | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
+| 85 | A | P3-monitor | farm-loans-rwanda | Agriculture | Agriculture and market-data tool | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
+| 85 | A | P3-monitor | input-prices-tanzania | Agriculture | Agriculture and market-data tool | thin visible copy; browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations |
+| 85 | A | P3-monitor | comparateur-assurance-sante-cote-d-ivoire-fr | Insurance | Insurance estimator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 85 | A | P3-monitor | farm-profit-cote-d-ivoire | Agriculture | Agriculture and market-data tool | browser smoke not run; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
+| 85 | A | P3-monitor | selecteur-aleatoire-fr | Business & ROI | General online utility | browser smoke not run; missing official/verification evidence; missing disclaimer/limitations; no verification panel |
+| 85 | A | P3-monitor | suivi-carburant-algeria-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 85 | A | P3-monitor | suivi-carburant-angola-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 85 | A | P3-monitor | suivi-carburant-benin-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 85 | A | P3-monitor | suivi-carburant-botswana-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser smoke not run; missing official/verification evidence; missing methodology/breakdown; no verification panel |

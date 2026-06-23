@@ -12,7 +12,11 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/gh-paye-2.webp"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/gh-wht/">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91"><link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91"><link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -189,10 +193,48 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </section>
 
 
+<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="gh-wht" aria-labelledby="gh-wht-verification-title">
+  <div class="tool-verification-wrap">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">WHT source check</span>
+          <h2 class="tool-verification-title" id="gh-wht-verification-title">Estimate withholding, then verify GRA rules and payment category</h2>
+          <p class="tool-verification-lead">The calculator uses the embedded rates shown on this page. It does not file a GRA return, issue a certificate, or confirm treaty eligibility.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Planning worksheet</span>
+          <p class="tool-verification-note">Copy or save the estimate after checking the current GRA rate and payment classification.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Primary workflow</h3>
+          <ul class="tool-verification-list">
+            <li>Select payment type and recipient residency, then calculate WHT to deduct and net amount to recipient.</li>
+            <li>Use the rate table to spot the embedded assumption before copying or saving the result.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Before relying</h3>
+          <ul class="tool-verification-list">
+            <li>Verify current GRA rate, threshold, residency, DTA position, payment classification, certificate, and due date.</li>
+            <li>Ask a tax practitioner when contracts bundle goods, services, management fees, royalties, or cross-border payments.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#resultCard">View estimate</a>
+        <p class="tool-verification-disclaimer">Planning estimate only. Not tax advice, a GRA filing, a withholding certificate, or official classification.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
 <afro-related-tools category="financial" current="gh-wht"></afro-related-tools>
+<afro-business-cta tool-name="Ghana WHT Calculator" prospect-segment="tax-compliance" save-note="Estimate locally, then verify GRA rates, DTA documents, payment category, certificate, and remittance timing."></afro-business-cta>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
@@ -226,6 +268,10 @@ function calculate(){
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
+function ghWhtSummary(){
+  calculate();
+  return 'Ghana WHT estimate: '+document.getElementById('resultGrid').innerText.replace(/\s+/g,' ').trim()+'. Verify current GRA rates, payment classification, residency, thresholds, DTA paperwork, certificate, and remittance deadline before acting.';
+}
 updateRate();
 </script>
 
@@ -236,8 +282,10 @@ updateRate();
   var div = document.createElement('div');
   div.className = 'result-actions';
   div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="gh-wht" tool-name="Ghana WHT Calculator"></save-result-button><share-result-button tool-name="Ghana WHT Calculator" tool-slug="gh-wht"></share-result-button>';
+  div.innerHTML = '<button type="button" class="btn" id="gh-copy-summary" style="width:auto;margin-top:0;background:#0f172a;color:#fff">Copy summary</button><save-result-button tool-slug="gh-wht" tool-name="Ghana WHT Calculator"></save-result-button><share-result-button tool-name="Ghana WHT Calculator" tool-slug="gh-wht"></share-result-button>';
   target.appendChild(div);
+  var copyBtn=document.getElementById('gh-copy-summary');
+  if(copyBtn){copyBtn.addEventListener('click',function(){var text=ghWhtSummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);copyBtn.textContent='Copied';setTimeout(function(){copyBtn.textContent='Copy summary';},1600);}});}
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

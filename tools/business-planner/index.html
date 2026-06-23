@@ -65,6 +65,9 @@
 <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script src="/assets/js/pro-gate.js?v=e4aca7ef" defer></script>
 <style>
 *{box-sizing:border-box}
@@ -349,6 +352,8 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
   background:#F4F7FA;transition:border-color .15s;
 }
 .chat-input:focus{border-color:var(--color-primary,#007AFF);background:#fff}
+.ai-consent{display:flex;align-items:flex-start;gap:8px;margin:10px 18px 0;color:#64748b;font-size:.74rem;line-height:1.45}
+.ai-consent input{margin-top:2px;accent-color:var(--color-primary,#007AFF)}
 .chat-send{
   padding:10px 22px;background:var(--color-primary,#007AFF);color:#fff;border:none;
   border-radius:980px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;
@@ -710,6 +715,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
         <div class="chat-header"><span class="chat-header-dot"></span> AfroTools Business Advisor</div>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-suggestions" id="chat-suggestions"></div>
+        <label class="ai-consent"><input type="checkbox" id="advisor-ai-consent"><span>I consent to send this question and the selected business-planning context to the AI advisor. Do not include private IDs, bank records, tax files, employee details, trade secrets, or customer data.</span></label>
         <div class="chat-input-row">
           <textarea class="chat-input" id="chat-input" placeholder="Ask about registration, taxes, licenses..." rows="1" aria-label="Ask about registration, taxes, licenses..."></textarea>
           <button type="button" class="chat-send" id="chat-send">Send</button>
@@ -746,6 +752,7 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
         <span class="pf">SWOT Analysis</span>
         <span class="pf">Funding Strategy</span>
       </div>
+      <label class="ai-consent" style="justify-content:center;max-width:680px;margin:14px auto 0;color:rgba(255,255,255,.62)"><input type="checkbox" id="plan-ai-consent"><span>I consent to send the selected business details and description to generate the AI business plan. I have removed private IDs, bank records, tax files, employee details, trade secrets, and customer data.</span></label>
       <button type="button" class="btn-generate" id="btn-full-plan" style="margin:0 auto">Generate Full Business Plan</button>
       <button type="button" class="btn-sm" id="btn-my-plans" style="display:none;margin:12px auto 0;background:transparent;border:1.5px solid var(--color-primary,#007AFF);color:var(--color-primary,#007AFF);padding:8px 20px;border-radius:980px;font-weight:700;font-size:.78rem;cursor:pointer">My Saved Plans</button>
     </div>
@@ -808,6 +815,20 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
   <h2 id="business-planner-faq-title">AI Business Planner FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
+<section class="df-faq quality-verification-panel" data-tool-verification-panel aria-labelledby="business-planner-verification-title">
+  <h2 id="business-planner-verification-title">Business Planner verification notes</h2>
+  <div class="df-faq__grid">
+    <details open><summary>Methodology and freshness</summary><p>The planner combines the selected country, business type, industry, employee setting, optional description, and stored registration/tax workflow rules into an editable action plan. It is a planning aid, not legal, tax, licensing, immigration, investment, accounting, or official government advice.</p></details>
+    <details><summary>AI and privacy boundary</summary><p>The base action plan is generated locally from the available rule set. AI advisor and full-plan actions require an explicit click and consent checkbox before sending business context. Remove private IDs, bank records, tax files, employee details, customer data, supplier contracts, and trade secrets before using AI.</p></details>
+    <details><summary>What to verify</summary><p>Before paying fees or filing forms, verify company registry steps, tax registration, license requirements, processing timelines, bank requirements, and current fees with the named official authority or a qualified professional.</p></details>
+  </div>
+</section>
+<div style="max-width:960px;margin:0 auto 24px;padding:0 20px">
+  <afro-business-cta
+    tool-name="Business Planner"
+    save-note="Generate the local action plan, then export PDF or use the optional AI plan only after consent and source verification."></afro-business-cta>
+</div>
+<afro-related-tools category="financial" current="business-planner"></afro-related-tools>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
@@ -1433,6 +1454,12 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
   async function sendChat(){
     var msg = chatInput.value.trim();
     if (!msg) return;
+    var advisorConsent = document.getElementById('advisor-ai-consent');
+    if (!advisorConsent || !advisorConsent.checked) {
+      addMsg('ai', 'AI advisor is optional. Tick consent before sending a question, and remove private IDs, bank records, tax files, employee details, trade secrets, or customer data first.');
+      chatInput.focus();
+      return;
+    }
 
     // Gate AI advisor: 3 free questions/day
     if (window.AfroProGate) {
@@ -1511,6 +1538,14 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
 
   async function generateProPlan(){
     if (!state.plan) return;
+    var planConsent = document.getElementById('plan-ai-consent');
+    if (!planConsent || !planConsent.checked) {
+      var consentMsg = 'AI business plan generation is optional. Tick consent first and remove private IDs, bank records, tax files, employee details, trade secrets, or customer data from the business description.';
+      var disclaimerEl = document.getElementById('plan-disclaimer');
+      if (disclaimerEl) disclaimerEl.textContent = consentMsg;
+      if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Consent required before AI generation.');
+      return;
+    }
     var p = state.plan;
 
     // Show generation UI

@@ -65,7 +65,21 @@
     .links span{color:#64748b;font-size:.88rem}
     .warn{border-color:#fed7aa;background:#fff7ed}
     .warn p,.warn li{color:#7c2d12}
+    .remit-tool{margin-bottom:18px}
+    .remit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .remit-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}
+    .remit-grid input,.remit-grid select{width:100%;min-height:44px;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;color:#0f172a;background:#fff}
+    .remit-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .remit-actions button{min-height:44px;border:0;border-radius:8px;padding:10px 14px;background:#0057b8;color:#fff;font-weight:900;cursor:pointer}
+    .remit-actions button.secondary{background:#0f172a}
+    .remit-output{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .remit-result{border:1px solid #dbeafe;border-radius:10px;background:#f8fafc;padding:14px}
+    .remit-result strong{display:block;color:#0f172a;font-size:1.25rem}
+    .remit-result span{display:block;color:#475569;font-size:.85rem;margin-top:4px}
+    .remit-winner{border-color:#86efac;background:#f0fdf4}
+    .remit-status{color:#475569;font-size:.88rem;align-self:center}
     @media(max-width:940px){.grid,.layout{grid-template-columns:1fr}}
+    @media(max-width:640px){.remit-grid,.remit-output{grid-template-columns:1fr}}
     @media(max-width:560px){.wrap{width:min(100% - 24px,1120px)}.actions{display:grid;grid-template-columns:1fr}.btn{width:100%}}
   </style>
 <style data-ha-p1-planner-style>
@@ -102,6 +116,68 @@
 <main id="main">
   <div class="wrap layout">
     <section>
+      <section class="card remit-tool" data-remit-tool>
+        <span class="tag">Kwatanta yanzu</span>
+        <h2>Kwatanta kamfanoni biyu</h2>
+        <p>Shigar da adadin da kake aikawa, caji da farashin canji. Sakamakon yana nuna kusan abin da mai karba zai samu da bambancin kudin.</p>
+        <div class="remit-grid">
+          <label>Adadin da za a aika
+            <input id="sendAmount" type="number" min="0" step="1000" value="100000">
+          </label>
+          <label>Kudin da ake aika
+            <select id="sendCurrency">
+              <option value="NGN">NGN</option>
+              <option value="USD">USD</option>
+              <option value="GBP">GBP</option>
+              <option value="EUR">EUR</option>
+              <option value="GHS">GHS</option>
+              <option value="KES">KES</option>
+            </select>
+          </label>
+          <label>Sunan hanya A
+            <input id="providerA" type="text" value="Hanya A" autocomplete="off">
+          </label>
+          <label>Sunan hanya B
+            <input id="providerB" type="text" value="Hanya B" autocomplete="off">
+          </label>
+          <label>Cajin A
+            <input id="feeA" type="number" min="0" step="100" value="1500">
+          </label>
+          <label>Cajin B
+            <input id="feeB" type="number" min="0" step="100" value="2500">
+          </label>
+          <label>Farashin canji A
+            <input id="rateA" type="number" min="0" step="0.0001" value="0.00065">
+          </label>
+          <label>Farashin canji B
+            <input id="rateB" type="number" min="0" step="0.0001" value="0.00068">
+          </label>
+          <label>Kudin da mai karba zai samu
+            <select id="receiveCurrency">
+              <option value="USD">USD</option>
+              <option value="NGN">NGN</option>
+              <option value="GBP">GBP</option>
+              <option value="EUR">EUR</option>
+              <option value="GHS">GHS</option>
+              <option value="KES">KES</option>
+            </select>
+          </label>
+          <label>Lokacin isowa
+            <select id="speedNote">
+              <option value="same-day">Rana daya ko kasa da haka</option>
+              <option value="1-3-days">Kwanaki 1 zuwa 3</option>
+              <option value="cash-pickup">Karbar kudi a ofis</option>
+              <option value="bank-transfer">Tura zuwa banki</option>
+            </select>
+          </label>
+        </div>
+        <div class="remit-actions">
+          <button type="button" onclick="compareRemittance()">Kwatanta sakamako</button>
+          <button type="button" class="secondary" onclick="copyRemittance()">Kwafi sakamako</button>
+          <span class="remit-status" id="remitStatus" aria-live="polite"></span>
+        </div>
+        <div class="remit-output" id="remitOutput"></div>
+      </section>
       <div class="grid">
       <article class="card"><span class="tag">Abin lura</span><h2>Kwatanta caji, farashin canji da adadin da mai karba zai samu</h2><p>Kwatanta caji, farashin canji da adadin da mai karba zai samu.</p></article>
       <article class="card"><span class="tag">Abin lura</span><h2>Duba lokacin isowa, hanyar karba da takardun da ake bukata</h2><p>Duba lokacin isowa, hanyar karba da takardun da ake bukata.</p></article>
@@ -115,6 +191,14 @@
           <li>Bude shafin Turanci mai aiki idan kana bukatar lissafi, fayil ko cikakken ma'amala.</li>
           <li>Duba sakamako da kanka, sannan ka tabbatar daga kwararre, kamfani ko tushe na hukuma idan sakamakon zai shafi kudi, doka ko takarda.</li>
         </ol>
+      </section>
+      <section class="card" style="margin-top:18px" data-tool-verification-panel="remittance-compare-ha">
+        <span class="tag">Sources &amp; verification</span>
+        <h2>Last reviewed 2026</h2>
+        <p><strong>Methodology:</strong> The estimator subtracts each provider fee from the send amount, multiplies the remaining amount by the rate you enter, then highlights which option gives the recipient more before speed, ID and payout constraints.</p>
+        <p><strong>Source and freshness:</strong> AfroTools does not fetch live remittance quotes on this page. Confirm fees, FX rates, limits, ID requirements and payout availability with the provider, bank, central bank guidance or regulator before sending money.</p>
+        <p><strong>Disclaimer and privacy:</strong> This is an estimate only, not a guaranteed quote or payment instruction. The values stay in this browser unless you copy the summary.</p>
+        <p><a href="/business-enquiry/?offer=finance-widget&amp;tool=remittance-compare-ha&amp;source=/ha/kayan-aiki/kwatanta-aika-kudi/">Request a remittance comparison widget or custom calculator</a>.</p>
       </section>
     </section>
     <aside>
@@ -137,6 +221,44 @@
 <afro-footer></afro-footer>
 <script data-ha-p1-planner-script>
 (function(){document.querySelectorAll('[data-ha-p1-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'AfroTools';var output=panel.querySelector('[data-p1-output]');var status=panel.querySelector('[data-p1-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var file=panel.querySelector('[name="file"]');var fileText=file&&file.files&&file.files.length?file.files.length+' file':'';var parts=[];if(scope)parts.push('Yanayi: '+scope);if(task)parts.push('Aiki: '+task);if(details)parts.push('Bayanai: '+details);if(fileText)parts.push(fileText);return parts.length?name+' - '+parts.join(' | '):'Sanya kasa, aiki ko bayanai domin samun takaitawa.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-p1-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='An kwafi takaitawa.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
+</script>
+<script>
+var lastRemitSummary = '';
+function remitMoney(value, currency){
+  return (currency || '') + ' ' + Number(value || 0).toLocaleString('en-US', { maximumFractionDigits: 2 });
+}
+function compareRemittance(){
+  var amount = Number(document.getElementById('sendAmount').value) || 0;
+  var sendCurrency = document.getElementById('sendCurrency').value;
+  var receiveCurrency = document.getElementById('receiveCurrency').value;
+  var aName = document.getElementById('providerA').value || 'Hanya A';
+  var bName = document.getElementById('providerB').value || 'Hanya B';
+  var feeA = Number(document.getElementById('feeA').value) || 0;
+  var feeB = Number(document.getElementById('feeB').value) || 0;
+  var rateA = Number(document.getElementById('rateA').value) || 0;
+  var rateB = Number(document.getElementById('rateB').value) || 0;
+  var speed = document.getElementById('speedNote').value;
+  var receivedA = Math.max(0, amount - feeA) * rateA;
+  var receivedB = Math.max(0, amount - feeB) * rateB;
+  var diff = Math.abs(receivedA - receivedB);
+  var winner = receivedA === receivedB ? 'Daidai' : (receivedA > receivedB ? aName : bName);
+  var output = document.getElementById('remitOutput');
+  output.innerHTML =
+    '<div class="remit-result '+(receivedA >= receivedB ? 'remit-winner' : '')+'"><strong>'+remitMoney(receivedA, receiveCurrency)+'</strong><span>'+aName+' bayan caji '+remitMoney(feeA, sendCurrency)+'</span></div>' +
+    '<div class="remit-result '+(receivedB >= receivedA ? 'remit-winner' : '')+'"><strong>'+remitMoney(receivedB, receiveCurrency)+'</strong><span>'+bName+' bayan caji '+remitMoney(feeB, sendCurrency)+'</span></div>';
+  lastRemitSummary = 'Remittance estimate: send ' + remitMoney(amount, sendCurrency) + '; ' + aName + ' receives about ' + remitMoney(receivedA, receiveCurrency) + '; ' + bName + ' receives about ' + remitMoney(receivedB, receiveCurrency) + '; better amount: ' + winner + '; difference ' + remitMoney(diff, receiveCurrency) + '; speed note ' + speed + '. Confirm live quote with provider before sending.';
+  document.getElementById('remitStatus').textContent = 'Mafi yawan abin da mai karba zai samu: ' + winner + '. Bambanci: ' + remitMoney(diff, receiveCurrency) + '.';
+}
+function copyRemittance(){
+  var text = lastRemitSummary || 'Kwatanta sakamako tukuna.';
+  var status = document.getElementById('remitStatus');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ status.textContent = 'An kwafi sakamakon kwatanci.'; }).catch(function(){ status.textContent = text; });
+  } else {
+    status.textContent = text;
+  }
+}
+compareRemittance();
 </script>
 </body>
 </html>

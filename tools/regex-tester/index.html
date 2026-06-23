@@ -18,6 +18,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
 <script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script type="application/ld+json">
@@ -337,6 +338,46 @@ GHA-123456789-1</textarea>
 <section class="df-faq" aria-labelledby="regex-tester-faq-title">
   <h2 id="regex-tester-faq-title">Regex Tester FAQ</h2>
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste a pattern, test realistic examples, switch tabs for matches, replacement and code, then copy the brief when you need a handoff.</p></details><details><summary>What should I verify?</summary><p>Check false positives, false negatives, flags, capture groups, Unicode behavior, replacement output and slow-pattern risk.</p></details><details><summary>Is this official?</summary><p>No. It is a local JavaScript regex utility, not an official validator or production security guarantee.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel="regex-tester">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Pattern review</span>
+          <h2 class="tool-verification-title">Test regex against real positive and negative cases</h2>
+          <p class="tool-verification-lead">Use match highlighting, captures, replacement output, code snippets, history, and copy actions to review a pattern before shipping it.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Local JavaScript regex</span>
+          <p class="tool-verification-note">Sample text and patterns stay in your browser.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>What to check</h3>
+          <ul class="tool-verification-list">
+            <li>Methodology: run the JavaScript regex against sample text, inspect matches and captures, then review replacement and generated-code output.</li>
+            <li>Test realistic valid, invalid, empty, long, Unicode, and edge-case samples before enforcing a pattern in production.</li>
+            <li>Review flags, capture groups, anchors, replacement output, and catastrophic-backtracking risk.</li>
+            <li>Confirm official formats for phone numbers, IDs, tax numbers, payment references, or government codes before rejecting users.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limitations</h3>
+          <ul class="tool-verification-list">
+            <li>Disclaimer: local JavaScript regex utility only, not an official validator or security guarantee.</li>
+            <li>Different languages and database engines can interpret regex syntax differently.</li>
+            <li>Do not paste sensitive logs or personal data into shared pattern examples.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#output">Review regex output</a>
+        <p class="tool-verification-disclaimer">Source/reference note: verify production formats against current API docs, regulator specs, or service-provider examples before deploying.</p>
+      </div>
+    </div>
+  </div>
 </section>
 </main>
 
