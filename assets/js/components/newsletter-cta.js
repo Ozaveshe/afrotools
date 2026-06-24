@@ -1,5 +1,5 @@
 /**
- * AFROTOOLS NEWSLETTER CTA — Sticky bottom bar Web Component
+ * AFROTOOLS NEWSLETTER CTA - Sticky bottom bar Web Component
  * Shows after user scrolls 40% of page. Dismissible. Remembers dismissal for 7 days.
  */
 (function () {
@@ -44,14 +44,16 @@
     }
     .btn:hover{background:#0062CC}
     .close{
-      background:none;border:none;color:#6b7280;cursor:pointer;padding:6px;
-      font-size:1.1rem;line-height:1;transition:color .15s;flex-shrink:0;
+      background:none;border:1px solid transparent;color:#9ca3af;cursor:pointer;padding:6px;
+      width:44px;height:44px;border-radius:8px;
+      font-size:1.1rem;line-height:1;transition:color .15s,background .15s,border-color .15s;flex-shrink:0;
     }
-    .close:hover{color:#fff}
+    .close:hover{color:#fff;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
     @media(max-width:640px){
-      .inner{flex-direction:column;gap:10px;align-items:stretch}
-      .form{max-width:none}
-      .text{font-size:.8rem}
+      .bar{padding:10px 12px}
+      .inner{flex-direction:row;gap:10px;align-items:center;flex-wrap:nowrap}
+      .form{display:none}
+      .text{font-size:.78rem;min-width:0}
     }
   `;
 
@@ -77,12 +79,12 @@
         <style>${CSS}</style>
         <div class="bar" id="bar" role="complementary" aria-label="Newsletter signup">
           <div class="inner">
-            <div class="text"><span>New tools every week.</span> Get notified — no spam, cancel anytime.</div>
+            <div class="text"><span>New tools every week.</span> Get notified - no spam, cancel anytime.</div>
             <form class="form" name="newsletter-cta" data-netlify="true" id="form">
               <input class="inp" type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
-              <button class="btn" type="submit">Notify Me →</button>
+              <button class="btn" type="submit">Notify me</button>
             </form>
-            <button class="close" type="button" aria-label="Dismiss" id="close">✕</button>
+            <button class="close" type="button" aria-label="Dismiss" id="close">x</button>
           </div>
         </div>`;
     }
@@ -137,13 +139,14 @@
 
         // 2. Enriched API capture (attribution, device, UTM, referrer)
         try {
+          const canCaptureLead = !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(window.location.hostname) && window.location.protocol !== 'file:';
           if (typeof window.AfroTools !== 'undefined' && typeof window.AfroTools.captureLeadEnriched === 'function') {
             window.AfroTools.captureLeadEnriched({
               email: email,
               source: 'newsletter-cta',
               optInDigest: true
             });
-          } else {
+          } else if (canCaptureLead) {
             // Fallback: send basic enriched data inline
             const params = new URLSearchParams(window.location.search);
             fetch('/api/capture-lead', {
@@ -165,7 +168,7 @@
           }
         } catch(err) {}
 
-        btn.textContent = '✓ Done!';
+        btn.textContent = 'Done';
         inp.value = '';
         setTimeout(dismiss, 2000);
       });

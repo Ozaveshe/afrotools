@@ -1584,15 +1584,13 @@
     nav {
       position: relative;
       height: var(--nav-shell-height);
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      background: #fff;
+      border-bottom: 1px solid #e5eaf2;
       display: flex; align-items: center;
       padding: 0 max(var(--nav-inline-pad), var(--nav-safe-right)) 0 max(var(--nav-inline-pad), var(--nav-safe-left));
       transition: box-shadow 0.2s;
     }
-    nav.scrolled { box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
+    nav.scrolled { box-shadow: 0 1px 0 rgba(15,23,42,0.08); }
 
     .inner {
       max-width: min(1760px, calc(100vw - 32px)); margin: 0 auto; width: 100%;
@@ -1614,14 +1612,14 @@
 
     .lnk {
       display: flex; align-items: center; gap: 4px;
-      padding: 7px 12px; border-radius: 980px;
+      padding: 7px 12px; border-radius: 8px;
       font-size: 0.81rem; font-weight: 600; color: #374151;
       text-decoration: none; border: none; background: transparent;
       cursor: pointer; white-space: nowrap;
       transition: color 0.13s, background 0.13s;
       min-height: 40px;
     }
-    .lnk:hover, .lnk.open { color: #0062CC; background: #EEF4FF; }
+    .lnk:hover, .lnk.open { color: #0057B8; background: #F3F7FC; }
     .lnk.active { color: #0062CC; position: relative; }
     .lnk.active::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 16px; height: 2px; background: #0062CC; border-radius: 2px; }
     .chev { width: 7px; height: 4px; flex-shrink: 0; opacity: 0.4; transition: transform 0.18s, opacity 0.13s; }
@@ -1631,11 +1629,9 @@
     .mega {
       position: fixed;
       top: var(--nav-shell-height); left: 0; right: 0;
-      background: rgba(255,255,255,0.97);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-      box-shadow: 0 18px 42px rgba(15,23,42,0.08);
+      background: #fff;
+      border-bottom: 1px solid #dbe3ef;
+      box-shadow: 0 18px 34px rgba(15,23,42,0.10);
       opacity: 0; visibility: hidden;
       transform: translateY(-6px);
       transition: opacity 0.16s ease, visibility 0.16s ease, transform 0.16s ease;
@@ -1650,7 +1646,7 @@
 
     .mega-inner {
       max-width: 1200px; margin: 0 auto;
-      padding: 22px 20px;
+      padding: 18px 20px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
@@ -1667,30 +1663,35 @@
     }
 
     .mega-col {
-      border-radius: 12px; padding: 15px;
-      border: 1px solid #edf1f7;
-      transition: border-color 0.13s, background 0.13s;
+      border-radius: 8px; padding: 13px;
+      border: 1px solid #e5eaf2;
+      background: #fff;
+      transition: border-color 0.13s, background 0.13s, transform 0.13s;
       display: flex; align-items: center; gap: 9px;
       text-decoration: none; cursor: pointer;
     }
-    .mega-col:hover { border-color: var(--col-accent, #0062CC); background: #f8fbff; }
+    .mega-col:hover { border-color: #b8c8dc; background: #f8fafc; transform: translateY(-1px); }
     .business-col {
       align-items: flex-start;
       flex-direction: column;
-      min-height: 136px;
+      min-height: 128px;
       gap: 10px;
     }
     .business-col .mega-col-icon {
-      color: #0062CC;
+      color: #0f172a;
       font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0;
     }
 
     .mega-col-icon {
-      width: 34px; height: 34px; border-radius: 8px;
+      width: 34px; height: 34px; border-radius: 7px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; flex-shrink: 0;
+      font-size: 0.82rem; flex-shrink: 0;
+      font-weight: 800;
+      background: #f1f5f9 !important;
+      color: #0f172a;
+      line-height: 1;
     }
     .mega-col-name { font-size: 0.83rem; font-weight: 600; color: #334155; line-height: 1.2; }
     .mega-col-desc { font-size: 0.65rem; font-weight: 400; color: #64748b; margin-top: 1px; }
@@ -1698,7 +1699,7 @@
     .mega-footer {
       max-width: 1200px; margin: 0 auto;
       padding: 10px 20px 14px;
-      border-top: 1px solid #f3f4f6;
+      border-top: 1px solid #e5eaf2;
       display: flex; align-items: center; justify-content: space-between;
     }
     .mega-footer-note { font-size: 0.68rem; color: #64748b; font-weight: 600; }
@@ -1727,7 +1728,7 @@
       align-items: center;
       min-height: 44px;
       border: 1px solid #dbe3ef;
-      border-radius: 12px;
+      border-radius: 8px;
       background: #fff;
       padding: 0 12px;
     }
@@ -1760,7 +1761,7 @@
       gap: 8px;
       min-height: 44px;
       padding: 10px 12px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #edf1f7;
       color: #1f2937;
       text-decoration: none;
@@ -1768,7 +1769,7 @@
       font-size: 0.84rem;
       font-weight: 800;
     }
-    .country-search-result:hover { border-color: #0062CC; color: #0062CC; background: #f8fbff; }
+    .country-search-result:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
     .country-search-meta { color: #64748b; font-size: 0.68rem; font-weight: 700; }
 
     /* RIGHT */
@@ -1780,13 +1781,13 @@
     .btn-login {
       display: inline-flex; align-items: center; justify-content: center;
       font-size: 0.79rem; font-weight: 600; color: #374151;
-      padding: 7px 14px; border-radius: 980px;
-      border: 1.5px solid rgba(0,0,0,0.12); background: rgba(0,0,0,0.03);
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid #dbe3ef; background: #fff;
       text-decoration: none; white-space: nowrap;
       transition: all 0.13s; cursor: pointer;
       min-height: 40px;
     }
-    .btn-login:hover { border-color: #0062CC; color: #0062CC; }
+    .btn-login:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
     .btn-login.is-user {
       width: 42px;
       min-width: 42px;
@@ -1832,19 +1833,19 @@
 
     .btn-pro {
       display: inline-flex; align-items: center; justify-content: center;
-      min-width: 56px; padding: 7px 14px; border-radius: 980px;
-      border: 1.5px solid #BFDBFE;
+      min-width: 56px; padding: 7px 14px; border-radius: 8px;
+      border: 1px solid #b8c8dc;
       background: #fff;
       color: #0B63CE; text-decoration: none; white-space: nowrap;
       font-size: 0.78rem; font-weight: 700; letter-spacing: 0;
       transition: transform 0.13s, box-shadow 0.13s, background 0.13s, border-color 0.13s;
-      box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+      box-shadow: none;
       min-height: 40px;
     }
     .btn-pro:hover {
       background: #EFF6FF;
       border-color: #0062CC;
-      box-shadow: 0 5px 14px rgba(0,98,204,0.12);
+      box-shadow: none;
       transform: translateY(-1px);
     }
     .btn-pro.is-free {
@@ -1861,12 +1862,12 @@
 
     .cta {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 8px 16px; border-radius: 980px;
+      padding: 8px 16px; border-radius: 8px;
       font-size: 0.79rem; font-weight: 700;
       text-decoration: none; background: #0062CC; color: #fff;
       border: none; cursor: pointer; white-space: nowrap;
       transition: background 0.13s, transform 0.1s;
-      box-shadow: 0 1px 4px rgba(0,122,255,0.28);
+      box-shadow: none;
       min-height: 40px;
     }
     .cta:hover  { background: #005BBF; transform: translateY(-1px); }
@@ -1876,15 +1877,15 @@
     .lang-switch { position: relative; display: flex; align-items: center; }
     .lang-btn {
       display: flex; align-items: center; gap: 4px;
-      padding: 4px 8px; border-radius: 980px;
+      padding: 4px 8px; border-radius: 8px;
       font-size: 0.73rem; font-weight: 700; color: #374151;
-      border: 1.5px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.02);
+      border: 1px solid #dbe3ef; background: #fff;
       cursor: pointer; white-space: nowrap; transition: all 0.13s;
       font-family: 'DM Sans', system-ui, sans-serif;
       min-height: 40px;
     }
     .lang-btn-label { transition: width 0.15s, opacity 0.15s; }
-    .lang-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
+    .lang-btn:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
     .lang-drop {
       display: none; position: absolute; top: calc(100% + 6px); right: 0;
       background: #fff; border-radius: 10px; border: 1px solid #e5e7eb;
@@ -1903,10 +1904,10 @@
     /* HAMBURGER */
     .burger {
       display: none; flex-direction: column; justify-content: center; gap: 5px;
-      width: 44px; height: 44px; background: transparent; border: none;
-      cursor: pointer; padding: 10px; border-radius: 6px; flex-shrink: 0;
+      width: 44px; height: 44px; background: #fff; border: 1px solid #dbe3ef;
+      cursor: pointer; padding: 10px; border-radius: 8px; flex-shrink: 0;
     }
-    .burger:hover { background: #f3f4f6; }
+    .burger:hover { background: #f8fafc; border-color: #b8c8dc; }
     .burger span { display: block; width: 100%; height: 2px; background: #374151; border-radius: 2px; transition: all 0.22s; }
     .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
@@ -1945,7 +1946,7 @@
       min-height: 44px;
       display: flex; align-items: center; justify-content: center;
       padding: 10px 12px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #e5e7eb;
       color: #1f2937;
       background: #fff;
@@ -1953,14 +1954,14 @@
       font-weight: 700;
       text-decoration: none;
     }
-    .mob-country-link:hover { border-color: #0062CC; color: #0062CC; background: #f8fbff; }
+    .mob-country-link:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
     .mob-country-search {
       display: flex;
       align-items: center;
       min-height: 48px;
       margin: 0 16px 10px;
       padding: 0 12px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #dbe3ef;
       background: #fff;
     }
@@ -1988,14 +1989,17 @@
     .mob-country-results .country-search-result { width: 100%; }
     .mob-cat {
       display: flex; align-items: center; gap: 12px;
-      padding: 13px 20px; border-bottom: 1px solid #f9fafb;
+      padding: 13px 20px; border-bottom: 1px solid #eef2f7;
       text-decoration: none; transition: background 0.1s; min-height: 58px;
     }
-    .mob-cat:hover { background: #f9fafb; }
+    .mob-cat:hover { background: #f8fafc; }
     .mob-cat-icon {
-      width: 38px; height: 38px; border-radius: 9px;
+      width: 38px; height: 38px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; flex-shrink: 0;
+      font-size: 0.82rem; flex-shrink: 0;
+      font-weight: 800;
+      background: #f1f5f9 !important;
+      color: #0f172a;
     }
     .mob-cat-label { font-size: 0.92rem; font-weight: 600; color: #334155; }
     .mob-cat-desc  { font-size: 0.7rem; font-weight: 400; color: #6b7280; margin-top: 1px; }
@@ -2008,19 +2012,19 @@
     .mob-footer a { min-height: 48px; }
     .mob-cta {
       display: flex; align-items: center; justify-content: center;
-      padding: 15px; border-radius: 980px; font-size: 0.95rem; font-weight: 700;
+      padding: 15px; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
       text-decoration: none; background: #0062CC; color: white; min-height: 52px;
     }
     .mob-login {
       display: flex; align-items: center; justify-content: center;
       padding: 13px; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
-      text-decoration: none; border: 1.5px solid #e5e7eb; color: #374151;
+      text-decoration: none; border: 1px solid #dbe3ef; color: #374151;
     }
     .mob-pro-link {
       display: flex; align-items: center; justify-content: center;
       padding: 13px; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
-      text-decoration: none; border: 1.5px solid #BFDBFE; color: #0B63CE; background: #fff;
-      box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+      text-decoration: none; border: 1px solid #b8c8dc; color: #0B63CE; background: #fff;
+      box-shadow: none;
     }
     .mob-pro-link.is-free {
       border-color: #CBD5E1;
@@ -2089,20 +2093,20 @@
     /* SEARCH BUTTON */
     .search-btn {
       display: flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 980px;
-      border: 1px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.04);
+      width: 40px; height: 40px; border-radius: 8px;
+      border: 1px solid #dbe3ef; background: #fff;
       cursor: pointer; color: #374151;
       transition: all 0.13s; flex-shrink: 0;
     }
-    .search-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
+    .search-btn:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
     .theme-toggle {
       display: flex; align-items: center; justify-content: center;
-      width: 40px; height: 40px; border-radius: 980px;
-      border: 1px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.03);
+      width: 40px; height: 40px; border-radius: 8px;
+      border: 1px solid #dbe3ef; background: #fff;
       color: #475569; cursor: pointer; flex-shrink: 0;
       transition: color 0.13s, background 0.13s, border-color 0.13s, transform 0.13s;
     }
-    .theme-toggle:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; transform: translateY(-1px); }
+    .theme-toggle:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; transform: translateY(-1px); }
     .theme-toggle svg { width: 17px; height: 17px; }
     .theme-icon-sun { display: none; }
     :host(.theme-dark) .theme-icon-moon { display: none; }
@@ -2132,8 +2136,7 @@
     /* SEARCH OVERLAY */
     .search-overlay {
       position: fixed; inset: 0; z-index: 9999;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(4px);
+      background: rgba(15,23,42,0.36);
       display: flex; align-items: flex-start; justify-content: center;
       padding-top: 12vh;
       opacity: 0; visibility: hidden;
@@ -2143,8 +2146,8 @@
 
     .search-modal {
       width: 100%; max-width: 560px;
-      background: #fff; border-radius: 14px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.08);
+      background: #fff; border-radius: 10px;
+      box-shadow: 0 22px 48px rgba(15,23,42,0.22);
       overflow: hidden;
       transform: translateY(-12px) scale(0.97);
       transition: transform 0.18s ease;
@@ -2183,7 +2186,7 @@
 
     .search-result {
       display: flex; align-items: center; gap: 12px;
-      padding: 10px 12px; border-radius: 10px;
+      padding: 10px 12px; border-radius: 8px;
       text-decoration: none; color: inherit;
       transition: background 0.1s;
       cursor: pointer;
@@ -2192,9 +2195,10 @@
       background: #EEF4FF;
     }
     .search-result-icon {
-      width: 38px; height: 38px; border-radius: 9px;
+      width: 38px; height: 38px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.15rem; flex-shrink: 0;
+      font-size: 0.82rem; flex-shrink: 0;
+      font-weight: 800;
       background: #f3f4f6;
     }
     .search-result-name {
@@ -2219,7 +2223,7 @@
     .search-empty {
       padding: 32px 16px; text-align: center;
     }
-    .search-empty-icon { font-size: 2rem; margin-bottom: 8px; }
+    .search-empty-icon { display: none; }
     .search-empty-text { font-size: 0.85rem; font-weight: 600; color: #6b7280; }
     .search-empty-hint { font-size: 0.72rem; color: #9ca3af; margin-top: 4px; }
 
@@ -2255,8 +2259,8 @@
     .mob-search-bar {
       display: flex; align-items: center; gap: 10px;
       margin: 12px 16px 4px; padding: 11px 14px;
-      border-radius: 10px; border: 1.5px solid #e5e7eb;
-      background: #f9fafb;
+      border-radius: 8px; border: 1px solid #dbe3ef;
+      background: #fff;
       transition: border-color 0.13s;
       min-height: 52px;
     }
@@ -2291,10 +2295,10 @@
     }
     .mob-lang-opt {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 8px 14px; border-radius: 980px;
+      padding: 8px 14px; border-radius: 8px;
       font-size: 0.82rem; font-weight: 600; color: #374151;
-      text-decoration: none; border: 1.5px solid #e5e7eb;
-      background: #f9fafb; transition: all 0.13s;
+      text-decoration: none; border: 1px solid #dbe3ef;
+      background: #fff; transition: all 0.13s;
     }
     .mob-lang-opt:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
     .mob-lang-opt.active { border-color: #0062CC; color: #0062CC; background: #EEF4FF; font-weight: 700; }
@@ -2303,8 +2307,8 @@
     .mob-theme-toggle {
       width: 100%; min-height: 48px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 12px 14px; border-radius: 12px;
-      border: 1.5px solid #e5e7eb; background: #f9fafb;
+      padding: 12px 14px; border-radius: 8px;
+      border: 1px solid #dbe3ef; background: #fff;
       color: #334155; font: inherit; font-size: 0.9rem; font-weight: 700;
       cursor: pointer;
     }
@@ -2313,7 +2317,7 @@
     .mob-theme-state { color: #64748b; font-size: 0.76rem; font-weight: 800; }
 
     :host(.theme-dark) nav {
-      background: rgba(8,15,28,0.96);
+      background: #08111F;
       border-bottom-color: rgba(255,255,255,0.08);
       color: #EEF5FF;
     }
@@ -2366,9 +2370,9 @@
     :host(.theme-dark) .mob,
     :host(.theme-dark) .search-modal,
     :host(.theme-dark) .lang-drop {
-      background: rgba(11,21,36,0.98);
+      background: #0B1524;
       border-color: rgba(255,255,255,0.08);
-      box-shadow: 0 24px 70px rgba(0,0,0,0.42);
+      box-shadow: 0 18px 42px rgba(0,0,0,0.34);
     }
     :host(.theme-dark) .mob {
       background: #08111F;
@@ -3227,12 +3231,12 @@
         educationHref:isSw ? '/sw/elimu/'                   : isFr ? '/fr/education/'                                   : '/education/',
         insurance:    isSw ? 'Bima'                         : isFr ? 'Santé &amp; Assurance'                            : 'Insurance',
         insuranceHref:isSw ? '/sw/bima/'                    : isFr ? '/fr/health-insurance/'                            : '/insurance/',
-        countries54:  isSw ? '🌍 Nchi 54'                   : isFr ? '🌍 54 pays'                                       : '🌍 54 countries',
+        countries54:  isSw ? 'Nchi 54'                   : isFr ? '54 pays'                                       : '54 countries',
         signIn:       isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign in',
         ariaNav:      isSw ? 'Urambazaji mkuu'              : isFr ? 'Navigation principale'                            : 'Main navigation',
         ariaMenu:     isSw ? 'Menyu ya urambazaji'          : isFr ? 'Menu de navigation'                               : 'Navigation menu',
         ariaSearch:   isSw ? 'Tafuta zana'                  : isFr ? 'Rechercher des outils'                            : 'Search tools',
-        megaNote:     isSw ? '🌍 Nchi 54 za Afrika · bure · bila usajili'       : isFr ? '🌍 54 pays africains · gratuit · sans inscription': '🌍 54 African countries · free forever · no sign-up required',
+        megaNote:     isSw ? 'Nchi 54 za Afrika · bure · bila usajili'       : isFr ? '54 pays africains · gratuit · sans inscription': '54 African countries · free forever · no sign-up required',
         browseAll:    isSw ? 'Tazama zana zote →'           : isFr ? 'Voir tous les outils →'                           : 'Browse all tools →',
         browseHref:   isSw ? '/sw/zana-zote/'               : isFr ? '/fr/all-tools/'                                   : '/all-tools/',
         allCats:      isSw ? 'Makundi yote'                 : isFr ? 'Toutes les catégories'                            : 'All Categories',
@@ -3245,7 +3249,7 @@
         dashboardHref:isFr ? '/fr/dashboard/'               : '/dashboard/',
         authHref:     (isFr ? '/fr/auth/' : '/auth/') + '?mode=login&next=' + encodeURIComponent(isFr ? '/fr/dashboard/' : '/dashboard/'),
         vaultHref:    isFr ? '/fr/dashboard/vault/'         : '/dashboard/vault/',
-        mobNote:      isSw ? '🌍 Nchi 54 · bure · bila usajili'                 : isFr ? '🌍 54 pays · gratuit · sans inscription'          : '🌍 54 countries · always free · no sign-up required',
+        mobNote:      isSw ? 'Nchi 54 · bure · bila usajili'                 : isFr ? '54 pays · gratuit · sans inscription'          : '54 countries · always free · no sign-up required',
         srchEmpty:    isSw ? 'Tafuta zana za Kiswahili na Afrika'          : isFr ? '2 594+ outils africains'                            : 'Search 2,594+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
         countriesFooterNote: isSw ? 'Nchi 54 za Afrika' : '54 African countries',
@@ -3531,8 +3535,8 @@
           <div class="mob-footer">
             <a href="${T.proHref}" class="mob-pro-link" data-pro-nav="mobile">${T.proLabel}</a>
             <a href="${T.authHref}" class="mob-login">${T.mobSignIn}</a>
-            <a href="${T.vaultHref}" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1.5px solid #0062CC;text-align:center;">📁 ${T.vaultLabel}</a>
-            <a href="/tools/afropoints/" class="mob-points-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#F59E0B;border:1.5px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.06);text-align:center;">🎯 AfroPoints</a>
+            <a href="${T.vaultHref}" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1px solid #b8c8dc;text-align:center;">${T.vaultLabel}</a>
+            <a href="/tools/afropoints/" class="mob-points-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;color:#92400E;border:1px solid #f4d58a;background:#fffaf0;text-align:center;">AfroPoints</a>
             <p class="mob-note">${T.mobNote}</p>
           </div>
         </div>
@@ -4366,6 +4370,7 @@
       // ── Search capture: send queries to /api/capture-search for product intelligence ──
       let _captureTimer = null;
       let _captureCount = 0;
+      const _canCaptureSearch = !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname) && location.protocol !== 'file:';
       const _captureSessionId = (() => {
         try {
           let sid = sessionStorage.getItem('_afro_search_sid');
@@ -4376,7 +4381,7 @@
 
       const captureSearch = (query, resultsCount, source) => {
         clearTimeout(_captureTimer);
-        if (!query || query.length < 2 || _captureCount >= 20) return;
+        if (!_canCaptureSearch || !query || query.length < 2 || _captureCount >= 20) return;
         _captureTimer = setTimeout(() => {
           _captureCount++;
           try {
@@ -4635,7 +4640,7 @@
         if (mobVaultLink) mobVaultLink.style.display = 'none';
         if (mobPointsLink) {
           mobPointsLink.style.display = 'none';
-          mobPointsLink.textContent = '🎯 AfroPoints';
+          mobPointsLink.textContent = 'AfroPoints';
         }
       };
       const clearRejectedAuth = (reason) => {
@@ -4719,11 +4724,11 @@
                   badge.title = 'AfroPoints Balance';
                   var pts = p.current_balance || 0;
                   var display = pts >= 10000 ? (pts / 1000).toFixed(1) + 'k' : pts.toLocaleString();
-                  badge.textContent = '🎯 ' + display;
+                  badge.textContent = display;
                   if (p.current_streak > 0) badge.textContent += ' 🔥';
                   if (loginBtn && loginBtn.parentNode) loginBtn.parentNode.insertBefore(badge, loginBtn.nextSibling);
                   // Update mobile points link with balance
-                  if (mobPointsLink) mobPointsLink.textContent = '🎯 AfroPoints — ' + display + (p.current_streak > 0 ? ' 🔥' : '');
+                  if (mobPointsLink) mobPointsLink.textContent = 'AfroPoints - ' + display + (p.current_streak > 0 ? ' streak' : '');
                 }).catch(function() {});
             }
           } catch(e) {}

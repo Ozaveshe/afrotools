@@ -23,10 +23,10 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-  <link rel="stylesheet" href="/assets/css/global.css?v=b1aadff2">
-  <link rel="stylesheet" href="/assets/css/tool-landing.css?v=134998d9"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
+  <link rel="stylesheet" href="/assets/css/global.css?v=8dfe990f">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css?v=be9037dd"><script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 
-  <script src="/assets/js/components/navbar.js?v=465dbcb3" defer></script>
+  <script src="/assets/js/components/navbar.js?v=e62dd595" defer></script>
   <script src="/assets/js/components/footer.js?v=c792168a" defer></script>
   <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
   <script type="application/ld+json">
@@ -200,15 +200,15 @@
     .mw-compare-card .mw-cc-val{font-weight:700;color:var(--color-primary,#007AFF)}
 
     /* ── 54-country sortable table ── */
-    .mw-table-section{margin-top:28px}
+    .mw-table-section{display:block;width:100%;max-width:100%;min-width:0;margin-top:28px;overflow:hidden}
     .mw-table-controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px}
     .mw-filter-group{display:flex;gap:6px;flex-wrap:wrap}
     .mw-filter-btn{padding:7px 14px;background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.75rem;font-weight:700;color:#64748b;cursor:pointer;transition:all .2s}
     .mw-filter-btn.active,.mw-filter-btn:hover{background:#0063D1;border-color:#0063D1;color:#fff}
     .mw-export-btn{padding:7px 14px;background:#fff;border:1.5px solid #0063D1;border-radius:8px;font-size:.75rem;font-weight:700;color:#0063D1;cursor:pointer;transition:all .2s}
     .mw-export-btn:hover{background:#0063D1;color:#fff}
-    .mw-table-wrap{overflow-x:auto;border-radius:12px;border:1.5px solid #e2e8f0}
-    .mw-country-table{width:100%;border-collapse:collapse;font-size:.82rem}
+    .mw-table-wrap{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;border:1px solid #e2e8f0}
+    .mw-country-table{width:100%;min-width:620px;border-collapse:collapse;font-size:.82rem}
     .mw-country-table th{background:#f8fafc;padding:10px 14px;text-align:left;font-size:.68rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap;border-bottom:2px solid #e2e8f0;user-select:none}
     .mw-country-table th:hover{color:#007AFF}
     .mw-country-table td{padding:10px 14px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
@@ -262,7 +262,7 @@
     /* ── Touch targets: min 44×44px for all interactive controls ── */
     .mw-compliance-row input,.mw-compliance-row button,.mw-compliance-row .mw-currency-badge,
     .mw-alert-row input,.mw-alert-row button,.mw-filter-btn,.mw-export-btn,
-    .mw-vf-submit,.mw-report-btn,.mw-vf-input{min-height:44px}
+    .mw-vf-submit,.mw-report-btn,.mw-vf-input,.mw-compare-toggle{min-height:44px}
 
     /* ── Living wage bars — show % label inside ── */
     .mw-bar-fill{position:relative;display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
@@ -314,6 +314,14 @@
       .mw-compliance-row{flex-direction:column}
       .mw-alert-row{flex-direction:column}
       .mw-table-controls{flex-direction:column;align-items:flex-start}
+      .tl-hero .tl-title{color:#0f172a}
+      .tl-hero .tl-desc{color:#475569}
+    }
+    @media(max-width:960px){
+      .mw-country-table button.ct-name,
+      .mw-country-table td,
+      .mw-country-table th{min-height:44px}
+      .mw-country-table button.ct-name{display:inline-flex;align-items:center}
     }
   </style>
   <meta property="article:modified_time" content="2026-04-03">

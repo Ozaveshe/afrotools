@@ -100,7 +100,7 @@ function html(routePath, meta) {
   <script type="application/ld+json">${schema(meta, routePath)}</script>
 </head>
 <body class="cars-page">
-  <afro-navbar theme="dark" active="transport"></afro-navbar>
+  <afro-navbar active="transport"></afro-navbar>
   <main class="cars-shell"><noscript><section class="cars-panel"><h1>${escapeHtml(meta.title)}</h1><p>${escapeHtml(meta.description)}</p></section></noscript><div id="carsApp"></div></main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script>

@@ -1805,19 +1805,16 @@ html[data-theme="dark"] :where(.card, .panel, .box, .stat-card, .metric-card, .r
 
 /* 2026+ app interior polish: forms, result panels, tables, and workbench cards. */
 :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .panel, .preview-card, .insights-card, .workflow-card, .app-card, .dashboard-card) {
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(248, 251, 255, 0.86)),
-    var(--surface-glass, var(--color-surface));
+  background: var(--color-surface);
   border: 1px solid rgba(var(--color-primary-rgb, 0, 98, 204), 0.13);
-  border-radius: var(--radius-xl, 18px);
+  border-radius: var(--radius-md, 10px);
 }
 
 :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .preview-card, .insights-card, .app-card, .dashboard-card, .ai-command) {
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(248, 251, 255, 0.88)) !important;
+  background: var(--color-surface) !important;
   border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.14) !important;
-  border-radius: var(--radius-xl, 18px) !important;
-  box-shadow: var(--shadow-card, 0 12px 30px rgba(15, 23, 42, 0.06)) !important;
+  border-radius: var(--radius-md, 10px) !important;
+  box-shadow: var(--shadow-card, 0 8px 24px rgba(15, 23, 42, 0.06)) !important;
 }
 
 :where(.form-grid, .result-grid, .result-cards, .app-grid, .dashboard-grid, .tool-main-grid, .input-row, .form-row, .form-row-2) {
@@ -1853,9 +1850,9 @@ html[data-theme="dark"] :where(.card, .panel, .box, .stat-card, .metric-card, .r
 
 :where(.table-wrap, .items-table-wrap, .fx-table-wrap, .pad-table-wrap, .tax-table-wrapper, .band-table-wrap) {
   border: 1px solid rgba(var(--color-primary-rgb, 0, 98, 204), 0.13);
-  border-radius: var(--radius-xl, 18px);
-  background: var(--surface-glass-strong, var(--color-surface));
-  box-shadow: var(--shadow-card, 0 12px 30px rgba(15, 23, 42, 0.06));
+  border-radius: var(--radius-md, 10px);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card, 0 8px 24px rgba(15, 23, 42, 0.06));
   overflow: auto;
 }
 
@@ -1869,23 +1866,49 @@ html[data-theme="dark"] :where(.card, .panel, .box, .stat-card, .metric-card, .r
 }
 
 html[data-theme="dark"] :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .panel, .preview-card, .insights-card, .workflow-card, .app-card, .dashboard-card) {
-  background:
-    linear-gradient(145deg, rgba(18, 31, 51, 0.88), rgba(11, 21, 36, 0.92)),
-    var(--color-surface);
+  background: var(--color-surface);
   border-color: rgba(147, 197, 253, 0.16);
 }
 
 html[data-theme="dark"] :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .preview-card, .insights-card, .app-card, .dashboard-card, .ai-command) {
-  background:
-    linear-gradient(145deg, rgba(18, 31, 51, 0.9), rgba(11, 21, 36, 0.94)) !important;
+  background: var(--color-surface) !important;
   border-color: rgba(147, 197, 253, 0.18) !important;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.26) !important;
 }
 
 html[data-theme="dark"] :where(.table-wrap, .items-table-wrap, .fx-table-wrap, .pad-table-wrap, .tax-table-wrapper, .band-table-wrap) {
-  background: rgba(18, 31, 51, 0.78);
+  background: var(--color-surface);
   border-color: rgba(147, 197, 253, 0.16);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.26);
+}
+
+/* Site coherence safety net: stable mobile controls and overflow containment. */
+:where(main, section, article, aside, header, footer, .container, .wrap, .shell, .grid, .panel, .card) {
+  min-width: 0;
+}
+
+:where(img, svg, video, canvas) {
+  max-width: 100%;
+}
+
+@media (max-width: 720px) {
+  :where(.btn, .button, .btn-primary, .btn-secondary, .btn-ghost, .card-cta, .hero-search-btn, .tool-button, .export-button, .file-button, .tab-button, .chip-button, .pill-button, a.tool-card, a.category-card, a.cat-card, a.hub-card, a.feature-card, a.step-card, a.home-tool-card, a.country-tool-card, [role="button"]) {
+    min-height: 44px;
+  }
+
+  :where(.btn, .button, .btn-primary, .btn-secondary, .btn-ghost, .card-cta, .tool-button, .export-button, .file-button, .tab-button, .chip-button, .pill-button) {
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+  }
+
+  :where(.badge, .pill, .chip, [class*="-badge"], [class*="-pill"], [class*="-chip"]) {
+    line-height: 1.2;
+  }
+
+  :where(table) {
+    max-width: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

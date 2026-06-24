@@ -92,10 +92,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
-<script src="/assets/js/components/tool-registry.min.js?v=7c43adae" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
+<script src="/assets/js/components/tool-registry.min.js?v=af33236a" defer></script>
 <script src="/assets/js/components/health-taxonomy.js?v=dbfb17a6" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
   body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);margin:0;-webkit-font-smoothing:antialiased}
@@ -177,6 +177,23 @@
   .route-cta{margin-top:auto;padding-top:4px;font-size:.78rem;font-weight:800;color:var(--color-primary)}
   @media(max-width:720px){.bucket-head{flex-direction:column}.bucket-count{align-self:flex-start}}
   @media(max-width:640px){.wrap{padding:0 18px}.hero{padding:48px 0 38px}.hero-stats{gap:18px}.hero-stat-value{font-size:1.6rem}}
+  .hero{background:#f8fafc;background-image:radial-gradient(circle at 8% 0%,rgba(0,87,184,.08),transparent 30%),radial-gradient(circle at 92% 12%,rgba(32,178,170,.12),transparent 24%);border-bottom:1px solid #e2e8f0}
+  .hero::before{display:none}
+  .hero-ey{background:#fff;border-color:rgba(148,163,184,.42);border-radius:8px;color:#475569;letter-spacing:0;text-transform:none;min-height:40px}
+  .hero h1{color:#0f172a;letter-spacing:0;max-width:820px}
+  .hero h1 b{color:#0057b8}
+  .hero-sub{color:#52637a}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:620px}
+  .hero-stat-value{color:#0057b8}
+  .hero-stat-label{color:#64748b;letter-spacing:.06em}
+  .note,.disclaimer,.overview-card,.flagship-card,.registry-card,.route-card,.tool-card{border-radius:8px;box-shadow:none}
+  .overview-card,.flagship-card,.registry-card,.route-card,.tool-card{border:1px solid #e2e8f0}
+  .flagship-card:hover,.tool-card:hover,.route-card:hover,.registry-pills a:hover{border-color:#2b6dd8;box-shadow:0 12px 24px rgba(15,23,42,.08);transform:translateY(-1px)}
+  .flagship-card:focus-visible,.tool-card:focus-visible,.route-card:focus-visible,.registry-pills a:focus-visible{outline:3px solid rgba(43,109,216,.28);outline-offset:3px}
+  .overview-icon,.flagship-icon,.bucket-icon,.tool-icon{width:44px;height:44px;border-radius:8px;background:#eef5ff;color:#0057b8;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;letter-spacing:0;line-height:1}
+  .flagship-badge,.tool-badge,.bucket-count,.registry-pills a{border-radius:8px}
+  .registry-pills a{min-height:44px}
+  @media(max-width:640px){.hero-stats{grid-template-columns:1fr;gap:14px}.hero-stat-value{font-size:1.55rem}.flagship-top,.tool-top{align-items:flex-start}.flagship-badges,.tool-badges{justify-content:flex-start}.registry-grid,.card-grid,.overview-grid,.flagship-grid,.route-grid{grid-template-columns:1fr}}
 </style>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -190,12 +207,12 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/health/" />
 </head>
 <body>
-<afro-navbar theme="dark" active="health"></afro-navbar>
+<afro-navbar active="health"></afro-navbar>
 <div class="wrap"><nav class="bc" aria-label="Breadcrumb"><a href="/">AfroTools</a> > <a href="/categories/">Categories</a> > <span class="cur">Health</span></nav></div>
 
 <section class="hero">
   <div class="wrap hero-z">
-    <div class="hero-ey"><span>🏥</span> Health</div>
+    <div class="hero-ey"><span aria-hidden="true">HL</span> Health</div>
     <h1>Health tools for <b>clearer care decisions</b>.</h1>
     <p class="hero-sub">Start with the question in front of you: symptoms, family health, care costs, medicine, insurance, nutrition, or a document you need to understand. AfroTools helps you prepare before you speak with a professional or provider.</p>
     <div class="hero-stats">
@@ -318,11 +335,19 @@ function getToolMode(tool){
   return'Health tool';
 }
 
+function compactLabel(value,fallback){
+  var source=String(value||fallback||'Health').replace(/[^A-Za-z0-9 ]/g,' ').trim();
+  var words=source.split(/\s+/).filter(Boolean);
+  if(!words.length){return'HL';}
+  if(words.length===1){return words[0].slice(0,3).toUpperCase();}
+  return (words[0][0]+words[1][0]).toUpperCase();
+}
+
 function renderOverviewCard(bucket){
   return [
     '<div class="overview-card">',
       '<div class="overview-top">',
-        '<span class="overview-icon">',escapeHtml(bucket.icon),'</span>',
+        '<span class="overview-icon" aria-hidden="true">',escapeHtml(compactLabel(bucket.title,'Health')),'</span>',
         '<span class="overview-count">',bucket.registryCount,' registry tools</span>',
       '</div>',
       '<h3>',escapeHtml(bucket.title),'</h3>',
@@ -338,7 +363,7 @@ function renderFlagshipCard(surface){
   return [
     '<a href="',escapeHtml(surface.href),'" class="flagship-card">',
       '<div class="flagship-top">',
-        '<span class="flagship-icon">',escapeHtml(surface.icon||'🏥'),'</span>',
+        '<span class="flagship-icon" aria-hidden="true">',escapeHtml(compactLabel(surface.title,'Health')),'</span>',
         '<div class="flagship-badges">',
           '<span class="',badgeClass,'">',escapeHtml(surface.surfaceType),'</span>',
           '<span class="flagship-badge mode">',escapeHtml(surface.mode),'</span>',
@@ -359,7 +384,7 @@ function renderToolCard(tool){
   return [
     '<a href="',escapeHtml(tool.href),'" class="tool-card">',
       '<div class="tool-top">',
-        '<span class="tool-icon">',escapeHtml(tool.icon||'🏥'),'</span>',
+        '<span class="tool-icon" aria-hidden="true">',escapeHtml(compactLabel(tool.name,'Health')),'</span>',
         '<div class="tool-badges">',
           '<span class="',statusClass,'">',statusLabel,'</span>',
           '<span class="tool-badge mode">',escapeHtml(getToolMode(tool)),'</span>',
@@ -380,7 +405,7 @@ function renderFeaturedBucket(bucket){
     '<section class="bucket-section">',
       '<div class="bucket-head">',
         '<div class="bucket-head-left">',
-          '<div class="bucket-icon">',escapeHtml(bucket.icon),'</div>',
+          '<div class="bucket-icon" aria-hidden="true">',escapeHtml(compactLabel(bucket.title,'Health')),'</div>',
           '<div>',
             '<h3>',escapeHtml(bucket.title),'</h3>',
             '<p>',escapeHtml(bucket.description),'</p>',
@@ -397,7 +422,7 @@ function renderFeaturedBucket(bucket){
 
 function renderRegistryBucket(bucket){
   var pills=bucket.allTools.map(function(tool){
-    return '<a href="'+escapeHtml(tool.href)+'">'+escapeHtml(tool.icon||'🏥')+' '+escapeHtml(tool.name)+'</a>';
+    return '<a href="'+escapeHtml(tool.href)+'">'+escapeHtml(tool.name)+'</a>';
   }).join('');
   return [
     '<div class="registry-card">',

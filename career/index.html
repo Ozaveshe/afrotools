@@ -20,15 +20,41 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
-<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
 :root{--en-accent:#6366F1;--en-accent-dark:#4F46E5;--en-accent-light:#E0E7FF;--en-accent-pale:#EEF2FF;--en-shadow-hover:0 4px 16px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.08)}
 .en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)!important}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
+.en-hero{background:#f8fafc!important;background-image:radial-gradient(circle at 15% 14%,rgba(0,87,184,.07),transparent 31%),radial-gradient(circle at 86% 18%,rgba(16,185,129,.06),transparent 28%)!important;color:#0f172a!important;border-bottom:1px solid #e2e8f0!important;padding:52px 20px 44px!important}
+.en-hero::before,.en-hero::after{display:none!important}
+.en-hero-inner,.en-stats-bar-inner,.en-section-inner{max-width:1120px!important}
+.en-hero h1{color:#0f172a!important;letter-spacing:0!important;line-height:1.08!important}
+.en-hero h1 em{color:#0057b8!important;font-style:normal!important}
+.en-hero p,.en-section-subtitle{color:#52637a!important;line-height:1.72!important}
+.en-badge{background:#fff!important;border:1px solid #dbe5f1!important;color:#334155!important;border-radius:8px!important;box-shadow:none!important;min-height:34px!important;padding:7px 12px!important}
+.en-hero-stats{gap:12px!important}
+.en-hero-stat,.en-stats-bar,.en-tool-card{background:#fff!important;border:1px solid #e2e8f0!important;border-radius:8px!important;box-shadow:none!important}
+.en-hero-stat{padding:16px!important}
+.en-hero-stat-num{color:#0057b8!important}
+.en-hero-stat-label,.en-stats-bar-item{color:#52637a!important}
+.en-stats-bar{border-left:0!important;border-right:0!important}
+.en-stats-bar-dot{background:#0057b8!important}
+.en-tools-section{padding:48px 20px!important}
+.en-tools-grid{gap:14px!important}
+.en-tool-card{padding:20px!important;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease!important}
+.en-tool-card:hover{border-color:#0057b8!important;box-shadow:0 10px 22px rgba(15,23,42,.08)!important;transform:translateY(-1px)!important}
+.en-tool-card:focus-visible{outline:3px solid rgba(0,87,184,.28)!important;outline-offset:3px!important}
+.en-tool-card-icon{width:44px!important;height:44px!important;border-radius:8px!important;background:#eef6ff!important;color:#0057b8!important;font-size:.82rem!important;font-weight:800!important;letter-spacing:0!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important}
+.en-tool-card-name{color:#0f172a!important;line-height:1.25!important}
+.en-tool-card-desc{color:#475569!important;line-height:1.62!important}
+.en-tool-card-meta{gap:8px!important;align-items:center!important}
+.en-tool-card-tag{background:#f8fafc!important;border:1px solid #dbe5f1!important;color:#334155!important;border-radius:8px!important;font-weight:700!important}
+.en-tool-card-arrow{display:none!important}
+@media(max-width:720px){.en-hero{padding:38px 16px 34px!important}.en-hero-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}.en-tools-section{padding:38px 16px!important}.en-tool-card{padding:18px!important}.en-stats-bar-inner{gap:10px!important}.en-stats-bar-item{min-height:32px!important}.en-hero h1{font-size:clamp(1.7rem,10vw,2.35rem)!important}}
 </style>
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="AfroTools">
@@ -38,13 +64,13 @@ a{text-decoration:none;color:inherit}
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/career/" />
 </head>
 <body>
-<afro-navbar theme="dark" active="career"></afro-navbar>
+<afro-navbar active="career"></afro-navbar>
 
 <div class="en-hero">
   <div class="en-hero-inner">
     <div class="en-hero-badge-row">
-      <span class="en-badge">💼 Career & Growth</span>
-      <span class="en-badge">🌍 15 Countries</span>
+      <span class="en-badge">Career & Growth</span>
+      <span class="en-badge">15 countries</span>
       <span class="en-badge">Always Free</span>
     </div>
     <h1>Career & Personal Development<br>Tools for <em>Africans</em></h1>
@@ -206,5 +232,23 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <afro-footer></afro-footer>
+<script>
+(function(){
+  function initials(text){
+    var words = String(text || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
+    var skip = {and:1,for:1,the:1,with:1,tool:1};
+    var picked = words.filter(function(word){ return !skip[word.toLowerCase()]; }).slice(0, 2);
+    return (picked.length ? picked : words).map(function(word){ return word.charAt(0).toUpperCase(); }).join('').slice(0, 2) || 'AT';
+  }
+  document.querySelectorAll('.en-tool-card').forEach(function(card){
+    var icon = card.querySelector('.en-tool-card-icon');
+    var name = card.querySelector('.en-tool-card-name');
+    if(icon && name){
+      icon.textContent = initials(name.textContent);
+      icon.setAttribute('aria-hidden', 'true');
+    }
+  });
+})();
+</script>
 </body>
 </html>

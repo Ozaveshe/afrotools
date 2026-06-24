@@ -20,10 +20,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
-<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
+<link rel="stylesheet" href="/assets/css/country-hub-ui-refresh.css?v=5fa74458">
+<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<script src="/assets/js/components/tool-registry.min.js?v=7c43adae" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=af33236a" defer></script>
 <style>
   .ke-hero { background:var(--color-bg-dark);padding:64px 0 48px;border-bottom:1px solid rgba(255,255,255,0.06); }
   .ke-hero-inner { max-width:900px;margin:0 auto;padding:0 24px; }
@@ -50,8 +51,8 @@
   .ke-alert-text { font-size:0.85rem;line-height:1.6;color:#1E3A5F; }
   .ke-alert-text strong { font-weight:700; }
   #tool-grid { min-height:120px; }
-  .ke-rate-table { background:#fff;border:1px solid var(--color-border);border-radius:10px;overflow:hidden; }
-  .ke-rate-table table { width:100%;border-collapse:collapse;font-size:0.83rem; }
+  .ke-rate-table { display:block;width:100%;max-width:100%;background:#fff;border:1px solid var(--color-border);border-radius:10px;overflow:hidden; }
+  .ke-rate-table table { width:100%;min-width:560px;border-collapse:collapse;font-size:0.83rem; }
   .ke-rate-table thead { background:var(--color-bg-dark); }
   .ke-rate-table thead th { padding:12px 16px;text-align:left;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45); }
   .ke-rate-table thead th:last-child { text-align:right; }
@@ -63,18 +64,19 @@
   .ke-rate-table td.rate-low { color:#0369a1; }
   .ke-rate-table td.rate-mid { color:#d97706; }
   .ke-rate-table td.rate-high { color:#c0392b; }
-  .rate-tabs { display:flex;border-bottom:1px solid var(--color-border);overflow-x:auto; }
-  .rate-tab { padding:12px 20px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--color-muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s;white-space:nowrap; }
+  .rate-tabs { display:flex;width:100%;max-width:100%;border-bottom:1px solid var(--color-border);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin; }
+  .rate-tab { appearance:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 20px;border:0;border-bottom:2px solid transparent;background:transparent;font:inherit;font-size:0.78rem;font-weight:700;cursor:pointer;color:var(--color-muted);margin-bottom:-1px;transition:all 0.15s;white-space:nowrap; }
   .rate-tab.active { color:var(--color-brand);border-bottom-color:var(--color-brand); }
+  .rate-tab:focus-visible { outline:3px solid rgba(37,99,235,0.2);outline-offset:-3px; }
   .rate-table-body { display:none; }
-  .rate-table-body.active { display:block; }
+  .rate-table-body.active { display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch; }
   .ke-info-grid { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
   .ke-info-card { background:#fff;border:1px solid var(--color-border);border-radius:10px;padding:20px; }
   .ke-info-card h4 { font-size:0.85rem;font-weight:700;color:var(--color-text);margin-bottom:10px; }
   .ke-info-card ul { list-style:none;display:flex;flex-direction:column;gap:6px; }
   .ke-info-card li { font-size:0.8rem;color:var(--color-muted);display:flex;gap:8px;line-height:1.4; }
   .ke-info-card li::before { content:'→';color:var(--color-brand);flex-shrink:0;font-weight:700; }
-  @media(max-width:600px) { .ke-info-grid{grid-template-columns:1fr;} }
+  @media(max-width:600px) { .ke-info-grid{grid-template-columns:1fr;} .ke-rate-table table{min-width:520px;} .ke-rate-table thead th,.ke-rate-table td{padding:10px 12px;} }
 
   /* ═══ TOOL CARD HOVER ═══ */
   #tool-grid a[style*="border:1.5px"],
@@ -103,6 +105,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/kenya/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/kenya/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/kenya/" />
+<script src="/assets/js/pages/country-hub-ui-refresh.js?v=41f802bc" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -165,10 +168,10 @@
     <p class="ke-sec-sub">Official KRA tax tables, NSSF, SHIF, and AHL rates for the 2025/2026 period.</p>
     <div class="ke-rate-table">
       <div class="rate-tabs">
-        <div class="rate-tab active" onclick="showTab('paye')">PAYE Bands</div>
-        <div class="rate-tab" onclick="showTab('nssf')">NSSF</div>
-        <div class="rate-tab" onclick="showTab('shif')">SHIF</div>
-        <div class="rate-tab" onclick="showTab('ahl')">Housing Levy</div>
+        <button type="button" class="rate-tab active" onclick="showTab('paye', this)">PAYE Bands</button>
+        <button type="button" class="rate-tab" onclick="showTab('nssf', this)">NSSF</button>
+        <button type="button" class="rate-tab" onclick="showTab('shif', this)">SHIF</button>
+        <button type="button" class="rate-tab" onclick="showTab('ahl', this)">Housing Levy</button>
       </div>
       <div class="rate-table-body active" id="tab-paye">
         <table>
@@ -282,11 +285,11 @@
 <afro-footer></afro-footer>
 
 <script>
-function showTab(id) {
+function showTab(id, trigger) {
   document.querySelectorAll('.rate-table-body').forEach(function(el){el.classList.remove('active');});
   document.querySelectorAll('.rate-tab').forEach(function(el){el.classList.remove('active');});
   document.getElementById('tab-'+id).classList.add('active');
-  event.target.classList.add('active');
+  if (trigger) trigger.classList.add('active');
 }
 function _initKeHub(){
   if (typeof renderToolGrid==='function') renderToolGrid('tool-grid','KE');

@@ -52,10 +52,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
-<script src="/assets/js/components/tool-registry.min.js?v=7c43adae" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
+<script src="/assets/js/components/tool-registry.min.js?v=af33236a" defer></script>
 <script src="/assets/js/components/education-taxonomy.js?v=aea57edc" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
   body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);margin:0;-webkit-font-smoothing:antialiased}
@@ -142,6 +142,26 @@
   .cta a{display:inline-flex;align-items:center;justify-content:center;padding:11px 22px;border-radius:999px;background:#fff;color:#1d4ed8;font-size:.82rem;font-weight:800}
   @media(max-width:720px){.bucket-head{flex-direction:column}.bucket-count{align-self:flex-start}.registry-card{grid-template-columns:1fr}.registry-note{grid-column:1;margin-top:0}}
   @media(max-width:640px){.wrap{padding:0 18px}.hero{padding:48px 0 38px}.hero-stats{gap:18px}.hero-stat-value{font-size:1.6rem}}
+  .hero{background:#f8fafc;background-image:radial-gradient(circle at 8% 0%,rgba(0,87,184,.08),transparent 30%),radial-gradient(circle at 92% 12%,rgba(255,199,44,.14),transparent 24%);border-bottom:1px solid #e2e8f0}
+  .hero::before{display:none}
+  .hero-ey{background:#fff;border-color:rgba(148,163,184,.42);border-radius:8px;color:#475569;letter-spacing:0;text-transform:none;min-height:40px}
+  .hero h1{color:#0f172a;letter-spacing:0;max-width:820px}
+  .hero h1 b{color:#0057b8}
+  .hero-sub{color:#52637a}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:620px}
+  .hero-stat-value{color:#0057b8}
+  .hero-stat-label{color:#64748b;letter-spacing:.06em}
+  .note,.overview-card,.product-card,.route-card,.tool-card,.registry-grid,.cta{border-radius:8px;box-shadow:none}
+  .overview-card,.product-card,.route-card,.tool-card,.registry-grid{border:1px solid #e2e8f0}
+  .product-card,.route-card{transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+  .product-card:hover,.tool-card:hover,.route-card:hover,.registry-pills a:hover{border-color:#2b6dd8;box-shadow:0 12px 24px rgba(15,23,42,.08);transform:translateY(-1px)}
+  .product-card:focus-visible,.tool-card:focus-visible,.route-card:focus-visible,.registry-pills a:focus-visible,.cta a:focus-visible{outline:3px solid rgba(43,109,216,.28);outline-offset:3px}
+  .overview-icon,.product-icon,.bucket-icon,.tool-icon{width:44px;height:44px;border-radius:8px;background:#eef5ff;color:#0057b8;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;letter-spacing:0;line-height:1}
+  .product-badge,.tool-badge,.bucket-count,.registry-pills a{border-radius:8px}
+  .registry-pills a{min-height:44px}
+  .cta{background:#0f172a;color:#fff}
+  .cta a{min-height:44px;border-radius:8px}
+  @media(max-width:640px){.hero-stats{grid-template-columns:1fr;gap:14px}.hero-stat-value{font-size:1.55rem}.product-top,.tool-top{align-items:flex-start}.registry-grid,.card-grid,.overview-grid,.product-grid,.subhub-grid{grid-template-columns:1fr}}
 </style>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -154,12 +174,12 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/education/" />
 </head>
 <body>
-<afro-navbar theme="dark" active="education"></afro-navbar>
-<div class="wrap"><nav class="bc" aria-label="Breadcrumb"><a href="/">AfroTools</a> › <a href="/categories/">Categories</a> › <span class="cur">Education</span></nav></div>
+<afro-navbar active="education"></afro-navbar>
+<div class="wrap"><nav class="bc" aria-label="Breadcrumb"><a href="/">AfroTools</a> &gt; <a href="/categories/">Categories</a> &gt; <span class="cur">Education</span></nav></div>
 
 <section class="hero">
   <div class="wrap hero-z">
-    <div class="hero-ey"><span>🎓</span> Education</div>
+    <div class="hero-ey"><span aria-hidden="true">ED</span> Education</div>
     <h1>Education tools for <b>clearer study decisions</b>.</h1>
     <p class="hero-sub">Start with the study goal in front of you: admissions, school fees, scholarships, study abroad, coursework, teaching, or exam prep. Each section points to the tools that help you decide the next step.</p>
     <div class="hero-stats">
@@ -225,22 +245,22 @@
       <a class="route-card" href="/education/fees/">
         <h3>Education Fees &amp; Cost Planning</h3>
         <p>Start with School Fees Comparator as the finance-side comparison anchor, then use Student Budget Planner for the monthly survival verdict and follow-on finance tools.</p>
-        <span class="route-cta">Open fees hub →</span>
+        <span class="route-cta">Open fees hub</span>
       </a>
       <a class="route-card" href="/education/loans/">
         <h3>Student Loans &amp; Repayment</h3>
         <p>Loan repayment, the canonical Kenya HELB calculator, and budget-support tools collected into one financing route.</p>
-        <span class="route-cta">Open loans hub →</span>
+        <span class="route-cta">Open loans hub</span>
       </a>
       <a class="route-card" href="/education/scholarships/">
         <h3>Scholarships &amp; Funding</h3>
         <p>One flagship scholarship flow with quick eligibility checks, profile-aware matching, degree-readiness checks, and supporting funding tools.</p>
-        <span class="route-cta">Open scholarships hub →</span>
+        <span class="route-cta">Open scholarships hub</span>
       </a>
       <a class="route-card" href="/education/study-abroad/">
         <h3>Study Abroad Planning</h3>
         <p>Destination comparison, affordability decisions, IELTS pathway targets, degree-readiness bridging, scholarships, and university shortlist building in one connected lane.</p>
-        <span class="route-cta">Open study abroad hub →</span>
+        <span class="route-cta">Open study abroad hub</span>
       </a>
     </div>
   </div>
@@ -274,6 +294,14 @@ function escapeHtml(value){
     .replace(/'/g,'&#39;');
 }
 
+function compactLabel(value,fallback){
+  var source=String(value||fallback||'Education').replace(/[^A-Za-z0-9 ]/g,' ').trim();
+  var words=source.split(/\s+/).filter(Boolean);
+  if(!words.length){return'ED';}
+  if(words.length===1){return words[0].slice(0,3).toUpperCase();}
+  return (words[0][0]+words[1][0]).toUpperCase();
+}
+
 function renderToolCard(tool){
   var badgeClass=tool.status==='new'?'tool-badge new':'tool-badge';
   var badgeLabel=tool.status==='new'?'New':'Live';
@@ -281,14 +309,14 @@ function renderToolCard(tool){
   return [
     '<a href="',escapeHtml(tool.href),'" class="tool-card">',
       '<div class="tool-top">',
-        '<span class="tool-icon">',escapeHtml(tool.icon||'🎓'),'</span>',
+        '<span class="tool-icon" aria-hidden="true">',escapeHtml(compactLabel(tool.name,'Education')),'</span>',
         '<span class="',badgeClass,'">',badgeLabel,'</span>',
       '</div>',
       '<h4>',escapeHtml(tool.name),'</h4>',
       '<p>',escapeHtml(tool.desc),'</p>',
       '<div class="tool-foot">',
         '<span class="tool-country">',escapeHtml(countryLabel),'</span>',
-        '<span class="tool-cta">Open →</span>',
+        '<span class="tool-cta">Open</span>',
       '</div>',
     '</a>'
   ].join('');
@@ -306,7 +334,7 @@ function renderOverviewCard(bucket, productCount){
   return [
     '<div class="overview-card">',
       '<div class="overview-top">',
-        '<span class="overview-icon">',escapeHtml(bucket.icon),'</span>',
+        '<span class="overview-icon" aria-hidden="true">',escapeHtml(compactLabel(bucketTitle,'Education')),'</span>',
         '<span class="overview-count">',escapeHtml(countLabel),'</span>',
       '</div>',
       '<h3>',escapeHtml(bucketTitle),'</h3>',
@@ -326,13 +354,13 @@ function renderProductCard(product){
   return [
     '<a href="',escapeHtml(product.href),'" class="product-card">',
       '<div class="product-top">',
-        '<span class="product-icon">',escapeHtml(product.icon||'🎓'),'</span>',
+        '<span class="product-icon" aria-hidden="true">',escapeHtml(compactLabel(product.title,'Education')),'</span>',
         '<span class="product-badge">',escapeHtml(publicLabel.accent),'</span>',
       '</div>',
       '<h3>',escapeHtml(product.title),'</h3>',
       '<p>',escapeHtml(product.summary),'</p>',
       '<div class="product-meta">',escapeHtml(publicLabel.type),'</div>',
-      '<div class="product-cta">Open tool →</div>',
+      '<div class="product-cta">Open tool</div>',
     '</a>'
   ].join('');
 }
@@ -342,7 +370,7 @@ function renderFeaturedBucket(bucket){
     '<section class="bucket-section">',
       '<div class="bucket-head">',
         '<div class="bucket-head-left">',
-          '<div class="bucket-icon">',escapeHtml(bucket.icon),'</div>',
+          '<div class="bucket-icon" aria-hidden="true">',escapeHtml(compactLabel(bucket.title,'Education')),'</div>',
           '<div>',
             '<h3>',escapeHtml(bucket.title),'</h3>',
             '<p>',escapeHtml(bucket.description),'</p>',
@@ -359,7 +387,7 @@ function renderFeaturedBucket(bucket){
 
 function renderRegistryBucket(bucket){
   var pills=bucket.allTools.map(function(tool){
-    return '<a href="'+escapeHtml(tool.href)+'">'+escapeHtml(tool.icon||'🎓')+' '+escapeHtml(tool.name)+'</a>';
+    return '<a href="'+escapeHtml(tool.href)+'">'+escapeHtml(tool.name)+'</a>';
   }).join('');
   var note=bucket.productBucket
     ? '<div class="registry-note">AfroJAMB and AfroStudy are available above when you want a focused exam-prep path.</div>'

@@ -4299,6 +4299,9 @@ function fetchCountryHubJson(path) {
     }
   } catch (err) {}
   var host = typeof location !== 'undefined' ? location.hostname : '';
+  if (/^(localhost|127\.0\.0\.1)$/i.test(host) && path.indexOf('/api/') === 0) {
+    return Promise.reject(new Error('Local API unavailable'));
+  }
   var hasLocalApi = /^(www\.)?afrotools\.com$/i.test(host) || /--afrotools\.netlify\.app$/i.test(host);
   var urls = hasLocalApi ? [path, 'https://afrotools.com' + path] : ['https://afrotools.com' + path, path];
   function attempt(index) {

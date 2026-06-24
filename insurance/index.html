@@ -21,14 +21,33 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=d8ba831e">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/insurance.css?v=8d691b26">
-<script src="/assets/js/components/navbar.min.js?v=91514111" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
+.ins-hero{background:#f8fafc!important;background-image:radial-gradient(circle at 8% 0%,rgba(0,87,184,.08),transparent 30%),radial-gradient(circle at 94% 16%,rgba(32,178,170,.12),transparent 24%)!important;color:#0f172a!important;border-bottom:1px solid #e2e8f0!important;padding:50px 20px 44px!important}
+.ins-hero::before{display:none!important}
+.ins-hero-inner{max-width:1120px!important}
+.ins-hero .breadcrumb,.ins-hero .breadcrumb a,.ins-hero .breadcrumb span{color:#52637a!important}
+.ins-hero h1{font-family:'DM Sans',system-ui,-apple-system,sans-serif!important;font-size:clamp(2rem,4vw,3.45rem)!important;font-weight:800!important;line-height:1.03!important;letter-spacing:0!important;color:#0f172a!important;max-width:880px!important}
+.ins-hero h1 em{color:#0057b8!important;font-style:normal!important}
+.ins-hero p{max-width:800px!important;color:#52637a!important;line-height:1.72!important}
+.ins-badges{gap:10px!important}
+.ins-badge{min-height:40px!important;padding:8px 12px!important;border-radius:8px!important;background:#fff!important;border:1px solid rgba(148,163,184,.45)!important;color:#0f172a!important;box-shadow:none!important;letter-spacing:0!important;text-transform:none!important}
+.ins-stats,.ins-main{max-width:1120px!important}
+.ins-stat,.ins-tool-card,.ins-why-card,.ins-faq details,.ins-seo{border-radius:8px!important;border:1px solid #e2e8f0!important;box-shadow:none!important;background:#fff!important}
+.ins-tool-card{transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease!important}
+.ins-tool-card:hover,.ins-tool-card:focus-visible{border-color:#2b6dd8!important;box-shadow:0 12px 24px rgba(15,23,42,.08)!important;transform:translateY(-1px)!important}
+.ins-tool-card:focus-visible,.ins-faq summary:focus-visible{outline:3px solid rgba(43,109,216,.28)!important;outline-offset:3px!important}
+.ins-tc-icon,.ins-why-icon{width:44px!important;height:44px!important;border-radius:8px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;background:#eef5ff!important;color:#0057b8!important;font-size:.82rem!important;font-weight:800!important;line-height:1!important;letter-spacing:0!important}
+.ins-tc-foot,.ins-badges{flex-wrap:wrap!important}
+.ins-tc-badge{border-radius:8px!important}
+.ins-tc-desc,.ins-why-card p,.ins-seo p,.ins-seo li,.faq-body{color:#52637a!important;line-height:1.68!important}
+@media(max-width:720px){.ins-hero{padding:40px 18px 34px!important}.ins-badges{display:grid!important;grid-template-columns:1fr!important}.ins-stat{min-width:0!important}.ins-tc-foot{align-items:flex-start!important}.ins-tool-card{min-width:0!important}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/insurance/" />
@@ -36,18 +55,18 @@ a{text-decoration:none;color:inherit}
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/insurance/" />
 </head>
 <body>
-<afro-navbar theme="dark" active="insurance"></afro-navbar>
+<afro-navbar active="insurance"></afro-navbar>
 
 <section class="ins-hero">
   <div class="ins-hero-inner">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> Insurance</nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>&gt;</span> Insurance</nav>
     <h1>Africa <em>Insurance</em> Command Center</h1>
     <p>Compare cover, claims, proof, payment reality and real buyer workflows across 54 African countries. Start with one need, then build a dashboard-ready insurance pack you can reuse before paying or filing a claim.</p>
     <div class="ins-badges">
-      <span class="ins-badge">&#x1f6e1;&#xfe0f; 16 App Families</span>
-      <span class="ins-badge">&#x1f30d; 54 Countries</span>
-      <span class="ins-badge">&#x1f4cb; Claim Ready</span>
-      <span class="ins-badge">&#x1f4e5; PDF Buyer Packs</span>
+      <span class="ins-badge">16 app families</span>
+      <span class="ins-badge">54 countries</span>
+      <span class="ins-badge">Claim ready</span>
+      <span class="ins-badge">PDF buyer packs</span>
     </div>
   </div>
 </section>
@@ -180,7 +199,7 @@ a{text-decoration:none;color:inherit}
       <div class="ins-why-card">
         <div class="ins-why-icon">&#x1f512;</div>
         <h3>Free &amp; Private</h3>
-        <p>No sign-up required. Your data stays in your browser — we never collect personal information.</p>
+        <p>No sign-up required. Your data stays in your browser; we never collect personal information.</p>
       </div>
     </div>
   </section>
@@ -192,7 +211,7 @@ a{text-decoration:none;color:inherit}
     <details><summary>Which African countries have the highest insurance penetration?<span></span></summary><div class="faq-body">South Africa leads at ~14% of GDP, followed by Namibia (~6.5%), Mauritius (~5.8%), Morocco (~3.9%), and Botswana (~3.2%). Most sub-Saharan countries remain below 2%.</div></details>
     <details><summary>What is microinsurance?<span></span></summary><div class="faq-body">Microinsurance is low-cost insurance designed for low-income earners and informal sector workers. Products are often linked to mobile money platforms (like M-Pesa in Kenya or MTN Mobile Money in Ghana) with premiums as low as $1/month.</div></details>
     <details><summary>Do these tools replace professional insurance advice?<span></span></summary><div class="faq-body">No. These are educational estimators to help you understand approximate costs and coverage needs. Always consult a licensed insurance broker or agent in your country for formal advice and binding quotes.</div></details>
-    <details><summary>Why does AfroTools show 300+ calculators?<span></span></summary><div class="faq-body">Each country has a dedicated calculator with local data — regulations, premium ranges, providers, and currency. For example, the Car Insurance tool alone has 54 individual country calculators, each tailored with country-specific data. This gives you far more accurate estimates than a single generic tool.</div></details>
+    <details><summary>Why does AfroTools show 300+ calculators?<span></span></summary><div class="faq-body">Each country has a dedicated calculator with local data: regulations, premium ranges, providers, and currency. For example, the Car Insurance tool alone has 54 individual country calculators, each tailored with country-specific data. This gives you far more accurate estimates than a single generic tool.</div></details>
   </section>
 
   <!-- SEO Content -->
@@ -207,7 +226,7 @@ a{text-decoration:none;color:inherit}
     <p>Mobile money-linked microinsurance is transforming access to coverage across the continent. Products with premiums as low as $1 per month are reaching millions of previously uninsured individuals through partnerships between insurers, telecoms, and fintech companies.</p>
 
     <h3>Country-Specific Calculators</h3>
-    <p>Insurance regulations, premium structures, and provider landscapes differ dramatically between countries. A car insurance premium in South Africa is calculated entirely differently from one in Nigeria or Kenya. That is why each of our tools has dedicated country calculators with local data — regulators, mandatory minimums, provider lists, and currency-specific calculations.</p>
+    <p>Insurance regulations, premium structures, and provider landscapes differ dramatically between countries. A car insurance premium in South Africa is calculated entirely differently from one in Nigeria or Kenya. That is why each of our tools has dedicated country calculators with local data: regulators, mandatory minimums, provider lists, and currency-specific calculations.</p>
 
     <p class="disclaimer">All calculations are estimates based on publicly available data and industry ranges. Actual premiums depend on individual risk profiles, insurer underwriting, and market conditions. These tools are for informational purposes only and do not constitute insurance advice. Always consult a licensed insurance broker in your country.</p>
   </section>
@@ -215,7 +234,27 @@ a{text-decoration:none;color:inherit}
 
 <afro-footer></afro-footer>
 <script src="/assets/js/insurance-workbench.js?v=100b7540" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
-<script>if(window.twemoji){twemoji.parse(document.body,{folder:'svg',ext:'.svg'})}</script>
+<script>
+(function(){
+  function compactInitials(text){
+    var words=String(text||'').replace(/[^A-Za-z0-9 ]/g,' ').trim().split(/\s+/).filter(Boolean);
+    if(!words.length){return'IN';}
+    if(words.length===1){return words[0].slice(0,3).toUpperCase();}
+    return (words[0][0]+words[1][0]).toUpperCase();
+  }
+  document.querySelectorAll('.ins-tc-icon').forEach(function(icon){
+    var card=icon.closest('.ins-tool-card');
+    var title=card&&card.querySelector('.ins-tc-name');
+    icon.textContent=compactInitials(title&&title.textContent);
+    icon.setAttribute('aria-hidden','true');
+  });
+  document.querySelectorAll('.ins-why-icon').forEach(function(icon){
+    var card=icon.closest('.ins-why-card');
+    var title=card&&card.querySelector('h3');
+    icon.textContent=compactInitials(title&&title.textContent);
+    icon.setAttribute('aria-hidden','true');
+  });
+})();
+</script>
 </body>
 </html>
