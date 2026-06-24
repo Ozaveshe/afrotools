@@ -27,6 +27,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/workflow-tightening.css?v=5c3ceaed">
 <link rel="stylesheet" href="/assets/css/vat-business-tax-layout-fix.css?v=3583381e">
+<link rel="stylesheet" href="/assets/css/vat-business-tax-focus.css?v=70162817">
 <script src="/assets/js/components/tool-registry.min.js?v=af33236a" defer></script>
 <script src="/assets/js/components/category-cards.js?v=51040fd5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
@@ -119,13 +120,70 @@
     <p class="hero-sub">VAT, invoice, pricing, margin, withholding, and business-tax planning tools for African businesses.</p>
     <div class="hero-stats">
       <div><div class="hs-n" id="s-total">63</div><div class="hs-l">VAT & business tools</div></div>
-      <div><div class="hs-n" id="s-live">63</div><div class="hs-l">Ready now</div></div>
+      <div><div class="hs-n" id="s-live">63</div><div class="hs-l">Available routes</div></div>
       <div><div class="hs-n" id="s-pipe">10</div><div class="hs-l">More planned</div></div>
     </div>
   </div>
 </section>
 
 <div class="wrap"><p class="quote">VAT work goes beyond a percentage. Build the quote, invoice, withholding, filing, and source-check route in one place, then keep a clean work summary ready for documents, payroll, trade, or legal follow-up.</p></div>
+
+<section class="vat-route-planner" aria-labelledby="vat-route-planner-title" data-vat-route-planner>
+  <div class="wrap">
+    <div class="vat-route-panel">
+      <div class="vat-route-panel__head">
+        <div>
+          <span class="vat-route-panel__eyebrow">Business route planner</span>
+          <h2 id="vat-route-planner-title">Choose the next VAT, invoice or pricing step</h2>
+          <p>Pick the country and business task. AfroTools will point you to the safest first route and copy a verification brief without saving invoice lines, customer data or tax files.</p>
+        </div>
+        <span class="vat-route-panel__badge">Route metadata only</span>
+      </div>
+      <form class="vat-route-form" data-vat-route-form>
+        <label>
+          <span>Country or market</span>
+          <select data-vat-route-country>
+            <option value="ALL">Pan-African / compare first</option>
+            <option value="NG">Nigeria</option>
+            <option value="KE">Kenya</option>
+            <option value="GH">Ghana</option>
+            <option value="ZA">South Africa</option>
+            <option value="EG">Egypt</option>
+            <option value="TZ">Tanzania</option>
+          </select>
+        </label>
+        <label>
+          <span>Business task</span>
+          <select data-vat-route-task>
+            <option value="vat">Add or extract VAT</option>
+            <option value="invoice">Prepare invoice or receipt</option>
+            <option value="pricing">Check margin, markup or break-even</option>
+            <option value="withholding">Review withholding tax</option>
+            <option value="import">Estimate import or landed cost</option>
+            <option value="cashflow">Check cash-flow impact</option>
+          </select>
+        </label>
+        <label>
+          <span>Transaction amount (optional, not saved)</span>
+          <input type="number" min="0" step="1000" inputmode="decimal" data-vat-route-amount placeholder="Example: 250000">
+        </label>
+      </form>
+      <div class="vat-route-result" aria-live="polite">
+        <div>
+          <strong data-vat-route-title>Pan-African / compare first: VAT calculator route</strong>
+          <p data-vat-route-copy>Open the VAT calculator, check the source panel, then export or save from the calculator page where supported.</p>
+          <ul data-vat-route-checklist></ul>
+          <p class="vat-route-status" data-vat-route-status>No invoice lines, customer records or tax documents are saved by this hub planner.</p>
+        </div>
+        <div class="vat-route-actions">
+          <a class="primary" href="/tools/vat-calculator/" data-vat-route-open>Open route</a>
+          <button type="button" data-vat-route-save>Save route</button>
+          <button type="button" data-vat-route-copy>Copy brief</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="sec"><div class="wrap">
   <div class="ey">All Tools</div>
@@ -201,7 +259,7 @@
 <script>
 function _initVatBusiness(){
   var key='ecommerce';
-  var allTools=AFRO_TOOLS.filter(function(t){return t.category===key;});
+  var allTools=AFRO_TOOLS.filter(function(t){return t.category===key&&!t.lang;});
   var live=allTools.filter(function(t){return t.status==='live'||t.status==='new';});
   var pipe=allTools.filter(function(t){return t.status==='queued'||t.status==='planned';});
   var plannedCount=pipe.length||10;
@@ -262,6 +320,7 @@ function _initVatBusiness(){
 if (typeof onRegistryReady === 'function') { onRegistryReady(_initVatBusiness); }
 else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initVatBusiness(); else document.addEventListener('afrotools:registry-ready', _initVatBusiness); }); }
 </script>
+<script src="/assets/js/pages/vat-business-tax-focus.js?v=1a6b9ed2" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

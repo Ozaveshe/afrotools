@@ -49,6 +49,7 @@ a{text-decoration:none;color:inherit}
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/password-strength.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
+<link rel="stylesheet" href="/assets/css/security-focus.css?v=c3e2d2fc">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -110,7 +111,7 @@ a{text-decoration:none;color:inherit}
       <label class="en-label">Enter Password to Test</label>
       <div class="pw-input-wrap">
         <input aria-label="Type your password" type="password" id="pwInput" class="en-input" placeholder="Type your password..." oninput="analyzeRealtime()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-        <button class="pw-toggle" onclick="toggleVisibility()" id="pwToggle" type="button">&#x1f441;&#xfe0f;</button>
+        <button class="pw-toggle" onclick="toggleVisibility()" id="pwToggle" type="button" aria-label="Show password">Show</button>
       </div>
       <div class="strength-bar"><div class="strength-fill" id="strengthBar"></div></div>
       <div id="strengthLabel" style="font-size:.82rem;font-weight:700;margin-top:6px;color:#64748b">Start typing to analyse...</div>
@@ -348,10 +349,11 @@ function showResults(pw,score){
 function toggleVisibility(){
   var input=document.getElementById('pwInput');
   var btn=document.getElementById('pwToggle');
-  if(input.type==='password'){input.type='text';btn.textContent='🙈';}
-  else{input.type='password';btn.textContent='👁️';}
+  if(input.type==='password'){input.type='text';btn.textContent='Hide';btn.setAttribute('aria-label','Hide password');}
+  else{input.type='password';btn.textContent='Show';btn.setAttribute('aria-label','Show password');}
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/security-focus.js?v=c57f4c90" defer></script>
 </body>
 </html>

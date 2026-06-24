@@ -131,6 +131,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq details[open] summary::after{content:'-'}
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
+<link rel="stylesheet" href="/assets/css/small-business-focus.css?v=584f7848">
 <script src="/assets/js/bundles/core.be3f97db.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -680,12 +681,12 @@ function calculate() {
 
   // Wire up save/share buttons
   var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({
+  if (_saveBtn && typeof _saveBtn.setData === 'function') _saveBtn.setData({
     inputs: { currency: document.getElementById('currency').value, businessType: document.getElementById('businessType').value, marketDays: marketDays, items: itemData.length, expenses: expenseData.length },
     outputs: { totalRevenue: totalRevenue, totalCost: totalCost, totalExpenses: totalExpenses, grossProfit: grossProfit, netProfit: netProfit, margin: margin.toFixed(1) + '%', monthlyProfit: netProfit * marketDays }
   });
   var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({
+  if (_shareBtn && typeof _shareBtn.setResult === 'function') _shareBtn.setResult({
     headline: 'Market Stall Profit',
     mainValue: (isProfit ? '' : '-') + sym + Math.abs(netProfit).toLocaleString() + ' net ' + (isProfit ? 'profit' : 'loss'),
     subValues: [
@@ -831,5 +832,6 @@ renderHistory();
 </script>
 
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/pages/small-business-focus.js?v=1f3c6d53" defer></script>
 </body>
 </html>

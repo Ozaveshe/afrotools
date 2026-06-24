@@ -456,6 +456,7 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="stylesheet" href="/assets/css/african-workflow.css?v=b5a0b1a7">
+<link rel="stylesheet" href="/assets/css/fintech-payment-focus.css?v=ec3defef">
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="stylesheet" href="/assets/css/money-page-commercial.css?v=e5730f07">
@@ -689,6 +690,7 @@
       <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
       <div class="ai-chat" id="aiChat">
         <div class="ai-msgs" id="aiMsgs"></div>
+        <label class="ai-consent"><input type="checkbox" id="aiConsent"><span>I consent to send this message and recent chat context to the AI advisor. Do not include account numbers, identity documents, recipient phone numbers, addresses, private transaction records, or sensitive amounts.</span></label>
         <div class="ai-input-row">
           <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
           <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
@@ -1318,8 +1320,15 @@ async function sendAI(){
   var input=document.getElementById('aiInput');
   var msgsEl=document.getElementById('aiMsgs');
   var sendBtn=document.getElementById('aiSend');
+  var status=document.getElementById('aiStatus');
+  var consent=document.getElementById('aiConsent');
   var q=input.value.trim();
   if(!q)return;
+  if(!consent||!consent.checked){
+    if(status)status.textContent='AI advisor is optional. Tick consent before sending a question, and keep private remittance, identity, account, phone, address, and transaction details out of the prompt.';
+    input.focus();
+    return;
+  }
   AI_MSGS.push({role:'user',content:q});
   msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
   input.value='';sendBtn.disabled=true;
@@ -1340,5 +1349,6 @@ async function sendAI(){
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/pages/fintech-payment-focus.js?v=a31b6f88" defer></script>
 </body>
 </html>

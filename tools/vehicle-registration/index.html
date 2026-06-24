@@ -78,6 +78,7 @@ details[open] summary::after{content:'\2212'}
 .faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
 @media(max-width:600px){.form-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="/assets/css/transport-focus.css?v=f286e7af">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/vehicle-registration.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/vehicle-registration.webp">
@@ -284,13 +285,10 @@ function checkRegistration() {
     statusHTML = '<div class="status-banner warn">&#x1f4cb; Registration details for ' + country.charAt(0).toUpperCase() + country.slice(1) + ' shown below. Enter expiry date above to check if renewal is due.</div>';
   }
 
-  document.getElementById('regResults').innerHTML = '';
-  document.getElementById('regStatus').innerHTML = '';
-
-  document.getElementById('regStatus').outerHTML;
-
   // Re-render results
   var el = document.getElementById('regResults');
+  if (!el) return;
+  el.classList.add('on');
   el.innerHTML = statusHTML +
     '<div class="info-grid">' +
     '<div class="info-box-reg"><div class="info-box-label">Annual Renewal Fee</div><div class="info-box-val">' + data.fee + '</div></div>' +
@@ -307,5 +305,6 @@ function checkRegistration() {
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/transport-focus.js?v=03ea47f7" defer></script>
 </body>
 </html>

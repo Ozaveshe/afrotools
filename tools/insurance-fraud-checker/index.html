@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
 <link rel="stylesheet" href="/assets/css/insurance.css?v=8d691b26">
+<link rel="stylesheet" href="/assets/css/insurance-claims-focus.css?v=510935e4">
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -84,7 +85,7 @@ a{text-decoration:none;color:inherit}
 }
 </script>
 </head>
-<body>
+<body data-insurance-claims-focus="true">
 <afro-navbar theme="dark" active="insurance"></afro-navbar>
 <section class="en-tool-hero">
   <div class="en-tool-hero-inner">
@@ -117,8 +118,8 @@ a{text-decoration:none;color:inherit}
         </select>
       </div>
       <div class="en-field">
-        <label class="en-label">Claim Type</label>
-        <select id="claimType" class="en-select" aria-label="Claim Type">
+        <label class="en-label" for="claimType">Claim Type</label>
+        <select id="claimType" class="en-select">
           <option value="motor">Motor / Vehicle</option>
           <option value="home">Home / Property</option>
           <option value="health">Health / Medical</option>
@@ -128,12 +129,12 @@ a{text-decoration:none;color:inherit}
         </select>
       </div>
       <div class="en-field">
-        <label class="en-label">Claim Amount (local currency)</label>
-        <input aria-label="ClaimAmount" type="number" id="claimAmount" class="en-input" value="5000000" min="0">
+        <label class="en-label" for="claimAmount">Claim Amount (local currency)</label>
+        <input aria-label="Claim amount" type="number" id="claimAmount" class="en-input" value="5000000" min="0">
       </div>
       <div class="en-field">
-        <label class="en-label">Policy Premium Paid (annual)</label>
-        <input aria-label="PremiumPaid" type="number" id="premiumPaid" class="en-input" value="200000" min="0">
+        <label class="en-label" for="premiumPaid">Policy Premium Paid (annual)</label>
+        <input aria-label="Policy premium paid annually" type="number" id="premiumPaid" class="en-input" value="200000" min="0">
       </div>
     </div>
   </div>
@@ -358,6 +359,7 @@ a{text-decoration:none;color:inherit}
   <wise-cta context="general"></wise-cta>
 </div>
 <afro-footer></afro-footer>
+<script src="/engines/insurance-fraud-checker-engine.js?v=8c14d584"></script>
 <script>
 var FLAGS_DATA=[
   {id:'f1',pts:8,label:'Incident within 3 months of policy start',category:'Timing'},
@@ -451,6 +453,55 @@ function calculate(){
 }
 </script>
 <script src="/assets/js/insurance-workbench.js?v=100b7540" defer></script>
+<script>
+window.calculate=function(){
+  var engine=window.AfroTools&&window.AfroTools.InsuranceFraudEngine;
+  if(!engine){alert('Fraud scoring engine failed to load.');return;}
+  var result=engine.calculate({
+    country:document.getElementById('country').value,
+    claimType:document.getElementById('claimType').value,
+    claimAmount:parseFloat(document.getElementById('claimAmount').value)||0,
+    premiumPaid:parseFloat(document.getElementById('premiumPaid').value)||0,
+    answers:flagAnswers
+  });
+  flagAnswers=result.answers;
+  var pct=result.pct;
+  var triggered=result.triggered;
+  var warnings=result.warnings;
+  document.getElementById('riskScore').textContent=pct+'/100';
+  document.getElementById('riskLabel').textContent=result.level+' | '+triggered.length+' red flags triggered, '+warnings.length+' unknown';
+  document.getElementById('riskBadgeLabel').textContent=result.badge;
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Risk Score</div><div class="en-metric-value" style="color:'+result.levelColor+'">'+pct+'%</div><div class="en-metric-unit">preliminary score</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Red Flags</div><div class="en-metric-value" style="color:#dc2626">'+triggered.length+'</div><div class="en-metric-unit">confirmed triggers</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Unknown Factors</div><div class="en-metric-value" style="color:#d97706">'+warnings.length+'</div><div class="en-metric-unit">need investigation</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Claim Ratio</div><div class="en-metric-value">'+fmt(result.claimRatio,1)+'x</div><div class="en-metric-unit">vs premium paid</div></div>';
+  var flagsHtml='<div style="padding:12px;border-radius:8px;margin-bottom:12px;font-size:.87rem;font-weight:600;background:'+(pct<35?'#dcfce7':pct<65?'#fef3c7':'#fee2e2')+';color:'+(pct<35?'#15803d':pct<65?'#92400e':'#991b1b')+'">'+result.recommendation+'</div>';
+  if(triggered.length>0){
+    flagsHtml+='<div style="margin-bottom:12px"><div style="font-weight:700;font-size:.88rem;color:#dc2626;margin-bottom:8px">Confirmed Red Flags:</div>'+
+      '<div class="en-results-table-wrap"><table class="en-results-table"><thead><tr><th>Red Flag</th><th>Category</th><th>Risk Weight</th></tr></thead><tbody>'+
+      triggered.map(function(f){
+        return '<tr><td class="en-td-value">'+f.label+'</td><td style="color:#64748b">'+f.category+'</td><td class="en-td-highlight" style="color:#dc2626">'+f.pts+' pts</td></tr>';
+      }).join('')+'</tbody></table></div></div>';
+  }
+  if(warnings.length>0){
+    flagsHtml+='<div><div style="font-weight:700;font-size:.88rem;color:#d97706;margin-bottom:8px">Factors to Investigate (Unknown):</div>'+
+      warnings.map(function(f){
+        return '<div style="padding:8px 12px;border-left:3px solid #d97706;background:#fffbeb;margin-bottom:6px;border-radius:0 6px 6px 0;font-size:.85rem">'+f.label+'</div>';
+      }).join('')+'</div>';
+  }
+  if(triggered.length===0&&warnings.length<3) flagsHtml+='<div style="padding:16px;text-align:center;color:#15803d;font-weight:700">No significant red flags identified. Claim appears legitimate.</div>';
+  document.getElementById('flagsContent').innerHTML=flagsHtml;
+  document.getElementById('reportingContent').innerHTML=
+    '<div style="font-size:.87rem;color:#64748b;margin-bottom:12px">Report insurance fraud through these official channels:</div>'+
+    result.reportingChannels.map(function(ch){
+      return '<div style="padding:10px 14px;border-left:3px solid #475569;background:#F8FAFC;margin-bottom:8px;border-radius:0 6px 6px 0;font-size:.85rem">'+ch+'</div>';
+    }).join('');
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+};
+</script>
+<script src="/assets/js/pages/insurance-claims-focus.js?v=e07d8096" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

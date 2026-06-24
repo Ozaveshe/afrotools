@@ -42,6 +42,7 @@
 <link rel="stylesheet" href="/assets/css/document-pdf-workflow.css?v=b22d924f">
 <link rel="stylesheet" href="/assets/css/document-pdf-workflow-tight.css?v=5044607f">
 <link rel="stylesheet" href="/assets/css/workflow-tightening.css?v=5c3ceaed">
+<link rel="stylesheet" href="/assets/css/document-pdf-focus.css?v=9522e715">
 <style>
 .docpdf-public-planner .docpdf-flow-grid>.docpdf-flow-panel:nth-child(3){display:none}
 .docpdf-route-band{background:#f8fafc;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:34px 0}
@@ -230,28 +231,41 @@
 }
 </script>
 </head>
-<body>
+<body class="document-pdf-focus">
 <afro-navbar></afro-navbar>
 <div class="wrap"><nav class="bc"><a href="/">AfroTools</a> &gt; <a href="/categories/">Categories</a> &gt; <span class="cur">Document & PDF</span></nav></div>
 
 <section class="hero">
   <div class="wrap hero-z">
-    <div class="hero-ey"><span>DP</span> Document & PDF</div>
-    <h1><b>Document & PDF</b></h1>
-    <p class="hero-sub">Complete PDF workspace: merge, split, compress, convert to images, watermark, AES-256 password protect, repair, and document builders.</p>
-    <div class="docpdf-hero-actions" aria-label="Document and PDF primary actions">
-      <button class="primary" type="button" onclick="document.getElementById('docpdf-route-title').scrollIntoView({behavior:'smooth',block:'start'});">Start workflow planner</button>
-      <a class="secondary" href="/tools/pdf-workspace/">Open PDF workspace</a>
+    <div class="docpdf-hero-copy">
+      <div class="hero-ey"><span>DP</span> Document & PDF Workspace</div>
+      <h1>Prepare, protect, and export <b>PDF work</b> without uploads.</h1>
+      <p class="hero-sub">Choose a document route, run the right local-first tool, then copy, save, or export a metadata-only handoff before moving to the next workflow.</p>
+      <div class="docpdf-hero-actions" aria-label="Document and PDF primary actions">
+        <button class="primary" type="button" onclick="document.querySelector('[data-document-pdf-workflow-app]').scrollIntoView({behavior:'smooth',block:'start'});">Start workflow planner</button>
+        <a class="secondary" href="/tools/pdf-workspace/">Open PDF workspace</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hs-n" id="s-total">31</div><div class="hs-l">Tools in category</div></div>
+        <div><div class="hs-n" id="s-live">31</div><div class="hs-l">Live now</div></div>
+        <div><div class="hs-n" id="s-pipe">6</div><div class="hs-l">Workflow routes</div></div>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div><div class="hs-n" id="s-total">31</div><div class="hs-l">Tools total</div></div>
-      <div><div class="hs-n" id="s-live">31</div><div class="hs-l">Live now</div></div>
-      <div><div class="hs-n" id="s-pipe">10</div><div class="hs-l">More planned</div></div>
-    </div>
+    <aside class="docpdf-hero-panel" aria-label="Document PDF quick routes">
+      <h2>Common starts</h2>
+      <p>Pick the current job. Each route opens a real tool and keeps source files on this device by default.</p>
+      <div class="docpdf-hero-route-list">
+        <a href="/tools/pdf-merge-split/"><span>Pack</span><strong>Merge, split, reorder</strong></a>
+        <a href="/tools/pdf-compress/"><span>Send</span><strong>Compress and protect</strong></a>
+        <a href="/tools/pdf-redact/"><span>Review</span><strong>Redact, sign, compare</strong></a>
+        <a href="/tools/invoice-generator/"><span>Business</span><strong>Invoices and receipts</strong></a>
+      </div>
+      <small>No official filing, legal, tax, or certification claim. Verify final documents before use.</small>
+    </aside>
   </div>
 </section>
 
-<div class="wrap"><p class="quote">Everything PDF in one place. Merge, split, compress, convert, watermark, encrypt, repair, and export documents - all running in your browser. Files never leave your device.</p></div>
+<div class="wrap"><p class="quote">PDF tools here are built around practical document routes: pack work, send work, publish work, review work, business documents, and career documents. Source files stay local unless a specific tool clearly says otherwise.</p></div>
 
 <section class="docpdf-flow-lab docpdf-public-planner" data-document-pdf-workflow-app data-docpdf-public-planner-only>
   <div class="docpdf-flow-head">
@@ -324,7 +338,7 @@ function _initDocPdf(){
   var live=allTools.filter(function(t){return t.status==='live'||t.status==='new';});
   var pipe=allTools.filter(function(t){return t.status==='queued'||t.status==='planned'||t.status==='coming-soon';});
   var fallbackOnlyIds={'html-to-pdf':true,'pdf-bates':true,'pdf-chat':true,'pdf-compare':true,'pdf-convert':true,'pdf-find-replace':true,'pdf-image-convert':true,'pdf-reorder':true,'pdf-repair':true,'pdf-to-audio':true,'pdf-translate':true,'pdf-workflow':true};
-  var plannedCount=pipe.length||10;
+  var plannedCount=6;
   var e;
   e=document.getElementById('s-total');if(e)e.textContent=allTools.length;
   e=document.getElementById('s-live');if(e)e.textContent=live.length;
@@ -369,6 +383,7 @@ function _initDocPdf(){
       var total=filteredLive.length+filteredPipe.length;
       label.style.display='block';
       label.textContent=total+' result'+(total!==1?'s':'')+' for "'+query+'"';
+      label.setAttribute('aria-live','polite');
     } else {
       label.style.display='none';
     }
@@ -424,6 +439,7 @@ else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_
 })();
 </script>
 <script src="/assets/js/lib/document-pdf-workflow.js?v=63499476" defer></script>
+<script src="/assets/js/pages/document-pdf-focus.js?v=6c7b4152" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>

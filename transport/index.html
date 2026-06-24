@@ -28,6 +28,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/transport.css?v=574b06af">
+<link rel="stylesheet" href="/assets/css/transport-focus.css?v=f286e7af">
 <style>
 /* Coherence pass: bring the transport hub into the shared calm product language. */
 .trp-hero{background:#f8fafc!important;background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(29,78,216,.08) 0%,transparent 70%)!important;color:#0f172a!important;padding:48px 18px 50px!important;border-bottom:1px solid #e2e8f0!important}
@@ -86,6 +87,60 @@
   <div class="trp-source-stat"><strong>23</strong><span>Linked workflows</span></div>
 </div>
     <!-- TRANSPORT_SOURCE_SUMMARY_END -->
+  </section>
+
+  <section class="trp-route-planner" aria-labelledby="trp-route-planner-title" data-trp-route-planner>
+    <div class="trp-route-planner__head">
+      <div>
+        <p class="trp-kicker">Route Planner</p>
+        <h2 id="trp-route-planner-title">Pick the cost driver before you quote, ship or book</h2>
+        <p>Choose the country and transport task. Save only a route note, then copy a verification brief for your buyer, driver, broker, customer or operations team.</p>
+      </div>
+      <span class="trp-route-planner__badge">No shipment details stored</span>
+    </div>
+    <form class="trp-route-form" data-trp-route-form>
+      <label>
+        <span>Country or route scope</span>
+        <select data-trp-route-country>
+          <option value="ALL">Pan-African / compare first</option>
+          <option value="NG">Nigeria</option>
+          <option value="KE">Kenya</option>
+          <option value="GH">Ghana</option>
+          <option value="ZA">South Africa</option>
+          <option value="TZ">Tanzania</option>
+          <option value="RW">Rwanda</option>
+        </select>
+      </label>
+      <label>
+        <span>Transport task</span>
+        <select data-trp-route-task>
+          <option value="fuel">Fuel or trip cost</option>
+          <option value="import">Import duty or landed cost</option>
+          <option value="car">Car landed cost or ownership</option>
+          <option value="fleet">Fleet, rider or truck operation</option>
+          <option value="delivery">Delivery, freight or shipping weight</option>
+          <option value="customs">Customs, port or clearance timing</option>
+          <option value="fare">City fare, commute or flight comparison</option>
+        </select>
+      </label>
+      <label>
+        <span>Amount or distance (optional, not saved)</span>
+        <input type="number" min="0" step="1" inputmode="decimal" data-trp-route-amount placeholder="Example: 120">
+      </label>
+    </form>
+    <div class="trp-route-result" aria-live="polite">
+      <div>
+        <strong data-trp-route-title>Pan-African / compare first: Fuel or trip cost</strong>
+        <p data-trp-route-copy>Estimate trip fuel first, then confirm current pump price, distance, toll and route assumptions before paying or quoting.</p>
+        <ul data-trp-route-checklist></ul>
+        <p class="trp-route-status" data-trp-route-status>No VINs, shipment references, booking references, customer details or documents are saved by this hub planner.</p>
+      </div>
+      <div class="trp-route-actions">
+        <a class="primary" href="/tools/fuel-cost/" data-trp-route-open>Open route</a>
+        <button type="button" data-trp-route-save>Save route</button>
+        <button type="button" data-trp-route-copy>Copy brief</button>
+      </div>
+    </div>
   </section>
 
   <section class="trp-pathways" aria-labelledby="transport-pathways-title">
@@ -206,5 +261,6 @@
 </main>
 
 <afro-footer></afro-footer>
+<script src="/assets/js/pages/transport-focus.js?v=03ea47f7" defer></script>
 </body>
 </html>

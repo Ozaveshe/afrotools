@@ -107,6 +107,8 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+  <link rel="stylesheet" href="/assets/css/engineering-tool-focus.css?v=04f93306">
+  <script src="/assets/js/pages/engineering-tool-focus.js?v=adc5d213" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/structural-calc/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calcul-structure/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-miundo-ya-ujenzi/" />
@@ -120,7 +122,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 </section>
 <div class="container">
 <div class="currency-bar">
-<label for="sc-currency">🌍 Country / Currency</label>
+<label for="sc-currency">Country / Currency</label>
 <select id="sc-currency">
 <option value="NGN">Nigeria (₦ Naira)</option>
 <option value="KES">Kenya (KSh)</option>
@@ -133,10 +135,10 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 </select>
 </div>
 <div class="tabs">
-<button type="button" class="tab active" onclick="switchTab('beam')">Beam Design</button>
-<button type="button" class="tab" onclick="switchTab('column')">Column Design</button>
-<button type="button" class="tab" onclick="switchTab('slab')">Slab Design</button>
-<button type="button" class="tab" onclick="switchTab('footing')">Pad Footing</button>
+<button type="button" class="tab active" onclick="switchTab('beam', this)">Beam Design</button>
+<button type="button" class="tab" onclick="switchTab('column', this)">Column Design</button>
+<button type="button" class="tab" onclick="switchTab('slab', this)">Slab Design</button>
+<button type="button" class="tab" onclick="switchTab('footing', this)">Pad Footing</button>
 </div>
 
 <!-- BEAM -->
@@ -265,11 +267,11 @@ function matCost(concreteM3,rebarKg,note){
     +'<span style="font-size:.78rem;color:#92400e">Indicative rates only. Prices vary by region and supplier. Select another currency above to compare.</span></div>';
 }
 
-function switchTab(tab){
+function switchTab(tab, trigger){
   document.querySelectorAll('.calc-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('sec-'+tab).classList.add('active');
-  event.target.classList.add('active');
+  (trigger || document.querySelector('.tab')).classList.add('active');
 }
 
 function calcBeam(){

@@ -477,6 +477,7 @@
     }
   }
 </style>
+<link rel="stylesheet" href="/assets/css/vat-business-tax-focus.css?v=70162817">
 
 <script type="application/ld+json">
 {
@@ -1004,12 +1005,12 @@
     document.getElementById('simpleResults').style.display = 'block';
 
     var _saveBtn = document.querySelector('save-result-button');
-    if (_saveBtn) _saveBtn.setData({
+    if (_saveBtn && typeof _saveBtn.setData === 'function') _saveBtn.setData({
       inputs: { costPrice: cost, markup: markupResult + '%', margin: marginResult + '%', currency: currency },
       outputs: { sellingPrice: currency + selling.toFixed(2), profit: currency + profit.toFixed(2), marginPct: marginResult + '%', markupPct: markupResult + '%' }
     });
     var _shareBtn = document.querySelector('share-result-button');
-    if (_shareBtn) _shareBtn.setResult({
+    if (_shareBtn && typeof _shareBtn.setResult === 'function') _shareBtn.setResult({
       headline: 'Markup Calculation',
       mainValue: currency + selling.toFixed(2),
       subValues: [
@@ -1204,6 +1205,7 @@
   generateMarkupTable();
 </script>
 
+<script src="/assets/js/pages/vat-business-tax-focus.js?v=1a6b9ed2" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

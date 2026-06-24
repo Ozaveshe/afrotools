@@ -56,6 +56,7 @@
 <meta name="twitter:title" content="African Domain Checker — .ng .ke .za .gh TLDs Guide | AfroTools">
 <meta name="twitter:description" content="Check pricing, registrar and requirements for African country-code domains: .ng, .ke, .za, .gh, .et, .tz, .rw, .cm, .sn, .ma, .eg and more.">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/developer-launch-focus.css?v=0744905c">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -103,18 +104,21 @@
     <h1>African <em>Domain Checker</em></h1>
     <p>Check pricing, registrars and local-presence requirements for African country-code TLDs. Find the right .ng, .ke, .za or .gh domain for your project.</p>
     <div class="en-tool-hero-meta">
-      <span class="en-tool-hero-pill">🌐 25+ African TLDs</span>
-      <span class="en-tool-hero-pill">💰 Pricing info</span>
-      <span class="en-tool-hero-pill">✅ Requirements guide</span>
+      <span class="en-tool-hero-pill">25+ African TLDs</span>
+      <span class="en-tool-hero-pill">Pricing info</span>
+      <span class="en-tool-hero-pill">Requirements guide</span>
     </div>
   </div>
 </div>
 
 <div class="en-tool-layout-wide">
   <div class="en-card">
-    <div class="en-card-title"><span class="en-card-title-icon">🔍</span> Check Your Domain</div>
+    <div class="en-card-title">Check Your Domain</div>
     <div class="domain-input-row">
+      <div style="flex:1;min-width:200px">
+      <label class="dev-inline-label" for="domain-name">Domain name without TLD</label>
       <input aria-label="Yourdomain (without TLD)" class="en-input" id="domain-name" placeholder="yourdomain (without TLD)" oninput="update()">
+      </div>
       <button type="button" class="en-btn en-btn-sm" onclick="selectAll()">Select All TLDs</button>
       <button type="button" class="en-btn en-btn-sm en-btn-secondary" onclick="clearAll()">Clear</button>
     </div>
@@ -124,7 +128,7 @@
   </div>
 
   <div class="en-card" id="results-card" style="display:none">
-    <div class="en-card-title"><span class="en-card-title-icon">📊</span> Domain Availability & Pricing</div>
+    <div class="en-card-title">Domain Availability & Pricing</div>
     <div class="results-table-wrap">
       <table class="results-table">
         <thead>
@@ -145,22 +149,22 @@
   </div>
 
   <div class="en-card" style="margin-top:20px">
-    <div class="en-card-title"><span class="en-card-title-icon">💡</span> African Domain Quick Guide</div>
+    <div class="en-card-title">African Domain Quick Guide</div>
     <div class="en-form-grid" style="gap:16px">
       <div class="en-tip" style="margin-bottom:0">
-        <div class="en-tip-icon">🇳🇬</div>
+        <div class="en-tip-icon">.ng</div>
         <div><div class="en-tip-label">.ng / .com.ng</div><div class="en-tip-text">No local presence required for .ng. .com.ng is cheaper (~$10/yr). Registered via NiRA-accredited registrars like QServers, WhoGoHost.</div></div>
       </div>
       <div class="en-tip" style="margin-bottom:0">
-        <div class="en-tip-icon">🇰🇪</div>
+        <div class="en-tip-icon">.ke</div>
         <div><div class="en-tip-label">.ke / .co.ke</div><div class="en-tip-text">.co.ke is most popular ($15-20/yr). No local company required. Register via KENIC-accredited registrars like Truehost, Webmaster Kenya.</div></div>
       </div>
       <div class="en-tip" style="margin-bottom:0">
-        <div class="en-tip-icon">🇿🇦</div>
+        <div class="en-tip-icon">.za</div>
         <div><div class="en-tip-label">.za / .co.za</div><div class="en-tip-text">.co.za requires registrant to be in SA or have SA company. $12-18/yr. Register via ZARC-accredited registrars: Afrihost, 1-grid, Hetzner SA.</div></div>
       </div>
       <div class="en-tip" style="margin-bottom:0">
-        <div class="en-tip-icon">🇬🇭</div>
+        <div class="en-tip-icon">.gh</div>
         <div><div class="en-tip-label">.gh / .com.gh</div><div class="en-tip-text">No local presence required for .com.gh. ~$25/yr. Register via NIC Ghana. Alternatives: .net.gh, .org.gh, .edu.gh (for institutions).</div></div>
       </div>
     </div>
@@ -231,7 +235,7 @@ function renderChips(){
   var el=document.getElementById('tld-selector');
   el.innerHTML=TLDS.map(function(t){
     var sel=selected.has(t.tld)?'selected':'';
-    return '<div class="tld-chip '+sel+'" onclick="toggleTld(\''+t.tld+'\')" title="'+t.country+'">'+t.flag+' '+t.tld+'</div>';
+    return '<div class="tld-chip '+sel+'" onclick="toggleTld(\''+t.tld+'\')" title="'+t.country+'">'+t.tld+'</div>';
   }).join('');
 }
 
@@ -259,7 +263,7 @@ function update(){
     var whoisUrl=t.whoisBase+(t.whoisBase.includes('?')?'':domain);
     return '<tr>'+
       '<td><span class="domain-preview">'+domain+'</span></td>'+
-      '<td>'+t.flag+' '+t.country+'</td>'+
+      '<td>'+t.country+'</td>'+
       '<td><span class="price-badge">~$'+t.price+'/yr</span></td>'+
       '<td style="color:var(--en-muted);font-size:.84rem">~$'+t.renew+'/yr</td>'+
       '<td>'+reqMap[t.req]+'</td>'+
@@ -274,5 +278,6 @@ renderChips();
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/developer-launch-focus.js?v=8d536edb" defer></script>
 </body>
 </html>

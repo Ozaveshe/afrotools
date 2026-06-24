@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/salary-tax.css?v=4398afbd">
+<link rel="stylesheet" href="/assets/css/salary-tax-focus.css?v=784e3df7">
 <link rel="stylesheet" href="/assets/css/workflow-tightening.css?v=5c3ceaed" media="print" onload="this.media='all'">
 <script src="/assets/js/salary-tax-data-loader.js?v=a304ad50" async></script>
 <style>
@@ -96,13 +97,14 @@
   <div class="hero-orb hero-orb--2" aria-hidden="true"></div>
   <div class="hero-orb hero-orb--3" aria-hidden="true"></div>
   <div class="hub-hero-inner">
+    <div class="salary-hero-copy">
     <nav class="hub-breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a><span aria-hidden="true">/</span>
       <span aria-current="page">Salary &amp; Tax</span>
     </nav>
     <div class="hero-trust-line">
       <span class="hero-trust-dot" aria-hidden="true"></span>
-      PAYE estimates &middot; 188 free tools &middot; 54 countries
+      PAYE estimates &middot; 188 curated routes &middot; 54 countries
     </div>
     <h1>African <span class="hero-em">Salary &amp; Payroll</span> Tools</h1>
     <p>Start with PAYE, net salary, payroll, employer cost, business tax, property and FX tools for African workers, employers, and small businesses. Each high-risk tax route points users back to visible assumptions and authority checks before payroll action.</p>
@@ -116,7 +118,7 @@
     <div class="hero-stats" aria-label="Platform statistics">
       <div class="hero-stat">
         <div class="hero-stat-val" id="s-total">188</div>
-        <div class="hero-stat-lbl">Free Tools</div>
+        <div class="hero-stat-lbl">Curated Routes</div>
       </div>
       <div class="hero-stat-divider" aria-hidden="true"></div>
       <div class="hero-stat"><div class="hero-stat-val">54</div><div class="hero-stat-lbl">Countries</div></div>
@@ -125,6 +127,60 @@
       <div class="hero-stat-divider" aria-hidden="true"></div>
       <div class="hero-stat"><div class="hero-stat-val">Free</div><div class="hero-stat-lbl">Core Calculators</div></div>
     </div>
+    </div>
+    <section class="salary-route-planner" aria-labelledby="salary-route-planner-title" data-salary-route-planner>
+      <div class="salary-route-planner__head">
+        <div>
+          <span class="salary-route-planner__eyebrow">Quick route planner</span>
+          <h2 id="salary-route-planner-title">Choose the safest first payroll or tax route</h2>
+          <p>Pick a country and job type, then copy or save a metadata-only brief before opening the calculator. Amounts are used on this screen only and are not saved.</p>
+        </div>
+        <span class="salary-route-planner__badge">Local-first</span>
+      </div>
+      <form class="salary-route-planner__form" data-salary-route-form>
+        <label>
+          <span>Country or market</span>
+          <select data-salary-route-country>
+            <option value="NG">Nigeria</option>
+            <option value="KE">Kenya</option>
+            <option value="GH">Ghana</option>
+            <option value="ZA">South Africa</option>
+            <option value="EG">Egypt</option>
+            <option value="TZ">Tanzania</option>
+            <option value="FR">Francophone Africa</option>
+            <option value="ALL">Not sure yet</option>
+          </select>
+        </label>
+        <label>
+          <span>Main task</span>
+          <select data-salary-route-task>
+            <option value="employee">Estimate employee take-home pay</option>
+            <option value="employer">Plan employer payroll cost</option>
+            <option value="contractor">Check contractor or side-income tax</option>
+            <option value="business">Review VAT, WHT, CIT, or capital tax</option>
+            <option value="property">Compare property, loan, or transfer cost</option>
+            <option value="fx">Check FX, rates, bank charges, or fuel</option>
+          </select>
+        </label>
+        <label>
+          <span>Monthly amount (optional, not saved)</span>
+          <input type="number" min="0" step="1000" inputmode="decimal" data-salary-route-amount placeholder="Example: 500000">
+        </label>
+      </form>
+      <div class="salary-route-planner__result" aria-live="polite">
+        <div>
+          <strong data-salary-route-title>Employee PAYE route</strong>
+          <p data-salary-route-description>Open the country PAYE calculator, check the source panel, then export or save the result on the calculator page.</p>
+          <ul data-salary-route-checklist></ul>
+          <p class="salary-route-planner__status" data-salary-route-status>No salary figures are saved by this hub planner.</p>
+        </div>
+        <div class="salary-route-planner__actions">
+          <a class="primary" href="/nigeria/ng-salary-tax" data-salary-route-open>Open route</a>
+          <button type="button" data-salary-route-save>Save route</button>
+          <button type="button" data-salary-route-copy>Copy brief</button>
+        </div>
+      </div>
+    </section>
   </div>
 </section>
 
@@ -159,7 +215,7 @@
           <div class="hc-foot">
             <span class="hc-badge">54 Countries</span>
             <span class="hc-badge">Visible assumptions</span>
-            <span class="hc-badge">PDF Payslip</span>
+            <span class="hc-badge">Export where supported</span>
           </div>
           <div class="hc-arrow">Explore PAYE Tools →</div>
         </div>
@@ -227,7 +283,7 @@
           <div class="hc-name">Crypto Suite</div>
           <div class="hc-desc">Live crypto prices, portfolio tracker, tax calculator, P2P rates, naira arbitrage spotter, scam checker, smart contract scanner — Africa-focused.</div>
           <div class="hc-foot">
-            <span class="hc-badge">Live Prices</span>
+            <span class="hc-badge">Verify prices</span>
             <span class="hc-badge">Portfolio</span>
             <span class="hc-badge">Scam Checker</span>
           </div>
@@ -242,7 +298,7 @@
           <div class="hc-desc">Live African currency rates, central bank rate tracker, bank charges comparator, fuel price tracker — AfroFX and AfroRates in real time.</div>
           <div class="hc-foot">
             <span class="hc-badge">54 Currencies</span>
-            <span class="hc-badge">Live Rates</span>
+            <span class="hc-badge">Rate checks</span>
             <span class="hc-badge">Central Banks</span>
           </div>
           <div class="hc-arrow">Explore FX Tools →</div>
@@ -271,7 +327,7 @@
       <div>
         <div class="sec-ey">Unified Workflow</div>
         <h2 id="salary-workflow-title">Calculate, save, report, then continue the payroll work</h2>
-        <p>Salary and tax users should not stop at one answer. The category now gives one clear path from a calculator result to a saved scenario, reusable report, payroll draft, and shareable packet.</p>
+        <p>Salary and tax users should not stop at one answer. Use this hub to move from a planning estimate to a saved scenario, source note, report, payroll draft or shareable packet where the selected tool supports it.</p>
       </div>
       <a class="salary-workflow-cta" href="/tools/afropayroll-os/workspace">Open payroll workspace</a>
     </div>
@@ -284,7 +340,7 @@
       <article class="salary-workflow-card">
         <span class="salary-workflow-step">02</span>
         <h3>Save the scenario</h3>
-        <p>High-value PAYE pages should save named scenarios locally and sync to dashboard workspace when the user is signed in.</p>
+        <p>High-value PAYE pages can save named scenarios locally and sync to dashboard workspace when the user is signed in and the route supports it.</p>
       </article>
       <article class="salary-workflow-card">
         <span class="salary-workflow-step">03</span>
@@ -294,7 +350,7 @@
       <article class="salary-workflow-card">
         <span class="salary-workflow-step">04</span>
         <h3>Continue in AfroPayroll</h3>
-        <p>For employer work, move from individual salary checks into a local-only payroll run draft with saved snapshots and export packets.</p>
+        <p>For employer work, move from individual salary checks into a local-first payroll run draft with saved snapshots and export packets where available.</p>
       </article>
     </div>
   </section>
@@ -373,6 +429,7 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/lazy-script-chain.js?v=9cfc21ea" data-delay="0" data-scripts="/assets/js/salary-tax-index.js?v=7cc18ad7" async></script>
+<script src="/assets/js/pages/salary-tax-focus.js?v=318c445c" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=f3366037" async></script>
 </body>
 </html>

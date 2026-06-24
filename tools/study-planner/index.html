@@ -23,6 +23,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
+<link rel="stylesheet" href="/assets/css/education-study-focus.css?v=dcf1c512">
 <script src="/assets/js/components/related-tools-data.min.js?v=9653f7f5" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -30,7 +31,6 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/bundles/core.be3f97db.min.js" defer></script>
 <script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
-<script src="/assets/js/edu-cloud-sync.js?v=b14c95ce" defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--green:#007AFF;--green-light:#4DA3FF;--green-pale:#E8F2FF;--dark:#0A1628;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#FAFAF8;--card:#fff;--radius:14px;--shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -266,14 +266,13 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/study-planner.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/study-planner/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/planificateur-etudes/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mpango-masomo/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/study-planner/" />
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 </head>
-<body>
+<body data-education-study-focus="true">
 <afro-navbar></afro-navbar>
 
 <!-- Hero -->
@@ -348,20 +347,20 @@
   <div class="sp-card-body">
     <div class="sp-prefs">
       <div class="sp-field">
-        <label>Hours per day</label>
-        <input aria-label="HoursPerDay" type="number" id="hoursPerDay" value="4" min="1" max="12" step="0.5">
+        <label for="hoursPerDay">Hours per day</label>
+        <input aria-label="Hours per day" type="number" id="hoursPerDay" value="4" min="1" max="12" step="0.5">
       </div>
       <div class="sp-field">
-        <label>Days per week</label>
-        <select id="daysPerWeek" aria-label="Days Per Week">
+        <label for="daysPerWeek">Days per week</label>
+        <select id="daysPerWeek" aria-label="Days per week">
           <option value="5">5 days (Mon - Fri)</option>
           <option value="6" selected>6 days (Mon - Sat)</option>
           <option value="7">7 days (Every day)</option>
         </select>
       </div>
       <div class="sp-field">
-        <label>Session length</label>
-        <select id="sessionLength" aria-label="Session Length">
+        <label for="sessionLength">Session length</label>
+        <select id="sessionLength" aria-label="Session length">
           <option value="0.5">30 min</option>
           <option value="1" selected>1 hour</option>
           <option value="1.5">1.5 hours</option>
@@ -369,8 +368,8 @@
         </select>
       </div>
       <div class="sp-field">
-        <label>Start time</label>
-        <input aria-label="StartTime" type="time" id="startTime" value="08:00">
+        <label for="startTime">Start time</label>
+        <input aria-label="Start time" type="time" id="startTime" value="08:00">
       </div>
     </div>
   </div>
@@ -386,10 +385,10 @@
     <div class="sp-breakdown" id="breakdown"></div>
     <div class="sp-table-wrap"><table class="sp-table" id="timetable"></table></div>
     <div class="sp-actions">
-      <button type="button" class="sp-action-btn primary" onclick="printTable()">&#128424; Print / PDF</button>
-      <button type="button" class="sp-action-btn" onclick="switchTab('setup')">&#9998; Edit subjects</button>
-      <button type="button" class="sp-action-btn" onclick="regenerate()">&#8635; Shuffle</button>
-      <button type="button" class="sp-action-btn" onclick="showPomodoro()">&#127813; Start Pomodoro</button>
+      <button type="button" class="sp-action-btn primary" onclick="printTable()">Print / PDF</button>
+      <button type="button" class="sp-action-btn" onclick="switchTab('setup')">Edit subjects</button>
+      <button type="button" class="sp-action-btn" onclick="regenerate()">Shuffle timetable</button>
+      <button type="button" class="sp-action-btn" onclick="showPomodoro()">Focus timer</button>
     </div>
     <!-- Pomodoro Timer -->
     <div class="sp-pomodoro" id="pomodoroTimer" style="display:none">
@@ -716,15 +715,6 @@ function saveToLocal() {
     };
     localStorage.setItem('sp_subjects', JSON.stringify(subjects));
     localStorage.setItem('sp_prefs', JSON.stringify(prefs));
-    // Cloud sync
-    if (window.EduCloudSync) {
-      EduCloudSync.save('studyplan', {
-        planName: 'My Plan',
-        subjects: subjects,
-        preferences: prefs,
-        updated_at: new Date().toISOString()
-      });
-    }
   } catch (e) {}
 }
 
@@ -903,7 +893,8 @@ if (!loadFromLocal()) {
   loadPreset('waec', document.querySelector('.sp-preset[data-key="waec"]'));
 }
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/pages/education-study-focus.js?v=15b48deb" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>
