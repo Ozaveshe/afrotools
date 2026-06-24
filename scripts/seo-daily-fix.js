@@ -7,7 +7,7 @@
  * Checks run & fixed automatically:
  *   1. Hreflang trailing-slash violations on .html-backed pages
  *   2. Sitemap <loc> trailing-slash violations
- *   3. Sitemap <lastmod> staleness (updates to today)
+ *   3. Sitemap <lastmod> staleness when AFROTOOLS_REFRESH_SITEMAP_LASTMOD=1
  *   4. Canonical tag presence check (reports only, no auto-fix)
  *   5. Missing meta description (reports only)
  *
@@ -34,6 +34,7 @@ const REPORT  = process.argv.includes('--report');
 const FIX_MODE = !DRY_RUN && !REPORT;
 const TODAY   = new Date().toISOString().slice(0, 10);
 const SITE_ORIGIN = 'https://afrotools.com';
+const REFRESH_SITEMAP_LASTMOD = process.env.AFROTOOLS_REFRESH_SITEMAP_LASTMOD === '1';
 
 const SKIP_DIRS = new Set([
   'node_modules',
@@ -375,17 +376,19 @@ for (const smName of SITEMAP_FILES) {
     return match;
   });
 
-  // Update <lastmod> to today for pages that were touched today
-  // (only update entries whose lastmod is stale by more than 7 days)
-  content = content.replace(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g, (match, date) => {
-    const ageMs = Date.now() - new Date(date).getTime();
-    const ageDays = ageMs / 86400000;
-    if (ageDays > 7) {
-      sitemapLastmodFixed++;
-      return `<lastmod>${TODAY}</lastmod>`;
-    }
-    return match;
-  });
+  if (REFRESH_SITEMAP_LASTMOD) {
+    // Update <lastmod> to today for pages that were touched today
+    // (only update entries whose lastmod is stale by more than 7 days)
+    content = content.replace(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/g, (match, date) => {
+      const ageMs = Date.now() - new Date(date).getTime();
+      const ageDays = ageMs / 86400000;
+      if (ageDays > 7) {
+        sitemapLastmodFixed++;
+        return `<lastmod>${TODAY}</lastmod>`;
+      }
+      return match;
+    });
+  }
 
   if (content !== original) {
     writeFile(smPath, content);
