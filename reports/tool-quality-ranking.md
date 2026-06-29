@@ -1,6 +1,6 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-06-29T21:48:33.611Z
+Generated: 2026-06-29T22:05:49.473Z
 
 ## Scope
 
@@ -40,16 +40,16 @@ Repair-first rows below D: 0
 | Engineering & Construction | 58 | 58 | 93.4 | 0 | 0 | 0 |
 | Energy & Utilities | 237 | 504 | 93.6 | 0 | 0 | 0 |
 | Agriculture | 507 | 1113 | 93.9 | 0 | 0 | 0 |
-| Finance, Tax & Market Data | 466 | 466 | 94.2 | 0 | 3 | 3 |
+| Finance, Tax & Market Data | 466 | 466 | 94.2 | 0 | 0 | 0 |
 | Telecom & Mobile | 52 | 52 | 94.2 | 0 | 0 | 0 |
 | Personal Finance | 25 | 25 | 94.2 | 0 | 0 | 0 |
 | Business & ROI | 34 | 34 | 94.4 | 0 | 0 | 0 |
 | Document & PDF | 118 | 118 | 94.5 | 0 | 0 | 0 |
 | VAT & Business Tax | 242 | 242 | 94.9 | 0 | 0 | 0 |
 | Travel & Tourism | 20 | 20 | 95.2 | 0 | 0 | 0 |
-| Mortgage & Property | 267 | 445 | 95.3 | 0 | 1 | 1 |
 | Diaspora | 3 | 3 | 95.3 | 0 | 0 | 0 |
 | Health & Wellness | 104 | 104 | 95.4 | 0 | 0 | 0 |
+| Mortgage & Property | 267 | 445 | 95.4 | 0 | 0 | 0 |
 | Sports & Entertainment | 30 | 30 | 95.4 | 0 | 0 | 0 |
 | Climate & Environment | 32 | 35 | 95.7 | 0 | 0 | 0 |
 | Trade & Import | 65 | 65 | 95.8 | 0 | 0 | 0 |
@@ -58,12 +58,8 @@ Repair-first rows below D: 0
 
 ## P0 Queue
 
-| Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
-| ---: | --- | --- | --- | --- | --- | --- |
-| 85 | A | P0-browser-failure | capacite-emprunt-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser route failed; browser console/page errors; missing methodology/breakdown |
-| 90 | A | P0-browser-failure | droits-enregistrement-fr | Mortgage & Property | Legal and compliance workflow | browser route failed; browser console/page errors; no verification panel; weak meta description length |
-| 93 | A | P0-browser-failure | ng-paye-ha | Finance, Tax & Market Data | Tax, salary, finance calculator | browser route failed; browser console/page errors; missing disclaimer/limitations; missing benchmark feature: disclaimer |
-| 94 | A | P0-browser-failure | comparateur-salaires-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser route failed; browser console/page errors; high-intent money tool lacks business CTA |
+No rows in this queue.
+
 
 ## High-Value P1 Queue
 
@@ -77,7 +73,6 @@ No rows in this queue.
 | 84 | B | P3-monitor | zana-kubana-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser console/page errors; missing official/verification evidence; missing methodology/breakdown |
 | 84 | B | P3-monitor | zana-kulinda-pdf-kwa-nenosiri-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser console/page errors; missing official/verification evidence; missing methodology/breakdown |
 | 85 | A | P3-monitor | afrotools-pro | Finance, Tax & Market Data | Tax, salary, finance calculator | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
-| 85 | A | P0-browser-failure | capacite-emprunt-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | no workflow or methodology evidence; browser route failed; browser console/page errors; missing methodology/breakdown |
 | 86 | A | P3-monitor | clinic-costs | Health & Wellness | Health and wellness estimator | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
 | 86 | A | P3-monitor | zana-chat-na-pdf-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
 | 86 | A | P3-monitor | zana-hariri-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser console/page errors; missing official/verification evidence; missing methodology/breakdown |
@@ -86,6 +81,7 @@ No rows in this queue.
 | 86 | A | P3-monitor | zana-watermark-nyingi-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
 | 86 | A | P3-monitor | zana-matumizi-ya-umeme-ya-vifaa-sw | Energy & Utilities | Energy and utility estimator | no workflow or methodology evidence; browser console/page errors; stale or undated assumptions; missing methodology/breakdown |
 | 86 | A | P3-monitor | roi-immobilier-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser console/page errors; no verification panel; weak meta description length; high-intent money tool lacks business CTA |
+| 86 | A | P3-monitor | taxe-fonciere-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser console/page errors; no verification panel; weak meta description length; high-intent money tool lacks business CTA |
 | 87 | A | P3-monitor | sn-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; no verification panel |
 | 87 | A | P3-monitor | zana-kikokotoo-bei-ya-sms-nyingi-sw | Telecom & Mobile | General online utility | unclear primary action; browser console/page errors; missing disclaimer/limitations; no verification panel |
 | 87 | A | P3-monitor | zana-kubadilisha-pdf-na-picha-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; no verification panel |
