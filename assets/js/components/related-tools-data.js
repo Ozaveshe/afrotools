@@ -3927,6 +3927,20 @@
         "imageKey": "islamic-finance"
       },
       {
+        "id": "lobola-negotiation-checklist",
+        "name": "Lobola Negotiation Checklist",
+        "icon": "LC",
+        "desc": "Prepare a respectful family meeting brief with r...",
+        "href": "/tools/lobola-negotiation-checklist/",
+        "category": "religious-cultural",
+        "lang": "en",
+        "priority": 78,
+        "estTraffic": 4500,
+        "imageExt": "webp",
+        "imageId": "lobola-calculator",
+        "imageKey": "lobola-calculator"
+      },
+      {
         "id": "wedding-budget",
         "name": "African Wedding Budget Planner",
         "icon": "WB",
@@ -4042,19 +4056,6 @@
         "estTraffic": 1000,
         "imageExt": "webp",
         "imageKey": "age-calculator-african"
-      },
-      {
-        "id": "african-proverbs",
-        "name": "African Proverb Generator — Yoruba, Swahili, Zulu, Akan",
-        "icon": "🦁",
-        "desc": "Discover authentic African proverbs from Yoruba,...",
-        "href": "/tools/african-proverbs/",
-        "category": "religious-cultural",
-        "lang": "en",
-        "priority": 50,
-        "estTraffic": 1000,
-        "imageExt": "webp",
-        "imageKey": "african-proverbs"
       }
     ],
     "en::agriculture": [
@@ -7815,7 +7816,7 @@
         "id": "calculateur-lobola-fr",
         "name": "Calculateur Lobola",
         "icon": "FR",
-        "desc": "Estimez la dot traditionnelle (lobola) en Afriqu...",
+        "desc": "Préparez une estimation familiale respectueuse p...",
         "href": "/fr/tools/calculateur-lobola",
         "category": "religious-cultural",
         "lang": "fr",

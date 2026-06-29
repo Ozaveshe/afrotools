@@ -202,16 +202,22 @@
     var model = text(source.model || source.vehicleModel || "");
     var year = text(source.year || source.vehicleYear || "");
     var makePattern = VEHICLE_MAKES.map(escapeRegex).join("|");
+    function cleanVehicleModel(value) {
+      var clean = text(value).replace(/\b(used|new)\b/gi, "").trim();
+      if (/^(?:from|to|into|in|for|with|shipping|freight|insurance|fx)\b/i.test(clean)) return "";
+      if (/^(?:vehicle|car|auto|automobile)$/i.test(clean)) return "";
+      return clean;
+    }
     var vehicle = raw.match(new RegExp("\\b(" + makePattern + ")\\s+([a-z0-9 -]{2,42}?)(?:\\s+(?:worth|valued|costing|from|into|to|in|with|for|shipping|freight|insurance|fx)\\b|[?.!,]|$)", "i"));
     if (vehicle) {
       if (!make) make = vehicle[1].replace(/^vw$/i, "Volkswagen");
-      if (!model) model = text(vehicle[2]).replace(/\b(used|new)\b/gi, "").trim();
+      if (!model) model = cleanVehicleModel(vehicle[2]);
     }
     var category = text(source.itemCategory || source.vehicle || source.item || "");
     var vehicleFromCategory = category.match(new RegExp("^(" + makePattern + ")\\s+(.+)$", "i"));
     if (vehicleFromCategory) {
       if (!make) make = vehicleFromCategory[1].replace(/^vw$/i, "Volkswagen");
-      if (!model) model = text(vehicleFromCategory[2]);
+      if (!model) model = cleanVehicleModel(vehicleFromCategory[2]);
     }
     var yearMatch = raw.match(/\b(19[8-9]\d|20[0-3]\d)\b/);
     if (!year && yearMatch) year = yearMatch[1];

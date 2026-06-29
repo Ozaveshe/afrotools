@@ -12,6 +12,7 @@ const cases = [
   ["Build my resume for an NGO job", "cv-builder", "employment"],
   ["Find scholarships for a Cameroonian student", "scholarship-finder", "education"],
   ["Scholarships for masters in Canada from Nigeria", "scholarship-finder", "education"],
+  ["I earn 650k in Nigeria and want to know what I take home", "paye-calculator", "tax"],
   ["Calculate payroll for 5 employees in Kenya", "paye-calculator", "tax"],
   ["PAYE on 250000 KES monthly salary", "paye-calculator", "tax"],
   ["I want to calculate my salary tax in angoa 1000000", "ao-paye", "tax"],
@@ -58,6 +59,23 @@ assert.strictEqual(noMatch.canPrefill, false);
 assert.strictEqual(noMatch.handoffPlan.mode, "route_only");
 assert.strictEqual(noMatch.handoffPlan.payloadLocation, "none");
 assert.strictEqual(noMatch.exportPlan.available, false);
+
+const ambiguousCanada = router.routeDeterministically("help me with Canada", { manifest });
+assert.strictEqual(ambiguousCanada.selectedToolId, "tool-search");
+assert.strictEqual(ambiguousCanada.confidence, 0.18);
+assert.ok(/scholarships|relocation|country data|jobs/i.test(ambiguousCanada.clarificationQuestion));
+
+const takeHomePayRoute = router.routeDeterministically("I earn 650k in Nigeria and want to know what I take home", { manifest });
+assert.strictEqual(takeHomePayRoute.selectedToolId, "paye-calculator");
+assert.strictEqual(takeHomePayRoute.extractedInputs.country, "Nigeria");
+assert.strictEqual(takeHomePayRoute.extractedInputs.grossPay, 650000);
+assert.ok(takeHomePayRoute.missingInputs.includes("payPeriod"));
+
+const japanImportRoute = router.routeDeterministically("Import a used Toyota from Japan to Ghana", { manifest });
+assert.strictEqual(japanImportRoute.selectedToolId, "import-duty");
+assert.strictEqual(japanImportRoute.extractedInputs.destinationCountry, "Ghana");
+assert.strictEqual(japanImportRoute.extractedInputs.itemCategory, "Toyota vehicle");
+assert.ok(!/from japan/i.test(japanImportRoute.extractedInputs.itemCategory));
 
 const careerRoute = router.routeDeterministically("Write me a CV for an electrical engineer in Ghana", { manifest });
 assert.strictEqual(careerRoute.selectedToolId, "cv-builder");

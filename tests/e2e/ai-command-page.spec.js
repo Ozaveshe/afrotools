@@ -120,9 +120,22 @@ test("real-life local routing covers common intake prompts", async ({ page }) =>
     await expect(card).toContainText(detail);
   }
 
+  await page.goto("/ai/?q=Import%20a%20used%20Toyota%20from%20Japan%20to%20Ghana&router=off", { waitUntil: "domcontentloaded" });
+  const importState = await page.evaluate(function () {
+    return window.AfroToolsAICommandPage.getState();
+  });
+  expect(importState.extractedInputs.itemCategory).toBe("Toyota vehicle");
+  expect(importState.extractedInputs.originCountry).toBe("Japan");
+  expect(importState.extractedInputs.model || "").toBe("");
+
+  await page.goto("/ai/?q=Create%20an%20invoice%20with%20VAT%20for%20my%20client&router=off", { waitUntil: "domcontentloaded" });
+  const invoiceCard = page.locator("[data-workflow-card]").first();
+  await expect(invoiceCard).toContainText("Choose business country.");
+  await expect(invoiceCard).not.toContainText("Target Role: my client");
+
   await page.goto("/ai/?q=Help%20me%20with%20Canada&router=off", { waitUntil: "domcontentloaded" });
   await expect(page.locator("#aiNoMatchState")).toBeVisible();
-  await expect(page.locator("#aiNoMatchState .ai-status")).toContainText(/No clear tool match|Add a country|browse/i);
+  await expect(page.locator("#aiNoMatchState .ai-status")).toContainText(/No clear tool match|money, documents, jobs, study|country data/i);
 });
 
 test("homepage command handoff opens /ai without leaking prompt in the URL", async ({ page }) => {

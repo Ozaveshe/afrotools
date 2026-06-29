@@ -415,7 +415,7 @@
       var vehicleFromCategory = itemCategory.match(/^(toyota|honda|mazda|nissan|hyundai|kia|lexus|bmw|mercedes|ford|volkswagen|vw)\s+(.+)$/i);
       if (vehicleFromCategory) {
         if (!vehicleMake) vehicleMake = vehicleFromCategory[1];
-        if (!vehicleModel) vehicleModel = vehicleFromCategory[2];
+        if (!vehicleModel && !/^(?:vehicle|car|auto|automobile)$/i.test(vehicleFromCategory[2])) vehicleModel = vehicleFromCategory[2];
       }
       var itemValue = positiveNumber(firstValue(inputs, ["itemValue", "value", "purchasePrice", "purchasePriceUsd", "budget", "cifValue", "cifUsd", "fobValue"]));
       var shippingCost = positiveNumber(firstValue(inputs, ["shippingCost", "freight", "freightUsd", "shipping", "shippingUsd"]));
@@ -654,7 +654,10 @@
       return makeValidation(errors);
     },
     getMissingInputs: function getMissingInvoice(normalized) {
-      return missing(normalized, ["amount"]);
+      var required = normalized.vatTreatment || normalized.taxRate !== null
+        ? ["country", "amount"]
+        : ["amount"];
+      return missing(normalized, required);
     },
     getUserFacingSummary: function summarizeInvoice(normalized) {
       return summaryList([

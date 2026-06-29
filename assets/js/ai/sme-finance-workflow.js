@@ -164,6 +164,8 @@
     var vatTreatment = raw.match(/\b(standard|zero-rated|zero rated|exempt|withholding|inclusive|exclusive)\b/i);
     var businessType = raw.match(/\b(shop|retail|consulting|agency|restaurant|school|clinic|startup|company|freelancer|sole proprietor|limited company)\b/i);
     var lineItem = raw.match(/\b(?:for|selling|service|services?|goods?)\s+([a-z][a-z0-9 &/-]{2,50})(?:\s+(?:in|to|worth|amount|invoice|vat|for)\b|[?.!,]|$)/i);
+    var lineItemDescription = text(source.lineItemDescription || source.description || source.service || (lineItem && lineItem[1]) || "");
+    if (/^(?:my|the|a|an)\s+(?:client|customer|buyer)\b/i.test(lineItemDescription)) lineItemDescription = "";
     var amount = positiveNumber(source.invoiceAmount || source.amount || source.total);
     var grossPay = positiveNumber(source.grossPay || source.salary || source.income || source.grossSalary);
     var employeeCount = positiveNumber(source.employeeCount || source.numberOfEmployees || source.employees || source.staffCount);
@@ -195,7 +197,7 @@
       fixedMonthlyCosts: fixedMonthlyCosts,
       vatTreatment: normalize(source.vatTreatment || source.taxTreatment || (vatTreatment && vatTreatment[1]) || ""),
       businessType: normalize(source.businessType || (businessType && businessType[1]) || ""),
-      lineItemDescription: text(source.lineItemDescription || source.description || source.service || (lineItem && lineItem[1]) || ""),
+      lineItemDescription: lineItemDescription,
       vatRate: positiveNumber(source.vatRate) !== null ? positiveNumber(source.vatRate) : (country.vatRate !== undefined ? country.vatRate : null),
       authority: country.authority || "relevant revenue authority",
       payeRoute: country.payeRoute || "/tools/paye-calculator/",

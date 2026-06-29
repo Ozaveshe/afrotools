@@ -64,7 +64,7 @@
         errorTitle: "Still looking",
         errorBody: "AfroTools could not find a clear match yet. Add a country, amount, document type, destination, or sector.",
         noMatchTitle: "No clear match yet",
-        noMatchBody: "Add a country, amount, document type, destination, or sector, or browse the tool directory.",
+        noMatchBody: "Is this mainly about money, documents, jobs, study, import/customs, energy, housing, business, or country data?",
       },
       consent: {
         title: "Optional AI help",
@@ -1098,11 +1098,12 @@
     var normalized = normalizeLocale(locale);
     var copy = Object.assign({}, decision);
     var isFallback = copy.selectedToolId === "tool-search" || copy.intentCategory === "search";
+    var preserveCustomFallback = Boolean(copy._meta && copy._meta.router === "ambiguous_country");
     copy.locale = normalized;
-    copy.reasonShort = isFallback ? t(normalized, "router.fallback") : t(normalized, "router.matched");
-    copy.clarificationQuestion = clarificationForMissing(normalized, copy.missingInputs);
+    copy.reasonShort = preserveCustomFallback && copy.reasonShort ? copy.reasonShort : (isFallback ? t(normalized, "router.fallback") : t(normalized, "router.matched"));
+    copy.clarificationQuestion = preserveCustomFallback && copy.clarificationQuestion ? copy.clarificationQuestion : clarificationForMissing(normalized, copy.missingInputs);
     copy.highStakesNotice = t(normalized, "highStakes." + (copy.safetyDomain || "none"), copy.highStakesNotice || "");
-    copy.suggestedNextActions = suggestedActions(normalized, copy);
+    copy.suggestedNextActions = preserveCustomFallback && Array.isArray(copy.suggestedNextActions) && copy.suggestedNextActions.length ? copy.suggestedNextActions : suggestedActions(normalized, copy);
     copy.labels = Object.assign({}, copy.labels || {}, {
       direction: isRtl(normalized) ? "rtl" : "ltr",
       category: categoryName(normalized, copy.intentCategory || copy.safetyDomain || "none"),

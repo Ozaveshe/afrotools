@@ -80,7 +80,7 @@
     rule("legal", "nda-generator", ["draft nda", "create nda", "client nda", "nda for", "non disclosure", "non-disclosure", "legal document generator"], ["legal"]),
     rule("study-abroad", "study-abroad-cost", ["study with", "study budget", "study cost", "study documents", "tuition budget", "nigeria to canada study"], ["education", "immigration"]),
     rule("scholarships", "scholarship-finder", ["scholarship", "scholarships", "bursary", "funding", "grant for school"], ["education"]),
-    rule("salary-tax", "paye-calculator", ["paye", "payroll", "salary tax", "income tax", "net pay", "gross pay"], ["tax"]),
+    rule("salary-tax", "paye-calculator", ["paye", "payroll", "salary tax", "income tax", "net pay", "gross pay", "take home", "take-home pay", "takehome", "salary", "i earn"], ["tax"]),
     rule("trade", "hs-code-lookup", ["hs code", "tariff code", "customs code"], ["finance"]),
     rule("trade", "sadc-roo", ["sadc rules of origin", "rules of origin", "origin certificate"], ["none"]),
     rule("import-duty", "import-duty", ["import duty", "customs duty", "import", "car import", "vehicle import", "landed cost", "cif", "port charges", "duty and port", "machinery into", "toyota", "honda", "mazda", "nissan"], ["finance"]),
@@ -342,6 +342,13 @@
   }
 
   function extractPlainAmount(query) {
+    var shorthand = String(query || "").match(/\b([1-9][0-9]*(?:\.\d+)?)\s?(k|m)\b/i);
+    if (shorthand) {
+      var scaled = Number(shorthand[1]);
+      if (Number.isFinite(scaled)) {
+        return String(shorthand[2]).toLowerCase() === "m" ? scaled * 1000000 : scaled * 1000;
+      }
+    }
     var matches = String(query || "").match(/\b[1-9][0-9]{2,}(?:,[0-9]{3})*(?:\.\d+)?\b/g);
     if (!matches || !matches.length) return "";
     for (var i = matches.length - 1; i >= 0; i -= 1) {
@@ -375,6 +382,14 @@
       role = role.replace(new RegExp("\\s+(?:in|from|based in)\\s+" + escaped + "\\s*$", "i"), "");
     });
     return role.replace(/\s+/g, " ").trim();
+  }
+
+  function cleanVehicleCategory(make, model) {
+    var cleanMake = String(make || "").replace(/^vw$/i, "Volkswagen").trim();
+    var cleanModel = String(model || "").replace(/\b(used|new)\b/gi, "").replace(/\s+/g, " ").trim();
+    if (!cleanMake) return "";
+    if (!cleanModel || /^(?:from|to|into|in|for|with|shipping|freight|insurance|fx)\b/i.test(cleanModel)) return cleanMake + " vehicle";
+    return (cleanMake + " " + cleanModel).trim();
   }
 
   function extractCity(query) {
@@ -560,7 +575,7 @@
     if (!extracted.targetRole && ruleMatch && ruleMatch.toolId === "cv-builder") extracted.targetRole = extractProfessionRole(original);
     if (pdfAction) extracted.pdfAction = pdfAction;
     if (productCategory) extracted.productCategory = productCategory;
-    if (vehicle) extracted.itemCategory = (vehicle[1] + " " + vehicle[2]).trim();
+    if (vehicle) extracted.itemCategory = cleanVehicleCategory(vehicle[1], vehicle[2]);
     if (!extracted.itemCategory && productCategory) extracted.itemCategory = productCategory;
     if (plot) {
       extracted.plotSize = plot.size;
@@ -759,6 +774,38 @@
     return /\bpassport\b/.test(text) && /\b(application|apply|renew|documents?|fees?|checklist|ghana|nigeria|kenya|next steps?)\b/.test(text);
   }
 
+  function isAmbiguousCountryPrompt(text) {
+    var country = extractCountryFromMap(text, COUNTRY_ALIASES) || extractCountryFromMap(text, DESTINATION_COUNTRIES);
+    if (!country) return false;
+    if (/\b(scholarships?|bursary|study|student|university|visa|immigration|passport|relocat|move|japa|cost|budget|rent|job|cv|resume|salary|paye|tax|invoice|vat|import|customs|duty|solar|generator|fuel|pdf|document|business|market|compare|profile|data)\b/.test(text)) return false;
+    var aliases = Object.assign({}, COUNTRY_ALIASES, DESTINATION_COUNTRIES);
+    var scrubbed = text;
+    Object.keys(aliases).sort(function byLength(left, right) {
+      return right.length - left.length;
+    }).forEach(function removeAlias(alias) {
+      scrubbed = scrubbed.replace(new RegExp("(^|\\b)" + alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(\\b|$)", "gi"), " ");
+    });
+    scrubbed = scrubbed.replace(/\b(help|assist|support|guide|me|with|about|for|please|can|you|tell|info|information|need|want|something)\b/g, " ").replace(/\s+/g, " ").trim();
+    return !scrubbed;
+  }
+
+  function ambiguousCountryDecision(query, options) {
+    var decision = rawFallbackDecision(query);
+    decision.confidence = 0.18;
+    decision.reasonShort = "I need one detail before choosing an AfroTools workflow.";
+    decision.clarificationQuestion = "Is this mainly about scholarships, relocation, visa-style planning, country data, jobs, cost of living, import/customs, documents, or business?";
+    decision.suggestedNextActions = [
+      "Choose the closest task area",
+      "Add a country plus one detail like budget, document type, salary, destination, item, or job target",
+      "Browse common AfroTools workflows"
+    ];
+    decision._meta = Object.assign({}, decision._meta || {}, {
+      router: "ambiguous_country",
+      providerUsed: false
+    });
+    return localizeDecision(decision, options);
+  }
+
   function guardrailFallbackDecision(query, options, inspection) {
     var decision = localizeDecision(rawFallbackDecision(query), options);
     decision.confidence = 0;
@@ -787,6 +834,7 @@
     var match = findBestRule(query);
     var manifestMatch = findManifestCandidate(query, manifest);
     var normalizedQuery = normalizeText(query);
+    if (isAmbiguousCountryPrompt(normalizedQuery)) return ambiguousCountryDecision(query, options);
     var keepCountryComparisonRule = match && match.toolId === "afroatlas" && detectedCountryCount(normalizedQuery) >= 2;
     var weakGenericCountryRule = match && match.toolId === "afroatlas" && match.score <= 3 && !keepCountryComparisonRule && !isExplicitCountryIntelligenceQuery(normalizedQuery);
     if (!match || (manifestMatch && manifestMatch.retrievalScore >= 40 && weakGenericCountryRule)) match = manifestMatch;
