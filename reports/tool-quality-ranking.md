@@ -1,6 +1,6 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-06-29T22:17:01.786Z
+Generated: 2026-06-29T22:28:04.766Z
 
 ## Scope
 
@@ -45,11 +45,11 @@ Repair-first rows below D: 0
 | Personal Finance | 25 | 25 | 94.2 | 0 | 0 | 0 |
 | Business & ROI | 34 | 34 | 94.4 | 0 | 0 | 0 |
 | Document & PDF | 118 | 118 | 94.6 | 0 | 0 | 0 |
-| VAT & Business Tax | 242 | 242 | 94.9 | 0 | 0 | 0 |
+| VAT & Business Tax | 242 | 242 | 95.2 | 0 | 0 | 0 |
 | Travel & Tourism | 20 | 20 | 95.2 | 0 | 0 | 0 |
-| Mortgage & Property | 267 | 445 | 95.3 | 0 | 0 | 0 |
 | Diaspora | 3 | 3 | 95.3 | 0 | 0 | 0 |
 | Health & Wellness | 104 | 104 | 95.4 | 0 | 0 | 0 |
+| Mortgage & Property | 267 | 445 | 95.4 | 0 | 0 | 0 |
 | Sports & Entertainment | 30 | 30 | 95.4 | 0 | 0 | 0 |
 | Climate & Environment | 32 | 35 | 95.7 | 0 | 0 | 0 |
 | Trade & Import | 65 | 65 | 95.8 | 0 | 0 | 0 |
