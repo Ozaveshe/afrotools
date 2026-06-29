@@ -44,10 +44,14 @@ test("direct query load hydrates the editable input and deterministic workflow",
   await expect(card.locator("[data-tool-call-label]")).toContainText("/tools/cv-builder/");
   await expect(card.locator(".ai-browse")).toHaveAttribute("href", "/search/?source=ai_private");
   await expect(card.locator(".ai-browse")).not.toHaveAttribute("href", /electrical|engineer|Ghana/i);
-  await expect(card).toContainText("Details found");
+  await expect(card).toContainText("You need");
+  await expect(card).toContainText("What I understood");
+  await expect(card).toContainText("I can prefill");
+  await expect(card).toContainText("I need one detail");
+  await expect(card).toContainText("You'll get");
   await expect(card.locator("[data-workflow-intelligence]")).toHaveCount(0);
   await expect(card).not.toContainText("Workflow intelligence");
-  await expect(card).toContainText("Before you use it");
+  await expect(card).toContainText("Before you act");
   await expect(card.locator("[data-ai-router-feedback]")).toContainText("Was this helpful?");
   await card.locator("[data-ai-feedback='negative']").click();
   await expect(card.locator("[data-ai-feedback-status]")).toContainText("Feedback saved for review.");
@@ -75,6 +79,66 @@ test("direct query load hydrates the editable input and deterministic workflow",
   expect(page.url()).not.toContain("Ghana");
 });
 
+test("salary intake asks for pay period without guessing monthly", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  await page.goto("/ai/?q=I%20earn%20650k%20in%20Nigeria%20and%20want%20to%20know%20what%20I%20take%20home&router=off", { waitUntil: "domcontentloaded" });
+
+  const card = page.locator("[data-workflow-card]").first();
+  await expect(card).toContainText("PAYE Calculator");
+  await expect(card).toContainText("Country: Nigeria");
+  await expect(card).toContainText("Gross Pay: 650000");
+  await expect(card).toContainText("Choose pay period.");
+  await expect(card.locator("[data-clarification-input]")).toHaveCount(1);
+  await expect(card.locator("[data-clarification-input='payPeriod']")).toBeVisible();
+
+  const state = await page.evaluate(function () {
+    return window.AfroToolsAICommandPage.getState();
+  });
+  expect(state.extractedInputs.country).toBe("Nigeria");
+  expect(state.extractedInputs.grossPay).toBe(650000);
+  expect(state.extractedInputs.payPeriod || "").toBe("");
+  expect(state.missingInputs).toContain("payPeriod");
+});
+
+test("real-life local routing covers common intake prompts", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  const cases = [
+    ["Import a used Toyota from Japan to Ghana", "Import Duty Calculator", /Toyota vehicle|Ghana|Japan/],
+    ["Make a CV for a customer service job", "CV Builder", /Customer service|target role/i],
+    ["Find scholarships for a masters degree in Canada", "Scholarship Finder", /Canada|masters/i],
+    ["Compare generator vs solar cost in Lagos", "Solar ROI Calculator", /Lagos|Nigeria/i],
+    ["Create an invoice with VAT", "Invoice Generator", /VAT treatment|standard/i],
+    ["Compress a PDF", "PDF Workspace", /compress/i]
+  ];
+
+  for (const [query, title, detail] of cases) {
+    await page.goto(`/ai/?q=${encodeURIComponent(query)}&router=off`, { waitUntil: "domcontentloaded" });
+    const card = page.locator("[data-workflow-card]").first();
+    await expect(card).toContainText(title);
+    await expect(card).toContainText(detail);
+  }
+
+  await page.goto("/ai/?q=Help%20me%20with%20Canada&router=off", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("#aiNoMatchState")).toBeVisible();
+  await expect(page.locator("#aiNoMatchState .ai-status")).toContainText(/No clear tool match|Add a country|browse/i);
+});
+
+test("homepage command handoff opens /ai without leaking prompt in the URL", async ({ page }) => {
+  await quietExternalNoise(page);
+
+  await page.goto("/?ai_home_variant=command", { waitUntil: "domcontentloaded" });
+  const hero = page.locator("#afrotoolsAiCommandHero");
+  await hero.locator("#ai-home-command-input").fill("Calculate my take-home pay in Nigeria");
+  await hero.getByRole("button", { name: "Ask AfroTools AI" }).click();
+
+  await page.waitForURL(/\/ai\/\?source=homepage_input/);
+  expect(new URL(page.url()).searchParams.get("q")).toBe(null);
+  await expect(page.locator("#aiCommandInput")).toHaveValue("Calculate my take-home pay in Nigeria");
+  await expect(page.locator("[data-workflow-card]").first()).toContainText("PAYE Calculator");
+});
+
 test("advanced context controls enrich vague prompts before routing", async ({ page }) => {
   await quietExternalNoise(page);
 
@@ -91,7 +155,7 @@ test("advanced context controls enrich vague prompts before routing", async ({ p
   await page.getByRole("button", { name: "Find the right AfroTools tool" }).click();
   await expect(page.locator("[data-workflow-card]").first()).toContainText("CV Builder");
   await expect(page.locator("[data-workflow-intelligence]")).toHaveCount(0);
-  await expect(page.locator("[data-workflow-card]").first()).toContainText("Before you use it");
+  await expect(page.locator("[data-workflow-card]").first()).toContainText("Before you act");
 });
 
 test("saved AI projects stay local by default and can be continued or deleted", async ({ page }) => {
@@ -158,7 +222,7 @@ test("empty state shows fallback browse cards without login", async ({ page }) =
   await page.goto("/ai/", { waitUntil: "domcontentloaded" });
 
   await expect(page.locator("#aiEmptyState")).toBeVisible();
-  await expect(page.getByText("Start by typing what you want to do.")).toBeVisible();
+  await expect(page.getByText("Describe the task. AfroTools will set up the next step.")).toBeVisible();
   await expect(page.locator("#aiFallbackGrid .ai-fallback-card")).toHaveCount(16);
   await expect(page.getByRole("link", { name: /CV Builder/i }).first()).toHaveAttribute("href", "/tools/cv-builder/");
 });
@@ -268,12 +332,16 @@ test("clarification answers update structured workflow state and prefill payload
   await page.goto("/ai/?q=Import%20a%202016%20Toyota%20Axio%20into%20Nigeria&router=off", { waitUntil: "domcontentloaded" });
 
   const card = page.locator("[data-workflow-card]").first();
-  await expect(card).toContainText("Add details before you open it");
+  await expect(card).toContainText("Answer one detail");
   await expect(card.getByLabel(/Purchase price/i)).toBeVisible();
   await card.getByLabel(/Purchase price/i).fill("8500");
+  await card.getByRole("button", { name: "Answer this" }).click();
+  await expect(card.getByLabel(/Shipping \/ freight/i)).toBeVisible();
   await card.getByLabel(/Shipping \/ freight/i).fill("1200");
+  await card.getByRole("button", { name: "Answer this" }).click();
+  await expect(card.getByLabel(/User FX rate/i)).toBeVisible();
   await card.getByLabel(/User FX rate/i).fill("1600");
-  await card.getByRole("button", { name: "Use these details" }).click();
+  await card.getByRole("button", { name: "Answer this" }).click();
 
   const state = await page.evaluate(function () {
     return window.AfroToolsAICommandPage.getState();
@@ -316,9 +384,9 @@ test("PDF workflow asks for action type before opening", async ({ page }) => {
 
   const card = page.locator("[data-workflow-card]").first();
   await expect(card).toContainText("PDF Workspace");
-  await expect(card).toContainText("Add details before you open it");
+  await expect(card).toContainText("Answer one detail");
   await card.locator('select[data-clarification-input="pdfAction"]').selectOption("compress");
-  await card.getByRole("button", { name: "Use these details" }).click();
+  await card.getByRole("button", { name: "Answer this" }).click();
 
   const state = await page.evaluate(function () {
     return window.AfroToolsAICommandPage.getState();

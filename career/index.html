@@ -27,7 +27,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<script src="/assets/js/components/tool-registry.min.js?v=af33236a" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=3652285b" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <meta property="og:locale" content="en_US">
@@ -369,8 +369,15 @@ function initCareerCategory() {
   if (save) save.addEventListener("click", function() { saveState("Path saved locally."); });
   if (copyButton) copyButton.addEventListener("click", function() {
     saveState("Share link updated.");
+    function fallback() {
+      if (status) status.textContent = "Share link is ready in the address bar.";
+    }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(location.href).then(function() { if (status) status.textContent = "Link copied with the current path."; });
+      navigator.clipboard.writeText(location.href).then(function() {
+        if (status) status.textContent = "Link copied with the current path.";
+      }).catch(fallback);
+    } else {
+      fallback();
     }
   });
   if (reset) reset.addEventListener("click", function() {

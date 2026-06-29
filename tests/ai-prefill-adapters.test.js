@@ -276,6 +276,15 @@ assert.strictEqual(payeLaunch.payload.normalizedInputs.grossPayAnnual, 3000000);
 assert.deepStrictEqual(payeLaunch.missingInputs, []);
 assertUrlDoesNotLeak(payeLaunch, ["250000", "5"]);
 
+const payeMissingPeriodLaunch = prefill.buildSafeLaunch("paye-calculator", {
+  country: "Nigeria",
+  grossPay: 650000,
+});
+assert.strictEqual(payeMissingPeriodLaunch.toolId, "paye-calculator");
+assert.ok(payeMissingPeriodLaunch.missingInputs.includes("payPeriod"));
+assert.strictEqual(payeMissingPeriodLaunch.payload.normalizedInputs.payPeriod, "");
+assertUrlDoesNotLeak(payeMissingPeriodLaunch, ["650000"]);
+
 const angolaPayeLaunch = prefill.buildSafeLaunch("ao-paye", {
   country: "Angola",
   grossPay: 1000000,
@@ -293,7 +302,7 @@ assertUrlDoesNotLeak(angolaPayeLaunch, ["1000000"]);
 const payeMissing = prefill.buildSafeLaunch("paye-calculator", {
   country: "Kenya",
 });
-assert.deepStrictEqual(payeMissing.missingInputs, ["grossPay"]);
+assert.deepStrictEqual(payeMissing.missingInputs, ["grossPay", "payPeriod"]);
 
 const cashflowLaunch = prefill.buildSafeLaunch("cash-flow-forecast", {
   country: "Kenya",

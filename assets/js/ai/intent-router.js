@@ -600,7 +600,10 @@
     if (ruleMatch && (ruleMatch.toolId === "paye-calculator" || ruleMatch.toolId === "ao-paye" || ruleMatch.intentCategory === "salary-tax")) {
       var salaryAmount = money || extractPlainAmount(original);
       if (salaryAmount) extracted.grossPay = salaryAmount;
-      if (!extracted.payPeriod) extracted.payPeriod = /\bannual|yearly|per year\b/i.test(original) ? "annual" : "monthly";
+      if (!extracted.payPeriod && /\bannual|yearly|per year\b/i.test(original)) extracted.payPeriod = "annual";
+      if (!extracted.payPeriod && /\bmonthly|per month\b/i.test(original)) extracted.payPeriod = "monthly";
+      if (!extracted.payPeriod && /\bweekly|per week\b/i.test(original)) extracted.payPeriod = "weekly";
+      if (!extracted.payPeriod && /\bdaily|per day\b/i.test(original)) extracted.payPeriod = "daily";
     }
     if (ruleMatch && ruleMatch.toolId === "solar-roi" && money) {
       extracted.monthlyBill = money;

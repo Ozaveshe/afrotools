@@ -73,6 +73,6 @@ assert.strictEqual(cashflowRevenuePlan.cashflowPrefillInputs.monthlyRevenue, 750
 assert.strictEqual(cashflowRevenuePlan.cashflowPrefillInputs.fixedMonthlyCosts, 250000);
 
 const missingPayroll = workflow.getMissingInputs(workflow.normalizeInputs("Calculate payroll for employees", {}));
-assert.deepStrictEqual(missingPayroll, ["country", "numberOfEmployees", "grossPay"]);
+assert.deepStrictEqual(missingPayroll, ["country", "numberOfEmployees", "grossPay", "payPeriod"]);
 
 console.log("AI SME finance workflow validated: payroll, VAT, invoice, PAYE, registration, cashflow, warnings, and missing inputs.");

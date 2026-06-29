@@ -3837,9 +3837,9 @@
       },
       {
         "id": "lobola-calculator",
-        "name": "Lobola / Bride Price Calculator",
-        "icon": "💍",
-        "desc": "Estimate lobola in cattle, cash, or ZAR/ZWG equi...",
+        "name": "Lobola Calculator",
+        "icon": "LC",
+        "desc": "Estimate a respectful family budget for cash, li...",
         "href": "/tools/lobola-calculator/",
         "category": "religious-cultural",
         "lang": "en",

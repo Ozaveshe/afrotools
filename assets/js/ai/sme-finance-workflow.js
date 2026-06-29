@@ -144,9 +144,10 @@
   function detectPeriod(raw, source) {
     var clean = normalize(source.payPeriod || source.period || raw);
     if (/\b(annual|yearly|per year|year)\b/.test(clean)) return "annual";
+    if (/\b(monthly|per month|month)\b/.test(clean)) return "monthly";
     if (/\b(weekly|per week|week)\b/.test(clean)) return "weekly";
     if (/\b(daily|per day|day)\b/.test(clean)) return "daily";
-    return "monthly";
+    return "";
   }
 
   function normalizeInputs(query, inputs) {

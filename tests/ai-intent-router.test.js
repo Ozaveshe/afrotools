@@ -83,8 +83,8 @@ assert.strictEqual(angolaSalaryRoute.selectedToolId, "ao-paye");
 assert.strictEqual(angolaSalaryRoute.selectedRoute, "/angola/ao-paye?source=ask");
 assert.strictEqual(angolaSalaryRoute.extractedInputs.country, "Angola");
 assert.strictEqual(angolaSalaryRoute.extractedInputs.grossPay, 1000000);
-assert.strictEqual(angolaSalaryRoute.extractedInputs.payPeriod, "monthly");
-assert.deepStrictEqual(angolaSalaryRoute.missingInputs, []);
+assert.strictEqual(angolaSalaryRoute.extractedInputs.payPeriod, undefined);
+assert.ok(angolaSalaryRoute.missingInputs.includes("payPeriod"));
 
 const pdfPageNumbersRoute = router.routeDeterministically("add page numbers to my PDF", { manifest });
 assert.strictEqual(pdfPageNumbersRoute.selectedToolId, "pdf-workspace");

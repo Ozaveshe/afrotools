@@ -674,7 +674,7 @@
     normalizeInputs: function normalizePaye(inputs) {
       var meta = countryMeta(firstValue(inputs, ["country"]), firstValue(inputs, ["countryCode"]));
       var gross = positiveNumber(firstValue(inputs, ["grossPay", "salary", "income", "budget", "grossSalary"]));
-      var period = payPeriod(firstValue(inputs, ["payPeriod", "period"])) || "monthly";
+      var period = payPeriod(firstValue(inputs, ["payPeriod", "period"]));
       var monthly = period === "annual" && gross !== null ? gross / 12 : gross;
       var annual = period === "annual" ? gross : (gross !== null ? gross * 12 : null);
       return {

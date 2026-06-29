@@ -68,7 +68,7 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/immigration-points/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/immigration-points/" />
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<link rel="stylesheet" href="/assets/css/diaspora-focus.css?v=05003aa1">
+<link rel="stylesheet" href="/assets/css/diaspora-focus.css?v=b5803faa">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -300,7 +300,7 @@
     <!-- UK Skilled Worker -->
     <div id="tab-UK" style="display:none">
       <div class="ds-card-title"><span class="ds-card-title-icon">&#x1f1ec;&#x1f1e7;</span> UK Skilled Worker Visa — Points Check</div>
-      <div class="ds-notice ds-notice-warning" style="margin-bottom:20px">UK Skilled Worker uses a 70-point threshold. 50 points are mandatory (job offer + skill level + English). The remaining 20 can be flexible (salary, PhD, shortage occupation).</div>
+      <div class="ds-notice ds-notice-warning" style="margin-bottom:20px">UK Skilled Worker uses a 70-point threshold. 50 points are mandatory (job offer + skill level + English). The remaining 20 can be flexible, but salary, occupation-code, health/education, extension, and shortage-list rules change often. Verify the current GOV.UK rule before acting.</div>
       <div class="ds-form-grid">
         <div class="ds-field">
           <label class="ds-label" for="ukJobOffer">Job offer from licensed UK sponsor?</label>
@@ -328,10 +328,10 @@
           <input class="ds-input" type="number" id="ukSalary" placeholder="e.g. 32000">
         </div>
         <div class="ds-field">
-          <label class="ds-label" for="ukRole">Job is a shortage occupation?</label>
+          <label class="ds-label" for="ukRole">Job has a valid lower-salary route?</label>
           <select class="ds-select" id="ukRole">
             <option value="0">No</option>
-            <option value="20">Yes — on UK Shortage Occupation List</option>
+            <option value="20">Yes — immigration salary list, temporary shortage list, or eligible exception</option>
           </select>
         </div>
         <div class="ds-field">
@@ -420,7 +420,7 @@
       </div>
       <div class="ds-faq-item">
         <button type="button" class="ds-faq-q" onclick="toggleFaq(this)">How does the UK Skilled Worker 70-point system work?</button>
-        <div class="ds-faq-a">You need exactly 70 points. 50 are mandatory: 20 for a licensed sponsor job offer, 20 for the job meeting skill level RQF3+, and 10 for English language. The remaining 20 come from salary (20 pts if above general threshold, 0-20 if below but meets going rate), shortage occupation (20 pts), or STEM PhD (20 pts). The general salary threshold in 2026 is £38,700/year or the specific SOC going rate.</div>
+        <div class="ds-faq-a">You need 70 points. 50 are mandatory: 20 for a licensed sponsor job offer, 20 for the job meeting the required skill/occupation-code rule, and 10 for English language. The remaining points depend on salary, going rate, occupation-list exceptions, health or education rules, and sometimes PhD routes. GOV.UK currently says the usual salary rule is at least £41,700/year or the occupation going rate, whichever is higher; lower routes may apply only in defined cases.</div>
       </div>
     </div>
   </div>
@@ -524,8 +524,10 @@ function calcUK() {
   var phd = +document.getElementById('ukPhd').value;
   var salaryVal = +document.getElementById('ukSalary').value || 0;
   var salaryPts = 0;
-  if (salaryVal >= 38700) salaryPts = 20;
-  else if (salaryVal >= 30960) salaryPts = 0; // meets going rate but not general threshold — 0 flexible pts
+  var ukGeneralSalaryThreshold = 41700;
+  var ukLowerSalaryFloor = 33400;
+  if (salaryVal >= ukGeneralSalaryThreshold) salaryPts = 20;
+  else if (salaryVal >= ukLowerSalaryFloor) salaryPts = 0; // may meet a lower route only if the role and going rate qualify
   var total = job + skill + eng + shortage + phd + salaryPts;
   var mandatoryPts = job + skill + eng;
   var passed = total >= 70 && mandatoryPts >= 50;
@@ -535,10 +537,10 @@ function calcUK() {
   } else if (mandatoryPts < 50) {
     cutoffsHtml = '<div class="cutoff-compare fail"><span class="cutoff-icon">&#x274c;</span><div class="cutoff-text"><div class="cutoff-label">Missing Mandatory Points ('+mandatoryPts+'/50 mandatory pts)</div><div class="cutoff-desc">You must have all 3 mandatory requirements: licensed sponsor job offer (20 pts) + RQF3+ skill level (20 pts) + English language (10 pts). These are non-negotiable.</div></div></div>';
   } else {
-    cutoffsHtml = '<div class="cutoff-compare fail"><span class="cutoff-icon">&#x274c;</span><div class="cutoff-text"><div class="cutoff-label">Not Yet Eligible ('+total+'/70 pts)</div><div class="cutoff-desc">You meet mandatory requirements but fall short of 70 total points. You need '+(70-total)+' more flexible points from salary, shortage occupation status, or PhD qualification.</div></div></div>';
+    cutoffsHtml = '<div class="cutoff-compare fail"><span class="cutoff-icon">&#x274c;</span><div class="cutoff-text"><div class="cutoff-label">Not Yet Eligible ('+total+'/70 pts)</div><div class="cutoff-desc">You meet mandatory requirements but fall short of 70 total points. You need '+(70-total)+' more flexible points from salary, an eligible lower-salary route, or PhD qualification.</div></div></div>';
   }
-  var rec = passed ? 'Ask your employer to confirm your role is on the shortage occupation list or that your salary meets the £38,700 general threshold. Obtain a Certificate of Sponsorship (CoS).' : 'Ensure your job offer is from a licensed sponsor. Salary below £38,700 may still work if your job is on the shortage occupation list.';
-  var next = '<ul style="padding-left:18px;font-size:.88rem;line-height:2"><li>Confirm your employer is on the UKVI Register of Licensed Sponsors</li><li>Verify your job title is on an eligible SOC code at RQF3+</li><li>Meet English language requirement (IELTS 4.0+ in all components, B1 CEFR)</li><li>Check if your occupation is on the UK Shortage Occupation List (SOL)</li><li>Obtain Certificate of Sponsorship (CoS) from your employer</li><li>Apply online at UKVI — processing: 3 weeks (standard) or 5 business days (priority)</li></ul>';
+  var rec = passed ? 'Ask your employer to confirm your occupation code, going rate, salary, lower-salary route if any, and Certificate of Sponsorship (CoS).' : 'Ensure your job offer is from a licensed sponsor. Salary below £41,700 may still work only if the occupation, going rate, and GOV.UK lower-salary route qualify.';
+  var next = '<ul style="padding-left:18px;font-size:.88rem;line-height:2"><li>Confirm your employer is on the UKVI Register of Licensed Sponsors</li><li>Verify your job title, occupation code, and skill route on GOV.UK</li><li>Meet English language requirement (usually B1 CEFR or an accepted equivalent)</li><li>Check immigration salary list, temporary shortage list, health/education, and extension rules if using a lower salary route</li><li>Obtain Certificate of Sponsorship (CoS) from your employer</li><li>Apply online at UKVI and verify the current decision-time guidance</li></ul>';
   showResults('UK Skilled Worker Points', total + ' / 70', 'Threshold: 70 pts | Mandatory: 50 pts', [
     ['Job offer from licensed sponsor', job], ['Job at required skill level (RQF3+)', skill],
     ['English language', eng], ['Salary (£'+salaryVal.toLocaleString()+'/yr)', salaryPts],
@@ -551,6 +553,6 @@ function toggleFaq(btn) {
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
-<script src="/assets/js/pages/diaspora-focus.js?v=ec945c18" defer></script>
+<script src="/assets/js/pages/diaspora-focus.js?v=921bb288" defer></script>
 </body>
 </html>

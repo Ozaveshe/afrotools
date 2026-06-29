@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
   <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-  <script src="/assets/js/bundles/core.be3f97db.min.js" defer></script>
+  <script src="/assets/js/bundles/core.a12e602c.min.js" defer></script>
   <style>
     :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5}
     body{margin:0;background:var(--ai-bg);color:var(--ai-text);font-family:"DM Sans",system-ui,sans-serif}
@@ -28,11 +28,7 @@
     .ai-kicker-line{display:inline-flex;align-items:center;gap:8px;margin:0 auto 12px;border:1px solid #bfdbfe;border-radius:999px;background:#eff6ff;color:#1d4ed8;padding:7px 12px;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
     .ai-title{margin:0 0 10px;color:var(--ai-text);font-size:clamp(2rem,5vw,3.7rem);font-weight:900;letter-spacing:0;line-height:1.02}
     .ai-copy{max-width:720px;margin:0 auto;color:var(--ai-muted);font-size:1rem;line-height:1.68}
-    .ai-signal-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:920px;margin:18px auto 0}
-    .ai-signal-strip span{display:grid;gap:3px;min-height:64px;border:1px solid #dbeafe;border-radius:13px;background:rgba(255,255,255,.86);box-shadow:0 10px 28px rgba(15,23,42,.05);padding:10px;text-align:left}
-    .ai-signal-strip b{color:#0f172a;font-size:.78rem;font-weight:900;line-height:1.2}
-    .ai-signal-strip small{color:#52637a;font-size:.7rem;font-weight:800;line-height:1.35}
-    .ai-command-hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(280px,.72fr);gap:16px;align-items:start}
+    .ai-command-hero{max-width:860px;margin:0 auto}
     .ai-command{padding:0}
     .ai-form{display:grid;gap:12px;max-width:900px;margin:0 auto;border:1px solid var(--ai-border);border-radius:16px;background:rgba(255,255,255,.94);box-shadow:0 18px 44px rgba(15,23,42,.07);padding:16px}
     .ai-field{display:grid;gap:8px}
@@ -59,24 +55,6 @@
     .ai-context-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
     .ai-context-status{color:#475569;font-size:.76rem;font-weight:800;line-height:1.45}
     .ai-trust{margin:0;border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;color:#334155;padding:12px 14px;font-size:.82rem;line-height:1.55}
-    .ai-routing-map{border:1px solid #dbeafe;border-radius:16px;background:#071426;color:#eaf4ff;box-shadow:0 22px 54px rgba(15,23,42,.12);padding:16px;overflow:hidden}
-    .ai-routing-map h2{margin:0;color:#fff;font-size:1.05rem;letter-spacing:0;line-height:1.25}
-    .ai-routing-map p{margin:6px 0 0;color:#b8c7dc;font-size:.84rem;line-height:1.55}
-    .ai-route-stack{display:grid;gap:9px;margin-top:14px}
-    .ai-route-step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:start;border:1px solid rgba(147,197,253,.24);border-radius:12px;background:rgba(255,255,255,.055);padding:10px}
-    .ai-route-step span{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#2563eb;color:#fff;font-size:.75rem;font-weight:900}
-    .ai-route-step strong{display:block;color:#fff;font-size:.82rem;line-height:1.25}
-    .ai-route-step small{display:block;margin-top:3px;color:#b8c7dc;font-size:.72rem;line-height:1.4}
-    .ai-route-badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
-    .ai-route-badges b{display:inline-flex;border:1px solid rgba(191,219,254,.28);border-radius:999px;background:rgba(255,255,255,.07);color:#dbeafe;padding:5px 8px;font-size:.68rem;line-height:1.2}
-    .ai-language-bridge{display:grid;gap:10px;margin-top:14px;border:1px solid rgba(191,219,254,.28);border-radius:14px;background:rgba(255,255,255,.07);padding:12px}
-    .ai-language-bridge strong{color:#fff;font-size:.84rem;line-height:1.25}
-    .ai-language-bridge p{margin:0;color:#b8c7dc;font-size:.74rem;line-height:1.45}
-    .ai-language-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-    .ai-language-links a{display:grid;gap:2px;min-height:54px;border:1px solid rgba(191,219,254,.28);border-radius:11px;background:rgba(255,255,255,.08);color:#eff6ff;text-decoration:none;padding:9px}
-    .ai-language-links a:hover,.ai-language-links a:focus-visible{border-color:#93c5fd;background:rgba(37,99,235,.2);outline:none}
-    .ai-language-links b{color:#fff;font-size:.78rem;line-height:1.2}
-    .ai-language-links span{color:#cfe3ff;font-size:.68rem;line-height:1.3}
     .ai-command-cockpit{max-width:1080px;margin:18px auto 0;border:1px solid #dbe6f4;border-radius:18px;background:linear-gradient(135deg,#fff 0%,#f7fbff 48%,#fff7ed 100%);box-shadow:0 20px 50px rgba(15,23,42,.08);padding:16px}
     .ai-cockpit-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
     .ai-cockpit-head h2{margin:0;color:#0f172a;font-size:1.12rem;line-height:1.2;font-weight:900}
@@ -150,6 +128,14 @@
     .ai-card-body{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .ai-mini-panel{border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc;padding:10px}
     .ai-mini-panel strong{display:block;color:#334155;font-size:.76rem;font-weight:900;margin-bottom:6px}
+    .ai-job-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .ai-job-panel{border:1px solid #e2e8f0;border-radius:11px;background:#fff;padding:11px}
+    .ai-job-panel.is-primary{border-color:#bfdbfe;background:#f8fbff}
+    .ai-job-panel.is-question{border-color:#fed7aa;background:#fff7ed}
+    .ai-job-panel.is-output{border-color:#bbf7d0;background:#f7fef9}
+    .ai-job-panel strong{display:block;color:#334155;font-size:.74rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+    .ai-job-panel p{margin:0;color:#334155;font-size:.84rem;line-height:1.5}
+    .ai-job-panel .ai-card-title{font-size:1.08rem}
     .ai-list{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
     .ai-list li{display:inline-flex;align-items:center;min-height:32px;max-width:100%;padding:5px 9px;border-radius:999px;background:#fff;color:#475569;border:1px solid #e2e8f0;font-size:.7rem;font-weight:800;line-height:1.25}
     .ai-list-empty{color:#64748b;font-size:.78rem;line-height:1.45}
@@ -356,8 +342,8 @@
     html[dir="rtl"] .ai-list,html[dir="rtl"] .ai-actions,html[dir="rtl"] .ai-clarification-actions,html[dir="rtl"] .ai-consent-actions{justify-content:flex-start}
     html[dir="rtl"] .ai-hub-list,html[dir="rtl"] .ai-education-plan ul,html[dir="rtl"] .ai-education-plan ol,html[dir="rtl"] .ai-career-plan ul,html[dir="rtl"] .ai-career-plan ol,html[dir="rtl"] .ai-import-plan ul,html[dir="rtl"] .ai-import-plan ol,html[dir="rtl"] .ai-energy-plan ul,html[dir="rtl"] .ai-energy-plan ol,html[dir="rtl"] .ai-finance-plan ul,html[dir="rtl"] .ai-finance-plan ol,html[dir="rtl"] .ai-country-plan ul,html[dir="rtl"] .ai-country-plan ol,html[dir="rtl"] .ai-local-life-plan ul,html[dir="rtl"] .ai-local-life-plan ol,html[dir="rtl"] .ai-construction-panel ul,html[dir="rtl"] .ai-agriculture-panel ul{padding-left:0;padding-right:20px}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media(max-width:760px){.ai-main{padding:26px 12px calc(42px + env(safe-area-inset-bottom))}.ai-header{text-align:left;margin-bottom:16px}.ai-kicker-line{margin-left:0}.ai-title{font-size:clamp(1.85rem,9vw,2.65rem)}.ai-copy{font-size:.95rem;line-height:1.58}.ai-signal-strip{grid-template-columns:1fr 1fr;margin-top:14px}.ai-signal-strip span{min-height:72px}.ai-command-hero{grid-template-columns:1fr}.ai-command{padding:0}.ai-form{padding:13px;border-radius:14px}.ai-input-row{grid-template-columns:1fr;gap:9px}.ai-run{width:100%}.ai-quick-rail{display:grid;grid-template-columns:1fr 1fr}.ai-quick-task{border-radius:11px}.ai-command-cockpit{border-radius:14px;padding:13px}.ai-cockpit-head{display:grid;align-items:start}.ai-cockpit-badge{justify-self:start}.ai-trust{font-size:.78rem;padding:10px 11px}.ai-card-head,.ai-projects-head,.ai-context-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head,.ai-country-head,.ai-local-life-head,.ai-workflow-panel-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{display:grid;justify-content:stretch}.ai-chip{justify-self:start}.ai-card-body,.ai-context-grid,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-tools,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-tools,.ai-local-life-source-grid,.ai-result-grid,.ai-result-summary,.ai-vertical-grid,.ai-example-grid,.ai-tool-link-grid,.ai-hub-two,.ai-candidate-list,.ai-lane-grid,.ai-proof-grid{grid-template-columns:1fr}.ai-actions,.ai-context-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions,.ai-feedback{display:grid}.ai-open,.ai-browse,.ai-small-button,.ai-feedback button{width:100%}.ai-list{display:grid;grid-template-columns:1fr}.ai-list li{border-radius:10px}.ai-clarification-chips{display:grid;grid-template-columns:1fr}.ai-answer-chip{width:100%;text-align:center;justify-content:center}.ai-fallback-grid{grid-template-columns:1fr}.ai-fallback-card{min-height:112px}.ai-hub-section{margin-top:26px}}
-    @media(min-width:761px) and (max-width:1060px){.ai-command-hero{grid-template-columns:1fr}.ai-routing-map{max-width:900px;margin:0 auto}.ai-lane-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.ai-main{padding:26px 12px calc(42px + env(safe-area-inset-bottom))}.ai-header{text-align:left;margin-bottom:16px}.ai-kicker-line{margin-left:0}.ai-title{font-size:clamp(1.85rem,9vw,2.65rem)}.ai-copy{font-size:.95rem;line-height:1.58}.ai-command{padding:0}.ai-form{padding:13px;border-radius:14px}.ai-input-row{grid-template-columns:1fr;gap:9px}.ai-run{width:100%}.ai-quick-rail{display:grid;grid-template-columns:1fr 1fr}.ai-quick-task{border-radius:11px}.ai-command-cockpit{border-radius:14px;padding:13px}.ai-cockpit-head{display:grid;align-items:start}.ai-cockpit-badge{justify-self:start}.ai-trust{font-size:.78rem;padding:10px 11px}.ai-card-head,.ai-projects-head,.ai-context-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head,.ai-country-head,.ai-local-life-head,.ai-workflow-panel-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{display:grid;justify-content:stretch}.ai-chip{justify-self:start}.ai-card-body,.ai-job-grid,.ai-context-grid,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-tools,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-tools,.ai-local-life-source-grid,.ai-result-grid,.ai-result-summary,.ai-vertical-grid,.ai-example-grid,.ai-tool-link-grid,.ai-hub-two,.ai-candidate-list,.ai-lane-grid,.ai-proof-grid{grid-template-columns:1fr}.ai-actions,.ai-context-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions,.ai-feedback{display:grid}.ai-open,.ai-browse,.ai-small-button,.ai-feedback button{width:100%}.ai-list{display:grid;grid-template-columns:1fr}.ai-list li{border-radius:10px}.ai-clarification-chips{display:grid;grid-template-columns:1fr}.ai-answer-chip{width:100%;text-align:center;justify-content:center}.ai-fallback-grid{grid-template-columns:1fr}.ai-fallback-card{min-height:112px}.ai-hub-section{margin-top:26px}}
+    @media(min-width:761px) and (max-width:1060px){.ai-lane-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(min-width:761px) and (max-width:980px){.ai-fallback-grid,.ai-education-tools,.ai-career-tools,.ai-import-tools,.ai-country-tools,.ai-local-life-tools{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-education-grid,.ai-career-grid,.ai-import-grid,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-source-grid,.ai-result-grid,.ai-proof-grid{grid-template-columns:1fr 1fr}}
     @media(prefers-reduced-motion:reduce){.ai-spinner,.ai-skeleton-line{animation:none}}
   </style>
@@ -386,12 +372,6 @@
         <div class="ai-kicker-line">Tools, data, and exports in one place</div>
         <h1 class="ai-title">AfroTools AI finds the right tool and sets it up.</h1>
         <p class="ai-copy">Tell it the job. It chooses a real AfroTools page, asks only for useful missing details, and helps you leave with a calculator, checklist, brief, or export.</p>
-        <div class="ai-signal-strip" aria-label="What AfroTools AI can do">
-          <span><b>Find the page</b><small>Calculators, documents, data, country guides, and planners.</small></span>
-          <span><b>Ask less</b><small>Only the missing details needed to make the next screen useful.</small></span>
-          <span><b>Keep it private</b><small>Local routing first, with consent before optional AI help.</small></span>
-          <span><b>Finish the job</b><small>Open a tool with source notes, checklists, briefs, or exports.</small></span>
-        </div>
       </header>
 
       <div class="ai-command-hero">
@@ -548,30 +528,6 @@
           <pre id="aiIntentDebugOutput">{}</pre>
         </details>
       </section>
-      <aside class="ai-routing-map" aria-label="How AfroTools AI works">
-        <h2>What happens after you ask?</h2>
-        <p>No empty chat loop. AfroTools AI moves the task into a useful page, keeps sensitive details under control, and shows what to check before acting.</p>
-        <div class="ai-route-stack">
-          <div class="ai-route-step"><span>1</span><div><strong>Read the job</strong><small>Country, task type, amount, document, deadline, or market.</small></div></div>
-          <div class="ai-route-step"><span>2</span><div><strong>Pick a page</strong><small>PAYE, PDF, scholarships, solar, import duty, CV, invoices, and more.</small></div></div>
-          <div class="ai-route-step"><span>3</span><div><strong>Keep details safe</strong><small>Private values stay in short-lived browser handoffs where possible.</small></div></div>
-          <div class="ai-route-step"><span>4</span><div><strong>Leave with output</strong><small>Briefs, checklists, JSON, WhatsApp summaries, and source warnings.</small></div></div>
-        </div>
-        <div class="ai-route-badges" aria-label="AI guardrails">
-          <b>Local-first by default</b>
-          <b>Source labels</b>
-          <b>No filing claims</b>
-          <b>Consent before model help</b>
-        </div>
-        <div class="ai-language-bridge" aria-label="Localized AfroTools product surfaces">
-          <strong>Keep going in French or Swahili</strong>
-          <p>The command page routes supported workflows in English today, and the wider product includes growing French and Swahili tool surfaces.</p>
-          <div class="ai-language-links">
-            <a href="/fr/" lang="fr"><b>Francais</b><span>Outils, pays et workflows</span></a>
-            <a href="/sw/" lang="sw"><b>Kiswahili</b><span>Zana, nchi na kazi za kila siku</span></a>
-          </div>
-        </div>
-      </aside>
       </div>
 
       <section class="ai-command-cockpit" aria-labelledby="ai-cockpit-title">
@@ -661,7 +617,7 @@
   <script src="/assets/js/ai/education-workflow.js?v=ff5f3751"></script>
   <script src="/assets/js/ai/career-workflow.js?v=4cf95954"></script>
   <script src="/assets/js/ai/energy-advisor-workflow.js?v=8c74cb11"></script>
-  <script src="/assets/js/ai/sme-finance-workflow.js?v=661b0069"></script>
+  <script src="/assets/js/ai/sme-finance-workflow.js?v=c57b8ea2"></script>
   <script src="/assets/js/ai/country-workflow.js?v=07eaa545"></script>
   <script src="/assets/js/ai/local-life-workflow.js?v=42a0440a"></script>
   <script src="/assets/js/ai/construction-workflow.js?v=1f769cef"></script>
@@ -669,11 +625,11 @@
   <script src="/assets/js/ai/workflow-export.js?v=5cd9d6ab"></script>
   <script src="/assets/js/ai/saved-projects.js?v=5981fd79"></script>
 <script src="/assets/js/ai/tool-manifest.js?v=43a68fa3"></script>
-  <script src="/assets/js/ai/intent-router.js?v=53f8f1df"></script>
-  <script src="/assets/js/ai/prefill-adapters.js?v=456f4dfc"></script>
+  <script src="/assets/js/ai/intent-router.js?v=b44c0c0b"></script>
+  <script src="/assets/js/ai/prefill-adapters.js?v=ae10097a"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
   <script src="/assets/js/ai/orchestrator.js?v=538b122c"></script>
-  <script src="/assets/js/ai/i18n.js?v=9b40fb7a"></script>
+  <script src="/assets/js/ai/i18n.js?v=d412553e"></script>
   <script src="/assets/js/ai/example-registry.js?v=112f1edd"></script>
   <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4"></script>
   <script src="/assets/js/ai/pro-monetization.js?v=a8b2d54a"></script>
@@ -1201,12 +1157,14 @@
 
     function fallbackQuickExamples() {
       return [
-        { id: "quick-import-duty", category: "trade", text: "Estimate a Toyota Axio landed cost into Nigeria" },
-        { id: "quick-cv", category: "career", text: "Build a Ghana electrical engineer CV" },
-        { id: "quick-paye", category: "sme", text: "Run Kenya payroll for 5 employees" },
-        { id: "quick-pdf", category: "documents", text: "Compress, sign, and export a PDF locally" },
-        { id: "quick-solar", category: "energy", text: "Compare solar vs generator costs for a Lagos shop" },
-        { id: "quick-living", category: "local-life", text: "Can I live in Nairobi on $1,200 per month?" }
+        { id: "quick-paye-ng", category: "sme", text: "Calculate my take-home pay in Nigeria" },
+        { id: "quick-cv-bank", category: "career", text: "Make a CV for a bank job" },
+        { id: "quick-import-duty", category: "trade", text: "Estimate import duty for a car" },
+        { id: "quick-solar", category: "energy", text: "Compare generator vs solar cost in Lagos" },
+        { id: "quick-scholarship", category: "education", text: "Find scholarships for a master's degree in Canada" },
+        { id: "quick-invoice-vat", category: "sme", text: "Create an invoice with VAT" },
+        { id: "quick-relocation", category: "local-life", text: "Make a relocation budget" },
+        { id: "quick-pdf", category: "documents", text: "Compress or edit a PDF" }
       ];
     }
 
@@ -1540,6 +1498,7 @@
       var role = String(value || "").trim();
       [country, targetCountry].filter(Boolean).forEach(function (name) {
         var escaped = String(name).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        role = role.replace(new RegExp("^" + escaped + "\\s+", "i"), "");
         role = role.replace(new RegExp("\\s+(?:in|from|based in)\\s+" + escaped + "\\s*$", "i"), "");
       });
       return role.replace(/\s+/g, " ").trim();
@@ -1636,6 +1595,8 @@
       var language = original.match(/\b(english|french|arabic|swahili|kiswahili)\b/i);
       var education = original.match(/\b(bsc|b\.sc|ba|b\.a|hnd|ond|msc|m\.sc|mba|phd|diploma|certificate|degree)\s+([a-z][a-z\s-]{2,60})\b/i);
       var householdSize = original.match(/\b([1-9][0-9]?)\s+(?:people|persons|family members|household members|dependents)\b/i);
+      var originCountry = original.match(/\bfrom\s+(japan|china|usa|united states|uae|dubai|germany|uk|united kingdom|korea|south korea)\b/i);
+      var vehicleMakeOnly = original.match(/\b(?:used\s+|new\s+)?(toyota|honda|mazda|nissan|hyundai|kia|mercedes|bmw|volkswagen|vw|ford|lexus)\b/i);
 
       if (country) inputs.country = country;
       if (targetCountry) inputs.targetCountry = targetCountry;
@@ -1658,6 +1619,8 @@
       if (workflow && workflow.id === "import-duty") {
         if (country) inputs.destinationCountry = country;
         if (vehicle) inputs.itemCategory = (vehicle[1] + " " + vehicle[2]).trim();
+        if (!inputs.itemCategory && vehicleMakeOnly) inputs.itemCategory = vehicleMakeOnly[1].toUpperCase() === "VW" ? "Volkswagen vehicle" : vehicleMakeOnly[1] + " vehicle";
+        if (originCountry) inputs.originCountry = originCountry[1].replace(/\busa\b/i, "United States").replace(/\buk\b/i, "United Kingdom").replace(/\buae\b/i, "UAE");
         if (money !== null) inputs.itemValue = money;
         if (engineCc) inputs.engineCc = Number(engineCc[1]);
         if (engineLitres) inputs.engineCc = Math.round(Number(engineLitres[1]) * 1000);
@@ -1694,10 +1657,15 @@
       }
       if (workflow && workflow.id === "paye-calculator") {
         if (money !== null) inputs.grossPay = money;
-        inputs.payPeriod = /\b(annual|yearly|per year)\b/i.test(original) ? "annual" : "monthly";
+        if (/\b(annual|yearly|per year|year)\b/i.test(original)) inputs.payPeriod = "annual";
+        else if (/\b(monthly|per month|month)\b/i.test(original)) inputs.payPeriod = "monthly";
+        else if (/\b(weekly|per week|week)\b/i.test(original)) inputs.payPeriod = "weekly";
+        else if (/\b(daily|per day|day)\b/i.test(original)) inputs.payPeriod = "daily";
       }
       if (workflow && workflow.id === "invoice-generator") {
         if (money !== null) inputs.amount = money;
+        if (money !== null) inputs.invoiceAmount = money;
+        if (/\bvat|value added tax\b/i.test(original)) inputs.vatTreatment = "standard";
       }
       if (workflow && workflow.id === "cost-of-living") {
         if (money !== null) {
@@ -1752,6 +1720,13 @@
           if (careerInputs.sector && !inputs.sector) inputs.sector = careerInputs.sector;
           if (careerInputs.experienceLevel && !inputs.experienceLevel) inputs.experienceLevel = careerInputs.experienceLevel;
         }
+        if (!hasValue(inputs.targetRole)) {
+          var compactRole = original.match(/^\s*(?:build|create|make|prepare|write|draft|improve)?\s*(?:a|an|n)?\s*([a-z][a-z\s-]{2,60}?)(?:\s+(?:cv|resume|cover letter|application)\b|\s+in\s+|\s+for\s+|\s+with\s+|[?.!,]|$)/i);
+          if (compactRole) {
+            var cleanRole = cleanTargetRole(compactRole[1], country, targetCountry).replace(/^(?:cv|resume|cover letter|application)\s+/i, "").trim();
+            if (cleanRole && !/^(?:cv|resume|cover letter|application|job|role)$/i.test(cleanRole)) inputs.targetRole = cleanRole;
+          }
+        }
       }
       return inputs;
     }
@@ -1765,13 +1740,18 @@
     }
 
     function extractMoney(query) {
-      var match = String(query || "").match(/(?:\$|usd\s*)\s?([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m))?/i) ||
-        String(query || "").match(/\b([0-9][0-9,]*(?:\.\d+)?)\s?(usd|dollars|naira|ngn|kes|ghs|zar|xaf|xof)\b/i);
+      var source = String(query || "");
+      var currency = "(?:\\$|usd|dollars?|naira|ngn|kes|ghs|zar|xaf|xof|cedis?|shillings?|rand)";
+      var match = source.match(new RegExp(currency + "\\s*([0-9][0-9,]*(?:\\.\\d+)?)(?:\\s?(k|m|thousand|million)\\b)?", "i")) ||
+        source.match(new RegExp("\\b([0-9][0-9,]*(?:\\.\\d+)?)(?:\\s?(k|m|thousand|million)\\b)?\\s*" + currency + "\\b", "i")) ||
+        source.match(/\b(?:earn|salary|gross|pay|take[-\s]?home|budget|cost|bill|amount|worth|value|price|invoice)[a-z\s:,-]{0,32}([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m|thousand|million))\b/i) ||
+        source.match(/\b([0-9][0-9,]*(?:\.\d+)?)(?:\s?(k|m|thousand|million))\b/i);
       if (!match) return null;
       var amount = Number(String(match[1]).replace(/,/g, ""));
       if (!Number.isFinite(amount)) return null;
-      if (match[2] && String(match[2]).toLowerCase() === "k") amount *= 1000;
-      if (match[2] && String(match[2]).toLowerCase() === "m") amount *= 1000000;
+      var scale = String(match[2] || "").toLowerCase();
+      if (scale === "k" || scale === "thousand") amount *= 1000;
+      if (scale === "m" || scale === "million") amount *= 1000000;
       return amount;
     }
 
@@ -1784,13 +1764,22 @@
           var clean = normalize(keyword);
           return total + (text.indexOf(clean) !== -1 ? clean.split(/\s+/).length + 1 : 0);
         }, 0);
-        if (score > 0 && (!best || score > best.score)) best = { workflow: workflow, score: score };
+      if (score > 0 && (!best || score > best.score)) best = { workflow: workflow, score: score };
       });
+      if (/\b(take[-\s]?home|net pay|salary tax|paye|payroll|income tax)\b/.test(text) || /\b(i earn|earning|gross salary|my salary)\b/.test(text)) {
+        best = { workflow: byId("paye-calculator"), score: Math.max(best && best.score || 0, 9) };
+      }
+      if (/\bsolar\b/.test(text) && /\b(generator|gen|fuel|diesel|petrol|electricity|power)\b/.test(text)) {
+        best = { workflow: byId("solar-roi"), score: Math.max(best && best.score || 0, 9) };
+      }
       if (/\b(invoice|receipt|quote|proforma)\b/.test(text) && /\b(create|make|generate|draft|issue|write)\b/.test(text)) {
         best = { workflow: byId("invoice-generator"), score: Math.max(best && best.score || 0, 8) };
       }
-      if (/\b(vat|value added tax|sales tax)\b/.test(text) && /\b(calculate|check|compute|how much)\b/.test(text)) {
+      if (!/\b(invoice|receipt|quote|proforma)\b/.test(text) && /\b(vat|value added tax|sales tax)\b/.test(text) && /\b(calculate|check|compute|how much)\b/.test(text)) {
         best = { workflow: byId("vat-calc-pan-african"), score: Math.max(best && best.score || 0, 8) };
+      }
+      if (!best && /\b(engineer|developer|analyst|accountant|teacher|nurse|doctor|designer|manager|graduate|intern|technician|mechanic|driver|chef|marketer|lawyer|architect)\b/.test(text)) {
+        best = { workflow: byId("cv-builder"), score: 4 };
       }
       if (!best) return null;
       var extracted = extractInputs(query, best.workflow);
@@ -1810,6 +1799,9 @@
     }
 
     function missingFor(workflow, inputs) {
+      if (workflow && workflow.id === "paye-calculator") {
+        return ["country", "grossPay", "payPeriod"].filter(function (key) { return !hasValue(inputs && inputs[key]); });
+      }
       if (workflow && workflow.id === "import-duty" && importAdvisorWorkflow && typeof importAdvisorWorkflow.getMissingInputs === "function") {
         return importAdvisorWorkflow.getMissingInputs(importAdvisorWorkflow.normalizeInputs("", inputs || {}));
       }
@@ -1974,14 +1966,24 @@
         safetyDomain: selected.category || decision.safetyDomain || plan.safety && plan.safety.safetyDomain || "none",
         privacyMode: plan.safety && plan.safety.privacyMode || decision.privacyMode || "browser_local"
       });
-      var execution = plan.execution || null;
+      var extracted = Object.assign({}, decision.extractedInputs || {});
+      var localExtracted = extractInputs(query, workflow);
+      Object.keys(localExtracted || {}).forEach(function (key) {
+        if (!hasValue(extracted[key])) extracted[key] = localExtracted[key];
+      });
+      var execution = plan.execution ? clone(plan.execution) : null;
+      var missing = Array.isArray(decision.missingInputs) ? decision.missingInputs.slice() : execution && execution.missingInputs || [];
+      missing = missing.filter(function (key) { return !hasValue(extracted[key]); });
+      if (execution && Array.isArray(execution.missingInputs)) {
+        execution.missingInputs = execution.missingInputs.filter(function (key) { return !hasValue(extracted[key]); });
+      }
       return {
         source: "deterministic_full_catalog",
         confidence: Number(decision.confidence || 0),
         workflow: workflow,
         reason: decision.reasonShort || "Matched on this page with the full AfroTools catalog.",
-        extractedInputs: decision.extractedInputs || {},
-        missingInputs: Array.isArray(decision.missingInputs) ? decision.missingInputs : execution && execution.missingInputs || [],
+        extractedInputs: extracted,
+        missingInputs: missing,
         privacyMode: decision.privacyMode || plan.safety && plan.safety.privacyMode || workflow.privacyMode,
         safetyDomain: decision.safetyDomain || plan.safety && plan.safety.safetyDomain || workflow.domain,
         highStakesNotice: decision.highStakesNotice || plan.safety && plan.safety.highStakesNotice || "",
@@ -2253,7 +2255,7 @@
 
     function renderClarification(match, state, launch, query) {
       var workflow = match.workflow;
-      var fields = getClarificationFields(workflow, state, 3);
+      var fields = getClarificationFields(workflow, state, 1);
       if (!fields.length) return "";
       var clarificationKey = workflow.id + ":" + fields.map(function (field) { return field.name; }).join(",");
       if (lastClarificationShownKey !== clarificationKey) {
@@ -2282,7 +2284,7 @@
       }).join("");
       return '<form class="ai-clarification" data-clarification-form data-tool-id="' + escapeHtml(workflow.id) + '" aria-label="Add missing details for ' + escapeHtml(workflow.title) + '">' +
         '<h4>' + escapeHtml(label("result.addDetailsTitle", "Add details before you open it")) + '</h4>' +
-        '<p>' + escapeHtml(label("result.addDetailsBody", "AfroTools found the tool. Add up to three useful details now, or skip and fill them inside the tool.")) + '</p>' +
+        '<p>' + escapeHtml(label("result.addDetailsBody", "AfroTools only needs the most useful missing detail right now.")) + '</p>' +
         '<div class="ai-clarification-grid">' + controls + '</div>' +
         '<div class="ai-clarification-actions">' +
         '<button class="ai-small-button primary" type="submit">' + escapeHtml(label("result.updatePrefill", "Use these details")) + '</button>' +
@@ -2322,6 +2324,50 @@
       return '<ul class="ai-list">' + values.map(function (item) {
         return "<li>" + escapeHtml(prettyField(item)) + "</li>";
       }).join("") + "</ul>";
+    }
+
+    function understoodText(inputs) {
+      var keys = Object.keys(inputs || {}).filter(function (key) { return hasValue(inputs[key]); });
+      if (!keys.length) return label("result.noInputs", "Nothing useful detected yet.");
+      return keys.slice(0, 4).map(function (key) {
+        return prettyField(key) + ": " + formatDetectedValue(inputs[key]);
+      }).join("; ");
+    }
+
+    function missingQuestion(workflow, state, launch) {
+      var nextState = Object.assign({}, state || {}, {
+        missingInputs: launch && launch.missingInputs && launch.missingInputs.length ? launch.missingInputs : state && state.missingInputs
+      });
+      var fields = getClarificationFields(workflow, nextState, 1);
+      if (!fields.length) return label("result.noQuestion", "I have enough to open the tool.");
+      var descriptor = localizedDescriptor(fields[0]);
+      if (descriptor.type === "select") return "Choose " + descriptor.label.toLowerCase() + ".";
+      return "Add " + descriptor.label.toLowerCase() + ".";
+    }
+
+    function outputExpectation(workflow) {
+      var id = workflow && workflow.id || "";
+      if (id === "paye-calculator") return "Estimated tax, deductions, and take-home pay.";
+      if (id === "cv-builder") return "A local CV workspace with templates and exports.";
+      if (id === "scholarship-finder") return "A shortlist with eligibility notes, deadlines, and source warnings.";
+      if (id === "study-abroad-cost") return "A study-budget plan with assumptions and next checks.";
+      if (id === "import-duty") return "A landed-cost estimate with customs assumptions and warnings.";
+      if (id === "solar-roi") return "A solar vs generator cost comparison and payback estimate.";
+      if (id === "invoice-generator") return "A draft invoice with VAT fields and export options.";
+      if (id === "pdf-workspace") return "A local PDF workspace for the selected action.";
+      if (id === "cost-of-living" || id === "japa-calculator" || id === "rent-affordability") return "A practical cost plan with assumptions to review.";
+      return workflow && workflow.reason || "A practical AfroTools workflow you can finish from here.";
+    }
+
+    function jobCardBody(workflow, mergedInputs, state, launch) {
+      return '<div class="ai-job-grid">' +
+        '<div class="ai-job-panel is-primary"><strong>' + escapeHtml(label("result.youNeed", "You need")) + '</strong><p class="ai-card-title">' + escapeHtml(workflow.title || label("result.openTool", "tool")) + '</p></div>' +
+        '<div class="ai-job-panel"><strong>' + escapeHtml(label("result.understood", "What I understood")) + '</strong><p>' + escapeHtml(understoodText(mergedInputs)) + '</p></div>' +
+        '<div class="ai-job-panel"><strong>' + escapeHtml(label("result.inputsDetected", "I can prefill")) + '</strong>' + inputList(mergedInputs) + '</div>' +
+        '<div class="ai-job-panel is-question"><strong>' + escapeHtml(label("result.missingInputs", "I need one detail")) + '</strong><p>' + escapeHtml(missingQuestion(workflow, state, launch)) + '</p></div>' +
+        '<div class="ai-job-panel is-output"><strong>' + escapeHtml(label("result.output", "You will get")) + '</strong><p>' + escapeHtml(outputExpectation(workflow)) + '</p></div>' +
+        '<div class="ai-job-panel"><strong>' + escapeHtml(label("result.privacyConfidence", "Before you act")) + '</strong><p>' + escapeHtml(sourceHintForTool(workflow.id) || "Review the assumptions before using the result for a real decision.") + '</p></div>' +
+        '</div>';
     }
 
     function sourceHintForTool(toolId) {
@@ -3087,12 +3133,15 @@
       }
       var routerFeedback = primary ? renderRouterFeedback() : "";
       var candidateTools = primary ? renderToolCandidates(match, workflow.id) : "";
+      var cardBody = primary
+        ? jobCardBody(workflow, mergedInputs, state, launch)
+        : '<div class="ai-card-body"><div class="ai-mini-panel"><strong>' + escapeHtml(label("result.inputsDetected", "Details found")) + '</strong>' + inputList(mergedInputs) + '</div><div class="ai-mini-panel"><strong>' + escapeHtml(label("result.missingInputs", "Details still needed")) + '</strong>' + missingList(launch.missingInputs || state.missingInputs) + '</div></div>';
       var html = '<article class="ai-workflow-card" data-workflow-card role="listitem" aria-label="' + escapeHtml(workflow.title) + ' workflow result" data-tool-id="' + escapeHtml(workflow.id) + '" data-primary="' + (primary ? "true" : "false") + '">' +
         '<div class="ai-card-head"><div><span class="ai-card-kicker">' + escapeHtml(cardKicker) + '</span><h3 class="ai-card-title">' + escapeHtml(workflow.title) + '</h3><p class="ai-card-reason">' + escapeHtml(cardReason) + '</p></div><span class="ai-chip">' + escapeHtml(confidenceLabel) + '</span></div>' +
         resultSummary +
         primaryActions +
         toolCallLine +
-        '<div class="ai-card-body"><div class="ai-mini-panel"><strong>' + escapeHtml(label("result.inputsDetected", "Details found")) + '</strong>' + inputList(mergedInputs) + '</div><div class="ai-mini-panel"><strong>' + escapeHtml(label("result.missingInputs", "Details still needed")) + '</strong>' + missingList(launch.missingInputs || state.missingInputs) + '</div></div>' +
+        cardBody +
         candidateTools +
         clarification +
         importPanel +
@@ -3749,7 +3798,32 @@
       }).join("");
     }
 
+    function clearWorkflowCards() {
+      [errorCards, noMatchCards, resultCards].forEach(function (target) {
+        if (target) target.innerHTML = "";
+      });
+    }
+
     function handleLowConfidence(query) {
+      var catalogMatch = localCatalogRoute(query);
+      if (catalogMatch && catalogMatch.workflow && (Number(catalogMatch.confidence || 0) >= LOW_CONFIDENCE || catalogMatch.selectedToolId && catalogMatch.selectedToolId !== "tool-search")) {
+        workflowState = createWorkflowState(catalogMatch, query, false);
+        renderMatches(resultCards, [catalogMatch], query, true);
+        track("ai_command_fallback_used", { reason: "low_confidence_full_catalog", query_length: query.length });
+        recordIntent("ai_intent_detected", {
+          intentCategory: catalogMatch.intentCategory || catalogMatch.safetyDomain || catalogMatch.workflow.domain,
+          selectedToolId: catalogMatch.selectedToolId || catalogMatch.workflow.id,
+          missingInputs: workflowState.missingInputs,
+          confidence: workflowState.confidence,
+          fallbackUsed: true,
+          routerSource: "deterministic_full_catalog_after_low_confidence",
+          workflowType: catalogMatch.selectedToolId || catalogMatch.workflow.id
+        });
+        setState("result");
+        showConsentCard(true);
+        if (modelStatus) modelStatus.textContent = "Using browser match from the full AfroTools catalog. You can open the tool now.";
+        return;
+      }
       workflowState = createEmptyWorkflowState();
       workflowState.originalQuery = query;
       workflowState.source = "fallback";
@@ -3791,6 +3865,7 @@
         return;
       }
       setState("loading");
+      clearWorkflowCards();
       track("ai_command_query_submit", { has_query: true, query_length: clean.length, consent_to_model: consentToModel });
       recordIntent("ai_prompt_submitted", {
         query: clean,
@@ -3888,7 +3963,7 @@
         });
         setState("result");
         showConsentCard(true);
-        if (modelStatus) modelStatus.textContent = "Using browser match. Local AfroTools matching found this tool without sending more data.";
+        if (modelStatus) modelStatus.textContent = "Using browser match from the full AfroTools catalog. Local matching found this tool without sending more data.";
       });
     }
 
