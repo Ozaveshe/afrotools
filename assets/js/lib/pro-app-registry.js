@@ -1,1 +1,324 @@
-!function(e){"use strict";var a=[{id:"payroll",name:"AfroPayroll",shortName:"Payroll",mark:"AP",route:"/pro/apps/payroll/",fallbackRoute:"/tools/afropayroll-os/workspace.html",routeExists:!0,routeStatus:"active",domain:"Payroll operations",owner:"Payroll OS",shellState:"Live workspace",buildStatus:"Reads payroll dashboard when the signed-in account has saved runs.",statusTone:"ready",summary:"Monthly runs, employee rows, country-pack confidence, payslip packets, approvals, exports, and audit history.",primaryAction:"Open app route",secondaryAction:"Open live workspace",tags:["Runs","Payslips","Approvals"],dataModel:"Saved payroll runs and device-saved payroll work.",dataSurface:"Saved payroll runs from the account, plus payroll work saved on this device.",needsAttention:"Review warnings, unsigned runs, and device saves that have not been saved to the account.",readiness:84},{id:"tax-compliance",name:"Tax Compliance",shortName:"Tax",mark:"TC",route:"/pro/apps/tax-compliance/",routeExists:!0,routeStatus:"active",domain:"Tax and statutory review",owner:"Country packs",shellState:"Setup ready",buildStatus:"First-run setup, Tax calendar, import review data, Evidence packs, Source review, Review checklist, and accountant packet handoff are available with device save.",statusTone:"ready",summary:"Client setup, obligation tracking, Source review dates, Evidence packs, and accountant packet handoff for African operators.",primaryAction:"Open app route",tags:["Setup","Calendar","Handoff"],dataModel:"Saved on this device first. Manual account save is planned after safe validation.",dataSurface:"Company profile, country lane, obligations, reviewer and tax contact, deadlines, evidence, source reviews, checklist progress, import logs, and accountant packets are saved on this device.",needsAttention:"Complete account-save validation and verified source refresh before offering shared team history or current official deadline confidence.",readiness:64},{id:"books",name:"Books",shortName:"Books",mark:"BK",route:"/pro/apps/books/",routeExists:!0,routeStatus:"active",domain:"Finance workspace",owner:"Finance OS",shellState:"Active",buildStatus:"Business setup, invoices, expenses, payments, imports, Month close, and Accountant packet exports are available on the Books route.",statusTone:"ready",summary:"Customer-facing finance workspace for Money in, Money out, Cashflow review, Month close, and Accountant packet handoff.",primaryAction:"Open Books",tags:["Cashflow","Month close","Accountant packet"],dataModel:"Saved on this device with optional Save to account when the AfroBooks account workspace is available.",dataSurface:"Business, customers, vendors, invoices, payments, expenses, review journals, reports, and packets are saved on this device first.",needsAttention:"Complete account-save validation before offering shared team records or automatic sync.",readiness:74},{id:"hr",name:"HR",shortName:"HR",mark:"HR",route:"/pro/apps/hr/",routeExists:!0,routeStatus:"active",domain:"People operations",owner:"People OS",shellState:"Active",buildStatus:"First-run setup, employee records, onboarding, leave, documents, Payroll readiness, people reports, and people packet export are available.",statusTone:"ready",summary:"Organization setup, employee records, Onboarding, Leave, Documents, Payroll readiness, and People reports.",primaryAction:"Open app route",tags:["Employees","Leave","Reports"],dataModel:"Saved on this device with read-only Payroll employee records where present. Save to account is manual when account records are available.",dataSurface:"Organization setup, employee records, checklist items, Leave, Documents, letter drafts, People reports, and Payroll handoff drafts are saved on this device.",needsAttention:"Complete account-save validation before offering shared HR records or automatic Payroll handoff.",readiness:68},{id:"trade-desk",name:"Trade Desk",shortName:"Trade",mark:"TD",route:"/pro/apps/trade-desk/",routeExists:!0,routeStatus:"shell",domain:"Import and trade ops",owner:"Trade OS",shellState:"Workspace preview",buildStatus:"Device-saved trade operations workspace for shipments, landed costs, AfCFTA notes, suppliers, duty review, and exports.",statusTone:"shell",summary:"A workbench for landed-cost scenarios, customs notes, FX watchlists, and trade-document handoff.",primaryAction:"Open app route",tags:["Imports","FX","Duties"],dataModel:"Trade scenarios are saved on this device with linked public calculators for estimates.",dataSurface:"Trade operations data is saved on this device.",needsAttention:"Create saved trade scenarios and client-level shipment records.",readiness:34},{id:"legal-desk",name:"Legal Desk",shortName:"Legal",mark:"LD",route:"/pro/apps/legal-desk/",fallbackRoute:"/pro/apps/legal/",aliasRoute:"/pro/apps/legal/",routeExists:!0,routeStatus:"shell",domain:"Documents and review",owner:"Legal OS",shellState:"Workspace preview",buildStatus:"Legal Desk opens the current document and review workspace.",statusTone:"shell",summary:"Draft packets, review notes, legal intake, and reusable document workflows for African operators.",primaryAction:"Open app route",tags:["Contracts","Review","Packets"],dataModel:"Legal records are saved on this device while account save is planned.",dataSurface:"Legal intake, drafts, reminders, and packet notes are saved on this device.",needsAttention:"Define document storage boundary and legal-disclaimer language.",readiness:30},{id:"grants-tenders",name:"Grants & Tenders",shortName:"Grants",mark:"GT",route:"/pro/apps/grants-tenders/",routeExists:!0,routeStatus:"shell",domain:"Opportunity pipeline",owner:"Growth OS",shellState:"Workspace preview",buildStatus:"Opportunity workspace for tenders, grants, requirements, deadlines, reviewers, and submission packets.",statusTone:"shell",summary:"Track tenders, grants, eligibility, deadlines, documents, reviewers, and submission status.",primaryAction:"Open app route",tags:["Pipeline","Deadlines","Packets"],dataModel:"Opportunity records are saved on this device while account save is planned.",dataSurface:"Opportunity, deadline, document, reviewer, and packet data is saved on this device.",needsAttention:"Create a source and deadline model before adding alerts.",readiness:34},{id:"creator-studio",name:"Creator Studio",shortName:"Creator",mark:"CS",route:"/pro/apps/creator-studio/",routeExists:!0,routeStatus:"shell",domain:"Creator operations",owner:"AfroStream",shellState:"Workspace preview",buildStatus:"Device-saved creator business workspace for media kits, rate cards, pitches, campaign calendars, sponsors, and handoff packs.",statusTone:"shell",summary:"Creator assets, channel notes, content tasks, sponsor briefs, and release calendars.",primaryAction:"Open app route",tags:["Creators","Assets","Calendar"],dataModel:"Creator workspace records are saved on this device while account save is planned.",dataSurface:"Creator briefs, media-kit notes, sponsor notes, and campaign tasks are saved on this device.",needsAttention:"Separate public creator intelligence from private client workspaces.",readiness:34},{id:"stream-intelligence",name:"Stream Intelligence",shortName:"Stream",mark:"SI",route:"/pro/apps/stream-intelligence/",routeExists:!0,routeStatus:"limited preview",domain:"Media intelligence",owner:"AfroStream",shellState:"Limited preview",buildStatus:"Verified source controls and privacy boundaries are being finalized before broader Pro use.",statusTone:"schema",summary:"Monitor creator updates, stream signals, news changes, sponsorship movements, and freshness tasks.",primaryAction:"Open review workspace",tags:["Signals","News","Freshness"],dataModel:"Limited preview built around public source checks and review notes.",dataSurface:"Public source review, freshness notes, and account features marked as coming later.",needsAttention:"Account-saved review queues and private intelligence controls are still being finalized.",readiness:14},{id:"property-projects",name:"Property Projects",shortName:"Property",mark:"PP",route:"/pro/apps/property-projects/",routeExists:!0,routeStatus:"shell",domain:"Build and property ops",owner:"Property OS",shellState:"Workspace preview",buildStatus:"Device-saved property and project workspace for budgets, contractors, procurement, inspections, documents, and milestones.",statusTone:"shell",summary:"Project budgets, build milestones, contractor documents, risk checks, and property handoff files.",primaryAction:"Open app route",tags:["Budgets","Milestones","Docs"],dataModel:"Property projects are saved on this device first, with signed-in account save where supported. Dedicated reminders are planned.",dataSurface:"Projects, budgets, procurement, contractor payments, inspections, documents, reminders, and packet history are saved on this device first and to the account when available.",needsAttention:"Decide how milestone reminders should work before offering automated alerts.",readiness:44}],t=[{id:"vault",name:"Pro Vault",route:"/pro/vault/",safeRoute:"/pro/vault/",routeExists:!0,routeStatus:"active",summary:"Shared route for export packets, documents, payslips, compliance packs, invoices, and device/account data labels."},{id:"team",name:"Team",route:"/pro/team/",safeRoute:"/pro/team/",routeExists:!0,routeStatus:"active",summary:"Shared route for roles, members, invites, clients, and permission model setups."},{id:"settings",name:"Settings",route:"/pro/settings/",safeRoute:"/pro/settings/",routeExists:!0,routeStatus:"active",summary:"Shared route for account profile display, Pro status, language lane, country, currency, and privacy preferences."},{id:"payroll-pack-support",name:"Payroll country-pack review",route:"/tools/afropayroll-os/support.html",safeRoute:"/tools/afropayroll-os/support.html",routeExists:!0,routeStatus:"active",summary:"Read-only country-pack review view for source review, confidence, engine coverage, and statutory calendar notes."}];function r(e){return JSON.parse(JSON.stringify(e))}function s(e){return e?!1===e.routeExists?e.safeRoute||e.fallbackRoute||"/pro/apps/":e.safeRoute||e.route||"/pro/workspace/":"/pro/workspace/"}function o(){return a.reduce(function(e,a){var t=a.shellState||"Unknown";return e[t]=(e[t]||0)+1,e},{})}var n={getApps:function(){return r(a)},getApp:function(e){for(var t=0;t<a.length;t+=1)if(a[t].id===e)return r(a[t]);return null},getRoutes:function(){return a.map(function(e){return{id:e.id,name:e.name,route:e.route,safeRoute:s(e),routeExists:!1!==e.routeExists,routeStatus:e.routeStatus,shellState:e.shellState,buildStatus:e.buildStatus}})},getSupportRoutes:function(){return r(t)},getStatusCounts:o,getBuildSummary:function(){var e=o();return{total:a.length,live:e["Live workspace"]||0,setupNeeded:e["Setup needed"]||0,comingOnline:e["Coming online"]||0,localShell:e["Workspace preview"]||e["Saved workspace"]||0,needsSchema:e["Account setup pending"]||0,blocked:e.Blocked||0}},safeRoute:s};e.AfroTools=e.AfroTools||{},e.AfroTools.proAppRegistry=n,e.AfroProAppRegistry=n}("undefined"!=typeof window?window:globalThis);
+!function (root) {
+  "use strict";
+
+  var apps = [
+    {
+      id: "payroll",
+      name: "AfroPayroll",
+      shortName: "Payroll",
+      mark: "AP",
+      route: "/pro/apps/payroll/",
+      fallbackRoute: "/tools/afropayroll-os/workspace.html",
+      routeExists: true,
+      routeStatus: "active",
+      domain: "Payroll operations",
+      owner: "Payroll OS",
+      shellState: "Live workspace",
+      buildStatus: "Reads payroll dashboard when the signed-in account has saved runs.",
+      statusTone: "ready",
+      summary: "Monthly runs, employee rows, country-pack confidence, payslip packets, approvals, exports, and audit history.",
+      primaryAction: "Open app route",
+      secondaryAction: "Open live workspace",
+      tags: ["Runs", "Payslips", "Approvals"],
+      dataModel: "Saved payroll runs and device-saved payroll work.",
+      dataSurface: "Saved payroll runs from the account, plus payroll work saved on this device.",
+      needsAttention: "Review warnings, unsigned runs, and device saves that have not been saved to the account.",
+      readiness: 84
+    },
+    {
+      id: "tax-compliance",
+      name: "Tax Compliance",
+      shortName: "Tax",
+      mark: "TC",
+      route: "/pro/apps/tax-compliance/",
+      routeExists: true,
+      routeStatus: "shell",
+      domain: "Tax and statutory review",
+      owner: "Country packs",
+      shellState: "Review packet only",
+      buildStatus: "First-run setup, tax calendar, import review data, evidence packs, source review, checklist, and accountant packet handoff are available with device save.",
+      statusTone: "shell",
+      summary: "Client setup, obligation tracking, source review dates, evidence packs, and accountant packet handoff for African operators.",
+      primaryAction: "Open preview",
+      tags: ["Setup", "Calendar", "Handoff"],
+      dataModel: "Saved on this device first. Manual account save is planned after safe validation.",
+      dataSurface: "Company profile, country lane, obligations, reviewer and tax contact, deadlines, evidence, source reviews, checklist progress, import logs, and accountant packets are saved on this device.",
+      needsAttention: "Complete account-save validation and verified source refresh before offering shared team history or current official deadline confidence.",
+      readiness: 64
+    },
+    {
+      id: "books",
+      name: "Books",
+      shortName: "Books",
+      mark: "BK",
+      route: "/pro/apps/books/",
+      routeExists: true,
+      routeStatus: "shell",
+      domain: "Finance workspace",
+      owner: "Finance OS",
+      shellState: "Local preview only",
+      buildStatus: "Business setup, invoices, expenses, payments, imports, month close, and accountant packet exports are available on the Books route.",
+      statusTone: "shell",
+      summary: "Customer-facing finance workspace for money in, money out, cashflow review, month close, and accountant packet handoff.",
+      primaryAction: "Open preview",
+      tags: ["Cashflow", "Month close", "Accountant packet"],
+      dataModel: "Saved on this device with optional Save to account only when the AfroBooks account workspace is available.",
+      dataSurface: "Business, customers, vendors, invoices, payments, expenses, review journals, reports, and packets are saved on this device first.",
+      needsAttention: "Complete account-save validation before offering shared team records or automatic sync.",
+      readiness: 74
+    },
+    {
+      id: "hr",
+      name: "HR",
+      shortName: "HR",
+      mark: "HR",
+      route: "/pro/apps/hr/",
+      routeExists: true,
+      routeStatus: "shell",
+      domain: "People operations",
+      owner: "People OS",
+      shellState: "Local preview only",
+      buildStatus: "First-run setup, employee records, onboarding, leave, documents, payroll readiness, people reports, and people packet export are available.",
+      statusTone: "shell",
+      summary: "Organization setup, employee records, onboarding, leave, documents, payroll readiness, and people reports.",
+      primaryAction: "Open preview",
+      tags: ["Employees", "Leave", "Reports"],
+      dataModel: "Saved on this device with read-only payroll employee records where present. Save to account is manual when account records are available.",
+      dataSurface: "Organization setup, employee records, checklist items, leave, documents, letter drafts, people reports, and payroll handoff drafts are saved on this device.",
+      needsAttention: "Complete account-save validation before offering shared HR records or automatic payroll handoff.",
+      readiness: 68
+    },
+    {
+      id: "trade-desk",
+      name: "Trade Desk",
+      shortName: "Trade",
+      mark: "TD",
+      route: "/pro/apps/trade-desk/",
+      routeExists: true,
+      routeStatus: "shell",
+      domain: "Import and trade ops",
+      owner: "Trade OS",
+      shellState: "Workspace preview",
+      buildStatus: "Device-saved trade operations workspace for shipments, landed costs, AfCFTA notes, suppliers, duty review, and exports.",
+      statusTone: "shell",
+      summary: "A workbench for landed-cost scenarios, customs notes, FX watchlists, and trade-document handoff.",
+      primaryAction: "Open preview",
+      tags: ["Imports", "FX", "Duties"],
+      dataModel: "Trade scenarios are saved on this device with linked public calculators for estimates.",
+      dataSurface: "Trade operations data is saved on this device.",
+      needsAttention: "Create saved trade scenarios and client-level shipment records.",
+      readiness: 34
+    },
+    {
+      id: "legal-desk",
+      name: "Legal Desk",
+      shortName: "Legal",
+      mark: "LD",
+      route: "/pro/apps/legal-desk/",
+      fallbackRoute: "/pro/apps/legal/",
+      aliasRoute: "/pro/apps/legal/",
+      routeExists: true,
+      routeStatus: "shell",
+      domain: "Documents and review",
+      owner: "Legal OS",
+      shellState: "Workspace preview",
+      buildStatus: "Legal Desk opens the current document and review workspace.",
+      statusTone: "shell",
+      summary: "Draft packets, review notes, legal intake, and reusable document workflows for African operators.",
+      primaryAction: "Open preview",
+      tags: ["Contracts", "Review", "Packets"],
+      dataModel: "Legal records are saved on this device while account save is planned.",
+      dataSurface: "Legal intake, drafts, reminders, and packet notes are saved on this device.",
+      needsAttention: "Define document storage boundary and legal-disclaimer language.",
+      readiness: 30
+    },
+    {
+      id: "grants-tenders",
+      name: "Grants & Tenders",
+      shortName: "Grants",
+      mark: "GT",
+      route: "/pro/apps/grants-tenders/",
+      routeExists: true,
+      routeStatus: "shell",
+      domain: "Opportunity pipeline",
+      owner: "Growth OS",
+      shellState: "Workspace preview",
+      buildStatus: "Opportunity workspace for tenders, grants, requirements, deadlines, reviewers, and submission packets.",
+      statusTone: "shell",
+      summary: "Track tenders, grants, eligibility, deadlines, documents, reviewers, and submission status.",
+      primaryAction: "Open preview",
+      tags: ["Pipeline", "Deadlines", "Packets"],
+      dataModel: "Opportunity records are saved on this device while account save is planned.",
+      dataSurface: "Opportunity, deadline, document, reviewer, and packet data is saved on this device.",
+      needsAttention: "Create a source and deadline model before adding alerts.",
+      readiness: 34
+    },
+    {
+      id: "creator-studio",
+      name: "Creator Studio",
+      shortName: "Creator",
+      mark: "CS",
+      route: "/pro/apps/creator-studio/",
+      routeExists: true,
+      routeStatus: "shell",
+      domain: "Creator operations",
+      owner: "AfroStream",
+      shellState: "Workspace preview",
+      buildStatus: "Device-saved creator business workspace for media kits, rate cards, pitches, campaign calendars, sponsors, and handoff packs.",
+      statusTone: "shell",
+      summary: "Creator assets, channel notes, content tasks, sponsor briefs, and release calendars.",
+      primaryAction: "Open preview",
+      tags: ["Creators", "Assets", "Calendar"],
+      dataModel: "Creator workspace records are saved on this device while account save is planned.",
+      dataSurface: "Creator briefs, media-kit notes, sponsor notes, and campaign tasks are saved on this device.",
+      needsAttention: "Separate public creator intelligence from private client workspaces.",
+      readiness: 34
+    },
+    {
+      id: "stream-intelligence",
+      name: "Stream Intelligence",
+      shortName: "Stream",
+      mark: "SI",
+      route: "/pro/apps/stream-intelligence/",
+      routeExists: true,
+      routeStatus: "limited preview",
+      domain: "Media intelligence",
+      owner: "AfroStream",
+      shellState: "Limited preview",
+      buildStatus: "Verified source controls and privacy boundaries are being finalized before broader Pro use.",
+      statusTone: "schema",
+      summary: "Monitor creator updates, stream signals, news changes, sponsorship movements, and freshness tasks.",
+      primaryAction: "Open review workspace",
+      tags: ["Signals", "News", "Freshness"],
+      dataModel: "Limited preview built around public source checks and review notes.",
+      dataSurface: "Public source review, freshness notes, and account features marked as coming later.",
+      needsAttention: "Account-saved review queues and private intelligence controls are still being finalized.",
+      readiness: 14
+    },
+    {
+      id: "property-projects",
+      name: "Property Projects",
+      shortName: "Property",
+      mark: "PP",
+      route: "/pro/apps/property-projects/",
+      routeExists: true,
+      routeStatus: "shell",
+      domain: "Build and property ops",
+      owner: "Property OS",
+      shellState: "Workspace preview",
+      buildStatus: "Device-saved property and project workspace for budgets, contractors, procurement, inspections, documents, and milestones.",
+      statusTone: "shell",
+      summary: "Project budgets, build milestones, contractor documents, risk checks, and property handoff files.",
+      primaryAction: "Open preview",
+      tags: ["Budgets", "Milestones", "Docs"],
+      dataModel: "Property projects are saved on this device first, with signed-in account save where supported. Dedicated reminders are planned.",
+      dataSurface: "Projects, budgets, procurement, contractor payments, inspections, documents, reminders, and packet history are saved on this device first and to the account when available.",
+      needsAttention: "Decide how milestone reminders should work before offering automated alerts.",
+      readiness: 44
+    }
+  ];
+
+  var supportRoutes = [
+    {
+      id: "vault",
+      name: "Pro Vault",
+      route: "/pro/vault/",
+      safeRoute: "/pro/vault/",
+      routeExists: true,
+      routeStatus: "active",
+      summary: "Shared route for export packets, documents, payslips, compliance packs, invoices, and device/account data labels."
+    },
+    {
+      id: "team",
+      name: "Team",
+      route: "/pro/team/",
+      safeRoute: "/pro/team/",
+      routeExists: true,
+      routeStatus: "active",
+      summary: "Shared route for roles, members, invites, clients, and permission model setups."
+    },
+    {
+      id: "settings",
+      name: "Settings",
+      route: "/pro/settings/",
+      safeRoute: "/pro/settings/",
+      routeExists: true,
+      routeStatus: "active",
+      summary: "Shared route for account profile display, Pro status, language lane, country, currency, and privacy preferences."
+    },
+    {
+      id: "payroll-pack-support",
+      name: "Payroll country-pack review",
+      route: "/tools/afropayroll-os/support.html",
+      safeRoute: "/tools/afropayroll-os/support.html",
+      routeExists: true,
+      routeStatus: "active",
+      summary: "Read-only country-pack review view for source review, confidence, engine coverage, and statutory calendar notes."
+    }
+  ];
+
+  function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function safeRoute(item) {
+    if (!item) return "/pro/workspace/";
+    if (item.routeExists === false) return item.safeRoute || item.fallbackRoute || "/pro/apps/";
+    return item.safeRoute || item.route || "/pro/workspace/";
+  }
+
+  function statusCounts() {
+    return apps.reduce(function (counts, app) {
+      var key = app.shellState || "Unknown";
+      counts[key] = (counts[key] || 0) + 1;
+      return counts;
+    }, {});
+  }
+
+  var api = {
+    getApps: function () {
+      return clone(apps);
+    },
+    getApp: function (id) {
+      for (var index = 0; index < apps.length; index += 1) {
+        if (apps[index].id === id) return clone(apps[index]);
+      }
+      return null;
+    },
+    getRoutes: function () {
+      return apps.map(function (app) {
+        return {
+          id: app.id,
+          name: app.name,
+          route: app.route,
+          safeRoute: safeRoute(app),
+          routeExists: app.routeExists !== false,
+          routeStatus: app.routeStatus,
+          shellState: app.shellState,
+          buildStatus: app.buildStatus
+        };
+      });
+    },
+    getSupportRoutes: function () {
+      return clone(supportRoutes);
+    },
+    getStatusCounts: statusCounts,
+    getBuildSummary: function () {
+      var counts = statusCounts();
+      return {
+        total: apps.length,
+        live: counts["Live workspace"] || 0,
+        setupNeeded: counts["Setup needed"] || 0,
+        comingOnline: counts["Coming online"] || 0,
+        localShell: (counts["Workspace preview"] || 0) + (counts["Local preview only"] || 0) + (counts["Review packet only"] || 0) + (counts["Saved workspace"] || 0),
+        needsSchema: counts["Account setup pending"] || 0,
+        blocked: counts.Blocked || 0
+      };
+    },
+    safeRoute: safeRoute
+  };
+
+  root.AfroTools = root.AfroTools || {};
+  root.AfroTools.proAppRegistry = api;
+  root.AfroProAppRegistry = api;
+}("undefined" != typeof window ? window : globalThis);
