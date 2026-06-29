@@ -339,31 +339,39 @@
   function localizeNode(node) {
     if (!node) return;
     if (node.nodeType === Node.TEXT_NODE) {
-      node.textContent = localizeText(node.textContent);
+      var translated = localizeText(node.textContent);
+      if (translated !== node.textContent) node.textContent = translated;
       return;
     }
     if (node.nodeType !== Node.ELEMENT_NODE) return;
     if (/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|CODE|PRE)$/i.test(node.tagName)) return;
     for (var child = node.firstChild; child; child = child.nextSibling) localizeNode(child);
-    if (node.id === 'summaryTitle') node.textContent = 'Comparaison salariale';
-    if (node.id === 'tab-bars') node.textContent = 'Barres par pays';
-    if (node.id === 'tab-table') node.textContent = 'Tableau comparatif';
-    if (node.id === 'tab-comp') node.textContent = 'R?mun?ration';
-    if (node.id === 'tab-skills') node.textContent = 'Primes de comp?tences';
-    if (node.id === 'tab-dist') node.textContent = 'Distribution';
-    if (node.id === 'tab-col') node.textContent = 'Co?t de la vie';
-    if (node.id === 'tab-city') node.textContent = 'D?tail par ville';
-    if (node.id === 'tab-gender') node.textContent = '?cart femmes-hommes';
-    if (node.id === 'tab-inflation') node.textContent = 'Inflation';
-    if (node.id === 'tab-career') node.textContent = 'Chronologie de carri?re';
+    setText(node, node.id === 'summaryTitle' ? 'Comparaison salariale' : null);
+    setText(node, node.id === 'tab-bars' ? 'Barres par pays' : null);
+    setText(node, node.id === 'tab-table' ? 'Tableau comparatif' : null);
+    setText(node, node.id === 'tab-comp' ? 'R?mun?ration' : null);
+    setText(node, node.id === 'tab-skills' ? 'Primes de comp?tences' : null);
+    setText(node, node.id === 'tab-dist' ? 'Distribution' : null);
+    setText(node, node.id === 'tab-col' ? 'Co?t de la vie' : null);
+    setText(node, node.id === 'tab-city' ? 'D?tail par ville' : null);
+    setText(node, node.id === 'tab-gender' ? '?cart femmes-hommes' : null);
+    setText(node, node.id === 'tab-inflation' ? 'Inflation' : null);
+    setText(node, node.id === 'tab-career' ? 'Chronologie de carri?re' : null);
     if (node.id === 'negotCard') {
       var title = node.querySelector('.sb-negot-title');
-      if (title) title.textContent = 'Calculateur de fourchette de n?gociation';
+      setText(title, 'Calculateur de fourchette de n?gociation');
     }
     if (node.id === 'remotePremiumCard') {
       var rtitle = node.querySelector('.sb-remote-title');
-      if (rtitle) rtitle.textContent = 'Prime de t?l?travail';
+      setText(rtitle, 'Prime de t?l?travail');
     }
+  }
+  function setText(node, value) {
+    if (node && value && node.textContent !== value) node.textContent = value;
+  }
+  function canRunInlineScript(scriptEl) {
+    var type = (scriptEl.getAttribute('type') || '').trim().toLowerCase();
+    return !type || type === 'text/javascript' || type === 'application/javascript' || type === 'module';
   }
   function refreshLocalization() {
     if (translating) return;
@@ -372,7 +380,18 @@
   }
   function watchMount() {
     if (observer) observer.disconnect();
-    observer = new MutationObserver(function() { refreshLocalization(); });
+    observer = new MutationObserver(function(mutations) {
+      if (translating) return;
+      translating = true;
+      try {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'characterData') localizeNode(mutation.target);
+          mutation.addedNodes.forEach(localizeNode);
+        });
+      } finally {
+        translating = false;
+      }
+    });
     observer.observe(mount, { subtree: true, childList: true, characterData: true });
   }
   fetch(SOURCE).then(function(r) { return r.text(); }).then(function(html) {
@@ -382,6 +401,7 @@
     var main = doc.querySelector('.tool-main,.sb-main,main');
     if (main) mount.innerHTML = main.outerHTML;
     doc.querySelectorAll('script:not([src])').forEach(function(sc) {
+      if (!canRunInlineScript(sc)) return;
       if (sc.textContent.indexOf('gtag') > -1 || sc.textContent.indexOf('schema.org') > -1) return;
       var ns = document.createElement('script');
       ns.textContent = sc.textContent;

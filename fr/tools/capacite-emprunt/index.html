@@ -167,15 +167,23 @@
     if(!root) return;
     var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false);
     var node;
-    while((node=walker.nextNode())) node.nodeValue=translateText(node.nodeValue);
+    while((node=walker.nextNode())) {
+      var translated = translateText(node.nodeValue);
+      if (translated !== node.nodeValue) node.nodeValue = translated;
+    }
     root.querySelectorAll('[placeholder]').forEach(function(el){
       el.setAttribute('placeholder',translateText(el.getAttribute('placeholder')));
     });
     root.querySelectorAll('a,button,summary,label,option,p,span,h1,h2,h3,h4,h5').forEach(function(el){
       if(el.childNodes.length===1&&el.childNodes[0].nodeType===Node.TEXT_NODE){
-        el.childNodes[0].nodeValue=translateText(el.childNodes[0].nodeValue);
+        var next = translateText(el.childNodes[0].nodeValue);
+        if (next !== el.childNodes[0].nodeValue) el.childNodes[0].nodeValue=next;
       }
     });
+  }
+  function canRunInlineScript(scriptEl) {
+    var type = (scriptEl.getAttribute('type') || '').trim().toLowerCase();
+    return !type || type === 'text/javascript' || type === 'application/javascript' || type === 'module';
   }
   fetch('/tools/mortgage-affordability/').then(function(r){return r.text();}).then(function(h){
     var d=document.createElement('div');
@@ -189,11 +197,17 @@
       if(b) mount.innerHTML=b.outerHTML;
     }
     localize(mount);
-    var observer=new MutationObserver(function(){ localize(mount); });
+    var observer=new MutationObserver(function(mutations){
+      mutations.forEach(function(mutation){
+        if (mutation.type === 'characterData') localize(mutation.target);
+        mutation.addedNodes.forEach(localize);
+      });
+    });
     observer.observe(mount,{subtree:true,childList:true,characterData:true});
     var scripts=d.querySelectorAll('script:not([src])');
     scripts.forEach(function(sc){
       var txt=sc.textContent;
+      if(!canRunInlineScript(sc)) return;
       if(txt.indexOf('gtag')>-1||txt.indexOf('schema.org')>-1) return;
       var ns=document.createElement('script');
       ns.textContent=txt;

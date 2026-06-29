@@ -2029,7 +2029,7 @@ window.PAYE_CALC_SYNC_ADAPTER = Object.assign({}, window.PAYE_CALC_SYNC_ADAPTER 
       Object.keys(replacements).forEach(function(key){
         if (value.indexOf(key) !== -1) value = value.split(key).join(replacements[key]);
       });
-      node.nodeValue = value;
+      if (value !== node.nodeValue) node.nodeValue = value;
       return;
     }
     if (node.nodeType !== 1) return;
@@ -2038,7 +2038,10 @@ window.PAYE_CALC_SYNC_ADAPTER = Object.assign({}, window.PAYE_CALC_SYNC_ADAPTER 
   function run(){ localizeText(document.getElementById('calcSaveShell')); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
   new MutationObserver(function(mutations){
-    mutations.forEach(function(m){ Array.prototype.forEach.call(m.addedNodes, localizeText); localizeText(m.target); });
+    mutations.forEach(function(m){
+      Array.prototype.forEach.call(m.addedNodes, localizeText);
+      if (m.type === 'characterData') localizeText(m.target);
+    });
   }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
 })();
 </script>

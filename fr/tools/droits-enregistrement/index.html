@@ -437,6 +437,8 @@ body.fr-duty-page main{display:block}
   function runInlineScripts(doc) {
     doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])').forEach(function(scriptEl, index) {
       var code = scriptEl.textContent || '';
+      var type = (scriptEl.getAttribute('type') || '').trim().toLowerCase();
+      if (type && type !== 'text/javascript' && type !== 'application/javascript' && type !== 'module') return;
       if (!code.trim() || /gtag\(|dataLayer|schema\.org/.test(code)) return;
       var inline = document.createElement('script');
       inline.setAttribute('data-fr-duty-inline', 'inline-' + index);
@@ -449,9 +451,15 @@ body.fr-duty-page main{display:block}
     mount.innerHTML = '<div class="fr-duty-fallback"><div class="fr-duty-fallback-card"><h3>Le calculateur n\'a pas pu être chargé.</h3><p>' + message + '</p><p><a href="/tools/stamp-duty/">Ouvrir la version anglaise</a> · <a href="/fr/property/">Retour au hub immobilier</a></p></div></div>';
   }
 
-  var observer = new MutationObserver(function() {
+  var observer = new MutationObserver(function(mutations) {
     if (!loaded) return;
-    localizeMountedTool(mount);
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'characterData') {
+        var next = translateText(mutation.target.nodeValue);
+        if (next !== mutation.target.nodeValue) mutation.target.nodeValue = next;
+      }
+      mutation.addedNodes.forEach(localizeMountedTool);
+    });
   });
 
   fetch(SOURCE_URL, { credentials: 'same-origin' })
