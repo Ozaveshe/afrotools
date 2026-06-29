@@ -851,19 +851,29 @@ function renderChart(type) {
 }
 
 // ── PDF MODAL ─────────────────────────────────────────────────
-function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
-function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
-document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
+function openPdfModal()  {
+  if(!RESULT) return;
+  const modal = document.getElementById('pdfModal');
+  if (!modal) { generatePdf(); return; }
+  modal.classList.add('on');
+  document.getElementById('modalForm').style.display='block';
+  document.getElementById('modalSuccess').style.display='none';
+}
+function closePdfModal() { const modal = document.getElementById('pdfModal'); if (modal) modal.classList.remove('on'); }
+const pdfModal = document.getElementById('pdfModal');
+if (pdfModal) pdfModal.addEventListener('click', e => { if(e.target===pdfModal) closePdfModal(); });
 
 async function submitPdf(e) {
   e.preventDefault();
-  const email = document.getElementById('pdfEmail').value;
+  const email = document.getElementById('pdfEmail')?.value || '';
   if (!email) return;
   try {
     await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Liberia',country_code:'LR',tool:'paye',tool_id:'lr-paye',currency:'LRD',gross_salary:RESULT.gross}).toString() });
   } catch(e){}
-  document.getElementById('modalForm').style.display  = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
+  const modalForm = document.getElementById('modalForm');
+  const modalSuccess = document.getElementById('modalSuccess');
+  if (modalForm) modalForm.style.display  = 'none';
+  if (modalSuccess) modalSuccess.style.display = 'block';
   generatePdf();
 }
 
