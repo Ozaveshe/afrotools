@@ -1,39 +1,39 @@
 # Mobile Audit
 
-Generated: 2026-06-17T02:12:41.542Z
+Generated: 2026-06-29T09:29:13.783Z
 
 ## Scope
 
-- HTML pages audited: 10281
-- Pages with issues: 112
-- Pages without issues: 10169
-- Pages using shared CSS foundation: 9909
-- Pages using shared navbar: 9840
+- HTML pages audited: 10293
+- Pages with issues: 472
+- Pages without issues: 9821
+- Pages using shared CSS foundation: 9922
+- Pages using shared navbar: 9852
 
 ## Top 20 Highest-Leverage Issue Clusters
 
 | # | Cluster | Pages | Score | Shared levers | Sample pages |
 | --- | --- | ---: | ---: | --- | --- |
-| 1 | pro: Multi-column layout stays multi-column too long | 7 | 166 | shared early-collapse layout pattern<br>pro/apps/creator-studio/index.html<br>pro/apps/grants-tenders/index.html<br>pro/apps/hr/index.html | `pro/apps/creator-studio/index.html`<br>`pro/apps/grants-tenders/index.html`<br>`pro/apps/hr/index.html` |
-| 2 | tools / afrostream: Multi-column layout stays multi-column too long | 4 | 92 | shared early-collapse layout pattern<br>tools/afrostream/creator.html<br>tools/afrostream/index.html<br>tools/afrostream/news.html | `tools/afrostream/creator.html`<br>`tools/afrostream/index.html`<br>`tools/afrostream/news.html` |
-| 3 | audit results: Missing viewport meta | 2 | 76 | audit-results/pdf-workspace-online-check/local-inline-render.html<br>audit-results/pdf-workspace-online-check/render-output.html | `audit-results/pdf-workspace-online-check/local-inline-render.html`<br>`audit-results/pdf-workspace-online-check/render-output.html` |
-| 4 | sw / zana: Horizontal overflow risk from 100vw or hard widths | 3 | 60 | shared overflow guard pattern<br>sw/zana/kilinganisha-tv-na-streaming/index.html<br>sw/zana/kulinganisha-hosting/index.html<br>sw/zana/orodha-vifaa/index.html | `sw/zana/kilinganisha-tv-na-streaming/index.html`<br>`sw/zana/kulinganisha-hosting/index.html`<br>`sw/zana/orodha-vifaa/index.html` |
-| 5 | engineering: Horizontal overflow risk from 100vw or hard widths | 2 | 50 | shared overflow guard pattern<br>engineering/afrodraft/assets/css/app.css<br>engineering/floor-planner/css/fp-3d-polish.css<br>engineering/floor-planner/css/fp-layout-access.css | `engineering/afrodraft/app.html`<br>`engineering/floor-planner/index.html` |
-| 6 | fr / tools: Multi-column layout stays multi-column too long | 2 | 50 | shared early-collapse layout pattern<br>assets/css/invoice-generator.css<br>fr/tools/contraste-couleurs/index.html | `fr/tools/contraste-couleurs/index.html`<br>`fr/tools/generateur-factures/index.html` |
-| 7 | matchday os: Multi-column layout stays multi-column too long | 2 | 48 | assets/css/matchday-os.css<br>shared early-collapse layout pattern<br>assets/css/matchday-navigation.css<br>assets/css/matchday-worldcup-pages.css | `matchday-os/index.html`<br>`matchday-os/share-cards/index.html` |
-| 8 | engineering: Multi-column layout stays multi-column too long | 2 | 46 | shared early-collapse layout pattern<br>engineering/afrodraft/assets/css/app.css<br>engineering/afrodraft/assets/css/templates.css | `engineering/afrodraft/app.html`<br>`engineering/afrodraft/index.html` |
-| 9 | tools / afropayroll os: Multi-column layout stays multi-column too long | 2 | 46 | shared early-collapse layout pattern<br>tools/afropayroll-os/index.html<br>tools/afropayroll-os/workspace.html | `tools/afropayroll-os/index.html`<br>`tools/afropayroll-os/workspace.html` |
-| 10 | fr / tools: Form controls likely below 16px | 2 | 42 | shared mobile form sizing pattern<br>assets/css/business-plan.css<br>fr/tools/contraste-couleurs/index.html | `fr/tools/contraste-couleurs/index.html`<br>`fr/tools/plan-affaires/app.html` |
-| 11 | tools / contract generator: Tap targets likely below 44px | 2 | 42 | shared 44px tap target pattern<br>assets/css/legal-enhancements.css<br>tools/contract-generator/app.html | `tools/contract-generator/app.html`<br>`tools/contract-generator/index.html` |
-| 12 | fr / tools: Tap targets likely below 44px | 2 | 40 | shared 44px tap target pattern<br>assets/css/business-plan.css<br>fr/tools/contraste-couleurs/index.html | `fr/tools/contraste-couleurs/index.html`<br>`fr/tools/plan-affaires/app.html` |
-| 13 | pro: Horizontal overflow risk from 100vw or hard widths | 2 | 40 | shared overflow guard pattern<br>pro/apps/events/index.html<br>pro/apps/seller/index.html | `pro/apps/events/index.html`<br>`pro/apps/seller/index.html` |
-| 14 | audit results: Full page is not using the shared navbar foundation | 2 | 28 | assets/js/components/navbar.js adoption<br>audit-results | `audit-results/pdf-workspace-online-check/local-inline-render.html`<br>`audit-results/pdf-workspace-online-check/render-output.html` |
-| 15 | audit results: Page is not using the shared CSS foundation | 2 | 28 | assets/css/design-system.css adoption<br>audit-results | `audit-results/pdf-workspace-online-check/local-inline-render.html`<br>`audit-results/pdf-workspace-online-check/render-output.html` |
-| 16 | French country PAYE pages: Full page is not using the shared navbar foundation | 2 | 28 | assets/js/components/navbar.js adoption<br>fr/country-paye | `fr/guinea-bissau/gw-paye.html`<br>`fr/sao-tome/st-paye.html` |
-| 17 | engineering: Tap targets likely below 44px | 1 | 28 | assets/css/engineering-enhancements.css<br>engineering/afrodraft/assets/css/app.css<br>shared 44px tap target pattern | `engineering/afrodraft/app.html` |
-| 18 | tools / afrostream: Form controls likely below 16px | 1 | 28 | shared mobile form sizing pattern<br>tools/afrostream/admin.html | `tools/afrostream/admin.html` |
-| 19 | tools / afrostream: Tap targets likely below 44px | 1 | 28 | shared 44px tap target pattern<br>tools/afrostream/admin.html | `tools/afrostream/admin.html` |
-| 20 | tools / ajo tracker: Form controls likely below 16px | 1 | 28 | assets/css/african-workflow.css<br>shared mobile form sizing pattern<br>tools/ajo-tracker/app.html | `tools/ajo-tracker/app.html` |
+| 1 | fr / tools: Multi-column layout stays multi-column too long | 144 | 3318 | shared early-collapse layout pattern<br>assets/css/invoice-generator.css<br>fr/tools/ajo-chama/index.html<br>fr/tools/assurance-auto/algeria.html | `fr/tools/ajo-chama/index.html`<br>`fr/tools/assurance-auto/algeria.html`<br>`fr/tools/assurance-auto/benin.html` |
+| 2 | fr / tools: Tap targets likely below 44px | 84 | 1680 | shared 44px tap target pattern<br>assets/css/business-plan.css<br>fr/tools/calculateur-engrais/index.html<br>fr/tools/compresser-image/index.html | `fr/tools/calculateur-engrais/index.html`<br>`fr/tools/compresser-image/index.html`<br>`fr/tools/conformite-donnees/index.html` |
+| 3 | tools / fuel tracker: Multi-column layout stays multi-column too long | 54 | 1188 | shared early-collapse layout pattern<br>tools/fuel-tracker/algeria/index.html<br>tools/fuel-tracker/angola/index.html<br>tools/fuel-tracker/benin/index.html | `tools/fuel-tracker/algeria/index.html`<br>`tools/fuel-tracker/angola/index.html`<br>`tools/fuel-tracker/benin/index.html` |
+| 4 | fr / tools: Fixed-width sidebar around 320px+ compresses content | 21 | 504 | shared sidebar collapse pattern<br>fr/tools/calculateur-ielts/index.html<br>fr/tools/calculateur-offrande/index.html<br>fr/tools/calculatrice-scientifique/index.html | `fr/tools/calculateur-ielts/index.html`<br>`fr/tools/calculateur-offrande/index.html`<br>`fr/tools/calculatrice-scientifique/index.html` |
+| 5 | ha: Multi-column layout stays multi-column too long | 21 | 462 | shared early-collapse layout pattern<br>ha/jamb/adabi/index.html<br>ha/jamb/cbt/index.html<br>ha/jamb/crk/index.html | `ha/jamb/adabi/index.html`<br>`ha/jamb/cbt/index.html`<br>`ha/jamb/crk/index.html` |
+| 6 | pro: Multi-column layout stays multi-column too long | 8 | 194 | shared early-collapse layout pattern<br>pro/apps/creator-studio/index.html<br>pro/apps/grants-tenders/index.html<br>pro/apps/hr/index.html | `pro/apps/creator-studio/index.html`<br>`pro/apps/grants-tenders/index.html`<br>`pro/apps/hr/index.html` |
+| 7 | yo: Multi-column layout stays multi-column too long | 7 | 154 | shared early-collapse layout pattern<br>yo/awon-ise/alawus-na-nysc/index.html<br>yo/awon-ise/duba-genotype/index.html<br>yo/awon-ise/kalkuletan-jamb/index.html | `yo/awon-ise/alawus-na-nysc/index.html`<br>`yo/awon-ise/duba-genotype/index.html`<br>`yo/awon-ise/kalkuletan-jamb/index.html` |
+| 8 | tools / afrostream: Multi-column layout stays multi-column too long | 4 | 92 | shared early-collapse layout pattern<br>tools/afrostream/creator.html<br>tools/afrostream/index.html<br>tools/afrostream/news.html | `tools/afrostream/creator.html`<br>`tools/afrostream/index.html`<br>`tools/afrostream/news.html` |
+| 9 | fr / tools: Horizontal overflow risk from 100vw or hard widths | 4 | 80 | shared overflow guard pattern<br>fr/tools/ajo-chama/index.html<br>fr/tools/convertisseur-devises/index.html<br>fr/tools/interet-tontine/index.html | `fr/tools/ajo-chama/index.html`<br>`fr/tools/convertisseur-devises/index.html`<br>`fr/tools/interet-tontine/index.html` |
+| 10 | audit results: Missing viewport meta | 2 | 76 | audit-results/pdf-workspace-online-check/local-inline-render.html<br>audit-results/pdf-workspace-online-check/render-output.html | `audit-results/pdf-workspace-online-check/local-inline-render.html`<br>`audit-results/pdf-workspace-online-check/render-output.html` |
+| 11 | sw / ghana: Multi-column layout stays multi-column too long | 3 | 66 | shared early-collapse layout pattern<br>sw/ghana/kikokotoo-gharama-ya-mfanyakazi/index.html<br>sw/ghana/kikokotoo-malipo-ya-kuachishwa-kazi/index.html<br>sw/ghana/kilinganisha-mkandarasi-na-mfanyakazi/index.html | `sw/ghana/kikokotoo-gharama-ya-mfanyakazi/index.html`<br>`sw/ghana/kikokotoo-malipo-ya-kuachishwa-kazi/index.html`<br>`sw/ghana/kilinganisha-mkandarasi-na-mfanyakazi/index.html` |
+| 12 | sw / nigeria: Multi-column layout stays multi-column too long | 3 | 66 | shared early-collapse layout pattern<br>sw/nigeria/kikokotoo-gharama-ya-mfanyakazi/index.html<br>sw/nigeria/kikokotoo-malipo-ya-kuachishwa-kazi/index.html<br>sw/nigeria/kilinganisha-mkandarasi-na-mfanyakazi/index.html | `sw/nigeria/kikokotoo-gharama-ya-mfanyakazi/index.html`<br>`sw/nigeria/kikokotoo-malipo-ya-kuachishwa-kazi/index.html`<br>`sw/nigeria/kilinganisha-mkandarasi-na-mfanyakazi/index.html` |
+| 13 | sw / south africa: Multi-column layout stays multi-column too long | 3 | 66 | shared early-collapse layout pattern<br>sw/south-africa/kikokotoo-kiinua-mgongo/index.html<br>sw/south-africa/kikokotoo-malipo-ya-kuachishwa-kazi/index.html<br>sw/south-africa/kilinganisha-mkandarasi-na-mfanyakazi/index.html | `sw/south-africa/kikokotoo-kiinua-mgongo/index.html`<br>`sw/south-africa/kikokotoo-malipo-ya-kuachishwa-kazi/index.html`<br>`sw/south-africa/kilinganisha-mkandarasi-na-mfanyakazi/index.html` |
+| 14 | sw / zana: Horizontal overflow risk from 100vw or hard widths | 3 | 60 | shared overflow guard pattern<br>sw/zana/kilinganisha-tv-na-streaming/index.html<br>sw/zana/kulinganisha-hosting/index.html<br>sw/zana/orodha-vifaa/index.html | `sw/zana/kilinganisha-tv-na-streaming/index.html`<br>`sw/zana/kulinganisha-hosting/index.html`<br>`sw/zana/orodha-vifaa/index.html` |
+| 15 | engineering: Horizontal overflow risk from 100vw or hard widths | 2 | 50 | shared overflow guard pattern<br>engineering/afrodraft/assets/css/app.css<br>engineering/floor-planner/css/fp-3d-polish.css<br>engineering/floor-planner/css/fp-layout-access.css | `engineering/afrodraft/app.html`<br>`engineering/floor-planner/index.html` |
+| 16 | matchday os: Multi-column layout stays multi-column too long | 2 | 48 | assets/css/matchday-os.css<br>shared early-collapse layout pattern<br>assets/css/matchday-navigation.css<br>assets/css/matchday-worldcup-pages.css | `matchday-os/index.html`<br>`matchday-os/share-cards/index.html` |
+| 17 | tools / afropayroll os: Multi-column layout stays multi-column too long | 2 | 48 | shared early-collapse layout pattern<br>tools/afropayroll-os/index.html<br>tools/afropayroll-os/workspace.html | `tools/afropayroll-os/index.html`<br>`tools/afropayroll-os/workspace.html` |
+| 18 | engineering: Multi-column layout stays multi-column too long | 2 | 46 | shared early-collapse layout pattern<br>engineering/afrodraft/assets/css/app.css<br>engineering/afrodraft/assets/css/templates.css | `engineering/afrodraft/app.html`<br>`engineering/afrodraft/index.html` |
+| 19 | fr / blog: Multi-column layout stays multi-column too long | 2 | 46 | shared early-collapse layout pattern<br>fr/blog/calculer-salaire-net-senegal/index.html<br>fr/blog/salaire-moyen-rdc-2026/index.html | `fr/blog/calculer-salaire-net-senegal/index.html`<br>`fr/blog/salaire-moyen-rdc-2026/index.html` |
+| 20 | fr / tools: Form controls likely below 16px | 2 | 42 | shared mobile form sizing pattern<br>assets/css/business-plan.css<br>fr/tools/contraste-couleurs/index.html | `fr/tools/contraste-couleurs/index.html`<br>`fr/tools/plan-affaires/app.html` |
 
 ## Top 30 Worst Files/Templates
 
@@ -54,71 +54,71 @@ Generated: 2026-06-17T02:12:41.542Z
 | 13 | `/artifacts/scholarship-card-redesign/preview.html` | 72 | artifacts | Missing CSS foundation, Missing navbar, Sub-16 controls, Tap targets |
 | 14 | `/audit-results/pdf-workspace-online-check/local-inline-render.html` | 66 | audit results | Viewport, Missing CSS foundation, Missing navbar |
 | 15 | `/audit-results/pdf-workspace-online-check/render-output.html` | 66 | audit results | Viewport, Missing CSS foundation, Missing navbar |
-| 16 | `/fr/tools/plan-affaires/app.html` | 62 | fr / tools | Sub-16 controls, Tap targets, Custom nav/search |
-| 17 | `/tools/business-plan/app.html` | 62 | tools / business plan | Sub-16 controls, Tap targets, Custom nav/search |
-| 18 | `/tools/afrostream/admin.html` | 56 | tools / afrostream | Sub-16 controls, Tap targets |
-| 19 | `/tools/import-duty/` | 48 | tools / import duty | Late collapse, Fixed sidebar |
-| 20 | `/tools/pdf-workspace/` | 46 | tools / pdf workspace | Late collapse, 100vh overlay |
-| 21 | `/trade/` | 44 | trade | Tap targets, Late collapse |
-| 22 | `/tools/employment-contract/` | 42 | tools / employment contract | Tap targets, Late collapse |
-| 23 | `/tools/personal-brand-audit/` | 42 | tools / personal brand audit | Sub-16 controls, Tap targets |
-| 24 | `/tools/tenancy-agreement/` | 42 | tools / tenancy agreement | Tap targets, Late collapse |
-| 25 | `/tools/landed-cost/` | 28 | tools / landed cost | Late collapse |
-| 26 | `/pro/apps/hr/` | 26 | pro | Late collapse |
-| 27 | `/pro/apps/property-projects/` | 26 | pro | Late collapse |
-| 28 | `/tools/university-ranking/` | 26 | tools / university ranking | Late collapse |
-| 29 | `/ask/` | 24 | ask | Fixed sidebar |
-| 30 | `/dashboard/` | 24 | dashboard | Tap targets |
+| 16 | `/fr/tools/montant-lettres-ke/` | 66 | fr / tools | Tap targets, Late collapse, Fixed sidebar |
+| 17 | `/fr/tools/projection-retraite/` | 66 | fr / tools | Tap targets, Late collapse, Fixed sidebar |
+| 18 | `/fr/tools/plan-affaires/app.html` | 62 | fr / tools | Sub-16 controls, Tap targets, Custom nav/search |
+| 19 | `/tools/business-plan/app.html` | 62 | tools / business plan | Sub-16 controls, Tap targets, Custom nav/search |
+| 20 | `/tools/afrostream/admin.html` | 56 | tools / afrostream | Sub-16 controls, Tap targets |
+| 21 | `/tools/import-duty/` | 52 | tools / import duty | Late collapse, Fixed sidebar |
+| 22 | `/fr/ai/` | 48 | fr / ai | Late collapse, Fixed sidebar |
+| 23 | `/fr/angola/ao-vat.html` | 48 | fr / angola | Late collapse, Fixed sidebar |
+| 24 | `/fr/egypt/eg-vat.html` | 48 | fr / egypt | Late collapse, Fixed sidebar |
+| 25 | `/fr/south-africa/za-vat.html` | 48 | fr / south africa | Late collapse, Fixed sidebar |
+| 26 | `/fr/tanzania/tz-vat.html` | 48 | fr / tanzania | Late collapse, Fixed sidebar |
+| 27 | `/fr/tools/compte-a-rebours/` | 48 | fr / tools | Late collapse, Fixed sidebar |
+| 28 | `/fr/tools/cout-funerailles/` | 48 | fr / tools | Late collapse, Fixed sidebar |
+| 29 | `/sw/ai/` | 48 | sw / ai | Late collapse, Fixed sidebar |
+| 30 | `/fr/ghana/gh-vat.html` | 46 | fr / ghana | Late collapse, Fixed sidebar |
 
 ## Shared Files Or Patterns That Fix The Most Pages
 
 | Lever | Pages | Score |
 | --- | ---: | ---: |
-| shared early-collapse layout pattern | 66 | 1532 |
-| shared 44px tap target pattern | 35 | 734 |
-| assets/js/components/navbar.js adoption | 15 | 210 |
-| shared mobile form sizing pattern | 14 | 332 |
-| shared overflow guard pattern | 14 | 292 |
-| shared app shell mobile pattern | 8 | 160 |
-| assets/css/design-system.css adoption | 8 | 112 |
-| shared sidebar collapse pattern | 7 | 168 |
-| pro/apps/creator-studio/index.html | 7 | 166 |
-| pro/apps/grants-tenders/index.html | 7 | 166 |
-| pro/apps/hr/index.html | 7 | 166 |
-| fr/tools/contraste-couleurs/index.html | 7 | 156 |
+| shared early-collapse layout pattern | 343 | 7820 |
+| shared 44px tap target pattern | 187 | 3774 |
+| fr/tools/ajo-chama/index.html | 148 | 3398 |
+| assets/css/invoice-generator.css | 144 | 3318 |
+| fr/tools/assurance-auto/algeria.html | 144 | 3318 |
+| assets/css/business-plan.css | 88 | 1764 |
+| fr/tools/calculateur-engrais/index.html | 84 | 1680 |
+| fr/tools/compresser-image/index.html | 84 | 1680 |
+| tools/fuel-tracker/algeria/index.html | 54 | 1188 |
+| tools/fuel-tracker/angola/index.html | 54 | 1188 |
+| tools/fuel-tracker/benin/index.html | 54 | 1188 |
+| assets/css/country-hub-ui-refresh.css | 52 | 1040 |
 
 ## Recommended Next-Fix Order
 
-1. pro: Multi-column layout stays multi-column too long
-   7 pages / 166 score; strong shared lever through shared early-collapse layout pattern.
+1. fr / tools: Multi-column layout stays multi-column too long
+   144 pages / 3318 score; strong shared lever through shared early-collapse layout pattern.
+   Primary levers: shared early-collapse layout pattern, assets/css/invoice-generator.css, fr/tools/ajo-chama/index.html, fr/tools/assurance-auto/algeria.html
+2. fr / tools: Tap targets likely below 44px
+   84 pages / 1680 score; strong shared lever through shared 44px tap target pattern.
+   Primary levers: shared 44px tap target pattern, assets/css/business-plan.css, fr/tools/calculateur-engrais/index.html, fr/tools/compresser-image/index.html
+3. tools / fuel tracker: Multi-column layout stays multi-column too long
+   54 pages / 1188 score; strong shared lever through shared early-collapse layout pattern.
+   Primary levers: shared early-collapse layout pattern, tools/fuel-tracker/algeria/index.html, tools/fuel-tracker/angola/index.html, tools/fuel-tracker/benin/index.html
+4. fr / tools: Fixed-width sidebar around 320px+ compresses content
+   21 pages / 504 score; strong shared lever through shared sidebar collapse pattern.
+   Primary levers: shared sidebar collapse pattern, fr/tools/calculateur-ielts/index.html, fr/tools/calculateur-offrande/index.html, fr/tools/calculatrice-scientifique/index.html
+5. ha: Multi-column layout stays multi-column too long
+   21 pages / 462 score; strong shared lever through shared early-collapse layout pattern.
+   Primary levers: shared early-collapse layout pattern, ha/jamb/adabi/index.html, ha/jamb/cbt/index.html, ha/jamb/crk/index.html
+6. pro: Multi-column layout stays multi-column too long
+   8 pages / 194 score; strong shared lever through shared early-collapse layout pattern.
    Primary levers: shared early-collapse layout pattern, pro/apps/creator-studio/index.html, pro/apps/grants-tenders/index.html, pro/apps/hr/index.html
-2. tools / afrostream: Multi-column layout stays multi-column too long
+7. yo: Multi-column layout stays multi-column too long
+   7 pages / 154 score; strong shared lever through shared early-collapse layout pattern.
+   Primary levers: shared early-collapse layout pattern, yo/awon-ise/alawus-na-nysc/index.html, yo/awon-ise/duba-genotype/index.html, yo/awon-ise/kalkuletan-jamb/index.html
+8. tools / afrostream: Multi-column layout stays multi-column too long
    4 pages / 92 score; strong shared lever through shared early-collapse layout pattern.
    Primary levers: shared early-collapse layout pattern, tools/afrostream/creator.html, tools/afrostream/index.html, tools/afrostream/news.html
-3. audit results: Missing viewport meta
+9. fr / tools: Horizontal overflow risk from 100vw or hard widths
+   4 pages / 80 score; strong shared lever through shared overflow guard pattern.
+   Primary levers: shared overflow guard pattern, fr/tools/ajo-chama/index.html, fr/tools/convertisseur-devises/index.html, fr/tools/interet-tontine/index.html
+10. audit results: Missing viewport meta
    2 pages / 76 score; repeated family pattern worth fixing before one-off pages.
    Primary levers: audit-results/pdf-workspace-online-check/local-inline-render.html, audit-results/pdf-workspace-online-check/render-output.html
-4. sw / zana: Horizontal overflow risk from 100vw or hard widths
-   3 pages / 60 score; strong shared lever through shared overflow guard pattern.
-   Primary levers: shared overflow guard pattern, sw/zana/kilinganisha-tv-na-streaming/index.html, sw/zana/kulinganisha-hosting/index.html, sw/zana/orodha-vifaa/index.html
-5. engineering: Horizontal overflow risk from 100vw or hard widths
-   2 pages / 50 score; repeated family pattern worth fixing before one-off pages.
-   Primary levers: shared overflow guard pattern, engineering/afrodraft/assets/css/app.css, engineering/floor-planner/css/fp-3d-polish.css, engineering/floor-planner/css/fp-layout-access.css
-6. fr / tools: Multi-column layout stays multi-column too long
-   2 pages / 50 score; repeated family pattern worth fixing before one-off pages.
-   Primary levers: shared early-collapse layout pattern, assets/css/invoice-generator.css, fr/tools/contraste-couleurs/index.html
-7. matchday os: Multi-column layout stays multi-column too long
-   2 pages / 48 score; repeated family pattern worth fixing before one-off pages.
-   Primary levers: assets/css/matchday-os.css, shared early-collapse layout pattern, assets/css/matchday-navigation.css, assets/css/matchday-worldcup-pages.css
-8. engineering: Multi-column layout stays multi-column too long
-   2 pages / 46 score; repeated family pattern worth fixing before one-off pages.
-   Primary levers: shared early-collapse layout pattern, engineering/afrodraft/assets/css/app.css, engineering/afrodraft/assets/css/templates.css
-9. tools / afropayroll os: Multi-column layout stays multi-column too long
-   2 pages / 46 score; repeated family pattern worth fixing before one-off pages.
-   Primary levers: shared early-collapse layout pattern, tools/afropayroll-os/index.html, tools/afropayroll-os/workspace.html
-10. fr / tools: Form controls likely below 16px
-   2 pages / 42 score; repeated family pattern worth fixing before one-off pages.
-   Primary levers: shared mobile form sizing pattern, assets/css/business-plan.css, fr/tools/contraste-couleurs/index.html
 
 ## Assumptions And Blind Spots
 
