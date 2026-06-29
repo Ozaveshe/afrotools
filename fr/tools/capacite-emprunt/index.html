@@ -165,6 +165,12 @@
   }
   function localize(root){
     if(!root) return;
+    if(root.nodeType===Node.TEXT_NODE){
+      var text = translateText(root.nodeValue);
+      if (text !== root.nodeValue) root.nodeValue = text;
+      return;
+    }
+    if(root.nodeType!==Node.ELEMENT_NODE && root.nodeType!==Node.DOCUMENT_FRAGMENT_NODE) return;
     var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false);
     var node;
     while((node=walker.nextNode())) {
