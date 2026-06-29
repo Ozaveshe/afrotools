@@ -4,6 +4,8 @@ Updated: 2026-05-13
 
 This matrix is the close-out truth sheet for the 20-app Pro architecture. Payroll is the only fully active Pro app. Other routes may be useful local previews, but they must keep the early-access waitlist and must not promise account sync, official filing, payment execution, legal certification, or private intelligence.
 
+Commercial product strategy for all 20 apps lives in `docs/AFROTOOLS-PRO-APP-PRODUCT-BRIEFS.md`. Use that brief for market references, unique selling points, sellable packaging, and app-specific improvement priorities, while keeping this readiness matrix as the implementation truth sheet.
+
 | App | Status | Data backing | Pro gate | Timeline | Close-out decision |
 | --- | --- | --- | --- | --- | --- |
 | Payroll | Active | Account/profile plus device workspace history | Yes | Ship | Keep as the active Pro app and continue hardening. |
