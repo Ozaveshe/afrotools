@@ -567,17 +567,17 @@
         </div>
         <div class="card-body">
           <div class="file-input-wrapper">
-            <input type="file" id="pdfFailiInput" accept=".pdf" multiple>
-            <label for="pdfFailiInput" class="file-input-label">
+            <input type="file" id="pdfFileInput" accept=".pdf" multiple>
+            <label for="pdfFileInput" class="file-input-label">
               Bofya kuchagua au buruta na dondosha PDF hapa
               <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Chagua faili moja kupakua PDF, au faili nyingi kuhamisha kama ZIP.</div>
             </label>
           </div>
           <div id="fileInfo" style="display:none; margin-top:12px;">
             <div class="f-label-text"><span id="fileName"></span></div>
-            <div style="font-size:0.7rem;color:#64748b;margin-top:4px;">Ukubwa jumla: <span id="fileUkubwa"></span></div>
+            <div style="font-size:0.7rem;color:#64748b;margin-top:4px;">Ukubwa jumla: <span id="fileSize"></span></div>
           </div>
-          <div id="batchFailiList" class="file-list" style="display:none;"></div>
+          <div id="batchFileList" class="file-list" style="display:none;"></div>
         </div>
       </div>
 
@@ -622,8 +622,8 @@
                 <div style="font-size:0.65rem;color:#64748b;margin-top:4px;">Ubora wa chini hupunguza zaidi PDF zenye picha nyingi.</div>
               </div>
               <div>
-                <label class="f-label-text" for="targetUkubwaInput">Ukubwa unaolengwa kwa kila PDF (si lazima)</label>
-                <input class="f-input" id="targetUkubwaInput" type="number" min="50" step="50" placeholder="Mfano: 500 KB">
+                <label class="f-label-text" for="targetSizeInput">Ukubwa unaolengwa kwa kila PDF (si lazima)</label>
+                <input class="f-input" id="targetSizeInput" type="number" min="50" step="50" placeholder="Mfano: 500 KB">
               </div>
               <div>
                 <label class="f-label-text">Tabia ya matokeo</label>
@@ -632,7 +632,7 @@
             </div>
             <div class="setting-checks">
               <label class="check-option"><input aria-label="GrayscaleToggle" type="checkbox" id="grayscaleToggle"> Skani nyeusi na nyeupe</label>
-              <label class="check-option"><input aria-label="KeepMaandishiToggle" type="checkbox" id="keepMaandishiToggle"> Tumia hali safi inapowezekana</label>
+              <label class="check-option"><input aria-label="KeepTextToggle" type="checkbox" id="keepTextToggle"> Tumia hali safi inapowezekana</label>
             </div>
           </div>
           <button type="button" class="calc-btn" id="compressBtn" disabled>Bana PDF</button>
@@ -650,8 +650,8 @@
         <div class="card-body">
           <div id="resultContent" style="display:none;">
             <div class="size-info">
-              <div><span class="size-label">Awali:</span> <span id="originalUkubwa"></span></div>
-              <div><span class="size-label">Baada ya kubana:</span> <span id="compressedUkubwa"></span></div>
+              <div><span class="size-label">Awali:</span> <span id="originalSize"></span></div>
+              <div><span class="size-label">Baada ya kubana:</span> <span id="compressedSize"></span></div>
             </div>
             <div class="savings-badge" id="savingsBadge"></div>
             <div class="result-note" id="resultNote"></div>
@@ -666,7 +666,7 @@
   </share-result-button>
 </div>
           </div>
-          <div id="processingMaandishi" style="display:none;text-align:center;color:#334155;">
+          <div id="processingText" style="display:none;text-align:center;color:#334155;">
             <div style="margin-bottom:12px;">Inabana...</div>
             <div class="progress-bar">
               <div class="progress-fill" id="progressFill"></div>
