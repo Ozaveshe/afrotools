@@ -103,7 +103,7 @@ h1{max-width:840px;margin:0;font-size:clamp(2rem,4.8vw,3.65rem);line-height:1.04
 .output{min-height:236px;white-space:pre-wrap;overflow:auto;background:#0f172a;color:#e2e8f0;border-radius:12px;padding:14px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.88rem;line-height:1.55;word-break:break-word}
 .copyline{margin-top:10px;color:#64748b;font-size:.86rem;min-height:20px}
 .section{margin-top:18px}
-.table-wrap{overflow-x:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff}
+.table-wrap{overflow-x:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff;-webkit-overflow-scrolling:touch;max-width:100%}
 .table{width:100%;border-collapse:collapse;min-width:760px}
 .table th,.table td{text-align:left;vertical-align:top;padding:11px 12px;border-bottom:1px solid #e2e8f0}
 .table th{background:#f8fafc;color:#334155;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase}
@@ -116,7 +116,8 @@ h1{max-width:840px;margin:0;font-size:clamp(2rem,4.8vw,3.65rem);line-height:1.04
 .links a{display:flex;align-items:center;min-height:44px;text-decoration:none;border:1px solid #dbe4ee;border-radius:10px;padding:11px 12px;background:#fff;color:#0e7490;font-weight:850}
 .small{margin:0;color:#64748b;font-size:.91rem;line-height:1.65}
 .list{margin:0;padding-left:18px;color:#475569;line-height:1.65}
-@media(max-width:920px){.hero{padding-top:72px}.hero-grid,.layout,.grid,.metrics,.steps,.links{grid-template-columns:1fr}.result{position:static}.card,.note{padding:16px}.table{min-width:720px}}
+@media(max-width:920px){.hero{padding-top:72px}.hero-grid,.layout,.grid,.metrics,.steps,.links{grid-template-columns:1fr}.result{position:static}.card,.note{padding:16px}}
+@media(max-width:920px){.table{min-width:0}.table thead{display:none}.table,.table tbody,.table tr,.table td{display:block;width:100%}.table tr{border-bottom:1px solid #e2e8f0;padding:10px 12px}.table tr:last-child{border-bottom:0}.table td{border-bottom:0;padding:5px 0 5px 42%;position:relative;min-height:30px}.table td::before{content:attr(data-label);position:absolute;left:0;top:5px;width:38%;color:#64748b;font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.table td:first-child{font-weight:800;color:#0f172a}}
 </style>
 </head>
 <body>
@@ -315,7 +316,7 @@ h1{max-width:840px;margin:0;font-size:clamp(2rem,4.8vw,3.65rem);line-height:1.04
   function renderScenarios(){
     $("scenarioRows").innerHTML = scenarioData().map((s) => {
       const month = monthlyCost(s.cost);
-      return "<tr><td>"+s.name+"</td><td>"+money(month)+"</td><td>"+fmt(s.gb)+" GB</td><td>"+fmt(s.min)+"</td><td>"+s.fit+"</td><td>"+s.risk+"</td></tr>";
+      return "<tr><td data-label=\"Yanayi\">"+s.name+"</td><td data-label=\"Kudin wata\">"+money(month)+"</td><td data-label=\"GB a wata\">"+fmt(s.gb)+" GB</td><td data-label=\"Mintuna\">"+fmt(s.min)+"</td><td data-label=\"Abin da ya dace\">"+s.fit+"</td><td data-label=\"Hadari\">"+s.risk+"</td></tr>";
     }).join("");
   }
   function renderSteps(score, perGb, perMin){
