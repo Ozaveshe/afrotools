@@ -37,12 +37,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/document-pdf-workflow.css?v=b22d924f">
 <link rel="stylesheet" href="/assets/css/document-pdf-workflow-tight.css?v=5044607f">
 <link rel="stylesheet" href="/assets/css/workflow-tightening.css?v=5c3ceaed">
-<link rel="stylesheet" href="/assets/css/document-pdf-focus.css?v=9522e715">
+<link rel="stylesheet" href="/assets/css/document-pdf-focus.css?v=d33b5ad6">
 <style>
 .docpdf-public-planner .docpdf-flow-grid>.docpdf-flow-panel:nth-child(3){display:none}
 .docpdf-route-band{background:#f8fafc;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:34px 0}
@@ -71,7 +72,8 @@
 @media(max-width:820px){.docpdf-route-head{display:grid}.docpdf-route-cta{justify-self:start}.docpdf-route-grid{grid-template-columns:1fr}.docpdf-proof-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.docpdf-route-band{padding:24px 0}.docpdf-proof-grid{grid-template-columns:1fr}}
 </style>
-<script src="/assets/js/components/tool-registry.min.js?v=962d56d8" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=6dfc1ea2" defer></script>
+<script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -105,9 +107,11 @@
   #tool-grid{min-height:120px}
   .tc{background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s,transform .2s;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.06);position:relative;text-decoration:none;color:inherit}
   .tc:hover{border-color:var(--color-primary);box-shadow:0 16px 48px rgba(0,122,255,.18),0 2px 8px rgba(0,0,0,.06);transform:translateY(-6px) scale(1.01)}
-  .tc-thumb{aspect-ratio:3/2;overflow:hidden;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center}
-  .tc-thumb-ph{font-size:4.5rem;opacity:.14;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;user-select:none;pointer-events:none}
-  .tc-thumb img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;z-index:1}
+  .tc-thumb{aspect-ratio:16/9;overflow:hidden;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+  .tc-thumb-ph{width:44px;height:44px;border-radius:8px;background:#eef6ff;color:#0057b8;font-size:.82rem;font-weight:800;opacity:1;position:absolute;inset:auto;z-index:2;display:flex;align-items:center;justify-content:center;user-select:none;pointer-events:none}
+  .tc-thumb img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .18s ease}
+  .tc-thumb.has-img img{opacity:1}
+  .tc-thumb.has-img .tc-thumb-ph{opacity:0}
   .tc-body{padding:13px 15px 15px;display:flex;flex-direction:column;flex:1}
   .tc-row1{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:5px}
   .tc-flag{font-size:1.35rem;line-height:1;flex-shrink:0}
@@ -153,9 +157,11 @@
   .tc{border-radius:8px!important;box-shadow:none!important}
   .tc:hover{border-color:#0057b8!important;box-shadow:0 10px 22px rgba(15,23,42,.08)!important;transform:translateY(-1px)!important}
   .tc:focus-visible{outline:3px solid rgba(0,87,184,.28)!important;outline-offset:3px!important}
-  .tc-thumb{aspect-ratio:auto!important;min-height:72px!important;background:#f8fafc!important;border-bottom:1px solid #e2e8f0}
-  .tc-thumb-ph{width:44px!important;height:44px!important;border-radius:8px!important;background:#eef6ff!important;color:#0057b8!important;font-size:.82rem!important;font-weight:800!important;opacity:1!important;position:relative!important;z-index:2!important;inset:auto!important}
-  .tc-thumb img{display:none!important}
+  .tc-thumb{aspect-ratio:16/9!important;min-height:104px!important;background:#f8fafc!important;border-bottom:1px solid #e2e8f0}
+  .tc-thumb-ph{width:44px!important;height:44px!important;border-radius:8px!important;background:#eef6ff!important;color:#0057b8!important;font-size:.82rem!important;font-weight:800!important;opacity:1!important;position:absolute!important;z-index:2!important;inset:auto!important}
+  .tc-thumb img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;position:absolute!important;inset:0!important;z-index:1!important;opacity:0;transition:opacity .18s ease}
+  .tc-thumb.has-img img{opacity:1}
+  .tc-thumb.has-img .tc-thumb-ph{opacity:0!important}
   .tc-flag{display:none!important}
   .tc-badge{border-radius:8px!important}
   .tc-cta{color:#0057b8!important}
@@ -197,6 +203,7 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/takardu-da-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/document-pdf/" />
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=c7cb9e7e">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -231,7 +238,7 @@
 }
 </script>
 </head>
-<body class="document-pdf-focus">
+<body class="document-pdf-focus document-pdf-ui-refresh top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 <div class="wrap"><nav class="bc"><a href="/">AfroTools</a> &gt; <a href="/categories/">Categories</a> &gt; <span class="cur">Document & PDF</span></nav></div>
 
@@ -337,7 +344,6 @@ function _initDocPdf(){
   var allTools=AFRO_TOOLS.filter(function(t){return t.category===key&&(!t.lang||t.lang==='en')&&t.id!==key;});
   var live=allTools.filter(function(t){return t.status==='live'||t.status==='new';});
   var pipe=allTools.filter(function(t){return t.status==='queued'||t.status==='planned'||t.status==='coming-soon';});
-  var fallbackOnlyIds={'html-to-pdf':true,'pdf-bates':true,'pdf-chat':true,'pdf-compare':true,'pdf-convert':true,'pdf-find-replace':true,'pdf-image-convert':true,'pdf-reorder':true,'pdf-repair':true,'pdf-to-audio':true,'pdf-translate':true,'pdf-workflow':true};
   var plannedCount=6;
   var e;
   e=document.getElementById('s-total');if(e)e.textContent=allTools.length;
@@ -354,11 +360,13 @@ function _initDocPdf(){
     return (picked.length ? picked : words).map(function(word){ return word.charAt(0).toUpperCase(); }).join('').slice(0, 2) || 'DP';
   }
 
+  function toolImageId(tool){
+    return tool.imageId || tool.sourceId || tool.id;
+  }
+
   function card(t,ok){
     var bg=DEFAULT_BG;
-    var imgSrc='/assets/img/tools/'+t.id+'.webp';
-    var imgFb='/assets/img/tools/'+t.id+'.svg';
-    var useImage=!fallbackOnlyIds[t.id];
+    var imgSrc='/assets/img/tools/'+toolImageId(t)+'.webp';
     var badgeClass=t.status==='new'?'badge-new':(ok?'badge-live':'badge-soon');
     var badgeText=t.status==='new'?'New':(ok?'Live':'Coming Soon');
     var tag=ok?'a':'div';
@@ -366,7 +374,7 @@ function _initDocPdf(){
     return '<'+tag+href+' class="tc'+(ok?'':' coming')+'">'
       +'<div class="tc-thumb" style="background:'+bg+'">'
       +'<div class="tc-thumb-ph" aria-hidden="true">'+initials(t.name)+'</div>'
-      +(useImage?'<img src="'+imgSrc+'" alt="'+t.name+'" loading="lazy" onerror="this.onerror=function(){this.style.display=\'none\'};this.src=\''+imgFb+'\';">':'')
+      +'<img src="'+imgSrc+'" alt="" loading="lazy" decoding="async" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">'
       +'</div>'
       +'<div class="tc-body">'
       +'<div class="tc-row1"><span class="tc-flag">'+t.icon+'</span><span class="tc-badge '+badgeClass+'">'+badgeText+'</span></div>'

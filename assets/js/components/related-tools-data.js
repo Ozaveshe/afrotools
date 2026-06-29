@@ -3967,6 +3967,20 @@
         "imageKey": "funeral-cost"
       },
       {
+        "id": "lobola-gift-list",
+        "name": "Lobola Gift List",
+        "icon": "LC",
+        "desc": "Build a respectful family gift and ceremony item...",
+        "href": "/tools/lobola-gift-list/",
+        "category": "religious-cultural",
+        "lang": "en",
+        "priority": 76,
+        "estTraffic": 3500,
+        "imageExt": "webp",
+        "imageId": "lobola-calculator",
+        "imageKey": "lobola-calculator"
+      },
+      {
         "id": "baby-name-generator",
         "name": "African Baby Name Generator",
         "icon": "BN",
@@ -4043,19 +4057,6 @@
         "estTraffic": 1000,
         "imageExt": "webp",
         "imageKey": "traditional-calendar"
-      },
-      {
-        "id": "age-calculator-african",
-        "name": "Age Calculator with African Name Day",
-        "icon": "AD",
-        "desc": "Calculate exact age and show Akan day-name sugge...",
-        "href": "/tools/age-calculator-african/",
-        "category": "religious-cultural",
-        "lang": "en",
-        "priority": 70,
-        "estTraffic": 1000,
-        "imageExt": "webp",
-        "imageKey": "age-calculator-african"
       }
     ],
     "en::agriculture": [
@@ -10582,9 +10583,10 @@
         "lang": "fr",
         "priority": 73,
         "estTraffic": 0,
-        "imageExt": "",
-        "sourceId": "image-tools",
-        "imageId": "image-design"
+        "imageExt": "webp",
+        "sourceId": "image-format-convert",
+        "imageId": "image-format-convert",
+        "imageKey": "image-format-convert"
       },
       {
         "id": "compresser-image-fr",

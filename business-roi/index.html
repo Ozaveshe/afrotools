@@ -24,10 +24,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<script src="/assets/js/components/tool-registry.min.js?v=962d56d8" defer></script>
-<script src="/assets/js/components/category-cards.js?v=51040fd5" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=6dfc1ea2" defer></script>
+<script src="/assets/js/components/category-cards.js?v=2b599d16" defer></script>
+<script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -109,7 +111,10 @@
   .tc:focus-visible{outline:3px solid rgba(0,87,184,.28)!important;outline-offset:3px!important}
   .tc-thumb{aspect-ratio:auto!important;min-height:72px!important;background:#f8fafc!important;border-bottom:1px solid #e2e8f0}
   .tc-thumb-ph{width:44px!important;height:44px!important;border-radius:8px!important;background:#eef6ff!important;color:#0057b8!important;font-size:.82rem!important;font-weight:800!important;opacity:1!important;position:relative!important;inset:auto!important;z-index:2!important}
-  .tc-thumb img,.tc-flag{display:none!important}
+  .tc-thumb img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;position:absolute!important;inset:0!important;z-index:1!important;opacity:0;transition:opacity .18s ease}
+  .tc-thumb.has-img img{opacity:1}
+  .tc-thumb.has-img .tc-thumb-ph{opacity:0!important}
+  .tc-flag{display:none!important}
   .tc-badge{border-radius:8px!important}
   .tc-cta{color:#0057b8!important}
   .cta{background:#0f172a!important}
@@ -126,8 +131,9 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/business-roi/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/business-roi/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/business-roi/" />
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=c7cb9e7e">
 </head>
-<body>
+<body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 <div class="wrap"><nav class="bc"><a href="/">AfroTools</a> &gt; <a href="/categories/">Categories</a> &gt; <span class="cur">Business & ROI</span></nav></div>
 

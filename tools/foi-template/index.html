@@ -156,8 +156,10 @@ textarea{min-height:80px;resize:vertical}
   "url": "https://afrotools.com/tools/foi-template/"
 }
 </script>
+<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=c7cb9e7e">
 </head>
-<body>
+<body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 
 <section class="tool-hero">
@@ -434,8 +436,7 @@ function copyLetter() {
 function printLetter() {
   var text = document.getElementById('letter-text').textContent;
   var w = window.open('', '_blank');
-  w.document.write('<html><head><title>FOI Request Letter</title><style>body{font-family:Georgia,serif;padding:60px;font-size:12pt;line-height:1.9;color:#000}pre{white-space:pre-wrap;font-family:Georgia,serif}</style></head><body><pre>' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre><script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
-</body></html>');
+  w.document.write('<html><head><title>FOI Request Letter</title><style>body{font-family:Georgia,serif;padding:60px;font-size:12pt;line-height:1.9;color:#000}pre{white-space:pre-wrap;font-family:Georgia,serif}</style></head><body><pre>' + text.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre><script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer><\/script></body></html>');
   w.document.close();
   w.print();
 }

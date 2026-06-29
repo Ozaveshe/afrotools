@@ -134,7 +134,7 @@ window.addEventListener('unhandledrejection', function (event) {
 <link rel="stylesheet" href="./css/cv-related-tools.css?v=31a377c4">
 
 <!-- Components -->
-<script src="../../assets/js/components/related-tools-data.min.js?v=7ca691ab" defer></script>
+<script src="../../assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
 <script src="../../assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script src="../../assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="../../assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -293,8 +293,10 @@ window.loadPdfLibs=function(){
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/gina-cv/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mjenzi-cv/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cv-builder/" />
+<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=c7cb9e7e">
 </head>
-<body>
+<body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
 
 <header class="cv-product-header" aria-label="CV Builder product navigation">
@@ -925,6 +927,78 @@ window.loadPdfLibs=function(){
 <script src="../../assets/js/favorites-widget.js?v=7f046e98" defer></script>
 <script src="./js/cv-workspace-sync.js?v=9782a0ed" defer></script>
 <script src="../../assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+
+<script>
+(function(){
+  var labels = {
+    fn: 'First name',
+    ln: 'Last name',
+    title: 'Professional title',
+    email: 'Email address',
+    phoneCode: 'Phone country code',
+    phone: 'Phone number',
+    loc: 'City and country',
+    linkedin: 'LinkedIn URL',
+    web: 'Website or portfolio URL',
+    nyscStatus: 'NYSC status',
+    summary: 'Professional summary',
+    'exps.0.t': 'Experience job title',
+    'exps.0.c': 'Experience company or organisation',
+    'exps.0.l': 'Experience location',
+    'exps.0.s': 'Experience start month',
+    'exps.0.e': 'Experience end month',
+    'exps.0.d': 'Experience achievements',
+    'edus.0.deg': 'Education qualification',
+    'edus.0.sch': 'Education institution',
+    'edus.0.loc': 'Education location',
+    'edus.0.y1': 'Education start year',
+    'edus.0.y2': 'Education end year',
+    'edus.0.g': 'Education grade or class',
+    'skills.h': 'Hard skills',
+    'skills.s': 'Soft skills',
+    'skills.t': 'Tools and software skills',
+    'langs.0.l': 'Language',
+    'langs.0.lv': 'Language proficiency',
+    'refs.0.n': 'Reference full name',
+    'refs.0.t': 'Reference title or position',
+    'refs.0.org': 'Reference organisation',
+    'refs.0.e': 'Reference email',
+    'refs.0.p': 'Reference phone',
+    'refs.0.rel': 'Reference relationship'
+  };
+  var packLabels = {
+    coverLetter: 'Cover letter output',
+    emailMessage: 'Short email application message output',
+    linkedinHeadline: 'LinkedIn headline output',
+    linkedinAbout: 'LinkedIn About section output',
+    interviewPrep: 'Interview prep questions output',
+    recruiterMessage: 'Recruiter message output',
+    followupApplication: 'Follow-up email after application output',
+    followupInterview: 'Follow-up email after interview output'
+  };
+  function decorate(){
+    document.querySelectorAll('[data-path]').forEach(function(el){
+      if (!el.getAttribute('aria-label')) {
+        var key = el.getAttribute('data-path');
+        el.setAttribute('aria-label', labels[key] || el.getAttribute('placeholder') || key || 'CV field');
+      }
+    });
+    document.querySelectorAll('[data-pack-text]').forEach(function(el){
+      if (!el.getAttribute('aria-label')) {
+        var key = el.getAttribute('data-pack-text');
+        el.setAttribute('aria-label', packLabels[key] || 'Application pack output');
+      }
+    });
+    document.querySelectorAll('.cv-country-sel,.cv-lang-sel').forEach(function(el){
+      el.style.minHeight = '44px';
+      el.style.height = '44px';
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', decorate);
+  else decorate();
+  new MutationObserver(decorate).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
 
 <script>
 // Save/Share buttons — manual placement needed

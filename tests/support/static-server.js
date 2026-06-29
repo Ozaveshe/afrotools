@@ -122,6 +122,14 @@ const server = http.createServer(function (request, response) {
   }
 
   if (pathname === '/api/matchday/leaderboard') {
+    if (!fs.existsSync(path.join(root, 'netlify', 'functions', 'matchday-leaderboard.js'))) {
+      return sendJson(response, 200, {
+        data: [],
+        meta: {
+          message: 'Local static-server placeholder: no Matchday leaderboard function is present.'
+        }
+      });
+    }
     return invokeFunction('matchday-leaderboard', request, response).catch(function (error) {
       console.error(error);
       sendJson(response, 500, { error: 'Matchday leaderboard failed locally.' });
@@ -129,6 +137,12 @@ const server = http.createServer(function (request, response) {
   }
 
   if (pathname === '/api/matchday/fixtures-sync-status') {
+    if (!fs.existsSync(path.join(root, 'netlify', 'functions', 'matchday-fixtures-sync-status.js'))) {
+      return sendJson(response, 200, {
+        status: 'not_configured',
+        message: 'Local static-server placeholder: no Matchday fixture sync status function is present.'
+      });
+    }
     return invokeFunction('matchday-fixtures-sync-status', request, response).catch(function (error) {
       console.error(error);
       sendJson(response, 500, { error: 'Matchday fixture sync status failed locally.' });

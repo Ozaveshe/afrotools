@@ -80,8 +80,10 @@
   "url": "https://afrotools.com/tools/claim-tracker/"
 }
 </script>
+<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=c7cb9e7e">
 </head>
-<body data-insurance-claims-focus="true">
+<body class="top-level-page-ui-refresh" data-insurance-claims-focus="true">
 <afro-navbar theme="dark" active="insurance"></afro-navbar>
 <section class="ins-tool-hero"><div class="container">
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/insurance/">Insurance</a> <span>›</span> Insurance Claim Tracker / Checklist</nav>
@@ -175,8 +177,32 @@ document.getElementById("results").scrollIntoView({behavior:"smooth",block:"star
 });
 }();
 </script>
-<script src="/assets/js/insurance-workbench.js?v=100b7540" defer></script>
+<script src="/assets/js/insurance-workbench.js?v=a5dce20c" defer></script>
 <script src="/assets/js/pages/insurance-claims-focus.js?v=e07d8096" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script>
+(function(){
+  var labels = {
+    handler: 'Claims handler or branch',
+    ref: 'Claim reference number',
+    date: 'Claim contact date',
+    missing: 'Missing document or decision needed',
+    next: 'Next follow-up date'
+  };
+  function decorate(){
+    document.querySelectorAll('[data-claim]').forEach(function(el){
+      if (!el.getAttribute('aria-label')) {
+        var key = el.getAttribute('data-claim');
+        var row = el.getAttribute('data-row');
+        var suffix = row ? ' row ' + (Number(row) + 1) : '';
+        el.setAttribute('aria-label', (labels[key] || 'Claim tracker field') + suffix);
+      }
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', decorate);
+  else decorate();
+  new MutationObserver(decorate).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
 </body>
 </html>

@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
   <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
@@ -76,6 +77,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .compare-table th{font-weight:600;color:#6B7280;background:#F9FAFB}
 .compare-table th:not(:first-child),.compare-table td:not(:first-child){text-align:center;width:140px}
 .compare-table td.feature-name{font-weight:500;color:#374151}
+.compare-cards-mobile{display:none}
 .check{color:var(--color-primary);font-weight:700;font-size:18px}
 .cross{color:#D1D5DB;font-size:18px}
 
@@ -102,8 +104,16 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   .pricing-hero{padding:64px 20px 48px}
   .pricing-cards{grid-template-columns:1fr;margin-top:-24px;gap:20px}
   .card{padding:32px 24px}
-  .compare-table th,.compare-table td{padding:10px 12px;font-size:13px}
-  .compare-table th:not(:first-child),.compare-table td:not(:first-child){width:80px}
+  .compare-table,.compare-table thead,.compare-table tbody,.compare-table tr,.compare-table th,.compare-table td{display:block;width:100%}
+  .compare-table thead{display:none}
+  .compare-table tr{border:1px solid #e5e7eb;border-radius:8px;margin-bottom:10px;background:#fff;overflow:hidden}
+  .compare-table td{display:grid;grid-template-columns:minmax(0,1fr) minmax(88px,.5fr);gap:12px;align-items:center;border-bottom:1px solid #f3f4f6;padding:11px 12px;font-size:13px}
+  .compare-table td:last-child{border-bottom:0}
+  .compare-table td::before{color:#6b7280;font-weight:700}
+  .compare-table td:nth-child(1)::before{content:'Feature'}
+  .compare-table td:nth-child(2)::before{content:'Free'}
+  .compare-table td:nth-child(3)::before{content:'Pro'}
+  .compare-table th:not(:first-child),.compare-table td:not(:first-child){text-align:left;width:100%}
 }
 @media(max-width:480px){
   .pricing-hero h1{font-size:26px}
@@ -113,6 +123,23 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 </style>
 <link rel="stylesheet" href="/assets/css/product-page-ui-refresh.css?v=0b5a75e2">
 <link rel="stylesheet" href="/assets/css/site-shell-ui-refresh.css?v=b86042d3">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=c7cb9e7e">
+<style data-pricing-mobile-table-fix>
+@media(max-width:768px){
+  .pricing-ui-refresh .compare-table,
+  .pricing-ui-refresh .compare-table thead,
+  .pricing-ui-refresh .compare-table tbody,
+  .pricing-ui-refresh .compare-table tr,
+  .pricing-ui-refresh .compare-table th,
+  .pricing-ui-refresh .compare-table td{display:none!important}
+  .pricing-ui-refresh .compare-cards-mobile{display:grid;gap:10px}
+  .pricing-ui-refresh .compare-card-row{border:1px solid #e5e7eb;border-radius:8px;background:#fff;padding:12px}
+  .pricing-ui-refresh .compare-card-feature{font-size:14px;font-weight:700;color:#111827;margin:0 0 10px}
+  .pricing-ui-refresh .compare-card-values{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pricing-ui-refresh .compare-card-values span{display:block;border:1px solid #f3f4f6;border-radius:8px;padding:9px 10px;font-size:13px;line-height:1.35;color:#374151;background:#f9fafb}
+  .pricing-ui-refresh .compare-card-values b{display:block;margin-bottom:3px;font-size:11px;text-transform:uppercase;color:#6b7280;letter-spacing:.04em}
+}
+</style>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
@@ -144,7 +171,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/pricing/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/pricing/" />
 </head>
-<body class="pricing-ui-refresh site-shell-ui-refresh">
+<body class="pricing-ui-refresh site-shell-ui-refresh top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
 
 <!-- Hero -->
@@ -220,6 +247,18 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       <tr><td class="feature-name">Early Access</td><td><span class="cross">&#10007;</span></td><td><strong>New tools 1 week early</strong></td></tr>
     </tbody>
   </table>
+  <div class="compare-cards-mobile" aria-label="Plan comparison">
+    <div class="compare-card-row"><p class="compare-card-feature">All Calculators (54 countries)</p><div class="compare-card-values"><span><b>Free</b>Included</span><span><b>Pro</b>Included</span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">AI Advisor</p><div class="compare-card-values"><span><b>Free</b>3 / day</span><span><b>Pro</b><strong>Unlimited</strong></span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">PDF Export</p><div class="compare-card-values"><span><b>Free</b>With watermark</span><span><b>Pro</b><strong>Clean, no watermark</strong></span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">Calculation History</p><div class="compare-card-values"><span><b>Free</b>Last 5</span><span><b>Pro</b><strong>Unlimited (cloud)</strong></span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">Share Results</p><div class="compare-card-values"><span><b>Free</b>Basic URL</span><span><b>Pro</b><strong>Custom branded cards</strong></span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">Tax Law Alerts</p><div class="compare-card-values"><span><b>Free</b>Not included</span><span><b>Pro</b><strong>Email alerts</strong></span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">Dark/Light Theme</p><div class="compare-card-values"><span><b>Free</b>Auto only</span><span><b>Pro</b><strong>Manual toggle</strong></span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">Priority Support</p><div class="compare-card-values"><span><b>Free</b>Community</span><span><b>Pro</b><strong>Email support</strong></span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">API Plans</p><div class="compare-card-values"><span><b>Free</b><a href="/api/pricing">Free sandbox key</a></span><span><b>Pro</b><a href="/api/pricing">Growth and Pro sold separately</a></span></div></div>
+    <div class="compare-card-row"><p class="compare-card-feature">Early Access</p><div class="compare-card-values"><span><b>Free</b>Not included</span><span><b>Pro</b><strong>New tools 1 week early</strong></span></div></div>
+  </div>
 </section>
 
 <!-- FAQ -->
