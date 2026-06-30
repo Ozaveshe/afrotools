@@ -419,12 +419,16 @@ body{background:var(--fr-roi-bg);color:var(--fr-roi-ink)}
   function injectInlineScripts(doc) {
     var inlineScripts = Array.prototype.slice.call(doc.querySelectorAll('script:not([src])'))
       .filter(function(script) {
+        var type = (script.getAttribute('type') || '').trim().toLowerCase();
+        if (type && type !== 'text/javascript' && type !== 'application/javascript' && type !== 'module') return false;
         var text = (script.textContent || '').trim();
         return text && text.indexOf('gtag(') === -1 && text.indexOf('googletagmanager') === -1;
       });
 
     inlineScripts.forEach(function(script) {
       var next = document.createElement('script');
+      var type = (script.getAttribute('type') || '').trim();
+      if (type) next.type = type;
       next.textContent = script.textContent;
       document.body.appendChild(next);
     });
@@ -436,6 +440,7 @@ body{background:var(--fr-roi-bg);color:var(--fr-roi-ink)}
       return response.text();
     })
   .then(function(html) {
+      var sourceDoc = new DOMParser().parseFromString(html, 'text/html');
       var localized = localizeText(html);
       var doc = new DOMParser().parseFromString(localized, 'text/html');
       doc.querySelectorAll('style').forEach(function(style) {
@@ -447,7 +452,7 @@ body{background:var(--fr-roi-bg);color:var(--fr-roi-ink)}
       var layout = doc.querySelector('.layout');
       if (!layout) throw new Error('layout not found');
       mount.innerHTML = layout.outerHTML;
-      injectInlineScripts(doc);
+      injectInlineScripts(sourceDoc);
     })
     .catch(function() {
       mount.innerHTML = '<div class="fr-roi-fallback"><div class="fr-roi-fallback-card"><h3>Chargement impossible</h3><p>La version française n\'a pas pu récupérer le moteur source pour le moment. Vous pouvez ouvrir la version anglaise pendant que nous réessayons en arrière-plan.</p><div class="fr-roi-fallback-actions"><a class="fr-roi-btn fr-roi-btn-primary" href="/tools/property-roi/">Ouvrir la version anglaise</a><a class="fr-roi-btn fr-roi-btn-secondary" href="/fr/mortgage/">Retour à l\'immobilier</a></div></div></div>';

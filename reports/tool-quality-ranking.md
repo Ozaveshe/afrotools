@@ -1,6 +1,6 @@
 # AfroTools Tool Quality Ranking
 
-Generated: 2026-06-29T22:28:04.766Z
+Generated: 2026-06-30T01:50:33.704Z
 
 ## Scope
 
@@ -36,17 +36,17 @@ Repair-first rows below D: 0
 | Category | Rows | Instances | Avg score | Low rows | P0 | Browser failures |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Creative Economy | 59 | 59 | 93.2 | 0 | 0 | 0 |
-| Uniquely African | 118 | 133 | 93.4 | 0 | 0 | 0 |
 | Engineering & Construction | 58 | 58 | 93.4 | 0 | 0 | 0 |
-| Energy & Utilities | 237 | 504 | 93.6 | 0 | 0 | 0 |
+| Uniquely African | 118 | 133 | 93.6 | 0 | 0 | 0 |
 | Agriculture | 507 | 1113 | 93.9 | 0 | 0 | 0 |
-| Finance, Tax & Market Data | 466 | 466 | 94.2 | 0 | 0 | 0 |
-| Telecom & Mobile | 52 | 52 | 94.2 | 0 | 0 | 0 |
+| Energy & Utilities | 237 | 504 | 93.9 | 0 | 0 | 0 |
 | Personal Finance | 25 | 25 | 94.2 | 0 | 0 | 0 |
+| Finance, Tax & Market Data | 466 | 466 | 94.4 | 0 | 0 | 0 |
 | Business & ROI | 34 | 34 | 94.4 | 0 | 0 | 0 |
-| Document & PDF | 118 | 118 | 94.6 | 0 | 0 | 0 |
+| Document & PDF | 118 | 118 | 94.9 | 0 | 0 | 0 |
+| Telecom & Mobile | 52 | 52 | 95.2 | 0 | 0 | 0 |
 | VAT & Business Tax | 242 | 242 | 95.2 | 0 | 0 | 0 |
-| Travel & Tourism | 20 | 20 | 95.2 | 0 | 0 | 0 |
+| Travel & Tourism | 20 | 20 | 95.3 | 0 | 0 | 0 |
 | Diaspora | 3 | 3 | 95.3 | 0 | 0 | 0 |
 | Health & Wellness | 104 | 104 | 95.4 | 0 | 0 | 0 |
 | Mortgage & Property | 267 | 445 | 95.4 | 0 | 0 | 0 |
@@ -71,27 +71,12 @@ No rows in this queue.
 | Score | Rank | Priority | Tool | Category | Benchmark | Top gaps |
 | ---: | --- | --- | --- | --- | --- | --- |
 | 85 | A | P3-monitor | afrotools-pro | Finance, Tax & Market Data | Tax, salary, finance calculator | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
-| 86 | A | P3-monitor | clinic-costs | Health & Wellness | Health and wellness estimator | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 86 | A | P3-monitor | zana-chat-na-pdf-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 86 | A | P3-monitor | zana-hariri-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser console/page errors; missing official/verification evidence; missing methodology/breakdown |
-| 86 | A | P3-monitor | zana-kubadilisha-format-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser console/page errors; missing official/verification evidence; missing methodology/breakdown |
-| 86 | A | P3-monitor | zana-kutafsiri-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; browser console/page errors; missing official/verification evidence; missing methodology/breakdown |
-| 86 | A | P3-monitor | zana-watermark-nyingi-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations |
-| 86 | A | P3-monitor | zana-matumizi-ya-umeme-ya-vifaa-sw | Energy & Utilities | Energy and utility estimator | no workflow or methodology evidence; browser console/page errors; stale or undated assumptions; missing methodology/breakdown |
-| 86 | A | P3-monitor | roi-immobilier-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser console/page errors; no verification panel; weak meta description length; high-intent money tool lacks business CTA |
-| 86 | A | P3-monitor | taxe-fonciere-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser console/page errors; no verification panel; weak meta description length; high-intent money tool lacks business CTA |
-| 87 | A | P3-monitor | sn-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 87 | A | P3-monitor | zana-kikokotoo-bei-ya-sms-nyingi-sw | Telecom & Mobile | General online utility | unclear primary action; browser console/page errors; missing disclaimer/limitations; no verification panel |
-| 87 | A | P3-monitor | zana-kubadilisha-pdf-na-picha-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 87 | A | P3-monitor | zana-namba-za-kurasa-pdf-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 87 | A | P3-monitor | zana-unganisha-na-gawanya-pdf-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 87 | A | P3-monitor | zana-watermark-pdf-sw | Document & PDF | PDF workflow utility | browser console/page errors; missing official/verification evidence; missing methodology/breakdown; no verification panel |
-| 87 | A | P3-monitor | salary-tax-paye-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | missing export/copy/save path; browser console/page errors; no continuation action; high-intent money tool lacks business CTA |
 | 88 | A | P3-monitor | pdf-sign-fr | Document & PDF | PDF workflow utility | stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations; high-intent money tool lacks business CTA |
 | 88 | A | P3-monitor | pdf-reorder-fr | Document & PDF | PDF workflow utility | stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations; weak meta description length |
 | 88 | A | P3-monitor | pdf-watermark-fr | Document & PDF | PDF workflow utility | stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations; weak meta description length |
 | 88 | A | P3-monitor | fertilizer-nigeria-ha | Agriculture | Agriculture and market-data tool | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
 | 88 | A | P3-monitor | pdf-ocr-fr | Document & PDF | PDF workflow utility | stale or undated assumptions; missing methodology/breakdown; missing disclaimer/limitations; weak meta description length |
+| 88 | A | P3-monitor | clinic-costs | Health & Wellness | Health and wellness estimator | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
 | 88 | A | P3-monitor | land-size | Uniquely African | General online utility | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
 | 88 | A | P3-monitor | telecom-data-usage-yo | Telecom & Mobile | General online utility | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
 | 88 | A | P3-monitor | electrical-load | Engineering & Construction | General online utility | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
@@ -107,11 +92,16 @@ No rows in this queue.
 | 88 | A | P3-monitor | zana-gharama-za-greenhouse-sw | Agriculture | Agriculture and market-data tool | missing official/verification evidence; stale or undated assumptions; no verification panel; weak meta description length |
 | 88 | A | P3-monitor | water-tank | Engineering & Construction | General online utility | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
 | 88 | A | P3-monitor | zana-ankara-ya-mtayarishi-sw | Document & PDF | PDF workflow utility | stale or undated assumptions; missing disclaimer/limitations; lags category-required features; high-intent money tool lacks business CTA |
+| 88 | A | P3-monitor | zana-chat-na-pdf-sw | Document & PDF | PDF workflow utility | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
+| 88 | A | P3-monitor | zana-hariri-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; missing official/verification evidence; missing methodology/breakdown; no verification panel |
 | 88 | A | P3-monitor | zana-html-kwenda-pdf-sw | Document & PDF | PDF workflow utility | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
+| 88 | A | P3-monitor | zana-kubadilisha-format-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; missing official/verification evidence; missing methodology/breakdown; no verification panel |
 | 88 | A | P3-monitor | zana-kubana-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; missing official/verification evidence; missing methodology/breakdown; no verification panel |
 | 88 | A | P3-monitor | zana-kulinda-pdf-kwa-nenosiri-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 88 | A | P3-monitor | zana-kutafsiri-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; missing official/verification evidence; missing methodology/breakdown; no verification panel |
 | 88 | A | P3-monitor | zana-mjenzi-cv-sw | Document & PDF | PDF workflow utility | missing official/verification evidence; missing methodology/breakdown; no verification panel; lags category-required features |
 | 88 | A | P3-monitor | zana-ocr-pdf-sw | Document & PDF | PDF workflow utility | no workflow or methodology evidence; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 88 | A | P3-monitor | zana-watermark-nyingi-sw | Document & PDF | PDF workflow utility | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
 | 88 | A | P3-monitor | malaria-risk | Health & Wellness | Health and wellness estimator | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
 | 88 | A | P3-monitor | zana-faida-ya-ufugaji-kuku-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | missing official/verification evidence; stale or undated assumptions; no verification panel; high-intent money tool lacks business CTA |
 | 88 | A | P3-monitor | zana-faida-ya-ufugaji-samaki-sw | VAT & Business Tax | VAT, invoice, ecommerce calculator | missing official/verification evidence; stale or undated assumptions; no verification panel; high-intent money tool lacks business CTA |
@@ -149,7 +139,7 @@ No rows in this queue.
 | 88 | A | P3-monitor | zana-gharama-ya-delivery-sw | Trade & Import | Trade and logistics calculator | missing export/copy/save path; stale or undated assumptions; no verification panel; no continuation action |
 | 88 | A | P3-monitor | zana-kupakia-lori-sw | Trade & Import | Trade and logistics calculator | missing export/copy/save path; stale or undated assumptions; no verification panel; no continuation action |
 | 88 | A | P3-monitor | zana-ada-za-ramani-za-usanifu-sw | Engineering & Construction | General online utility | missing official/verification evidence; stale or undated assumptions; no verification panel; high-intent money tool lacks business CTA |
-| 88 | A | P3-monitor | zana-gharama-za-mafuta-ya-generator-sw-wave8 | Energy & Utilities | Energy and utility estimator | browser console/page errors; stale or undated assumptions; missing disclaimer/limitations; no verification panel |
+| 88 | A | P3-monitor | zana-matumizi-ya-umeme-ya-vifaa-sw | Energy & Utilities | Energy and utility estimator | no workflow or methodology evidence; stale or undated assumptions; missing methodology/breakdown; no verification panel |
 | 88 | A | P3-monitor | zana-kifuatiliaji-susu-sw | Finance, Tax & Market Data | Tax, salary, finance calculator | missing official/verification evidence; stale or undated assumptions; no verification panel; high-intent money tool lacks business CTA |
 | 88 | A | P3-monitor | zana-kikokotoo-gharama-za-ujenzi-sw | Engineering & Construction | General online utility | missing official/verification evidence; stale or undated assumptions; no verification panel; high-intent money tool lacks business CTA |
 | 88 | A | P3-monitor | zana-kizalishaji-kiapo-sw | Mortgage & Property | Legal and compliance workflow | no workflow or methodology evidence; stale or undated assumptions; missing methodology/breakdown; no verification panel |
@@ -170,3 +160,13 @@ No rows in this queue.
 | 88 | A | P3-monitor | zana-kubadilisha-vipimo-sw-finish | Business & ROI | General online utility | no workflow or methodology evidence; missing official/verification evidence; missing methodology/breakdown; no verification panel |
 | 88 | A | P3-monitor | zana-mkopo-wa-gari-dhidi-ya-fedha-taslimu-sw-finish | Transport & Logistics | Transport and mobility estimator | missing export/copy/save path; stale or undated assumptions; no verification panel; no continuation action |
 | 88 | A | P3-monitor | zana-siku-za-kazi-sw-wave8 | Business & ROI | General online utility | no workflow or methodology evidence; missing official/verification evidence; missing methodology/breakdown; no verification panel |
+| 88 | A | P3-monitor | zana-uwanja-wa-sql-sw | Developer Tools | Developer utility | missing official/verification evidence; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
+| 88 | A | P3-monitor | farm-loans-uganda | Agriculture | Agriculture and market-data tool | missing methodology/breakdown; missing disclaimer/limitations; no verification panel; weak title length |
+| 88 | A | P3-monitor | farm-loans-rwanda | Agriculture | Agriculture and market-data tool | missing methodology/breakdown; missing disclaimer/limitations; no verification panel; weak title length |
+| 88 | A | P3-monitor | input-prices-tanzania | Agriculture | Agriculture and market-data tool | thin visible copy; missing methodology/breakdown; missing disclaimer/limitations; no verification panel |
+| 88 | A | P3-monitor | comparateur-assurance-sante-cote-d-ivoire-fr | Insurance | Insurance estimator | missing official/verification evidence; missing methodology/breakdown; no verification panel; weak meta description length |
+| 88 | A | P3-monitor | farm-profit-cote-d-ivoire | Agriculture | Agriculture and market-data tool | missing methodology/breakdown; missing disclaimer/limitations; no verification panel; weak meta description length |
+| 88 | A | P3-monitor | selecteur-aleatoire-fr | Business & ROI | General online utility | missing official/verification evidence; missing disclaimer/limitations; no verification panel; weak related/internal links |
+| 88 | A | P3-monitor | suivi-carburant-algeria-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | missing official/verification evidence; missing methodology/breakdown; no verification panel; high-intent money tool lacks business CTA |
+| 88 | A | P3-monitor | suivi-carburant-angola-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | missing official/verification evidence; missing methodology/breakdown; no verification panel; high-intent money tool lacks business CTA |
+| 88 | A | P3-monitor | suivi-carburant-benin-fr | Finance, Tax & Market Data | Tax, salary, finance calculator | missing official/verification evidence; missing methodology/breakdown; no verification panel; high-intent money tool lacks business CTA |

@@ -50,10 +50,10 @@ function jsonResponse(statusCode, body, extraHeaders = {}) {
 /* ── Supabase client ──────────────────────────────────────── */
 const SUPABASE_URL = process.env.SUPABASE_URL_AUTH || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
-if (!SUPABASE_ANON_KEY) console.warn('[crypto-p2p] Missing SUPABASE_ANON_KEY_AUTH env var');
 
 let supabase;
 function getSupabase() {
+  if (!SUPABASE_ANON_KEY) return null;
   if (!supabase) supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   return supabase;
 }
@@ -137,6 +137,7 @@ async function fetchBybitP2P(asset, fiat, side) {
 /* ── Supabase manual rates ────────────────────────────────── */
 async function fetchManualRates(asset, fiat) {
   const sb = getSupabase();
+  if (!sb) return [];
   const { data, error } = await sb
     .from('p2p_rates')
     .select('*')

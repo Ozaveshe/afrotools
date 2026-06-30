@@ -113,17 +113,33 @@
     });
     var nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) { node.nodeValue = swapText(node.nodeValue); });
+    nodes.forEach(function (node) {
+      var translated = swapText(node.nodeValue);
+      if (translated !== node.nodeValue) node.nodeValue = translated;
+    });
     root.querySelectorAll('[placeholder],[aria-label],[title],[alt],input[type="button"],input[type="submit"],button').forEach(function (el) {
       ['placeholder', 'aria-label', 'title', 'alt', 'value'].forEach(function (attr) {
-        if (el.hasAttribute && el.hasAttribute(attr)) el.setAttribute(attr, swapText(el.getAttribute(attr)));
+        if (el.hasAttribute && el.hasAttribute(attr)) {
+          var translated = swapText(el.getAttribute(attr));
+          if (translated !== el.getAttribute(attr)) el.setAttribute(attr, translated);
+        }
       });
     });
   }
   function watch(root) {
     localize(root);
     if (!root || !root.body) return;
-    new MutationObserver(function () { localize(root); }).observe(root.body, { childList: true, subtree: true, characterData: true });
+    var pending = false;
+    var view = root.defaultView || window;
+    var schedule = view.requestAnimationFrame || function (callback) { return setTimeout(callback, 16); };
+    new MutationObserver(function () {
+      if (pending) return;
+      pending = true;
+      schedule(function () {
+        pending = false;
+        localize(root);
+      });
+    }).observe(root.body, { childList: true, subtree: true, characterData: true });
   }
   window.cronFrLocalizer = {
     localizeDocument: watch,

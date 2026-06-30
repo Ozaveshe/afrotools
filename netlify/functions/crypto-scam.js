@@ -10,7 +10,6 @@
 
 const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
-if (!SUPABASE_ANON_KEY) console.warn('[crypto-scam] Missing SUPABASE_ANON_KEY_AUTH env var');
 const { getAllowedOrigin } = require('./utils/cors');
 
 const CORS_HEADERS = {
@@ -22,6 +21,32 @@ const CORS_HEADERS = {
 
 function jsonResponse(statusCode, body) {
   return { statusCode, headers: CORS_HEADERS, body: JSON.stringify(body) };
+}
+
+function emptyPublicPayload(params) {
+  if (params.stats === 'true') {
+    return { total: 0, totalLostNGN: 0, byCountry: {}, byType: {}, configured: false };
+  }
+  if (params.recent) {
+    return { reports: [], configured: false };
+  }
+  return {
+    query: (params.q || '').trim(),
+    found: 0,
+    reports: [],
+    configured: false,
+  };
+}
+
+function getReadHeaders() {
+  const serviceHeaders = getServiceHeaders();
+  if (serviceHeaders) return serviceHeaders;
+  if (!SUPABASE_ANON_KEY) return null;
+  return {
+    apikey: SUPABASE_ANON_KEY,
+    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    'Content-Type': 'application/json',
+  };
 }
 
 async function getUserFromToken(authHeader) {
@@ -53,11 +78,12 @@ exports.handler = async function (event) {
   }
 
   const params = event.queryStringParameters || {};
-  const headers = getServiceHeaders();
-  if (!headers) return jsonResponse(500, { error: 'Server config error' });
 
   // ── GET: Search or stats ──
   if (event.httpMethod === 'GET') {
+    const headers = getReadHeaders();
+    if (!headers) return jsonResponse(200, emptyPublicPayload(params));
+
     // Stats
     if (params.stats === 'true') {
       const res = await fetch(
@@ -119,6 +145,9 @@ exports.handler = async function (event) {
 
   // ── POST: Submit new report ──
   if (event.httpMethod === 'POST') {
+    const headers = getServiceHeaders();
+    if (!headers) return jsonResponse(503, { error: 'Report submission is temporarily unavailable' });
+
     let body;
     try { body = JSON.parse(event.body); } catch { return jsonResponse(400, { error: 'Invalid JSON' }); }
 
@@ -160,6 +189,9 @@ exports.handler = async function (event) {
 
   // ── PATCH: Admin update status ──
   if (event.httpMethod === 'PATCH') {
+    const headers = getServiceHeaders();
+    if (!headers) return jsonResponse(503, { error: 'Admin update is temporarily unavailable' });
+
     const user = await getUserFromToken(event.headers['authorization'] || event.headers['Authorization']);
     if (!user) return jsonResponse(401, { error: 'Unauthorized' });
 

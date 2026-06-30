@@ -135,6 +135,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/simple-chart-fallback.js?v=43a71e45"></script>
 <script>
 (function(){
   var mount = document.getElementById('tool-mount');
@@ -398,7 +399,7 @@
   function loadScript(src) {
     return new Promise(function(resolve, reject){
       if (!src) { resolve(); return; }
-      if (/googletagmanager|gtag\/js|navbar\.min\.js|footer\.min\.js|related-tools(?:-data)?\.min\.js/i.test(src)) { resolve(); return; }
+      if (/googletagmanager|gtag\/js|navbar\.min\.js|footer\.min\.js|related-tools(?:-data)?(?:\.min)?\.js|chart\.js|chart\.umd/i.test(src)) { resolve(); return; }
       if (document.querySelector('script[src="' + src + '"]')) { resolve(); return; }
       var script = document.createElement('script');
       script.src = src;

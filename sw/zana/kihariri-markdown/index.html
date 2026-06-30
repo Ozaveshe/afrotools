@@ -1033,6 +1033,27 @@
 
 <script>
 (function() {
+  if (!window.marked) {
+    window.marked = {
+      setOptions: function(){},
+      parse: function(markdown) {
+        return String(markdown || '').split(/\n{2,}/).map(function(block) {
+          var safe = block.replace(/[&<>]/g, function(ch) {
+            return ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : '&gt;';
+          });
+          return '<p>' + safe.replace(/\n/g, '<br>') + '</p>';
+        }).join('');
+      }
+    };
+  }
+  if (!window.DOMPurify) {
+    window.DOMPurify = { sanitize: function(html) {
+      var template = document.createElement('template');
+      template.innerHTML = String(html || '');
+      template.content.querySelectorAll('script,iframe,object,embed').forEach(function(node) { node.remove(); });
+      return template.innerHTML;
+    } };
+  }
   /* ── Configure marked.js with GFM ─────────────────────────────── */
   marked.setOptions({
     gfm: true,

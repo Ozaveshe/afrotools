@@ -321,6 +321,28 @@ iframe{width:100%;border:0;border-radius:18px;background:#fff;min-height:1080px;
     for (const child of Array.from(node.childNodes)) walk(child, doc);
   }
 
+  function setAttr(node, attr, value) {
+    if (node && node.getAttribute(attr) !== value) node.setAttribute(attr, value);
+  }
+
+  function setText(node, value) {
+    if (node && node.textContent !== value) node.textContent = value;
+  }
+
+  function setHtml(node, value) {
+    if (node && node.innerHTML !== value) node.innerHTML = value;
+  }
+
+  let pendingFrameLocalization = false;
+  function scheduleFrameLocalization() {
+    if (pendingFrameLocalization) return;
+    pendingFrameLocalization = true;
+    requestAnimationFrame(() => {
+      pendingFrameLocalization = false;
+      localizeFrame();
+    });
+  }
+
   function localizeFrame() {
     const doc = iframe.contentDocument;
     if (!doc || !doc.body) return;
@@ -339,23 +361,19 @@ iframe{width:100%;border:0;border-radius:18px;background:#fff;min-height:1080px;
 
     walk(doc.body, doc);
 
-    const title = doc.querySelector('title');
-    if (title) title.textContent = 'Droits de mutation en Afrique du Sud | AfroTools';
+    setText(doc.querySelector('title'), 'Droits de mutation en Afrique du Sud | AfroTools');
 
     const metas = doc.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]');
-    metas.forEach(meta => meta.setAttribute('content', 'Droits de mutation en Afrique du Sud | AfroTools'));
+    metas.forEach(meta => setAttr(meta, 'content', 'Droits de mutation en Afrique du Sud | AfroTools'));
 
     const desc = doc.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]');
-    desc.forEach(meta => meta.setAttribute('content', 'Calculez les droits de mutation immobilière en Afrique du Sud avec les taux SARS 2026/27.'));
+    desc.forEach(meta => setAttr(meta, 'content', 'Calculez les droits de mutation immobilière en Afrique du Sud avec les taux SARS 2026/27.'));
 
-    const canon = doc.querySelector('link[rel="canonical"]');
-    if (canon) canon.setAttribute('href', 'https://afrotools.com/fr/tools/za-droits-mutation/');
+    setAttr(doc.querySelector('link[rel="canonical"]'), 'href', 'https://afrotools.com/fr/tools/za-droits-mutation/');
 
-    const h1 = doc.querySelector('h1');
-    if (h1) h1.innerHTML = 'Afrique du Sud <em>Droits de mutation</em>';
+    setHtml(doc.querySelector('h1'), 'Afrique du Sud <em>Droits de mutation</em>');
 
-    const breadcrumb = doc.querySelector('.breadcrumb');
-    if (breadcrumb) breadcrumb.innerHTML = '<a href="/fr/">Accueil</a> / <a href="/fr/tools/">Outils</a> / <span>Droits de mutation</span>';
+    setHtml(doc.querySelector('.breadcrumb'), '<a href="/fr/">Accueil</a> / <a href="/fr/tools/">Outils</a> / <span>Droits de mutation</span>');
 
     const iframeCard = doc.querySelector('.tool-main-inner');
     if (iframeCard) iframeCard.style.gridTemplateColumns = '1fr';
@@ -376,12 +394,10 @@ iframe{width:100%;border:0;border-radius:18px;background:#fff;min-height:1080px;
       localizeFrame();
       const doc = iframe.contentDocument;
       if (!doc || !doc.body) return;
-      const observer = new MutationObserver(() => {
-        localizeFrame();
-      });
+      const observer = new MutationObserver(scheduleFrameLocalization);
       observer.observe(doc.body, { subtree: true, childList: true, characterData: true });
       if (doc.defaultView) {
-        doc.defaultView.addEventListener('resize', localizeFrame);
+        doc.defaultView.addEventListener('resize', scheduleFrameLocalization);
       }
     } catch (err) {
       console.warn('French transfer duty localization failed', err);

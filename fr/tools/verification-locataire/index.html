@@ -389,12 +389,15 @@ body{background:linear-gradient(180deg,#f8fbff 0%,#fff 46%,#f7fafc 100%)}
   }
 
   function executeInlineScripts(doc) {
-    Array.prototype.forEach.call(doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])'), function(scriptNode, index) {
+    Array.prototype.forEach.call(doc.querySelectorAll('script:not([src])'), function(scriptNode, index) {
+      var type = (scriptNode.getAttribute('type') || '').trim().toLowerCase();
+      if (type && type !== 'text/javascript' && type !== 'application/javascript' && type !== 'module') return;
       var code = scriptNode.textContent || '';
       if (!code.trim()) return;
       if (code.indexOf('gtag') !== -1 || code.indexOf('dataLayer') !== -1) return;
       var clone = document.createElement('script');
       clone.setAttribute('data-fr-tenant-inline', String(index));
+      if (type) clone.type = type;
       clone.textContent = code;
       document.body.appendChild(clone);
     });

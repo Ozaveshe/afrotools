@@ -311,6 +311,7 @@ a{text-decoration:none}
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/simple-chart-fallback.js?v=43a71e45"></script>
 <script>
 (function(){
   var sourceUrl = '/tools/property-cgt/';
@@ -421,7 +422,7 @@ a{text-decoration:none}
   }
 
   function shouldSkipScript(src) {
-    return !src || /googletagmanager|gtag\.js|navbar\.js|footer\.js|related-tools\.js/.test(src);
+    return !src || /googletagmanager|gtag(?:\.js|\/js)|navbar(?:\.min)?\.js|footer(?:\.min)?\.js|related-tools(?:-data)?(?:\.min)?\.js|chart\.js|chart\.umd/.test(src);
   }
 
   function loadScript(src) {
@@ -447,7 +448,9 @@ a{text-decoration:none}
   }
 
   function runInlineScripts(doc) {
-    Array.prototype.forEach.call(doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])'), function(scriptEl, index) {
+    Array.prototype.forEach.call(doc.querySelectorAll('script:not([src])'), function(scriptEl, index) {
+      var type = (scriptEl.getAttribute('type') || '').trim().toLowerCase();
+      if (type && !/javascript|ecmascript|module/.test(type)) return;
       var code = scriptEl.textContent || '';
       if (!code.trim() || /gtag\(|dataLayer|schema\.org/.test(code)) return;
       var inline = document.createElement('script');
@@ -477,9 +480,6 @@ a{text-decoration:none}
       return response.text();
     })
     .then(function(html) {
-      SOURCE_REPLACEMENTS.forEach(function(pair) {
-        html = html.split(pair[0]).join(pair[1]);
-      });
       var doc = parser.parseFromString(html, 'text/html');
       appendSourceStyles(doc);
       var scripts = Array.prototype.map.call(doc.querySelectorAll('script[src]'), function(scriptEl) {

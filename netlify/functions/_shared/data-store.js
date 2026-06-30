@@ -55,6 +55,15 @@ const STATIC_PATHS = {
  * Get data by key.
  * Read order: Supabase → Netlify Blobs → static JSON files.
  */
+function shouldSkipWrites() {
+  var value = String(
+    process.env.AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES ||
+    process.env.AFROTOOLS_SKIP_LIVE_DATA_STORE_WRITES ||
+    ''
+  ).toLowerCase();
+  return value === '1' || value === 'true' || value === 'yes';
+}
+
 async function getData(key, siteUrl) {
   // 1. Try Supabase (primary — always available)
   if (SUPABASE_KEY) {
@@ -118,6 +127,11 @@ async function getData(key, siteUrl) {
 async function setData(key, data) {
   var supabaseOk = false;
   var blobOk = false;
+
+  if (shouldSkipWrites()) {
+    console.log('[data-store] Write skipped for key: ' + key + ' (local QA)');
+    return false;
+  }
 
   // 1. Write to Supabase (primary — upsert)
   if (SUPABASE_KEY) {

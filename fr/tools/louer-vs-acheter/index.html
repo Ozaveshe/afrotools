@@ -350,18 +350,26 @@ body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,#fff 44%,#f6f8fc 100%
     if (node.dataset && node.dataset.frLocalized === '1') return;
     if (node.matches('[placeholder],[title]')) {
       const attr = node.hasAttribute('placeholder') ? 'placeholder' : 'title';
-      node.setAttribute(attr, translateText(node.getAttribute(attr) || ''));
+      const current = node.getAttribute(attr) || '';
+      const translated = translateText(current);
+      if (translated !== current) node.setAttribute(attr, translated);
     }
     if (node.matches('.lt-name,.lt-rate,.result-label,.result-sub,.rstat-label,.amort-toggle,.ai-title,.ai-by,.ai-status,.ai-thinking,.faq-q,.faq-a,.info-block h3,.info-block p,.hero-sub,.breadcrumb a,.breadcrumb span,[placeholder]')) {
-      node.textContent = translateText(node.textContent);
+      const current = node.textContent;
+      const translated = translateText(current);
+      if (translated !== current) node.textContent = translated;
     }
     node.querySelectorAll('summary, button, label, h1, h2, h3, p, span, option, a, strong, small, [placeholder], [title]').forEach(el => {
       if (el.dataset && el.dataset.frLocalized === '1') return;
       if (el.matches('[placeholder],[title]')) {
         const attr = el.hasAttribute('placeholder') ? 'placeholder' : 'title';
-        el.setAttribute(attr, translateText(el.getAttribute(attr) || ''));
+        const current = el.getAttribute(attr) || '';
+        const translated = translateText(current);
+        if (translated !== current) el.setAttribute(attr, translated);
       } else if (!el.closest('script, style, noscript, template')) {
-        el.textContent = translateText(el.textContent);
+        const current = el.textContent;
+        const translated = translateText(current);
+        if (translated !== current) el.textContent = translated;
       }
     });
   }
@@ -369,13 +377,19 @@ body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,#fff 44%,#f6f8fc 100%
     if (!root) return;
     translateNode(root);
     root.querySelectorAll('[placeholder]').forEach(el => {
-      el.setAttribute('placeholder', translateText(el.getAttribute('placeholder') || ''));
+      const current = el.getAttribute('placeholder') || '';
+      const translated = translateText(current);
+      if (translated !== current) el.setAttribute('placeholder', translated);
     });
     root.querySelectorAll('[title]').forEach(el => {
-      el.setAttribute('title', translateText(el.getAttribute('title') || ''));
+      const current = el.getAttribute('title') || '';
+      const translated = translateText(current);
+      if (translated !== current) el.setAttribute('title', translated);
     });
     root.querySelectorAll('.ai-title,.ai-by,.ai-status,.ai-thinking,.faq-q,.faq-a,.result-label,.result-sub,.rstat-label,.amort-toggle,.lt-name,.lt-rate').forEach(el => {
-      el.textContent = translateText(el.textContent);
+      const current = el.textContent;
+      const translated = translateText(current);
+      if (translated !== current) el.textContent = translated;
     });
   }
   function loadScript(src){
@@ -408,6 +422,16 @@ body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,#fff 44%,#f6f8fc 100%
       .replace(/buying/g,'acheter')
       .replace(/renting/g,'louer');
   }
+  let pendingLocalization = false;
+  function scheduleLocalization(){
+    if (pendingLocalization) return;
+    pendingLocalization = true;
+    requestAnimationFrame(() => {
+      pendingLocalization = false;
+      localizeMount(mount);
+      patchAiAdvisor();
+    });
+  }
   async function init(){
     try {
       const response = await fetch(SOURCE_URL);
@@ -421,15 +445,9 @@ body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,#fff 44%,#f6f8fc 100%
       loadInlineScripts(doc);
       localizeMount(mount);
       patchAiAdvisor();
-      const observer = new MutationObserver(() => {
-        localizeMount(mount);
-        patchAiAdvisor();
-      });
+      const observer = new MutationObserver(scheduleLocalization);
       observer.observe(mount, { subtree: true, childList: true, characterData: true });
-      window.addEventListener('load', () => {
-        localizeMount(mount);
-        patchAiAdvisor();
-      }, { once: true });
+      window.addEventListener('load', scheduleLocalization, { once: true });
     } catch (error) {
       mount.innerHTML = '<div class="fr-rvb-fallback"><div class="fr-rvb-fallback-card"><h3>Chargement impossible</h3><p>La version française du comparateur n’a pas pu se charger. <a href="/tools/rent-vs-buy/">Ouvrir la version anglaise</a>.</p></div></div>';
     }

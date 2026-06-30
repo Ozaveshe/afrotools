@@ -210,6 +210,10 @@ function _initFrenchPayeHub() {
     return tool.lang === "fr" && tool.href.indexOf("/fr/") === 0 ? tool.href : null;
   }
 
+  function getImageId(tool) {
+    return String(tool && (tool.imageId || tool.id) || "paye-calculator").replace(/-fr$/, "");
+  }
+
   function getCountryLabel(tool) {
     if (!tool.countries || !tool.countries.length) return "Afrique";
     return COUNTRY_NAMES_FR[tool.countries[0]] || tool.countries[0];
@@ -269,7 +273,7 @@ function _initFrenchPayeHub() {
     return '' +
       '<a href="' + tool.href + '" class="htc' + (animate ? ' htc-animate' : '') + '"' + delay + '>' +
         '<div class="htc-img" aria-hidden="true">' +
-          '<img src="/assets/img/tools/' + tool.id + '.webp" alt="" loading="lazy" decoding="async" onerror="this.src=\'/assets/img/tools/' + tool.id + '.svg\';this.onerror=function(){this.style.display=\'none\';};">' +
+          '<img src="/assets/img/tools/' + getImageId(tool) + '.webp" alt="" loading="lazy" decoding="async" onerror="this.src=\'/assets/img/tools/' + getImageId(tool) + '.svg\';this.onerror=function(){this.style.display=\'none\';};">' +
           '<span class="htc-img-ph">' + tool.icon + '</span>' +
           '<div class="htc-img-chips"><span class="htc-flag">' + tool.icon + '</span><span class="htc-badge badge-live">En ligne</span></div>' +
         '</div>' +

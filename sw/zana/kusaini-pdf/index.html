@@ -29,9 +29,8 @@
 <script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
-<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -750,10 +749,10 @@
               Bofya au buruta na dondosha PDF hapa
             </label>
           </div>
-          <div class="pdf-preview" id="pdfOnyesho la awali">
-            <div style="margin-bottom: 8px;"><strong>Faili:</strong> <span id="pdfFailiName">-</span></div>
-            <div style="margin-bottom: 8px;"><strong>Kurasa:</strong> <span id="pdfUkurasaCount">-</span></div>
-            <div><strong>Ukubwa:</strong> <span id="pdfFailiUkubwa">-</span></div>
+          <div class="pdf-preview" id="pdfPreview">
+            <div style="margin-bottom: 8px;"><strong>Faili:</strong> <span id="pdfFileName">-</span></div>
+            <div style="margin-bottom: 8px;"><strong>Kurasa:</strong> <span id="pdfPageCount">-</span></div>
+            <div><strong>Ukubwa:</strong> <span id="pdfFileSize">-</span></div>
           </div>
         </div>
       </div>
@@ -784,9 +783,9 @@
               <button type="button" class="width-btn" data-width="6">Nene</button>
             </div>
             <div class="canvas-actions">
-              <button type="button" class="canvas-btn" id="undoChoraBtn">Rudisha</button>
-              <button type="button" class="canvas-btn" id="clearChoraBtn">Futa</button>
-              <button type="button" class="canvas-btn" id="useChoraBtn" style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border-color:var(--afro-green);">Tumia hii</button>
+              <button type="button" class="canvas-btn" id="undoDrawBtn">Rudisha</button>
+              <button type="button" class="canvas-btn" id="clearDrawBtn">Futa</button>
+              <button type="button" class="canvas-btn" id="useDrawBtn" style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border-color:var(--afro-green);">Tumia hii</button>
             </div>
           </div>
 
@@ -813,22 +812,22 @@
                 <button type="button" class="color-btn green" data-typecolor="green">Kijani</button>
               </div>
             </div>
-            <div class="font-preview" id="fontOnyesho la awali">Jina lako</div>
-            <button type="button" class="calc-btn" id="useAndikaBtn">Tumia saini hii</button>
+            <div class="font-preview" id="fontPreview">Jina lako</div>
+            <button type="button" class="calc-btn" id="useTypeBtn">Tumia saini hii</button>
           </div>
 
           <!-- Pakia Tab -->
           <div id="upload" class="tab-content" style="display:none;">
             <div class="file-input-wrapper">
-              <input type="file" id="sigPichaInput" accept=".png,.jpg,.jpeg,.gif,.webp">
+              <input type="file" id="sigImageInput" accept=".png,.jpg,.jpeg,.gif,.webp">
               <label for="sigPichaInput" class="file-input-label">
                 Pakia picha ya saini
               </label>
             </div>
-            <div class="image-preview" id="imageOnyesho la awali" style="display:none;">
+            <div class="image-preview" id="imagePreview" style="display:none;">
               <img id="previewImg" src="" alt="Saini">
             </div>
-            <button type="button" class="calc-btn" id="usePichaBtn">Tumia saini hii</button>
+            <button type="button" class="calc-btn" id="useImageBtn">Tumia saini hii</button>
           </div>
         </div>
       </div>
@@ -840,9 +839,9 @@
         </div>
         <div class="card-body">
           <div class="page-nav">
-            <button type="button" id="prevUkurasaBtn">Uliotangulia</button>
-            <div class="page-info"><span id="currentUkurasa">1</span> / <span id="totalKurasa">1</span></div>
-            <button type="button" id="nextUkurasaBtn">Unaofuata</button>
+            <button type="button" id="prevPageBtn">Uliotangulia</button>
+            <div class="page-info"><span id="currentPage">1</span> / <span id="totalPages">1</span></div>
+            <button type="button" id="nextPageBtn">Unaofuata</button>
           </div>
           <div class="pdf-canvas-container">
             <canvas id="pdfRenderCanvas"></canvas>
@@ -874,9 +873,9 @@
           <span class="card-title">Matokeo</span>
         </div>
         <div class="card-body">
-          <div class="result-text" id="resultMaandishi"></div>
+          <div class="result-text" id="resultText"></div>
           <div class="action-row" id="actionRow" style="display:none;">
-            <button type="button" class="act-btn" id="finalPakuaBtn">Pakua PDF iliyosainiwa</button>
+            <button type="button" class="act-btn" id="finalDownloadBtn">Pakua PDF iliyosainiwa</button>
           </div>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
   <share-result-button
@@ -948,7 +947,7 @@
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 
 <script>
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2';
   function getPDFLib() {
     if (!window.PDFLib) throw new Error('Maktaba ya PDF haikupakia. Tafadhali onyesha upya ukurasa.');
     return window.PDFLib;

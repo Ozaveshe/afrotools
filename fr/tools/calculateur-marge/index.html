@@ -135,8 +135,10 @@
         mount.appendChild(document.importNode(main, true));
         window.marginFrLocalizer.localizeElement(mount);
         doc.querySelectorAll('script').forEach(function (script) {
-          if (!script.src && script.textContent) {
+          var type = (script.getAttribute('type') || '').trim().toLowerCase();
+          if (!script.src && script.textContent && (!type || type === 'text/javascript' || type === 'application/javascript' || type === 'module')) {
             var next = document.createElement('script');
+            if (type) next.type = type;
             next.textContent = script.textContent;
             document.body.appendChild(next);
           }

@@ -371,11 +371,11 @@ a{text-decoration:none}
     });
     Array.prototype.forEach.call(root.querySelectorAll('[placeholder]'), function(el){
       var translated = translateText(el.getAttribute('placeholder') || '');
-      el.setAttribute('placeholder', translated);
+      if (translated !== el.getAttribute('placeholder')) el.setAttribute('placeholder', translated);
     });
     Array.prototype.forEach.call(root.querySelectorAll('[aria-label]'), function(el){
       var translated = translateText(el.getAttribute('aria-label') || '');
-      el.setAttribute('aria-label', translated);
+      if (translated !== el.getAttribute('aria-label')) el.setAttribute('aria-label', translated);
     });
   }
 
@@ -391,7 +391,13 @@ a{text-decoration:none}
   }
 
   function shouldSkipScript(src){
-    return !src || /googletagmanager|gtag\.js/.test(src);
+    if (!src || /googletagmanager|gtag\.js/.test(src)) return true;
+    try {
+      var url = new URL(src, window.location.href);
+      return url.origin !== window.location.origin;
+    } catch (error) {
+      return true;
+    }
   }
 
   function loadScript(src){
@@ -406,6 +412,11 @@ a{text-decoration:none}
     });
   }
 
+  function ensureChartFallback(){
+    if (window.Chart) return Promise.resolve();
+    return loadScript('/assets/js/lib/simple-chart-fallback.js?v=43a71e45');
+  }
+
   function mountFragment(doc){
     var fragment = doc.querySelector('.tool-wrap') || doc.querySelector('.card, main, [class*="tool"], [class*="wrap"]');
     if (!fragment) throw new Error('SOURCE_FRAGMENT_MISSING');
@@ -415,6 +426,8 @@ a{text-decoration:none}
 
   function runInlineScripts(doc){
     Array.prototype.forEach.call(doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])'), function(scriptEl, index){
+      var type = (scriptEl.getAttribute('type') || '').trim().toLowerCase();
+      if (type && !/^(text|application)\/javascript$/.test(type) && type !== 'module') return;
       var code = scriptEl.textContent || '';
       if (!code.trim() || /gtag\(|dataLayer|schema\.org/.test(code)) return;
       var inline = document.createElement('script');
@@ -450,16 +463,24 @@ a{text-decoration:none}
         .filter(function(src, index, list){ return src && list.indexOf(src) === index; });
       return scripts.reduce(function(chain, src){
         return chain.then(function(){ return loadScript(src); });
-      }, Promise.resolve()).then(function(){
+      }, Promise.resolve()).then(ensureChartFallback).then(function(){
         mountFragment(doc);
         runInlineScripts(doc);
         localizeTree(mount);
-        var observer = new MutationObserver(function(){ localizeTree(mount); });
+        var pending = false;
+        var observer = new MutationObserver(function(){
+          if (pending) return;
+          pending = true;
+          requestAnimationFrame(function(){
+            pending = false;
+            localizeTree(mount);
+          });
+        });
         observer.observe(mount, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['placeholder', 'aria-label', 'title'] });
       });
     })
     .catch(function(error){
-      console.error('[fr-wrapper][evaluation-immobiliere]', error);
+      console.warn('[fr-wrapper][evaluation-immobiliere]', error);
       setFallback('Le moteur source est momentanément indisponible. Ouvrez la version anglaise complète ou revenez à la rubrique Immobilier.');
     })
     .finally(function(){

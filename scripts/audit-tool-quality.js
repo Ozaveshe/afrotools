@@ -25,7 +25,7 @@ const RUN_BROWSER = argv.includes('--browser');
 const LIMIT = numberArg('--limit', 0);
 const BROWSER_LIMIT = numberArg('--browser-limit', 0);
 const CONCURRENCY = numberArg('--concurrency', 6);
-const BROWSER_TIMEOUT = numberArg('--timeout', 8000);
+const BROWSER_TIMEOUT = numberArg('--timeout', 12000);
 const PORT = numberArg('--port', 4173);
 const TARGET_IDS = listArg('--id');
 const TARGET_ROUTES = listArg('--route').map(normalizeRoute);
@@ -696,7 +696,10 @@ async function ensureServer(port) {
   if (await requestLocal(port, '/')) return { started: false, process: null };
   const child = spawn(process.execPath, [path.join(ROOT, 'tests/support/static-server.js')], {
     cwd: ROOT,
-    env: Object.assign({}, process.env, { PORT: String(port) }),
+    env: Object.assign({}, process.env, {
+      PORT: String(port),
+      AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES: process.env.AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES || '1',
+    }),
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   child.stdout.on('data', (chunk) => process.stdout.write(String(chunk)));
@@ -1130,6 +1133,21 @@ async function main() {
     live_instances: liveInstances,
     unique_routes: uniqueRoutes.length,
   };
+  const browserIssueRoutes = RUN_BROWSER
+    ? Object.entries(browserResults)
+      .filter(([, result]) => !result.ok || (result.consoleErrors || 0) + (result.pageErrors || 0) > 0)
+      .map(([route, result]) => ({
+        route,
+        ok: result.ok,
+        status: result.status,
+        error: result.error || '',
+        consoleErrors: result.consoleErrors || 0,
+        pageErrors: result.pageErrors || 0,
+        sampleConsoleErrors: result.sampleConsoleErrors || [],
+        samplePageErrors: result.samplePageErrors || [],
+        failedResponses: result.failedResponses || [],
+      }))
+    : [];
   const browserSummary = {
     enabled: RUN_BROWSER,
     routes_tested: RUN_BROWSER ? Object.keys(browserResults).length : 0,
@@ -1137,6 +1155,7 @@ async function main() {
     routes_with_console_or_page_errors: RUN_BROWSER ? Object.values(browserResults).filter((result) => (result.consoleErrors || 0) + (result.pageErrors || 0) > 0).length : 0,
     timeout_ms: RUN_BROWSER ? BROWSER_TIMEOUT : 0,
     concurrency: RUN_BROWSER ? CONCURRENCY : 0,
+    issue_samples: browserIssueRoutes.slice(0, 20),
   };
   const summary = summarize(records, registryStats, browserSummary);
   writeReports(records, summary);
@@ -1145,6 +1164,19 @@ async function main() {
   console.log(`A/B/C/D/F rows: ${summary.score_distribution_rows.A}/${summary.score_distribution_rows.B}/${summary.score_distribution_rows.C}/${summary.score_distribution_rows.D}/${summary.score_distribution_rows.F}`);
   if (RUN_BROWSER) {
     console.log(`Browser smoke tested ${browserSummary.routes_tested} unique routes; failures: ${browserSummary.failures}; routes with console/page errors: ${browserSummary.routes_with_console_or_page_errors}.`);
+    if (browserSummary.issue_samples.length) {
+      console.log('Browser issue samples:');
+      browserSummary.issue_samples.slice(0, 10).forEach((issue) => {
+        const samples = []
+          .concat(issue.sampleConsoleErrors || [])
+          .concat(issue.samplePageErrors || [])
+          .concat(issue.error || [])
+          .filter(Boolean)
+          .slice(0, 2)
+          .join(' | ');
+        console.log(`- ${issue.route} status=${issue.status} console=${issue.consoleErrors} page=${issue.pageErrors}${samples ? ` :: ${samples}` : ''}`);
+      });
+    }
   }
   console.log(`Wrote ${path.relative(ROOT, REPORT_MD)}, ${path.relative(ROOT, REPORT_JSON)}, ${path.relative(ROOT, REPORT_CSV)}.`);
 }

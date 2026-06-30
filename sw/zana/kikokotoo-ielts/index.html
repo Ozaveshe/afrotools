@@ -185,6 +185,53 @@
 
 <!-- IELTS ENGINE -->
 <main class="ielts-container">
+  <section class="ielts-card">
+    <h2>Mpango wa IELTS</h2>
+    <div class="ielts-mode-toggle" aria-label="Aina ya IELTS">
+      <button class="ielts-mode-btn is-active" id="modeAcademic" type="button">IELTS Academic</button>
+      <button class="ielts-mode-btn" id="modeGeneral" type="button">IELTS General</button>
+    </div>
+    <div class="ielts-setup-grid">
+      <div class="ielts-form-group">
+        <label for="targetDestination">Nchi unayolenga</label>
+        <select class="ielts-select" id="targetDestination">
+          <option value="uk">Uingereza</option>
+          <option value="canada">Canada</option>
+          <option value="australia">Australia</option>
+          <option value="new-zealand">New Zealand</option>
+          <option value="usa">Marekani</option>
+          <option value="ireland">Ireland</option>
+          <option value="global">Global / nchi nyingi</option>
+        </select>
+      </div>
+      <div class="ielts-form-group">
+        <label for="targetPathway">Njia</label>
+        <select class="ielts-select" id="targetPathway">
+          <option value="undergrad-admission">Udahili wa shahada ya kwanza</option>
+          <option value="postgrad-admission">Udahili wa uzamili</option>
+          <option value="scholarship-competitiveness">Ushindani wa scholarship</option>
+          <option value="skilled-migration">Mpango wa uhamiaji wa ujuzi</option>
+          <option value="work-pathway">Njia ya kazi</option>
+        </select>
+      </div>
+      <div class="ielts-form-group">
+        <label for="planningTarget">Target ya jumla</label>
+        <select class="ielts-select" id="planningTarget">
+          <option value="">Tumia benchmark ya njia</option>
+          <option value="6.0">6.0 overall</option>
+          <option value="6.5">6.5 overall</option>
+          <option value="7.0">7.0 overall</option>
+          <option value="7.5">7.5 overall</option>
+          <option value="8.0">8.0 overall</option>
+        </select>
+      </div>
+    </div>
+    <div class="ielts-path-summary">
+      <div class="ielts-summary-label">Benchmark uliyochagua</div>
+      <strong id="pathSummaryTitle">UK undergraduate planning benchmark</strong>
+      <p id="pathSummaryText">Tumia hii kama mwongozo wa kupanga, kisha hakiki mahitaji rasmi ya chuo, visa au mwajiri.</p>
+    </div>
+  </section>
 
   <!-- Score Entry Card -->
   <div class="ielts-card">
@@ -209,22 +256,73 @@
       </div>
     </div>
     <div class="ielts-actions">
-      <button type="button" class="ielts-btn" id="calcBtn">Kokotoa Alama ya Jumla</button>
+      <button type="button" class="ielts-btn" id="calculateBtn">Kokotoa Alama ya Jumla</button>
+      <button type="button" class="ielts-btn" id="resetBtn">Weka upya</button>
+    </div>
+  </div>
+
+  <div class="ielts-card">
+    <h2>Makadirio ya alama ghafi</h2>
+    <p class="ielts-hint">Tumia sehemu hii kama una majibu sahihi kati ya 40 kwa Listening au Reading.</p>
+    <div class="ielts-form-row">
+      <div class="ielts-form-group">
+        <label for="rawListening">Listening raw score</label>
+        <input class="ielts-input" id="rawListening" type="number" min="0" max="40" placeholder="0-40">
+        <strong id="rawListeningBand">--</strong>
+      </div>
+      <div class="ielts-form-group">
+        <label for="rawReading">Reading raw score</label>
+        <input class="ielts-input" id="rawReading" type="number" min="0" max="40" placeholder="0-40">
+        <span id="readingEstimateLabel">Reading estimate (Academic)</span>
+        <strong id="rawReadingBand">--</strong>
+      </div>
+    </div>
+    <div class="ielts-actions">
+      <button type="button" class="ielts-btn" id="applyRawBtn">Tumia makadirio haya</button>
     </div>
   </div>
 
   <!-- Results (populated by JS) -->
-  <div id="ieltsResults" style="display:none;">
+  <div id="resultsPanel" class="ielts-results-grid hidden">
     <div class="ielts-result-card">
       <div class="ielts-band-display">
         <div class="ielts-band-label">Alama ya Jumla (Overall Band)</div>
-        <div class="ielts-band-value" id="overallBand">—</div>
-        <div class="ielts-cefr" id="cefrLevel"></div>
+        <div class="ielts-band-value" id="overallScore">--</div>
+        <div class="ielts-cefr" id="levelDesc"></div>
       </div>
-      <div class="ielts-breakdown" id="bandBreakdown"></div>
+      <div class="ielts-breakdown" id="componentScores"></div>
+      <div class="ielts-equiv-row">
+        <div class="ielts-toefl-box"><div class="ielts-toefl-label">TOEFL iBT</div><div class="ielts-toefl-value" id="toeflScore">--</div></div>
+        <div class="ielts-toefl-box"><div class="ielts-toefl-label">PTE Academic</div><div class="ielts-toefl-value" id="pteScore">--</div></div>
+        <div class="ielts-toefl-box"><div class="ielts-toefl-label">Duolingo</div><div class="ielts-toefl-value" id="duolingoScore">--</div></div>
+      </div>
     </div>
-    <div id="requirementsPanel"></div>
-    <div id="toeflConversion"></div>
+    <div class="ielts-result-card">
+      <span class="ielts-status-badge status-close" id="verdictStatus">Run the calculator</span>
+      <span class="ielts-status-meta" id="verdictMeta">Pathway benchmark</span>
+      <h3 id="verdictTitle">Chagua target hapo juu</h3>
+      <p id="verdictSummary">Utaona kama alama yako inakaribia njia uliyochagua.</p>
+      <div class="ielts-gap-list" id="gapList"></div>
+    </div>
+  </div>
+
+  <div class="ielts-card hidden" id="qualificationCard">
+    <h2>Njia zinazokaribia</h2>
+    <div class="ielts-qualification-columns">
+      <div>
+        <h3 class="ielts-column-title">Tayari uko ndani ya range</h3>
+        <div class="ielts-route-list" id="availableRoutes"></div>
+      </div>
+      <div>
+        <h3 class="ielts-column-title">Njia za karibu zaidi</h3>
+        <div class="ielts-route-list" id="closeRoutes"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ielts-card hidden" id="actionPlanCard">
+    <h2 id="improve-plan">Hatua inayofuata</h2>
+    <div class="ielts-tips-box"><div id="studyTipsContent"></div></div>
   </div>
 
   <!-- Requirements checker -->

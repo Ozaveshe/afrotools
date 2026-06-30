@@ -4,6 +4,9 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..', '..');
 const port = Number(process.env.PORT || 4173);
+if (process.env.AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES !== '0') {
+  process.env.AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES = '1';
+}
 const types = {
   '.css': 'text/css; charset=utf-8',
   '.gif': 'image/gif',
@@ -19,6 +22,20 @@ const types = {
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
   '.xml': 'application/xml; charset=utf-8'
+};
+
+const apiFunctionAliases = {
+  '/api/backup-power-costs': 'api-backup-power-costs',
+  '/api/clinic-costs': 'api-clinic-costs',
+  '/api/fintech-fees': 'api-fintech-fees',
+  '/api/fx-spreads': 'api-fx-spreads',
+  '/api/lease-risk': 'api-lease-risk',
+  '/api/pharmacy-prices': 'api-pharmacy-prices',
+  '/api/rent-intelligence': 'api-rent-intelligence',
+  '/api/scholarships': 'api-scholarships',
+  '/api/staple-baskets': 'api-staple-baskets',
+  '/api/transport-fares': 'api-transport-fares',
+  '/api/wholesale-retail-spreads': 'api-wholesale-retail-spreads'
 };
 
 function routeCandidates(url) {
@@ -65,14 +82,35 @@ function queryParams(requestUrl) {
   return Object.fromEntries(parsed.searchParams.entries());
 }
 
+function apiFunctionFor(pathname) {
+  const clean = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  return apiFunctionAliases[clean] || '';
+}
+
+function localClientIpFor(seed) {
+  let hash = 0;
+  for (let index = 0; index < seed.length; index += 1) {
+    hash = ((hash << 5) - hash + seed.charCodeAt(index)) >>> 0;
+  }
+  return '127.77.' + ((hash % 250) + 1) + '.' + (((hash >> 8) % 250) + 1);
+}
+
 async function invokeFunction(functionName, request, response) {
   const body = await readRequestBody(request);
   const functionPath = path.join(root, 'netlify', 'functions', functionName + '.js');
   delete require.cache[require.resolve(functionPath)];
   const fn = require(functionPath);
+  const headers = Object.assign({}, request.headers);
+  const localClientIp = localClientIpFor(functionName + ':' + request.url + ':' + (request.headers.referer || ''));
+  if (!headers['x-forwarded-for']) headers['x-forwarded-for'] = localClientIp;
+  if (!headers['x-nf-client-connection-ip']) headers['x-nf-client-connection-ip'] = localClientIp;
+  if (!headers['client-ip']) headers['client-ip'] = localClientIp;
+  if (process.env.AFROTOOLS_LOCAL_FUNCTION_API_KEY && !headers['x-api-key']) {
+    headers['x-api-key'] = process.env.AFROTOOLS_LOCAL_FUNCTION_API_KEY;
+  }
   const result = await fn.handler({
     httpMethod: request.method,
-    headers: request.headers,
+    headers,
     queryStringParameters: queryParams(request.url),
     body,
     path: request.url.split('?')[0]
@@ -146,6 +184,14 @@ const server = http.createServer(function (request, response) {
     return invokeFunction('matchday-fixtures-sync-status', request, response).catch(function (error) {
       console.error(error);
       sendJson(response, 500, { error: 'Matchday fixture sync status failed locally.' });
+    });
+  }
+
+  const apiFunctionName = apiFunctionFor(pathname);
+  if (apiFunctionName) {
+    return invokeFunction(apiFunctionName, request, response).catch(function (error) {
+      console.error(error);
+      sendJson(response, 500, { error: apiFunctionName + ' failed locally.' });
     });
   }
 

@@ -426,13 +426,25 @@
     return text;
   }
 
+  function escapeScriptText(text) {
+    return String(text).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\r?\n/g, '\\n');
+  }
+
+  function replaceAllScript(text, pairs) {
+    for (var i = 0; i < pairs.length; i++) {
+      var rawCodeReplacement = String(pairs[i][0]).indexOf('toLocaleString(') === 0;
+      text = text.split(pairs[i][0]).join(rawCodeReplacement ? pairs[i][1] : escapeScriptText(pairs[i][1]));
+    }
+    return text;
+  }
+
   function translateHtml(html) {
     return replaceAll(html, htmlReplacements);
   }
 
   function translateScript(js) {
-    js = replaceAll(js, scriptReplacements);
-    js = replaceAll(js, corridorNoteReplacements);
+    js = replaceAllScript(js, scriptReplacements);
+    js = replaceAllScript(js, corridorNoteReplacements);
     return js;
   }
 

@@ -375,15 +375,17 @@ body{background:#f6f8fb}
   }
 
   function runInlineScripts(doc){
-    Array.prototype.forEach.call(doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])'), function(scriptEl, index){
+    Array.prototype.forEach.call(doc.querySelectorAll('script:not([src])'), function(scriptEl, index){
+      var type = (scriptEl.getAttribute('type') || '').trim().toLowerCase();
+      if (type && type !== 'text/javascript' && type !== 'application/javascript' && type !== 'module') return;
       var code = scriptEl.textContent || '';
       if (!code.trim() || /gtag\(|dataLayer|schema\.org/.test(code)) return;
-      var translated = translateText(code);
       var marker = 'fr-tax-inline-' + index;
       if (document.body.querySelector('script[data-fr-tax-inline="' + marker + '"]')) return;
       var inline = document.createElement('script');
       inline.setAttribute('data-fr-tax-inline', marker);
-      inline.textContent = translated;
+      if (type) inline.type = type;
+      inline.textContent = code;
       document.body.appendChild(inline);
     });
   }

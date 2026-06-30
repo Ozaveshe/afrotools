@@ -435,10 +435,13 @@ body { background: linear-gradient(180deg,#f7f8fb 0%,#ffffff 100%); }
   }
 
   function injectInlineScripts(doc) {
-    doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])').forEach(function(scriptNode) {
+    doc.querySelectorAll('script:not([src])').forEach(function(scriptNode) {
+      var type = (scriptNode.getAttribute('type') || '').trim().toLowerCase();
+      if (type && type !== 'text/javascript' && type !== 'application/javascript' && type !== 'module') return;
       var text = scriptNode.textContent || '';
       if (!text.trim() || text.indexOf('gtag') !== -1) return;
       var clone = document.createElement('script');
+      if (type) clone.type = type;
       clone.textContent = text;
       document.body.appendChild(clone);
     });

@@ -304,6 +304,7 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
 
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/simple-chart-fallback.js?v=43a71e45"></script>
 <script>
 (function(){
   var mount = document.getElementById('tool-mount');
@@ -486,7 +487,7 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
   function loadScript(src) {
     return new Promise(function(resolve, reject) {
       if (!src) return resolve();
-      if (/gtag|googletagmanager/.test(src)) return resolve();
+      if (/gtag|googletagmanager|related-tools(?:-data)?(?:\.min)?\.js|chart\.js|chart\.umd/.test(src)) return resolve();
       if (document.querySelector('script[data-ltc-src="' + src + '"]')) return resolve();
       var s = document.createElement('script');
       s.src = src;
@@ -530,10 +531,7 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
       "    '<div class=\"fraud\"><h3>⚠️ Risques de fraude courants au pays ' + c.name + '</h3><ul>' +\n" +
       "    c.frauds.map(function(f) { return '<li>' + f + '</li>'; }).join('') + '</ul></div>' +\n" +
       "    '<div class=\"footer\">Généré par AfroTools. Cette checklist est fournie à titre informatif uniquement. Faites toujours appel à un avocat immobilier qualifié.</div>' +\n" +
-      "    '<script data-fr-action-planner-script>
-(function(){document.querySelectorAll('[data-fr-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Outil';var output=panel.querySelector('[data-fr-action-output]');var status=panel.querySelector('[data-fr-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Donnees: '+details);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des donnees pour preparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-fr-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
-</script>
-</body></html>';\n" +
+      "    '</body></html>';\n" +
       "  win.document.write(html);\n" +
       "  win.document.close();\n" +
       "  setTimeout(function(){ win.print(); }, 500);\n" +
@@ -542,13 +540,14 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
   }
 
   function injectInlineScripts(doc) {
-    var scripts = doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])');
+    var scripts = doc.querySelectorAll('script:not([src])');
     scripts.forEach(function(scriptNode, index) {
+      var type = (scriptNode.getAttribute('type') || '').trim().toLowerCase();
+      if (type && type !== 'text/javascript' && type !== 'application/javascript' && type !== 'module') return;
       var text = scriptNode.textContent || '';
       if (!text.trim()) return;
       if (text.indexOf('gtag') !== -1 || text.indexOf('dataLayer') !== -1) return;
       text = fixSourceScript(text);
-      text = replaceMany(text);
       if (text.indexOf('var COUNTRIES =') !== -1) {
         text += '\n;window.__ltcLocalize && window.__ltcLocalize();';
       }
@@ -556,6 +555,7 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
       if (document.querySelector('script[data-ltc-inline="' + key + '"]')) return;
       var clone = document.createElement('script');
       clone.dataset.ltcInline = key;
+      if (type) clone.type = type;
       clone.textContent = text;
       document.body.appendChild(clone);
     });
@@ -614,7 +614,7 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
         return node.getAttribute('src');
       }).filter(function(src, idx, arr) {
         if (!src) return false;
-        if (/navbar\.min\.js|footer\.min\.js|related-tools|min\.js|newsletter-cta|gtag\/js/.test(src)) return false;
+        if (/navbar\.min\.js|footer\.min\.js|related-tools(?:-data)?(?:\.min)?\.js|min\.js|newsletter-cta|gtag\/js|chart\.js|chart\.umd/.test(src)) return false;
         return arr.indexOf(src) === idx;
       });
 

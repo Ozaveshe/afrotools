@@ -71,7 +71,7 @@
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="/assets/js/lib/simple-chart-fallback.js?v=43a71e45"></script>
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/bundles/tool-page.3b1f7518.min.js?v=3b1f7518" defer></script>
 <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
@@ -353,12 +353,14 @@ function calculate(){
 }
 function toggleBands(el){var card=el.closest('.sidebar-card');card.classList.toggle('collapsed');el.querySelector('.toggle-icon').textContent=card.classList.contains('collapsed')?'▶':'▼';}
 function updateChart(net,nasscorp,tax){
+  if(!window.Chart){return;}
   var ctx=document.getElementById('payChart').getContext('2d');
   if(myChart){myChart.destroy();}
   myChart=new Chart(ctx,{type:'doughnut',data:{labels:['Mshahara Halisi','NASSCORP','Kodi ya LRA'],datasets:[{data:[Math.round(net),Math.round(nasscorp),Math.round(tax)],backgroundColor:['#007AFF','#FF9500','#FF3B30'],borderWidth:2}]},options:{cutout:'68%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}}}});
 }
 function setChart(type,btn){
   document.querySelectorAll('.chart-btn').forEach(function(b){b.classList.remove('active')});if(btn)btn.classList.add('active');
+  if(!window.Chart){return;}
   var gross=state.period==='annual'?state.gross/12:state.gross;
   var nasscorp=state.togs.nasscorp?gross*NASSCORP_RATE:0;
   var tax=calcLRA((gross-nasscorp)*12)/12;

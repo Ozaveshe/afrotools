@@ -236,6 +236,7 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
 </style>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/lib/simple-chart-fallback.js?v=43a71e45"></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/survey-cost/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-geometre/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/survey-cost/" />
@@ -456,8 +457,10 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
   }
 
   function runInline(doc){
-    Array.prototype.forEach.call(doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])'), function(node, i){
+    Array.prototype.forEach.call(doc.querySelectorAll('script:not([src])'), function(node, i){
+      var type = (node.getAttribute('type') || '').toLowerCase();
       var code = node.textContent || '';
+      if (type && !/javascript|ecmascript/.test(type)) return;
       if (!code.trim() || code.indexOf('gtag') > -1) return;
       var clone = document.createElement('script');
       clone.dataset.frSurveyInline = '1-' + i;
@@ -487,7 +490,7 @@ body{background:var(--ft-bg);color:var(--ft-ink)}
         return node.getAttribute('src');
       }).filter(function(src, idx, arr){
         if (!src) return false;
-        if (/navbar\.min\.js|footer\.min\.js|related-tools(?:-data)?\.min\.js|wise-cta\.js|gtag\/js/.test(src)) return false;
+        if (/navbar\.min\.js|footer\.min\.js|related-tools(?:-data)?(?:\.min)?\.js|wise-cta\.js|gtag\/js|chart\.js|chart\.umd/.test(src)) return false;
         return arr.indexOf(src) === idx;
       });
       return scripts.reduce(function(chain, src){

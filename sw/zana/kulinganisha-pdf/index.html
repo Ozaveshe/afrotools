@@ -1075,8 +1075,8 @@
           <!-- Asili -->
           <div class="upload-col">
             <div class="upload-label"><span class="dot dot-original"></span> PDF asili</div>
-            <div class="upload-zone" id="dropAsili">
-              <input aria-label="FileAsili" type="file" id="fileAsili" accept=".pdf">
+            <div class="upload-zone" id="dropOriginal">
+              <input aria-label="FileAsili" type="file" id="fileOriginal" accept=".pdf">
               <span class="upload-icon">&#128196;</span>
               <div class="upload-text">Buruta original PDF here</div>
               <div class="upload-hint">au bofya browse</div>
@@ -1085,8 +1085,8 @@
           <!-- Iliyobadilishwa -->
           <div class="upload-col">
             <div class="upload-label"><span class="dot dot-modified"></span> PDF iliyobadilishwa</div>
-            <div class="upload-zone" id="dropIliyobadilishwa">
-              <input aria-label="FileIliyobadilishwa" type="file" id="fileIliyobadilishwa" accept=".pdf">
+            <div class="upload-zone" id="dropModified">
+              <input aria-label="FileIliyobadilishwa" type="file" id="fileModified" accept=".pdf">
               <span class="upload-icon">&#128196;</span>
               <div class="upload-text">Buruta modified PDF here</div>
               <div class="upload-hint">au bofya browse</div>
@@ -1115,7 +1115,7 @@
         </div>
         <div class="compare-row">
           <button type="button" class="compare-btn" id="compareBtn" disabled>
-            <span id="compareBtnMaandishi">&#8596; Endesha ulinganisho</span>
+            <span id="compareBtnText">&#8596; Endesha ulinganisho</span>
           </button>
         </div>
       </div>
@@ -1127,7 +1127,7 @@
         <div class="card-head">
           <span class="card-title">Matokeo ya ulinganisho</span>
           <div class="mode-toggle-row" style="margin-bottom:0;">
-            <button type="button" class="mode-btn active" id="modeMaandishi" data-mode="text">&#9998; Maandishi diff</button>
+            <button type="button" class="mode-btn active" id="modeText" data-mode="text">&#9998; Maandishi diff</button>
             <button type="button" class="mode-btn" id="modeVisual" data-mode="visual">&#128065; Visual diff</button>
           </div>
         </div>
@@ -1141,7 +1141,7 @@
             <div class="summary-bar" id="summaryBar">
               <span class="stat-add" id="statAdd">0 zilizoongezwa</span>
               <span class="stat-del" id="statDel">0 zilizofutwa</span>
-              <span class="stat-pages" id="statKurasa">0 / 0 kurasa zimebadilika</span>
+              <span class="stat-pages" id="statPages">0 / 0 kurasa zimebadilika</span>
               <span class="stat-neutral" id="statWords">0 maneno yamebadilika</span>
               <span class="stat-sim" id="statSim">100% zinafanana</span>
             </div>
@@ -1154,15 +1154,15 @@
                 <button class="toolbar-btn" id="prevChangeBtn" type="button">Badiliko lililopita</button>
                 <button class="toolbar-btn" id="nextChangeBtn" type="button">Badiliko linalofuata</button>
                 <button class="toolbar-btn" id="copySummaryBtn" type="button">Nakili muhtasari</button>
-                <button class="toolbar-btn" id="downloadRipotiBtn" type="button">Pakua ripoti</button>
+                <button class="toolbar-btn" id="downloadReportBtn" type="button">Pakua ripoti</button>
               </div>
             </div>
             <div class="quality-note" id="qualityNote">Pakia PDF mbili, kisha endesha ulinganisho kuona maelezo ya review kwa kila ukurasa.</div>
             <div class="change-map" id="changeMap" aria-label="Changed page map"></div>
-            <div class="page-nav" id="textUkurasaNav">
+            <div class="page-nav" id="textPageNav">
               <button type="button" id="textPrevBtn" disabled>&#8592; Prev</button>
-              <span class="page-indicator" id="textUkurasaIndicator">Ukurasa 1 / 1</span>
-              <button type="button" id="textInayofuataBtn" disabled>Inayofuata &#8594;</button>
+              <span class="page-indicator" id="textPageIndicator">Ukurasa 1 / 1</span>
+              <button type="button" id="textNextBtn" disabled>Inayofuata &#8594;</button>
             </div>
             <div class="diff-panels">
               <div class="diff-panel">
@@ -1178,10 +1178,10 @@
 
           <!-- Visual diff View -->
           <div id="visualDiffView" style="display:none;">
-            <div class="page-nav" id="visualUkurasaNav">
+            <div class="page-nav" id="visualPageNav">
               <button type="button" id="visualPrevBtn" disabled>&#8592; Prev</button>
-              <span class="page-indicator" id="visualUkurasaIndicator">Ukurasa 1 / 1</span>
-              <button type="button" id="visualInayofuataBtn" disabled>Inayofuata &#8594;</button>
+              <span class="page-indicator" id="visualPageIndicator">Ukurasa 1 / 1</span>
+              <button type="button" id="visualNextBtn" disabled>Inayofuata &#8594;</button>
             </div>
             <div class="visual-metric" id="visualMetric">Fungua visual diff baada ya kulinganisha kuona mabadiliko ya pixel kwa ukurasa.</div>
             <div class="visual-diff-container" id="visualContainer">
