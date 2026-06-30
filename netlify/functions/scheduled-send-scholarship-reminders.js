@@ -1,5 +1,6 @@
 const { buildReminderSchedule, getAuthClient } = require('./_shared/scholarship-platform');
 const { isEmailConfigured, sendEmail } = require('./_shared/email-adapter');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const FINDER_URL = 'https://afrotools.com/tools/scholarship-finder/';
 const HUB_URL = 'https://afrotools.com/tools/education-hub/';
@@ -88,7 +89,7 @@ async function skipJob(client, job, reason) {
     });
 }
 
-exports.handler = async function () {
+exports.handler = withScheduledProof('scheduled-send-scholarship-reminders', async function () {
   const client = getAuthClient();
   if (!client) {
     return { statusCode: 500, body: 'Scholarship auth client not configured' };
@@ -233,4 +234,4 @@ exports.handler = async function () {
   const summary = 'Scholarship reminders: sent=' + sent + ', failed=' + failed + ', skipped=' + skipped;
   console.log('[scholarship-reminders]', summary);
   return { statusCode: 200, body: summary };
-};
+});

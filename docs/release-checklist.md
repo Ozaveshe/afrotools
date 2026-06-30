@@ -36,6 +36,7 @@
 - `npm run security:scan`
 - `npm run build:deploy`
 - `npm run audit:dist`
+- `npm run automation:live-health:strict` when claiming live scheduled-function proof is green
 - Confirm `dist/` does not contain repo internals such as `package.json`, `AGENTS.md`, `netlify/`, `scripts/`, `supabase/`, `tests/`, `docs/`, `.codex/`, or `.agents/`.
 - Confirm production, deploy-preview, branch-deploy, and staging contexts all run the real build.
 

@@ -11,6 +11,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
 const { sendEmail } = require('./_shared/email-adapter');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const MARKETING_SUPABASE = getMarketingSupabaseConfig();
 const SUPABASE_URL = MARKETING_SUPABASE.url;
@@ -23,7 +24,7 @@ const MONTH_NAMES = [
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
 
-exports.handler = async function (event) {
+exports.handler = withScheduledProof('send-monthly-digest', async function (event) {
   if (!RESEND_API_KEY) {
     console.log('[digest] RESEND_API_KEY not set — skipping digest send');
     return { statusCode: 200, body: 'Skipped: no RESEND_API_KEY' };
@@ -157,7 +158,7 @@ exports.handler = async function (event) {
 
   console.log('[digest] Done: ' + sent + ' sent, ' + errors + ' errors');
   return { statusCode: 200, body: 'Sent: ' + sent + ', Errors: ' + errors };
-};
+});
 
 // ─── HTML Email Builder (with activity) ───
 

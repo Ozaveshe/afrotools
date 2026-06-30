@@ -170,6 +170,9 @@
   and `market_data_source_runs`) and writes both dated and latest
   `reports/live-automation-health-*.json` / `.md` files. Keep manual run proof
   separate from scheduled proof, especially for AfroStream news.
+- Use `npm run automation:live-health:strict` before claiming the live automation
+  lane is green. The plain command is a report writer; the strict command exits
+  non-zero when scheduled proof is stale, degraded, missing, or unavailable.
 - When `audit:schedules` reports no recent Codex evidence, separate a truly
   stale job from a definition that was reactivated after its last scheduled fire
   and is waiting for the next proof point.

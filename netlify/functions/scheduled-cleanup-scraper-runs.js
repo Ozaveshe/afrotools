@@ -7,8 +7,9 @@ var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
                    process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
                    process.env.SUPABASE_SERVICE_KEY;
+var withScheduledProof = require('./_shared/scheduled-proof').withScheduledProof;
 
-exports.handler = async function(event) {
+exports.handler = withScheduledProof('scheduled-cleanup-scraper-runs', async function(event) {
   if (!SUPABASE_KEY) return { statusCode: 200, body: 'No Supabase key — skipping' };
 
   var cutoff = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
@@ -56,4 +57,4 @@ exports.handler = async function(event) {
     console.error('[cleanup] Failed: ' + err.message);
     return { statusCode: 500, body: err.message };
   }
-};
+});

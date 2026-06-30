@@ -7,6 +7,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
 const { isEmailConfigured, sendEmail } = require('./_shared/email-adapter');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const MARKETING_SUPABASE = getMarketingSupabaseConfig();
 const SUPABASE_URL = MARKETING_SUPABASE.url;
@@ -15,7 +16,7 @@ const SITE_URL = 'https://afrotools.com';
 const BATCH_SIZE = 100;
 const WELCOME_GRACE_DAYS = 3;
 
-exports.handler = async function () {
+exports.handler = withScheduledProof('send-weekly-newsletter', async function () {
   if (!SUPABASE_SERVICE_KEY) {
     console.log('[weekly-newsletter] Supabase service key missing - skipping');
     return { statusCode: 200, body: 'Skipped: no Supabase service key' };
@@ -85,7 +86,7 @@ exports.handler = async function () {
   var summary = 'Weekly newsletter: sent=' + sent + ', skipped=' + skipped + ', failed=' + failed;
   console.log('[weekly-newsletter]', summary);
   return { statusCode: 200, body: summary };
-};
+});
 
 function startOfUtcWeek(date) {
   var d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));

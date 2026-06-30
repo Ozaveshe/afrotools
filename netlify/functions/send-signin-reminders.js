@@ -7,6 +7,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
 const { isEmailConfigured, sendEmail } = require('./_shared/email-adapter');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const MARKETING_SUPABASE = getMarketingSupabaseConfig();
 const SUPABASE_URL = MARKETING_SUPABASE.url;
@@ -17,7 +18,7 @@ const INACTIVE_DAYS = 14;
 const REMINDER_COOLDOWN_DAYS = 21;
 const WELCOME_GRACE_DAYS = 6;
 
-exports.handler = async function () {
+exports.handler = withScheduledProof('send-signin-reminders', async function () {
   if (!SUPABASE_SERVICE_KEY) {
     console.log('[signin-reminders] Supabase service key missing - skipping');
     return { statusCode: 200, body: 'Skipped: no Supabase service key' };
@@ -88,7 +89,7 @@ exports.handler = async function () {
   var summary = 'Sign-in reminders: sent=' + sent + ', skipped=' + skipped + ', failed=' + failed;
   console.log('[signin-reminders]', summary);
   return { statusCode: 200, body: summary };
-};
+});
 
 function eligibleByProfile(profile, now) {
   if (isWithinDays(profile.email_welcome_sent_at, now, WELCOME_GRACE_DAYS)) return false;

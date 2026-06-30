@@ -8,6 +8,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
 const { isEmailConfigured } = require('./_shared/email-adapter');
 const { sendLifecycleEmail } = require('./_shared/lifecycle-email');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const MARKETING_SUPABASE = getMarketingSupabaseConfig();
 const SUPABASE_URL = MARKETING_SUPABASE.url;
@@ -17,7 +18,7 @@ const BATCH_SIZE = 100;
 const ACCOUNT_AGE_DAYS = 3;
 const WELCOME_GRACE_DAYS = 3;
 
-exports.handler = async function () {
+exports.handler = withScheduledProof('send-onboarding-nudges', async function () {
   if (!SUPABASE_SERVICE_KEY) {
     console.log('[onboarding-nudges] Supabase service key missing - skipping');
     return { statusCode: 200, body: 'Skipped: no Supabase service key' };
@@ -95,7 +96,7 @@ exports.handler = async function () {
   var summary = 'Onboarding nudges: sent=' + sent + ', skipped=' + skipped + ', failed=' + failed;
   console.log('[onboarding-nudges]', summary);
   return { statusCode: 200, body: summary };
-};
+});
 
 async function hasMeaningfulActivity(sb, userId) {
   var checks = [

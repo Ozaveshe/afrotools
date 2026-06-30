@@ -8,6 +8,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
 const { isEmailConfigured } = require('./_shared/email-adapter');
 const { sendLifecycleEmail } = require('./_shared/lifecycle-email');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const MARKETING_SUPABASE = getMarketingSupabaseConfig();
 const SUPABASE_URL = MARKETING_SUPABASE.url;
@@ -16,7 +17,7 @@ const SITE_URL = 'https://afrotools.com';
 const BATCH_SIZE = 100;
 const FOLLOWUP_DELAY_DAYS = 2;
 
-exports.handler = async function () {
+exports.handler = withScheduledProof('send-lead-followups', async function () {
   if (!SUPABASE_SERVICE_KEY) {
     console.log('[lead-followups] Supabase service key missing - skipping');
     return { statusCode: 200, body: 'Skipped: no Supabase service key' };
@@ -99,7 +100,7 @@ exports.handler = async function () {
   var summary = 'Lead follow-ups: sent=' + sent + ', skipped=' + skipped + ', failed=' + failed;
   console.log('[lead-followups]', summary);
   return { statusCode: 200, body: summary };
-};
+});
 
 async function hasAccountProfile(sb, email) {
   var result = await sb

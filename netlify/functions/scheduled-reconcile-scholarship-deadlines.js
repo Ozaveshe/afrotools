@@ -1,6 +1,7 @@
 const { reconcileAllScholarshipDeadlines } = require('./_shared/scholarship-platform');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
-exports.handler = async function () {
+exports.handler = withScheduledProof('scheduled-reconcile-scholarship-deadlines', async function () {
   try {
     const result = await reconcileAllScholarshipDeadlines();
     const summary = {
@@ -25,4 +26,4 @@ exports.handler = async function () {
       body: JSON.stringify({ ok: false, error: error.message })
     };
   }
-};
+});

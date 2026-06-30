@@ -41,9 +41,42 @@ const EXPLICIT_HEALTH = {
     fallbackKey: 'rates-latest',
     note: 'Central-bank scheduler updates the shared rates meta category.',
   },
+  'scrape-fx-rates': {
+    type: 'table_latest',
+    table: 'fx_snapshots',
+    select: 'captured_at,source',
+    order: 'captured_at.desc',
+    timestampField: 'captured_at',
+    sourceField: 'source',
+    note: 'Legacy FX scraper writes fx_snapshots rows.',
+  },
   'scheduled-refresh-market-data': {
     type: 'market_data_runs',
     trigger: 'netlify-schedule',
+  },
+  'conflict-sync': {
+    type: 'table_latest',
+    table: 'ac_conflicts',
+    select: 'last_api_sync',
+    order: 'last_api_sync.desc',
+    timestampField: 'last_api_sync',
+    filter: 'is_published=eq.true&last_api_sync=not.is.null',
+    note: 'Conflict sync patches ac_conflicts.last_api_sync on published conflicts.',
+  },
+  'scheduled-detect-changes': {
+    type: 'live_data_key',
+    key: 'prev-fuel',
+    note: 'Change detector updates previous-snapshot keys in live_data_store after each scan.',
+  },
+  'scheduled-discover-scholarships': {
+    type: 'live_data_key',
+    key: 'scholarship-source-registry-latest',
+    note: 'Scholarship source discovery writes the latest source registry summary to live_data_store.',
+  },
+  'scheduled-verify-scholarships': {
+    type: 'live_data_key',
+    key: 'scholarships-latest',
+    note: 'Scholarship verification writes the public scholarship feed cache to live_data_store.',
   },
   'scheduled-scan-gazette': {
     type: 'meta',
@@ -61,6 +94,27 @@ function readText(filePath) {
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function sleepSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function isTransientFsError(error) {
+  return /^(EBUSY|EPERM|EACCES|UNKNOWN)$/i.test(String(error && error.code || ''));
+}
+
+function writeTextFileWithRetry(filePath, content) {
+  const attempts = 5;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      fs.writeFileSync(filePath, content);
+      return;
+    } catch (error) {
+      if (!isTransientFsError(error) || attempt === attempts) throw error;
+      sleepSync(50 * attempt);
+    }
+  }
 }
 
 function cleanEnv(value) {
@@ -167,6 +221,22 @@ function deriveMetaHealth(text) {
   return metaMatch ? { type: 'meta', metaKey: metaMatch[1] } : null;
 }
 
+function scheduledProofKey(functionName) {
+  return 'scheduled-proof-' + String(functionName || 'unknown')
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function deriveScheduledProofHealth(text) {
+  const proofMatch = text.match(/withScheduledProof\s*\(\s*['"]([^'"]+)['"]/);
+  return proofMatch ? {
+    type: 'live_data_key',
+    key: scheduledProofKey(proofMatch[1]),
+    note: 'Uses scheduled-proof heartbeat written after the scheduled handler returns.',
+  } : null;
+}
+
 function inferHealth(functionName) {
   if (EXPLICIT_HEALTH[functionName]) {
     return Object.assign({ source: 'explicit' }, EXPLICIT_HEALTH[functionName]);
@@ -178,7 +248,8 @@ function inferHealth(functionName) {
   }
 
   const text = readText(filePath);
-  return deriveRunScraperHealth(text) ||
+  return deriveScheduledProofHealth(text) ||
+    deriveRunScraperHealth(text) ||
     deriveMetaHealth(text) ||
     null;
 }
@@ -229,6 +300,143 @@ function statusFor(timestamp, status, slaHours, nowMs) {
     return { status: 'stale', age_hours: age };
   }
   return { status: 'ok', age_hours: age };
+}
+
+function liveDataRowStatus(row, data) {
+  if (!row) return null;
+  if (data && data.status) return data.status;
+  return data && data.ok === false ? 'degraded' : 'ok';
+}
+
+function latestRowStatus(row, statusField) {
+  if (!row) return null;
+  return statusField ? row[statusField] || null : 'ok';
+}
+
+function parseCronField(field, min, max) {
+  const values = new Set();
+  const raw = String(field || '').trim();
+  if (!raw) return values;
+
+  raw.split(',').forEach((part) => {
+    const segment = part.trim();
+    if (!segment) return;
+
+    let base = segment;
+    let step = 1;
+    if (segment.includes('/')) {
+      const pieces = segment.split('/');
+      base = pieces[0] || '*';
+      step = Math.max(1, Number(pieces[1]) || 1);
+    }
+
+    let start = min;
+    let end = max;
+    if (base !== '*') {
+      if (base.includes('-')) {
+        const range = base.split('-').map((value) => Number(value));
+        start = Number.isFinite(range[0]) ? range[0] : min;
+        end = Number.isFinite(range[1]) ? range[1] : max;
+      } else {
+        start = Number(base);
+        end = start;
+      }
+    }
+
+    for (let value = start; value <= end; value += step) {
+      if (Number.isFinite(value) && value >= min && value <= max) values.add(value);
+    }
+  });
+
+  return values;
+}
+
+function cronDayMatches(schedule, date) {
+  const dayOfMonth = parseCronField(schedule.dayOfMonth, 1, 31);
+  const dayOfWeek = parseCronField(schedule.dayOfWeek, 0, 7);
+  const domWildcard = String(schedule.dayOfMonth || '').trim() === '*';
+  const dowWildcard = String(schedule.dayOfWeek || '').trim() === '*';
+  const utcDay = date.getUTCDay();
+  const domMatches = dayOfMonth.has(date.getUTCDate());
+  const dowMatches = dayOfWeek.has(utcDay) || (utcDay === 0 && dayOfWeek.has(7));
+
+  if (domWildcard && dowWildcard) return true;
+  if (domWildcard) return dowMatches;
+  if (dowWildcard) return domMatches;
+  return domMatches || dowMatches;
+}
+
+function parseCronSchedule(expression) {
+  const parts = String(expression || '').trim().split(/\s+/);
+  if (parts.length !== 5) return null;
+  const [minute, hour, dayOfMonth, month, dayOfWeek] = parts;
+  return {
+    minute,
+    hour,
+    dayOfMonth,
+    month,
+    dayOfWeek,
+    minutes: parseCronField(minute, 0, 59),
+    hours: parseCronField(hour, 0, 23),
+    months: parseCronField(month, 1, 12),
+  };
+}
+
+function cronMatches(schedule, date) {
+  return schedule.minutes.has(date.getUTCMinutes()) &&
+    schedule.hours.has(date.getUTCHours()) &&
+    schedule.months.has(date.getUTCMonth() + 1) &&
+    cronDayMatches(schedule, date);
+}
+
+function nextScheduledAt(expression, fromDate) {
+  const schedule = parseCronSchedule(expression);
+  if (!schedule) return null;
+
+  const start = fromDate instanceof Date ? fromDate : new Date(fromDate || Date.now());
+  if (!Number.isFinite(start.getTime())) return null;
+
+  const candidate = new Date(start.getTime());
+  candidate.setUTCSeconds(0, 0);
+  candidate.setUTCMinutes(candidate.getUTCMinutes() + 1);
+
+  const maxMinutes = 366 * 24 * 60;
+  for (let i = 0; i < maxMinutes; i += 1) {
+    if (cronMatches(schedule, candidate)) return candidate.toISOString();
+    candidate.setUTCMinutes(candidate.getUTCMinutes() + 1);
+  }
+  return null;
+}
+
+function minutesUntil(timestamp, nowMs) {
+  const iso = toIso(timestamp);
+  if (!iso) return null;
+  return Math.max(0, Math.round((new Date(iso).getTime() - nowMs) / (60 * 1000)));
+}
+
+function scraperRunNote(health, latest, latestAny) {
+  if (!health.requireScheduledSource) return '';
+
+  const base = 'Requires a Netlify Scheduled Function scraper_runs row.';
+  if (!latest && latestAny) {
+    return 'No scheduled row found; latest any-source row is ' +
+      (latestAny.source || 'unknown source') +
+      ' at ' +
+      (toIso(latestAny.fetched_at) || 'unknown time') +
+      '.';
+  }
+
+  const scheduledAt = latest && toIso(latest.fetched_at);
+  const anyAt = latestAny && toIso(latestAny.fetched_at);
+  if (scheduledAt && anyAt && new Date(anyAt).getTime() > new Date(scheduledAt).getTime()) {
+    return base + ' Latest any-source row is ' +
+      (latestAny.source || 'unknown source') +
+      ' at ' +
+      anyAt +
+      '; not accepted as scheduled proof.';
+  }
+
+  return base;
 }
 
 function buildParams(params) {
@@ -295,11 +503,7 @@ async function checkScraperRun(record, functionName, health, nowMs) {
   const statusValue = latest && latest.status;
   const timestamp = latest && toIso(latest.fetched_at);
   const computed = statusFor(timestamp, statusValue, record.sla_hours, nowMs);
-  let note = health.requireScheduledSource ? 'Requires a Netlify Scheduled Function scraper_runs row.' : '';
-
-  if (health.requireScheduledSource && !latest && latestAny) {
-    note = 'No scheduled row found; latest any-source row is ' + (latestAny.source || 'unknown source') + '.';
-  }
+  const note = scraperRunNote(health, latest, latestAny);
 
   return {
     id: record.id,
@@ -333,7 +537,7 @@ async function checkLiveDataKey(record, functionName, health, nowMs) {
   const rowTimestamp = row && toIso(row.updated_at);
   const dataTimestamp = firstTimestamp(data);
   const timestamp = rowTimestamp || dataTimestamp;
-  const dataStatus = data.status || (data.ok === false ? 'degraded' : 'ok');
+  const dataStatus = liveDataRowStatus(row, data);
   const computed = statusFor(timestamp, dataStatus, record.sla_hours, nowMs);
 
   return {
@@ -438,6 +642,43 @@ async function checkMarketDataRuns(record, functionName, health, nowMs) {
   };
 }
 
+async function checkTableLatest(record, functionName, health, nowMs) {
+  const timestampField = health.timestampField || 'updated_at';
+  const params = buildParams({
+    select: health.select || timestampField,
+    order: health.order || (timestampField + '.desc'),
+    limit: '1',
+  });
+  const filter = health.filter ? '&' + health.filter : '';
+  const result = await supabaseGet(health.table + '?' + params + filter);
+  if (result.skipped) return unavailable(record, functionName, health, result.reason);
+
+  const latest = Array.isArray(result.rows) ? latestRow(result.rows) : null;
+  const timestamp = latest && toIso(latest[timestampField]);
+  const latestStatus = latestRowStatus(latest, health.statusField);
+  const computed = statusFor(timestamp, latestStatus, record.sla_hours, nowMs);
+
+  return {
+    id: record.id,
+    display_name: record.display_name,
+    function_name: functionName,
+    schedule: record.expected_schedule || null,
+    netlify_schedule: null,
+    status: computed.status,
+    evidence_type: 'table_latest',
+    evidence_id: health.table + '.' + timestampField,
+    latest_at: timestamp,
+    age_hours: roundHours(computed.age_hours),
+    sla_hours: Number(record.sla_hours || 0),
+    latest_status: latestStatus || null,
+    latest_source: health.sourceField && latest ? latest[health.sourceField] || null : null,
+    records_count: health.countField && latest ? latest[health.countField] || null : null,
+    error_excerpt: health.errorField && latest && latest[health.errorField] ? String(latest[health.errorField]).slice(0, 220) : null,
+    severity: record.severity_if_stale || 'p2',
+    note: health.note || 'Uses latest table timestamp as scheduled write proof.',
+  };
+}
+
 function unavailable(record, functionName, health, reason) {
   return {
     id: record.id,
@@ -447,7 +688,7 @@ function unavailable(record, functionName, health, reason) {
     netlify_schedule: null,
     status: 'unavailable',
     evidence_type: health.type,
-    evidence_id: health.scraperId || health.key || health.metaKey || health.trigger || null,
+    evidence_id: health.scraperId || health.key || health.metaKey || health.trigger || health.table || null,
     latest_at: null,
     age_hours: null,
     sla_hours: Number(record.sla_hours || 0),
@@ -465,6 +706,7 @@ async function runCheck(record, functionName, health, nowMs) {
   if (health.type === 'live_data_key') return checkLiveDataKey(record, functionName, health, nowMs);
   if (health.type === 'meta') return checkMeta(record, functionName, health, nowMs);
   if (health.type === 'market_data_runs') return checkMarketDataRuns(record, functionName, health, nowMs);
+  if (health.type === 'table_latest') return checkTableLatest(record, functionName, health, nowMs);
   return {
     id: record.id,
     display_name: record.display_name,
@@ -503,8 +745,8 @@ function formatAge(hours) {
 
 function markdownTable(items) {
   const lines = [
-    '| Status | Function | Evidence | Latest | Age | SLA | Note |',
-    '| --- | --- | --- | --- | ---: | ---: | --- |',
+    '| Status | Function | Evidence | Latest | Next scheduled | Age | SLA | Note |',
+    '| --- | --- | --- | --- | --- | ---: | ---: | --- |',
   ];
   for (const item of items) {
     lines.push([
@@ -512,6 +754,7 @@ function markdownTable(items) {
       '`' + item.function_name + '`',
       '`' + item.evidence_type + ':' + (item.evidence_id || 'n/a') + '`',
       item.latest_at || 'n/a',
+      item.next_scheduled_at || 'n/a',
       formatAge(item.age_hours),
       formatAge(item.sla_hours),
       String(item.note || '').replace(/\|/g, '/'),
@@ -535,8 +778,8 @@ function writeReports(report) {
     latest_markdown: path.relative(ROOT, latestMdPath),
   };
 
-  fs.writeFileSync(jsonPath, JSON.stringify(report, null, 2) + '\n');
-  fs.writeFileSync(latestJsonPath, JSON.stringify(report, null, 2) + '\n');
+  writeTextFileWithRetry(jsonPath, JSON.stringify(report, null, 2) + '\n');
+  writeTextFileWithRetry(latestJsonPath, JSON.stringify(report, null, 2) + '\n');
 
   const problems = problemItems(report.checks);
   const lines = [];
@@ -558,7 +801,7 @@ function writeReports(report) {
     lines.push('- None.');
   } else {
     for (const item of problems) {
-      lines.push('- [' + String(item.severity || 'p2').toUpperCase() + '] `' + item.function_name + '` is `' + item.status + '` via `' + item.evidence_type + ':' + (item.evidence_id || 'n/a') + '`; latest=' + (item.latest_at || 'n/a') + ', age=' + formatAge(item.age_hours) + ', SLA=' + formatAge(item.sla_hours) + '. ' + (item.note || ''));
+      lines.push('- [' + String(item.severity || 'p2').toUpperCase() + '] `' + item.function_name + '` is `' + item.status + '` via `' + item.evidence_type + ':' + (item.evidence_id || 'n/a') + '`; latest=' + (item.latest_at || 'n/a') + ', next=' + (item.next_scheduled_at || 'n/a') + ', age=' + formatAge(item.age_hours) + ', SLA=' + formatAge(item.sla_hours) + '. ' + (item.note || ''));
     }
   }
   lines.push('');
@@ -585,8 +828,8 @@ function writeReports(report) {
   }
   lines.push('');
 
-  fs.writeFileSync(mdPath, lines.join('\n'));
-  fs.writeFileSync(latestMdPath, lines.join('\n'));
+  writeTextFileWithRetry(mdPath, lines.join('\n'));
+  writeTextFileWithRetry(latestMdPath, lines.join('\n'));
 }
 
 async function main() {
@@ -624,6 +867,8 @@ async function main() {
 
     const result = await runCheck(record, functionName, health, nowMs);
     result.netlify_schedule = netlifySchedule;
+    result.next_scheduled_at = nextScheduledAt(netlifySchedule, now);
+    result.minutes_until_next_scheduled = minutesUntil(result.next_scheduled_at, nowMs);
     checks.push(result);
   }
 
@@ -650,7 +895,7 @@ async function main() {
   if (problems.length) {
     console.log('- Top issues:');
     problems.slice(0, 8).forEach((item) => {
-      console.log('  - [' + String(item.severity || 'p2').toUpperCase() + '] ' + item.function_name + ': ' + item.status + ' (' + item.evidence_type + ':' + (item.evidence_id || 'n/a') + ', latest=' + (item.latest_at || 'n/a') + ', age=' + formatAge(item.age_hours) + ', SLA=' + formatAge(item.sla_hours) + ')');
+      console.log('  - [' + String(item.severity || 'p2').toUpperCase() + '] ' + item.function_name + ': ' + item.status + ' (' + item.evidence_type + ':' + (item.evidence_id || 'n/a') + ', latest=' + (item.latest_at || 'n/a') + ', next=' + (item.next_scheduled_at || 'n/a') + ', age=' + formatAge(item.age_hours) + ', SLA=' + formatAge(item.sla_hours) + ')');
     });
   }
 
@@ -661,7 +906,22 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error('automation live health audit failed: ' + sanitizeError(error));
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error('automation live health audit failed: ' + sanitizeError(error));
+    process.exitCode = 1;
+  });
+}
+
+module.exports = {
+  deriveMetaHealth,
+  deriveRunScraperHealth,
+  deriveScheduledProofHealth,
+  inferHealth,
+  latestRowStatus,
+  liveDataRowStatus,
+  nextScheduledAt,
+  parseCronField,
+  scraperRunNote,
+  scheduledProofKey,
+};

@@ -2,6 +2,7 @@
 
 const { createClient } = require('@supabase/supabase-js');
 const { getStore } = require('@netlify/blobs');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const PRACTICE_POOL = ((require('../../data/jamb/pools/practice-pool.json') || {}).questions || []).filter(isLaunchSafeQuestion);
 const SUPABASE_URL = process.env.SUPABASE_URL_DATA || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
@@ -31,7 +32,7 @@ const SUBJECT_LABELS = {
 };
 const SUBJECT_POOLS = buildSubjectPools(PRACTICE_POOL);
 
-exports.handler = async function () {
+exports.handler = withScheduledProof('scheduled-send-jamb-daily', async function () {
   if (!SUPABASE_SERVICE_KEY) {
     console.log('[jamb-daily-send] SUPABASE service key not set - skipping');
     return { statusCode: 200, body: 'Skipped: no Supabase service key' };
@@ -107,7 +108,7 @@ exports.handler = async function () {
       errors: errors,
     }),
   };
-};
+});
 
 function isLaunchSafeQuestion(question) {
   var text = ((question && question.question) || '') + ' ' + Object.values((question && question.options) || {}).join(' ');

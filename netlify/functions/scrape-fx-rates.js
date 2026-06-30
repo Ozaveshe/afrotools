@@ -7,8 +7,13 @@
  * Manual trigger: GET /api/scrape-fx
  */
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_AUTH_URL ||
+  process.env.SUPABASE_DATA_URL ||
+  process.env.SUPABASE_URL ||
+  'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY;
 const { getAllowedOrigin } = require('./utils/cors');
 
 const AFRICAN_CURRENCIES = [

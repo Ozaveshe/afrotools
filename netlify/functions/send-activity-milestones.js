@@ -9,6 +9,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
 const { isEmailConfigured } = require('./_shared/email-adapter');
 const { sendLifecycleEmail } = require('./_shared/lifecycle-email');
+const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const MARKETING_SUPABASE = getMarketingSupabaseConfig();
 const SUPABASE_URL = MARKETING_SUPABASE.url;
@@ -19,7 +20,7 @@ const ACTION_LOOKBACK_DAYS = 10;
 const MIN_ACTIVITY_AGE_HOURS = 1;
 const WELCOME_GRACE_DAYS = 1;
 
-exports.handler = async function () {
+exports.handler = withScheduledProof('send-activity-milestones', async function () {
   if (!SUPABASE_SERVICE_KEY) {
     console.log('[activity-milestones] Supabase service key missing - skipping');
     return { statusCode: 200, body: 'Skipped: no Supabase service key' };
@@ -98,7 +99,7 @@ exports.handler = async function () {
   var summary = 'Activity milestones: sent=' + sent + ', skipped=' + skipped + ', failed=' + failed;
   console.log('[activity-milestones]', summary);
   return { statusCode: 200, body: summary };
-};
+});
 
 async function latestMeaningfulActivity(sb, userId, now) {
   var since = new Date(now.getTime() - ACTION_LOOKBACK_DAYS * 24 * 60 * 60 * 1000).toISOString();
