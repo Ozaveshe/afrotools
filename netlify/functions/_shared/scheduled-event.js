@@ -10,23 +10,8 @@ function getHeader(event, headerName) {
   return '';
 }
 
-function parseBody(event) {
-  if (!event || !event.body) return null;
-  if (typeof event.body === 'object') return event.body;
-  try {
-    return JSON.parse(event.body);
-  } catch (error) {
-    return null;
-  }
-}
-
-function hasNextRunBody(event) {
-  var body = parseBody(event);
-  return !!(body && typeof body.next_run === 'string' && body.next_run);
-}
-
 function isScheduledEvent(event) {
-  return getHeader(event, 'x-nf-event') === 'schedule' || hasNextRunBody(event);
+  return String(getHeader(event, 'x-nf-event')).toLowerCase() === 'schedule';
 }
 
 module.exports = {
