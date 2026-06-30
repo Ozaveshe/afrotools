@@ -23,8 +23,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
-  <script src="/assets/js/components/tool-registry.min.js?v=6dfc1ea2" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.css?v=ffd1e2cf">
+  <script src="/assets/js/components/tool-registry.min.js?v=0e800cac" defer></script>
   <script src="/assets/js/components/country-selector.js?v=63cdc470" defer></script>
   <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -8111,7 +8111,7 @@ document.addEventListener('DOMContentLoaded', function() {
   filterHtml += '<button type="button" class="f-tab" data-cat="live">Live Only</button>';
   Object.keys(AFRO_CATEGORIES).forEach(function(k) {
     var cat = AFRO_CATEGORIES[k];
-    filterHtml += '<button type="button" class="f-tab" data-cat="' + k + '">' + cat.icon + ' ' + cat.name + '</button>';
+    filterHtml += '<button type="button" class="f-tab" data-cat="' + k + '">' + cat.name + '</button>';
   });
   filterBar.innerHTML = filterHtml;
 
@@ -8298,6 +8298,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
+  function uiInitials(value) {
+    var words = String(value || 'AT')
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^A-Za-z0-9\s]/g, ' ')
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2);
+    return (words.map(function(word) { return word.charAt(0).toUpperCase(); }).join('').slice(0, 2) || 'AT');
+  }
+
   function countryDisplay(value) {
     if (window.AfroCountry && typeof window.AfroCountry.get === 'function') {
       var country = window.AfroCountry.get(value);
@@ -8458,7 +8469,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       html += '<div class="tools-section">';
       html += '<div class="section-header">';
-      html += '<div class="section-icon" style="background:' + (BG_MAP[k] || '#f3f4f6') + '">' + cat.icon + '</div>';
+      html += '<div class="section-icon" style="background:' + (BG_MAP[k] || '#f3f4f6') + '">' + esc(uiInitials(cat.name || k)) + '</div>';
       html += '<div class="section-title">' + esc(cat.name) + '</div>';
       html += '<div class="section-count">' + liveCount + ' live / ' + tools.length + ' total</div>';
       html += '</div>';
@@ -8483,7 +8494,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         html += '<' + tag + ' class="tc' + soonClass + '" style="--accent:' + accent + '"' + href + '>';
         html += '<div class="tc-top">';
-        html += '<div class="tc-icon" style="background:' + (BG_MAP[t.category] || '#f3f4f6') + '">' + esc(t.icon) + '</div>';
+        html += '<div class="tc-icon" style="background:' + (BG_MAP[t.category] || '#f3f4f6') + '">' + esc(uiInitials(t.name || t.id || 'AT')) + '</div>';
         html += '<h3>' + esc(t.name) + '</h3>';
         html += '</div>';
         html += '<p>' + esc(t.desc) + '</p>';

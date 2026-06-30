@@ -4058,6 +4058,17 @@ function countryHubEsc(value) {
   });
 }
 
+function countryHubInitials(value) {
+  var words = String(value || 'AT')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2);
+  return (words.map(function(word) { return word.charAt(0).toUpperCase(); }).join('').slice(0, 2) || 'AT');
+}
+
 function countryHubLabel(labels, key, countryName) {
   return countryHubEsc((labels[key] || '').replace('{country}', countryName || ''));
 }
@@ -4200,18 +4211,18 @@ function ensureCountryHubStyles() {
     '.country-featured-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px}',
     '.country-featured-title{font-size:.72rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#64748b}',
     '.country-featured-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}',
-    '.country-featured-card{min-height:142px;background:#fff;border:1px solid #dbe7f3;border-radius:10px;overflow:hidden;text-decoration:none;color:#111827;display:grid;grid-template-columns:86px minmax(0,1fr);transition:border-color .18s,box-shadow .18s,transform .18s}',
+    '.country-featured-card{min-height:166px;background:#fff;border:1px solid #dbe7f3;border-radius:10px;overflow:hidden;text-decoration:none;color:#111827;display:flex;flex-direction:column;align-items:stretch;text-align:left;transition:border-color .18s,box-shadow .18s,transform .18s}',
     '.country-featured-card:hover{border-color:var(--color-primary,#0062CC);box-shadow:0 12px 28px rgba(15,23,42,.08);transform:translateY(-2px)}',
     '.country-featured-card:focus-visible{outline:2px solid var(--color-primary,#0062CC);outline-offset:3px}',
-    '.country-featured-media{position:relative;background:#eef4ff;min-height:142px;overflow:hidden}',
-    '.country-featured-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#eef4ff}',
+    '.country-featured-media{display:none}',
+    '.country-featured-img{width:100%;height:100%;object-fit:contain;background:#eef4ff}',
     '.country-featured-img.is-error{display:none}',
     '.country-featured-media.has-image .country-featured-icon{opacity:0}',
     '.country-featured-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.55rem;font-weight:800;color:#0f172a}',
-    '.country-featured-body{padding:12px;display:flex;flex-direction:column;gap:7px;min-width:0}',
+    '.country-featured-body{padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}',
     '.country-featured-chip{align-self:flex-start;border-radius:999px;padding:4px 8px;font-size:.62rem;font-weight:900;color:var(--cat-color,#334155);background:var(--cat-bg,#f1f5f9)}',
-    '.country-featured-card h3{font-size:.92rem;line-height:1.2;margin:0;color:#111827;font-weight:800;letter-spacing:0}',
-    '.country-featured-card p{font-size:.75rem;line-height:1.42;color:#5b6778;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}',
+    '.country-featured-card h3{font-size:.96rem;line-height:1.25;margin:0;color:#111827;font-weight:800;letter-spacing:0}',
+    '.country-featured-card p{font-size:.78rem;line-height:1.5;color:#5b6778;margin:0;display:block;overflow:visible}',
     '.country-tool-controls{background:#fff;border:1px solid #dbe7f3;border-radius:10px;padding:16px;margin:0 0 18px;box-shadow:0 10px 28px rgba(15,23,42,.04)}',
     '.country-tool-search-row{display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:12px;align-items:center;margin-bottom:12px}',
     '.country-tool-search{position:relative}',
@@ -4256,7 +4267,7 @@ function ensureCountryHubStyles() {
     '.country-tool-card:hover{border-color:var(--color-primary,#0062CC);box-shadow:0 14px 32px rgba(15,23,42,.10);transform:translateY(-2px)}',
     '.country-tool-card:focus-visible{outline:2px solid var(--color-primary,#0062CC);outline-offset:3px}',
     '.country-tool-card-media{height:118px;position:relative;background:#eef4ff;overflow:hidden}',
-    '.country-tool-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1;background:#eef4ff}',
+    '.country-tool-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;z-index:1;background:#fff}',
     '.country-tool-card-img.is-error{display:none}',
     '.country-tool-card-media.has-image .country-tool-card-icon{opacity:0}',
     '.country-tool-card-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:#0f172a;transition:opacity .18s}',
@@ -4415,10 +4426,7 @@ function renderCountryFeaturedTools(tools, countryCode, labels, countryName) {
           var scopeLabel = local ? (labels.madeFor || '').replace('{country}', countryName || countryCode) : labels.africaWide;
           return '' +
             '<a class="country-featured-card" href="' + countryHubEsc(tool.href || '#') + '" data-tool-id="' + countryHubEsc(tool.id || '') + '">' +
-              '<div class="country-featured-media">' +
-                '<span class="country-featured-icon" aria-hidden="true">' + countryHubEsc(tool.icon || '') + '</span>' +
-                (img ? '<img class="country-tool-card-img country-featured-img" src="' + countryHubEsc(img) + '" alt="" loading="lazy" decoding="async">' : '') +
-              '</div>' +
+              (img ? '<div class="country-featured-media" aria-hidden="true"><img class="country-tool-card-img country-featured-img" src="' + countryHubEsc(img) + '" alt="" loading="lazy" decoding="async"></div>' : '') +
               '<div class="country-featured-body">' +
                 '<span class="country-featured-chip" style="--cat-color:' + countryHubEsc(cat.color || '#334155') + ';--cat-bg:' + countryHubEsc(cat.bg || '#f1f5f9') + '">' + countryHubEsc(scopeLabel) + '</span>' +
                 '<h3>' + countryHubEsc(tool.name || '') + '</h3>' +
@@ -4440,7 +4448,7 @@ function renderCountryToolCard(tool, countryCode, labels, countryName) {
   return '' +
     '<a class="country-tool-card" href="' + countryHubEsc(tool.href || '#') + '" data-tool-id="' + countryHubEsc(tool.id || '') + '">' +
       '<div class="country-tool-card-media">' +
-        '<span class="country-tool-card-icon" aria-hidden="true">' + countryHubEsc(tool.icon || '') + '</span>' +
+        '<span class="country-tool-card-icon" aria-hidden="true">' + countryHubEsc(countryHubInitials(tool.name || tool.id || 'AT')) + '</span>' +
         (img ? '<img class="country-tool-card-img" src="' + countryHubEsc(img) + '" alt="" loading="lazy" decoding="async">' : '') +
         badge +
       '</div>' +

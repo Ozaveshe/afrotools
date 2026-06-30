@@ -22,11 +22,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=ffd1e2cf">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
-<script src="/assets/js/components/tool-registry.min.js?v=6dfc1ea2" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=0e800cac" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -261,7 +261,7 @@ a{text-decoration:none;color:inherit;}
     <div class="search-wrap">
       <input type="search" class="search-input" id="searchInput" placeholder="Search by tool, country, category..." aria-label="Search all tools" autocomplete="off" oninput="handleSearchInput()">
       <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" onclick="clearSearch()" hidden>&times;</button>
-      <span class="search-icon">🔍</span>
+      <span class="search-icon" aria-hidden="true"></span>
     </div>
     <div class="filter-tabs" id="filterTabs">
       <button type="button" class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">All <span class="filter-count" id="countAll">2,601</span></button>
@@ -647,8 +647,21 @@ function clearSearch(){
   renderTools();
 }
 
+function labelInitials(value){
+  return String(value || 'AT')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(function(word){ return word.charAt(0).toUpperCase(); })
+    .join('')
+    .slice(0, 2) || 'AT';
+}
+
 function getIcon(tool){
-  const safeIcon = (tool.icon||'🛠️').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+  const safeIcon = labelInitials(tool.name || tool.id || 'AT');
   const safeName = (tool.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const imageSrc = getToolIconSrc(tool);
   const imageFallback = getToolIconFallback(tool);
@@ -665,7 +678,7 @@ function getCatMeta(cat){
   return {
     name: frName || localMeta.name || (registryMeta && registryMeta.name) || cat || 'Tools',
     color: localMeta.color || (registryMeta && registryMeta.bg) || '#f3f4f6',
-    icon: localMeta.icon || (registryMeta && registryMeta.icon) || '🔧',
+    icon: localMeta.icon || (registryMeta && registryMeta.icon) || '',
     desc: (registryMeta && registryMeta.desc) || ''
   };
 }
@@ -792,9 +805,8 @@ function renderTools(){
     const safeName = escapeHtml(t.name);
     const safeDesc = escapeHtml(t.desc);
     const safeHref = typeof t.href === 'string' && (t.href.startsWith('/') || t.href.startsWith('https://afrotools.com/')) ? t.href : '#';
-    const safeIcon = escapeHtml(t.icon || '🛠️');
+    const safeIcon = escapeHtml(labelInitials(t.name || t.id || 'AT'));
     const safeCatName = escapeHtml(cat.name);
-    const safeCatIcon = escapeHtml(cat.icon);
     const imageSrc = getToolIconSrc(t);
     const imageFallback = getToolIconFallback(t);
 
@@ -807,10 +819,10 @@ function renderTools(){
         <div class="tc-name">${safeName}</div>
         <div class="tc-desc">${safeDesc.substring(0,100)}${safeDesc.length>100?'…':''}</div>
         <div class="tc-meta">
-          <span class="cat-pill">${safeCatIcon} ${safeCatName}</span>
+          <span class="cat-pill">${safeCatName}</span>
           <span class="tc-badge ${live?'live':'planned'}">${live?'● ' + PAGE_COPY.live:PAGE_COPY.soon}</span>
           ${t.tier?`<span class="tc-badge tier${t.tier.replace('T','')}">${t.tier}</span>`:''}
-          ${aiPowered?'<span class="tc-badge" style="background:#ede9fe;color:#6d28d9;">✦ AI</span>':''}
+          ${aiPowered?'<span class="tc-badge" style="background:#ede9fe;color:#6d28d9;">AI</span>':''}
           ${t.countries&&t.countries.length<=4?`<span class="tc-countries">${t.countries.join(' · ')}</span>`:''}
         </div>
       </div>

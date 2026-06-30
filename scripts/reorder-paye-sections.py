@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Reorder PAYE page sections to match Nigeria reference:
-  Save CTA → Guide → wise-cta → FAQ → Related Tools → Footer
+  Save CTA -> Guide -> FAQ -> Related Tools -> Footer
 """
 
 import re, os, glob
@@ -32,9 +32,6 @@ def process_file(filepath):
 
     guide_sec, html = extract_section(html, r'(?:<!-- (?:TWO-COLUMN GUIDE|FAQ) -->\s*)?<section class="ng-guide-sec">.*?</section>')
 
-    # wise-cta div
-    wise_sec, html = extract_section(html, r'<div[^>]*>\s*<wise-cta[^>]*></wise-cta>\s*</div>')
-
     faq_sec, html = extract_section(html, r'(?:<!-- FAQ[^>]*-->\s*)?<section class="ng-faq-sec">.*?</section>')
 
     related_sec, html = extract_section(html, r'(?:<!-- RELATED TOOLS[^>]*-->\s*)?<afro-related-tools[^>]*></afro-related-tools>')
@@ -51,8 +48,6 @@ def process_file(filepath):
         ordered += '\n<!-- SAVE TOOL CTA -->\n' + save_sec.strip() + '\n'
     if guide_sec:
         ordered += '\n<!-- TWO-COLUMN GUIDE -->\n' + guide_sec.strip() + '\n'
-    if wise_sec:
-        ordered += '\n' + wise_sec.strip() + '\n'
     if faq_sec:
         ordered += '\n<!-- FAQ -->\n' + faq_sec.strip() + '\n'
     ordered += '\n<!-- RELATED TOOLS -->\n' + related_sec.strip() + '\n'

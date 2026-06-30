@@ -32,15 +32,12 @@ def get_country_info(filepath):
 
     return html, country, tool_id
 
-
 def remove_afro_chat(html):
     """Remove <afro-chat> elements."""
     return re.sub(r'<afro-chat[^>]*>.*?</afro-chat>\s*', '', html, flags=re.DOTALL)
 
-
 def has_section(html, cls):
     return cls in html
-
 
 def build_save_cta(country, tool_id):
     return f'''
@@ -71,7 +68,6 @@ def build_save_cta(country, tool_id):
   </div>
 </section>
 '''
-
 
 def convert_inline_seo_to_guide(html, country):
     """Find inline-styled SEO section and convert to ng-guide-sec two-column layout."""
@@ -167,7 +163,6 @@ def convert_inline_seo_to_guide(html, country):
     html = html.replace(old_section, guide_section)
     return html, True
 
-
 def convert_old_faq_to_ng(html, country):
     """Convert old-format FAQ (faq-sec/faq-grid) to ng-faq-sec two-column accordion."""
     # Pattern 1: <section class="container faq-sec"> (Ghana style)
@@ -230,7 +225,6 @@ def convert_old_faq_to_ng(html, country):
     html = html.replace(old_faq, new_faq)
     return html, True
 
-
 def add_save_js(html, tool_id):
     """Add toggleSaveTool script if not present."""
     if 'toggleSaveTool' in html:
@@ -259,7 +253,6 @@ document.addEventListener('DOMContentLoaded',updateSaveUI);
     html = html.replace('</body>', save_js + '\n</body>')
     return html
 
-
 def ensure_paye_css(html):
     """Ensure paye-tool.css is linked."""
     if 'paye-tool.css' in html:
@@ -268,7 +261,6 @@ def ensure_paye_css(html):
     css_link = '<link rel="stylesheet" href="/assets/css/paye-tool.css">\n'
     html = html.replace('</head>', css_link + '</head>')
     return html
-
 
 def ensure_google_fonts(html):
     """Ensure Instrument Serif font is loaded."""
@@ -284,16 +276,11 @@ def ensure_google_fonts(html):
             html = html.replace(old_url, new_url)
     return html
 
-
 def insert_save_section(html, save_html):
     """Insert save CTA before the first major section after calculator."""
     # Try inserting before ng-guide-sec
     if '<section class="ng-guide-sec">' in html:
         return html.replace('<section class="ng-guide-sec">', save_html + '\n<section class="ng-guide-sec">')
-    # Try inserting before wise-cta
-    m = re.search(r'<div[^>]*>\s*<wise-cta', html)
-    if m:
-        return html[:m.start()] + save_html + '\n' + html[m.start():]
     # Try inserting before ng-faq-sec
     if '<section class="ng-faq-sec">' in html:
         return html.replace('<section class="ng-faq-sec">', save_html + '\n<section class="ng-faq-sec">')
@@ -306,7 +293,6 @@ def insert_save_section(html, save_html):
         m = re.search(r'<afro-footer', html)
         return html[:m.start()] + save_html + '\n' + html[m.start():]
     return html
-
 
 def process_file(filepath):
     html, country, tool_id = get_country_info(filepath)
@@ -356,7 +342,6 @@ def process_file(filepath):
 
     return changes
 
-
 def main():
     paye_files = sorted(glob.glob(os.path.join(ROOT, '*', '*-paye.html')))
     # Exclude widgets, fr, nigeria
@@ -386,7 +371,6 @@ def main():
             print(f"MISSING {section}: {', '.join(missing)}")
         else:
             print(f"ALL OK: {section}")
-
 
 if __name__ == '__main__':
     main()

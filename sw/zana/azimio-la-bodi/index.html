@@ -104,7 +104,6 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <script src="/data/legal/country-legal-index.js?v=02e28276" defer></script>
 <script src="/engines/legal-engine.js?v=cade292f" defer></script>
 <style>
@@ -156,7 +155,6 @@ function show(id){var el=q(id);if(el)el.classList.add('on');}
 function fmtMoney(n,c){return c+' '+Math.round(n).toLocaleString('en-US');}
 function copyFrom(id,btn){var el=q(id);var txt=el ? (el.value || el.textContent || '') : '';function done(){if(btn){var old=btn.textContent;btn.textContent='Imenakiliwa';setTimeout(function(){btn.textContent=old;},1600);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(done);}else{done();}}
 function countryName(code){var map={"NG":"Nigeria","GH":"Ghana","CI":"Pwani ya Pembe","SN":"Senegali","CM":"Kameruni","KE":"Kenya","TZ":"Tanzania","UG":"Uganda","RW":"Rwanda","MU":"Mauritius","ZA":"Afrika Kusini","ZM":"Zambia","BW":"Botswana","ZW":"Zimbabwe","EG":"Misri","MA":"Moroko"};return map[code]||'Nchi uliyochagua';}
-
 
 function generateResolution(){var co=value('coName','[JINA LA KAMPUNI]'),type=value('resType','bank'),date=value('meetingDate','[TAREHE]'),chair=value('chair','[MWENYEKITI]'),sec=value('secretary','[COMPANY SECRETARY]'),venue=value('venue','[MAHALI / MODE]'),directors=value('directorsPresent','[DIRECTORS WALIOKUWEPO]'),details=value('resDetails','[MAELEZO YA AZIMIO]');var title={bank:'KUFUNGUA AKAUNTI YA BENKI',contract:'KUIDHINISHA CONTRACT',director:'KUTEUA DIRECTOR',dividend:'KUTANGAZA DIVIDEND',signatory:'KUIDHINISHA SIGNATORY',borrow:'KUIDHINISHA BORROWING',custom:'AZIMIO MAALUM'}[type];var body='AZIMIO LA BODI - RASIMU\\n'+co+'\\n\\nTarehe: '+date+'\\nMahali / mode: '+venue+'\\nMwenyekiti: '+chair+'\\nCompany secretary: '+sec+'\\n\\nDirectors waliokuwepo:\\n'+directors+'\\n\\nIMEAZIMIWA KWAMBA: '+title+'\\n\\n'+details+'\\n\\nIMEAZIMIWA ZAIDI KWAMBA officers wa kampuni wanaohusika waidhinishwe kuchukua hatua zinazohitajika kutekeleza azimio hili, ikiwa ni pamoja na kusaini nyaraka, kuwasilisha filings na kuhifadhi records za kampuni pale inapofaa.\\n\\nCERTIFIED TRUE COPY\\nSahihi: __________________________\\nMwenyekiti\\n\\nSahihi: __________________________\\nCompany Secretary\\n\\nKanusho: Rasimu hii inahitaji review ya company secretary au lawyer kabla ya kutumika kama board record rasmi.';q('resolutionText').textContent=body;show('resolutionResult');}
 function toggleResHint(){};

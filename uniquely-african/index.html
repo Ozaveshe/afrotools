@@ -34,9 +34,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/design-system.css?v=ffd1e2cf">
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 
@@ -52,7 +52,7 @@
       --border: #e2e8f0;
       --radius: 12px;
     }
-    body { font-family: 'Inter', sans-serif; color: var(--text); background: #fff; line-height: 1.6; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--text); background: #fff; line-height: 1.6; }
     a { text-decoration: none; color: inherit; }
     .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
 
@@ -253,11 +253,297 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/uniquely-african/" />
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
-</head>
-<body class="top-level-page-ui-refresh">
+<style>
+  body.uniquely-african-hub {
+    background: #f8fafc;
+  }
 
-<!-- Navbar injected by navbar.js -->
-<div id="navbar-placeholder"></div>
+  .uniquely-african-hub .wrap {
+    width: min(100% - 32px, 1160px);
+    padding-inline: 0;
+  }
+
+  .uniquely-african-hub .breadcrumb {
+    padding: 18px 0;
+  }
+
+  .uniquely-african-hub .cat-hero {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 56px 0 46px;
+  }
+
+  .uniquely-african-hub .cat-hero::before,
+  .uniquely-african-hub .cat-hero::after {
+    display: none;
+  }
+
+  .uniquely-african-hub .cat-eyebrow {
+    background: #fff;
+    border-color: #dbe5f1;
+    border-radius: 8px;
+    color: #0758b8;
+    margin-bottom: 18px;
+    min-height: 34px;
+  }
+
+  .uniquely-african-hub .cat-eyebrow span {
+    display: none;
+  }
+
+  .uniquely-african-hub .cat-hero h1 {
+    color: #0f172a;
+    font-size: clamp(2.25rem, 5vw, 4.2rem);
+    letter-spacing: 0;
+    max-width: 780px;
+  }
+
+  .uniquely-african-hub .cat-hero h1 span {
+    color: #0f172a;
+  }
+
+  .uniquely-african-hub .cat-tagline {
+    color: #475569;
+    font-size: 1.08rem;
+    line-height: 1.72;
+    max-width: 700px;
+  }
+
+  .uniquely-african-hub .hero-stats {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 150px));
+    margin-top: 24px;
+  }
+
+  .uniquely-african-hub .hs {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .uniquely-african-hub .hs-num {
+    color: #0758b8;
+  }
+
+  .uniquely-african-hub .hs-lbl {
+    color: #64748b;
+  }
+
+  .uniquely-african-hub .intro-note {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 1rem;
+    line-height: 1.75;
+    margin: 30px 0 18px;
+    max-width: 780px;
+    padding: 18px 20px;
+  }
+
+  .uniquely-african-hub .atlas-feature {
+    background: #0f172a;
+    border-radius: 8px;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, .16);
+    margin: 24px 0 20px;
+  }
+
+  .uniquely-african-hub .atlas-feature::before {
+    display: none;
+  }
+
+  .uniquely-african-hub .atlas-feature-media {
+    align-items: center;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    flex: 0 0 172px;
+    height: 112px;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .uniquely-african-hub .atlas-feature-media img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .uniquely-african-hub .atlas-feature-badge,
+  .uniquely-african-hub .atlas-feature-cta {
+    border-radius: 8px;
+  }
+
+  .uniquely-african-hub .sec {
+    padding: 46px 0;
+  }
+
+  .uniquely-african-hub .sec--alt {
+    background: #eef4fb;
+  }
+
+  .uniquely-african-hub .sec-title {
+    letter-spacing: 0;
+  }
+
+  .uniquely-african-hub .tools-grid {
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
+  }
+
+  .uniquely-african-hub .tool-card {
+    align-items: stretch !important;
+    background: #fff;
+    border: 1px solid #dbe5f1;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .05);
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0;
+    min-height: 100%;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .uniquely-african-hub .tool-card.live:hover,
+  .uniquely-african-hub .tool-card.live:focus-visible {
+    border-color: rgba(0, 87, 184, .52);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, .1);
+    transform: translateY(-1px);
+  }
+
+  .uniquely-african-hub .category-hub-card-image-inline > .category-hub-card-media {
+    background: #fff !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-radius: 0 !important;
+    height: 134px !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .uniquely-african-hub .category-hub-card-image-inline > .category-hub-card-media img {
+    height: 100% !important;
+    object-fit: cover !important;
+    width: 100% !important;
+  }
+
+  .uniquely-african-hub .tc-body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .uniquely-african-hub .tc-name {
+    font-size: .96rem;
+    line-height: 1.25;
+  }
+
+  .uniquely-african-hub .tc-desc {
+    color: #52637a;
+    font-size: .8rem;
+  }
+
+  .uniquely-african-hub .tc-foot {
+    gap: 10px;
+    margin-top: auto;
+  }
+
+  .uniquely-african-hub .tool-badge {
+    border-radius: 8px;
+  }
+
+  .uniquely-african-hub .why-card,
+  .uniquely-african-hub .faq-item,
+  .uniquely-african-hub .rel-link {
+    border-radius: 8px;
+  }
+
+  .uniquely-african-hub .why-icon {
+    align-items: center;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    color: #0758b8;
+    display: inline-flex;
+    font-size: .8rem;
+    font-weight: 900;
+    height: 40px;
+    justify-content: center;
+    letter-spacing: 0;
+    margin-bottom: 12px;
+    width: 40px;
+  }
+
+  .uniquely-african-hub .cta-band {
+    background: #0f172a;
+  }
+
+  .uniquely-african-hub .btn-g,
+  .uniquely-african-hub .btn-outline {
+    border-radius: 8px;
+    min-height: 44px;
+  }
+
+  @media (max-width: 760px) {
+    .uniquely-african-hub .cat-hero {
+      padding: 42px 0 34px;
+    }
+
+    .uniquely-african-hub .hero-stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .uniquely-african-hub .hs {
+      padding: 12px 10px;
+    }
+
+    .uniquely-african-hub .hs-num {
+      font-size: 1.55rem;
+    }
+
+    .uniquely-african-hub .atlas-feature {
+      align-items: stretch;
+      padding: 20px;
+      text-align: left;
+    }
+
+    .uniquely-african-hub .atlas-feature-media {
+      flex-basis: auto;
+      height: 150px;
+      width: 100%;
+    }
+
+    .uniquely-african-hub .atlas-feature-stats {
+      justify-content: flex-start;
+    }
+
+    .uniquely-african-hub .atlas-feature-cta {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .uniquely-african-hub .wrap {
+      width: min(100% - 24px, 1160px);
+    }
+
+    .uniquely-african-hub .hero-stats {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
+</head>
+<body class="top-level-page-ui-refresh uniquely-african-hub">
+
+<afro-navbar></afro-navbar>
 
 <div class="wrap">
   <nav class="breadcrumb">
@@ -271,7 +557,7 @@
 <section class="cat-hero">
   <div class="wrap cat-hero-inner">
     <div class="cat-eyebrow">
-      <span>?</span> Uniquely African Tools
+      <span>AT</span> Uniquely African Tools
     </div>
     <h1><span>Uniquely African Tools</span></h1>
     <p class="cat-tagline">Tools built for problems only Africans know.</p>
@@ -284,14 +570,16 @@
 </section>
 
 <!-- -- INTRO -- -->
-<div class="wrap" style="padding-top:32px;padding-bottom:8px">
-  <p style="font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid #818cf8;padding-left:18px">No other tool platform has these. Generator fuel cost vs solar ROI. Japa relocation budgeter. Ajo and Chama savings group tracker. Lobola calculator. Mobile money fee comparator. Built for problems the rest of the world doesn't have.</p>
+<div class="wrap">
+  <p class="intro-note">No other tool platform has these. Generator fuel cost vs solar ROI. Japa relocation budgeter. Ajo and Chama savings group tracker. Lobola calculator. Mobile money fee comparator. Built for problems the rest of the world doesn't have.</p>
 </div>
 
 <!-- -- AFROATLAS FEATURED BANNER -- -->
 <div class="wrap">
   <a href="/tools/afroatlas/" class="atlas-feature rv">
-    <div class="atlas-feature-icon">??</div>
+    <div class="atlas-feature-media" aria-hidden="true">
+      <img src="/assets/img/tools/afroatlas.webp" alt="" loading="lazy" decoding="async">
+    </div>
     <div class="atlas-feature-body">
       <div class="atlas-feature-badge">NEW - FLAGSHIP TOOL</div>
       <h3>AfroAtlas - Africa's Resource Intelligence Explorer</h3>
@@ -303,7 +591,7 @@
         <div class="atlas-feature-stat"><strong>30%</strong><span>World's Minerals</span></div>
       </div>
     </div>
-    <div class="atlas-feature-cta">Explore Africa ?</div>
+    <div class="atlas-feature-cta">Explore Africa &rarr;</div>
   </a>
 </div>
 
@@ -311,48 +599,48 @@
 <section class="sec"><div class="wrap"><div class="sec-head rv"><div class="sec-eyebrow">Flagship</div><h2 class="sec-title">Most Popular African Tools</h2><p class="sec-sub">The tools Africans use the most - powerful, free, and ready now.</p></div><div class="tools-grid">
 
         <a href="/tools/afrokitchen/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">AK</div>
           <div class="tc-body">
             <div class="tc-name">AfroKitchen - African Recipes</div>
             <div class="tc-desc">150+ authentic recipes from all 54 countries. Step-by-step timers, serving scaling, ingredient costs, AI cooking advisor.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">AI Advisor</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/japa-calculator/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">JP</div>
           <div class="tc-body">
             <div class="tc-name">Japa Cost Calculator</div>
             <div class="tc-desc">Total relocation cost from Africa. 36 origins, 21 destinations, 55+ visa pathways. Cost of living, quality of life, visa predictor.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">AI Advisor</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/remittance-compare/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">RM</div>
           <div class="tc-body">
             <div class="tc-name">Remittance Comparator</div>
             <div class="tc-desc">Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">AI Advisor</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/remittance-v2/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">RP</div>
           <div class="tc-body">
             <div class="tc-name">Remittance Comparator Pro</div>
             <div class="tc-desc">Expanded corridors, real-time rates, API access. Find the cheapest way to send money home.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">AI Advisor</span>
             </div>
           </div>
@@ -364,72 +652,72 @@
 <section class="sec sec--alt"><div class="wrap"><div class="sec-head rv"><div class="sec-eyebrow">Money & Savings</div><h2 class="sec-title">Financial Tools for Africa</h2><p class="sec-sub">Savings groups, mobile money, tithe calculators, and more.</p></div><div class="tools-grid">
 
         <a href="/tools/ajo-tracker/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">AC</div>
           <div class="tc-body">
             <div class="tc-name">Ajo/Chama Savings Tracker</div>
             <div class="tc-desc">Track rotating savings groups. Members, contributions, payout calendar, payment tracking. Ajo, Esusu, Chama, Stokvel, Tontine.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">AI Insights</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/ajo-interest/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">AI</div>
           <div class="tc-body">
             <div class="tc-name">Ajo / Esusu Interest Calculator</div>
             <div class="tc-desc">Calculate returns on rotating savings groups. Optimal Ajo contribution amounts.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/susu-tracker/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">SU</div>
           <div class="tc-body">
             <div class="tc-name">Susu Group Tracker</div>
             <div class="tc-desc">Manage susu/esusu/ajo groups. Track contributions, arrears, payouts.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/mobile-money-fees/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">MM</div>
           <div class="tc-body">
             <div class="tc-name">Mobile Money Fee Checker</div>
             <div class="tc-desc">Compare M-Pesa, MTN MoMo, Airtel Money, OPay, Chipper fees instantly.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/tithe-calculator/" class="tool-card live rv">
-          <div class="tc-icon">?</div>
+          <div class="tc-icon">TO</div>
           <div class="tc-body">
             <div class="tc-name">Tithe & Offering Calculator</div>
             <div class="tc-desc">10% tithe, first fruits, and offering calculator. Multi-currency.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/hawala-tracker/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">HW</div>
           <div class="tc-body">
             <div class="tc-name">Informal Remittance Cost Tracker</div>
             <div class="tc-desc">Compare hawala, Western Union, and bank wire costs for Horn of Africa.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
@@ -441,48 +729,48 @@
 <section class="sec"><div class="wrap"><div class="sec-head rv"><div class="sec-eyebrow">Cost & Utilities</div><h2 class="sec-title">Electricity, Fuel & Living Costs</h2><p class="sec-sub">Calculate daily living costs across African countries.</p></div><div class="tools-grid">
 
         <a href="/tools/generator-fuel/" class="tool-card live rv">
-          <div class="tc-icon">?</div>
+          <div class="tc-icon">GF</div>
           <div class="tc-body">
             <div class="tc-name">Generator Fuel Calculator</div>
             <div class="tc-desc">Running cost per hour. Generator vs solar comparison over time.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/electricity-estimator/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">EL</div>
           <div class="tc-body">
             <div class="tc-name">Electricity Bill Estimator</div>
             <div class="tc-desc">Prepaid meter units calculator per country. Tariff bands and usage estimator.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/fuel-cost/" class="tool-card live rv">
-          <div class="tc-icon">?</div>
+          <div class="tc-icon">FC</div>
           <div class="tc-body">
             <div class="tc-name">Fuel Cost Calculator</div>
             <div class="tc-desc">Route fuel cost estimator with African city routes and live fuel prices.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/cost-of-living/" class="tool-card live rv">
-          <div class="tc-icon">???</div>
+          <div class="tc-icon">CL</div>
           <div class="tc-body">
             <div class="tc-name">African Cost of Living Comparator</div>
             <div class="tc-desc">Compare living costs across 54 African capitals. Basket of goods approach.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
@@ -494,48 +782,48 @@
 <section class="sec sec--alt"><div class="wrap"><div class="sec-head rv"><div class="sec-eyebrow">Culture & Tradition</div><h2 class="sec-title">Cultural Calculators</h2><p class="sec-sub">Lobola, bridewealth planning, market days, funeral costs - tools for African life events.</p></div><div class="tools-grid">
 
         <a href="/tools/lobola-calculator/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">LO</div>
           <div class="tc-body">
             <div class="tc-name">Lobola Calculator</div>
             <div class="tc-desc">Estimate a respectful family budget for cash, livestock, gifts, and ceremony costs.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/brideprice-advisor/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">BP</div>
           <div class="tc-body">
             <div class="tc-name">Bride Price Advisor</div>
             <div class="tc-desc">Igba nkwu, Lobola, Bridewealth guidance for 20+ ethnic groups across Africa.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">AI Advisor</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/market-days/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">MD</div>
           <div class="tc-body">
             <div class="tc-name">African Market Day Calendar</div>
             <div class="tc-desc">Eke, Orie, Afor, Nkwo cycle tracker and weekly market day finder for Nigerian markets.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/burial-cost/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">BU</div>
           <div class="tc-body">
             <div class="tc-name">Funeral Cost Estimator</div>
             <div class="tc-desc">Estimate burial costs in Nigeria, Kenya, Ghana, SA. Local packages.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
@@ -547,96 +835,96 @@
 <section class="sec"><div class="wrap"><div class="sec-head rv"><div class="sec-eyebrow">Documents, Business & Diaspora</div><h2 class="sec-title">Business, Documents & Diaspora Tools</h2><p class="sec-sub">Cheque writing, WhatsApp links, land calculations, diaspora tax guides, and gig economy trackers.</p></div><div class="tools-grid">
 
         <a href="/tools/naira-to-words/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">NW</div>
           <div class="tc-body">
             <div class="tc-name">Amount to Words (Naira)</div>
             <div class="tc-desc">Convert Naira amounts to words for cheques and documents.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/amount-words-ke/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">KE</div>
           <div class="tc-body">
             <div class="tc-name">Amount to Words (Kenya)</div>
             <div class="tc-desc">Convert Kenya Shilling amounts to words for cheques and legal docs.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/amount-words-gh/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">GH</div>
           <div class="tc-body">
             <div class="tc-name">Amount to Words (Ghana)</div>
             <div class="tc-desc">Convert Ghana Cedi amounts to words for cheques.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/whatsapp-link/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">WA</div>
           <div class="tc-body">
             <div class="tc-name">WhatsApp Link Generator</div>
             <div class="tc-desc">Generate wa.me links with pre-filled messages. African business essential.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/land-size/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">LS</div>
           <div class="tc-body">
             <div class="tc-name">Land Size Calculator</div>
             <div class="tc-desc">Nigerian plots, hectares, acres, perches. Country-specific land units.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/nollywood-pitch/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">TV</div>
           <div class="tc-body">
             <div class="tc-name">Film/TV Budget Estimator Africa</div>
             <div class="tc-desc">Budget film and TV productions - Nollywood, Afrobeats video, Ghollywood cost builder.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">AI Advisor</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/diaspora-guide/" class="tool-card live rv">
-          <div class="tc-icon">??</div>
+          <div class="tc-icon">DT</div>
           <div class="tc-body">
             <div class="tc-name">African Diaspora Tax Guide</div>
             <div class="tc-desc">Tax obligations for Africans living in UK, USA, Canada, UAE. Double taxation treaties.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">AI Advisor</span>
             </div>
           </div>
         </a>
 
         <a href="/tools/okada-income/" class="tool-card live rv">
-          <div class="tc-icon">???</div>
+          <div class="tc-icon">OK</div>
           <div class="tc-body">
             <div class="tc-name">Okada / Boda Boda Income Tracker</div>
             <div class="tc-desc">Daily income, expenses, and profit tracker for motorcycle taxi riders across Africa.</div>
             <div class="tc-foot">
-              <span class="tool-badge live">? Live</span>
+              <span class="tool-badge live">Live</span>
               <span class="tc-tier">Free Tool</span>
             </div>
           </div>
@@ -654,17 +942,17 @@
     </div>
     <div class="why-grid rv">
       <div class="why-card">
-        <div class="why-icon">?</div>
+        <div class="why-icon">AT</div>
         <h3>Africa-First Problems</h3>
         <p>Generator fuel vs solar ROI. Ajo savings groups. Lobola calculations. Mobile money fee comparison. These tools exist because the rest of the world doesn't need them - but you do.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">??</div>
+        <div class="why-icon">54</div>
         <h3>54 Countries, One Platform</h3>
         <p>From Nigeria to Kenya, Ghana to South Africa - every tool is localised with real African currencies, tariffs, and cultural context.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">??</div>
+        <div class="why-icon">FR</div>
         <h3>100% Free, No Sign-Up</h3>
         <p>All 26 tools work instantly in your browser. No accounts, no paywalls, no data harvesting. Some include optional AI advisors for deeper insights.</p>
       </div>
@@ -681,23 +969,23 @@
     </div>
 
         <details class="faq-item rv" open>
-          <summary class="faq-q">What is the Japa calculator?<span class="faq-chevron">?</span></summary>
+          <summary class="faq-q">What is the Japa calculator?<span class="faq-chevron" aria-hidden="true">+</span></summary>
           <div class="faq-a">'Japa' is Nigerian slang for emigrating. The Japa Cost Calculator estimates total relocation costs: visa fees, flight, shipping, housing deposit, and first-month expenses - for 12 African origin countries and 7 destinations.</div>
         </details>
         <details class="faq-item rv">
-          <summary class="faq-q">What is an Ajo/Chama calculator?<span class="faq-chevron">?</span></summary>
+          <summary class="faq-q">What is an Ajo/Chama calculator?<span class="faq-chevron" aria-hidden="true">+</span></summary>
           <div class="faq-a">Ajo (Nigeria), Chama (Kenya), and Tontine (West Africa) are rotating savings groups. Our tool tracks contributions, rotation schedules, and interest on late payments.</div>
         </details>
         <details class="faq-item rv">
-          <summary class="faq-q">Do you have a generator cost calculator?<span class="faq-chevron">?</span></summary>
+          <summary class="faq-q">Do you have a generator cost calculator?<span class="faq-chevron" aria-hidden="true">+</span></summary>
           <div class="faq-a">Yes - compare monthly generator fuel spend against a solar panel system investment, with Nigerian and Kenyan fuel and electricity prices baked in.</div>
         </details>
         <details class="faq-item rv">
-          <summary class="faq-q">How many African tools are available?<span class="faq-chevron">?</span></summary>
+          <summary class="faq-q">How many African tools are available?<span class="faq-chevron" aria-hidden="true">+</span></summary>
           <div class="faq-a">We currently have 26 uniquely African tools live and free to use. These cover savings groups, remittances, cultural calculators, cost of living, fuel costs, mobile money fees, and much more.</div>
         </details>
         <details class="faq-item rv">
-          <summary class="faq-q">Are these tools really free?<span class="faq-chevron">?</span></summary>
+          <summary class="faq-q">Are these tools really free?<span class="faq-chevron" aria-hidden="true">+</span></summary>
           <div class="faq-a">Yes, all 26 African tools are completely free. Some include optional AI advisors powered by Claude AI for deeper insights, but the core calculators are always free.</div>
         </details>
   </div>
@@ -709,10 +997,10 @@
     <div class="sec-eyebrow" style="margin-bottom:10px">Also explore</div>
     <h2 class="sec-title rv" style="margin-bottom:16px">Related Categories</h2>
     <div class="related-bar">
-      <a href="/" class="rel-link">?? All Tools</a>
-      <a href="/salary-tax/" class="rel-link">?? Salary & Tax</a>
-      <a href="/health/" class="rel-link">?? Health & Agriculture</a>
-      <a href="/business-roi/" class="rel-link">?? Business & ROI Tools</a>
+      <a href="/" class="rel-link">All Tools</a>
+      <a href="/salary-tax/" class="rel-link">Salary & Tax</a>
+      <a href="/health/" class="rel-link">Health & Agriculture</a>
+      <a href="/business-roi/" class="rel-link">Business & ROI Tools</a>
     </div>
   </div>
 </section>
@@ -722,13 +1010,12 @@
   <div class="wrap">
     <h2>New tools drop every week.</h2>
     <p>Get notified the moment your tool goes live - no spam, one email per launch.</p>
-    <a href="/#newsletter" class="btn-g">Get notified ?</a>
-    <a href="/" class="btn-outline">? All categories</a>
+    <a href="/#newsletter" class="btn-g">Get notified &rarr;</a>
+    <a href="/" class="btn-outline">All categories</a>
   </div>
 </section>
 
-<!-- Footer injected by footer.js -->
-<div id="footer-placeholder"></div>
+<afro-footer></afro-footer>
 
 <script>
   // Scroll reveal - low threshold so elements appear as soon as they enter viewport

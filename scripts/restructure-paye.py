@@ -260,9 +260,6 @@ def wrap_seo_sections(content):
     for m in reversed(seo_sections):
         content = content[:m.start()] + content[m.end():]
 
-    # Also remove any wise-cta wrappers between removed sections
-    content = re.sub(r'\n*<div style="padding: 0 20px; max-width: 760px[^"]*">\s*<wise-cta[^>]*></wise-cta>\s*</div>\n*', '\n', content)
-
     # Insert new guide before the FAQ section
     faq_pos = content.find('<section class="ng-faq-sec">')
     if faq_pos == -1:

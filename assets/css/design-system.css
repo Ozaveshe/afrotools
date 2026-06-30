@@ -2614,6 +2614,586 @@ html[data-theme="dark"] :where(.table-wrap, .items-table-wrap, .fx-table-wrap, .
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
 }
 
+/* Top-level page repair: keep card links from inheriting button-like centering. */
+html body.top-level-page-ui-refresh :where(
+  .home-tool-card,
+  .tool-card[href],
+  a.tool-card,
+  .hub-tool-card[href],
+  a.hub-tool-card,
+  .tc[href],
+  a.tc,
+  .tcard,
+  .category-card,
+  .disc-card,
+  .ak-social-card,
+  .ak-social-showcase-card,
+  .ak-intel-preview-card,
+  .ak-recipe-card,
+  .ak-static-recipe-card,
+  .ak-collection-card,
+  .ak-collection-related-card,
+  .ak-country-chip,
+  .trp-tool-card,
+  .gov-tool-card
+) {
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  text-align: left !important;
+  width: auto !important;
+}
+
+html body.top-level-page-ui-refresh .home-tool-card {
+  align-items: flex-start !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+html body.top-level-page-ui-refresh .home-tool-card .home-tool-icon,
+html body.top-level-page-ui-refresh .home-tool-card strong,
+html body.top-level-page-ui-refresh .home-tool-card p,
+html body.top-level-page-ui-refresh .home-tool-card em {
+  align-self: flex-start !important;
+  text-align: left !important;
+}
+
+html body.top-level-page-ui-refresh .ak-social-card,
+html body.top-level-page-ui-refresh .ak-social-showcase-card,
+html body.top-level-page-ui-refresh .ak-intel-preview-card,
+html body.top-level-page-ui-refresh .ak-collection-card,
+html body.top-level-page-ui-refresh .ak-collection-related-card {
+  align-content: start !important;
+  align-items: start !important;
+  display: grid !important;
+  justify-content: stretch !important;
+  justify-items: start !important;
+}
+
+html body.top-level-page-ui-refresh .ak-social-card > *,
+html body.top-level-page-ui-refresh .ak-social-showcase-card > *,
+html body.top-level-page-ui-refresh .ak-intel-preview-card > *,
+html body.top-level-page-ui-refresh .ak-collection-card > *,
+html body.top-level-page-ui-refresh .ak-collection-related-card > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+html body.top-level-page-ui-refresh .ak-recipe-card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+html body.top-level-page-ui-refresh .ak-static-recipe-card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+html body.top-level-page-ui-refresh .ak-static-recipe-card.has-thumb {
+  grid-template-columns: none !important;
+}
+
+html body.top-level-page-ui-refresh .ak-static-recipe-card-thumb {
+  display: block !important;
+  height: 220px !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+html body.top-level-page-ui-refresh .ak-static-recipe-card-thumb img {
+  display: block !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  width: 100% !important;
+}
+
+html body.top-level-page-ui-refresh .ak-country-chip {
+  align-items: center !important;
+  display: grid !important;
+}
+
+html body.top-level-page-ui-refresh .ak-recipe-card-meta,
+html body.top-level-page-ui-refresh .ak-static-recipe-card-meta {
+  display: grid !important;
+  gap: 8px !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+html body.top-level-page-ui-refresh .ak-recipe-card-meta-item,
+html body.top-level-page-ui-refresh .ak-static-recipe-card-meta > span {
+  align-items: center !important;
+  display: flex !important;
+  flex: initial !important;
+  gap: 7px !important;
+  justify-content: flex-start !important;
+  min-width: 0 !important;
+  overflow-wrap: normal !important;
+  text-align: left !important;
+  white-space: normal !important;
+  width: auto !important;
+}
+
+html body.top-level-page-ui-refresh .ak-recipe-card-meta-text,
+html body.top-level-page-ui-refresh .ak-recipe-card-meta-text small,
+html body.top-level-page-ui-refresh .ak-recipe-card-meta-text strong,
+html body.top-level-page-ui-refresh .ak-static-recipe-card-meta small,
+html body.top-level-page-ui-refresh .ak-static-recipe-card-meta strong {
+  min-width: 0 !important;
+  overflow-wrap: normal !important;
+  text-align: left !important;
+  word-break: normal !important;
+}
+
+html body.top-level-page-ui-refresh .ak-static-card-icon,
+html body.top-level-page-ui-refresh .ak-recipe-card-meta-item svg {
+  flex: 0 0 auto !important;
+}
+
+/* Homepage creator showcase: replace oversized emoji artwork with compact tool rows. */
+html body.top-level-page-ui-refresh .mk-creator-grid {
+  display: grid !important;
+  gap: 10px !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+html body.top-level-page-ui-refresh .mk-tool-tile {
+  align-items: center !important;
+  background: #fff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  display: grid !important;
+  gap: 10px !important;
+  grid-template-columns: 38px minmax(0, 1fr) !important;
+  min-width: 0 !important;
+  padding: 12px !important;
+  text-align: left !important;
+}
+
+html body.top-level-page-ui-refresh .mk-tool-tile-icon {
+  align-items: center !important;
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+  border-radius: 8px !important;
+  color: #0758b8 !important;
+  display: inline-flex !important;
+  font-size: 0 !important;
+  font-weight: 850 !important;
+  height: 38px !important;
+  justify-content: center !important;
+  letter-spacing: .04em !important;
+  line-height: 1 !important;
+  overflow: hidden !important;
+  position: relative !important;
+  text-indent: -999px !important;
+  width: 38px !important;
+}
+
+html body.top-level-page-ui-refresh .mk-tool-tile:nth-child(1) .mk-tool-tile-icon::before { content: "TH"; }
+html body.top-level-page-ui-refresh .mk-tool-tile:nth-child(2) .mk-tool-tile-icon::before { content: "SC"; }
+html body.top-level-page-ui-refresh .mk-tool-tile:nth-child(3) .mk-tool-tile-icon::before { content: "CP"; }
+html body.top-level-page-ui-refresh .mk-tool-tile:nth-child(4) .mk-tool-tile-icon::before { content: "IN"; }
+
+html body.top-level-page-ui-refresh .mk-tool-tile-icon::before {
+  align-items: center !important;
+  display: flex !important;
+  font-size: .68rem !important;
+  inset: 0 !important;
+  justify-content: center !important;
+  position: absolute !important;
+  text-indent: 0 !important;
+}
+
+html body.top-level-page-ui-refresh .mk-tool-tile-name {
+  color: #0f172a !important;
+  font-size: .88rem !important;
+  font-weight: 850 !important;
+  line-height: 1.25 !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+html body.top-level-page-ui-refresh .mk-creator-footer {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  color: #475569 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  justify-content: flex-start !important;
+  padding: 10px 12px !important;
+  text-align: left !important;
+}
+
+/* Shared card reset: top-level touch-target rules must not turn content cards into centered buttons. */
+html body.top-level-page-ui-refresh :where(
+  a.hub-card,
+  a.feature-card,
+  a.hub-tool-card,
+  a.tool-card,
+  a.tc,
+  a.docpdf-route-card,
+  a.leg-tool-card,
+  a.ins-tool-card,
+  a.fin-tool-card,
+  a.tel-tool-card,
+  a.telecom-card,
+  a.en-card,
+  a.trp-tool-card,
+  a.gov-tool-card,
+  a.country-featured-card,
+  a.country-hub-pulse-card,
+  a.ak-social-card,
+  a.ak-social-showcase-card,
+  a.ak-intel-preview-card,
+  a.ak-collection-card,
+  a.ak-collection-related-card,
+  a.ak-collection-share-card,
+  .ak-collection-share-card,
+  a.ak-static-recipe-card,
+  a.ak-country-hub-card
+) {
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  text-align: left !important;
+  white-space: normal !important;
+}
+
+html body.top-level-page-ui-refresh :where(
+  a.hub-card,
+  a.feature-card,
+  a.hub-tool-card,
+  a.tool-card,
+  a.tc,
+  a.docpdf-route-card,
+  a.leg-tool-card,
+  a.ins-tool-card,
+  a.fin-tool-card,
+  a.tel-tool-card,
+  a.telecom-card,
+  a.en-card,
+  a.trp-tool-card,
+  a.gov-tool-card,
+  a.country-featured-card,
+  a.country-hub-pulse-card,
+  a.ak-social-card,
+  a.ak-social-showcase-card,
+  a.ak-intel-preview-card,
+  a.ak-collection-card,
+  a.ak-collection-related-card,
+  a.ak-collection-share-card,
+  .ak-collection-share-card,
+  a.ak-static-recipe-card,
+  a.ak-country-hub-card
+) > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body.top-level-page-ui-refresh .category-hub-card-image-inline > .category-hub-card-media img,
+html body.top-level-page-ui-refresh .tc:has(> .tc-thumb) > .tc-thumb img,
+html body.image-design-ui-refresh.top-level-page-ui-refresh .tool-thumb img,
+html body.document-pdf-focus.top-level-page-ui-refresh .tc-thumb img,
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .tc-image img {
+  background: #fff !important;
+  object-fit: contain !important;
+}
+
+html body.document-pdf-focus.top-level-page-ui-refresh .hero h1 {
+  letter-spacing: 0 !important;
+  line-height: 1.06 !important;
+}
+
+html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card {
+  align-items: start !important;
+  display: grid !important;
+  gap: 8px 12px !important;
+  grid-template-columns: max-content minmax(0, 1fr) auto !important;
+  min-height: 0 !important;
+}
+
+html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card span {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+  white-space: nowrap !important;
+}
+
+html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card strong {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  min-width: 0 !important;
+}
+
+html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card p {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  min-width: 0 !important;
+}
+
+html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card em {
+  align-self: center !important;
+  grid-column: 3 !important;
+  grid-row: 1 / span 2 !important;
+  white-space: nowrap !important;
+}
+
+html body.top-level-page-ui-refresh .ak-collection-share-card {
+  align-items: start !important;
+  justify-items: stretch !important;
+}
+
+@media (max-width: 720px) {
+  html body.document-pdf-focus.top-level-page-ui-refresh .hero h1 {
+    font-size: clamp(2.35rem, 11vw, 3.15rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card {
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+  }
+
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card em {
+    align-self: start !important;
+    grid-column: 2 !important;
+    grid-row: 3 !important;
+    white-space: normal !important;
+  }
+}
+
+@media (max-width: 720px) {
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card span,
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card strong,
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card p,
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card em {
+    grid-column: 1 !important;
+  }
+
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card span {
+    grid-row: 1 !important;
+  }
+
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card strong {
+    grid-row: 2 !important;
+  }
+
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card p {
+    grid-row: 3 !important;
+  }
+
+  html body.document-pdf-focus.top-level-page-ui-refresh .docpdf-route-card em {
+    grid-row: 4 !important;
+  }
+}
+
+html:has(link[rel="canonical"][href$="/tools/"]) body.top-level-page-ui-refresh .section-icon,
+html:has(link[rel="canonical"][href$="/tools/"]) body.top-level-page-ui-refresh .tc-icon {
+  color: #0758b8 !important;
+  font-size: 0 !important;
+  font-weight: 900 !important;
+  letter-spacing: .04em !important;
+}
+
+html:has(link[rel="canonical"][href$="/tools/"]) body.top-level-page-ui-refresh .section-icon::before,
+html:has(link[rel="canonical"][href$="/tools/"]) body.top-level-page-ui-refresh .tc-icon::before {
+  font-size: .72rem !important;
+  line-height: 1 !important;
+}
+
+html:has(link[rel="canonical"][href$="/tools/"]) body.top-level-page-ui-refresh .section-icon::before {
+  content: "AT";
+}
+
+html:has(link[rel="canonical"][href$="/tools/"]) body.top-level-page-ui-refresh .tc-icon::before {
+  content: "TO";
+}
+
+/* All tools page: use the calmer category-hub treatment instead of a dark showcase banner. */
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero {
+  background: #f8fafc !important;
+  background-image: none !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  padding: 40px 24px 32px !important;
+  text-align: left !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-inner {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 1120px !important;
+  text-align: left !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-breadcrumb,
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-breadcrumb a,
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-breadcrumb-sep {
+  color: #64748b !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-eyebrow {
+  background: #eff6ff !important;
+  border-color: #bfdbfe !important;
+  color: #0758b8 !important;
+  margin-bottom: 14px !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero h1 {
+  color: #0f172a !important;
+  font-size: clamp(2rem, 4vw, 3.25rem) !important;
+  letter-spacing: 0 !important;
+  max-width: 780px !important;
+  text-align: left !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero h1 em {
+  color: #0057b8 !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-sub {
+  color: #475569 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: 760px !important;
+  text-align: left !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-stats {
+  display: grid !important;
+  gap: 10px !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  max-width: 980px !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-stat {
+  background: #fff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: none !important;
+  padding: 12px 14px !important;
+  text-align: left !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-stat .s-lbl {
+  color: #64748b !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-stat .s-val,
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-stat .s-val.blue {
+  color: #0057b8 !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .filter-bar {
+  background: #fff !important;
+  box-shadow: none !important;
+  padding: 14px 24px !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .filter-inner,
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .page-main {
+  max-width: 1120px !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .filter-inner {
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .search-wrap {
+  flex: 1 1 360px !important;
+  max-width: 480px !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .filter-tabs {
+  gap: 8px !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .filter-tab {
+  border-radius: 8px !important;
+  font-size: .72rem !important;
+  min-height: 38px !important;
+  padding: 7px 11px !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .tools-grid {
+  gap: 14px !important;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)) !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .tool-card {
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .05) !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .tc-image {
+  aspect-ratio: auto !important;
+  background: #fff !important;
+  height: 124px !important;
+}
+
+html body.all-tools-ui-refresh.top-level-page-ui-refresh .tc-image img {
+  background: #fff !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  width: 100% !important;
+}
+
+html body.top-level-page-ui-refresh #new-tools .tc-thumb--wide {
+  background: #fff !important;
+  height: 178px !important;
+}
+
+html body.top-level-page-ui-refresh #new-tools .tc-thumb--wide img {
+  background: #fff !important;
+  object-fit: contain !important;
+  padding: 8px !important;
+}
+
+@media (max-width: 640px) {
+  html body.top-level-page-ui-refresh #new-tools .tc-thumb--wide {
+    height: 150px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html body.top-level-page-ui-refresh .ak-recipe-card-meta,
+  html body.top-level-page-ui-refresh .ak-static-recipe-card-meta {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body.top-level-page-ui-refresh .mk-creator-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero {
+    padding: 30px 16px 26px !important;
+  }
+
+  html body.all-tools-ui-refresh.top-level-page-ui-refresh .hero-stats {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body.all-tools-ui-refresh.top-level-page-ui-refresh .filter-bar {
+    padding: 12px 16px !important;
+  }
+}
+
 @media print {
   body { background: #fff; color: #000; }
   .card { box-shadow: none !important; border: 1px solid #ddd !important; }

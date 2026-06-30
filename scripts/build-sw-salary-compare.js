@@ -82,7 +82,6 @@ const replacements = [
   ['aria-label="Message to AI advisor"', 'aria-label="Ujumbe kwa mshauri wa AI"'],
   ['Thinking\u2026', 'Inafikiri\u2026'],
   ['Sorry, the AI advisor is temporarily unavailable.', 'Samahani, mshauri wa AI kwa sasa haapatikani.'],
-  ['<wise-cta context="paye"></wise-cta>', '<wise-cta context="general"></wise-cta>'],
   ['tool-name="Salary Compare"', 'tool-name="Kulinganisha Mishahara"'],
   ['body:JSON.stringify({tool:\'salary-compare\',messages:AI_MSGS.slice(-6),context:\'\'})', 'body:JSON.stringify({tool:\'salary-compare\',messages:AI_MSGS.slice(-6),context:\'Jibu kwa Kiswahili na eleza matokeo ya zana ya kulinganisha mishahara.\'})'],
   ['Sorry, I could not get a response.', 'Samahani, sikuweza kupata jibu.'],
@@ -270,7 +269,6 @@ html = replaceAll(html, 'Mfumuko wa Bei-Adjusted Salary Trend - ', 'Mwelekeo wa 
 html = replaceAll(html, 'Median months to wa kupandishwa cheo kwa ', 'Wastani wa miezi hadi kupandishwa cheo kwa ');
 
 html = replaceAll(html, "body:JSON.stringify({tool:'salary-compare',messages:AI_MSGS.slice(-6),context:''})", "body:JSON.stringify({tool:'salary-compare',messages:AI_MSGS.slice(-6),context:'Jibu kwa Kiswahili na eleza matokeo ya zana ya kulinganisha mishahara.'})");
-html = replaceAll(html, '<wise-cta context="paye"></wise-cta>', '<wise-cta context="general"></wise-cta>');
 html = replaceAll(html, 'tool-name="Salary Compare"', 'tool-name="Kulinganisha Mishahara"');
 
 html = replaceAll(html, "const EXP_LABELS = ['Junior (0-3 yrs)','Mid-Level (3-7 yrs)','Senior (7-12 yrs)','Lead/Manager (12+ yrs)'];", "const EXP_LABELS = ['Junior (miaka 0-3)','Kiwango cha Kati (miaka 3-7)','Senior (miaka 7-12)','Kiongozi/Meneja (miaka 12+)'];");

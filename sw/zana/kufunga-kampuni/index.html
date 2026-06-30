@@ -35,7 +35,6 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <script src="/data/legal/country-legal-index.js?v=02e28276" defer></script>
 <script src="/engines/legal-engine.js?v=cade292f" defer></script>
 <style>
@@ -78,7 +77,6 @@ function show(id){var el=q(id);if(el)el.classList.add('on');}
 function fmtMoney(n,c){return c+' '+Math.round(n).toLocaleString('en-US');}
 function copyFrom(id,btn){var el=q(id);var txt=el ? (el.value || el.textContent || '') : '';function done(){if(btn){var old=btn.textContent;btn.textContent='Imenakiliwa';setTimeout(function(){btn.textContent=old;},1600);}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(done);}else{done();}}
 function countryName(code){var map={"NG":"Nigeria","GH":"Ghana","CI":"Pwani ya Pembe","SN":"Senegali","CM":"Kameruni","KE":"Kenya","TZ":"Tanzania","UG":"Uganda","RW":"Rwanda","MU":"Mauritius","ZA":"Afrika Kusini","ZM":"Zambia","BW":"Botswana","ZW":"Zimbabwe","EG":"Misri","MA":"Moroko"};return map[code]||'Nchi uliyochagua';}
-
 
 function showWinding(){var c=value('wuCountry','NG'),name=countryName(c),route=value('wuRoute','voluntary'),status=value('wuStatus','Inaweza kulipa madeni');var routes=['Voluntary winding-up: directors/shareholders huanzisha closure pale inaruhusiwa','Compulsory liquidation: mahakama au creditors wanaweza kuhusika','Strike-off/deregistration: njia rahisi zaidi tu pale kampuni inastahiki'];var steps=['Board/shareholder decision na records','Wajulishe creditors, wafanyakazi na counterparties pale inahitajika','Andaa accounts, tax position na asset/liability list','Realise assets na settle liabilities kwa mpangilio halali','File forms na registrar na tax authority','Hifadhi closure receipts, gazette notices na deregistration confirmation'];var risks=['Mchakato usio sahihi unaweza kuongeza personal liability kwa directors','Kodi, payroll, pensions au creditors wasiolipwa wanaweza kuzuia closure','Kampuni dormant bado inaweza kuhitaji annual returns hadi itakapoondolewa'];var html='<h3>'+name+' - '+route+'</h3><p>Hali: '+status+'</p><h3>Njia zinazowezekana</h3><ul class="list"><li>'+routes.join('</li><li>')+'</li></ul><h3>Hatua muhimu</h3><ul class="list"><li>'+steps.join('</li><li>')+'</li></ul><h3>Viashiria vya hatari</h3><ul class="list"><li>'+risks.join('</li><li>')+'</li></ul><div class="warn">Winding-up ni mchakato wa kisheria. Shirikisha insolvency practitioner, lawyer, accountant au registrar kabla ya filing.</div>';var txt='CHECKLIST YA KUFUNGA KAMPUNI - '+name+'\\nNjia: '+route+'\\nStatus: '+status+'\\n\\nHatua:\\n- '+steps.join('\\n- ')+'\\n\\nHatari:\\n- '+risks.join('\\n- ')+'\\n\\nThibitisha mchakato rasmi kabla ya closure.';q('wuHtml').innerHTML=html;q('wuText').textContent=txt;show('wuResult');}
 </script>

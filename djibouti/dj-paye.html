@@ -88,7 +88,6 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/dj-paye.webp">
 <meta property="article:modified_time" content="2026-04-06">
-<script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
@@ -228,7 +227,6 @@
               <button type="button" class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
-
 
               </div>
       </div>
@@ -405,10 +403,6 @@
     </div>
   </div>
 </section>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-  <wise-cta context="paye" country="Djibouti"></wise-cta>
-</div>
 
 <!-- FAQ -->
 <section class="ng-faq-sec">
@@ -661,7 +655,6 @@ async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getEl
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const R=RESULT;const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);msgs.scrollTop=msgs.scrollHeight;CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:`Djibouti advisor for gross ${fmt(R.gross)}, take-home ${fmt(R.net)}, rate ${pct(R.effRate)}. Concise.`,messages:CHAT_HISTORY})});const data=await res.json();const text=data.text||'Unable to respond.';aiEl.textContent=text;CHAT_HISTORY.push({role:'assistant',content:text});msgs.scrollTop=msgs.scrollHeight;}catch{aiEl.textContent='Network error.';}}
 
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
-
 
 // Net-to-Gross: register forward function
 window._grossToNet = function(g) {

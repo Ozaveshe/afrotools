@@ -10,7 +10,6 @@ import re, os, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 def get_meta(html):
     """Extract country name and tool ID."""
     m = re.search(r'current="([^"]+)"', html)
@@ -24,7 +23,6 @@ def get_meta(html):
         m = re.search(r'<title>([^|<]+)', html)
         country = m.group(1).split('PAYE')[0].strip() if m else 'Unknown'
     return country, tool_id
-
 
 def build_save_cta(country, tool_id):
     return f'''<!-- SAVE TOOL CTA -->
@@ -53,7 +51,6 @@ def build_save_cta(country, tool_id):
     </div>
   </div>
 </section>'''
-
 
 def extract_faq_items(html):
     """Extract FAQ Q&A pairs from various old formats."""
@@ -94,7 +91,6 @@ def extract_faq_items(html):
 
     return items
 
-
 def build_faq_section(items, country):
     if not items:
         return ''
@@ -129,7 +125,6 @@ def build_faq_section(items, country):
     </div>
   </div>
 </section>'''
-
 
 def extract_and_build_guide(html, country):
     """Find inline-styled SEO section and convert to ng-guide-sec."""
@@ -229,7 +224,6 @@ def extract_and_build_guide(html, country):
     html = html.replace(old_section, '')
     return guide, html
 
-
 def find_old_faq(html):
     """Find and remove old FAQ section, return items and cleaned HTML."""
     # Pattern 1: <section class="faq-sec"> with faq-inner
@@ -255,20 +249,8 @@ def find_old_faq(html):
 
     return [], html
 
-
-def extract_wise_cta(html):
-    """Extract wise-cta div."""
-    m = re.search(r'<div[^>]*>\s*<wise-cta[^>]*></wise-cta>\s*</div>', html, re.DOTALL)
-    if m:
-        wise = m.group(0)
-        html = html[:m.start()] + html[m.end():]
-        return wise, html
-    return '', html
-
-
 def remove_afro_chat(html):
     return re.sub(r'\s*<afro-chat[^>]*>.*?</afro-chat>', '', html, flags=re.DOTALL)
-
 
 def add_save_js(html, tool_id):
     if 'function toggleSaveTool' in html:
@@ -295,12 +277,10 @@ document.addEventListener('DOMContentLoaded',updateSaveUI);
     html = html.replace('</body>', js + '\n</body>')
     return html
 
-
 def ensure_paye_css(html):
     if 'paye-tool.css' in html:
         return html
     return html.replace('</head>', '<link rel="stylesheet" href="/assets/css/paye-tool.css">\n</head>')
-
 
 def ensure_instrument_serif(html):
     if 'Instrument+Serif' in html or 'Instrument Serif' in html:
@@ -309,7 +289,6 @@ def ensure_instrument_serif(html):
     if m and 'Instrument' not in m.group(1):
         return html.replace(m.group(1), m.group(1) + '&family=Instrument+Serif:ital@0;1')
     return html
-
 
 def process_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -331,14 +310,7 @@ def process_file(filepath):
         if guide_html:
             # Insert guide between save and FAQ
             faq_pos = html.find('<section class="ng-faq-sec">')
-            # Look for wise-cta before FAQ
-            wise_before_faq = html.rfind('<wise-cta', 0, faq_pos)
-            if wise_before_faq > 0:
-                # Find the containing div
-                div_start = html.rfind('<div', 0, wise_before_faq)
-                insert_pos = div_start
-            else:
-                insert_pos = faq_pos
+            insert_pos = faq_pos
             html = html[:insert_pos] + '\n' + guide_html + '\n\n' + html[insert_pos:]
             html = re.sub(r'\n{4,}', '\n\n', html)
             with open(filepath, 'w', encoding='utf-8') as f:
@@ -368,21 +340,17 @@ def process_file(filepath):
     if guide_html:
         changes.append('converted SEO to ng-guide-sec')
 
-    # 5. Extract wise-cta (will re-insert in correct position)
-    wise_html, html = extract_wise_cta(html)
 
     # 6. Build all new sections
     save_html = build_save_cta(country, tool_id)
     faq_html = build_faq_section(faq_items, country) if faq_items else ''
 
     # 7. Build the ordered insertion block
-    # Order: Save → Guide → wise-cta → FAQ
+    # Order: Save -> Guide -> FAQ
     insertion = '\n'
     insertion += save_html + '\n\n'
     if guide_html:
         insertion += guide_html + '\n\n'
-    if wise_html:
-        insertion += wise_html + '\n\n'
     if faq_html:
         insertion += faq_html + '\n\n'
 
@@ -414,7 +382,6 @@ def process_file(filepath):
         f.write(html)
 
     print(f"  DONE {os.path.basename(filepath)}: {', '.join(changes)}")
-
 
 def verify_all(paye_files):
     print("\n=== VERIFICATION ===")
@@ -465,7 +432,6 @@ def verify_all(paye_files):
         print("  ALL 53 pages: PASS")
     return all_ok
 
-
 def main():
     paye_files = sorted(glob.glob(os.path.join(ROOT, '*', '*-paye.html')))
     paye_files = [f for f in paye_files if
@@ -479,7 +445,6 @@ def main():
         process_file(filepath)
 
     verify_all(paye_files)
-
 
 if __name__ == '__main__':
     main()

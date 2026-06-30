@@ -30,7 +30,7 @@
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Salary & Tax","item":"https://afrotools.com/salary-tax/"}]}</script>
 <script src="/assets/js/lazy-fonts.js?v=832374e1" data-font-href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" async></script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=a8f8dd0d">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=ffd1e2cf">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/salary-tax.css?v=4398afbd">
@@ -71,7 +71,8 @@
 .hero-stat-val{color:#0f172a!important}
 .hero-stat-lbl{color:#64748b!important}
 .hero-stat-divider{background:#e2e8f0!important}
-.hub-card,.tc,.why-card,.find-results{border-radius:8px!important;box-shadow:none!important}
+  .hub-section{scroll-margin-top:96px}
+  .hub-card,.tc,.why-card,.find-results{border-radius:8px!important;box-shadow:none!important}
 .hub-card:hover,.hub-card:focus-visible,.tc:hover,.tc:focus-visible{box-shadow:0 8px 22px rgba(15,23,42,.08)!important;transform:translateY(-1px)!important}
 .hc-icon,.why-icon{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:44px!important;height:36px!important;padding:0 8px!important;border-radius:8px!important;background:#eaf3ff!important;color:#0057b8!important;font-size:.68rem!important;font-weight:900!important;letter-spacing:.02em!important;white-space:nowrap!important}
 .hub-card{gap:.8rem!important}
@@ -114,7 +115,7 @@
     <div class="hero-search-wrap" role="search">
       <div class="hero-search-bar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="search" id="tool-search" placeholder="Search 188 tools — Kenya PAYE, Nigeria CGT, crypto tax..." autocomplete="off" spellcheck="false" aria-label="Search salary and tax tools">
+        <input type="search" id="tool-search" placeholder="Find a tool - Kenya PAYE, Nigeria CGT, crypto tax..." autocomplete="off" spellcheck="false" aria-label="Search salary and tax tools">
       </div>
       <a href="#hub-cards" class="hero-browse-link">Browse all 8 hubs &darr;</a>
     </div>
@@ -134,15 +135,15 @@
     <section class="salary-route-planner" aria-labelledby="salary-route-planner-title" data-salary-route-planner>
       <div class="salary-route-planner__head">
         <div>
-          <span class="salary-route-planner__eyebrow">Quick route planner</span>
-          <h2 id="salary-route-planner-title">Choose the safest first payroll or tax route</h2>
-          <p>Pick a country and job type, then copy or save a metadata-only brief before opening the calculator. Amounts are used on this screen only and are not saved.</p>
+          <span class="salary-route-planner__eyebrow">Quick tool finder</span>
+          <h2 id="salary-route-planner-title">Tell us what you need, then open the right calculator</h2>
+          <p>Choose a country and task. AfroTools will suggest the best starting point and a short checklist before you continue. Optional amounts stay on this screen and are not saved.</p>
         </div>
-        <span class="salary-route-planner__badge">Local-first</span>
+        <span class="salary-route-planner__badge">Private by default</span>
       </div>
       <form class="salary-route-planner__form" data-salary-route-form>
         <label>
-          <span>Country or market</span>
+          <span>Where are you working?</span>
           <select data-salary-route-country>
             <option value="NG">Nigeria</option>
             <option value="KE">Kenya</option>
@@ -155,7 +156,7 @@
           </select>
         </label>
         <label>
-          <span>Main task</span>
+          <span>What do you want to do?</span>
           <select data-salary-route-task>
             <option value="employee">Estimate employee take-home pay</option>
             <option value="employer">Plan employer payroll cost</option>
@@ -166,21 +167,21 @@
           </select>
         </label>
         <label>
-          <span>Monthly amount (optional, not saved)</span>
-          <input type="number" min="0" step="1000" inputmode="decimal" data-salary-route-amount placeholder="Example: 500000">
+          <span>Monthly amount (optional)</span>
+          <input type="number" min="0" step="1000" inputmode="decimal" data-salary-route-amount placeholder="Example: 500000 (not saved)">
         </label>
       </form>
       <div class="salary-route-planner__result" aria-live="polite">
         <div>
-          <strong data-salary-route-title>Employee PAYE route</strong>
+          <strong data-salary-route-title>Employee take-home pay</strong>
           <p data-salary-route-description>Open the country PAYE calculator, check the source panel, then export or save the result on the calculator page.</p>
           <ul data-salary-route-checklist></ul>
-          <p class="salary-route-planner__status" data-salary-route-status>No salary figures are saved by this hub planner.</p>
+          <p class="salary-route-planner__status" data-salary-route-status>Only the tool choice can be saved here; salary amounts stay out of storage.</p>
         </div>
         <div class="salary-route-planner__actions">
-          <a class="primary" href="/nigeria/ng-salary-tax" data-salary-route-open>Open route</a>
-          <button type="button" data-salary-route-save>Save route</button>
-          <button type="button" data-salary-route-copy>Copy brief</button>
+          <a class="primary" href="/nigeria/ng-salary-tax" data-salary-route-open>Open tool</a>
+          <button type="button" data-salary-route-save>Save tool choice</button>
+          <button type="button" data-salary-route-copy>Copy checklist</button>
         </div>
       </div>
     </section>
@@ -207,7 +208,9 @@
 
   <!-- Hub Cards -->
   <section class="hub-section" id="hub-cards">
-    <div class="sec-ey">Finance Hubs</div>
+    <div class="sec-ey">Find your tool</div>
+    <h2 class="sec-title in">Choose the job first, then the country</h2>
+    <p class="sec-sub in">Start with the outcome you need: take-home pay, payroll cost, contractor tax, business tax, property, savings, crypto, FX, or Francophone tools. Each card opens the country-aware calculators and source notes for that route.</p>
     <div class="hub-cards">
 
       <a class="hub-card" href="/salary-tax/paye/">
@@ -220,7 +223,7 @@
             <span class="hc-badge">Visible assumptions</span>
             <span class="hc-badge">Export where supported</span>
           </div>
-          <div class="hc-arrow">Explore PAYE Tools →</div>
+          <div class="hc-arrow">Open PAYE tools &rarr;</div>
         </div>
       </a>
 
@@ -234,7 +237,7 @@
             <span class="hc-badge">Leave & PTO</span>
             <span class="hc-badge">Pension</span>
           </div>
-          <div class="hc-arrow">Explore Payroll Tools →</div>
+          <div class="hc-arrow">Open payroll tools &rarr;</div>
         </div>
       </a>
 
@@ -248,7 +251,7 @@
             <span class="hc-badge">CGT</span>
             <span class="hc-badge">WHT</span>
           </div>
-          <div class="hc-arrow">Explore Business Tax →</div>
+          <div class="hc-arrow">Open business tax tools &rarr;</div>
         </div>
       </a>
 
@@ -262,7 +265,7 @@
             <span class="hc-badge">Rent vs Buy</span>
             <span class="hc-badge">Property ROI</span>
           </div>
-          <div class="hc-arrow">Explore Property Tools →</div>
+          <div class="hc-arrow">Open property tools &rarr;</div>
         </div>
       </a>
 
@@ -276,7 +279,7 @@
             <span class="hc-badge">Compound Interest</span>
             <span class="hc-badge">Savings Goal</span>
           </div>
-          <div class="hc-arrow">Explore Savings Tools →</div>
+          <div class="hc-arrow">Open savings tools &rarr;</div>
         </div>
       </a>
 
@@ -290,7 +293,7 @@
             <span class="hc-badge">Portfolio</span>
             <span class="hc-badge">Scam Checker</span>
           </div>
-          <div class="hc-arrow">Explore Crypto Tools →</div>
+          <div class="hc-arrow">Open crypto tools &rarr;</div>
         </div>
       </a>
 
@@ -304,7 +307,7 @@
             <span class="hc-badge">Rate checks</span>
             <span class="hc-badge">Central Banks</span>
           </div>
-          <div class="hc-arrow">Explore FX Tools →</div>
+          <div class="hc-arrow">Open FX tools &rarr;</div>
         </div>
       </a>
 
@@ -432,7 +435,7 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/lazy-script-chain.js?v=9cfc21ea" data-delay="0" data-scripts="/assets/js/salary-tax-index.js?v=7cc18ad7" async></script>
-<script src="/assets/js/pages/salary-tax-focus.js?v=318c445c" defer></script>
+<script src="/assets/js/pages/salary-tax-focus.js?v=2f2e9341" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=f3366037" async></script>
 </body>
 </html>
