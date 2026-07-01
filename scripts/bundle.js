@@ -63,6 +63,7 @@ const LEGACY_BUNDLE_ALIASES = {
   // historical tool-page bundle names. Keep them available until a full HTML
   // bundle rewrite has safely moved every route to the current hash.
   'tool-page': [
+    'tool-page.3b1f7518.min.js',
     'tool-page.4701dd1d.min.js',
     'tool-page.c4ee75a0.min.js',
   ],
