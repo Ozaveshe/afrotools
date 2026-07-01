@@ -32,6 +32,9 @@
   <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
   <script src="/data/hr/social-security-rates.js?v=357ff6e5"></script>
   <script src="/engines/hr-engine.js?v=9bfe19a1"></script>
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=ffd1e2cf">
+  <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+  <link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -82,6 +85,253 @@
 }
 </script>
   <style>
+    body.top-level-page-ui-refresh {
+      background:#f6f8fb;
+      color:#0f172a;
+    }
+    .tl-hero {
+      background:#fff;
+      border-bottom:1px solid #dbe3ef;
+      padding:42px 20px 34px;
+    }
+    .tl-hero-inner,
+    .tl-body {
+      max-width:1080px;
+      margin:0 auto;
+    }
+    .tl-breadcrumb {
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:8px;
+      margin:0 0 18px;
+      color:#64748b;
+      font-size:.86rem;
+      line-height:1.5;
+    }
+    .tl-breadcrumb a {
+      color:#64748b;
+      text-decoration:none;
+    }
+    .tl-breadcrumb a:hover {
+      color:#0062cc;
+      text-decoration:underline;
+    }
+    .tl-category-label {
+      display:inline-flex;
+      min-height:36px;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border:1px solid #bfdbfe;
+      border-radius:10px;
+      background:#eff6ff;
+      color:#0057b8;
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .tl-title {
+      max-width:780px;
+      margin:18px 0 10px;
+      color:#0f172a;
+      font-family:"Instrument Serif", Georgia, serif;
+      font-size:clamp(2.35rem, 5vw, 4.35rem);
+      font-weight:500;
+      line-height:1.02;
+      letter-spacing:0;
+    }
+    .tl-accent {
+      color:#0062cc;
+    }
+    .tl-desc {
+      max-width:800px;
+      margin:0;
+      color:#64748b;
+      font-size:1.05rem;
+      line-height:1.75;
+    }
+    .tl-badges {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:22px;
+    }
+    .tl-badges span {
+      display:inline-flex;
+      min-height:38px;
+      align-items:center;
+      padding:8px 12px;
+      border:1px solid #dbe3ef;
+      border-radius:10px;
+      background:#fff;
+      color:#334155;
+      font-size:.84rem;
+      font-weight:800;
+      line-height:1.2;
+    }
+    .tl-body {
+      display:block;
+      padding:28px 20px 56px;
+    }
+    .tl-main {
+      display:grid;
+      width:100%;
+      gap:24px;
+    }
+    .tl-card {
+      width:100%;
+      overflow:hidden;
+      border:1px solid #dbe3ef;
+      border-radius:14px;
+      background:#fff;
+      box-shadow:0 10px 28px rgba(15,23,42,.05);
+    }
+    .tl-card-header {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:18px 20px;
+      border-bottom:1px solid #eef2f7;
+      background:#f8fafc;
+    }
+    .tl-card-icon {
+      display:inline-flex;
+      width:38px;
+      height:38px;
+      flex:0 0 38px;
+      align-items:center;
+      justify-content:center;
+      border-radius:10px;
+      background:#eef6ff;
+      color:#0057b8;
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.08em;
+    }
+    .tl-card-title {
+      color:#0f172a;
+      font-size:1rem;
+      font-weight:900;
+      line-height:1.25;
+    }
+    .tl-card-sub {
+      margin-top:2px;
+      color:#94a3b8;
+      font-size:.84rem;
+      line-height:1.45;
+    }
+    .tl-form-grid {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+      padding:20px;
+    }
+    .tl-field {
+      min-width:0;
+    }
+    .tl-label {
+      display:block;
+      margin-bottom:8px;
+      color:#64748b;
+      font-size:.74rem;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .tl-field select,
+    .tl-field input {
+      width:100%;
+      min-height:54px;
+      border:1px solid #dbe3ef;
+      border-radius:10px;
+      background:#fff;
+      color:#0f172a;
+      font:600 1rem/1 "Inter", "DM Sans", system-ui, sans-serif;
+    }
+    .tl-field select {
+      padding:0 14px;
+    }
+    .tl-field input {
+      padding:0 14px;
+    }
+    .tl-field select:focus,
+    .tl-field input:focus,
+    .tl-btn:focus-visible,
+    .ss-tab:focus-visible,
+    .ss-se-toggle:focus-visible {
+      outline:3px solid rgba(0,98,204,.22);
+      outline-offset:2px;
+      border-color:#0062cc;
+    }
+    .tl-btn {
+      display:inline-flex;
+      min-height:48px;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:0 18px;
+      border:1px solid #0062cc;
+      border-radius:10px;
+      background:#0062cc;
+      color:#fff;
+      font-weight:900;
+      text-decoration:none;
+      cursor:pointer;
+      transition:background .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .tl-btn:hover {
+      background:#004fa3;
+      border-color:#004fa3;
+      box-shadow:0 10px 22px rgba(0,98,204,.16);
+    }
+    .tl-card > .tl-btn {
+      width:calc(100% - 40px);
+      margin:0 20px 20px;
+    }
+    .tl-section-title {
+      margin:0 0 10px;
+      color:#0f172a;
+      font-size:1rem;
+      font-weight:900;
+      line-height:1.3;
+    }
+    .ss-result-actions {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:16px;
+    }
+    .ss-result-actions .tl-btn {
+      width:auto;
+    }
+    @media(max-width:720px) {
+      .tl-hero {
+        padding:30px 16px 26px;
+      }
+      .tl-body {
+        padding:20px 16px 48px;
+      }
+      .tl-form-grid {
+        grid-template-columns:1fr;
+        padding:16px;
+      }
+      .tl-card-header {
+        padding:16px;
+      }
+      .tl-card > .tl-btn {
+        width:calc(100% - 32px);
+        margin:0 16px 16px;
+      }
+      .tl-title {
+        font-size:clamp(2.2rem, 14vw, 3.2rem);
+      }
+      .tl-desc {
+        font-size:1rem;
+        line-height:1.65;
+      }
+    }
     /* ── Summary Cards Grid ── */
     .ss-summary { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0; }
     .ss-summary-card { background:var(--bg,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:18px 14px;text-align:center; }
@@ -132,7 +382,7 @@
     .ss-pro-cta a { display:inline-flex;margin-top:8px;color:#0056b3;font-weight:800;text-decoration:none; }
     .ss-pro-cta a:hover { text-decoration:underline; }
 
-    /* ── AI Observations ── */
+    /* Country notes */
     .ss-obs-panel { background:var(--color-bg-subtle,#f8fafc);border:1px solid var(--color-border,#e5e7eb);border-radius:12px;padding:16px;margin:16px 0;font-size:.85rem;color:var(--color-text-muted,#6b7280);line-height:1.7; }
     .ss-obs-panel .sop-title { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--color-primary,#007AFF);margin-bottom:8px; }
 
@@ -163,7 +413,7 @@
     /* ── Benefits ── */
     .ss-benefits-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0; }
     .ss-benefit-card { background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;border-left:4px solid #4F46E5; }
-    .ss-benefit-card .sbc-icon { font-size:1.3rem;margin-bottom:4px; }
+    .ss-benefit-card .sbc-icon { display:inline-flex;min-width:30px;height:24px;align-items:center;justify-content:center;margin-bottom:6px;border-radius:999px;background:#eef2ff;color:#4338ca;font-size:.68rem;font-weight:900;letter-spacing:.08em; }
     .ss-benefit-card .sbc-type { font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#4F46E5;margin-bottom:3px; }
     .ss-benefit-card .sbc-title { font-size:.88rem;font-weight:700;color:#0f172a;margin-bottom:5px; }
     .ss-benefit-card .sbc-body { font-size:.78rem;color:#475569;line-height:1.6; }
@@ -200,17 +450,30 @@
     .ss-alert-list { list-style:none;padding:0;margin:0; }
     .ss-alert-list li { display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid #fde8c8;font-size:.82rem;color:#44403c;line-height:1.55; }
     .ss-alert-list li:last-child { border-bottom:none; }
-    .ss-alert-list .al-icon { flex-shrink:0;margin-top:1px; }
+    .ss-alert-list .al-icon {
+      display:inline-flex;
+      width:22px;
+      height:22px;
+      flex-shrink:0;
+      align-items:center;
+      justify-content:center;
+      margin-top:1px;
+      border-radius:999px;
+      background:#fff7ed;
+      color:#c2410c;
+      font-size:.68rem;
+      font-weight:900;
+    }
     .ss-alert-action { margin-top:10px;padding:10px 12px;background:#fff;border-radius:8px;border:1px solid #fed7aa;font-size:.78rem;color:#92400e;line-height:1.6; }
     .ss-alert-action strong { display:block;margin-bottom:4px;color:#c2410c; }
 
     /* ── Self-Employed ── */
     .ss-se-row { display:flex;align-items:center;gap:10px;padding:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;margin:12px 0 4px; }
     .ss-se-row label { font-size:.82rem;font-weight:600;color:#0f172a;cursor:pointer;flex:1; }
-    .ss-se-toggle { appearance:none;-webkit-appearance:none;width:40px;height:22px;background:#e2e8f0;border-radius:100px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0; }
+    .ss-se-toggle { appearance:none;-webkit-appearance:none;width:44px !important;min-width:44px !important;height:24px !important;min-height:24px !important;inline-size:44px !important;block-size:24px !important;flex:0 0 44px !important;background:#e2e8f0;border-radius:100px;cursor:pointer;position:relative;transition:background .2s; }
     .ss-se-toggle:checked { background:#4F46E5; }
-    .ss-se-toggle::after { content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2); }
-    .ss-se-toggle:checked::after { transform:translateX(18px); }
+    .ss-se-toggle::after { content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2); }
+    .ss-se-toggle:checked::after { transform:translateX(20px); }
     .ss-se-panel { background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:16px;margin-bottom:10px;display:none; }
     .ss-se-panel.show { display:block; }
     .ss-se-panel .sep-title { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#4338ca;margin-bottom:10px; }
@@ -253,7 +516,7 @@
     .ss-expat-result.has-agreement { background:#f0fdf4;border:1px solid #bbf7d0; }
     .ss-expat-result.no-agreement { background:#fff7ed;border:1px solid #fed7aa; }
     .ss-expat-result.neutral { background:#f8fafc;border:1px solid #e2e8f0;color:#64748b; }
-    .ss-expat-result .ser-icon { font-size:1.2rem;margin-bottom:4px; }
+    .ss-expat-result .ser-icon { display:inline-flex;min-width:28px;height:24px;align-items:center;justify-content:center;margin-bottom:6px;border-radius:999px;background:#fff;color:inherit;font-size:.68rem;font-weight:900;letter-spacing:.08em; }
     .ss-expat-result .ser-title { font-weight:800;font-size:.88rem;margin-bottom:4px; }
     .ss-expat-result.has-agreement .ser-title { color:#15803d; }
     .ss-expat-result.no-agreement .ser-title { color:#c2410c; }
@@ -308,18 +571,12 @@
     }
   </style>
   <meta property="article:modified_time" content="2026-03-29">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/social-security/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/securite-sociale/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-michango-ya-hifadhi-ya-jamii/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/social-security/" />
-<link rel="stylesheet" href="/assets/css/design-system.css?v=ffd1e2cf">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -329,7 +586,7 @@
     <nav class="tl-breadcrumb" aria-label="Breadcrumb">
       <a href="/">AfroTools</a> &rsaquo; <a href="/salary-tax/">Salary &amp; Tax</a> &rsaquo; Social Security Calculator
     </nav>
-    <div class="tl-category-label">&#x1F4B0; SALARY &amp; TAX</div>
+    <div class="tl-category-label">SALARY &amp; TAX</div>
     <h1 class="tl-title">Social Security <span class="tl-accent">Calculator</span></h1>
     <p class="tl-desc">Calculate employee and employer social security contributions for any African country. Get a full breakdown of every scheme &mdash; pension, health insurance, work injury, housing fund &mdash; with caps, rates, and net-after-deduction figures in local currency.</p>
     <div class="tl-badges">
@@ -347,7 +604,7 @@
     <!-- ── INPUT CARD ── -->
     <div class="tl-card">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x1F4B0;</span>
+        <span class="tl-card-icon">SS</span>
         <div>
           <div class="tl-card-title">Social Security Contributions</div>
           <div class="tl-card-sub">Select a country and enter monthly gross salary to calculate contributions</div>
@@ -409,10 +666,10 @@
       <!-- Self-employed toggle -->
       <div class="ss-se-row">
         <input type="checkbox" class="ss-se-toggle" id="se-toggle" onchange="onSeToggle()">
-        <label for="se-toggle">&#x1F4BC; I&rsquo;m self-employed or an informal worker</label>
+        <label for="se-toggle">I&rsquo;m self-employed or an informal worker</label>
       </div>
       <div class="ss-se-panel" id="se-panel">
-        <div class="sep-title">&#x2705; Voluntary Contribution Options for You</div>
+        <div class="sep-title">Voluntary Contribution Options for You</div>
         <div id="se-schemes-list"><div class="ss-se-none">Select a country above to see voluntary contribution options.</div></div>
       </div>
 
@@ -426,7 +683,7 @@
     <!-- ── RESULTS ── -->
     <div class="tl-card" id="results" style="display:none">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x1F4CA;</span>
+        <span class="tl-card-icon">BR</span>
         <div>
           <div class="tl-card-title">Contribution Breakdown</div>
           <div class="tl-card-sub" id="result-subtitle">&mdash;</div>
@@ -435,8 +692,8 @@
 
       <!-- Tab Bar -->
       <div class="ss-tabs">
-        <button type="button" class="ss-tab active" data-tab="contributions" onclick="switchTab('contributions')">&#x1F4B0; Contributions</button>
-        <button type="button" class="ss-tab" data-tab="benefits" onclick="switchTab('benefits')">&#x1F3E5; What You Get</button>
+        <button type="button" class="ss-tab active" data-tab="contributions" onclick="switchTab('contributions')">Contributions</button>
+        <button type="button" class="ss-tab" data-tab="benefits" onclick="switchTab('benefits')">What You Get</button>
       </div>
 
       <!-- Tab: Contributions -->
@@ -517,11 +774,9 @@
         Repeat this monthly in AfroPayroll Pro, keep employee and employer totals with your payroll draft, and export handoff files for accountant review. AfroPayroll Pro does not disburse salaries, handle statutory filing, or provide a compliance guarantee.
         <a href="/tools/afropayroll-os/workspace">Build a reviewable payroll draft &rarr;</a>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
-        <button type="button" class="tl-btn" id="ss-copy-summary" style="width:auto">Copy contribution summary</button>
-        <button type="button" class="tl-btn" id="ss-download-summary" data-no-gate="true" style="width:auto">Download TXT</button>
-        <save-result-button tool-slug="social-security" tool-name="Social Security Contribution Calculator"></save-result-button>
-        <share-result-button tool-name="Social Security Contribution Calculator" tool-slug="social-security"></share-result-button>
+      <div class="ss-result-actions">
+        <button type="button" class="tl-btn" id="ss-copy-summary">Copy contribution summary</button>
+        <button type="button" class="tl-btn" id="ss-download-summary" data-no-gate="true">Download TXT</button>
       </div>
       <div id="ss-export-status" role="status" aria-live="polite" style="min-height:1.2em;margin-top:8px;font-size:.82rem;color:var(--text-muted,#64748b)"></div>
 
@@ -529,7 +784,7 @@
 
       <!-- Tab: Benefits -->
       <div class="ss-tab-panel" id="tab-benefits">
-        <div class="ss-benefits-note" style="margin-top:14px">&#x1F4CA; Calculate contributions above, then click <strong>What You Get</strong> to see benefit entitlements by scheme.</div>
+        <div class="ss-benefits-note" style="margin-top:14px">Calculate contributions above, then click <strong>What You Get</strong> to see benefit entitlements by scheme.</div>
       </div><!-- /tab-benefits -->
 
     </div>
@@ -537,7 +792,7 @@
     <!-- ── ROI / IS IT WORTH IT ── -->
     <div class="tl-card" id="roi-card" style="display:none">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x1F4B9;</span>
+        <span class="tl-card-icon">ROI</span>
         <div>
           <div class="tl-card-title">Is Social Security Worth It?</div>
           <div class="tl-card-sub">What you put in vs. what you could receive back</div>
@@ -545,7 +800,7 @@
       </div>
       <div class="ss-roi-inner" id="roi-inner">
         <div class="ss-roi-hdr" onclick="this.parentElement.classList.toggle('open')">
-          <span class="srh-title">&#x1F4C8; Benefits vs. Contributions Ratio</span>
+          <span class="srh-title">Benefits vs. Contributions Ratio</span>
           <button type="button" class="srh-arrow" aria-label="Toggle">&#x25BE;</button>
         </div>
         <div class="ss-roi-body"><div id="roi-rows"></div></div>
@@ -555,19 +810,19 @@
     <!-- ── EMPLOYER NON-REMITTANCE ALERT ── -->
     <div class="tl-card" id="employer-alert-card" style="display:none">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x26A0;&#xFE0F;</span>
+        <span class="tl-card-icon">RM</span>
         <div>
           <div class="tl-card-title">Is Your Employer Remitting?</div>
           <div class="tl-card-sub">Up to 70% of African formal employees have missing contributions</div>
         </div>
       </div>
       <div class="ss-alert-inner">
-        <div class="sai-title">&#x1F4CB; Verify Your Contributions Are Being Paid</div>
+        <div class="sai-title">Verify Your Contributions Are Being Paid</div>
         <div class="ss-alert-q">Are you actually receiving the contributions deducted above?</div>
         <ul class="ss-alert-list">
-          <li><span class="al-icon">&#x1F9FE;</span><div>Does your payslip show the exact deductions listed in the breakdown above? If different amounts appear, your employer may be deducting but not remitting the full amount.</div></li>
-          <li><span class="al-icon">&#x1F4F1;</span><div>Log into <strong id="employer-alert-portal">your national social security portal</strong> and confirm contributions appear for the current month. Missing months are a red flag.</div></li>
-          <li><span class="al-icon">&#x1F4DC;</span><div>Have you received a formal contribution statement in the last 12 months? Your social security authority should issue these. Request one if you haven&rsquo;t.</div></li>
+          <li><span class="al-icon">1</span><div>Does your payslip show the exact deductions listed in the breakdown above? If different amounts appear, your employer may be deducting but not remitting the full amount.</div></li>
+          <li><span class="al-icon">2</span><div>Log into <strong id="employer-alert-portal">your national social security portal</strong> and confirm contributions appear for the current month. Missing months are a red flag.</div></li>
+          <li><span class="al-icon">3</span><div>Have you received a formal contribution statement in the last 12 months? Your social security authority should issue these. Request one if you haven&rsquo;t.</div></li>
         </ul>
         <div class="ss-alert-action"><strong>If you find discrepancies:</strong> Contact your employer&rsquo;s HR department and request written confirmation of remittance dates. If unresolved, file a formal complaint with your national social security authority. Keep all payslips showing deductions as evidence — these are your legal proof.</div>
       </div>
@@ -576,7 +831,7 @@
     <!-- ── CONTRIBUTION HISTORY GAP ANALYZER ── -->
     <div class="tl-card" id="history-card">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x1F4D6;</span>
+        <span class="tl-card-icon">HG</span>
         <div>
           <div class="tl-card-title">Check Your Contribution History</div>
           <div class="tl-card-sub">Step-by-step guide to verify your record and spot gaps</div>
@@ -588,7 +843,7 @@
     <!-- ── CROSS-COUNTRY COMPARISON ── -->
     <div class="tl-card">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x1F30D;</span>
+        <span class="tl-card-icon">CC</span>
         <div>
           <div class="tl-card-title">Cross-Country Comparison</div>
           <div class="tl-card-sub">Compare social security burden across up to 5 African countries</div>
@@ -602,7 +857,7 @@
     <!-- ── EXPAT DOUBLE-CONTRIBUTION CHECKER ── -->
     <div class="tl-card">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x2708;&#xFE0F;</span>
+        <span class="tl-card-icon">EX</span>
         <div>
           <div class="tl-card-title">Expat Double-Contribution Checker</div>
           <div class="tl-card-sub">Find out if you&rsquo;re paying into social security in two countries simultaneously</div>
@@ -661,8 +916,8 @@
     <!-- ── AI OBSERVATIONS ── -->
     <div class="tl-card" id="ai-panel">
       <div class="ss-obs-panel">
-        <div class="sop-title">AI Observations</div>
-        <div id="ai-obs">Select a country above and calculate to see AI-powered observations about social security schemes, compliance requirements, and how contributions compare across the region.</div>
+        <div class="sop-title">Country notes</div>
+        <div id="ai-obs">Select a country above and calculate to see notes about contribution schemes, compliance checks, and how rates compare across the region.</div>
       </div>
     </div>
 
@@ -677,7 +932,7 @@
       <li><strong>Inputs:</strong> selected country and gross monthly salary. Self-employed guidance appears only where the embedded dataset includes it.</li>
       <li><strong>Method:</strong> applies the local contribution rates, caps, and scheme split available in the AfroTools social security dataset or HR engine.</li>
       <li><strong>Verify before acting:</strong> current authority rates, salary definition, capped earnings, employer registration, payslip deductions, contribution statement, and payment deadlines.</li>
-      <li><strong>Privacy:</strong> salary scenarios stay in your browser unless you choose to copy, download, save, or share a summary.</li>
+      <li><strong>Privacy:</strong> salary scenarios stay in your browser unless you choose to copy or download a summary.</li>
     </ul>
     <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not official payroll filing, legal advice, tax advice, or proof that an employer has remitted contributions.</p>
   </div>
@@ -749,6 +1004,14 @@ function formatNumber(n) {
 function formatPct(n) {
   if (n === undefined || n === null || isNaN(n)) return '0%';
   return Number(n).toFixed(1) + '%';
+}
+
+function firstFiniteNumber() {
+  for (var i = 0; i < arguments.length; i++) {
+    var value = Number(arguments[i]);
+    if (Number.isFinite(value)) return value;
+  }
+  return 0;
 }
 
 function getCurrency(cc) {
@@ -850,11 +1113,11 @@ function calculate() {
   }
 
   /* Populate summary */
-  var employeeTotal = result.employeeTotal || 0;
-  var employerTotal = result.employerTotal || 0;
-  var totalContribution = employeeTotal + employerTotal;
-  var netSalary = monthlySalary - employeeTotal;
-  var costToEmployer = monthlySalary + employerTotal;
+  var employeeTotal = firstFiniteNumber(result.employeeTotal, result.totalEmployee);
+  var employerTotal = firstFiniteNumber(result.employerTotal, result.totalEmployer);
+  var totalContribution = firstFiniteNumber(result.totalContribution, employeeTotal + employerTotal);
+  var netSalary = firstFiniteNumber(result.netSalary, result.netAfterDeductions, monthlySalary - employeeTotal);
+  var costToEmployer = firstFiniteNumber(result.costToEmployer, result.totalCostToEmployer, monthlySalary + employerTotal);
 
   document.getElementById('r-employee-total').textContent = cur + ' ' + formatNumber(employeeTotal);
   document.getElementById('r-employee-pct').textContent = formatPct((employeeTotal / monthlySalary) * 100) + ' of gross';
@@ -1229,7 +1492,7 @@ function updateHistory(cc) {
   }
   html += '</div>';
   if (data.redFlags && data.redFlags.length) {
-    html += '<div class="ss-red-flags"><div class="srf-title">&#x26A0;&#xFE0F; Red Flags to Look For</div><ul>';
+    html += '<div class="ss-red-flags"><div class="srf-title">Red Flags to Look For</div><ul>';
     for (var j = 0; j < data.redFlags.length; j++) { html += '<li>' + data.redFlags[j] + '</li>'; }
     html += '</ul></div>';
     html += '<div class="ss-alert-action"><strong>If you find discrepancies:</strong> Contact HR first and request written confirmation of remittance. If unresolved, file a formal complaint with your national social security authority. Keep all payslips showing deductions &mdash; these are your legal proof.</div>';
@@ -1251,14 +1514,14 @@ function renderBenefits(cc, monthlySalary, cur) {
   for (var i = 0; i < benefits.length; i++) {
     var b = benefits[i];
     html += '<div class="ss-benefit-card' + (typeClass[b.type] || '') + '">';
-    html += '<div class="sbc-icon">' + b.icon + '</div>';
+    html += '<div class="sbc-icon" aria-hidden="true">' + b.type.slice(0, 2).toUpperCase() + '</div>';
     html += '<div class="sbc-type">' + b.type.charAt(0).toUpperCase() + b.type.slice(1) + '</div>';
     html += '<div class="sbc-title">' + b.title + '</div>';
     html += '<div class="sbc-body">' + b.body + '</div>';
     html += '</div>';
   }
   html += '</div>';
-  html += '<div class="ss-benefits-note">&#x2139;&#xFE0F; Benefit entitlements are estimates based on current scheme rules. Actual benefits depend on your total contribution history, scheme investment performance, and retirement date. Consult your scheme administrator for a personalised projection.</div>';
+  html += '<div class="ss-benefits-note">Benefit entitlements are estimates based on current scheme rules. Actual benefits depend on your total contribution history, scheme investment performance, and retirement date. Consult your scheme administrator for a personalised projection.</div>';
   panel.innerHTML = html;
 }
 
@@ -1383,13 +1646,13 @@ function checkExpat() {
   var key1 = home + '-' + work, key2 = work + '-' + home;
   var ag = SS_BILATERAL[key1] || SS_BILATERAL[key2];
   if (!ag) {
-    result.innerHTML = '<div class="ss-expat-result no-agreement"><div class="ser-icon">&#x26A0;&#xFE0F;</div><div class="ser-title">No Agreement Found</div><div class="ser-body">We have no record of a bilateral social security agreement between these countries. You may be liable for contributions in <strong>both countries simultaneously</strong>. Consult a tax advisor familiar with both jurisdictions before taking up the posting.</div></div>';
+    result.innerHTML = '<div class="ss-expat-result no-agreement"><div class="ser-icon">!</div><div class="ser-title">No Agreement Found</div><div class="ser-body">We have no record of a bilateral social security agreement between these countries. You may be liable for contributions in <strong>both countries simultaneously</strong>. Consult a tax advisor familiar with both jurisdictions before taking up the posting.</div></div>';
     return;
   }
   if (ag.status === 'agreement') {
-    result.innerHTML = '<div class="ss-expat-result has-agreement"><div class="ser-icon">&#x2705;</div><div class="ser-title">Agreement Exists</div><div class="ser-body">' + ag.note + '</div></div>';
+    result.innerHTML = '<div class="ss-expat-result has-agreement"><div class="ser-icon">OK</div><div class="ser-title">Agreement Exists</div><div class="ser-body">' + ag.note + '</div></div>';
   } else {
-    result.innerHTML = '<div class="ss-expat-result no-agreement"><div class="ser-icon">&#x26A0;&#xFE0F;</div><div class="ser-title">Partial / Uncertain</div><div class="ser-body">' + ag.note + '</div></div>';
+    result.innerHTML = '<div class="ss-expat-result no-agreement"><div class="ser-icon">!</div><div class="ser-title">Partial / Uncertain</div><div class="ser-body">' + ag.note + '</div></div>';
   }
 }
 
@@ -1410,8 +1673,11 @@ function fallbackCalculate(cc, monthlySalary) {
     /* Apply cap if present */
     if (scheme.cap && typeof scheme.cap === 'number' && base > scheme.cap) {
       base = scheme.cap;
-    } else if (scheme.cap && typeof scheme.cap.monthly === 'number' && base > scheme.cap.monthly) {
-      base = scheme.cap.monthly;
+    } else if (scheme.cap && typeof scheme.cap.monthly === 'number') {
+      base = Math.min(base, scheme.cap.monthly);
+      if (typeof scheme.cap.deductFromTierI === 'number') {
+        base = Math.max(0, base - scheme.cap.deductFromTierI);
+      }
     }
 
     var empAmt = base * ((scheme.employeeRate || 0) / 100);
@@ -1436,6 +1702,9 @@ function fallbackCalculate(cc, monthlySalary) {
   return {
     employeeTotal: employeeTotal,
     employerTotal: employerTotal,
+    totalContribution: employeeTotal + employerTotal,
+    netSalary: monthlySalary - employeeTotal,
+    costToEmployer: monthlySalary + employerTotal,
     breakdown: breakdown
   };
 }

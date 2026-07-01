@@ -49,6 +49,26 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 /* ── MAIN ── */
 .sb-main{padding:28px 0 64px}
 .sb-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.sb-workbench{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(320px,.82fr);gap:18px;align-items:start}
+.sb-workbench .sb-card{min-width:0}
+.sb-workbench #inputCard .sb-card-head{padding:12px 18px}
+.sb-workbench #inputCard .sb-card-body{padding:18px}
+.sb-workbench .sb-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.sb-workbench .sb-row>div{min-width:0}
+.sb-workbench .sb-field{margin-bottom:12px}
+.sb-workbench #selSkills{height:76px!important}
+.sb-workbench .sb-btn{margin-top:2px}
+.sb-workbench .ai-advisor-card{position:sticky;top:92px;margin:0;min-width:0}
+.sb-workbench .ai-msgs{max-height:220px}
+@media(max-width:980px){
+  .sb-workbench{grid-template-columns:1fr}
+  .sb-workbench .ai-advisor-card{position:static;order:-1}
+}
+@media(max-width:640px){
+  .sb-workbench .sb-row{grid-template-columns:1fr}
+  .sb-workbench #inputCard .sb-card-body{padding:16px}
+  .sb-workbench #selSkills{height:88px!important}
+}
 
 /* ── CARDS ── */
 .sb-card{background:#fff;border:1px solid var(--sb-border);border-radius:var(--sb-radius);overflow:hidden;box-shadow:var(--sb-shadow)}
@@ -307,13 +327,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 .ai-send{padding:9px 14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
 .ai-send:disabled{opacity:.5;cursor:not-allowed}
 
-/* AI Advisor floating section */
-.ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
 </style>
 <script src="/assets/js/bundles/core.52693c87.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -410,6 +425,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 
 <!-- ── MAIN ── -->
 <main class="sb-main"><div class="sb-main-inner">
+
+<section class="sb-workbench" aria-label="Salary benchmark workbench">
 
 <!-- INPUT CARD -->
 <div class="sb-card" id="inputCard">
@@ -508,6 +525,28 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 <button type="button" class="sb-btn sb-btn-primary" id="btnBenchmark">Compare Salaries Across Africa</button>
 </div>
 </div>
+
+<!-- AI Chat -->
+<div class="ai-advisor-card" id="aiCard">
+  <div class="ai-advisor-head">
+    <span class="ai-dot"></span>
+    <span class="ai-title">AI Salary Compare Advisor</span>
+    <span class="ai-by">Powered by Claude</span>
+  </div>
+  <div class="ai-advisor-body">
+    <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+    <div class="ai-chat" id="aiChat">
+      <div class="ai-msgs" id="aiMsgs"></div>
+      <label class="ai-consent"><input type="checkbox" id="aiConsent"><span>I consent to send this message and recent chat context to the AI advisor. Do not include private salary, employer, phone, email, identity, immigration, or contract details.</span></label>
+      <div class="ai-input-row">
+        <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" aria-label="Message to AI advisor" onkeydown="if(event.key==='Enter')sendAI()">
+        <button type="button" class="ai-send" id="aiSend" aria-label="Send message" onclick="sendAI()">&#x2192;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</section>
 
 <!-- RESULTS -->
 <div id="resultsArea" style="display:none" aria-live="polite" aria-atomic="false">
@@ -657,31 +696,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 <section class="sb-seo quality-verification-panel" data-tool-verification-panel aria-labelledby="salary-compare-verification-title">
 <h2 id="salary-compare-verification-title">Salary benchmark verification notes</h2>
 <details class="sb-faq" open><summary>Methodology and freshness</summary><p>Salary Compare blends stored role benchmarks, experience multipliers, skill premiums, cost-of-living factors, PPP adjustments, and user-entered negotiation targets. The visible benchmark is a planning range, not a current employer offer, payroll instruction, tax calculation, visa rule, or official wage schedule. Salary data moves quickly, so verify recent local market reports and recruiter feedback before relying on a figure.</p></details>
-<details class="sb-faq"><summary>Privacy and AI consent</summary><p>The calculator runs locally in your browser. Copy, CSV download, save, share, and optional AI advisor actions happen only when you choose them. Do not paste private salary records, employer names, phone numbers, emails, identity documents, immigration details, contracts, or payslips into the AI prompt.</p></details>
-<details class="sb-faq"><summary>Export path</summary><p>After calculating, copy the benchmark, download CSV, save a local result, or share a summary for recruiter, manager, founder, or compensation-review discussions. Recheck currency conversion, benefits, gross versus net pay, contract type, and allowances before making a decision.</p></details>
+<details class="sb-faq"><summary>Privacy and AI consent</summary><p>The calculator runs locally in your browser. Copy, CSV download, print, and optional AI advisor actions happen only when you choose them. Do not paste private salary records, employer names, phone numbers, emails, identity documents, immigration details, contracts, or payslips into the AI prompt.</p></details>
+<details class="sb-faq"><summary>Export path</summary><p>After calculating, copy the benchmark, download CSV, or print a summary for recruiter, manager, founder, or compensation-review discussions. Recheck currency conversion, benefits, gross versus net pay, contract type, and allowances before making a decision.</p></details>
 </section>
-
-<!-- AI Chat -->
-<div class="ai-advisor-section">
-  <div class="ai-advisor-card" id="aiCard">
-    <div class="ai-advisor-head">
-      <span class="ai-dot"></span>
-      <span class="ai-title">AI Salary Compare Advisor</span>
-      <span class="ai-by">Powered by Claude</span>
-    </div>
-    <div class="ai-advisor-body">
-      <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
-      <div class="ai-chat" id="aiChat">
-        <div class="ai-msgs" id="aiMsgs"></div>
-        <label class="ai-consent"><input type="checkbox" id="aiConsent"><span>I consent to send this message and recent chat context to the AI advisor. Do not include private salary, employer, phone, email, identity, immigration, or contract details.</span></label>
-        <div class="ai-input-row">
-          <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" aria-label="Message to AI advisor" onkeydown="if(event.key==='Enter')sendAI()">
-          <button type="button" class="ai-send" id="aiSend" aria-label="Send message" onclick="sendAI()">&#x2192;</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div style="max-width:960px;margin:0 auto;padding:0 20px 20px">
   <afro-business-cta
@@ -1917,19 +1934,6 @@ function updateRemotePremium() {
    ════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', init);
 
-})();
-</script>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="salary-compare" tool-name="Salary Compare"></save-result-button><share-result-button tool-name="Salary Compare" tool-slug="salary-compare"></share-result-button>';
-  target.appendChild(div);
 })();
 </script>
 

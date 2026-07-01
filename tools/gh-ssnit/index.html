@@ -31,10 +31,6 @@
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/bundles/core.52693c87.min.js" defer></script>
-<script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=aea511a5" defer></script>
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script type="application/ld+json">
 {
@@ -345,8 +341,6 @@ input[type=number]:focus-visible,input[type=text]:focus-visible,select:focus-vis
     <div class="ssnit-result-grid" id="s1ResultGrid" aria-live="polite" aria-atomic="true"></div>
     <div class="ssnit-result-actions">
       <button type="button" class="ssnit-btn ssnit-btn-secondary" id="ssnit-copy-summary">Copy summary</button>
-      <save-result-button tool-slug="gh-ssnit" tool-name="Ghana SSNIT Calculator"></save-result-button>
-      <share-result-button tool-name="Ghana SSNIT Calculator" tool-slug="gh-ssnit"></share-result-button>
     </div>
     <div id="ssnit-export-status" role="status" aria-live="polite" style="min-height:1.2em;margin-top:8px;font-size:.8rem;color:#64748b"></div>
   </div>
@@ -654,7 +648,7 @@ input[type=number]:focus-visible,input[type=text]:focus-visible,select:focus-vis
       <li><strong>Inputs:</strong> basic salary, years contributed, current age, retirement age, and optional Tier 3 contribution.</li>
       <li><strong>Method:</strong> applies the embedded Ghana pension engine to split mandatory contributions and estimate monthly pension eligibility.</li>
       <li><strong>Verify before acting:</strong> SSNIT statement, NPRA or trustee records, employer remittance, capped earnings, best 36 months, age, and current contribution rules.</li>
-      <li><strong>Privacy:</strong> salary and pension scenarios run locally. Copy, save, or share only the summary you choose.</li>
+      <li><strong>Privacy:</strong> salary and pension scenarios run locally. Copy only the summary you choose.</li>
     </ul>
     <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not an official SSNIT statement, legal advice, tax advice, or a trustee quote.</p>
   </div>
@@ -804,13 +798,37 @@ function setSsnitExportStatus(message) {
   if (status) status.textContent = message;
 }
 
+function copySsnitTextFallback(text) {
+  var textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  textarea.style.top = '0';
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  var copied = false;
+  try {
+    copied = document.execCommand('copy');
+  } catch (err) {
+    copied = false;
+  }
+  textarea.remove();
+  return copied;
+}
+
 function copySsnitSummary() {
   var text = buildSsnitSummary();
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function () { setSsnitExportStatus('SSNIT summary copied.'); }).catch(function () { setSsnitExportStatus('Copy failed. Select and copy the summary manually.'); });
-  } else {
-    setSsnitExportStatus(text);
+    navigator.clipboard.writeText(text).then(function () {
+      setSsnitExportStatus('SSNIT summary copied.');
+    }).catch(function () {
+      setSsnitExportStatus(copySsnitTextFallback(text) ? 'SSNIT summary copied.' : 'Copy failed. Select and copy the summary manually.');
+    });
+    return;
   }
+  setSsnitExportStatus(copySsnitTextFallback(text) ? 'SSNIT summary copied.' : 'Copy failed. Select and copy the summary manually.');
 }
 
 document.getElementById('ssnit-copy-summary').addEventListener('click', copySsnitSummary);
@@ -1149,14 +1167,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script>
-(function(){
-  var div = document.createElement('div');
-  div.className = 'result-actions'; div.style.cssText = 'display:none';
-  div.innerHTML = '<save-result-button tool-slug="gh-ssnit" tool-name="Ghana SSNIT Calculator"></save-result-button>';
-  document.body.appendChild(div);
-})();
-</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script>
