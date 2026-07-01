@@ -431,7 +431,7 @@
       <ul>
         <li><strong>Email address</strong> &mdash; collected only when you voluntarily subscribe to updates, create an AfroTools Pro account, or request a PDF report via email. We never require an account to use any free tool.</li>
         <li><strong>Account information</strong> &mdash; if you create an AfroTools Pro account, we store your email, hashed password (via Supabase authentication), subscription status, and account preferences.</li>
-        <li><strong>Usage analytics</strong> &mdash; aggregate page views, device type, country, and session duration collected via Google Analytics 4 (GA4). AfroTools does not intentionally attach personal identifiers to browsing behaviour. IP anonymisation is enabled.</li>
+        <li><strong>Usage analytics</strong> &mdash; aggregate page views, device type, country, session duration, and product-session diagnostics collected via Google Analytics 4 (GA4) and Microsoft Clarity after cookie consent. AfroTools does not intentionally attach personal identifiers to browsing behaviour. IP anonymisation is enabled where supported.</li>
         <li><strong>Calculator inputs</strong> &mdash; local-only tools process salary, tax, health, and financial inputs in your browser. AI-assisted tools send a calculation summary and your question only after you continue from the AI notice. Saved scenarios are stored only when you use account sync.</li>
         <li><strong>Payment information</strong> &mdash; if you subscribe to AfroTools Pro, payment details are processed directly by our payment processors (Paystack and/or Stripe). We never see, store, or have access to your full card number, CVV, or banking details.</li>
         <li><strong>Contact form submissions</strong> &mdash; when you use our contact form, your name, email, and message are stored by our form provider for the purpose of responding to your enquiry.</li>
@@ -470,7 +470,7 @@
       </div>
       <p>AfroTools uses no advertising cookies and no third-party tracking cookies that identify individual users. We use only the following:</p>
       <ul>
-        <li><strong>Google Analytics 4 cookies</strong> &mdash; <code>_ga</code> and <code>_ga_*</code> cookies collect anonymous page view data (country, device type, page visited). No personal identifiers are linked. These cookies expire after 14 months. You can opt out via our cookie consent banner.</li>
+        <li><strong>Analytics cookies</strong> &mdash; Google Analytics 4 uses <code>_ga</code> and <code>_ga_*</code> cookies for anonymous page view data. Microsoft Clarity may set first-party analytics identifiers for session diagnostics after cookie consent. No personal identifiers are intentionally linked. You can opt out via our cookie consent banner.</li>
         <li><strong>Supabase authentication cookies</strong> &mdash; if you sign in to an AfroTools Pro account, Supabase stores a session token to keep you logged in. These are strictly functional and are cleared when you log out.</li>
         <li><strong>localStorage preferences</strong> &mdash; we use browser localStorage to remember settings such as preferred country, dark/light mode, cookie consent choice, and recently used tools. Browser-local preferences stay on your device unless you choose a tool or feature that uses account sync, analytics, forms, or AI assist.</li>
       </ul>
@@ -496,7 +496,7 @@
           <tr><td>Cloud sync and dashboard</td><td>AfroTools account services</td><td>Supabase</td><td>While your account or saved scenario exists</td><td>Delete saved data or request account deletion</td></tr>
           <tr><td>Contact, newsletter, and email reports</td><td>AfroTools forms and email workflows</td><td>Netlify or email provider</td><td>Only as long as needed for the stated purpose</td><td>Unsubscribe or request deletion</td></tr>
           <tr><td>PDF Workspace</td><td>Browser by default</td><td>None for local processing</td><td>Tab memory and local downloads</td><td>Close the tab and delete downloaded files</td></tr>
-          <tr><td>Analytics and fonts</td><td>Browser request metadata</td><td>Google Analytics 4 and Google Fonts</td><td>GA4 retention is 14 months</td><td>Cookie controls and browser privacy settings</td></tr>
+          <tr><td>Analytics and fonts</td><td>Browser request metadata and consented session diagnostics</td><td>Google Analytics 4, Microsoft Clarity, and Google Fonts</td><td>GA4 retention is 14 months; Clarity follows Microsoft project retention settings</td><td>Cookie controls and browser privacy settings</td></tr>
         </tbody>
       </table>
       <p><strong>PDF tools (merge, split, compress, convert):</strong> Files you upload to our PDF Workspace are processed within your browser for the local workflow. If a future tool offers cloud sharing, email delivery, or account sync, that workflow must be labeled before upload.</p>
@@ -541,6 +541,7 @@
       <ul>
         <li><strong>Supabase</strong> &mdash; provides authentication and database services for AfroTools Pro accounts. Supabase processes your email and hashed password. Data is stored in compliance with SOC 2 Type II standards. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a></li>
         <li><strong>Google Analytics 4</strong> &mdash; aggregate usage statistics with IP anonymisation enabled. No cross-site tracking. We do not enable Google Signals or advertising features. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+        <li><strong>Microsoft Clarity</strong> &mdash; consented product-session diagnostics such as page interactions, scroll behaviour, and heatmap-style UX signals. AfroTools does not intentionally send form values or sensitive calculator inputs to Clarity. <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener">Microsoft Privacy Statement</a></li>
         <li><strong>Paystack</strong> &mdash; processes payments for AfroTools Pro subscriptions in African currencies. Paystack is PCI DSS Level 1 compliant. We never receive or store your card details. <a href="https://paystack.com/privacy" target="_blank" rel="noopener">Paystack Privacy Policy</a></li>
         <li><strong>Stripe</strong> &mdash; processes international payments for AfroTools Pro. Stripe is PCI DSS Level 1 certified. We never receive or store your card details. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a></li>
         <li><strong>Netlify</strong> &mdash; hosts AfroTools and processes form submissions. May log basic request metadata. <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Netlify Privacy Policy</a></li>
@@ -563,7 +564,7 @@
         <li><strong>Newsletter subscriptions</strong> &mdash; email addresses are retained until you unsubscribe</li>
         <li><strong>Pro accounts</strong> &mdash; account data is retained while your subscription is active and for 30 days after cancellation to allow reactivation</li>
         <li><strong>Contact form submissions</strong> &mdash; retained for 90 days, then automatically deleted</li>
-        <li><strong>Analytics data</strong> &mdash; Google Analytics data is retained for 14 months per our GA4 configuration</li>
+        <li><strong>Analytics data</strong> &mdash; Google Analytics data is retained for 14 months per our GA4 configuration; Microsoft Clarity data follows the retention settings in the Clarity project</li>
         <li><strong>Local calculator inputs</strong> &mdash; not stored on our servers unless you explicitly save a scenario to your account</li>
       </ul>
       <p>You may request deletion of your data at any time by emailing <a href="mailto:privacy@afrotools.com">privacy@afrotools.com</a>. We will confirm deletion within 7 business days.</p>

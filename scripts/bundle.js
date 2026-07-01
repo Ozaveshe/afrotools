@@ -25,6 +25,7 @@ const BUNDLE_DEFS = {
     'assets/js/lib/validators.js',
     'assets/js/lib/error-boundary.js',
     'assets/js/lib/analytics.js',
+    'assets/js/lib/clarity.js',
     'assets/js/lib/toast.js',
     'assets/js/lib/dark-mode.js',
     'assets/js/lib/a11y.js',
@@ -54,7 +55,9 @@ const LEGACY_BUNDLE_ALIASES = {
     'core.a778d1f9.min.js',
     'core.8bd20673.min.js',
     'core.6b2634cc.min.js',
+    'core.52693c87.min.js',
     'core.009aa1e7.min.js',
+    'core.78b8d771.min.js',
   ],
   // Some generated and country-level salary/tax pages still reference these
   // historical tool-page bundle names. Keep them available until a full HTML
