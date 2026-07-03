@@ -76,24 +76,23 @@
 </style>
 <meta name="tool-id" content="ao-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
 <script>window.PAYE_SAVE_SLUG='ao-paye';</script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-  <script src="/assets/js/components/save-result-button.js?v=ed2f7752" defer></script>
-  <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ao-paye.webp">
 <meta property="article:modified_time" content="2026-04-06">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/angola/ao-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/angola/ao-paye" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/angola/kikokotoo-kodi-mshahara/" />
@@ -219,7 +218,7 @@
         </div>
 
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Download PDF
           </button>
@@ -228,21 +227,6 @@
             Share Result
           </button>
         </div>
-
-          <!-- Save & Share -->
-          <div class="save-share-row">
-            <save-result-button
-              tool-slug="ao-paye"
-              tool-name="Angola PAYE Calculator"
-              country-code="AO"
-              currency="AOA">
-            </save-result-button>
-            <share-result-button
-              tool-name="Angola PAYE Calculator"
-              tool-slug="ao-paye"
-              country-flag="🇦🇴">
-            </share-result-button>
-          </div>
           <salary-benchmark country-code="AO" currency="AOA"></salary-benchmark>
       </div>
     </div>
@@ -767,25 +751,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
 
   document.getElementById('resultsCard').classList.add('on');
   // Save/Share/Benchmark wiring
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({
-    inputs: { grossSalary: RESULT.gross },
-    outputs: {
-      netPay: RESULT.netMonthly,
-      tax: RESULT.monthlyPAYE,
-      effectiveRate: RESULT.effectiveRate
-    }
-  });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly) + '/mo',
-    subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' },
-      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
-    ]
-  });
+  // Benchmark widget stays in the result card; save/share controls are handled once elsewhere.
   var _bmWidget = document.querySelector('salary-benchmark');
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
   renderChart(CHART_TYPE);
@@ -951,7 +917,7 @@ td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
 <meta property="article:modified_time" content="2026-04-06">
-</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head><body>
 <div class="cover">
@@ -1033,6 +999,55 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
     setTimeout(()=>{try{w.print()}catch(e){}},1200);
   }
+}
+
+async function downloadPdfSummary() {
+  if (!RESULT) return;
+  if (!window.AfroTools || !window.AfroTools.pdf) {
+    window.print();
+    return;
+  }
+
+  const R = RESULT;
+  const bandRows = R.bandBreakdown.map(b => ({
+    label: pct(b.rate) + ' band on ' + fmt(b.income),
+    value: b.tax > 0 ? '-' + fmt(b.tax) : fmt(0),
+    type: b.tax > 0 ? 'deduction' : undefined,
+    color: b.tax > 0 ? 'red' : 'muted'
+  }));
+
+  await window.AfroTools.pdf.generate({
+    title: 'Angola PAYE Tax Report',
+    subtitle: 'AGT and INSS monthly estimate',
+    country: 'Angola',
+    countryCode: 'AO',
+    currency: 'AOA',
+    toolId: 'ao-paye',
+    skipGate: true,
+    heroStats: [
+      { label: 'Monthly Take-Home', value: fmt(R.netMonthly), highlight: true },
+      { label: 'Monthly Gross', value: fmt(R.gross) },
+      { label: 'PAYE Tax', value: fmt(R.monthlyPAYE), color: 'red' },
+      { label: 'Effective Rate', value: pct(R.effectiveRate), color: 'red' }
+    ],
+    effectiveRate: R.effectiveRate,
+    sections: [
+      { title: 'Monthly Income & Deductions', rows: [
+        { label: 'Monthly Gross Salary', value: fmt(R.gross) },
+        { label: 'INSS employee contribution (' + pct(R.inssRate) + ')', value: '-' + fmt(R.inss), type: 'deduction' },
+        { label: 'Taxable Income', value: fmt(Math.max(0, R.gross - R.inss)), color: 'muted' },
+        { label: 'PAYE Income Tax', value: '-' + fmt(R.monthlyPAYE), type: 'deduction' },
+        { label: 'Monthly Take-Home Pay', value: fmt(R.netMonthly), type: 'total' }
+      ] },
+      { title: 'AGT Band Computation', rows: bandRows },
+      { title: 'Employer Cost Baseline', rows: [
+        { label: 'Employee Gross Salary', value: fmt(R.gross) },
+        { label: 'Employer INSS (8%)', value: fmt(R.empINSS), type: 'deduction' },
+        { label: 'Total Employer Monthly Cost', value: fmt(R.totalEmployerCostMonthly), type: 'total' }
+      ] }
+    ],
+    source: 'Angola AGT PAYE model and INSS contribution treatment used on this page. Employee INSS is deductible before PAYE in this estimate. Informational only; verify employer-specific treatment with AGT or a qualified payroll advisor.'
+  });
 }
 
 // ── SHARE ─────────────────────────────────────────────────────
@@ -1135,7 +1150,7 @@ window._grossToNet = function(g) {
 };
 </script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script>
 (function(){
   var KEY='afro_favs_v2',TOOL_ID='ao-paye',LIMIT=10;

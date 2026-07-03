@@ -79,21 +79,23 @@
 <meta name="tool-id" content="tz-paye">
   <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/tz-paye.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
 <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=353f7468">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tanzania/tz-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tanzania/tz-paye" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/tanzania/kikokotoo-kodi-mshahara/" />
@@ -240,7 +242,7 @@
         </div>
 
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Download PDF
           </button>
@@ -918,6 +920,30 @@ function renderChart(type) {
 }
 
 // ── PDF MODAL ─────────────────────────────────────────────────
+async function downloadPdfSummary(){
+  if(!RESULT || !window.AfroTools?.pdf) return;
+  const R = RESULT;
+  await window.AfroTools.pdf.generate({
+    filename:'afrotools-tz-paye-tanzania-2026-07-03.pdf',
+    title:'Tanzania PAYE Summary',
+    subtitle:'Monthly employment tax estimate',
+    country:'Tanzania',
+    currency:'TZS',
+    summary:[
+      {label:'Take-home',value:fmt(R.netMonthly)},
+      {label:'Gross',value:fmt(R.gross)},
+      {label:'PAYE',value:fmt(R.monthlyPAYE)},
+      {label:'Effective rate',value:pct(R.effectiveRate)}
+    ],
+    sections:[
+      {heading:'Monthly result',rows:[['Gross salary',fmt(R.gross)],['PAYE tax',fmt(R.monthlyPAYE)],['Employee social security',fmt(R.social)],['Take-home pay',fmt(R.netMonthly)]]},
+      {heading:'Annual view',rows:[['Annual gross salary',fmt(R.annualGross)],['Annual PAYE',fmt(R.annualTax)],['Annual social security',fmt(R.annualSocial)],['Annual take-home pay',fmt(R.annualNet)]]},
+      {heading:'Employer view',rows:[['Employer social security',fmt(R.empSocial)],['SDL',fmt(R.sdl)],['WCF',fmt(R.wcf)],['Total employer monthly cost',fmt(R.totalEmployerCostMonthly)]]}
+    ],
+    skipGate:true
+  });
+}
+
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
 function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
 document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
@@ -969,7 +995,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
   <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
 <meta property="article:modified_time" content="2026-03-28">
-</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head><body>
 <div class="cover">
@@ -1298,6 +1324,5 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
 
-<script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 </body>
 </html>

@@ -31,11 +31,11 @@
 <!-- Full CSS loaded async - non-blocking -->
 <link rel="preload" href="/assets/css/tokens.min.css?v=b7df8b91" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="/assets/css/global.min.css?v=2ab3665c" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/assets/css/paye-tool.css?v=e597e3a3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="/assets/css/paye-tool.css?v=8e22dda1" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-  <link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+  <link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 </noscript>
 <link rel="stylesheet" href="/assets/css/paye-calculation-sync.css?v=9b62cabb">
 
@@ -120,6 +120,7 @@
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/bundles/core.ff52e4f7.min.js" defer></script><script src="/assets/js/lib/share-state.js?v=a06e4cb8" defer></script>
 <script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
   <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
@@ -131,8 +132,8 @@
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
 <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=353f7468">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="stylesheet" href="/assets/css/money-page-commercial.css?v=e5730f07">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
@@ -348,7 +349,7 @@
 
           <!-- ACTIONS -->
           <div class="action-row">
-            <button type="button" class="act-btn act-pdf" onclick="downloadPdf()">
+            <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdf()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Download PDF
             </button>
@@ -1398,6 +1399,7 @@ async function downloadPdf() {
         'Unemployment Insurance Act 63 of 2001',
         'Skills Development Levies Act 9 of 1999',
       ],
+      skipGate: true,
     });
     if (typeof gtag === 'function') gtag('event', 'pdf_download', { tool_name: 'za-paye', country: 'South Africa' });
   } catch (e) {
@@ -1732,8 +1734,7 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
 
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
-<script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
 <script src="/assets/js/ai/prefill-adapters.js?v=201d9098" defer></script>
 <script src="/assets/js/ai/prefill-consumer.js?v=e6054dc4" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

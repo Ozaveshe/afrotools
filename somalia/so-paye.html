@@ -78,24 +78,23 @@
 </style>
 <meta name="tool-id" content="so-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
 <script>window.PAYE_SAVE_SLUG='so-paye';</script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-  <script src="/assets/js/components/save-result-button.js?v=ed2f7752" defer></script>
-  <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/so-paye.webp">
 <meta property="article:modified_time" content="2026-04-06">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/somalia/so-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/somalia/so-paye" />
@@ -180,24 +179,10 @@
         </div>
 
         <div class="action-row">
-          <button type="button" class="act-btn" style="color:#2563eb" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
+          <button type="button" class="act-btn" style="color:#2563eb" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
           <button type="button" class="act-btn" style="color:#4189dd" id="soShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
         </div>
 
-          <!-- Save & Share -->
-          <div class="save-share-row">
-            <save-result-button
-              tool-slug="so-paye"
-              tool-name="Somalia PAYE Calculator"
-              country-code="SO"
-              currency="SOS">
-            </save-result-button>
-            <share-result-button
-              tool-name="Somalia PAYE Calculator"
-              tool-slug="so-paye"
-              country-flag="🇸🇴">
-            </share-result-button>
-          </div>
           <salary-benchmark country-code="SO" currency="SOS"></salary-benchmark>
       </div>
     </div>
@@ -431,7 +416,7 @@
           <p class="tool-verification-lead">This high-stakes calculator links the authority sources, method notes, test cases, and limitations used to check the numbers shown on this page.</p>
         </div>
         <div class="tool-verification-status">
-          <span class="tool-verification-badge">Last verified 2026-04-06</span>
+          <span class="tool-verification-badge">Last verified 2026-07-03</span>
           <p class="tool-verification-note">Somalia - high risk - AfroTools source audit</p>
         </div>
       </div>
@@ -439,7 +424,8 @@
         <div class="tool-verification-block">
           <h3>Official source links</h3>
           <ul class="tool-verification-list">
-<li><a href="https://financialministry.gov.sd" target="_blank" rel="noopener">financialministry.gov.sd</a></li>
+<li><a href="https://mof.gov.so/" target="_blank" rel="noopener">Somalia Ministry of Finance</a></li>
+<li><a href="https://revenuedirectorate.gov.so/" target="_blank" rel="noopener">Somalia Revenue Directorate</a></li>
           </ul>
         </div>
         <div class="tool-verification-block">
@@ -523,26 +509,7 @@ updateSliderFill(document.getElementById('salarySlider'));
   if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';setTimeout(()=>el.style.borderColor='',2000);return;}
   const tax=gross*0.05;const net=gross-tax;const effectiveRate=gross>0?tax/gross:0;RESULT={gross,monthly:gross,tax,net,effectiveRate,annualGross:gross*12,annualNet:net*12,annualTax:tax*12,totalEmployerCost:gross};
   document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/mo · ${fmt(gross*12)}/yr`;document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');
-  // Save/Share/Benchmark wiring
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({
-    inputs: { grossSalary: RESULT.gross },
-    outputs: {
-      netPay: RESULT.net,
-      tax: RESULT.tax,
-      effectiveRate: RESULT.effectiveRate
-    }
-  });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.net) + '/mo',
-    subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.tax) + '/mo' },
-      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
-    ]
-  });
+  // Benchmark wiring
   var _bmWidget = document.querySelector('salary-benchmark');
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.net); }renderChart('donut');var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');var d=PERIOD==='monthly'?12:1;empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/d)+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong><br>No formal employer contributions in Somalia; total cost equals gross salary.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
   document.getElementById('aiBtn').disabled=false;
@@ -564,6 +531,7 @@ function renderChart(type){
   else if(type==='employer'){CHART=new Chart(canvas,{type:'bar',data:{labels:['Take-Home','Income Tax (5%)'],datasets:[{label:'Amount',data:[R.net,R.tax],backgroundColor:AfroChartColors.doughnut.slice(0,2),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'SOS'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid}},y:{ticks:{font:{size:10,weight:'600'}}}}}})}
 }
 
+async function downloadPdfSummary(){if(!RESULT||!window.AfroTools?.pdf)return;const R=RESULT;await window.AfroTools.pdf.generate({filename:'afrotools-so-paye-somalia-2026-07-03.pdf',title:'Somalia PAYE Summary',subtitle:'Flat employment income tax estimate',country:'Somalia',currency:'SOS',summary:[{label:'Take-home',value:fmt(R.net)},{label:'Gross',value:fmt(R.gross)},{label:'Tax',value:fmt(R.tax)},{label:'Effective rate',value:pct(R.effectiveRate)}],sections:[{heading:'Monthly result',rows:[['Gross salary',fmt(R.gross)],['Employment income tax',fmt(R.tax)],['Take-home pay',fmt(R.net)]]},{heading:'Annual view',rows:[['Annual gross salary',fmt(R.annualGross)],['Annual tax',fmt(R.annualTax)],['Annual take-home pay',fmt(R.annualNet)]]},{heading:'Employer view',rows:[['Total employer monthly cost',fmt(R.totalEmployerCost)],['Employer contribution note','No formal employer contribution is modeled on this calculator.']]}],skipGate:true});}
 function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';document.getElementById('modalSuccess').style.display='none';}
 function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
@@ -621,7 +589,7 @@ window._grossToNet = function(g) {
   return g-calcMonthlyPAYE(g).tax;
 };
 </script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

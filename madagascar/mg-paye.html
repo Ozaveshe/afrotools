@@ -57,25 +57,24 @@
 </script>
 <meta name="tool-id" content="mg-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
 <script>window.PAYE_SAVE_SLUG='mg-paye';</script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-  <script src="/assets/js/components/save-result-button.js?v=ed2f7752" defer></script>
-  <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/mg-paye.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/madagascar/mg-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/madagascar/calculateur-salaire-net" />
@@ -96,22 +95,8 @@
             <button type="button" class="preset-btn" onclick="setPreset(3500000, this)">MGA 3.5M</button>
             <button type="button" class="preset-btn" onclick="setPreset(5000000, this)">MGA 5M</button>
           </div>
-<div class="field"><div class="f-label"><span class="f-label-text">Active Deductions</span></div><div style="display:flex;align-items:center;gap:9px;padding:10px 12px;background:#f9f9f9;border:1.5px solid #ddd;border-radius:7px"><input type="checkbox" id="cnapsChk" checked onclick="togCNAPS()"><label for="cnapsChk" style="font-size:.72rem;font-weight:700;color:#333;margin:0;cursor:pointer">CNaPS Pension (1%, capped MGA 2,101,440/mo)</label></div></div><div class="field"><div class="f-label"><span class="f-label-text">Eligible Dependents</span><span class="f-hint">MGA 2,000 relief each</span></div><div class="f-wrap"><input aria-label="Dependents" type="number" class="f-input" id="dependents" min="0" max="10" step="1" value="0" oninput="calculate()"></div></div><button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Monthly Take-Home Pay</div><div class="res-hero-amount" id="resAmount">MGA 0</div><div class="res-hero-period">After tax &amp; CNaPS</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button><button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button><button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button type="button" class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download PDF</button><button type="button" class="act-btn act-share" id="mgShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button></div>
+<div class="field"><div class="f-label"><span class="f-label-text">Active Deductions</span></div><div style="display:flex;align-items:center;gap:9px;padding:10px 12px;background:#f9f9f9;border:1.5px solid #ddd;border-radius:7px"><input type="checkbox" id="cnapsChk" checked onclick="togCNAPS()"><label for="cnapsChk" style="font-size:.72rem;font-weight:700;color:#333;margin:0;cursor:pointer">CNaPS Pension (1%, capped MGA 2,101,440/mo)</label></div></div><div class="field"><div class="f-label"><span class="f-label-text">Eligible Dependents</span><span class="f-hint">MGA 2,000 relief each</span></div><div class="f-wrap"><input aria-label="Dependents" type="number" class="f-input" id="dependents" min="0" max="10" step="1" value="0" oninput="calculate()"></div></div><button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Monthly Take-Home Pay</div><div class="res-hero-amount" id="resAmount">MGA 0</div><div class="res-hero-period">After tax &amp; CNaPS</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button><button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button><button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download PDF</button><button type="button" class="act-btn act-share" id="mgShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button></div>
 
-          <!-- Save & Share -->
-          <div class="save-share-row">
-            <save-result-button
-              tool-slug="mg-paye"
-              tool-name="Madagascar PAYE Calculator"
-              country-code="MG"
-              currency="MGA">
-            </save-result-button>
-            <share-result-button
-              tool-name="Madagascar PAYE Calculator"
-              tool-slug="mg-paye"
-              country-flag="🇲🇬">
-            </share-result-button>
-          </div>
           <salary-benchmark country-code="MG" currency="MGA"></salary-benchmark></div></div><div class="sidebar"><div class="ai-card"><div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Tax Advisor</span><span class="ai-head-by">Powered by Claude</span></div><div class="ai-body"><p class="ai-status" id="aiStatus">Calculate salary to unlock Madagascar tax analysis.</p><div class="ai-response" id="aiResp"></div><button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first →</button><div class="ai-chat" id="aiChat"><div class="chat-msgs" id="chatMsgs"></div><div class="chat-row"><input aria-label="Ask a follow up" class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()"><button type="button" class="chat-send" onclick="sendChat()">→</button></div></div></div></div><div class="card bands-card"><div class="card-head" onclick="toggleBands(this)"><span class="card-title">Madagascar Tax Bands</span><span class="tog-arrow">▾</span></div><div class="bands-body"><div class="band-row"><span class="band-range">MGA 0 – 350,000/mo</span><span class="band-rate">0%</span></div><div class="band-row"><span class="band-range">MGA 350,001 – 400,000/mo</span><span class="band-rate">5%</span></div><div class="band-row"><span class="band-range">MGA 400,001 – 500,000/mo</span><span class="band-rate">10%</span></div><div class="band-row"><span class="band-range">MGA 500,001 – 600,000/mo</span><span class="band-rate">15%</span></div><div class="band-row"><span class="band-range">Above MGA 600,000/mo</span><span class="band-rate">20%</span></div><div class="band-note">Minimum IRSA when tax is due: MGA 3,000/month. CNaPS: 1% employee + 13% employer on salary up to MGA 2,101,440/month in the standard general regime.</div></div></div><div class="disclaimer"><strong>Disclaimer:</strong> Informational only. Verify with local tax authority.</div>
 
       <div class="tool-info-card">
@@ -405,26 +390,7 @@ function calcTax(gross) {
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(eff * 200, 100) + '%'; }, 80);
   document.getElementById('hiddenGross').value = gross;
   document.getElementById('resultsCard').classList.add('on');
-  // Save/Share/Benchmark wiring
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({
-    inputs: { grossSalary: RESULT.gross },
-    outputs: {
-      netPay: RESULT.net,
-      tax: RESULT.tax,
-      effectiveRate: RESULT.effectiveRate
-    }
-  });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.net) + '/mo',
-    subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.tax) + '/mo' },
-      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
-    ]
-  });
+  // Benchmark wiring
   var _bmWidget = document.querySelector('salary-benchmark');
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.net); }
   renderChart(CHART_TYPE);
@@ -464,6 +430,46 @@ function renderChart(type) {
     CHART = new Chart(canvas, { type: 'bar', data: { labels: ['Take-Home','IRSA','CNaPS (Employee)','CNaPS (Employer)'], datasets: [{ label:'Amount', data: [R.net, R.tax, R.cnaps, R.employerCNaPS], backgroundColor: AfroChartColors.doughnut.slice(0,4), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'MGA'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } } });
   }
 }
+async function downloadPdfSummary() {
+  if (!RESULT || !window.AfroTools?.pdf) return;
+  const R = RESULT;
+  await window.AfroTools.pdf.generate({
+    filename: 'afrotools-mg-paye-madagascar-2026-07-03.pdf',
+    title: 'Madagascar PAYE Summary',
+    subtitle: 'IRSA, CNaPS, and take-home pay estimate',
+    country: 'Madagascar',
+    currency: 'MGA',
+    summary: [
+      { label: 'Take-home', value: fmt(R.net) },
+      { label: 'Gross', value: fmt(R.gross) },
+      { label: 'IRSA', value: fmt(R.tax) },
+      { label: 'Effective rate', value: pct(R.effectiveRate) }
+    ],
+    sections: [
+      { heading: 'Monthly result', rows: [
+        ['Gross salary', fmt(R.gross)],
+        ['Taxable after CNaPS', fmt(R.taxable)],
+        ['CNaPS employee contribution', fmt(R.cnaps)],
+        ['IRSA before relief', fmt(R.baseTax)],
+        ['Dependent relief', fmt(R.dependentRelief)],
+        ['IRSA due', fmt(R.tax)],
+        ['Take-home pay', fmt(R.net)]
+      ] },
+      { heading: 'Annual and employer view', rows: [
+        ['Annual gross salary', fmt(R.annualGross)],
+        ['Annual take-home pay', fmt(R.annualNet)],
+        ['Employer CNaPS', fmt(R.employerCNaPS)],
+        ['Total employer monthly cost', fmt(R.totalEmployerCost)]
+      ] },
+      { heading: 'Assumptions', rows: [
+        ['Covered salary', fmt(R.coveredSalary)],
+        ['Eligible dependents', String(R.dependents)]
+      ] }
+    ],
+    skipGate: true
+  });
+}
+
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
 function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
 document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
@@ -512,7 +518,7 @@ async function sendChat(){
   msgs.scrollTop=msgs.scrollHeight;
 }
 </script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script>window._grossToNet=function(g){var r=calcTax(g);return g-r.cnaps-r.tax;};</script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>

@@ -64,13 +64,12 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <meta name="tool-id" content="gq-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
 <script>window.PAYE_SAVE_SLUG='gq-paye';</script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Equatorial Guinea PAYE Calculator 2025/26","url":"https://afrotools.com/eq-guinea/gq-paye","description":"Calculate Equatorial Guinea take-home pay using 2025/26 IRPF tax bands (0%–35%), social security contributions. XAF CFA franc.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/gq-paye.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Equatorial Guinea","item":"https://afrotools.com/eq-guinea"},{"@type":"ListItem","position":3,"name":"PAYE Calculator","item":"https://afrotools.com/eq-guinea/gq-paye"}]}</script>
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-  <script src="/assets/js/components/save-result-button.js?v=ed2f7752" defer></script>
-  <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
@@ -78,16 +77,16 @@
 <meta name="twitter:description" content="Equatorial Guinea PAYE calculator 2025/26. IRPF progressive 0%–35%, social security 4.5% employee + 21.5% employer. XAF currency. Free PDF.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/gq-paye.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
 <meta property="og:url" content="https://afrotools.com/eq-guinea/gq-paye">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/eq-guinea/gq-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/eq-guinea/gq-paye" />
@@ -209,25 +208,17 @@
           <div style="position:relative;height:200px"><canvas id="mainChart"></canvas></div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 22px 22px">
-          <button type="button" onclick="openPdfModal()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,215,0,.1);border:1.5px solid rgba(255,215,0,.35);color:#7a6200">📄 Download PDF</button>
-          <button type="button" id="gqShareBtn" onclick="shareResult()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:#f5f5f5;border:1.5px solid #ddd;color:#333">Share Result</button>
+        <div class="action-row" style="padding:0 22px 22px">
+          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Download PDF
+          </button>
+          <button type="button" class="act-btn act-share" id="gqShareBtn" onclick="shareResult()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share Result
+          </button>
         </div>
 
-          <!-- Save & Share -->
-          <div class="save-share-row">
-            <save-result-button
-              tool-slug="gq-paye"
-              tool-name="Equatorial Guinea PAYE Calculator"
-              country-code="GQ"
-              currency="XAF">
-            </save-result-button>
-            <share-result-button
-              tool-name="Equatorial Guinea PAYE Calculator"
-              tool-slug="gq-paye"
-              country-flag="🇬🇶">
-            </share-result-button>
-          </div>
           <salary-benchmark country-code="GQ" currency="XAF"></salary-benchmark>
       </div>
     </div>
@@ -516,10 +507,6 @@ function calcAnnualIRPF(i){const n=Math.max(0,i),d=[];if(n<=1e6)return d.push({r
   }
 
   function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('socSec'),s=n?0.045:0,r=0.215,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualIRPF(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,monthly:e,socSec:o,socSecRate:s,empSocSec:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualSocSec:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/month · ${fmt(l)}/year`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('hiddenGross').value=e,document.getElementById('employerStrip').innerHTML=`<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + social security ${fmt(a)}/mo.`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart(CHART_TYPE),document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'}),document.getElementById('aiBtn').disabled=!1,document.getElementById('aiBtn').textContent='Get AI Tax Analysis →',document.getElementById('aiStatus').textContent=`Gross: ${fmt(e)}/mo · Take-home: ${fmt(h)}/mo · Tax: ${fmt(u)}/mo · Effective: ${pct(b)}`;
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({ inputs: { grossSalary: RESULT.gross }, outputs: { netPay: RESULT.netMonthly, tax: RESULT.monthlyPAYE, effectiveRate: RESULT.effectiveRate } });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({ headline: 'My Take-Home Pay', mainValue: fmt(RESULT.netMonthly) + '/mo', subValues: [{ label: 'Gross', value: fmt(RESULT.gross) + '/mo' }, { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' }, { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }] });
   var _bmWidget = document.querySelector('salary-benchmark');
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
 }
@@ -528,6 +515,43 @@ function setPeriod(e,n){PERIOD=e,document.querySelectorAll('.per-btn').forEach(e
 function toggleBands(e){const n=e.nextElementSibling;n.style.display='none'===n.style.display?'block':'none';const s=e.querySelector('.tog-arrow');s.style.transform='none'===s.style.transform||'rotate(0deg)'===s.style.transform?'rotate(180deg)':'rotate(0deg)'}
 function setChart(e,n){CHART_TYPE=e,document.querySelectorAll('.chart-tab').forEach(e=>e.classList.remove('on')),n.classList.add('on'),n.style.background='var(--primary)',n.style.color='#fff',renderChart(e)}
 function renderChart(e){if(!RESULT)return;const n=RESULT,s=document.getElementById('mainChart');CHART&&(CHART.destroy(),CHART=null),'donut'===e?CHART=new Chart(s,{type:'doughnut',data:{labels:['Take-Home','IRPF Tax','Social Security'],datasets:[{data:[n.netMonthly,n.monthlyPAYE,n.socSec],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}}):'bar'===e?n.bandBreakdown.filter(e=>e.tax>0).length>0&&(CHART=new Chart(s,{type:'bar',data:{labels:n.bandBreakdown.filter(e=>e.tax>0).map(e=>(100*e.rate)+'%'),datasets:[{label:'Annual Tax (XAF)',data:n.bandBreakdown.filter(e=>e.tax>0).map(e=>e.tax),backgroundColor: AfroChartColors.series[0],borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{ticks:{callback:e=>'XAF'+(e/1e6).toFixed(1)+'M'},grid:{color:'#eee'}},x:{ticks:{font:{size:10,weight:'600'}}}}}})):'employer'===e&&(CHART=new Chart(s,{type:'bar',data:{labels:['Take-Home','IRPF Tax','Social Security','Emp SS'],datasets:[{label:'XAF',data:[n.netMonthly,n.monthlyPAYE,n.socSec,n.empSocSec],backgroundColor: AfroChartColors.doughnut.slice(0, 4),borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{ticks:{callback:e=>'XAF'+(e/1e3).toFixed(0)+'k'},grid:{color:'#eee'}}}}})),CHART}
+async function downloadPdfSummary() {
+  if (!RESULT || !window.AfroTools?.pdf) return;
+  const R = RESULT;
+  const rows = [
+    ['Monthly gross salary', fmt(R.gross)],
+    ['Social security contribution', fmt(R.socSec)],
+    ['Monthly IRPF', fmt(R.monthlyPAYE)],
+    ['Monthly take-home pay', fmt(R.netMonthly)],
+    ['Annual take-home pay', fmt(R.annualNet)],
+    ['Effective tax rate', pct(R.effectiveRate)],
+    ['Employer social security', fmt(R.empSocSec)],
+    ['Total employer monthly cost', fmt(R.totalEmployerCostMonthly)]
+  ];
+  const bandRows = (R.bandBreakdown || []).map(b => [
+    `Band at ${pct(b.rate)}`,
+    `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
+  ]);
+  await window.AfroTools.pdf.generate({
+    filename: 'afrotools-gq-paye-equatorial-guinea-2026-07-03.pdf',
+    title: 'Equatorial Guinea PAYE Summary',
+    subtitle: 'IRPF and social security estimate',
+    country: 'Equatorial Guinea',
+    currency: 'XAF',
+    summary: [
+      { label: 'Take-home', value: fmt(R.netMonthly) },
+      { label: 'Gross', value: fmt(R.gross) },
+      { label: 'IRPF', value: fmt(R.monthlyPAYE) },
+      { label: 'Effective rate', value: pct(R.effectiveRate) }
+    ],
+    sections: [
+      { heading: 'Result', rows },
+      { heading: 'Tax bands used', rows: bandRows.length ? bandRows : [['IRPF', 'Income remains in the zero-tax band']] },
+      { heading: 'Source note', rows: [['Basis', 'IRPF bands and social security assumptions shown on this calculator.']] }
+    ],
+    skipGate: true
+  });
+}
 function openPdfModal(){RESULT&&(document.getElementById('pdfModal').style.display='flex',document.getElementById('leadForm').style.display='block')}
 function closePdfModal(){document.getElementById('pdfModal').style.display='none'}
 document.getElementById('pdfModal').addEventListener('click',e=>{e.target.id==='pdfModal'&&closePdfModal()});
@@ -537,7 +561,7 @@ function shareResult(){if(!RESULT)return;const e=`My Equatorial Guinea PAYE: Gro
 async function getAI(){if(!RESULT)return;const e=RESULT,n=document.getElementById('aiBtn'),s=document.getElementById('aiResp');n.disabled=!0,n.textContent='Analysing…',s.style.display='block',s.className='ai-response',s.textContent='Generating analysis...';try{const e=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Brief tax advisor for Equatorial Guinea PAYE. Concise.',messages:[{role:'user',content:'Summarize this calculation briefly in 2 sentences.'}]})});if(e.ok){const n=await e.json();s.textContent=n.text||'Analysis unavailable.',n.text&&(document.getElementById('aiChat').style.display='block')}}catch(e){s.textContent='AI analysis temporarily unavailable.'}n.disabled=!1,n.textContent='Ask follow-up →'}
 async function sendChat(){const e=document.getElementById('chatIn'),n=e.value.trim();if(n&&RESULT){e.value='';const s=document.getElementById('chatMsgs');s.innerHTML+=`<div style="font-size:.78rem;padding:8px 11px;border-radius:6px;background:rgba(37,99,235,.22);color:#fff;align-self:flex-end;max-width:85%">${n}</div>`;const r=document.createElement('div');r.style.cssText='font-size:.78rem;padding:8px 11px;border-radius:6px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);align-self:flex-start;max-width:95%',r.textContent='…',s.appendChild(r),s.scrollTop=s.scrollHeight}}
 </script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script>window._grossToNet=function(g){var d=isOn('socSec')?g*0.045:0;return g-(d+calcAnnualIRPF(Math.max(0,(g-d)*12)).tax/12);};</script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>

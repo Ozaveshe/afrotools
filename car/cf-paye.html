@@ -62,13 +62,12 @@ body{font-family:'Inter',Arial,sans-serif; }
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <meta name="tool-id" content="cf-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
 <script>window.PAYE_SAVE_SLUG='cf-paye';</script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Central African Republic PAYE Calculator 2025/26","url":"https://afrotools.com/car/cf-paye","description":"Calculate CAR take-home pay using 2025/26 DGI IRPP tax bands (0%–50%), CNSS contributions. XAF CFA franc.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/cf-paye.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Central African Republic","item":"https://afrotools.com/car"},{"@type":"ListItem","position":3,"name":"PAYE Calculator","item":"https://afrotools.com/car/cf-paye"}]}</script>
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-  <script src="/assets/js/components/save-result-button.js?v=ed2f7752" defer></script>
-  <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -77,15 +76,15 @@ body{font-family:'Inter',Arial,sans-serif; }
 <meta name="twitter:description" content="CAR PAYE 2025/26. DGI IRPP 0%–50%, CNSS 3% employee + 18% employer. XAF currency. Free calculator and PDF.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cf-paye.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
 <meta property="og:url" content="https://afrotools.com/car/cf-paye">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/car/cf-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/centrafrique/calculateur-salaire-net" />
@@ -197,7 +196,7 @@ body{font-family:'Inter',Arial,sans-serif; }
         </div>
 
         <div class="action-row" style="grid-template-columns:1fr 1fr">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Download PDF
           </button>
@@ -207,20 +206,6 @@ body{font-family:'Inter',Arial,sans-serif; }
           </button>
         </div>
 
-          <!-- Save & Share -->
-          <div class="save-share-row">
-            <save-result-button
-              tool-slug="cf-paye"
-              tool-name="Central African Republic PAYE Calculator"
-              country-code="CF"
-              currency="XAF">
-            </save-result-button>
-            <share-result-button
-              tool-name="Central African Republic PAYE Calculator"
-              tool-slug="cf-paye"
-              country-flag="🇨🇫">
-            </share-result-button>
-          </div>
           <salary-benchmark country-code="CF" currency="XAF"></salary-benchmark>
       </div>
     </div>
@@ -514,10 +499,7 @@ function calcAnnualDGI(i){const n=Math.max(0,i),d=[];if(n<=200000)return d.push(
   }
 
   function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('cnss'),s=n?0.03:0,r=0.18,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualDGI(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,cnss:o,empCNSS:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualCNSS:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/mo · ${fmt(l)}/yr`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('employerStrip').innerHTML=`<strong>Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/mo</strong><br>Gross + CNSS ${fmt(a)}/mo`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart('donut'),document.getElementById('aiBtn').disabled=false,document.getElementById('aiBtn').textContent='Get AI Tax Analysis';
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({ inputs: { grossSalary: RESULT.gross }, outputs: { netPay: RESULT.netMonthly, tax: RESULT.monthlyPAYE, effectiveRate: RESULT.effectiveRate } });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({ headline: 'My Take-Home Pay', mainValue: fmt(RESULT.netMonthly) + '/mo', subValues: [{ label: 'Gross', value: fmt(RESULT.gross) + '/mo' }, { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' }, { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }] });
+  // Benchmark wiring
   var _bmWidget = document.querySelector('salary-benchmark');
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
 }
@@ -529,6 +511,17 @@ function setChart(e){const n=document.getElementById('mainChart');if(CHART){CHAR
 function shareResult(){if(!RESULT)return;const e=`CAR PAYE: ${Math.round(RESULT.gross).toLocaleString()} XAF gross → ${Math.round(RESULT.netMonthly).toLocaleString()} take-home (${pct(RESULT.effectiveRate)})`;navigator.clipboard&&(navigator.clipboard.writeText(e),document.getElementById('cfShareBtn').textContent='✓ Copied!')}
 
 // ── PDF MODAL ─────────────────────────────────────────────────
+async function downloadPdfSummary(){if(!RESULT||!window.AfroTools?.pdf)return;const R=RESULT;const rows=[
+['Monthly gross salary',fmt(R.gross)],
+['CNSS employee contribution',fmt(R.cnss)],
+['PAYE income tax',fmt(R.monthlyPAYE)],
+['Monthly take-home pay',fmt(R.netMonthly)],
+['Annual gross salary',fmt(R.annualGross)],
+['Annual take-home pay',fmt(R.annualNet)],
+['Effective tax rate',pct(R.effectiveRate)],
+['Employer CNSS cost',fmt(R.empCNSS)],
+['Total employer monthly cost',fmt(R.totalEmployerCostMonthly)]
+];const bandRows=(R.bandBreakdown||[]).map(b=>[`Band at ${pct(b.rate)}`,`${fmt(b.income)} income -> ${fmt(b.tax)} tax`]);await window.AfroTools.pdf.generate({filename:'afrotools-cf-paye-central-african-republic-2026-07-03.pdf',title:'Central African Republic PAYE Summary',subtitle:'DGI IRPP and CNSS estimate',country:'Central African Republic',currency:'XAF',summary:[{label:'Monthly take-home',value:fmt(R.netMonthly)},{label:'Monthly gross',value:fmt(R.gross)},{label:'PAYE tax',value:fmt(R.monthlyPAYE)},{label:'Effective rate',value:pct(R.effectiveRate)}],sections:[{heading:'Result',rows},{heading:'Tax bands used',rows:bandRows.length?bandRows:[['PAYE tax','Income remains in the zero-tax band']]},{heading:'Source note',rows:[['Basis','DGI IRPP bands and CNSS contribution assumptions shown on this calculator.']]}],skipGate:true});}
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
 function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
 document.getElementById('pdfModal').addEventListener('click', function(e){ if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
@@ -694,8 +687,8 @@ async function sendChat(){
   msgs.scrollTop=msgs.scrollHeight;
 }
 </script>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script>window._grossToNet=function(g){var d=isOn('cnss')?g*0.03:0;return g-(d+calcAnnualDGI(Math.max(0,(g-d)*12)).tax/12);};</script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>

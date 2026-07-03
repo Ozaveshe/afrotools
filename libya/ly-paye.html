@@ -57,24 +57,23 @@
 </script>
 <meta name="tool-id" content="ly-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
 <script>window.PAYE_SAVE_SLUG='ly-paye';</script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-  <script src="/assets/js/components/save-result-button.js?v=ed2f7752" defer></script>
-  <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ly-paye.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/libya/ly-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/libya/ly-paye" />
@@ -95,22 +94,8 @@
             <button type="button" class="preset-btn" onclick="setPreset(30000, this)">LYD 30k</button>
             <button type="button" class="preset-btn" onclick="setPreset(60000, this)">LYD 60k</button>
           </div>
-<button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Monthly Take-Home Pay</div><div class="res-hero-amount" id="resAmount">LYD 0</div><div class="res-hero-period">After PAYE &amp; all deductions</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button><button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button><button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button type="button" class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download PDF</button><button type="button" class="act-btn act-share" id="lyShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button></div>
+<button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Monthly Take-Home Pay</div><div class="res-hero-amount" id="resAmount">LYD 0</div><div class="res-hero-period">After PAYE &amp; all deductions</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button><button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button><button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download PDF</button><button type="button" class="act-btn act-share" id="lyShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button></div>
 
-          <!-- Save & Share -->
-          <div class="save-share-row">
-            <save-result-button
-              tool-slug="ly-paye"
-              tool-name="Libya PAYE Calculator"
-              country-code="LY"
-              currency="LYD">
-            </save-result-button>
-            <share-result-button
-              tool-name="Libya PAYE Calculator"
-              tool-slug="ly-paye"
-              country-flag="🇱🇾">
-            </share-result-button>
-          </div>
           <salary-benchmark country-code="LY" currency="LYD"></salary-benchmark></div></div><div class="sidebar"><div class="ai-card"><div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Tax Advisor</span><span class="ai-head-by">Powered by Claude</span></div><div class="ai-body"><p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your Libya tax and social contributions.</p><div class="ai-response" id="aiResp"></div><button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button><div class="ai-chat" id="aiChat"><div class="chat-msgs" id="chatMsgs"></div><div class="chat-row"><input aria-label="Ask a follow up" class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()"><button type="button" class="chat-send" onclick="sendChat()">→</button></div></div></div></div><div class="card bands-card"><div class="card-head" onclick="toggleBands(this)"><span class="card-title">Libya 2025 Tax Components</span><span class="tog-arrow">▾</span></div><div class="bands-body"><div class="band-row"><span class="band-range">Income Tax (first LYD 1,000/mo)</span><span class="band-rate">5%</span></div><div class="band-row"><span class="band-range">Income Tax (above LYD 1,000/mo)</span><span class="band-rate">10%</span></div><div class="band-row"><span class="band-range">Stamp Duty (on net salary)</span><span class="band-rate">0.5%</span></div><div class="band-row"><span class="band-range">Employee Social Security</span><span class="band-rate">5.125%</span></div><div class="band-row"><span class="band-range">Social Unity Fund (SUF)</span><span class="band-rate">1%</span></div><div class="band-row"><span class="band-range">Employer Social Security</span><span class="band-rate">14.35%</span></div><p class="band-note">Progressive tax: 5% on first LYD 12,000/year, 10% above. Stamp duty on net salary. Employer cost: gross + 14.35% social.</p></div></div><div class="disclaimer"><strong>Disclaimer:</strong> For informational purposes only. Rates based on Libyan law. Verify with local tax authority.</div>
 
       <div class="tool-info-card">
@@ -387,21 +372,6 @@ updateSliderFill(document.getElementById('salarySlider'));
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
   document.getElementById('hiddenGross').value = gross;
   document.getElementById('resultsCard').classList.add('on');
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({
-    inputs: { grossSalary: RESULT.gross },
-    outputs: { netPay: RESULT.netMonthly, tax: RESULT.incomeTax, effectiveRate: RESULT.effectiveRate }
-  });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly) + '/mo',
-    subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.incomeTax) + '/mo' },
-      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
-    ]
-  });
   var _bmWidget = document.querySelector('salary-benchmark');
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
   renderChart(CHART_TYPE);
@@ -454,6 +424,44 @@ function renderChart(type) {
     CHART = new Chart(canvas, { type: 'bar', data: { labels: ['Take-Home','Employee Deductions','Employer Social (14.35%)'], datasets: [{ label:'Amount', data: [R.netMonthly, R.totalDeductions, R.employerSS], backgroundColor: AfroChartColors.doughnut.slice(0,3), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'LYD'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } } });
   }
 }
+async function downloadPdfSummary() {
+  if (!RESULT || !window.AfroTools?.pdf) return;
+  const R = RESULT;
+  await window.AfroTools.pdf.generate({
+    filename: 'afrotools-ly-paye-libya-2026-07-03.pdf',
+    title: 'Libya PAYE Summary',
+    subtitle: 'Income tax, social security, SUF, and stamp duty estimate',
+    country: 'Libya',
+    currency: 'LYD',
+    summary: [
+      { label: 'Take-home', value: fmt(R.netMonthly) },
+      { label: 'Gross', value: fmt(R.gross) },
+      { label: 'Income tax', value: fmt(R.incomeTax) },
+      { label: 'Effective rate', value: pct(R.effectiveRate) }
+    ],
+    sections: [
+      { heading: 'Monthly result', rows: [
+        ['Gross salary', fmt(R.gross)],
+        ['Income tax', fmt(R.incomeTax)],
+        ['Employee social security', fmt(R.socialEmployee)],
+        ['Social Unity Fund', fmt(R.suf)],
+        ['Stamp duty', fmt(R.stampDuty)],
+        ['Total deductions', fmt(R.totalDeductions)],
+        ['Take-home pay', fmt(R.netMonthly)]
+      ] },
+      { heading: 'Annual and employer view', rows: [
+        ['Annual gross salary', fmt(R.annualGross)],
+        ['Annual take-home pay', fmt(R.annualNet)],
+        ['Annual deductions', fmt(R.annualDeductions)],
+        ['Employer social security', fmt(R.employerSS)],
+        ['Total employer monthly cost', fmt(R.totalEmployerCost)]
+      ] },
+      { heading: 'Source note', rows: [['Basis', 'Libya PAYE components and social contribution assumptions shown on this calculator.']] }
+    ],
+    skipGate: true
+  });
+}
+
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
 function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
 document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
@@ -505,7 +513,7 @@ async function sendChat() {
   } catch(err) { aiEl.textContent = 'AI temporarily unavailable.'; }
 }
 </script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script>window._grossToNet=function(g){return g-calcMonthlyPAYE(g).tax;};</script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>

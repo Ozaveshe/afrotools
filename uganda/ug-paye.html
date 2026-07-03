@@ -77,19 +77,21 @@
 </style>
 <meta name="tool-id" content="ug-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 <script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ug-paye.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/uganda/ug-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/uganda/ug-paye" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/uganda/kikokotoo-kodi-mshahara/" />
@@ -241,7 +243,7 @@
         <div class="employer-strip" id="employerStrip"></div>
 
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">📄 Get PDF</button>
+          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()">Download PDF</button>
           <button type="button" class="act-btn" onclick="whatsappShare()" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.618-1.462A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.171 0-4.2-.695-5.856-1.873l-.42-.277-2.735.867.87-2.664-.305-.44A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
             WhatsApp
@@ -361,6 +363,9 @@
 
               </div>
       </div>
+    </div>
+  </div>
+</div>
 
 <!-- PDF MODAL -->
 <div class="modal-bg" id="pdfModal">
@@ -885,6 +890,30 @@ function renderChart(type) {
 }
 
 // ── PDF MODAL ─────────────────────────────────────────────────
+async function downloadPdfSummary(){
+  if(!RESULT || !window.AfroTools?.pdf) return;
+  const R = RESULT;
+  await window.AfroTools.pdf.generate({
+    filename:'afrotools-ug-paye-uganda-2026-07-03.pdf',
+    title:'Uganda PAYE Summary',
+    subtitle:'Monthly employment tax estimate',
+    country:'Uganda',
+    currency:'UGX',
+    summary:[
+      {label:'Take-home',value:fmt(R.netMonthly)},
+      {label:'Gross',value:fmt(R.gross)},
+      {label:'PAYE',value:fmt(R.monthlyPAYE)},
+      {label:'Effective rate',value:pct(R.effectiveRate)}
+    ],
+    sections:[
+      {heading:'Monthly result',rows:[['Gross salary',fmt(R.gross)],['PAYE tax',fmt(R.monthlyPAYE)],['NSSF employee',fmt(R.nssf)],['Local service tax',fmt(R.lstMonthly)],['Take-home pay',fmt(R.netMonthly)]]},
+      {heading:'Annual view',rows:[['Annual gross salary',fmt(R.annualGross)],['Annual PAYE',fmt(R.annualTax)],['Annual NSSF',fmt(R.annualNSSF)],['Annual local service tax',fmt(R.lstAnnual)],['Annual take-home pay',fmt(R.annualNet)]]},
+      {heading:'Employer view',rows:[['Employer NSSF',fmt(R.empNSSF)],['Total employer monthly cost',fmt(R.totalEmployerCostMonthly)]]}
+    ],
+    skipGate:true
+  });
+}
+
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
 function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
 document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
@@ -935,7 +964,7 @@ td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
 <meta property="article:modified_time" content="2026-03-28">
-</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head><body>
 <div class="cover">
@@ -1241,13 +1270,12 @@ window.PAYE_CALC_SYNC_ADAPTER = (function () {
 })();
 </script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script>
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
 <script src="/assets/js/lib/paye-calculation-sync.js?v=27be8670" defer></script>
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
-<script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 </body>
 </html>

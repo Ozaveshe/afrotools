@@ -25,7 +25,9 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <meta name="tool-id" content="dz-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
 <script>window.PAYE_SAVE_SLUG='dz-paye';</script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 <style>
   :root {
     --calc-accent: #0063D1;
@@ -74,25 +76,22 @@
 </script>
 
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-  <script src="/assets/js/components/save-result-button.js?v=ed2f7752" defer></script>
-  <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-  <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/dz-paye.webp">
 <meta property="article:modified_time" content="2026-04-06">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+<link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 <link rel="stylesheet" href="/assets/css/paye-sources.css?v=81ca79b4">
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
 <meta property="og:url" content="https://afrotools.com/algeria/dz-paye">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/algeria/dz-paye" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/algerie/calculateur-salaire-net" />
@@ -178,24 +177,9 @@
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>
+          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
           <button type="button" class="act-btn act-share" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
         </div>
-
-          <!-- Save & Share -->
-          <div class="save-share-row">
-            <save-result-button
-              tool-slug="dz-paye"
-              tool-name="Algeria PAYE Calculator"
-              country-code="DZ"
-              currency="DZD">
-            </save-result-button>
-            <share-result-button
-              tool-name="Algeria PAYE Calculator"
-              tool-slug="dz-paye"
-              country-flag="🇩🇿">
-            </share-result-button>
-          </div>
           <salary-benchmark country-code="DZ" currency="DZD"></salary-benchmark>
       </div>
     </div>
@@ -513,25 +497,7 @@ return{tax,bandBreakdown:bands.filter(b=>b.income>0)};}
 const cnas=isOn('cnas')?gross*0.09:0;const empCNAS=gross*0.255;const taxable=gross-cnas;const result=calcDGI(taxable);const tax=result.tax;const net=gross-cnas-tax;const eff=gross>0?tax/gross:0;RESULT={gross,cnas,empCNAS,tax,bandBreakdown:result.bandBreakdown,net,effectiveRate:eff,empCost:gross+empCNAS};document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/year`;document.getElementById('resContent').innerHTML=`<div class="res-section"><div class="res-section-title">Income</div><div class="res-row"><span class="res-row-lbl">Annual Gross</span><span class="res-row-val">${fmt(gross)}</span></div></div><div class="res-section"><div class="res-section-title">Deductions</div>${cnas?`<div class="res-row"><span class="res-row-lbl">CNAS (9%)</span><span class="res-row-val c-red">${fmt(cnas)}</span></div>`:''}
 <div class="res-row"><span class="res-row-lbl">Taxable</span><span class="res-row-val c-mut">${fmt(taxable)}</span></div><div class="res-row"><span class="res-row-lbl">DGI Tax</span><span class="res-row-val c-red">${fmt(tax)}</span></div></div><div class="res-section"><div class="res-row total"><span class="res-row-lbl">Take-Home</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');
   // Save/Share/Benchmark wiring
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({
-    inputs: { grossSalary: RESULT.gross },
-    outputs: {
-      netPay: RESULT.net,
-      tax: RESULT.tax,
-      effectiveRate: RESULT.effectiveRate
-    }
-  });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.net) + '/yr',
-    subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/yr' },
-      { label: 'Tax', value: fmt(RESULT.tax) + '/yr' },
-      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
-    ]
-  });
+  // Benchmark widget stays in the result card; save/share controls are handled once elsewhere.
   var _bmWidget = document.querySelector('salary-benchmark');
 if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.net); }renderChart(CHART_TYPE);document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis →';const empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.empCost)+'/year</strong><br>Gross salary + modeled employer payroll charges (25.5%) '+fmt(RESULT.empCNAS)+'/year.';}}
 function toggleBands(h){const b=h.nextElementSibling;b.classList.toggle('open');h.querySelector('.tog-arrow').classList.toggle('open');}
@@ -542,6 +508,49 @@ else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(bands.le
 function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');}
 function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
+async function downloadPdfSummary(){
+  if(!RESULT)return;
+  if(!window.AfroTools||!window.AfroTools.pdf){window.print();return;}
+  const R=RESULT;
+  const bandRows=R.bandBreakdown.map(b=>({
+    label:pct(b.rate)+' band on '+fmt(b.income),
+    value:b.tax>0?'-'+fmt(b.tax):fmt(0),
+    type:b.tax>0?'deduction':undefined,
+    color:b.tax>0?'red':'muted'
+  }));
+  await window.AfroTools.pdf.generate({
+    title:'Algeria PAYE Tax Report',
+    subtitle:'DGI and CNAS annual estimate',
+    country:'Algeria',
+    countryCode:'DZ',
+    currency:'DZD',
+    toolId:'dz-paye',
+    skipGate:true,
+    heroStats:[
+      {label:'Annual Take-Home',value:fmt(R.net),highlight:true},
+      {label:'Annual Gross',value:fmt(R.gross)},
+      {label:'DGI Tax',value:fmt(R.tax),color:'red'},
+      {label:'Effective Rate',value:pct(R.effectiveRate),color:'red'}
+    ],
+    effectiveRate:R.effectiveRate,
+    sections:[
+      {title:'Annual Income & Deductions',rows:[
+        {label:'Annual Gross Salary',value:fmt(R.gross)},
+        {label:'CNAS employee contribution (9%)',value:'-'+fmt(R.cnas),type:'deduction'},
+        {label:'Taxable Income',value:fmt(Math.max(0,R.gross-R.cnas)),color:'muted'},
+        {label:'DGI Income Tax',value:'-'+fmt(R.tax),type:'deduction'},
+        {label:'Annual Take-Home Pay',value:fmt(R.net),type:'total'}
+      ]},
+      {title:'DGI Band Computation',rows:bandRows},
+      {title:'Employer Cost Baseline',rows:[
+        {label:'Employee Gross Salary',value:fmt(R.gross)},
+        {label:'Employer payroll charges (25.5%)',value:fmt(R.empCNAS),type:'deduction'},
+        {label:'Total Employer Annual Cost',value:fmt(R.empCost),type:'total'}
+      ]}
+    ],
+    source:'Algeria DGI progressive income-tax bands and CNAS payroll contribution model used on this page. Informational estimate only; verify employer-specific treatment with DGI or a qualified payroll advisor.'
+  });
+}
 function shareResult(){if(!RESULT)return;const text=`Algeria PAYE: Gross DZD ${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home DZD ${Math.round(RESULT.net).toLocaleString()}/yr (${pct(RESULT.effectiveRate)}). afrotools.com/algeria/dz-paye`;if(navigator.share){navigator.share({title:'My Algeria PAYE',text,url:'https://afrotools.com/algeria/dz-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);}}
 async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');btn.disabled=true;btn.textContent='Analysing…';const prompt=`Algeria PAYE 2025: Gross DZD ${Math.round(R.gross).toLocaleString()}, CNAS DZD ${Math.round(R.cnas).toLocaleString()}, DGI DZD ${Math.round(R.tax).toLocaleString()}, Take-home DZD ${Math.round(R.net).toLocaleString()}, Rate ${pct(R.effectiveRate)}. Summarize in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Algeria tax advisor. Concise.',messages:[{role:'user',content:prompt}]})});const data=await res.json();const text=data.text||'Unable.';document.getElementById('aiResp').textContent=text;document.getElementById('aiResp').style.display='block';document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}catch(e){btn.disabled=false;btn.textContent='Try Again';}}
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Algeria tax advisor.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});}catch{aiEl.textContent='Error.';}}
@@ -550,7 +559,7 @@ document.getElementById('modalForm').style.display='none';closePdfModal();}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
 updateSliderFill(document.getElementById('salarySlider'));
 </script>
-<script src="/assets/js/bundles/tool-page.e945d564.min.js?v=e945d564" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/bundles/tool-page.b3e6b709.min.js?v=b3e6b709" defer></script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script>

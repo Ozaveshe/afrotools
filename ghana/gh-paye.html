@@ -29,11 +29,11 @@
 <!-- Full CSS loaded async - non-blocking -->
 <link rel="preload" href="/assets/css/tokens.min.css?v=b7df8b91" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="/assets/css/global.min.css?v=2ab3665c" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/assets/css/paye-tool.css?v=e597e3a3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="/assets/css/paye-tool.css?v=8e22dda1" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-  <link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
+  <link rel="stylesheet" href="/assets/css/paye-tool.css?v=8e22dda1">
 </noscript>
 <link rel="stylesheet" href="/assets/css/paye-calculation-sync.css?v=9b62cabb">
 
@@ -79,11 +79,23 @@
 <style>
 .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
+body.country-tax-page-ui-refresh .tool-hero{padding:34px 0 28px!important;background:#f8fafc!important;border-bottom:1px solid #e2e8f0!important;}
+body.country-tax-page-ui-refresh .tool-hero .container{display:block!important;max-width:1200px!important;}
+body.country-tax-page-ui-refresh .breadcrumb{color:#64748b!important;margin-bottom:14px!important;}
+body.country-tax-page-ui-refresh .breadcrumb a{color:#475569!important;}
+body.country-tax-page-ui-refresh .breadcrumb span{color:#0062cc!important;}
+body.country-tax-page-ui-refresh .tool-hero h1{max-width:780px!important;margin:0 0 10px!important;text-align:left!important;font-size:3rem!important;line-height:1.05!important;letter-spacing:0!important;color:#0f172a!important;}
+body.country-tax-page-ui-refresh .tool-hero-sub{max-width:700px!important;margin:0!important;text-align:left!important;color:#475569!important;}
+body.country-tax-page-ui-refresh .hero-badges{justify-content:flex-start!important;margin-top:16px!important;}
+body.country-tax-page-ui-refresh .hero-meta{margin-top:18px!important;max-width:820px!important;color:#475569!important;}
+body.country-tax-page-ui-refresh .tool-hero p[style*="font-size:0.8rem"]{max-width:820px!important;}
+body.country-tax-page-ui-refresh .badge-grey{background:#f1f5f9!important;color:#475569!important;border-color:#cbd5e1!important;}
+@media (max-width:640px){body.country-tax-page-ui-refresh .tool-hero{padding:26px 0 24px!important;}body.country-tax-page-ui-refresh .tool-hero h1{font-size:2.25rem!important;}body.country-tax-page-ui-refresh .tool-hero-sub{font-size:.95rem!important;}body.country-tax-page-ui-refresh .hero-badges{gap:8px!important;}}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
 <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=353f7468">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=4ef0d5e6">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=0a9f509d">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="stylesheet" href="/assets/css/money-page-commercial.css?v=e5730f07">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
@@ -101,7 +113,7 @@
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/ghana/">Ghana</a> / <span>PAYE Calculator</span></nav>
     <h1>Ghana PAYE Tax Calculator 2026</h1>
-    <p class="tool-hero-sub">GRA 7-band progressive tax (0%-35%), SSNIT Tier I/II/III optimizer, bonus calculator, all personal reliefs. Your exact take-home pay in Ghana cedis.</p>
+    <p class="tool-hero-sub">Estimate Ghana PAYE, SSNIT, reliefs, bonuses, and take-home pay in Ghana cedis before you verify with GRA guidance.</p>
     <div class="hero-badges">
       <span class="badge badge-gold">AI Advisor</span>
       <a class="badge badge-green" href="#sources-verification" aria-label="GRA 2026 Verified evidence">GRA 2026 evidence</a>
@@ -240,7 +252,7 @@
 
           <!-- Actions -->
           <div class="action-row">
-            <button type="button" class="act-btn act-pdf" id="pdfBtn" onclick="exportPdf()">
+            <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="exportPdf()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Download PDF
             </button>
@@ -638,6 +650,7 @@
 <script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
 <script src="/assets/js/bundles/core.ff52e4f7.min.js" defer></script><script src="/assets/js/lib/share-state.js?v=a06e4cb8" defer></script>
 <script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
+<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
 
 <script>
 (function(){
@@ -952,6 +965,7 @@
       subtitle: 'GRA 2026 Calculation',
       country: 'Ghana',
       toolId: 'gh-paye',
+      skipGate: true,
       heroStats: [
         { label: 'Monthly Take-Home', value: fmt(R.netMonthly), highlight: true },
         { label: 'Annual Gross', value: fmt(R.gross) },
@@ -1069,7 +1083,7 @@
     });
 
     // Actions
-    // PDF button uses onclick="exportPdf()" - handled by auto-email-gate
+    // Keep salary report downloads local and direct; this page bypasses the shared PDF gate.
     $('waBtn').addEventListener('click', () => {
       if (!R || !window.AfroTools?.shareState) return;
       window.AfroTools.shareState.whatsappShare({
@@ -1290,8 +1304,7 @@
 <script src="/assets/js/lib/paye-calculation-sync.js?v=27be8670" defer></script>
 <script src="/assets/js/lib/paye-report-sync.js?v=f5f8d67c" defer></script>
 <script src="/assets/js/lib/paye-tool-save-cta.js?v=6ed14b79" defer></script>
-<script src="/assets/js/lib/auto-email-gate.js?v=21029bcc" defer></script>
-<script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=a31433c7" defer></script>
 <script src="/assets/js/ai/prefill-adapters.js?v=201d9098" defer></script>
 <script src="/assets/js/ai/prefill-consumer.js?v=e6054dc4" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
