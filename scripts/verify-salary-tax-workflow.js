@@ -51,6 +51,10 @@ for (const page of requiredReportPages) {
   assert(calcIndex === -1 || reportIndex === -1 || reportIndex > calcIndex, `${page} must load paye-report-sync.js after paye-calculation-sync.js`);
 }
 
+const ngPayeHtml = read('nigeria/ng-salary-tax.html');
+assert(/class="act-btn act-pdf"[^>]*data-no-gate="true"/.test(ngPayeHtml), 'nigeria/ng-salary-tax.html PDF button must bypass the legacy account gate');
+assert(ngPayeHtml.includes('skipGate: true'), 'nigeria/ng-salary-tax.html PDF template call must keep salary PDF export local-first');
+
 assertIncludes('assets/js/lib/pdf-download-gate.js', 'guardPromise', 'promise download gate API');
 assertIncludes('assets/js/lib/pdf-download-gate.js', 'afro_pdf_gate_context_v1', 'gate context storage');
 assertIncludes('assets/js/lib/pdf-download-gate.js', 'afro-pdf-gate-passed', 'gate completion event');
