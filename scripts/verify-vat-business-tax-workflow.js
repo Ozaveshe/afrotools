@@ -145,7 +145,7 @@ function main() {
   assertIncludes('docs/VAT-BUSINESS-TAX-WORKFLOW.md', 'https://www.kra.go.ke/individual/filing-paying/types-of-taxes/value-added-tax', 'KRA source URL docs');
   assertIncludes('docs/VAT-BUSINESS-TAX-WORKFLOW.md', 'https://www.sars.gov.za/types-of-tax/value-added-tax/', 'SARS source URL docs');
 
-  assertIncludes('assets/js/lib/pdf-template.js', 'e&&e.category', 'explicit PDF category support');
+  assertIncludes('assets/js/lib/pdf-template.js', 'config && config.category', 'explicit PDF category support');
   assertIncludes('assets/js/lib/pdf-template.js', 'vat-business-tax', 'VAT PDF category resolver');
 
   if (failures.length) {

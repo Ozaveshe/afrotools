@@ -76,7 +76,7 @@
   <meta name="tool-id" content="ng-paye">
   <meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
   <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
-  <script src="/assets/js/lib/pdf-template.js?v=deda13ab" defer></script>
+  <script src="/assets/js/lib/pdf-template.js?v=191c53a4" defer></script>
   <style>
     /* NTA regime notice — contrast fix: white text needs dark bg */
     .regime-notice {
@@ -1765,61 +1765,63 @@ function renderChart(type) {
 async function downloadPdf() {
   if (!RESULT) return;
   try {
-    const other = REGIME === 'pita' ? calcNTA(RESULT.gross) : calcPITA(RESULT.gross);
+    const pdfFmt = n => 'NGN ' + Math.round(n).toLocaleString('en-NG');
+    const pitaResult = calcPITA(RESULT.gross);
+    const ntaResult = calcNTA(RESULT.gross);
+    const comparisonDiff = Math.abs(ntaResult.netAnnual - pitaResult.netAnnual);
+    const comparisonWinner = ntaResult.netAnnual > pitaResult.netAnnual ? ' (NTA better)' : ' (PITA better)';
     const sections = [
       {
         title: 'Income & Deductions',
         rows: [
-          { label: 'Gross Annual Salary', value: fmt(RESULT.gross) },
-          ...(RESULT.pension > 0 ? [{ label: 'Pension (8%)', value: '(' + fmt(RESULT.pension) + ')', type: 'deduction' }] : []),
-          ...(RESULT.nhf > 0 ? [{ label: 'NHF (2.5%)', value: '(' + fmt(RESULT.nhf) + ')', type: 'deduction' }] : []),
-          ...(RESULT.nhis > 0 ? [{ label: 'NHIS', value: '(' + fmt(RESULT.nhis) + ')', type: 'deduction' }] : []),
-          ...(RESULT.life > 0 ? [{ label: 'Life Insurance', value: '(' + fmt(RESULT.life) + ')', type: 'deduction' }] : []),
-          ...(RESULT.homeloan > 0 ? [{ label: 'Home Loan Interest', value: '(' + fmt(RESULT.homeloan) + ')', type: 'deduction' }] : []),
-          { label: 'Total Statutory Deductions', value: '(' + fmt(RESULT.statutory) + ')', type: 'subtotal' },
+          { label: 'Gross Annual Salary', value: pdfFmt(RESULT.gross) },
+          ...(RESULT.pension > 0 ? [{ label: 'Pension (8%)', value: '(' + pdfFmt(RESULT.pension) + ')', type: 'deduction' }] : []),
+          ...(RESULT.nhf > 0 ? [{ label: 'NHF (2.5%)', value: '(' + pdfFmt(RESULT.nhf) + ')', type: 'deduction' }] : []),
+          ...(RESULT.nhis > 0 ? [{ label: 'NHIS', value: '(' + pdfFmt(RESULT.nhis) + ')', type: 'deduction' }] : []),
+          ...(RESULT.life > 0 ? [{ label: 'Life Insurance', value: '(' + pdfFmt(RESULT.life) + ')', type: 'deduction' }] : []),
+          ...(RESULT.homeloan > 0 ? [{ label: 'Home Loan Interest', value: '(' + pdfFmt(RESULT.homeloan) + ')', type: 'deduction' }] : []),
+          { label: 'Total Statutory Deductions', value: '(' + pdfFmt(RESULT.statutory) + ')', type: 'subtotal' },
         ]
       },
       {
         title: 'Tax Relief & Taxable Income',
         rows: [
           RESULT.regime === 'pita'
-            ? { label: 'Consolidated Relief Allowance (CRA)', value: fmt(RESULT.cra), color: 'green' }
-            : { label: 'Rent Relief (NTA 2026)', value: fmt(RESULT.rentRelief), color: 'green' },
-          { label: 'Taxable Income', value: fmt(RESULT.taxable) },
+            ? { label: 'Consolidated Relief Allowance (CRA)', value: pdfFmt(RESULT.cra), color: 'green' }
+            : { label: 'Rent Relief (NTA 2026)', value: pdfFmt(RESULT.rentRelief), color: 'green' },
+          { label: 'Taxable Income', value: pdfFmt(RESULT.taxable) },
         ]
       },
       {
         title: 'Tax Computation',
         rows: [
           ...RESULT.bandBreakdown.filter(b => b.income > 0).map(b => ({
-            label: `@ ${pct(b.rate)} on ${fmt(b.income)}`,
-            value: fmt(b.amount),
+            label: `@ ${pct(b.rate)} on ${pdfFmt(b.income)}`,
+            value: pdfFmt(b.amount),
             indent: true,
             type: 'deduction',
           })),
-          { label: 'Total PAYE Tax', value: '(' + fmt(RESULT.tax) + ')', type: 'subtotal' },
+          { label: 'Total PAYE Tax', value: '(' + pdfFmt(RESULT.tax) + ')', type: 'subtotal' },
         ]
       },
       {
         title: 'Net Pay Summary',
         rows: [
-          { label: 'Total Deductions (Statutory + Tax)', value: '(' + fmt(RESULT.statutory + RESULT.tax) + ')', color: 'red' },
-          { label: 'Annual Take-Home Pay', value: fmt(RESULT.netAnnual), type: 'total' },
-          { label: 'Monthly Take-Home Pay', value: fmt(RESULT.netMonthly), type: 'total' },
+          { label: 'Total Deductions (Statutory + Tax)', value: '(' + pdfFmt(RESULT.statutory + RESULT.tax) + ')', color: 'red' },
+          { label: 'Annual Take-Home Pay', value: pdfFmt(RESULT.netAnnual), type: 'total' },
+          { label: 'Monthly Take-Home Pay', value: pdfFmt(RESULT.netMonthly), type: 'total' },
           { label: 'Effective Tax Rate', value: pct(RESULT.effectiveRate), color: 'muted' },
         ]
       },
       {
         title: 'Regime Comparison',
         rows: [
-          { label: 'PITA 2025 Take-Home', value: fmt(calcPITA(RESULT.gross).netAnnual) },
-          { label: 'NTA 2026 Take-Home', value: fmt(calcNTA(RESULT.gross).netAnnual) },
-          { label: 'Difference', value: fmt(Math.abs(calcNTA(RESULT.gross).netAnnual - calcPITA(RESULT.gross).netAnnual)) + (calcNTA(RESULT.gross).netAnnual > calcPITA(RESULT.gross).netAnnual ? ' (NTA better)' : ' (PITA better)'), type: 'total', highlight: false },
+          { label: 'PITA 2025 Take-Home', value: pdfFmt(pitaResult.netAnnual) },
+          { label: 'NTA 2026 Take-Home', value: pdfFmt(ntaResult.netAnnual) },
+          { label: 'Difference', value: pdfFmt(comparisonDiff) + comparisonWinner, type: 'total', highlight: false },
         ]
       }
     ];
-
-    const chartCanvas = document.getElementById('mainChart');
 
     await AfroTools.pdf.generate({
       title: 'Nigeria PAYE Tax Report',
@@ -1827,16 +1829,17 @@ async function downloadPdf() {
       country: 'Nigeria',
       countryFlag: '',
       toolId: 'ng-paye',
+      countryCode: 'NG',
+      currency: 'NGN',
       skipGate: true,
-      effectiveRate: RESULT.effectiveRate,
+      effectiveRate: RESULT.effectiveRate / 100,
       heroStats: [
-        { label: 'Gross Annual', value: fmt(RESULT.gross) },
-        { label: 'Monthly Take-Home', value: fmt(RESULT.netMonthly), highlight: true },
-        { label: 'Annual Tax', value: fmt(RESULT.tax), color: 'red' },
+        { label: 'Gross Annual', value: pdfFmt(RESULT.gross) },
+        { label: 'Monthly Take-Home', value: pdfFmt(RESULT.netMonthly), highlight: true },
+        { label: 'Annual Tax', value: pdfFmt(RESULT.tax), color: 'red' },
         { label: 'Effective Rate', value: pct(RESULT.effectiveRate), color: 'red' },
       ],
       sections,
-      chartImage: chartCanvas,
       source: RESULT.regime === 'pita'
         ? 'Personal Income Tax Act (PITA), Cap P8 LFN 2004 as amended. CRA per Finance Acts 2019-2023. PAYE bands: 7%-24%. FIRS authority.'
         : 'Nigeria Tax Act 2025, signed 26 June 2025, effective 1 January 2026. NTA bands: 0%-25%. Rent Relief replaces CRA. FIRS authority.',
@@ -2030,7 +2033,7 @@ document.addEventListener('afro:lazy-script-chain-complete', () => {
   restoreFromUrl();
 });
 </script>
-<script src="/assets/js/lazy-script-chain.js?v=9cfc21ea" data-delay="600" data-scripts="/assets/js/bundles/tool-page.4701dd1d.min.js?v=e945d564|/assets/js/bundles/core.009aa1e7.min.js|/assets/js/components/business-cta.js?v=25d06338|/assets/js/afro-history.js?v=6ecf1296|/assets/js/lib/workspace-sync.js?v=da7e0c2c|/assets/js/lib/paye-calculation-sync.js?v=27be8670|/assets/js/lib/paye-report-sync.js?v=f5f8d67c|/assets/js/lib/auto-email-gate.js?v=21029bcc" async></script>
+<script src="/assets/js/lazy-script-chain.js?v=9cfc21ea" data-delay="600" data-scripts="/assets/js/bundles/tool-page.1fd22e36.min.js|/assets/js/bundles/core.009aa1e7.min.js|/assets/js/components/business-cta.js?v=25d06338|/assets/js/afro-history.js?v=6ecf1296|/assets/js/lib/workspace-sync.js?v=da7e0c2c|/assets/js/lib/paye-calculation-sync.js?v=27be8670|/assets/js/lib/paye-report-sync.js?v=f5f8d67c|/assets/js/lib/auto-email-gate.js?v=58ae3473" async></script>
 <script src="/assets/js/lazy-analytics.js?v=f3366037" async></script>
 <script>
 (function(){
