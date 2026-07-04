@@ -7,7 +7,31 @@ const vm = require("vm");
 
 const ROOT = path.join(__dirname, "..");
 const claritySource = fs.readFileSync(path.join(ROOT, "assets", "js", "lib", "clarity.js"), "utf8");
+const cookieConsentSource = fs.readFileSync(path.join(ROOT, "assets", "js", "components", "cookie-consent.js"), "utf8");
 const bundleSource = fs.readFileSync(path.join(ROOT, "scripts", "bundle.js"), "utf8");
+const headersSource = fs.readFileSync(path.join(ROOT, "_headers"), "utf8");
+
+function getCspDirective(name) {
+  const cspLine = headersSource
+    .split(/\r?\n/)
+    .find((line) => line.includes("Content-Security-Policy:"));
+  assert.ok(cspLine, "_headers must define a Content-Security-Policy");
+
+  const csp = cspLine.slice(cspLine.indexOf("Content-Security-Policy:") + "Content-Security-Policy:".length);
+  const directive = csp
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${name} `));
+  assert.ok(directive, `CSP must include ${name}`);
+  return directive;
+}
+
+function assertDirectiveAllows(name, sources) {
+  const directive = getCspDirective(name);
+  sources.forEach((source) => {
+    assert.ok(directive.includes(source), `${name} must allow ${source} for Microsoft Clarity`);
+  });
+}
 
 function createSandbox(consentValue) {
   const inserted = [];
@@ -79,8 +103,8 @@ assert.strictEqual(unset.inserted.length, 0, "Clarity must not load before cooki
 assert.strictEqual(typeof unset.sandbox.window.AfroTools.clarity.load, "function", "Clarity loader API is exposed");
 
 unset.setConsent("accepted");
-assert.strictEqual(unset.sandbox.window.AfroTools.clarity.load(), true, "Clarity loads after consent changes to accepted");
-assert.strictEqual(unset.inserted.length, 1, "Accepted consent inserts exactly one Clarity script");
+unset.listeners["afrotools:cookie-consent"]({ detail: { status: "accepted" } });
+assert.strictEqual(unset.inserted.length, 1, "Accepted consent event inserts exactly one Clarity script");
 assert.strictEqual(unset.inserted[0].src, "https://www.clarity.ms/tag/wz74o0pctq", "Clarity project id matches provided snippet");
 
 const accepted = run("accepted");
@@ -90,5 +114,13 @@ assert.strictEqual(accepted.inserted.length, 1, "Existing accepted consent injec
 
 assert.ok(bundleSource.includes("'assets/js/lib/clarity.js'"), "Core bundle includes the Clarity loader");
 assert.ok(bundleSource.includes("'core.52693c87.min.js'"), "Current core bundle alias is preserved for existing pages");
+assert.ok(
+  cookieConsentSource.includes('window.dispatchEvent(new CustomEvent("afrotools:cookie-consent"'),
+  "Cookie consent banner dispatches the event that wakes the Clarity loader"
+);
+assertDirectiveAllows("default-src", ["https://*.clarity.ms", "https://c.bing.com"]);
+assertDirectiveAllows("script-src", ["https://www.clarity.ms", "https://*.clarity.ms"]);
+assertDirectiveAllows("connect-src", ["https://www.clarity.ms", "https://*.clarity.ms", "https://c.bing.com"]);
+assertDirectiveAllows("img-src", ["https://*.clarity.ms", "https://c.bing.com"]);
 
 console.log("clarity-consent.test.js passed");
