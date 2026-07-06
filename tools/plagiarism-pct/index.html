@@ -95,13 +95,25 @@ textarea:focus{outline:none;border-color:var(--color-primary)}
 .tips-list h3{font-size:.9rem;font-weight:700;color:#166534;margin:0 0 .75rem}
 .tip{font-size:.82rem;color:#166534;margin-bottom:.4rem;padding-left:1.2rem;position:relative;line-height:1.5}
 .tip::before{content:'✓';position:absolute;left:0;font-weight:800}
+.flagged-phrase.match{background:#eff6ff;border-left-color:#2563eb;color:#1e3a8a}
+.source-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.source-grid textarea{min-height:250px}
+.mode-note{font-size:.82rem;color:#475569;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:10px;padding:.75rem .9rem;margin:0 0 1rem;line-height:1.6}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem 1rem;border:1.5px solid #bfdbfe;border-radius:10px;background:#fff;color:#1d4ed8;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.secondary-btn:hover,.secondary-btn:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.method-card{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:1.25rem;margin-bottom:1.5rem}
+.method-card h2{font-size:1rem;font-weight:800;color:#111;margin:0 0 .65rem}
+.method-card p{margin:0 0 .7rem;color:#475569;font-size:.86rem;line-height:1.7}
+.method-card ul{margin:0;padding-left:1.1rem;color:#475569;font-size:.84rem;line-height:1.7}
 .sec-body{padding:40px 0}
+@media(max-width:720px){.source-grid{grid-template-columns:1fr}.result-actions .secondary-btn{width:100%}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/plagiarism-pct.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/plagiarism-pct/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/pourcentage-plagiat/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/plagiarism-pct/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -112,7 +124,7 @@ textarea:focus{outline:none;border-color:var(--color-primary)}
       "name": "How should I use Plagiarism Percentage Self-Check Tool?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Paste your draft text, optionally paste a source or reference text, then run a local originality check for repeated generic phrases, overlap with the source text, sentence patterns, and revision tips."
       }
     },
     {
@@ -120,7 +132,7 @@ textarea:focus{outline:none;border-color:var(--color-primary)}
       "name": "What should I verify before acting on Plagiarism Percentage Self-Check Tool?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Use your institution's official plagiarism checker for submission decisions. This tool runs locally in the browser and does not compare against internet, journal, school, or Turnitin-style databases."
       }
     },
     {
@@ -128,7 +140,7 @@ textarea:focus{outline:none;border-color:var(--color-primary)}
       "name": "Is Plagiarism Percentage Self-Check Tool an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a private browser-based self-editing estimate, not an official plagiarism score, disciplinary result, database scan, legal advice, or academic integrity decision."
       }
     }
   ],
@@ -160,10 +172,20 @@ textarea:focus{outline:none;border-color:var(--color-primary)}
 </div>
 
 <div class="card">
-  <h2>Paste Your Text for Analysis</h2>
-  <label for="plag-text">Your Essay or Assignment Text</label>
-  <textarea id="plag-text" placeholder="Paste your essay, assignment or paragraph here (minimum 100 words for accurate analysis)..." oninput="updateCount()"></textarea>
-  <div class="char-count" id="char-count">0 words / 0 characters</div>
+  <h2>Check Draft Originality</h2>
+  <p class="mode-note">Use draft-only mode for generic phrase and writing-pattern signals. Add source text when you want a local overlap check against a reading, article, sample answer, or copied reference passage.</p>
+  <div class="source-grid">
+    <div>
+      <label for="source-text">Source or Reference Text (optional)</label>
+      <textarea id="source-text" placeholder="Paste a source passage, article extract, sample answer or reference text here for overlap comparison..." oninput="updateCount()"></textarea>
+      <div class="char-count" id="source-count">0 source words / 0 characters</div>
+    </div>
+    <div>
+      <label for="plag-text">Your Draft Text</label>
+      <textarea id="plag-text" placeholder="Paste your essay, assignment or paragraph here (minimum 50 words for meaningful analysis)..." oninput="updateCount()"></textarea>
+      <div class="char-count" id="char-count">0 draft words / 0 characters</div>
+    </div>
+  </div>
   <div>
     <button type="button" class="btn" onclick="checkPlagiarism()">Analyse Text</button>
     <button type="button" class="btn btn-clear" onclick="clearText()">Clear</button>
@@ -178,38 +200,29 @@ textarea:focus{outline:none;border-color:var(--color-primary)}
     <div class="stats-row" id="p-stats"></div>
     <div class="flagged-section" id="p-flagged"></div>
     <div class="tips-list" id="p-tips"></div>
-  </div>
-</div>
-
-</div>
-</div>
-
-
-
-<section class="df-upgrade" data-df-upgrade="plagiarism-pct">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Plagiarism Percentage Self-Check Tool decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for plagiarism percentage self-check tool so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Plagiarism Percentage Self-Check Tool: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, currentYear, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
+    <div class="result-actions" aria-label="Originality report actions">
+      <button type="button" class="secondary-btn" onclick="copyOriginalityReport()">Copy report</button>
+      <button type="button" class="secondary-btn" onclick="downloadOriginalityReport()">Download TXT</button>
+      <button type="button" class="secondary-btn" onclick="saveOriginalityReport()">Save in browser</button>
     </div>
-    <form class="df-form" data-df-form="plagiarism-pct">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="plagiarism-pct" data-df-base="Plagiarism Percentage Self-Check Tool: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Plagiarism Percentage Self-Check Tool: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="plagiarism-pct">Copy summary</button></div>
-    </form>
+    <div class="action-status" id="plag-action-status" aria-live="polite"></div>
   </div>
+</div>
+
+<section class="method-card" aria-labelledby="plag-method-title">
+  <h2 id="plag-method-title">How this local estimate works</h2>
+  <p>This MVP does not upload your text or scan external databases. It checks your draft in the browser, then reports local overlap and writing-pattern signals you can revise before using an official school checker.</p>
+  <ul>
+    <li><strong>Overlap score:</strong> compares meaningful words and repeated 4-word phrases between your draft and the optional source text.</li>
+    <li><strong>Generic phrase score:</strong> flags common template phrases such as broad essay openers and filler transitions.</li>
+    <li><strong>Revision guidance:</strong> suggests where to paraphrase, cite, quote, or add your own analysis.</li>
+    <li><strong>Privacy:</strong> analysis stays in the browser unless you choose to save the report locally.</li>
+  </ul>
 </section>
-<section class="df-faq" aria-labelledby="plagiarism-pct-faq-title">
-  <h2 id="plagiarism-pct-faq-title">Plagiarism Percentage Self-Check Tool FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
+
+</div>
+</div>
+
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <afro-footer></afro-footer>
@@ -239,7 +252,7 @@ function clearText(){
   document.getElementById('char-count').textContent='0 words / 0 characters';
   document.getElementById('plag-result').classList.remove('show');
 }
-function checkPlagiarism(){
+function legacyGenericOriginalityCheck(){
   var text=document.getElementById('plag-text').value.trim();
   var words=text?text.split(/\s+/).length:0;
   if(words<50){alert('Please paste at least 50 words for a meaningful analysis.');return;}
@@ -292,7 +305,177 @@ function checkPlagiarism(){
     '<div class="tip">For a proper plagiarism check, use Turnitin, PlagScan or your university\'s licensed checker before final submission.</div>';
   document.getElementById('plag-result').classList.add('show');
 }
+var currentOriginalityReport=null;
+var STOP_WORDS={the:1,and:1,for:1,with:1,that:1,this:1,from:1,are:1,was:1,were:1,have:1,has:1,had:1,not:1,but:1,you:1,your:1,our:1,they:1,their:1,can:1,will:1,would:1,should:1,could:1,about:1,into:1,than:1,then:1,there:1,these:1,those:1,also:1,only:1,very:1,when:1,where:1,what:1,which:1,while:1,because:1};
+function wordList(value){
+  return String(value||'').toLowerCase().replace(/[^a-z0-9'\s-]/g,' ').split(/\s+/).map(function(word){return word.replace(/^'+|'+$/g,'');}).filter(function(word){return word.length>2&&!STOP_WORDS[word];});
+}
+function phraseList(value,size){
+  var words=wordList(value);
+  var phrases=[];
+  for(var i=0;i<=words.length-size;i++){phrases.push(words.slice(i,i+size).join(' '));}
+  return phrases;
+}
+function countWords(value){
+  var text=String(value||'').trim();
+  return text?text.split(/\s+/).length:0;
+}
+function updateCount(){
+  var draft=document.getElementById('plag-text').value;
+  var source=document.getElementById('source-text').value;
+  document.getElementById('char-count').textContent=countWords(draft)+' draft words / '+draft.length+' characters';
+  document.getElementById('source-count').textContent=countWords(source)+' source words / '+source.length+' characters';
+}
+function clearText(){
+  document.getElementById('plag-text').value='';
+  document.getElementById('source-text').value='';
+  document.getElementById('char-count').textContent='0 draft words / 0 characters';
+  document.getElementById('source-count').textContent='0 source words / 0 characters';
+  document.getElementById('plag-result').classList.remove('show');
+  setOriginalityStatus('');
+  currentOriginalityReport=null;
+}
+function findGenericPhrases(text){
+  var textLower=String(text||'').toLowerCase();
+  var found=[];
+  GENERIC_PHRASES.forEach(function(phrase){
+    var idx=textLower.indexOf(phrase);
+    if(idx!==-1){found.push(phrase);}
+  });
+  return Array.from(new Set(found));
+}
+function compareSource(source,draft){
+  var sourceWords=wordList(source);
+  var draftWords=wordList(draft);
+  var sourceSet=new Set(sourceWords);
+  var overlappingWords=Array.from(new Set(draftWords.filter(function(word){return sourceSet.has(word);})));
+  var wordOverlapPct=draftWords.length?Math.round((overlappingWords.length/Array.from(new Set(draftWords)).length)*100):0;
+  var sourcePhrases=new Set(phraseList(source,4));
+  var matchedPhrases=Array.from(new Set(phraseList(draft,4).filter(function(phrase){return sourcePhrases.has(phrase);}))).slice(0,12);
+  var phraseScore=Math.min(60,matchedPhrases.length*10);
+  var overlapScore=Math.min(100,Math.round((wordOverlapPct*.45)+phraseScore));
+  return {wordOverlapPct:wordOverlapPct,overlappingWords:overlappingWords.slice(0,20),matchedPhrases:matchedPhrases,overlapScore:overlapScore};
+}
+function checkPlagiarism(){
+  var draft=document.getElementById('plag-text').value.trim();
+  var source=document.getElementById('source-text').value.trim();
+  var words=countWords(draft);
+  if(words<50){alert('Please paste at least 50 draft words for a meaningful analysis.');return;}
+  var genericFound=findGenericPhrases(draft);
+  var sentences=draft.split(/[.!?]+/).filter(function(s){return s.trim().length>10;});
+  var longSentences=sentences.filter(function(s){return s.trim().split(/\s+/).length>30;}).length;
+  var sourceComparison=source?compareSource(source,draft):{wordOverlapPct:0,overlappingWords:[],matchedPhrases:[],overlapScore:0};
+  var genericScore=Math.min(60,genericFound.length*5+(draft.toLowerCase().indexOf('this essay')!==-1?10:0)+(draft.toLowerCase().indexOf('in conclusion')!==-1?8:0));
+  var totalScore=source?Math.min(100,Math.round(sourceComparison.overlapScore*.7+genericScore*.3)):Math.min(95,genericScore);
+  var verdict=totalScore<20?'Looks Original':totalScore<45?'Revise Some Generic or Similar Sections':'High Similarity Signals - Revise Before Submitting';
+  var verdictClass=totalScore<20?'score-verdict score-low':totalScore<45?'score-verdict score-mid':'score-verdict score-high';
+  currentOriginalityReport={draftWords:words,sourceWords:countWords(source),sentenceCount:sentences.length,genericFound:genericFound,matchedPhrases:sourceComparison.matchedPhrases,overlapWords:sourceComparison.overlappingWords,wordOverlapPct:sourceComparison.wordOverlapPct,score:totalScore,verdict:verdict,longSentences:longSentences,hasSource:!!source};
+  var scoreEl=document.getElementById('p-score');
+  scoreEl.textContent=totalScore+'%';
+  scoreEl.style.color=totalScore<20?'#22c55e':totalScore<45?'#f59e0b':'#dc2626';
+  var verdictEl=document.getElementById('p-verdict');
+  verdictEl.textContent=verdict;
+  verdictEl.className=verdictClass;
+  document.getElementById('p-stats').innerHTML=
+    '<div class="stat-box"><div class="lbl">Draft Words</div><div class="val">'+words+'</div></div>'+
+    '<div class="stat-box"><div class="lbl">Source Words</div><div class="val">'+currentOriginalityReport.sourceWords+'</div></div>'+
+    '<div class="stat-box"><div class="lbl">Source Word Overlap</div><div class="val">'+sourceComparison.wordOverlapPct+'%</div></div>'+
+    '<div class="stat-box"><div class="lbl">Matched 4-Word Phrases</div><div class="val">'+sourceComparison.matchedPhrases.length+'</div></div>'+
+    '<div class="stat-box"><div class="lbl">Generic Phrases</div><div class="val">'+genericFound.length+'</div></div>'+
+    '<div class="stat-box"><div class="lbl">Sentences</div><div class="val">'+sentences.length+'</div></div>';
+  var flagged='<h3>Flagged Signals</h3>';
+  if(sourceComparison.matchedPhrases.length){
+    flagged+='<p style="font-size:.84rem;color:#475569;margin:.2rem 0 .6rem">Matched phrases from the optional source text:</p>';
+    sourceComparison.matchedPhrases.forEach(function(phrase){flagged+='<div class="flagged-phrase match">"'+phrase+'" - quote, cite, or rewrite with your own analysis.</div>';});
+  }
+  if(genericFound.length){
+    flagged+='<p style="font-size:.84rem;color:#475569;margin:.75rem 0 .6rem">Generic phrases to rewrite:</p>';
+    genericFound.forEach(function(phrase){flagged+='<div class="flagged-phrase">"'+phrase+'" - replace with a specific claim, example, or source-backed point.</div>';});
+  }
+  if(!sourceComparison.matchedPhrases.length&&!genericFound.length){
+    flagged+='<p style="font-size:.85rem;color:#166534;font-weight:700">No source phrase overlap or common generic phrases detected in this local check.</p>';
+  }
+  document.getElementById('p-flagged').innerHTML=flagged;
+  document.getElementById('p-tips').innerHTML='<h3>Revision Plan</h3>'+
+    '<div class="tip">If a phrase matches the source, either quote it, cite it clearly, or rewrite it with your own explanation.</div>'+
+    '<div class="tip">Replace template phrases with concrete evidence, named examples, dates, locations, or course-specific concepts.</div>'+
+    '<div class="tip">After every borrowed idea, add your own analysis so the paragraph does more than repeat the source.</div>'+
+    '<div class="tip">Use this local result as a draft check only; submit-facing decisions still need your school or university checker.</div>';
+  setOriginalityStatus('');
+  document.getElementById('plag-result').classList.add('show');
+}
+function buildOriginalityReport(){
+  if(!currentOriginalityReport){checkPlagiarism();}
+  var r=currentOriginalityReport;
+  return [
+    'Originality self-check report - AfroTools',
+    'Score: '+r.score+'%',
+    'Verdict: '+r.verdict,
+    'Draft words: '+r.draftWords,
+    'Source words: '+r.sourceWords,
+    'Source word overlap: '+r.wordOverlapPct+'%',
+    'Matched 4-word phrases: '+r.matchedPhrases.length,
+    'Generic phrases: '+r.genericFound.length,
+    '',
+    'Matched source phrases',
+    r.matchedPhrases.length?r.matchedPhrases.map(function(p){return '- '+p;}).join('\n'):'- None detected',
+    '',
+    'Generic phrases',
+    r.genericFound.length?r.genericFound.map(function(p){return '- '+p;}).join('\n'):'- None detected',
+    '',
+    'Next steps',
+    '- Quote and cite exact source wording.',
+    '- Rewrite close paraphrases with your own analysis.',
+    '- Replace generic phrases with specific evidence.',
+    '- Use your institution official checker before final submission.',
+    '',
+    'Privacy note: this report was generated locally in the browser. It is not an official plagiarism score or external database scan.'
+  ].join('\n');
+}
+function setOriginalityStatus(message){
+  var el=document.getElementById('plag-action-status');
+  if(el){el.textContent=message||'';}
+}
+function copyOriginalityReport(){
+  var text=buildOriginalityReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setOriginalityStatus('Originality report copied.');}).catch(function(){fallbackOriginalityCopy(text);});
+  }else{fallbackOriginalityCopy(text);}
+}
+function fallbackOriginalityCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setOriginalityStatus('Originality report copied.');}
+  catch(e){window.prompt('Copy originality report',text);setOriginalityStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function downloadOriginalityReport(){
+  var text=buildOriginalityReport();
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='originality-self-check-report.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setOriginalityStatus('TXT originality report downloaded.');
+}
+function saveOriginalityReport(){
+  buildOriginalityReport();
+  try{
+    localStorage.setItem('afrotools-originality-self-check',JSON.stringify({savedAt:Date.now(),report:currentOriginalityReport,text:buildOriginalityReport()}));
+    setOriginalityStatus('Originality report saved in this browser.');
+  }catch(e){
+    setOriginalityStatus('Browser storage is unavailable. Download the TXT report instead.');
+  }
+}
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

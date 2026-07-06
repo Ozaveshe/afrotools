@@ -24,8 +24,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -42,19 +41,6 @@
     overflow: hidden;
   }
 
-  .tool-hero::after {
-    content: '';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 120px;
-    height: 120px;
-    background: rgba(0, 122, 255, 0.04);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
   .tool-hero-inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -66,7 +52,6 @@
     font-size: 0.72rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
@@ -84,7 +69,6 @@
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 800;
     color: #fff;
-    letter-spacing: -0.02em;
     line-height: 1.1;
     margin-bottom: 10px;
   }
@@ -117,7 +101,6 @@
     border-radius: 4px;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
   }
 
   .b-green {
@@ -148,7 +131,7 @@
   .tool-card {
     background: #fff;
     border: 1px solid #DBEAFE;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
@@ -160,7 +143,6 @@
     background: #F5F9FF;
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #0f172a;
     display: flex;
@@ -175,7 +157,7 @@
   /* Upload zone */
   .upload-zone {
     border: 2px dashed #BFDBFE;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 40px 24px;
     text-align: center;
     cursor: pointer;
@@ -249,7 +231,8 @@
     cursor: pointer;
     font-size: 0.78rem;
     font-weight: 600;
-    padding: 4px 8px;
+    min-height: 44px;
+    padding: 8px 10px;
   }
 
   /* Find / Replace inputs */
@@ -265,7 +248,6 @@
     display: block;
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #64748b;
     margin-bottom: 6px;
@@ -284,10 +266,11 @@
     font-family: 'DM Sans', sans-serif;
     outline: none;
     box-sizing: border-box;
+    min-height: 44px;
   }
 
   .fr-row input[type="color"] {
-    height: 42px;
+    height: 44px;
     padding: 5px;
     cursor: pointer;
   }
@@ -333,7 +316,6 @@
     margin: 18px 0 8px;
     font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #475569;
   }
@@ -354,11 +336,12 @@
     font-size: 0.8rem;
     font-weight: 600;
     color: #0f172a;
+    min-height: 44px;
   }
 
   .toggle-item input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     accent-color: var(--afro-green);
     cursor: pointer;
   }
@@ -371,6 +354,7 @@
     color: #fff;
     border: none;
     border-radius: 8px;
+    min-height: 44px;
     font-size: 0.88rem;
     font-weight: 700;
     cursor: pointer;
@@ -478,6 +462,7 @@
     font-weight: 800;
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
   }
 
   .mini-btn:hover {
@@ -540,6 +525,7 @@
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
     transition: all 0.15s;
+    min-height: 44px;
   }
 
   .page-nav button:hover {
@@ -615,7 +601,6 @@
     font-size: 0.68rem;
     font-weight: 700;
     color: var(--afro-green);
-    letter-spacing: 0.05em;
     text-transform: uppercase;
     margin-bottom: 4px;
   }
@@ -759,8 +744,59 @@
     font-size: 0.66rem;
     color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
     font-weight: 800;
+  }
+
+  .review-check {
+    display: none;
+    gap: 10px;
+    align-items: flex-start;
+    min-height: 44px;
+    margin: 8px 0 12px;
+    padding: 10px 12px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #334155;
+  }
+
+  .review-check input {
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    accent-color: var(--afro-green);
+    flex: 0 0 auto;
+  }
+
+  .upload-zone:focus-visible,
+  .file-info .remove-btn:focus-visible,
+  .toggle-item input:focus-visible,
+  .action-btn:focus-visible,
+  .mini-btn:focus-visible,
+  .page-nav button:focus-visible,
+  details summary:focus-visible,
+  .fr-row input:focus-visible,
+  .fr-row select:focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.32);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .upload-zone,
+    .action-btn,
+    .mini-btn,
+    .page-nav button,
+    .highlight-overlay,
+    details summary svg {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    .action-btn:hover {
+      transform: none;
+    }
   }
 
   /* SEO + FAQ */
@@ -802,7 +838,7 @@
 
   details {
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
     margin-bottom: 8px;
     background: #fff;
   }
@@ -939,8 +975,7 @@
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
+<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-find-replace.webp">
@@ -975,7 +1010,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rechercher-remplacer-pdf/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tafuta-na-badilisha-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-find-replace/" />
-<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -988,10 +1022,9 @@
       <a href="/">AfroTools</a> / <a href="/tools/">Tools</a> / <span>PDF Find &amp; Replace</span>
     </div>
     <h1>PDF Find & <em>Replace</em></h1>
-    <p class="hero-sub">Search across a PDF, review every match, replace one match or a scoped range, then export a clean visual overlay PDF with an audit file. Everything runs in your browser.</p>
+    <p class="hero-sub">Find text, review matches, apply a visual replacement, and export the edited PDF or CSV audit. Everything runs in your browser.</p>
     <div class="hero-badges">
       <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">No Upload</span>
       <span class="badge b-green">Page Ranges</span>
       <span class="badge b-green">Audit CSV</span>
     </div>
@@ -1000,7 +1033,7 @@
 
 <div class="tool-main">
   <div class="tool-main-inner">
-    <div id="statusMsg" class="status-msg"></div>
+    <div id="statusMsg" class="status-msg" role="status" aria-live="polite"></div>
 
     <div class="two-col">
       <!-- Left Column -->
@@ -1015,7 +1048,7 @@
               <p>Drop a PDF here or click to browse</p>
               <span class="hint">Supports any PDF file</span>
             </div>
-            <input aria-label="FileInput" type="file" id="fileInput" accept=".pdf,application/pdf" hidden>
+            <input aria-label="Choose PDF file" type="file" id="fileInput" accept=".pdf,application/pdf" hidden>
           </div>
         </div>
 
@@ -1041,19 +1074,19 @@
 
             <div class="toggle-row">
               <label class="toggle-item">
-                <input aria-label="CaseSensitive" type="checkbox" id="caseSensitive">
+                <input type="checkbox" id="caseSensitive">
                 Case sensitive
               </label>
               <label class="toggle-item">
-                <input aria-label="WholeWord" type="checkbox" id="wholeWord">
+                <input type="checkbox" id="wholeWord">
                 Whole word
               </label>
               <label class="toggle-item">
-                <input aria-label="RegexMode" type="checkbox" id="regexMode">
+                <input type="checkbox" id="regexMode">
                 Regex
               </label>
               <label class="toggle-item">
-                <input aria-label="FitToBox" type="checkbox" id="fitToBox" checked>
+                <input type="checkbox" id="fitToBox" checked>
                 Fit replacement
               </label>
             </div>
@@ -1120,6 +1153,10 @@
                 <button type="button" class="action-btn secondary-btn" id="replaceSelectedBtn">Replace Selected</button>
                 <button type="button" class="action-btn replace-btn" id="replaceAllBtn">Replace All</button>
               </div>
+              <label class="review-check" for="reviewConfirm">
+                <input type="checkbox" id="reviewConfirm">
+                <span>I reviewed the preview and understand this is visual replacement, not redaction.</span>
+              </label>
               <div class="btn-row">
                 <button type="button" class="action-btn light-btn" id="undoBtn" style="display:none">Undo Output</button>
                 <button type="button" class="action-btn dl-btn" id="downloadBtn" style="display:none">Download PDF</button>
@@ -1193,48 +1230,6 @@
 <!-- FAQ Section -->
 
 
-<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="pdf-find-replace" aria-labelledby="pdf-find-replace-verification-title">
-  <div class="container">
-    <div class="tool-verification-card">
-      <div class="tool-verification-head">
-        <div>
-          <span class="tool-verification-kicker">PDF find/replace check</span>
-          <h2 class="tool-verification-title" id="pdf-find-replace-verification-title">Find text, review every match, then export with an audit trail</h2>
-          <p class="tool-verification-lead">Use this for visible text replacement on PDFs where you need page navigation, match counts, undo, CSV audit, and a local download path.</p>
-        </div>
-        <div class="tool-verification-status">
-          <span class="tool-verification-badge">Local visual replacement</span>
-          <p class="tool-verification-note">PDFs are processed in-browser. Visual replacement is not the same as permanent redaction.</p>
-        </div>
-      </div>
-      <div class="tool-verification-grid">
-        <div class="tool-verification-block">
-          <h3>Primary task</h3>
-          <ul class="tool-verification-list"><li>Upload a PDF and search for exact, case-sensitive, whole-word, or regex matches.</li><li>Review highlighted matches before replacing selected matches or all matches.</li><li>Download the modified PDF and, when useful, the CSV replacement report.</li></ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Result and export</h3>
-          <ul class="tool-verification-list"><li>Match count and replacement summary.</li><li>Modified PDF download after review.</li><li>CSV report for internal checking.</li></ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Before you use it</h3>
-          <ul class="tool-verification-list"><li>Use PDF Redact for permanent removal of sensitive text.</li><li>Confirm replacements on each affected page before sharing.</li><li>Keep an original copy because text extraction varies by PDF source.</li></ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Assumptions and freshness</h3>
-          <p class="tool-verification-meta">Local PDF utility only. Text extraction depends on PDF structure, fonts, scans, and embedded layers; verify outputs manually for important documents.</p>
-        </div>
-      </div>
-      <div class="tool-verification-actions">
-        <a class="tool-verification-report" href="/contact/">Report tool issue</a>
-        <p class="tool-verification-disclaimer">Planning utility only. It is not an official provider, legal, tax, security, filing, compliance, or live-data service. Keep sensitive content local unless you intentionally export or share it.</p>
-      </div>
-    </div>
-  </div>
-</section>
-<afro-business-cta tool-name="PDF Find &amp; Replace" prospect-segment="document-workflows" save-note="Search locally, review matches, replace visually, then export the modified PDF or CSV audit through the existing actions."></afro-business-cta>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
 <section class="faq-section">
   <h2>Frequently Asked Questions</h2>
   <div class="faq-list">
@@ -1277,9 +1272,43 @@
 </section>
 
 <afro-related-tools category="document-pdf" current="pdf-find-replace"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<script>
+(function() {
+  var downloadBtn = document.getElementById('downloadBtn');
+  var reviewConfirm = document.getElementById('reviewConfirm');
+  var statusMsg = document.getElementById('statusMsg');
+  if (!downloadBtn || !reviewConfirm) return;
+  var reviewWrap = reviewConfirm.closest('.review-check');
+  function outputReady() {
+    return downloadBtn.style.display && downloadBtn.style.display !== 'none';
+  }
+  function syncReviewState() {
+    var ready = outputReady();
+    if (reviewWrap) reviewWrap.style.display = ready ? 'flex' : 'none';
+    if (!ready) reviewConfirm.checked = false;
+  }
+  ['fileInput', 'findBtn', 'replaceSelectedBtn', 'replaceAllBtn', 'undoBtn'].forEach(function(id) {
+    var control = document.getElementById(id);
+    if (control) control.addEventListener('click', syncReviewState);
+  });
+  if (window.MutationObserver) {
+    new MutationObserver(syncReviewState).observe(downloadBtn, { attributes: true, attributeFilter: ['style', 'class'] });
+  }
+  syncReviewState();
+  downloadBtn.addEventListener('click', function(event) {
+    if (reviewConfirm.checked) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (statusMsg) {
+      statusMsg.textContent = 'Review the preview and confirm this is visual replacement before downloading.';
+      statusMsg.className = 'status-msg error';
+    }
+    reviewConfirm.focus();
+  }, true);
+})();
+</script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/js/pages/pdf-find-replace.js?v=296e075d"></script>
@@ -1797,22 +1826,8 @@
 })();
 </script>
 <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Pdf Find Replace" tool-slug="pdf-find-replace"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>

@@ -554,6 +554,14 @@
             margin-bottom: 1rem;
         }
 
+        .bib-status {
+            min-height: 1.25rem;
+            margin: -0.25rem 0 0.85rem;
+            color: var(--primary-green);
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
         .bib-list {
             list-style: none;
             padding: 0;
@@ -906,7 +914,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-citations/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-citation/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/citation-generator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -917,7 +924,7 @@
       "name": "How should I use Citation Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Choose a citation style and source type, enter the author, title, date, publisher, DOI, URL, case, or report details required for that source, then copy the live citation or add it to the bibliography builder. Use copy, export, save, and restore controls to keep a working bibliography for an assignment or paper."
       }
     },
     {
@@ -925,7 +932,7 @@
       "name": "What should I verify before acting on Citation Generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Verify the required style edition from your lecturer, journal, court, or institution. Check spelling, author order, DOI or URL, access date, edition, page range, publisher, law report, court details, and whether AI or checker suggestions are allowed for the submission."
       }
     },
     {
@@ -933,7 +940,7 @@
       "name": "Is Citation Generator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a formatting assistant and bibliography workspace, not an official university, journal, legal, or style-manual ruling. Always verify final references against the required style guide."
       }
     }
   ],
@@ -1150,47 +1157,23 @@
                         <button type="button" class="btn btn-primary btn-small" id="addCitationBtn">? Add Current Citation</button>
                         <button type="button" class="btn btn-secondary btn-small" id="copyAllBtn">?? Copy All</button>
                         <button type="button" class="btn btn-secondary btn-small" id="exportBtn">?? Export .txt</button>
+                        <button type="button" class="btn btn-secondary btn-small" id="saveBibBtn">Save locally</button>
+                        <button type="button" class="btn btn-secondary btn-small" id="restoreBibBtn">Restore saved</button>
                         <button type="button" class="btn btn-danger btn-small" id="clearAllBtn">Clear All</button>
                     </div>
+                    <div class="bib-status" id="bibStatus" aria-live="polite"></div>
                     <ul class="bib-list" id="bibList"></ul>
                 </div>
             </div>
         </div>
     </div>
 
-    
-
-
-<section class="df-upgrade" data-df-upgrade="citation-generator">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Citation Generator decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for citation generator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Citation Generator: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="citation-generator">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="citation-generator" data-df-base="Citation Generator: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Citation Generator: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="citation-generator">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="citation-generator-faq-title">
-  <h2 id="citation-generator-faq-title">Citation Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <afro-related-tools category="education" current="citation-generator"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
     <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
     <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
@@ -1495,6 +1478,8 @@
             document.getElementById('addCitationBtn').addEventListener('click', addCitationToBibliography);
             document.getElementById('copyAllBtn').addEventListener('click', copyAllBibliography);
             document.getElementById('exportBtn').addEventListener('click', exportBibliography);
+            document.getElementById('saveBibBtn').addEventListener('click', saveBibliographyLocal);
+            document.getElementById('restoreBibBtn').addEventListener('click', restoreBibliographyLocal);
             document.getElementById('clearAllBtn').addEventListener('click', clearBibliography);
 
             // Citation checker
@@ -2289,6 +2274,7 @@
 
             state.bibliography.push(entry);
             renderBibliography();
+            setBibStatus('Citation added to bibliography.');
         }
 
         function renderBibliography() {
@@ -2320,6 +2306,54 @@
             bibList.innerHTML = html;
         }
 
+        function setBibStatus(message) {
+            const status = document.getElementById('bibStatus');
+            if (status) {
+                status.textContent = message || '';
+            }
+        }
+
+        function saveBibliographyLocal() {
+            if (state.bibliography.length === 0) {
+                setBibStatus('Add at least one citation before saving.');
+                return;
+            }
+
+            try {
+                localStorage.setItem('afrotools-citation-generator-bibliography', JSON.stringify({
+                    savedAt: new Date().toISOString(),
+                    format: state.format,
+                    sourceType: state.sourceType,
+                    bibliography: state.bibliography
+                }));
+                setBibStatus('Bibliography saved in this browser.');
+            } catch (error) {
+                setBibStatus('Browser storage is unavailable. Export TXT instead.');
+            }
+        }
+
+        function restoreBibliographyLocal() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('afrotools-citation-generator-bibliography') || 'null');
+                if (!saved || !Array.isArray(saved.bibliography) || saved.bibliography.length === 0) {
+                    setBibStatus('No saved bibliography found.');
+                    return;
+                }
+
+                state.bibliography = saved.bibliography
+                    .filter(item => item && item.citation)
+                    .map((item, index) => ({
+                        id: item.id || Date.now() + index,
+                        citation: String(item.citation),
+                        format: item.format || saved.format || state.format
+                    }));
+                renderBibliography();
+                setBibStatus('Saved bibliography restored.');
+            } catch (error) {
+                setBibStatus('Saved bibliography could not be restored.');
+            }
+        }
+
         function moveBibliography(id, direction) {
             const index = state.bibliography.findIndex(item => item.id === id);
             if (index === -1) return;
@@ -2329,11 +2363,13 @@
 
             [state.bibliography[index], state.bibliography[newIndex]] = [state.bibliography[newIndex], state.bibliography[index]];
             renderBibliography();
+            setBibStatus('Bibliography order updated.');
         }
 
         function deleteBibliography(id) {
             state.bibliography = state.bibliography.filter(item => item.id !== id);
             renderBibliography();
+            setBibStatus('Citation removed.');
         }
 
         function copyAllBibliography() {
@@ -2349,8 +2385,10 @@
 
             navigator.clipboard.writeText(text).then(function() {
                 if (window.AfroTools && AfroTools.toast) AfroTools.toast.success('Bibliography copied to clipboard!');
+                setBibStatus('Bibliography copied.');
             }).catch(function() {
                 if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Failed to copy. Try exporting instead.');
+                setBibStatus('Copy failed. Export TXT instead.');
             });
         }
 
@@ -2374,12 +2412,14 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+            setBibStatus('Bibliography TXT exported.');
         }
 
         function clearBibliography() {
             if (!confirm('Are you sure you want to clear all citations? This cannot be undone.')) return;
             state.bibliography = [];
             renderBibliography();
+            setBibStatus('Bibliography cleared.');
         }
 
         function checkCitation() {
@@ -2467,6 +2507,5 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroTools Citation Generator","description":"AI-powered citation generator for African scholars supporting APA 7, MLA 9, Chicago, Harvard, Vancouver, IEEE, OSCOLA, and Turabian formats.","url":"https://afrotools.com/tools/citation-generator/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/citation-generator.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroTools Citation Generator","url":"https://afrotools.com/tools/citation-generator/","description":"AI-powered citation generator for African scholars supporting APA 7, MLA 9, Chicago, Harvard, Vancouver, IEEE, OSCOLA, and Turabian formats.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/citation-generator.webp"}</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

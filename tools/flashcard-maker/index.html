@@ -5,10 +5,10 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flashcard Study Tool — Flip, Quiz &amp; Match | AfroTools</title>
-<meta name="description" content="Free flashcard maker with pre-made JAMB, WAEC, KCSE and Matric exam packs. Study with flip cards, quizzes, and matching games. Spaced repetition and progress tracking.">
+<meta name="description" content="Free Africa exam flashcard maker with ECZ, UNEB, NECTA, WAEC Ghana, KNEC, ZIMSEC, NSC, WAEC, JAMB, KCSE, and Matric starter decks. Study with flip cards, quizzes, matching games, and progress tracking.">
 <link rel="canonical" href="https://afrotools.com/tools/flashcard-maker/">
 <meta property="og:title" content="Flashcard Study Tool — Flip, Quiz &amp; Match | AfroTools">
-<meta property="og:description" content="Free flashcard maker with pre-made JAMB, WAEC, KCSE and Matric exam packs. Flip, quiz, match study modes with spaced repetition.">
+<meta property="og:description" content="Free Africa exam flashcard maker with source-aware starter decks, flip, quiz, match modes, and links into countdowns, timetables, study plans, and score tracking.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/flashcard-maker.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/flashcard-maker/">
@@ -21,12 +21,12 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="flashcard-maker.css?v=2c4e03b8">
 <meta name="tool-id" content="flashcard-maker">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Flashcard Study Tool | AfroTools">
-<meta name="twitter:description" content="Free flashcard maker with pre-made JAMB, WAEC, KCSE and Matric exam packs. Flip, quiz, match modes with spaced repetition.">
+<meta name="twitter:description" content="Africa exam flashcard starter decks with flip, quiz, match modes and prep-tool handoffs.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Flashcard Study Tool","description":"Free flashcard maker with pre-made exam packs, flip/quiz/match modes, and spaced repetition.","url":"https://afrotools.com/tools/flashcard-maker/","inLanguage":"en","applicationCategory":"EducationalApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/flashcard-maker.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Flashcard Study Tool","url":"https://afrotools.com/tools/flashcard-maker/","description":"Free flashcard maker with pre-made exam packs, flip/quiz/match modes, and spaced repetition.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/flashcard-maker.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education/"},{"@type":"ListItem","position":3,"name":"Flashcard Study Tool","item":"https://afrotools.com/tools/flashcard-maker/"}]}</script>
@@ -44,9 +44,50 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/createur-fiches/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kadi-kusoma/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/flashcard-maker/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="flashcard-exam-loop">
+  .fc-exam-loop{margin-bottom:18px}
+  .fc-exam-loop-card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px}
+  .fc-exam-loop-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+  .fc-exam-loop h2{font-size:1rem;letter-spacing:0;line-height:1.25;margin:0 0 5px;color:var(--text)}
+  .fc-exam-loop p{font-size:.84rem;color:var(--muted);line-height:1.6;margin:0;max-width:620px}
+  .fc-exam-loop-metrics{display:flex;gap:8px;flex-wrap:wrap}
+  .fc-exam-loop-metric{background:var(--brand-pale);border:1px solid rgba(0,122,255,.16);border-radius:10px;color:var(--brand-dark);font-size:.72rem;font-weight:800;line-height:1.2;padding:7px 10px;white-space:nowrap}
+  .fc-exam-loop-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .fc-exam-loop-actions a,.fc-exam-loop-actions button{align-items:center;background:#fff;border:1.5px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;display:inline-flex;font-family:inherit;font-size:.78rem;font-weight:700;justify-content:center;min-height:36px;padding:8px 12px;text-decoration:none}
+  .fc-exam-loop-actions a:hover,.fc-exam-loop-actions button:hover{border-color:var(--brand);color:var(--brand)}
+  .fc-exam-loop-actions .primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .fc-exam-loop-actions .primary:hover{background:var(--brand-dark);color:#fff}
+  .fc-exam-loop-list{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-top:12px}
+  .fc-exam-loop-list button{text-align:left;background:#f8fafc;border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;font-family:inherit;padding:10px 12px}
+  .fc-exam-loop-list strong{display:block;font-size:.8rem;line-height:1.2;margin-bottom:3px}
+  .fc-exam-loop-list span{display:block;color:var(--muted);font-size:.7rem;line-height:1.35}
+  .fc-review-pack{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:start}
+  .fc-review-pack h3{font-size:1rem;line-height:1.25;margin:0 0 6px;color:var(--text);letter-spacing:0}
+  .fc-review-pack p{font-size:.84rem;line-height:1.6;color:var(--muted);margin:0}
+  .fc-review-pack-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .fc-review-pack-status{font-size:.78rem;line-height:1.45;color:var(--muted);margin-top:10px;min-height:1.2em}
+  .fc-review-focus{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+  .fc-review-focus-card{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:12px}
+  .fc-review-focus-card strong{display:block;font-size:.78rem;line-height:1.25;color:var(--text);margin-bottom:4px}
+  .fc-review-focus-card span{display:block;color:var(--muted);font-size:.72rem;line-height:1.45}
+  .fc-review-list{display:grid;gap:8px;margin-top:14px}
+  .fc-review-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start;border:1px solid var(--border);border-radius:10px;background:#fff;padding:10px 12px}
+  .fc-review-row strong{display:block;font-size:.82rem;line-height:1.3;color:var(--text);overflow-wrap:anywhere}
+  .fc-review-row span{display:block;font-size:.75rem;line-height:1.45;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+  .fc-review-row em{font-style:normal;font-size:.68rem;font-weight:800;color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:999px;padding:3px 8px;white-space:nowrap}
+  @media (max-width:640px){
+    .fc-exam-loop-card{padding:15px}
+    .fc-exam-loop-actions a,.fc-exam-loop-actions button{width:100%}
+    .fc-review-pack{grid-template-columns:1fr}
+    .fc-review-pack-actions{justify-content:stretch}
+    .fc-review-pack-actions .fc-btn{width:100%}
+    .fc-review-focus{grid-template-columns:1fr}
+    .fc-review-row{grid-template-columns:1fr}
+    .fc-review-row em{width:max-content}
+  }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -62,6 +103,7 @@
     <span class="fc-tag">WAEC / SSCE</span>
     <span class="fc-tag">KCSE</span>
     <span class="fc-tag">SA Matric</span>
+    <span class="fc-tag">ECZ / UNEB / NECTA</span>
     <span class="fc-tag">University</span>
   </div>
 </div>
@@ -69,11 +111,11 @@
 
 <!-- Study ecosystem link -->
 <div class="fc-study-bar">
-  <a href="/tools/study-planner/" class="fc-study-link">
+  <a href="/tools/exam-timetable/" class="fc-study-link">
     <span class="fc-study-link-icon">&#128197;</span>
     <div class="fc-study-link-text">
       <div class="fc-study-link-title">Need a study timetable?</div>
-      <div class="fc-study-link-desc">Use the Study Planner to organise your revision schedule</div>
+      <div class="fc-study-link-desc">Use the exam timetable tool to build a dated prep route, then drill it here</div>
     </div>
     <span class="fc-study-link-arrow">&rarr;</span>
   </a>
@@ -81,6 +123,7 @@
 
 <!-- App -->
 <div class="fc-app">
+<div class="fc-exam-loop" id="examDeckContext" aria-live="polite"></div>
 
 <!-- Tabs -->
 <div class="fc-tabs">
@@ -222,6 +265,14 @@
   </div>
 </div>
 
+<!-- Review pack -->
+<div class="fc-card" style="margin-top:16px">
+  <div class="fc-card-head">
+    <span class="fc-card-label"><span class="icon">&#128221;</span> Review Pack</span>
+  </div>
+  <div class="fc-card-body" id="reviewPackPanel" aria-live="polite"></div>
+</div>
+
 <!-- Card breakdown: mastered vs needs review -->
 <div class="fc-card" style="margin-top:16px">
   <div class="fc-card-head">
@@ -259,34 +310,6 @@
 <details class="fc-faq"><summary>What study modes are available?</summary><p>Flip mode lets you see the front and reveal the back by clicking. Quiz mode asks you to type the answer for active recall practice. Match mode gives you a set of terms and definitions to pair together.</p></details>
 </section>
 
-
-
-<section class="df-upgrade" data-df-upgrade="flashcard-maker">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Flashcard Study Tool decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for flashcard study tool so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Flashcard Study Tool: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="flashcard-maker">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="flashcard-maker" data-df-base="Flashcard Study Tool: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Flashcard Study Tool: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="flashcard-maker">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="flashcard-maker-faq-title">
-  <h2 id="flashcard-maker-faq-title">Flashcard Study Tool FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
 <afro-related-tools category="education" current="flashcard-maker"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -492,6 +515,128 @@ var PRESET_DECKS = {
       ['Acids and bases (Brønsted-Lowry)','Acid: proton donor. Base: proton acceptor']
     ]
   },
+  'ecz-grade-12': {
+    name: 'Zambia ECZ Grade 12 Starter',
+    emoji: '&#127891;',
+    desc: 'School Certificate revision prompts',
+    cards: [
+      ['ECZ exam window check','Confirm each paper date against the official ECZ Grade 12 timetable before printing a plan.'],
+      ['English command words','Describe means give features. Explain means give reasons. Evaluate means judge with evidence.'],
+      ['Mathematics formula bank','Keep algebra, trigonometry, mensuration, probability, and statistics formulas in one daily review list.'],
+      ['Biology practical revision','Practise diagrams, labels, variables, observations, and conclusions as separate flashcards.'],
+      ['Chemistry reaction prompt','Write the word equation, balanced equation, conditions, and observation for common reactions.'],
+      ['Physics calculation routine','Write known values, required value, formula, substitution, units, and final answer.'],
+      ['Civic Education essay plan','Define the term, state two points, add a Zambian example, and close with an impact.'],
+      ['Past paper review loop','After each timed paper, create one card for every repeated mistake or forgotten method.'],
+      ['Final week rule','Review summaries, sleep plan, stationery, calculator, ID, and transport before new heavy topics.'],
+      ['Source reminder','Use this starter deck with the official ECZ timetable and your school subject guidance.']
+    ]
+  },
+  'ecz-grade-7': {
+    name: 'Zambia ECZ Grade 7 Starter',
+    emoji: '&#128218;',
+    desc: 'Primary leaving exam basics',
+    cards: [
+      ['Grade 7 timetable check','Confirm the official ECZ paper order with your school or guardian.'],
+      ['Mathematics daily drill','Practise times tables, fractions, percentages, shapes, and word problems every week.'],
+      ['English comprehension clue','Read the question first, underline keywords, then answer using evidence from the passage.'],
+      ['Integrated Science card','Front: term or diagram. Back: definition, use, and one example.'],
+      ['Social Studies memory frame','Place, date, person, reason, result. Use this order for history and civics facts.'],
+      ['Special Paper practice','Use short timed sets to build speed, pattern spotting, and calm checking.'],
+      ['Parent check-in','Show one completed paper and three mistake cards at each weekly check-in.'],
+      ['Exam bag','Pencils, pen, ruler, eraser, sharpener, candidate details, water, and transport plan.']
+    ]
+  },
+  'uganda-uneb': {
+    name: 'Uganda UNEB Starter',
+    emoji: '&#127891;',
+    desc: 'PLE, UCE, and UACE readiness cards',
+    cards: [
+      ['UNEB registration check','Confirm candidate registration, subjects, school records, and any late-registration requirements.'],
+      ['Mathematics working marks','Show method clearly. Many marks come from correct steps, not only final answers.'],
+      ['English essay opening','Start with a direct answer, define the topic, and preview the points you will explain.'],
+      ['Science experiment card','Aim, apparatus, method, observation, result, and precaution.'],
+      ['Social Studies evidence','Use location, cause, effect, and example to strengthen short-answer responses.'],
+      ['CRE or IRE revision','Pair each story, teaching, or practice with one lesson and one example.'],
+      ['Continuous assessment reminder','Keep project, practical, and school-based assessment gaps separate from exam revision.'],
+      ['Weekly paper review','Make flashcards from every wrong answer in the latest timed paper.']
+    ]
+  },
+  'tanzania-csee': {
+    name: 'Tanzania NECTA CSEE Starter',
+    emoji: '&#127481;&#127487;',
+    desc: 'Form Four CSEE revision prompts',
+    cards: [
+      ['NECTA timetable check','Use NECTA as the official source for final paper dates and instructions.'],
+      ['Kiswahili term card','Front: msamiati or dhana. Back: maana, matumizi, and sentensi fupi.'],
+      ['English writing card','Plan introduction, two body points, evidence, and a clear conclusion.'],
+      ['Basic Mathematics routine','Formula, substitution, working, units, and final answer.'],
+      ['Biology diagram drill','Draw, label, state function, and add one common exam mistake.'],
+      ['Geography case fact','Place, process, cause, effect, and local example.'],
+      ['History answer shape','Date or period, actor, cause, event, result, significance.'],
+      ['Final fortnight','Switch from broad notes to timed papers, mistake cards, and sleep protection.']
+    ]
+  },
+  'south-africa-nsc': {
+    name: 'South Africa NSC Starter',
+    emoji: '&#127487;&#127462;',
+    desc: 'Matric exam and APS support',
+    cards: [
+      ['DBE timetable check','Confirm the official DBE NSC subject paper dates before locking your plan.'],
+      ['APS target card','Front: course name. Back: required APS, subject marks, and gap from current marks.'],
+      ['Mathematics paper method','Identify topic, formula, substitution, simplification, and final units.'],
+      ['Physical Sciences split','Keep Physics formulas and Chemistry reactions in separate review stacks.'],
+      ['Life Sciences diagram card','Diagram name, labels, function, and one process linked to it.'],
+      ['Geography mapwork','Scale, direction, coordinates, gradient, and interpretation.'],
+      ['English essay planning','Thesis, evidence, analysis, and conclusion in four short bullets.'],
+      ['Past paper weekend','One timed paper, one memo review, one mistake deck update.']
+    ]
+  },
+  'ghana-waec': {
+    name: 'Ghana WAEC Starter',
+    emoji: '&#127468;&#127469;',
+    desc: 'BECE and WASSCE starter cards',
+    cards: [
+      ['WAEC Ghana timetable check','Download the correct BECE, WASSCE school, or private candidate timetable before planning.'],
+      ['Core Mathematics card','Formula, example question, solved steps, and common mistake.'],
+      ['English summary writing','Main idea, supporting point, shortened wording, and no new opinion.'],
+      ['Integrated Science term','Definition, example, diagram or process, and one application.'],
+      ['Social Studies answer','Concept, Ghana example, effect, and recommendation.'],
+      ['Elective subject split','Separate core revision from elective subject deep practice.'],
+      ['Index and centre check','Confirm index number, centre details, arrival time, and materials.'],
+      ['Timed paper habit','After every practice paper, turn all lost marks into flashcards.']
+    ]
+  },
+  'kenya-kcse-exam': {
+    name: 'Kenya KNEC KCSE Starter',
+    emoji: '&#127472;&#127466;',
+    desc: 'KCSE revision and target-grade cards',
+    cards: [
+      ['KNEC timetable check','Confirm paper order, dates, and instructions from the official KNEC KCSE timetable.'],
+      ['Mean grade target','Write your target grade, current grade, and the two subjects with the biggest improvement gap.'],
+      ['Kiswahili msamiati','Neno, maana, matumizi katika sentensi, and tahadhari ya makosa.'],
+      ['English comprehension','Question keyword, passage evidence, answer sentence, and mark count.'],
+      ['Biology practical card','Specimen, observation, inference, and diagram label.'],
+      ['Chemistry equation card','Reactants, products, conditions, observations, and balanced equation.'],
+      ['Mathematics working marks','Carry method steps clearly even when the final answer is uncertain.'],
+      ['Cluster goal reminder','Link weekly revision to the subject cluster needed for your preferred course.']
+    ]
+  },
+  'zimbabwe-zimsec': {
+    name: 'Zimbabwe ZIMSEC Starter',
+    emoji: '&#127487;&#127484;',
+    desc: 'O Level and A Level prep cards',
+    cards: [
+      ['ZIMSEC timetable check','Download the correct O Level or A Level timetable and confirm every paper date.'],
+      ['Command word card','Define, describe, explain, compare, discuss, and evaluate each need different answer depth.'],
+      ['Mathematics method card','Topic, rule, working, check, and units.'],
+      ['English Language response','Audience, purpose, tone, structure, and evidence.'],
+      ['Integrated Science card','Term, definition, process, diagram, and one real example.'],
+      ['History essay skeleton','Context, cause, event, evidence, result, and judgement.'],
+      ['Geography case study','Location, factor, process, impact, and management response.'],
+      ['Final check','Candidate details, centre, timetable, stationery, calculator, transport, and sleep.']
+    ]
+  },
   'uni-study-skills': {
     name: 'University Study Skills',
     emoji: '&#127979;',
@@ -515,6 +660,18 @@ var PRESET_DECKS = {
     ]
   }
 };
+
+var EXAM_DECK_META = {
+  'ecz-grade-12': { exam: 'zambia-grade-12', title: 'Zambia ECZ Grade 12', source: 'https://www.exams-council.org.zm/grade-12/', note: 'Use the official ECZ Grade 12 timetable for final paper dates.' },
+  'ecz-grade-7': { exam: 'zambia-grade-7', title: 'Zambia ECZ Grade 7', source: 'https://www.exams-council.org.zm/grade-7/', note: 'Use the official ECZ Grade 7 timetable and school guidance for paper order.' },
+  'uganda-uneb': { exam: 'uganda-uneb-registration', title: 'Uganda UNEB', source: 'https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/', note: 'Keep registration and school-based assessment gaps separate from revision cards.' },
+  'tanzania-csee': { exam: 'tanzania-csee', title: 'Tanzania NECTA CSEE', source: 'https://necta.go.tz/pages/csee', note: 'Use NECTA for the final CSEE paper timetable before printing a plan.' },
+  'south-africa-nsc': { exam: 'south-africa-nsc', title: 'South Africa NSC', source: 'https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338', note: 'Check DBE subject paper dates and APS targets before locking the final week.' },
+  'ghana-waec': { exam: 'ghana-waec', title: 'Ghana WAEC BECE/WASSCE', source: 'https://waecgh.org/timetable/', note: 'Download the correct WAEC Ghana timetable for BECE, WASSCE school, or private candidates.' },
+  'kenya-kcse-exam': { exam: 'kenya-kcse', title: 'Kenya KNEC KCSE', source: 'https://www.knec.ac.ke/2026-kcse-timetable/', note: 'Check KNEC paper order, target grade, and subject cluster goals.' },
+  'zimbabwe-zimsec': { exam: 'zimbabwe-zimsec', title: 'Zimbabwe ZIMSEC O/A Level', source: 'https://www5.zimsec.co.zw/timetables/', note: 'Download the correct ZIMSEC O Level or A Level timetable before adding paper dates.' }
+};
+var activeExamDeckKey = '';
 
 /* ── State ── */
 var STORAGE_KEY = 'afro_flashcards';
@@ -544,6 +701,7 @@ function load() {
   updateStats();
   updateStreak();
   renderPresets();
+  renderExamDeckContext();
 }
 
 function save() {
@@ -568,6 +726,51 @@ function switchTab(tab) {
 
 /* ── Deck management ── */
 function getDeck() { return state.activeDeck !== null ? state.decks[state.activeDeck] : null; }
+
+function deckKeyByName(name) {
+  var found = '';
+  Object.keys(PRESET_DECKS).forEach(function(key) {
+    if (!found && PRESET_DECKS[key].name === name) found = key;
+  });
+  return found;
+}
+
+function renderExamDeckContext(presetKey) {
+  var box = document.getElementById('examDeckContext');
+  if (!box) return;
+  var key = presetKey || activeExamDeckKey || deckKeyByName(getDeck() ? getDeck().name : '');
+  var meta = key ? EXAM_DECK_META[key] : null;
+  if (!meta) {
+    var quickKeys = ['ecz-grade-12','uganda-uneb','tanzania-csee','ghana-waec','kenya-kcse-exam','zimbabwe-zimsec'];
+    box.innerHTML = '<div class="fc-exam-loop-card">' +
+      '<div class="fc-exam-loop-top"><div><h2>Start with an Africa exam deck</h2>' +
+      '<p>Load a starter pack, study it in flip, quiz, or match mode, then move into the matching timetable, study plan, countdown, and score tracker.</p></div>' +
+      '<div class="fc-exam-loop-metrics"><span class="fc-exam-loop-metric">' + Object.keys(EXAM_DECK_META).length + ' exam packs</span><span class="fc-exam-loop-metric">Local browser save</span></div></div>' +
+      '<div class="fc-exam-loop-list">' + quickKeys.map(function(k) {
+        var p = PRESET_DECKS[k];
+        return '<button type="button" onclick="loadPreset(\'' + k + '\')"><strong>' + escHtml(p.name) + '</strong><span>' + p.cards.length + ' starter cards</span></button>';
+      }).join('') + '</div></div>';
+    return;
+  }
+  activeExamDeckKey = key;
+  var p = PRESET_DECKS[key];
+  var deck = getDeck();
+  var total = deck && deck.name === p.name ? deck.cards.length : p.cards.length;
+  var mastered = deck && deck.name === p.name ? deck.cards.filter(function(c) { return c.mastered; }).length : 0;
+  var exam = encodeURIComponent(meta.exam);
+  box.innerHTML = '<div class="fc-exam-loop-card">' +
+    '<div class="fc-exam-loop-top"><div><h2>' + escHtml(meta.title) + ' flashcard deck</h2>' +
+    '<p>' + escHtml(meta.note) + ' This deck turns exam-prep advice into cards you can drill, mark for review, export, and keep on this device.</p></div>' +
+    '<div class="fc-exam-loop-metrics"><span class="fc-exam-loop-metric">' + total + ' cards</span><span class="fc-exam-loop-metric">' + mastered + ' mastered</span></div></div>' +
+    '<div class="fc-exam-loop-actions">' +
+    '<button type="button" class="primary" onclick="loadPreset(\'' + key + '\')">Load and study deck</button>' +
+    '<a href="/tools/exam-timetable/?exam=' + exam + '">Build timetable</a>' +
+    '<a href="/tools/study-planner/?exam=' + exam + '">Study plan</a>' +
+    '<a href="/tools/exam-countdown/?exam=' + exam + '">Countdown</a>' +
+    '<a href="/tools/grade-tracker/?exam=' + exam + '">Track scores</a>' +
+    '<a href="' + escHtml(meta.source) + '" target="_blank" rel="noopener">Official source</a>' +
+    '</div></div>';
+}
 
 function renderDecks() {
   var el = document.getElementById('deckList');
@@ -606,15 +809,17 @@ function createDeck() {
   if (!name) return;
   state.decks.push({ name: name, cards: [] });
   state.activeDeck = state.decks.length - 1;
+  activeExamDeckKey = '';
   document.getElementById('newDeckName').value = '';
-  save(); renderDecks(); renderCards(); updateStats();
+  save(); renderDecks(); renderCards(); updateStats(); renderExamDeckContext();
 }
 
 function selectDeck(i) {
   state.activeDeck = i;
+  activeExamDeckKey = deckKeyByName(getDeck() ? getDeck().name : '');
   currentFilter = 'all';
   state.studyIndex = 0;
-  save(); renderDecks(); renderCards(); updateStats();
+  save(); renderDecks(); renderCards(); updateStats(); renderExamDeckContext();
   // Show study prompt if deck has cards
   var deck = state.decks[i];
   if (deck && deck.cards.length > 0) {
@@ -634,7 +839,8 @@ function deleteDeck(i) {
   if (!confirm('Delete "' + state.decks[i].name + '"? This cannot be undone.')) return;
   state.decks.splice(i, 1);
   if (state.activeDeck >= state.decks.length) state.activeDeck = state.decks.length > 0 ? 0 : null;
-  save(); renderDecks(); renderCards(); updateStats();
+  activeExamDeckKey = deckKeyByName(getDeck() ? getDeck().name : '');
+  save(); renderDecks(); renderCards(); updateStats(); renderExamDeckContext();
 }
 
 function addCard() {
@@ -647,12 +853,12 @@ function addCard() {
   document.getElementById('cardFront').value = '';
   document.getElementById('cardBack').value = '';
   document.getElementById('cardFront').focus();
-  save(); renderCards(); updateStats();
+  save(); renderCards(); updateStats(); renderExamDeckContext();
 }
 
 function deleteCard(i) {
   getDeck().cards.splice(i, 1);
-  save(); renderCards(); updateStats();
+  save(); renderCards(); updateStats(); renderExamDeckContext();
 }
 
 function editCard(i) {
@@ -683,7 +889,7 @@ function saveCardEdit(i) {
   if (!front || !back) return;
   deck.cards[i].front = front;
   deck.cards[i].back = back;
-  save(); renderCards(); updateStats();
+  save(); renderCards(); updateStats(); renderExamDeckContext();
 }
 
 function cancelCardEdit() {
@@ -711,7 +917,7 @@ function bulkImport() {
   document.getElementById('bulkInput').value = '';
   document.getElementById('bulkSection').classList.remove('show');
   if (count > 0) alert('Imported ' + count + ' cards!');
-  save(); renderCards(); updateStats();
+  save(); renderCards(); updateStats(); renderExamDeckContext();
 }
 
 function exportDeck() {
@@ -747,6 +953,7 @@ function renderPresets() {
 function loadPreset(key) {
   var p = PRESET_DECKS[key];
   if (!p) return;
+  activeExamDeckKey = key;
   // Check if deck already exists
   var existsIdx = -1;
   state.decks.forEach(function(d, i) { if (d.name === p.name) existsIdx = i; });
@@ -759,12 +966,33 @@ function loadPreset(key) {
     state.decks.push({ name: p.name, cards: cards });
     state.activeDeck = state.decks.length - 1;
   }
-  save(); renderDecks(); renderCards(); renderPresets(); updateStats();
+  save(); renderDecks(); renderCards(); renderPresets(); updateStats(); renderExamDeckContext(key);
   // Auto-switch to study
   switchTab('study');
 }
 
 /* ── Study engine ── */
+function presetKeyFromQuery(value) {
+  var aliases = {
+    'zambia-gce': 'ecz-grade-12',
+    'zambia-grade-7': 'ecz-grade-7',
+    'zambia-grade-12': 'ecz-grade-12',
+    'uganda-uneb-registration': 'uganda-uneb',
+    'tanzania-csee': 'tanzania-csee',
+    'south-africa-nsc': 'south-africa-nsc',
+    'ghana-waec': 'ghana-waec',
+    'kenya-kcse': 'kenya-kcse-exam',
+    'zimbabwe-zimsec': 'zimbabwe-zimsec'
+  };
+  return PRESET_DECKS[value] ? value : (aliases[value] || '');
+}
+
+function initPresetFromQuery() {
+  var params = new URLSearchParams(window.location.search);
+  var key = presetKeyFromQuery(params.get('exam') || params.get('deck') || params.get('preset') || '');
+  if (key) loadPreset(key);
+}
+
 function buildStudyOrder() {
   var deck = getDeck();
   if (!deck) return [];
@@ -858,7 +1086,7 @@ function markCard(gotIt) {
   state.stats.sessionCards++;
   state.studyIndex++;
   recordStreak();
-  save(); updateStats(); renderStudy();
+  save(); updateStats(); renderExamDeckContext(); renderStudy();
 }
 
 /* ── Quiz mode ── */
@@ -897,7 +1125,7 @@ function checkQuiz() {
   }
   state.stats.sessionCards++;
   recordStreak();
-  save(); updateStats();
+  save(); updateStats(); renderExamDeckContext();
   setTimeout(function() { state.studyIndex++; renderStudy(); }, 1500);
 }
 
@@ -923,7 +1151,7 @@ function renderMatch(area, controls, deck) {
     var j = Math.floor(Math.random() * (i + 1));
     var tmp = defs[i]; defs[i] = defs[j]; defs[j] = tmp;
   }
-  matchState = { selected: null, matched: 0, total: count };
+  matchState = { selected: null, matched: 0, total: count, cards: cards };
   var pairOptions = [4, 6, 8, 10];
   var pairBtns = '<div class="fc-match-pair-selector"><span class="fc-match-pair-label">Pairs:</span>';
   pairOptions.forEach(function(n) {
@@ -960,6 +1188,7 @@ function matchClick(el) {
     if (matchState.selected.id === id) {
       matchState.selected.el.classList.add('matched');
       el.classList.add('matched');
+      if (matchState.cards && matchState.cards[id]) matchState.cards[id].mastered = true;
       matchState.matched++;
       state.stats.correct++;
       state.stats.sessionCards++;
@@ -975,6 +1204,8 @@ function matchClick(el) {
     } else {
       el.classList.add('wrong');
       matchState.selected.el.classList.add('wrong');
+      if (matchState.cards && matchState.cards[id]) matchState.cards[id].reviewCount = (matchState.cards[id].reviewCount || 0) + 1;
+      if (matchState.cards && matchState.cards[matchState.selected.id]) matchState.cards[matchState.selected.id].reviewCount = (matchState.cards[matchState.selected.id].reviewCount || 0) + 1;
       state.stats.incorrect++;
       state.stats.sessionCards++;
       var prev = matchState.selected.el;
@@ -1113,12 +1344,160 @@ function escHtml(str) {
 }
 
 /* ── Init ── */
+/* Review pack */
+function getReviewQueue() {
+  var deck = getDeck();
+  if (!deck || !deck.cards.length) return [];
+  return deck.cards.map(function(card, index) {
+    return {
+      index: index,
+      front: card.front,
+      back: card.back,
+      mastered: !!card.mastered,
+      reviewCount: card.reviewCount || 0
+    };
+  }).filter(function(item) {
+    return !item.mastered;
+  }).sort(function(a, b) {
+    if (b.reviewCount !== a.reviewCount) return b.reviewCount - a.reviewCount;
+    return a.index - b.index;
+  });
+}
+
+function getActiveExamMeta() {
+  var key = activeExamDeckKey || deckKeyByName(getDeck() ? getDeck().name : '');
+  return key ? EXAM_DECK_META[key] : null;
+}
+
+function buildReviewPackText() {
+  var deck = getDeck();
+  if (!deck || !deck.cards.length) return 'No flashcard deck is selected.';
+  var queue = getReviewQueue();
+  var mastered = deck.cards.filter(function(c) { return c.mastered; }).length;
+  var meta = getActiveExamMeta();
+  var lines = [
+    'AfroTools Flashcard Review Pack',
+    'Deck: ' + deck.name,
+    'Progress: ' + mastered + '/' + deck.cards.length + ' mastered',
+    'Review queue: ' + queue.length + ' card' + (queue.length === 1 ? '' : 's'),
+    ''
+  ];
+  if (meta) {
+    lines.push('Exam route: ' + meta.title);
+    lines.push('Official source: ' + meta.source);
+    lines.push('Timetable: https://afrotools.com/tools/exam-timetable/?exam=' + encodeURIComponent(meta.exam));
+    lines.push('Study planner: https://afrotools.com/tools/study-planner/?exam=' + encodeURIComponent(meta.exam));
+    lines.push('Countdown: https://afrotools.com/tools/exam-countdown/?exam=' + encodeURIComponent(meta.exam));
+    lines.push('Grade tracker: https://afrotools.com/tools/grade-tracker/?exam=' + encodeURIComponent(meta.exam));
+    lines.push('');
+  }
+  if (!queue.length) {
+    lines.push('All cards in this deck are currently marked as mastered.');
+    lines.push('Next step: shuffle the deck again tomorrow, then add missed questions from your next timed paper.');
+    return lines.join('\n');
+  }
+  lines.push('Focus order');
+  queue.forEach(function(item, idx) {
+    var marker = item.reviewCount > 0 ? item.reviewCount + ' review mark' + (item.reviewCount === 1 ? '' : 's') : 'new/unmastered';
+    lines.push((idx + 1) + '. ' + item.front + ' [' + marker + ']');
+    lines.push('   Answer: ' + item.back);
+  });
+  lines.push('');
+  lines.push('Next session');
+  lines.push('- Drill the first ' + Math.min(queue.length, 5) + ' card' + (Math.min(queue.length, 5) === 1 ? '' : 's') + ' before adding new material.');
+  lines.push('- Turn every missed past-paper mark into one new card.');
+  lines.push('- Recheck your timetable and target score after this review block.');
+  return lines.join('\n');
+}
+
+function setReviewPackStatus(message) {
+  var el = document.getElementById('reviewPackStatus');
+  if (el) el.textContent = message || '';
+}
+
+function copyReviewPack() {
+  var text = buildReviewPackText();
+  function done() { setReviewPackStatus('Review pack copied.'); }
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); }
+    catch(e) { setReviewPackStatus('Copy failed. Download the TXT pack instead.'); }
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+
+function downloadReviewPack() {
+  var deck = getDeck();
+  var text = buildReviewPackText();
+  var name = deck ? deck.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : 'flashcards';
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (name || 'flashcards') + '-review-pack.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setReviewPackStatus('Review pack downloaded.');
+}
+
+function renderReviewPack() {
+  var panel = document.getElementById('reviewPackPanel');
+  if (!panel) return;
+  var deck = getDeck();
+  if (!deck || !deck.cards.length) {
+    panel.innerHTML = '<div class="fc-study-empty" style="padding:24px 20px"><div class="fc-study-empty-desc">Select a deck to build a review queue.</div></div>';
+    return;
+  }
+  var queue = getReviewQueue();
+  var missed = queue.filter(function(item) { return item.reviewCount > 0; }).length;
+  var newCards = queue.length - missed;
+  var mastered = deck.cards.filter(function(c) { return c.mastered; }).length;
+  var nextCards = queue.slice(0, 6);
+  var headline = queue.length ? queue.length + ' card' + (queue.length === 1 ? '' : 's') + ' need review' : 'Deck is fully mastered';
+  var note = queue.length ?
+    'Copy or download the queue before your next timed paper. Missed cards come first, then new cards.' :
+    'Keep the deck warm with a quick shuffle tomorrow, then add missed questions from the next past paper.';
+  panel.innerHTML =
+    '<div class="fc-review-pack">' +
+    '<div><h3>' + headline + '</h3><p>' + note + '</p></div>' +
+    '<div class="fc-review-pack-actions">' +
+    '<button type="button" class="fc-btn sm" onclick="copyReviewPack()">Copy TXT</button>' +
+    '<button type="button" class="fc-btn primary sm" onclick="downloadReviewPack()">Download TXT</button>' +
+    '</div></div>' +
+    '<div class="fc-review-focus">' +
+    '<div class="fc-review-focus-card"><strong>' + mastered + '/' + deck.cards.length + ' mastered</strong><span>Cards marked Got It.</span></div>' +
+    '<div class="fc-review-focus-card"><strong>' + missed + ' missed</strong><span>Cards marked Review Again.</span></div>' +
+    '<div class="fc-review-focus-card"><strong>' + newCards + ' new</strong><span>Cards not mastered yet.</span></div>' +
+    '</div>' +
+    (nextCards.length ? '<div class="fc-review-list">' + nextCards.map(function(item) {
+      var label = item.reviewCount > 0 ? item.reviewCount + 'x review' : 'new';
+      return '<div class="fc-review-row"><div><strong>' + escHtml(item.front) + '</strong><span>' + escHtml(item.back) + '</span></div><em>' + label + '</em></div>';
+    }).join('') + '</div>' : '') +
+    '<div class="fc-review-pack-status" id="reviewPackStatus" role="status"></div>';
+}
+
+var updateStatsBase = updateStats;
+updateStats = function() {
+  updateStatsBase();
+  renderReviewPack();
+};
+
 load();
+initPresetFromQuery();
 </script>
 
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

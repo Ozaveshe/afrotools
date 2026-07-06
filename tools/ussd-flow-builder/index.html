@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USSD Flow Builder for Africa | AfroTools</title>
-<meta name="description" content="Design, lint, simulate and export USSD menu flows for Africa's Talking and African mobile money products. Includes CON/END validation, telco character limits and generated handlers.">
+<title>USSD Flow Builder and Simulator for Africa | AfroTools</title>
+<meta name="description" content="Design, lint, simulate and export USSD menu flows with CON/END validation, telco character limits, callback test payloads and launch handoff notes.">
 <link rel="canonical" href="https://afrotools.com/tools/ussd-flow-builder/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="USSD Flow Builder for Africa | AfroTools">
-<meta property="og:description" content="Build USSD flows with phone simulation, CON/END checks, character-limit warnings and code export.">
+<meta property="og:title" content="USSD Flow Builder and Simulator for Africa | AfroTools">
+<meta property="og:description" content="Build USSD flows with phone simulation, CON/END checks, character-limit warnings, callback payloads and launch handoff notes.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/ussd-flow-builder.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/ussd-flow-builder/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="USSD Flow Builder for Africa | AfroTools">
-<meta name="twitter:description" content="Design, lint, simulate and export Africa-ready USSD flows.">
+<meta name="twitter:title" content="USSD Flow Builder and Simulator for Africa | AfroTools">
+<meta name="twitter:description" content="Design, lint, simulate and export Africa-ready USSD flows with launch handoff notes.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ussd-flow-builder.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,17 +30,58 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "USSD Flow Builder for Africa",
+  "name": "USSD Flow Builder and Simulator for Africa",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
   "url": "https://afrotools.com/tools/ussd-flow-builder/",
-  "description": "Design, lint, simulate and export USSD menu flows for Africa's Talking and African mobile money products.",
+  "description": "Design, lint, simulate and export USSD menu flows with CON/END validation, telco character limits, callback test payloads and launch handoff notes.",
+  "featureList": [
+    "USSD screen map builder",
+    "Phone-style session simulator",
+    "CON and END response validation",
+    "Market character-limit warnings",
+    "Node and PHP callback starter handlers",
+    "Flow JSON export",
+    "Callback test payload",
+    "Launch handoff brief"
+  ],
+  "browserRequirements": "Runs in a modern browser. Flow state is stored locally unless the user exports a file.",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
   "image": "https://afrotools.com/assets/img/tools/ussd-flow-builder.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to design and test a USSD menu flow",
+  "description": "Create USSD screens, simulate user input, validate callback response shape, then export code and launch notes.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Choose provider and market rules",
+      "text": "Set the service code, provider model, market and timeout so the builder can apply conservative character-limit checks."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Build menu, input and final screens",
+      "text": "Create screen IDs, prompts, menu options, captured variables and final END responses."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Simulate the phone session",
+      "text": "Use the phone simulator to test menu paths, invalid entries, back navigation and home navigation."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Review lint and export handoff",
+      "text": "Check CON/END shape, dead links, long prompts and END screens, then export JSON, code, payloads and launch notes."
+    }
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -84,7 +125,7 @@ h1{font-size:clamp(2rem,5vw,4.6rem);line-height:.98;margin:0 0 14px;font-weight:
 .wrap{max-width:1240px;margin:0 auto;padding:24px 22px 70px}
 .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap}
-.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 13px;font:700 .82rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn{appearance:none;min-height:44px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 13px;font:700 .82rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .btn:hover{border-color:#94a3b8;background:#f8fafc}
 .btn.primary{background:#0f766e;color:#fff;border-color:#0f766e}
 .btn.primary:hover{background:#115e59}
@@ -101,12 +142,12 @@ h1{font-size:clamp(2rem,5vw,4.6rem);line-height:.98;margin:0 0 14px;font-weight:
 .form-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .field{min-width:0}
 label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
-input,select,textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+input,select,textarea{width:100%;min-height:44px;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
 textarea{min-height:96px;resize:vertical;line-height:1.45}
 input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.14)}
 .hint{font-size:.78rem;line-height:1.55;color:var(--muted);margin:8px 0 0}
 .screen-list{display:flex;gap:8px;flex-wrap:wrap}
-.screen-chip{border:1px solid var(--line);background:#fff;border-radius:7px;padding:8px 10px;cursor:pointer;color:#334155;font-weight:700;font-size:.79rem}
+.screen-chip{min-width:44px;min-height:44px;border:1px solid var(--line);background:#fff;border-radius:7px;padding:8px 10px;cursor:pointer;color:#334155;font-weight:700;font-size:.79rem}
 .screen-chip.active{background:#ecfdf5;border-color:#0f766e;color:#065f46}
 .screen-chip .type{display:block;font-size:.68rem;font-weight:700;color:#64748b;margin-top:2px}
 .options{display:grid;gap:8px}
@@ -129,11 +170,22 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
 .phone-nav{height:46px;display:flex;gap:28px;align-items:center;justify-content:center;color:#475569;font-size:.68rem}
 .transcript{max-height:210px;overflow:auto;border:1px solid var(--line);border-radius:7px;background:#f8fafc;padding:10px;font:.76rem var(--mono);line-height:1.5;white-space:pre-wrap}
 .tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
-.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer}
+  .tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer;min-height:44px}
 .tab.active{background:#fff;color:#0f766e}
 .tab-panel{display:none}
-.tab-panel.active{display:block}
-.codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:440px}
+  .tab-panel.active{display:block}
+  .codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:440px}
+  .handoff-section{max-width:1180px;margin:24px auto 0;padding:0 0 12px}
+  .handoff-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.55fr);gap:16px}
+  .handoff-section h2{font-size:1.45rem;line-height:1.2;margin:0 0 10px;color:var(--ink)}
+  .handoff-section p{font-size:.9rem;line-height:1.7;color:#475569;margin:0 0 12px}
+  .handoff-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+  .handoff-list li{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 12px;font-size:.84rem;line-height:1.5;color:#334155}
+  .handoff-note{border:1px solid #bae6fd;background:#f0f9ff;border-radius:8px;padding:14px;color:#075985;font-size:.84rem;line-height:1.6}
+.ussd-faq__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ussd-faq details{border:1px solid var(--line);background:#fff;border-radius:8px;padding:12px}
+.ussd-faq summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:800;font-size:.86rem;color:var(--ink)}
+.ussd-faq p{margin:8px 0 0;font-size:.84rem;line-height:1.62;color:#475569}
 .source-card{display:grid;gap:8px}
 .source-card a{color:#0f766e;text-decoration:none;font-weight:700}
 .source-card a:hover{text-decoration:underline}
@@ -145,11 +197,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
 @media(max-width:980px){
   .grid{grid-template-columns:1fr}
   .right{position:static}
-  .hero-grid,.metric-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-grid,.metric-row,.handoff-grid,.ussd-faq__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:680px){
   .hero-inner,.wrap{padding-left:16px;padding-right:16px}
-  .form-grid,.form-grid.two,.hero-grid,.metric-row{grid-template-columns:1fr}
+  .form-grid,.form-grid.two,.hero-grid,.metric-row,.handoff-grid,.ussd-faq__grid{grid-template-columns:1fr}
   .option-row{grid-template-columns:56px 1fr}
   .option-row .remove-cell{grid-column:1 / -1}
 }
@@ -157,7 +209,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ussd-flow-builder/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mjenzi-mtiririko-ussd/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ussd-flow-builder/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -165,26 +216,26 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use USSD Flow Builder — Visual USSD Menu Designer?",
+      "name": "How should I use USSD Flow Builder?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Create menu, input and END screens, simulate phone input, review lint warnings, then export JSON, starter handlers, callback payloads and the launch brief."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on USSD Flow Builder — Visual USSD Menu Designer?",
+      "name": "What should I verify before submitting a USSD flow?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Check CON and END responses, prompt length, dead links, END screens, callback payload fields, session persistence, HTTPS hosting, data minimization and current provider rules."
       }
     },
     {
       "@type": "Question",
-      "name": "Is USSD Flow Builder — Visual USSD Menu Designer an official result?",
+      "name": "Does this provision a live USSD code?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a local design and starter-code tool. It does not provision a shortcode, certify a gateway integration, host a callback endpoint or approve production launch."
       }
     }
   ],
@@ -295,11 +346,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
           <button class="tab" data-output="php" type="button">PHP handler</button>
           <button class="tab" data-output="json" type="button">Flow JSON</button>
           <button class="tab" data-output="payload" type="button">Test payload</button>
+          <button class="tab" data-output="brief" type="button">Launch brief</button>
         </div>
         <div class="tab-panel active" id="panel-node"><pre class="codebox" id="code-node"></pre></div>
         <div class="tab-panel" id="panel-php"><pre class="codebox" id="code-php"></pre></div>
         <div class="tab-panel" id="panel-json"><pre class="codebox" id="code-json"></pre></div>
         <div class="tab-panel" id="panel-payload"><pre class="codebox" id="code-payload"></pre></div>
+        <div class="tab-panel" id="panel-brief"><pre class="codebox" id="code-brief"></pre></div>
       </section>
     </div>
 
@@ -361,29 +414,27 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
     </aside>
   </section>
 
-<section class="df-upgrade" data-df-upgrade="ussd-flow-builder">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>USSD Flow Builder — Visual USSD Menu Designer decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for ussd flow builder — visual ussd menu designer so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: USSD Flow Builder — Visual USSD Menu Designer: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+<section class="handoff-section" aria-labelledby="ussd-handoff-title">
+  <div class="handoff-grid">
+    <div class="card">
+      <div class="card-body">
+        <h2 id="ussd-handoff-title">Prepare a gateway handoff before shortcode submission.</h2>
+        <p>USSD providers usually need a public callback URL, a response contract, sample payloads and evidence that every menu path terminates cleanly. The launch brief tab turns the current local flow into a handoff note for engineering, QA or aggregator review.</p>
+        <ul class="handoff-list">
+          <li>Use the simulator to test happy paths, invalid input, back navigation and final END responses.</li>
+          <li>Keep request examples synthetic. Do not put PINs, national IDs, payment secrets or real phone numbers in shared JSON.</li>
+          <li>Export the flow JSON and launch brief together so callback developers can replay the same screen map.</li>
+        </ul>
+      </div>
     </div>
-    <form class="df-form" data-df-form="ussd-flow-builder">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="ussd-flow-builder" data-df-base="USSD Flow Builder — Visual USSD Menu Designer: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">USSD Flow Builder — Visual USSD Menu Designer: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="ussd-flow-builder">Copy summary</button></div>
-    </form>
+    <div class="handoff-note">
+      <strong>What this tool does not do:</strong> it does not provision a shortcode, host your callback, certify a telco integration, store production sessions or approve payment compliance. Confirm current aggregator docs, telco limits and data-protection rules before launch.
+    </div>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="ussd-flow-builder-faq-title">
-  <h2 id="ussd-flow-builder-faq-title">USSD Flow Builder — Visual USSD Menu Designer FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+<section class="handoff-section ussd-faq" aria-labelledby="ussd-flow-builder-faq-title">
+  <h2 id="ussd-flow-builder-faq-title">USSD Flow Builder FAQ</h2>
+  <div class="ussd-faq__grid"><details><summary>How should I use this builder?</summary><p>Create menu, input and END screens, simulate phone input, review lint warnings, then export JSON, starter handlers, callback payloads and the launch brief.</p></details><details><summary>What should I verify before submission?</summary><p>Check CON/END responses, prompt length, dead links, END screens, callback payload fields, session persistence, HTTPS hosting, data minimization and current provider rules.</p></details><details><summary>Does this provision a live USSD code?</summary><p>No. It is a local design and starter-code tool. Your aggregator or telco still controls shortcode provisioning, billing, certification and production launch.</p></details></div>
 </section>
 <section class="tool-verification-sec" data-tool-verification-panel="ussd-flow-builder">
   <div class="container">
@@ -995,11 +1046,56 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
       text: ''
     }, null, 2);
   }
+  function generateLaunchBrief(){
+    var health = lintFlow();
+    var limit = limits[flow.country] || limits.generic;
+    var endings = flow.screens.filter(function(screen){ return screen.type === 'end'; }).map(function(screen){ return screen.id; });
+    var variables = flow.screens.filter(function(screen){ return screen.type === 'input'; }).map(function(screen){ return screen.variable || screen.id; });
+    var messages = health.messages.map(function(msg){ return '- ' + msg.type.toUpperCase() + ': ' + msg.text; }).join('\n');
+    return [
+      'AfroTools USSD launch handoff',
+      'Product: ' + flow.name,
+      'Service code: ' + flow.serviceCode,
+      'Provider model: ' + flow.provider,
+      'Market profile: ' + limit.label,
+      'Session timeout: ' + (flow.timeout || 180) + ' seconds',
+      'Home screen: ' + flow.home,
+      '',
+      'Flow summary',
+      '- Screens: ' + flow.screens.length,
+      '- END screens: ' + health.endScreens + (endings.length ? ' (' + endings.join(', ') + ')' : ''),
+      '- Captured variables: ' + (variables.length ? variables.join(', ') : 'none'),
+      '- Long-menu warnings: ' + health.longMenus,
+      '- Dead links: ' + health.deadLinks,
+      '',
+      'Callback contract to implement',
+      '- Accept HTTPS POST requests from the gateway callback URL.',
+      '- Read sessionId, serviceCode, phoneNumber and text from the request body.',
+      '- Return text/plain responses starting with CON for continuing menus or END for final screens.',
+      '- Store production session state in Redis, a database or another short-lived server store.',
+      '- Avoid logging PINs, national IDs, payment secrets or full phone numbers.',
+      '',
+      'QA paths before submission',
+      '- Dial the home screen and every visible menu option.',
+      '- Test invalid input, 0 back, 00 home and timeout behavior.',
+      '- Verify every input capture advances to the intended next screen.',
+      '- Confirm prompt lengths against the current aggregator and telco rules.',
+      '- Replay the exported callback payload against staging before sending to the provider.',
+      '',
+      'Current lint',
+      messages || '- OK: Flow passes current checks.',
+      '',
+      'Limitations',
+      '- This is a local design and starter-code tool, not telco approval or aggregator certification.',
+      '- Gateway formats, session timeout, shortcode rules and billing terms can differ by provider and market.'
+    ].join('\n');
+  }
   function renderGenerated(){
     $('code-node').textContent = generateNode();
     $('code-php').textContent = generatePhp();
     $('code-json').textContent = exportJsonText();
     $('code-payload').textContent = generatePayload();
+    $('code-brief').textContent = generateLaunchBrief();
   }
 
   function renderAll(){
@@ -1073,7 +1169,32 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
   }
   function copyActiveOutput(){
     var el = $('code-' + activeOutput);
-    navigator.clipboard.writeText(el.textContent).then(function(){ toast('Output copied'); });
+    copyText(el.textContent, 'Output copied');
+  }
+
+  function copyText(text, message){
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function(){ toast(message); }).catch(function(){ fallbackCopyText(text, message); });
+      return;
+    }
+    fallbackCopyText(text, message);
+  }
+
+  function fallbackCopyText(text, message){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      toast(message);
+    } catch(e) {
+      toast('Copy failed');
+    }
+    textarea.remove();
   }
 
   document.addEventListener('click', function(event){
@@ -1142,6 +1263,5 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-sh
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

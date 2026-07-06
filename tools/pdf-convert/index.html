@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Converter - Word, Excel, Text, Images | AfroTools</title>
-<meta name="description" content="Free private PDF converter for DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG. Runs in your browser with no uploads.">
+<title>PDF Converter Online Free | Word, Excel, Text, Images | AfroTools</title>
+<meta name="description" content="Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG locally in your browser with output review before download.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-convert/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF Converter | AfroTools">
-<meta property="og:description" content="Convert Word and spreadsheets to PDF, extract PDF text, or export PDF pages as PNG or JPG. Private browser processing with no uploads.">
+<meta property="og:title" content="PDF Converter Online Free | AfroTools">
+<meta property="og:description" content="Convert Word and spreadsheets to PDF, extract PDF text, or export PDF pages as PNG or JPG locally in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-convert/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-convert.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF Converter | AfroTools">
-<meta name="twitter:description" content="Convert DOCX, spreadsheets, PDF text, and PDF pages to images in your browser. No uploads.">
+<meta name="twitter:title" content="PDF Converter Online Free | AfroTools">
+<meta name="twitter:description" content="Convert DOCX, spreadsheets, PDF text, and PDF pages to images locally in your browser. No uploads.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -50,14 +50,14 @@
   .card-body { padding: 22px; }
 
   .mode-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 0; }
-  .mode-btn { padding: 14px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.82rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .mode-btn { min-height: 44px; padding: 14px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.82rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; touch-action: manipulation; }
   .mode-btn:hover { border-color: var(--afro-blue); }
   .mode-btn.on { border-color: var(--afro-blue); background: var(--color-primary); color: #fff; }
 
-  .drop-zone { border: 2px dashed #e5e7eb; border-radius: 8px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #EFF6FF; }
+  .drop-zone { border: 2px dashed #e5e7eb; border-radius: 8px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #EFF6FF; touch-action: manipulation; }
   .drop-zone:hover { border-color: var(--afro-blue); }
   .drop-zone.dragover { border-color: var(--afro-blue); background: rgba(0,122,255,0.08); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
-  .drop-icon { font-size: 2.4rem; margin-bottom: 8px; }
+  .drop-icon { color: var(--afro-blue); font-size: 0.78rem; font-weight: 900; letter-spacing: 0.08em; margin-bottom: 8px; text-transform: uppercase; }
   .drop-text { font-size: 0.85rem; color: #334155; font-weight: 600; margin-bottom: 4px; }
   .drop-hint { font-size: 0.72rem; color: #6B8CAE; }
 
@@ -65,7 +65,7 @@
   .settings-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
   .field { margin-bottom: 0; }
   .f-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #1e293b; margin-bottom: 6px; display: block; }
-  .f-select, .f-input { width: 100%; padding: 10px 13px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #1e293b; outline: none; font-family: 'DM Sans', sans-serif; }
+  .f-select, .f-input { width: 100%; min-height: 44px; padding: 10px 13px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #1e293b; outline: none; font-family: 'DM Sans', sans-serif; }
   .f-select { cursor: pointer; }
   .f-select:focus, .f-input:focus { border-color: var(--afro-blue); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
   .field-note { font-size: 0.7rem; color: #6B8CAE; line-height: 1.45; margin-top: 5px; }
@@ -79,7 +79,7 @@
   .toggle-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: 0.2s; }
   .toggle-switch input:checked + .toggle-track::after { left: 22px; }
 
-  .calc-btn { width: 100%; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: all 0.18s; margin-top: 16px; font-family: 'DM Sans', sans-serif; }
+  .calc-btn { width: 100%; min-height: 44px; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: all 0.18s; margin-top: 16px; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
   .calc-btn:hover:not(:disabled) { background: #0059B3; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,122,255,0.3); }
   .calc-btn:disabled { background: #93c5fd; cursor: not-allowed; transform: none; box-shadow: none; }
 
@@ -88,7 +88,7 @@
   .progress-text { font-size: 0.72rem; color: #6B8CAE; margin-top: 6px; text-align: center; display: none; }
 
   .result-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
-  .act-btn { padding: 12px 20px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; }
+  .act-btn { min-height: 44px; padding: 12px 20px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; touch-action: manipulation; }
   .act-download { background: rgba(0,122,255,0.1); border: 1.5px solid rgba(0,122,255,0.35); color: #1e40af; }
   .act-download:hover { background: rgba(0,122,255,0.2); }
   .act-reset { background: #f3f4f6; border: 1.5px solid #e5e7eb; color: #374151; }
@@ -101,7 +101,7 @@
   .file-info .fname { font-size: 0.85rem; font-weight: 700; color: #1e293b; }
   .file-info .fsize { font-size: 0.72rem; color: #9ca3af; margin-left: 8px; }
   .file-info .fextra { font-size: 0.72rem; color: var(--color-primary); margin-left: 8px; font-weight: 700; }
-  .file-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #374151; padding: 5px 9px; border-radius: 4px; cursor: pointer; font-size: 0.68rem; font-weight: 700; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .file-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #374151; min-height: 44px; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.68rem; font-weight: 700; transition: all 0.15s; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
   .file-remove:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; }
 
   .text-output { width: 100%; min-height: 300px; padding: 16px; font-family: 'DM Sans', monospace; font-size: 0.85rem; line-height: 1.7; border: 1.5px solid #e5e7eb; border-radius: 8px; background: #EFF6FF; color: #1e293b; resize: vertical; outline: none; }
@@ -116,6 +116,11 @@
   .sheet-tab.on { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
 
   .hidden { display: none !important; }
+
+  .output-review { align-items: flex-start; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; color: #92400e; display: flex; gap: 10px; margin: 0 auto 14px; max-width: 560px; padding: 11px 12px; text-align: left; }
+  .output-review input { flex: 0 0 auto; height: 18px; margin-top: 2px; width: 18px; }
+  .output-review label { cursor: pointer; font-size: 0.78rem; font-weight: 750; line-height: 1.45; }
+  .output-review:focus-within { box-shadow: 0 0 0 3px rgba(245,158,11,0.18); }
 
   /* SEO content */
   .seo-section { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
@@ -153,8 +158,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "PDF Converter",
-  "description": "Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG in your browser with no file uploads.",
+  "name": "PDF Converter Online",
+  "description": "Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG locally in your browser with output review before gated PDF or ZIP downloads.",
   "url": "https://afrotools.com/tools/pdf-convert/",
   "inLanguage": "en",
   "applicationCategory": "ProductivityApplication",
@@ -174,8 +179,7 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert a Word document to PDF?","acceptedAnswer":{"@type":"Answer","text":"Select Word to PDF, upload a DOCX file, choose page size and margins, then convert. The PDF is generated in your browser."}},{"@type":"Question","name":"Can I convert Excel files with multiple sheets?","acceptedAnswer":{"@type":"Answer","text":"Yes. XLSX, XLS, and CSV files are supported. Multi-sheet workbooks show sheet tabs so you can pick the sheet to export."}},{"@type":"Question","name":"Can I export PDF pages as images?","acceptedAnswer":{"@type":"Answer","text":"Yes. Upload a PDF, choose PNG or JPG, set scale and page range, then download a ZIP with one image per selected page."}},{"@type":"Question","name":"Is my data safe?","acceptedAnswer":{"@type":"Answer","text":"All conversion work runs locally in your browser. Files are not uploaded to AfroTools servers."}}]}</script>
-<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
+<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-convert.webp">
@@ -211,7 +215,6 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/canza-pdf/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-format-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-convert/" />
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -251,10 +254,10 @@
       <div class="card-head"><span class="card-title">Upload Word Document</span></div>
       <div class="card-body">
         <div class="drop-zone" id="wordDropZone">
-          <div class="drop-icon">&#128196;</div>
+          <div class="drop-icon">DOCX</div>
           <div class="drop-text">Drag &amp; drop your .docx file here, or click to browse</div>
           <div class="drop-hint">Supports .docx files (Microsoft Word)</div>
-          <input aria-label="WordFileInput" type="file" id="wordFileInput" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
+          <input aria-label="Choose Word document" type="file" id="wordFileInput" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
         </div>
         <div class="file-info" id="wordFileInfo">
           <div class="file-info-inner">
@@ -274,8 +277,8 @@
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Margins</label>
-            <select class="f-select" id="wordMargins" aria-label="Word Margins">
+            <label class="f-label" for="wordMargins">Margins</label>
+            <select class="f-select" id="wordMargins">
               <option value="normal">Normal (25 mm)</option>
               <option value="narrow">Narrow (13 mm)</option>
               <option value="wide">Wide (32 mm)</option>
@@ -292,12 +295,16 @@
     <div class="card hidden" id="wordResultCard">
       <div class="card-head"><span class="card-title">PDF Created</span></div>
       <div class="card-body" style="text-align:center;">
-        <div style="font-size:3rem;margin-bottom:8px;">&#128196;</div>
+        <div class="drop-icon">PDF</div>
         <div style="font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:4px;" id="wordResultName"></div>
         <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="wordResultInfo"></div>
+        <div class="output-review">
+          <input type="checkbox" id="wordReviewConfirm">
+          <label for="wordReviewConfirm">I checked the generated PDF name, page size, margins, and layout before download.</label>
+        </div>
         <div class="result-actions" style="justify-content:center;">
-          <button type="button" class="act-btn act-download" id="wordDownloadBtn">&#128229; Download PDF</button>
-          <button type="button" class="act-btn act-reset" onclick="resetWord()">&#8635; Convert Another</button>
+          <button type="button" class="act-btn act-download" id="wordDownloadBtn">Download PDF</button>
+          <button type="button" class="act-btn act-reset" onclick="resetWord()">Convert Another</button>
         </div>
       </div>
     </div>
@@ -309,10 +316,10 @@
       <div class="card-head"><span class="card-title">Upload Spreadsheet</span></div>
       <div class="card-body">
         <div class="drop-zone" id="excelDropZone">
-          <div class="drop-icon">&#128202;</div>
+          <div class="drop-icon">XLS</div>
           <div class="drop-text">Drag &amp; drop your spreadsheet here, or click to browse</div>
           <div class="drop-hint">Supports .xlsx, .xls, .csv files</div>
-          <input aria-label="ExcelFileInput" type="file" id="excelFileInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" style="display:none">
+          <input aria-label="Choose spreadsheet file" type="file" id="excelFileInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" style="display:none">
         </div>
         <div class="file-info" id="excelFileInfo">
           <div class="file-info-inner">
@@ -334,15 +341,15 @@
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Orientation</label>
-            <select class="f-select" id="excelOrientation" aria-label="Excel Orientation">
+            <label class="f-label" for="excelOrientation">Orientation</label>
+            <select class="f-select" id="excelOrientation">
               <option value="portrait">Portrait</option>
               <option value="landscape" selected>Landscape</option>
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Font Size</label>
-            <select class="f-select" id="excelFontSize" aria-label="Excel Font Size">
+            <label class="f-label" for="excelFontSize">Font Size</label>
+            <select class="f-select" id="excelFontSize">
               <option value="7">Small (7pt)</option>
               <option value="8" selected>Medium (8pt)</option>
               <option value="10">Large (10pt)</option>
@@ -351,7 +358,7 @@
         </div>
         <div class="toggle-row">
           <label class="toggle-switch">
-            <input aria-label="ExcelFitPage" type="checkbox" id="excelFitPage" checked>
+            <input type="checkbox" id="excelFitPage" checked>
             <span class="toggle-track"></span>
           </label>
           <span class="toggle-label">Auto-fit columns to page width</span>
@@ -366,12 +373,16 @@
     <div class="card hidden" id="excelResultCard">
       <div class="card-head"><span class="card-title">PDF Created</span></div>
       <div class="card-body" style="text-align:center;">
-        <div style="font-size:3rem;margin-bottom:8px;">&#128202;</div>
+        <div class="drop-icon">PDF</div>
         <div style="font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:4px;" id="excelResultName"></div>
         <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="excelResultInfo"></div>
+        <div class="output-review">
+          <input type="checkbox" id="excelReviewConfirm">
+          <label for="excelReviewConfirm">I checked the selected sheet, orientation, table layout, and page fit before download.</label>
+        </div>
         <div class="result-actions" style="justify-content:center;">
-          <button type="button" class="act-btn act-download" id="excelDownloadBtn">&#128229; Download PDF</button>
-          <button type="button" class="act-btn act-reset" onclick="resetExcel()">&#8635; Convert Another</button>
+          <button type="button" class="act-btn act-download" id="excelDownloadBtn">Download PDF</button>
+          <button type="button" class="act-btn act-reset" onclick="resetExcel()">Convert Another</button>
         </div>
       </div>
     </div>
@@ -383,10 +394,10 @@
       <div class="card-head"><span class="card-title">Upload PDF</span></div>
       <div class="card-body">
         <div class="drop-zone" id="textDropZone">
-          <div class="drop-icon">&#128221;</div>
+          <div class="drop-icon">TXT</div>
           <div class="drop-text">Drag &amp; drop your PDF here, or click to browse</div>
           <div class="drop-hint">Extracts selectable text from PDF files</div>
-          <input aria-label="TextFileInput" type="file" id="textFileInput" accept=".pdf,application/pdf" style="display:none">
+          <input aria-label="Choose PDF for text extraction" type="file" id="textFileInput" accept=".pdf,application/pdf" style="display:none">
         </div>
         <div class="file-info" id="textFileInfo">
           <div class="file-info-inner">
@@ -409,11 +420,11 @@
       <div class="card-head"><span class="card-title">Extracted Text</span></div>
       <div class="card-body">
         <div class="page-tabs" id="textPageTabs"></div>
-        <textarea class="text-output" id="textOutput" readonly aria-label="Text Output"></textarea>
+        <textarea class="text-output" id="textOutput" readonly aria-label="Extracted PDF text"></textarea>
         <div class="result-actions">
-          <button type="button" class="act-btn act-copy" onclick="copyText()">&#128203; Copy to Clipboard</button>
-          <button type="button" class="act-btn act-download" onclick="downloadText()">&#128229; Download as .txt</button>
-          <button type="button" class="act-btn act-reset" onclick="resetPdfText()">&#8635; Extract Another</button>
+          <button type="button" class="act-btn act-copy" onclick="copyText()">Copy to Clipboard</button>
+          <button type="button" class="act-btn act-download" onclick="downloadText()">Download as .txt</button>
+          <button type="button" class="act-btn act-reset" onclick="resetPdfText()">Extract Another</button>
         </div>
       </div>
     </div>
@@ -425,10 +436,10 @@
       <div class="card-head"><span class="card-title">Upload PDF</span></div>
       <div class="card-body">
         <div class="drop-zone" id="imageDropZone">
-          <div class="drop-icon">&#128444;</div>
+          <div class="drop-icon">IMG</div>
           <div class="drop-text">Drag &amp; drop your PDF here, or click to browse</div>
           <div class="drop-hint">Export selected pages as PNG or JPG images</div>
-          <input aria-label="ImageFileInput" type="file" id="imageFileInput" accept=".pdf,application/pdf" style="display:none">
+          <input aria-label="Choose PDF for image export" type="file" id="imageFileInput" accept=".pdf,application/pdf" style="display:none">
         </div>
         <div class="file-info" id="imageFileInfo">
           <div class="file-info-inner">
@@ -449,8 +460,8 @@
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Render Scale</label>
-            <select class="f-select" id="imageScale" aria-label="Image Scale">
+            <label class="f-label" for="imageScale">Render Scale</label>
+            <select class="f-select" id="imageScale">
               <option value="1">1x</option>
               <option value="1.5" selected>1.5x</option>
               <option value="2">2x</option>
@@ -458,8 +469,8 @@
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Page Range</label>
-            <input aria-label="All, 1, 3 5" class="f-input" id="imagePageRange" type="text" placeholder="All, 1, 3-5">
+            <label class="f-label" for="imagePageRange">Page Range</label>
+            <input aria-label="Image page range" class="f-input" id="imagePageRange" type="text" placeholder="All, 1, 3-5">
             <div class="field-note">Leave blank for all pages. Use commas and ranges.</div>
           </div>
         </div>
@@ -473,12 +484,16 @@
     <div class="card hidden" id="imageResultCard">
       <div class="card-head"><span class="card-title">Image ZIP Created</span></div>
       <div class="card-body" style="text-align:center;">
-        <div style="font-size:3rem;margin-bottom:8px;">&#128444;</div>
+        <div class="drop-icon">ZIP</div>
         <div style="font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:4px;" id="imageResultName"></div>
         <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="imageResultInfo"></div>
+        <div class="output-review">
+          <input type="checkbox" id="imageReviewConfirm">
+          <label for="imageReviewConfirm">I checked the image format, scale, and page range before downloading the ZIP.</label>
+        </div>
         <div class="result-actions" style="justify-content:center;">
-          <button type="button" class="act-btn act-download" id="imageDownloadBtn">&#128229; Download ZIP</button>
-          <button type="button" class="act-btn act-reset" onclick="resetPdfImages()">&#8635; Export Another</button>
+          <button type="button" class="act-btn act-download" id="imageDownloadBtn">Download ZIP</button>
+          <button type="button" class="act-btn act-reset" onclick="resetPdfImages()">Export Another</button>
         </div>
       </div>
     </div>
@@ -488,11 +503,11 @@
   <div class="tips-section">
     <div class="tips-title">Tips</div>
     <div class="tips-grid">
-      <div class="tip-item">&#128274; Files never leave your device</div>
-      <div class="tip-item">&#128196; Word conversion preserves basic formatting</div>
-      <div class="tip-item">&#128202; Excel tables get styled headers &amp; alternating rows</div>
-      <div class="tip-item">&#128444; PDF pages can export as PNG/JPG ZIPs</div>
-      <div class="tip-item">&#128221; PDF text extraction works on selectable text only</div>
+      <div class="tip-item">Files never leave your device</div>
+      <div class="tip-item">Word conversion preserves basic formatting</div>
+      <div class="tip-item">Excel tables get styled headers and alternating rows</div>
+      <div class="tip-item">PDF pages can export as PNG/JPG ZIPs</div>
+      <div class="tip-item">PDF text extraction works on selectable text only</div>
     </div>
   </div>
 </div>
@@ -525,46 +540,6 @@
   </ul>
 </div>
 
-<!-- FAQs -->
-
-
-<section class="tool-verification-sec" data-tool-verification-panel data-quality-proof="PDF Format Converter" aria-labelledby="pdf-convert-verification-title">
-  <div class="container">
-    <div class="tool-verification-card">
-      <div class="tool-verification-head">
-        <div>
-          <span class="tool-verification-kicker">Local document workflow</span>
-          <h2 class="tool-verification-title" id="pdf-convert-verification-title">Convert, verify, then export</h2>
-          <p class="tool-verification-lead">Use the upload panels above for the real conversion. This checklist keeps the workflow explicit: choose the right mode, confirm the output, then download only after checking the file.</p>
-        </div>
-        <div class="tool-verification-status">
-          <span class="tool-verification-badge">Browser-first processing</span>
-          <p class="tool-verification-note">No source file upload is required for the core converter.</p>
-        </div>
-      </div>
-      <div class="tool-verification-grid">
-        <div class="tool-verification-block"><h3>Methodology</h3><ul class="tool-verification-list"><li>DOCX, spreadsheet, selectable-PDF text, and PDF-page image exports use browser libraries and the file you select.</li><li>Output quality depends on fonts, tables, images, page range, file structure, and device memory.</li></ul></div>
-        <div class="tool-verification-block"><h3>Pre-export checks</h3><ul class="tool-verification-list"><li>Open the PDF, TXT, or ZIP before sending it onward.</li><li>Check page order, table layout, missing images, text order, file size, and portal compatibility.</li></ul></div>
-        <div class="tool-verification-block"><h3>Privacy</h3><p class="tool-verification-meta">Files are processed locally by default. The account gate, when shown for PDF-category downloads, records export metadata and account intent only; it should not upload source files, generated PDFs, extracted text, or ZIP contents.</p></div>
-        <div class="tool-verification-block"><h3>Copyable handoff</h3><p class="tool-verification-meta">Use the checklist when handing a document to a client, school, authority, bank, employer, or teammate.</p></div>
-      </div>
-      <div class="tool-verification-actions">
-        <button type="button" class="act-btn act-copy" id="copyPdfConvertChecklist">Copy verification checklist</button>
-        <p class="tool-verification-disclaimer" id="pdfConvertChecklistStatus" aria-live="polite">Disclaimer: private browser conversion is not a guarantee that an external portal will accept the output.</p>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="tool-verification-sec" aria-labelledby="pdf-convert-faq-title">
-  <div class="container">
-    <div class="tool-verification-card">
-      <h2 id="pdf-convert-faq-title">PDF Format Converter FAQ</h2>
-      <div class="tool-verification-grid"><details class="tool-verification-block"><summary>Which mode should I use?</summary><p>Use Word to PDF for DOCX, Excel to PDF for sheets, PDF to Text for selectable text, and PDF to Images when you need page screenshots.</p></details><details class="tool-verification-block"><summary>What should I verify?</summary><p>Open the exported file and check layout, page breaks, tables, images, and text order before using it for contracts, applications, filings, or client delivery.</p></details><details class="tool-verification-block"><summary>Is my file uploaded?</summary><p>No upload is required for the converter. Processing runs in the browser, but you should still avoid shared devices for private documents.</p></details></div>
-    </div>
-  </div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
 <div class="faq-section">
   <h2 class="faq-title">Frequently Asked Questions</h2>
   <div class="faq-item">
@@ -594,7 +569,6 @@
 </div>
 
 <afro-related-tools category="document-pdf" current="pdf-convert"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <!-- Core PDF utilities -->
@@ -644,6 +618,25 @@ function showToast(msg, isError) {
   setTimeout(function() { t.remove(); }, 3500);
 }
 
+function outputReviewConfirmed() {
+  var checks = Array.prototype.slice.call(document.querySelectorAll('.output-review input'));
+  return checks.some(function(input) {
+    var card = input.closest('.card');
+    return card && !card.classList.contains('hidden') && input.checked;
+  });
+}
+
+function requireOutputReview() {
+  if (outputReviewConfirmed()) return true;
+  showToast('Review the output details, then tick the review checkbox before download.', true);
+  var activeCheck = Array.prototype.slice.call(document.querySelectorAll('.output-review input')).find(function(input) {
+    var card = input.closest('.card');
+    return card && !card.classList.contains('hidden');
+  });
+  if (activeCheck) activeCheck.focus();
+  return false;
+}
+
 function saveBlob(blob, filename) {
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
@@ -657,6 +650,7 @@ function saveBlob(blob, filename) {
 }
 
 function downloadBlob(blob, filename, requiresGate) {
+  if (requiresGate && !requireOutputReview()) return;
   function save() { saveBlob(blob, filename); }
   if (!requiresGate) {
     save();
@@ -1514,59 +1508,11 @@ setupDropZone('excelDropZone', 'excelFileInput', handleExcelFile);
 setupDropZone('textDropZone', 'textFileInput', handlePdfTextFile);
 setupDropZone('imageDropZone', 'imageFileInput', handlePdfImageFile);
 
-var copyChecklistBtn = document.getElementById('copyPdfConvertChecklist');
-if (copyChecklistBtn) {
-  copyChecklistBtn.addEventListener('click', function() {
-    var text = [
-      'AfroTools PDF converter verification checklist',
-      '1. Confirm the source file type and target output mode.',
-      '2. Check page range, sheet selection, margins, and image format before converting.',
-      '3. Open the exported PDF, TXT, or ZIP and inspect page order, tables, fonts, images, and file size.',
-      '4. Confirm the receiving portal, client, school, authority, bank, or employer accepts the format.',
-      '5. Keep sensitive documents local and avoid shared devices.'
-    ].join('\n');
-    var status = document.getElementById('pdfConvertChecklistStatus');
-    var done = function() {
-      if (status) status.textContent = 'Verification checklist copied.';
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(function() { fallbackChecklistCopy(text); done(); });
-    } else {
-      fallbackChecklistCopy(text);
-      done();
-    }
-  });
-}
-
-function fallbackChecklistCopy(text) {
-  var ta = document.createElement('textarea');
-  ta.value = text;
-  ta.setAttribute('readonly', '');
-  ta.style.position = 'fixed';
-  ta.style.left = '-9999px';
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand('copy'); } catch (err) {}
-  ta.remove();
-}
 </script>
 <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Pdf Convert" tool-slug="pdf-convert"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>

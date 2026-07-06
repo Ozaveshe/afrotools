@@ -78,9 +78,13 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.5rem;border:none;border-radius:10px;font-family:inherit;font-size:.93rem;font-weight:700;cursor:pointer;transition:all .2s;background:var(--color-primary);color:#fff}
 .btn:hover{background:#0063D1;transform:translateY(-1px)}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:.62rem .9rem;border:1.5px solid #d7dde5;border-radius:10px;background:#fff;color:#1e40af;font-family:inherit;font-size:.86rem;font-weight:800;cursor:pointer}
+.secondary-btn:hover{border-color:var(--color-primary);background:#f8faff}
 .result-box{display:none;margin-top:1rem}
 .result-box.show{display:block}
 .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1rem}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;align-items:center;margin-top:1rem;padding:1rem;border:1.5px solid #e5e7eb;border-radius:12px;background:#f9fafb}
+.result-actions__status{font-size:.8rem;color:#6b7280;line-height:1.5}
 .rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:center}
 .rs .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:.2rem}
 .rs .val{font-size:1.25rem;font-weight:800;color:var(--color-primary)}
@@ -99,7 +103,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:.88rem;color:#555;padding:0 1.25rem;line-height:1.7}
 .faq-item.open .faq-a{max-height:300px;padding:.75rem 1.25rem 1rem}
 .sec-body{padding:40px 0}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
+@media(max-width:600px){.row{grid-template-columns:1fr}.btn,.secondary-btn{width:100%;justify-content:center}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/nysc-allowance.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/nysc-allowance/" />
@@ -107,7 +111,6 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/alawus-na-nysc/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/posho-ya-nysc/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/nysc-allowance/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -171,32 +174,24 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
     <div class="result-grid" id="nysc-grid"></div>
     <div class="breakdown" id="nysc-breakdown"></div>
     <div id="nysc-info"></div>
+    <div class="result-actions" aria-label="NYSC allowance result actions">
+      <button class="secondary-btn" type="button" id="copyNYSCReport">Copy report</button>
+      <button class="secondary-btn" type="button" id="downloadNYSCReport">Download TXT</button>
+      <button class="secondary-btn" type="button" id="saveNYSCReport">Save locally</button>
+      <span class="result-actions__status" id="nyscActionStatus" role="status" aria-live="polite"></span>
+    </div>
   </div>
 </div>
 
-<section class="df-upgrade" data-df-upgrade="nysc-allowance">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>NYSC Allowance Calculator decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for nysc allowance calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: NYSC Allowance Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="nysc-allowance">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="nysc-allowance" data-df-base="NYSC Allowance Calculator: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">NYSC Allowance Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="nysc-allowance">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="nysc-allowance-faq-title">
-  <h2 id="nysc-allowance-faq-title">NYSC Allowance Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+<section class="card">
+  <h2>Method and checks</h2>
+  <p>
+    AfroTools combines the federal NYSC allowance assumption, selected state top-up,
+    side income, and monthly expenses to estimate 12-month income and savings.
+    State support can change or be paid irregularly, so confirm the latest top-up
+    policy, PPA support, lodge costs, transport, and CDS obligations before making
+    a service-year budget.
+  </p>
 </section>
 <div class="faq">
   <h2>About NYSC Allowance</h2>
@@ -212,7 +207,73 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 
 <afro-footer></afro-footer>
 <script>
+var currentNYSCPlan=null;
 function fmt(n){return '₦'+Math.round(n).toLocaleString();}
+function stateLabel(){
+  var select=document.getElementById('nysc-state');
+  return select.options[select.selectedIndex]?select.options[select.selectedIndex].textContent:'Selected state';
+}
+function setNYSCActionStatus(message){
+  var status=document.getElementById('nyscActionStatus');
+  if(status){status.textContent=message;}
+}
+function buildNYSCReport(){
+  if(!currentNYSCPlan){return 'Run the NYSC Allowance Calculator first to create a report.';}
+  var p=currentNYSCPlan;
+  return [
+    'NYSC allowance estimate - AfroTools',
+    '',
+    'Inputs',
+    '- Posting state: '+p.state,
+    '- Federal allowance: '+fmt(p.federal),
+    '- State top-up allowance: '+fmt(p.stateTopup),
+    '- Monthly side income: '+fmt(p.side),
+    '- Monthly expenses: '+fmt(p.expenses),
+    '',
+    'Estimate',
+    '- Total monthly income: '+fmt(p.monthlyTotal),
+    '- Monthly savings: '+fmt(p.monthlySavings),
+    '- 12-month income: '+fmt(p.annualTotal),
+    '- 12-month savings: '+fmt(p.annualSavings),
+    '',
+    'Planning checks',
+    '- Confirm current NYSC federal allowance and any state top-up before relying on the estimate.',
+    '- Check whether your PPA provides transport, meals, accommodation, or delayed reimbursements.',
+    '- This is a budget planning estimate, not official NYSC guidance or a guaranteed payment statement.'
+  ].join('\n');
+}
+async function copyNYSCReport(){
+  var report=buildNYSCReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    await navigator.clipboard.writeText(report);
+  }else{
+    var textarea=document.createElement('textarea');
+    textarea.value=report;
+    textarea.setAttribute('readonly','');
+    textarea.style.position='fixed';
+    textarea.style.left='-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+  }
+  setNYSCActionStatus('NYSC report copied.');
+}
+function downloadNYSCReport(){
+  var blob=new Blob([buildNYSCReport()],{type:'text/plain;charset=utf-8'});
+  var link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download='nysc-allowance-report.txt';
+  document.body.appendChild(link);
+  link.click();
+  URL.revokeObjectURL(link.href);
+  link.remove();
+  setNYSCActionStatus('TXT report downloaded.');
+}
+function saveNYSCReport(){
+  localStorage.setItem('afrotools-nysc-allowance-report',JSON.stringify({savedAt:Date.now(),plan:currentNYSCPlan,report:buildNYSCReport()}));
+  setNYSCActionStatus('Saved in this browser.');
+}
 function calcNYSC(){
   var federal=33000;
   var stateTopup=parseInt(document.getElementById('nysc-state').value)||0;
@@ -222,6 +283,7 @@ function calcNYSC(){
   var monthlySavings=monthlyTotal-expenses;
   var annualTotal=monthlyTotal*12;
   var annualSavings=monthlySavings*12;
+  currentNYSCPlan={state:stateLabel(),federal:federal,stateTopup:stateTopup,side:side,expenses:expenses,monthlyTotal:monthlyTotal,monthlySavings:monthlySavings,annualTotal:annualTotal,annualSavings:annualSavings};
   document.getElementById('nysc-grid').innerHTML=
     '<div class="rs"><div class="lbl">Monthly Income</div><div class="val">'+fmt(monthlyTotal)+'</div><div class="sub">Federal + State + Side</div></div>'+
     '<div class="rs"><div class="lbl">Monthly Savings</div><div class="val" style="color:'+(monthlySavings>=0?'var(--color-primary)':'#dc2626')+'">'+fmt(Math.abs(monthlySavings))+'</div><div class="sub">'+(monthlySavings>=0?'Surplus':'Deficit — review expenses')+'</div></div>'+
@@ -242,7 +304,9 @@ function calcNYSC(){
   document.getElementById('nysc-result').classList.add('show');
 }
 document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){this.parentElement.classList.toggle('open');});});
+document.getElementById('copyNYSCReport').addEventListener('click',function(){copyNYSCReport().catch(function(){setNYSCActionStatus('Copy failed. Try download instead.');});});
+document.getElementById('downloadNYSCReport').addEventListener('click',downloadNYSCReport);
+document.getElementById('saveNYSCReport').addEventListener('click',saveNYSCReport);
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

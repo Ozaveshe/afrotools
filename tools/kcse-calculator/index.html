@@ -84,6 +84,26 @@ select:focus{outline:none;border-color:var(--primary)}
 .result-label{font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:1rem}
 .result-points{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:.5rem}
 .result-uni{margin-top:1rem;padding:1rem;background:rgba(255,255,255,.08);border-radius:10px;font-size:.88rem;color:rgba(255,255,255,.85);line-height:1.6}
+.kcse-action-pack{margin-top:1rem;border:1.5px solid #dbeafe;border-radius:14px;background:#fff;padding:1rem;text-align:left}
+.kcse-action-pack[hidden]{display:none}
+.kcse-action-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.75rem;align-items:start}
+.kcse-action-head h3{font-size:1rem;line-height:1.25;margin:0 0 .25rem;color:#111}
+.kcse-action-head p{font-size:.82rem;line-height:1.55;color:#5b6472;margin:0}
+.kcse-action-buttons{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:flex-end}
+.kcse-action-buttons .btn{font-size:.78rem;margin:0;padding:.55rem .8rem}
+.kcse-action-buttons .btn-secondary{background:#fff;color:#0f4fb8;border:1px solid #bfdbfe}
+.kcse-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin:.9rem 0}
+.kcse-action-cell{border:1px solid #e5e7eb;border-radius:10px;background:#f8fafc;padding:.75rem}
+.kcse-action-cell strong{display:block;color:#0f172a;font-size:.88rem;line-height:1.25;overflow-wrap:anywhere}
+.kcse-action-cell span{display:block;color:#64748b;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-top:.25rem}
+.kcse-action-list{display:grid;gap:.55rem}
+.kcse-action-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.55rem;align-items:start;border:1px solid #e5e7eb;border-radius:10px;padding:.7rem;background:#fff}
+.kcse-action-dot{width:.55rem;height:.55rem;border-radius:99px;background:#2563eb;margin-top:.35rem}
+.kcse-action-item b{display:block;color:#111827;font-size:.82rem;line-height:1.35}
+.kcse-action-item small{display:block;color:#5b6472;font-size:.76rem;line-height:1.45;margin-top:.15rem}
+.kcse-action-links{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.8rem}
+.kcse-action-links a{display:inline-flex;align-items:center;min-height:32px;padding:.4rem .65rem;border:1px solid #bfdbfe;border-radius:8px;background:#eff6ff;color:#0f4fb8;font-size:.76rem;font-weight:800;text-decoration:none}
+.kcse-action-status{min-height:1.2em;margin-top:.7rem;color:#64748b;font-size:.78rem}
 .breakdown-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:1rem}
 .breakdown-table th{background:#f3f4f6;padding:.5rem .75rem;text-align:left;font-weight:700;font-size:.75rem;color:#374151;border-bottom:2px solid var(--border)}
 .breakdown-table td{padding:.45rem .75rem;border-bottom:1px solid #f3f4f6}
@@ -97,6 +117,7 @@ select:focus{outline:none;border-color:var(--primary)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:.88rem;color:#555;padding:0 1.25rem;line-height:1.7}
 .faq-item.open .faq-a{max-height:300px;padding:.75rem 1.25rem 1rem}
 .sec-body{padding:40px 0}
+@media(max-width:700px){.kcse-action-head{grid-template-columns:1fr}.kcse-action-buttons{display:grid;grid-template-columns:1fr;justify-content:stretch}.kcse-action-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.subject-row{grid-template-columns:1fr}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/kcse-calculator.webp">
@@ -106,8 +127,68 @@ select:focus{outline:none;border-color:var(--primary)}
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/kcse-calculator/" />
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="kcse-mvp-refresh">
+body.top-level-page-ui-refresh.kcse-calculator-page .hero{
+  display:block!important;
+  min-height:auto!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  padding:52px 0 44px!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.kcse-calculator-page .hero::before,
+body.top-level-page-ui-refresh.kcse-calculator-page .hero::after{
+  display:none!important;
+}
+body.top-level-page-ui-refresh.kcse-calculator-page .hero .container,
+body.top-level-page-ui-refresh.kcse-calculator-page .sec-body>.container{
+  width:min(100% - 32px,860px)!important;
+  max-width:860px!important;
+  margin-inline:auto!important;
+  padding-inline:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.kcse-calculator-page .bc,
+body.top-level-page-ui-refresh.kcse-calculator-page .badges,
+body.top-level-page-ui-refresh.kcse-calculator-page .hero h1,
+body.top-level-page-ui-refresh.kcse-calculator-page .hero-sub{
+  margin-left:0!important;
+  margin-right:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.kcse-calculator-page .badges{
+  align-items:center!important;
+  justify-content:flex-start!important;
+}
+body.top-level-page-ui-refresh.kcse-calculator-page .hero h1{
+  max-width:16ch!important;
+  color:#fff!important;
+  font-size:clamp(1.9rem,4vw,2.45rem)!important;
+  line-height:1.05!important;
+  letter-spacing:0!important;
+}
+body.top-level-page-ui-refresh.kcse-calculator-page .hero-sub{
+  max-width:58ch!important;
+  color:rgba(255,255,255,.88)!important;
+}
+.kcse-input-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.85rem}
+.kcse-input-actions .btn{margin:0!important}
+.kcse-input-actions .btn-secondary{background:#fff;color:#0f4fb8;border:1.5px solid #bfdbfe}
+.kcse-input-status{min-height:1.35em;margin-top:.75rem;color:#b45309;font-size:.84rem;font-weight:800}
+.kcse-input-status.is-ok{color:#166534}
+@media(max-width:600px){
+  body.top-level-page-ui-refresh.kcse-calculator-page .hero{
+    padding:38px 0 34px!important;
+  }
+  body.top-level-page-ui-refresh.kcse-calculator-page .hero .container,
+  body.top-level-page-ui-refresh.kcse-calculator-page .sec-body>.container{
+    width:min(100% - 24px,860px)!important;
+  }
+  .kcse-input-actions{display:grid;grid-template-columns:1fr}
+}
+</style>
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh kcse-calculator-page">
 <afro-navbar theme="dark" active="education"></afro-navbar>
 <div class="hero">
   <div class="container">
@@ -139,12 +220,39 @@ select:focus{outline:none;border-color:var(--primary)}
   <h2>Enter Your KCSE Grades</h2>
   <p style="font-size:.82rem;color:#6b7280;margin:-0.5rem 0 1rem">Best 7 of 8 subjects are used to calculate mean grade. Grade scale: A(12) A-(11) B+(10) B(9) B-(8) C+(7) C(6) C-(5) D+(4) D(3) D-(2) E(1)</p>
   <div id="subjects-container"></div>
-  <button type="button" class="btn" style="margin-top:.75rem" onclick="calcKCSE()">Calculate Mean Grade</button>
+  <div class="kcse-input-actions" aria-label="KCSE grade actions">
+    <button type="button" class="btn" onclick="calcKCSE()">Calculate Mean Grade</button>
+    <button type="button" class="btn btn-secondary" onclick="loadKCSESample()">Load sample grades</button>
+    <button type="button" class="btn btn-secondary" onclick="clearKCSEGrades()">Clear</button>
+  </div>
+  <div class="kcse-input-status" id="kcse-input-status" aria-live="polite"></div>
   <div class="result-box" id="kcse-result">
     <div class="result-grade" id="r-grade">--</div>
     <div class="result-label">KCSE Mean Grade</div>
     <div class="result-points" id="r-points"></div>
     <div class="result-uni" id="r-uni"></div>
+  </div>
+  <div class="kcse-action-pack" id="kcse-action-pack" hidden aria-live="polite">
+    <div class="kcse-action-head">
+      <div>
+        <h3>KUCCPS action pack</h3>
+        <p>Turn the mean grade into a pathway, target gap, weak-subject focus, and shareable prep note.</p>
+      </div>
+      <div class="kcse-action-buttons">
+        <button type="button" class="btn btn-secondary" onclick="copyKCSEActionPack()">Copy plan</button>
+        <button type="button" class="btn" onclick="downloadKCSEActionPack()">Download TXT</button>
+      </div>
+    </div>
+    <div class="kcse-action-grid" id="kcse-action-grid"></div>
+    <div class="kcse-action-list" id="kcse-action-list"></div>
+    <div class="kcse-action-links">
+      <a href="/tools/study-planner/?exam=kenya-kcse">Study plan</a>
+      <a href="/tools/exam-timetable/?exam=kenya-kcse">Prep timetable</a>
+      <a href="/tools/flashcard-maker/?exam=kenya-kcse">Flashcards</a>
+      <a href="/tools/grade-tracker/?exam=kenya-kcse">Track scores</a>
+      <a href="https://www.knec.ac.ke/2026-kcse-timetable/" target="_blank" rel="noopener">KNEC source</a>
+    </div>
+    <div class="kcse-action-status" id="kcse-action-status" role="status"></div>
   </div>
   <div id="breakdown-wrap"></div>
 </div>
@@ -178,26 +286,60 @@ var UNI_REQS=[
   {min:5.5,grade:'C',text:'Qualifies for diploma programmes at technical colleges and some private university certificate programmes.'},
   {min:0,grade:'C-',text:'Certificate level programmes. Consider bridging courses or diploma pathways before degree admission.'}
 ];
+var lastKCSEResult=null;
 function buildSubjects(){
   var c=document.getElementById('subjects-container');
   var html='<div style="display:grid;grid-template-columns:1fr 140px;gap:.5rem;padding:0 0 8px;font-size:.7rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em"><span>Subject</span><span>Grade</span></div>';
   SUBJECTS.forEach(function(s,i){
-    html+='<div class="subject-row"><div class="subject-name">'+s+'</div><select id="subj-'+i+'" class="subj-sel" aria-label="Subj"><option value="">-- Select --</option>';
+    html+='<div class="subject-row"><div class="subject-name">'+esc(s)+'</div><select id="subj-'+i+'" class="subj-sel" aria-label="Grade for '+esc(s)+'"><option value="">-- Select --</option>';
     GRADES.forEach(function(g){html+='<option value="'+g+'">'+g+'</option>';});
     html+='</select></div>';
   });
   c.innerHTML=html;
 }
+function setKCSEInputStatus(message,type){
+  var el=document.getElementById('kcse-input-status');
+  if(!el)return;
+  el.textContent=message||'';
+  el.classList.toggle('is-ok',type==='ok');
+}
+function loadKCSESample(){
+  var sample=['B+','B','C+','B-','C+','B','B-','C'];
+  sample.forEach(function(grade,i){
+    var sel=document.getElementById('subj-'+i);
+    if(sel)sel.value=grade;
+  });
+  setKCSEInputStatus('Sample grades loaded. Calculate to see the mean grade, eligibility note, and action pack.','ok');
+}
+function clearKCSEGrades(){
+  SUBJECTS.forEach(function(s,i){
+    var sel=document.getElementById('subj-'+i);
+    if(sel)sel.value='';
+  });
+  lastKCSEResult=null;
+  document.getElementById('kcse-result').classList.remove('show');
+  document.getElementById('kcse-action-pack').hidden=true;
+  document.getElementById('breakdown-wrap').innerHTML='';
+  setKCSEStatus('');
+  setKCSEInputStatus('Grades cleared. Enter at least 7 subjects or load the sample to try the calculator.','');
+}
 function calcKCSE(){
   var grades=[];
-  var valid=true;
   SUBJECTS.forEach(function(s,i){
     var sel=document.getElementById('subj-'+i);
     if(sel&&sel.value){grades.push({subject:s,grade:sel.value,points:POINTS[sel.value]});}
     else{grades.push({subject:s,grade:null,points:null});}
   });
   var filled=grades.filter(function(g){return g.points!==null;});
-  if(filled.length<7){alert('Please enter grades for at least 7 subjects.');return;}
+  if(filled.length<7){
+    setKCSEInputStatus('Enter grades for at least 7 subjects. You have entered '+filled.length+'.', '');
+    var firstEmpty=SUBJECTS.findIndex(function(s,i){var sel=document.getElementById('subj-'+i);return sel&&!sel.value;});
+    if(firstEmpty>=0){
+      var target=document.getElementById('subj-'+firstEmpty);
+      if(target)target.focus();
+    }
+    return;
+  }
   // sort by points descending, take best 7
   var sorted=filled.slice().sort(function(a,b){return b.points-a.points;});
   var best7=sorted.slice(0,7);
@@ -210,6 +352,9 @@ function calcKCSE(){
   UNI_REQS.forEach(function(r){if(mean>=r.min&&uniText==='University eligibility not found.')uniText=r.text;});
   document.getElementById('r-uni').innerHTML='<strong>University Eligibility:</strong> '+uniText;
   document.getElementById('kcse-result').classList.add('show');
+  lastKCSEResult={grades:grades,filled:filled,best7:best7,sum:sum,mean:mean,grade:grade,uniText:uniText};
+  setKCSEInputStatus('KCSE mean grade calculated from your best 7 subjects.','ok');
+  renderKCSEActionPack();
   // breakdown
   var tbl='<div style="margin-top:1.5rem"><h3 style="font-size:1rem;font-weight:700;margin-bottom:.5rem">Subject Breakdown</h3><table class="breakdown-table"><thead><tr><th>Subject</th><th>Grade</th><th>Points</th><th>Counted</th></tr></thead><tbody>';
   var best7names=best7.map(function(g){return g.subject;});
@@ -233,6 +378,114 @@ function getGrade(mean){
   if(mean>=2.5)return 'D';
   if(mean>=1.5)return 'D-';
   return 'E';
+}
+function esc(value){
+  return String(value==null?'':value).replace(/[&<>"']/g,function(ch){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+  });
+}
+function nextGrade(grade){
+  var idx=GRADES.indexOf(grade);
+  return idx>0?GRADES[idx-1]:grade;
+}
+function targetGap(mean,target){
+  return Math.max(0,target-mean);
+}
+function lowestCountedSubject(result){
+  if(!result||!result.best7.length)return null;
+  var sorted=result.best7.slice().sort(function(a,b){return a.points-b.points;});
+  return sorted[0]||null;
+}
+function actionItems(result){
+  var degreeGap=targetGap(result.mean,6.5);
+  var competitiveGap=targetGap(result.mean,9.5);
+  var weak=lowestCountedSubject(result);
+  var items=[];
+  items.push({
+    title:degreeGap===0?'Degree minimum check':'Degree minimum gap',
+    detail:degreeGap===0?'Your mean is at or above the C+ planning threshold commonly used for degree eligibility. Confirm the current KUCCPS course cutoffs before applying.':'You are '+degreeGap.toFixed(2)+' mean points below the C+ planning threshold. Build a diploma, certificate, or repeat-subject backup route.'
+  });
+  items.push({
+    title:competitiveGap===0?'Competitive course range':'Competitive course gap',
+    detail:competitiveGap===0?'Your mean is in the B+ planning range used for many competitive programmes. Compare course cluster requirements before choosing.':'You are '+competitiveGap.toFixed(2)+' mean points below a B+ competitive-course planning range. Prioritise the subjects tied to your target cluster.'
+  });
+  if(weak){
+    items.push({
+      title:'First revision focus',
+      detail:weak.subject+' is the lowest counted subject in the best seven at '+weak.grade+' ('+weak.points+' points). A one-step lift to '+nextGrade(weak.grade)+' would raise the mean by about '+(1/7).toFixed(2)+' points.'
+    });
+  }
+  return items;
+}
+function setKCSEStatus(message){
+  var el=document.getElementById('kcse-action-status');
+  if(el)el.textContent=message||'';
+}
+function renderKCSEActionPack(){
+  var pack=document.getElementById('kcse-action-pack');
+  var grid=document.getElementById('kcse-action-grid');
+  var list=document.getElementById('kcse-action-list');
+  var result=lastKCSEResult;
+  if(!pack||!grid||!list||!result)return;
+  pack.hidden=false;
+  grid.innerHTML=[
+    ['Mean grade',result.grade],
+    ['Mean points',result.mean.toFixed(2)+'/12'],
+    ['Best seven sum',String(result.sum)]
+  ].map(function(item){return '<div class="kcse-action-cell"><strong>'+esc(item[1])+'</strong><span>'+esc(item[0])+'</span></div>';}).join('');
+  list.innerHTML=actionItems(result).map(function(item){
+    return '<div class="kcse-action-item"><i class="kcse-action-dot"></i><div><b>'+esc(item.title)+'</b><small>'+esc(item.detail)+'</small></div></div>';
+  }).join('');
+  try{localStorage.setItem('afrotools_kcse_action_pack',JSON.stringify({grade:result.grade,mean:result.mean,sum:result.sum,updatedAt:Date.now()}));}catch(e){}
+}
+function buildKCSEActionText(){
+  var result=lastKCSEResult;
+  if(!result)return 'No KCSE result yet. Enter at least 7 subject grades first.';
+  var lines=[
+    'AfroTools KCSE KUCCPS Action Pack',
+    'Mean grade: '+result.grade,
+    'Mean points: '+result.mean.toFixed(2)+' / 12',
+    'Best seven sum: '+result.sum,
+    '',
+    'Counted subjects'
+  ];
+  result.best7.forEach(function(g){lines.push('- '+g.subject+': '+g.grade+' ('+g.points+' points)');});
+  lines.push('');
+  lines.push('Next checks');
+  actionItems(result).forEach(function(item){lines.push('- '+item.title+': '+item.detail);});
+  lines.push('');
+  lines.push('Tools');
+  lines.push('Study plan: https://afrotools.com/tools/study-planner/?exam=kenya-kcse');
+  lines.push('Prep timetable: https://afrotools.com/tools/exam-timetable/?exam=kenya-kcse');
+  lines.push('Flashcards: https://afrotools.com/tools/flashcard-maker/?exam=kenya-kcse');
+  lines.push('Grade tracker: https://afrotools.com/tools/grade-tracker/?exam=kenya-kcse');
+  lines.push('Official KNEC source: https://www.knec.ac.ke/2026-kcse-timetable/');
+  lines.push('');
+  lines.push('This is a planning estimate, not an official KNEC result or KUCCPS placement decision. Confirm current course cutoffs and subject requirements before applying.');
+  return lines.join('\n');
+}
+function copyKCSEActionPack(){
+  var text=buildKCSEActionText();
+  function done(){setKCSEStatus('KCSE action pack copied.');}
+  function fallback(){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');done();}catch(e){setKCSEStatus('Copy failed. Download the TXT plan instead.');}
+    document.body.removeChild(ta);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(fallback);
+  else fallback();
+}
+function downloadKCSEActionPack(){
+  var text=buildKCSEActionText();
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='kcse-kuccps-action-pack.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setKCSEStatus('KCSE action pack downloaded.');
 }
 document.addEventListener('DOMContentLoaded',function(){buildSubjects();});
 document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){this.parentElement.classList.toggle('open');});});

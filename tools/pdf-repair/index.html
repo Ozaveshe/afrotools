@@ -64,7 +64,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -81,17 +81,6 @@
     overflow: hidden;
   }
 
-  .tool-hero::after {
-    content: '';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
   .tool-hero-inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -103,7 +92,6 @@
     font-size: 0.72rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
@@ -121,7 +109,6 @@
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 800;
     color: #fff;
-    letter-spacing: -0.02em;
     line-height: 1.1;
     margin-bottom: 10px;
   }
@@ -154,7 +141,6 @@
     border-radius: 4px;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
   }
 
   .b-green {
@@ -180,7 +166,7 @@
   .card {
     background: #fff;
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
   }
@@ -201,7 +187,6 @@
   .card-title {
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #374151;
   }
@@ -232,6 +217,7 @@
     font-size: 0.9rem;
     color: #334155;
     font-weight: 600;
+    min-height: 44px;
   }
 
   .file-input-label:hover {
@@ -324,7 +310,6 @@
     margin-bottom: 6px;
     font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.07em;
     text-transform: uppercase;
     color: #64748b;
   }
@@ -340,6 +325,7 @@
     color: #0f172a;
     font: 700 0.82rem 'DM Sans', sans-serif;
     outline: none;
+    min-height: 44px;
   }
 
   .field-row input:focus,
@@ -371,12 +357,11 @@
     color: #fff;
     border: none;
     border-radius: 8px;
+    min-height: 44px;
     font-size: 0.9rem;
     font-weight: 700;
-    letter-spacing: 0.03em;
     cursor: pointer;
     transition: all 0.18s;
-    margin-top: 16px;
     font-family: 'DM Sans', sans-serif;
   }
 
@@ -386,6 +371,7 @@
     color: #0f172a;
     border: 1.5px solid #cbd5e1;
     border-radius: 8px;
+    min-height: 44px;
     font-size: 0.82rem;
     font-weight: 800;
     cursor: pointer;
@@ -454,7 +440,7 @@
   .result-card {
     background: #fff;
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
     display: none;
@@ -524,6 +510,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     border-radius: 6px;
+    min-height: 44px;
     cursor: pointer;
     transition: all 0.15s;
     display: flex;
@@ -596,13 +583,12 @@
     font-size: 0.64rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
   }
 
   .info-card {
     background: #f9fafb;
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 16px;
   }
 
@@ -610,7 +596,6 @@
     font-size: 0.72rem;
     font-weight: 700;
     color: #374151;
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 10px;
   }
@@ -637,7 +622,6 @@
     font-weight: 800;
     color: #1e293b;
     margin-bottom: 24px;
-    letter-spacing: -0.01em;
   }
 
   .faq-item {
@@ -661,6 +645,7 @@
     justify-content: space-between;
     align-items: center;
     font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
   }
 
   .faq-q::after {
@@ -690,6 +675,34 @@
     max-height: 400px;
   }
 
+  .file-input-label:focus-visible,
+  .field-row input:focus-visible,
+  .field-row select:focus-visible,
+  .calc-btn:focus-visible,
+  .ghost-btn:focus-visible,
+  .act-btn:focus-visible,
+  .faq-q:focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.32);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .file-input-label,
+    .calc-btn,
+    .ghost-btn,
+    .act-btn,
+    .faq-q::after,
+    .faq-a,
+    .progress-fill {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    .calc-btn:hover {
+      transform: none;
+    }
+  }
+
   @media (max-width: 768px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
@@ -703,8 +716,7 @@
     }
   }
 </style>
-<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
+<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-repair.webp">
@@ -739,8 +751,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/reparer-pdf/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kurekebisha-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-repair/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -748,26 +758,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use PDF Repair Tool?",
+      "name": "What types of PDF corruption can this tool fix?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "It can often recover PDFs with extra bytes before the PDF header, broken cross-reference tables, incomplete trailers, missing EOF markers, and fragile object streams, as long as recoverable page content still exists."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on PDF Repair Tool?",
+      "name": "Is my PDF uploaded to a server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "No. Repair runs in the browser using local JavaScript and WebAssembly libraries. The file is not uploaded to AfroTools."
       }
     },
     {
       "@type": "Question",
-      "name": "Is PDF Repair Tool an official result?",
+      "name": "What does raster salvage mean?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "Raster salvage renders readable pages as images and places them in a fresh PDF. It can rescue appearance, but selectable text, links, forms, and tags may not survive."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why did the repair fail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Repair can fail when the file is not a PDF, page data is missing, the file is heavily truncated, or an encrypted document needs a password that was not provided."
       }
     }
   ],
@@ -859,7 +877,7 @@
           <div class="progress-bar" id="progressBar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <div class="progress-text" id="progressText">Analyzing file...</div>
+          <div class="progress-text" id="progressText" role="status" aria-live="polite">Analyzing file...</div>
         </div>
       </div>
     </div>
@@ -875,7 +893,7 @@
         <div class="card-body">
           <div id="reportRows"></div>
           <div id="errorList" style="display:none; margin-top:12px;">
-            <div style="font-size:0.72rem;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Errors Found</div>
+            <div style="font-size:0.72rem;font-weight:700;color:#991b1b;text-transform:uppercase;margin-bottom:6px;">Errors Found</div>
             <div id="errorListInner" style="font-size:0.78rem;color:#6b7280;line-height:1.6;"></div>
           </div>
           <div class="action-row" id="actionRow" style="display:none;">
@@ -883,12 +901,6 @@
             <button type="button" class="act-btn act-download" id="downloadZipBtn" style="display:none">Download ZIP</button>
             <button type="button" class="act-btn act-secondary" id="downloadReportBtn">Download Report</button>
           </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="Pdf Repair"
-    tool-slug="pdf-repair">
-  </share-result-button>
-</div>
         </div>
       </div>
 
@@ -922,41 +934,13 @@
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The PDF Repair tool attempts to fix damaged files that fail to open in strict readers. It inspects the file header, EOF marker, xref and trailer hints, encryption markers, and page recovery signals, then tries a local qpdf rebuild, a pdf-lib compatibility save, and an optional raster-page salvage. Your PDFs are processed entirely in your browser and can be downloaded individually, bundled as a ZIP, or documented with a JSON or CSV repair report.</p>
+    <p>PDF Repair attempts a local recovery path for files that fail in stricter readers. It checks the header, EOF marker, xref and trailer hints, encryption markers, and page recovery signals, then tries qpdf rebuild, pdf-lib normalization, and optional raster-page salvage.</p>
   </div>
 </section>
 <!-- FAQs -->
 <div class="seo-section">
   <h2>Frequently Asked Questions</h2>
 
-
-
-<section class="df-upgrade" data-df-upgrade="pdf-repair">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF Repair Tool decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for pdf repair tool so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: PDF Repair Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: workflowCopy, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="pdf-repair">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-repair" data-df-base="PDF Repair Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">PDF Repair Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-repair">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="pdf-repair-faq-title">
-  <h2 id="pdf-repair-faq-title">PDF Repair Tool FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
   <div class="faq-item">
     <button type="button" class="faq-q">What types of PDF corruption can this tool fix?</button>
     <div class="faq-a">It can often recover PDFs with extra bytes before the PDF header, broken cross-reference tables, incomplete trailers, missing EOF markers, and fragile object streams. It works best when the page content still exists somewhere inside the file.</div>
@@ -983,44 +967,9 @@
   </div>
 </div>
 
-<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-repair-verification-title">
-  <div class="tool-verification-card">
-    <div class="tool-verification-head">
-      <div>
-        <span class="tool-verification-kicker">Repair limits</span>
-        <h2 class="tool-verification-title" id="pdf-repair-verification-title">Treat repair output as a best-effort recovery copy</h2>
-        <p class="tool-verification-lead">Repair runs locally and attempts to rebuild readable PDF structure. It cannot recover every corrupted file, replace missing bytes, or guarantee forms, signatures, bookmarks, or attachments survive.</p>
-      </div>
-      <div class="tool-verification-status">
-        <span class="tool-verification-badge">Local-first recovery workflow</span>
-        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the original source or sender before relying on a repaired PDF. The shared PDF account gate does not upload your files.</p>
-      </div>
-    </div>
-    <div class="tool-verification-grid">
-      <div class="tool-verification-block">
-        <h3>Methodology</h3>
-        <ul class="tool-verification-list">
-          <li>Attempts to load each PDF locally, rebuild a downloadable copy, and report whether processing succeeded.</li>
-          <li>Batch runs can export repaired PDFs and a local report for review.</li>
-          <li>Severely corrupted, encrypted, partial, or non-PDF files may fail or lose unsupported features.</li>
-        </ul>
-      </div>
-      <div class="tool-verification-block">
-        <h3>Before sharing</h3>
-        <ul class="tool-verification-list">
-          <li>Compare page count, text, images, form fields, signatures, bookmarks, file size, and attachments against the expected document.</li>
-          <li>Ask the sender for a fresh source file when the repaired copy is used for legal, school, bank, tax, or client work.</li>
-          <li>For page cleanup after repair, open <a href="/tools/pdf-workspace/">PDF Workspace</a>.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 <afro-related-tools category="document-pdf" current="pdf-repair"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
@@ -1292,6 +1241,5 @@
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

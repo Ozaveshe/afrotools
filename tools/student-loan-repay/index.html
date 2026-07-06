@@ -81,11 +81,19 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .result-box{display:none;margin-top:1rem}
 .result-box.show{display:block}
 .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1rem}
-.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:center}
+.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:left;display:grid;align-content:start;gap:.18rem;min-width:0}
 .rs .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:.2rem}
-.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary)}
+.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary);line-height:1.15;overflow-wrap:anywhere}
 .rs .sub{font-size:.75rem;color:#6b7280;margin-top:.1rem}
+.result-note{margin:1rem 0 0;padding:1rem;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;color:#78350f;font-size:.82rem;line-height:1.65}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem 1rem;border:1.5px solid #bfdbfe;border-radius:10px;background:#fff;color:#1d4ed8;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.secondary-btn:hover,.secondary-btn:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.schedule-title{font-size:.9rem;font-weight:700;margin:1.25rem 0 .5rem;color:#111}
+.schedule-wrap{overflow-x:auto;overflow-y:hidden;border:1.5px solid #e5e7eb;border-radius:12px;background:#fff;-webkit-overflow-scrolling:touch}
 .sched-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:1rem}
+.schedule-wrap .sched-table{display:table!important;margin-top:0;width:620px!important;min-width:620px!important;max-width:none!important}
 .sched-table th{background:#f3f4f6;padding:.5rem .7rem;text-align:left;font-weight:700;font-size:.72rem;color:#374151;border-bottom:2px solid #e5e7eb}
 .sched-table td{padding:.4rem .7rem;border-bottom:1px solid #f3f4f6}
 .faq{margin-top:2rem}
@@ -97,18 +105,17 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:.88rem;color:#555;padding:0 1.25rem;line-height:1.7}
 .faq-item.open .faq-a{max-height:300px;padding:.75rem 1.25rem 1rem}
 .sec-body{padding:40px 0}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
+@media(max-width:600px){.row{grid-template-columns:1fr}.result-actions .secondary-btn{width:100%}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/student-loan-repay.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/student-loan-repay/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/remboursement-pret-etudiant/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/marejesho-ya-mkopo-wa-mwanafunzi/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/student-loan-repay/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh student-loan-repay-page">
 <afro-navbar theme="dark" active="education"></afro-navbar>
 <div class="hero">
   <div class="container">
@@ -162,33 +169,16 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
   <div class="result-box" id="slr-result">
     <div class="result-grid" id="slr-grid"></div>
     <div id="slr-schedule"></div>
+    <div class="result-note" id="slr-note"></div>
+    <div class="result-actions" aria-label="Student loan repayment result actions">
+      <button type="button" class="secondary-btn" onclick="copyLoanReport()">Copy repayment brief</button>
+      <button type="button" class="secondary-btn" onclick="downloadLoanReport()">Download TXT</button>
+      <button type="button" class="secondary-btn" onclick="saveLoanReport()">Save in browser</button>
+    </div>
+    <div class="action-status" id="slr-action-status" aria-live="polite"></div>
   </div>
 </div>
 
-<section class="df-upgrade" data-df-upgrade="student-loan-repay">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Student Loan Repayment Calculator decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for student loan repayment calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Student Loan Repayment Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, saveExport, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="student-loan-repay">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="student-loan-repay" data-df-base="Student Loan Repayment Calculator: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Student Loan Repayment Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="student-loan-repay">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="student-loan-repay-faq-title">
-  <h2 id="student-loan-repay-faq-title">Student Loan Repayment Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div class="faq">
   <h2>Student Loan FAQs</h2>
   <div class="faq-item"><div class="faq-q">What is Nigeria's NELFUND student loan?</div><div class="faq-a">NELFUND (Nigerian Education Loan Fund) provides student loans at 3.5% interest rate. Repayment starts 2 years after graduation or upon first employment, whichever comes first. Maximum repayment period is 10 years. Applications are made through the NELFUND portal with your JAMB number.</div></div>
@@ -211,6 +201,7 @@ var SCHEMES={
   uganda:{rate:5,years:10,currency:'UGX',name:'Uganda Higher Education'},
   custom:{rate:5,years:10,currency:'',name:'Custom'}
 };
+var currentLoanPlan=null;
 function prefillScheme(){
   var s=SCHEMES[document.getElementById('slr-scheme').value];
   document.getElementById('slr-rate').value=s.rate;
@@ -224,7 +215,8 @@ function calcLoan(){
   var annualRate=parseFloat(document.getElementById('slr-rate').value)||0;
   var years=parseInt(document.getElementById('slr-years').value)||10;
   if(!amount){alert('Please enter the loan amount.');return;}
-  var c=SCHEMES[scheme].currency||'';
+  var schemeInfo=SCHEMES[scheme];
+  var c=schemeInfo.currency||'';
   var n=years*12;
   var r=annualRate/100/12;
   var monthly;
@@ -232,29 +224,119 @@ function calcLoan(){
   else{monthly=amount*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);}
   var totalPay=monthly*n;
   var totalInterest=totalPay-amount;
-  document.getElementById('slr-grid').innerHTML=
-    '<div class="rs"><div class="lbl">Monthly Payment</div><div class="val">'+fmt(monthly,c)+'</div><div class="sub">Fixed amount</div></div>'+
-    '<div class="rs"><div class="lbl">Total Repaid</div><div class="val">'+fmt(totalPay,c)+'</div><div class="sub">Over '+years+' years</div></div>'+
-    '<div class="rs"><div class="lbl">Total Interest</div><div class="val">'+fmt(totalInterest,c)+'</div><div class="sub">Cost of borrowing</div></div>'+
-    '<div class="rs"><div class="lbl">Interest Rate</div><div class="val">'+(annualRate)+'%</div><div class="sub">Per annum</div></div>';
-  // First 12 months schedule
-  var sched='<h3 style="font-size:.9rem;font-weight:700;margin:1.25rem 0 .5rem">First 12 Months Amortization Schedule</h3>'+
-    '<table class="sched-table"><thead><tr><th>Month</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Balance</th></tr></thead><tbody>';
+  var annualPayment=monthly*12;
+  var scheduleRows=[];
   var bal=amount;
   for(var m=1;m<=12&&bal>0;m++){
     var int=bal*r;
     var prin=monthly-int;
     if(prin>bal)prin=bal;
     bal-=prin;
-    sched+='<tr><td>'+m+'</td><td>'+fmt(monthly,c)+'</td><td>'+fmt(int,c)+'</td><td>'+fmt(prin,c)+'</td><td>'+fmt(Math.max(bal,0),c)+'</td></tr>';
+    scheduleRows.push({month:m,payment:monthly,interest:int,principal:prin,balance:Math.max(bal,0)});
   }
-  sched+='</tbody></table>';
+  currentLoanPlan={
+    scheme:schemeInfo.name,
+    amount:amount,
+    currency:c,
+    annualRate:annualRate,
+    years:years,
+    months:n,
+    monthly:monthly,
+    annualPayment:annualPayment,
+    totalPay:totalPay,
+    totalInterest:totalInterest,
+    scheduleRows:scheduleRows
+  };
+  document.getElementById('slr-grid').innerHTML=
+    '<div class="rs"><div class="lbl">Monthly Payment</div><div class="val">'+fmt(monthly,c)+'</div><div class="sub">Fixed amount</div></div>'+
+    '<div class="rs"><div class="lbl">Total Repaid</div><div class="val">'+fmt(totalPay,c)+'</div><div class="sub">Over '+years+' years</div></div>'+
+    '<div class="rs"><div class="lbl">Total Interest</div><div class="val">'+fmt(totalInterest,c)+'</div><div class="sub">Cost of borrowing</div></div>'+
+    '<div class="rs"><div class="lbl">Annual Payment Load</div><div class="val">'+fmt(annualPayment,c)+'</div><div class="sub">'+(annualRate===0?'No interest model':'At '+annualRate+'% p.a.')+'</div></div>';
+  var sched='<h3 class="schedule-title">First 12 Months Amortization Schedule</h3>'+
+    '<div class="schedule-wrap"><table class="sched-table"><thead><tr><th>Month</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Balance</th></tr></thead><tbody>';
+  scheduleRows.forEach(function(row){
+    sched+='<tr><td>'+row.month+'</td><td>'+fmt(row.payment,c)+'</td><td>'+fmt(row.interest,c)+'</td><td>'+fmt(row.principal,c)+'</td><td>'+fmt(row.balance,c)+'</td></tr>';
+  });
+  sched+='</tbody></table></div>';
   document.getElementById('slr-schedule').innerHTML=sched;
+  document.getElementById('slr-note').innerHTML='<strong>Planning estimate only.</strong> This repayment plan uses the rate and period shown above. Confirm the exact balance, interest treatment, grace period, income-contingent rules, employer deductions, penalties, deferment rules and payoff amount with the loan provider before paying.';
+  setLoanStatus('');
   document.getElementById('slr-result').classList.add('show');
+}
+function setLoanStatus(message){
+  var el=document.getElementById('slr-action-status');
+  if(el){el.textContent=message||'';}
+}
+function buildLoanReport(){
+  if(!currentLoanPlan){calcLoan();}
+  var p=currentLoanPlan;
+  return [
+    'Student loan repayment brief - AfroTools',
+    'Scheme: '+p.scheme,
+    'Loan amount: '+fmt(p.amount,p.currency),
+    'Annual interest rate: '+p.annualRate+'%',
+    'Repayment period: '+p.years+' year(s) / '+p.months+' months',
+    '',
+    'Repayment estimate',
+    '- Monthly payment: '+fmt(p.monthly,p.currency),
+    '- Annual payment load: '+fmt(p.annualPayment,p.currency),
+    '- Total repaid: '+fmt(p.totalPay,p.currency),
+    '- Total interest: '+fmt(p.totalInterest,p.currency),
+    '',
+    'First 12 months',
+    p.scheduleRows.map(function(row){
+      return '- Month '+row.month+': payment '+fmt(row.payment,p.currency)+', interest '+fmt(row.interest,p.currency)+', principal '+fmt(row.principal,p.currency)+', balance '+fmt(row.balance,p.currency);
+    }).join('\n'),
+    '',
+    'Verify the exact balance, interest treatment, grace period, income-contingent rules, employer deductions, penalties, deferment rules and payoff amount with the loan provider. This is a planning estimate, not an official lender statement.'
+  ].join('\n');
+}
+function fallbackLoanCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setLoanStatus('Repayment brief copied.');}
+  catch(e){window.prompt('Copy repayment brief',text);setLoanStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function copyLoanReport(){
+  var text=buildLoanReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setLoanStatus('Repayment brief copied.');}).catch(function(){fallbackLoanCopy(text);});
+  }else{
+    fallbackLoanCopy(text);
+  }
+}
+function slugify(value){return String(value||'student-loan-repayment').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'student-loan-repayment';}
+function downloadLoanReport(){
+  var text=buildLoanReport();
+  var filename=slugify((currentLoanPlan&&currentLoanPlan.scheme)||'student-loan-repayment')+'-repayment-brief.txt';
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setLoanStatus('TXT repayment brief downloaded.');
+}
+function saveLoanReport(){
+  buildLoanReport();
+  try{
+    localStorage.setItem('afrotools-student-loan-repayment',JSON.stringify({savedAt:Date.now(),plan:currentLoanPlan,report:buildLoanReport()}));
+    setLoanStatus('Repayment plan saved in this browser.');
+  }catch(e){
+    setLoanStatus('Browser storage is unavailable. Download the TXT brief instead.');
+  }
 }
 document.addEventListener('DOMContentLoaded',function(){prefillScheme();});
 document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){this.parentElement.classList.toggle('open');});});
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

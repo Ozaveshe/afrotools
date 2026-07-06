@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF to Image & Image to PDF Converter | AfroTools</title>
-<meta name="description" content="Convert PDF pages to PNG, JPG, or WebP and combine images into a PDF with page ranges, ZIP export, ordering, margins, and quality controls. Private browser-only tool.">
+<title>PDF to JPG, PNG, WebP & Image to PDF Converter | AfroTools</title>
+<meta name="description" content="Convert PDF pages to JPG, PNG, or WebP, or combine images into a PDF with page ranges, order, margins, and ZIP export. Local browser-first PDF image tool.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-image-convert/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF to Image & Image to PDF Converter | AfroTools">
-<meta property="og:description" content="Convert PDF pages to PNG, JPG, or WebP images, or combine images into a PDF with page size, orientation, margin, and quality controls.">
+<meta property="og:title" content="PDF to JPG, PNG, WebP & Image to PDF Converter | AfroTools">
+<meta property="og:description" content="Convert PDF pages to JPG, PNG, or WebP images, or combine images into a PDF with order, page size, orientation, margin, and quality controls.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-image-convert/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-image-convert.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF to Image & Image to PDF Converter | AfroTools">
-<meta name="twitter:description" content="Convert between PDFs and images in your browser with page ranges, ZIP download, ordering, and PDF layout controls.">
+<meta name="twitter:title" content="PDF to JPG, PNG, WebP & Image to PDF Converter | AfroTools">
+<meta name="twitter:description" content="Convert PDFs to images or images to PDF in your browser with page ranges, ZIP download, ordering, and layout controls.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,41 +24,45 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=29afdf58">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
   :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; --afro-light: #f5f7fa; }
 
-  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
-  .tool-hero::after { content: ''; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
+  .tool-hero { background: #f7fbff; border-bottom: 1px solid #dbeafe; padding: 34px 0 22px; position: relative; overflow: hidden; }
   .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
-  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
-  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 700; color: #64748b; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: #64748b; text-decoration: none; }
   .breadcrumb span { color: var(--afro-blue); }
-  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #0f172a; letter-spacing: 0; line-height: 1.1; margin-bottom: 10px; }
   h1 em { color: var(--afro-blue); font-style: normal; }
-  .hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-sub { font-size: 0.95rem; color: #334155; line-height: 1.6; max-width: 680px; margin-bottom: 16px; }
   .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
-  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
-  .b-green { background: rgba(0,122,255,0.18); color: var(--color-primary); border: 1px solid rgba(0,122,255,0.38); }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 999px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.04em; }
+  .b-green { background: #fff; color: #075985; border: 1px solid #bae6fd; }
 
-  .tool-main { max-width: 980px; margin: 0 auto; padding: 28px 24px 72px; }
+  .tool-main { max-width: 980px; margin: 0 auto; padding: 24px 24px 56px; }
+  .workflow-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .workflow-step { background: #fff; border: 1px solid #dbeafe; border-radius: 8px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .step-num { flex: 0 0 28px; min-height: 28px; border-radius: 6px; background: #e0f2fe; color: #075985; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; }
+  .step-title { display: block; font-size: 0.82rem; color: #0f172a; font-weight: 800; margin-bottom: 2px; }
+  .step-copy { display: block; font-size: 0.74rem; color: #64748b; line-height: 1.45; }
   .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.05); margin-bottom: 18px; }
   .card-head { padding: 15px 22px; border-bottom: 1px solid #EFF6FF; display: flex; align-items: center; justify-content: space-between; background: #F5F9FF; }
   .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #374151; }
   .card-body { padding: 22px; }
 
   .mode-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 0; }
-  .mode-btn { padding: 14px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.82rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .mode-btn { min-height: 46px; padding: 14px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; font-size: 0.82rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; touch-action: manipulation; }
   .mode-btn:hover { border-color: var(--afro-blue); }
   .mode-btn.on { border-color: var(--afro-blue); background: var(--color-primary); color: #fff; }
+  .mode-btn:focus-visible, .drop-zone:focus-visible, .calc-btn:focus-visible, .act-btn:focus-visible, .mini-btn:focus-visible, .file-item-remove:focus-visible, .thumb-dl:focus-visible { outline: 3px solid rgba(0,122,255,0.28); outline-offset: 2px; }
 
-  .drop-zone { border: 2px dashed #e5e7eb; border-radius: 8px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #EFF6FF; }
+  .drop-zone { border: 2px dashed #cbd5e1; border-radius: 8px; padding: 34px 20px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; background: #EFF6FF; min-height: 148px; touch-action: manipulation; }
   .drop-zone:hover { border-color: var(--afro-blue); }
   .drop-zone.dragover { border-color: var(--afro-blue); background: rgba(0,122,255,0.08); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
-  .drop-icon { font-size: 2.4rem; margin-bottom: 8px; }
+  .drop-mark { width: 46px; height: 46px; border-radius: 10px; margin: 0 auto 10px; display: inline-flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #bfdbfe; color: #075985; font-size: 0.76rem; font-weight: 900; letter-spacing: 0.06em; }
   .drop-text { font-size: 0.85rem; color: #334155; font-weight: 600; margin-bottom: 4px; }
   .drop-hint { font-size: 0.72rem; color: #6B8CAE; }
 
@@ -67,9 +71,9 @@
   .settings-row.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .field { margin-bottom: 0; }
   .f-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #1e293b; margin-bottom: 6px; display: block; }
-  .f-select { width: 100%; padding: 10px 13px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #1e293b; outline: none; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+  .f-select { width: 100%; min-height: 44px; padding: 10px 13px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #1e293b; outline: none; font-family: 'DM Sans', sans-serif; cursor: pointer; }
   .f-select:focus { border-color: var(--afro-blue); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
-  .f-input { width: 100%; padding: 10px 13px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #1e293b; outline: none; font-family: 'DM Sans', sans-serif; }
+  .f-input { width: 100%; min-height: 44px; padding: 10px 13px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #1e293b; outline: none; font-family: 'DM Sans', sans-serif; }
   .f-input:focus { border-color: var(--afro-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
   .field-hint { display: block; margin-top: 5px; font-size: 0.68rem; color: #6B8CAE; line-height: 1.45; }
 
@@ -81,8 +85,8 @@
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--afro-blue); border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 6px rgba(0,122,255,0.35); cursor: pointer; }
   input[type=range]::-moz-range-thumb { width: 18px; height: 18px; background: var(--afro-blue); border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 6px rgba(0,122,255,0.35); cursor: pointer; }
 
-  .calc-btn { width: 100%; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: all 0.18s; margin-top: 16px; font-family: 'DM Sans', sans-serif; }
-  .calc-btn:hover:not(:disabled) { background: #0059B3; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,122,255,0.3); }
+  .calc-btn { width: 100%; min-height: 48px; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: background 0.18s, box-shadow 0.18s; margin-top: 16px; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
+  .calc-btn:hover:not(:disabled) { background: #0059B3; box-shadow: 0 6px 20px rgba(0,122,255,0.22); }
   .calc-btn:disabled { background: #93c5fd; cursor: not-allowed; transform: none; box-shadow: none; }
 
   .progress-bar { width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; margin-top: 12px; display: none; }
@@ -96,11 +100,11 @@
   .thumb-img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
   .thumb-info { padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; }
   .thumb-label { font-size: 0.7rem; font-weight: 700; color: #374151; }
-  .thumb-dl { background: none; border: none; cursor: pointer; font-size: 0.88rem; padding: 4px 8px; border-radius: 4px; transition: 0.15s; color: var(--color-primary); }
+  .thumb-dl { background: #fff; border: 1px solid #bfdbfe; cursor: pointer; font-size: 0.78rem; min-height: 36px; padding: 6px 10px; border-radius: 5px; transition: background 0.15s; color: var(--color-primary); font-weight: 800; touch-action: manipulation; }
   .thumb-dl:hover { background: rgba(0,122,255,0.1); }
 
   .result-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
-  .act-btn { padding: 12px 20px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; }
+  .act-btn { min-height: 44px; padding: 12px 20px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s, color 0.15s; display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; touch-action: manipulation; }
   .act-download { background: rgba(0,122,255,0.1); border: 1.5px solid rgba(0,122,255,0.35); color: #1e40af; }
   .act-download:hover { background: rgba(0,122,255,0.2); }
   .act-reset { background: #f3f4f6; border: 1.5px solid #e5e7eb; color: #374151; }
@@ -115,7 +119,7 @@
   .file-item-name { font-size: 0.82rem; color: #1e293b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .file-item-size { font-size: 0.68rem; color: #9ca3af; }
   .file-actions { display: flex; align-items: center; gap: 6px; margin-left: 10px; }
-  .mini-btn, .file-item-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #374151; padding: 5px 9px; border-radius: 4px; cursor: pointer; font-size: 0.68rem; font-weight: 700; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .mini-btn, .file-item-remove { min-height: 36px; background: #EFF6FF; border: 1px solid #e5e7eb; color: #374151; padding: 7px 10px; border-radius: 4px; cursor: pointer; font-size: 0.68rem; font-weight: 700; transition: background 0.15s, border-color 0.15s, color 0.15s; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
   .mini-btn:hover:not(:disabled) { background: rgba(0,122,255,0.1); border-color: rgba(0,122,255,0.35); color: #1e40af; }
   .mini-btn:disabled { opacity: 0.45; cursor: not-allowed; }
   .file-item-remove:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; }
@@ -123,26 +127,23 @@
 
   .hidden { display: none !important; }
 
-  /* SEO content */
-  .seo-section { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
-  .seo-section h2 { font-size: 1.3rem; font-weight: 800; color: #1e293b; margin-bottom: 12px; }
-  .seo-section h3 { font-size: 1rem; font-weight: 700; color: #1a3a22; margin-bottom: 8px; margin-top: 20px; }
-  .seo-section p { font-size: 0.88rem; color: #374151; line-height: 1.7; margin-bottom: 12px; }
-  .seo-section ul { padding-left: 20px; margin-bottom: 12px; }
-  .seo-section li { font-size: 0.85rem; color: #374151; line-height: 1.7; margin-bottom: 4px; }
-
   .tips-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-top: 8px; }
   .tips-title { font-size: 0.72rem; font-weight: 700; color: #374151; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
   .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .tip-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #334155; font-weight: 600; padding: 8px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; }
 
   @media (max-width: 768px) {
+    .tool-hero { padding: 28px 0 18px; }
+    .tool-main { padding: 18px 16px 44px; }
+    .workflow-strip { grid-template-columns: 1fr; }
     .mode-row { grid-template-columns: 1fr; }
     .settings-row, .settings-row.three, .settings-row.four { grid-template-columns: 1fr; }
     .thumb-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
     .tips-grid { grid-template-columns: 1fr; }
     .result-actions { flex-direction: column; }
     .act-btn { width: 100%; justify-content: center; }
+    .file-item { align-items: flex-start; flex-direction: column; gap: 10px; }
+    .file-actions { margin-left: 0; flex-wrap: wrap; }
   }
 </style>
 
@@ -157,6 +158,13 @@
   "applicationCategory": "DocumentApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
+  "featureList": [
+    "PDF pages to JPG, PNG, or WebP",
+    "PDF embedded image extraction",
+    "Image files to PDF",
+    "Page range and layout controls",
+    "ZIP export for multi-page image output"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -186,8 +194,7 @@
   "image": "https://afrotools.com/assets/img/tools/pdf-image-convert.webp"
 }
 </script>
-<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
+<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-image-convert.webp">
@@ -222,7 +229,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/pdf-en-image/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-pdf-na-picha/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-image-convert/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <script type="application/ld+json">
 {
@@ -231,26 +237,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use PDF ↔ Image Converter?",
+      "name": "Can I convert selected PDF pages to images?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Yes. Upload a PDF, enter a page range such as 1-3 or 5, choose JPG, PNG, or WebP, then convert and download the image files."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on PDF ↔ Image Converter?",
+      "name": "Can I combine multiple images into one PDF?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Yes. Switch to Image to PDF, add PNG, JPG, JPEG, or WebP files, set page size, orientation, fit, and margins, then create the PDF."
       }
     },
     {
       "@type": "Question",
-      "name": "Is PDF ↔ Image Converter an official result?",
+      "name": "Are files uploaded while converting?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "Conversion work runs in the browser. The shared PDF download gate is for account continuity and does not upload the source files."
       }
     }
   ],
@@ -259,6 +265,11 @@
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+  body.top-level-page-ui-refresh .tool-hero h1 { color: #0f172a; }
+  body.top-level-page-ui-refresh .tool-hero h1 em,
+  body.top-level-page-ui-refresh .breadcrumb span { color: var(--color-primary); }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -266,18 +277,22 @@
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>PDF Image Converter</span></div>
-    <h1>PDF <em>and</em> Image <em>Converter</em></h1>
-    <p class="hero-sub">Convert PDF pages to PNG, JPG, or WebP, or combine multiple images into a single PDF. Fast, free, and fully browser-only, so your files stay on your device.</p>
+    <h1>Convert PDF pages and images</h1>
+    <p class="hero-sub">Choose one direction, set the few options that matter, then download images, a ZIP, or a PDF. Source files stay in this browser while conversion runs.</p>
     <div class="hero-badges">
-      <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">Batch Processing</span>
-      <span class="badge b-green">ZIP Download</span>
+      <span class="badge b-green">JPG, PNG, WebP</span>
+      <span class="badge b-green">Image to PDF</span>
+      <span class="badge b-green">Page ranges</span>
     </div>
   </div>
 </div>
 
 <div class="tool-main">
+  <div class="workflow-strip" aria-label="Conversion steps">
+    <div class="workflow-step"><span class="step-num">1</span><span><span class="step-title">Pick direction</span><span class="step-copy">PDF to image, or images to PDF.</span></span></div>
+    <div class="workflow-step"><span class="step-num">2</span><span><span class="step-title">Set output</span><span class="step-copy">Choose format, pages, size, fit, and margin.</span></span></div>
+    <div class="workflow-step"><span class="step-num">3</span><span><span class="step-title">Download</span><span class="step-copy">Save each file, a ZIP, or the finished PDF.</span></span></div>
+  </div>
   <!-- Mode Selection -->
   <div class="card">
     <div class="card-head"><span class="card-title">Conversion Mode</span></div>
@@ -294,11 +309,11 @@
     <div class="card">
       <div class="card-head"><span class="card-title">Upload PDF</span></div>
       <div class="card-body">
-        <div class="drop-zone" id="pdfDropZone">
-          <div class="drop-icon">&#128196;</div>
+        <div class="drop-zone" id="pdfDropZone" role="button" tabindex="0" aria-label="Choose a PDF file to convert">
+          <div class="drop-mark" aria-hidden="true">PDF</div>
           <div class="drop-text">Drag & drop your PDF here, or click to browse</div>
           <div class="drop-hint">Supports any PDF file</div>
-          <input aria-label="PdfFileInput" type="file" id="pdfFileInput" accept=".pdf" style="display:none">
+          <input aria-label="PDF file" type="file" id="pdfFileInput" accept=".pdf" style="display:none">
         </div>
         <div id="pdfFileInfo" class="hidden" style="margin-top:12px; padding:10px 14px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -319,16 +334,16 @@
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Output Format</label>
-            <select class="f-select" id="p2iFormat" aria-label="P2i Format">
+            <label class="f-label" for="p2iFormat">Output Format</label>
+            <select class="f-select" id="p2iFormat">
               <option value="png">PNG (Lossless)</option>
               <option value="jpeg">JPG (Compressed)</option>
               <option value="webp">WebP (Small)</option>
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Resolution Scale</label>
-            <select class="f-select" id="p2iScale" aria-label="P2i Scale">
+            <label class="f-label" for="p2iScale">Resolution Scale</label>
+            <select class="f-select" id="p2iScale">
               <option value="1">1x (72 DPI)</option>
               <option value="2" selected>2x (144 DPI)</option>
               <option value="3">3x (216 DPI)</option>
@@ -346,12 +361,12 @@
             <span class="slider-label" id="p2iQualityLabel">Image Quality</span>
             <span class="slider-val" id="p2iQualityVal">85</span>
           </div>
-          <input aria-label="P2iQuality" type="range" id="p2iQuality" min="10" max="100" value="85" step="5">
+          <input aria-label="Image quality" type="range" id="p2iQuality" min="10" max="100" value="85" step="5">
         </div>
         <button class="calc-btn" id="p2iConvertBtn" disabled type="button">Convert PDF to Images</button>
-        <div class="progress-bar" id="p2iProgress"><div class="progress-fill" id="p2iProgressFill"></div></div>
-        <div class="progress-text" id="p2iProgressText"></div>
-        <div class="status-text" id="p2iStatus"></div>
+        <div class="progress-bar" id="p2iProgress" aria-hidden="true"><div class="progress-fill" id="p2iProgressFill"></div></div>
+        <div class="progress-text" id="p2iProgressText" role="status" aria-live="polite"></div>
+        <div class="status-text" id="p2iStatus" role="status" aria-live="polite"></div>
       </div>
     </div>
 
@@ -360,11 +375,10 @@
       <div class="card-head"><span class="card-title">Converted Images</span></div>
       <div class="card-body">
         <div class="thumb-grid" id="p2iThumbGrid"></div>
-        <div class="result-note" id="p2iResultNote"></div>
+        <div class="result-note" id="p2iResultNote" role="status" aria-live="polite"></div>
         <div class="result-actions" id="p2iActions">
           <button class="act-btn act-download" id="p2iZipBtn" type="button">Download all as ZIP</button>
           <button class="act-btn act-reset" id="p2iResetBtn" type="button">Convert another</button>
-          <share-result-button tool-name="PDF Image Converter" tool-slug="pdf-image-convert"></share-result-button>
         </div>
       </div>
     </div>
@@ -375,11 +389,11 @@
     <div class="card">
       <div class="card-head"><span class="card-title">Upload Images</span></div>
       <div class="card-body">
-        <div class="drop-zone" id="imgDropZone">
-          <div class="drop-icon">&#128444;</div>
+        <div class="drop-zone" id="imgDropZone" role="button" tabindex="0" aria-label="Choose images to combine into a PDF">
+          <div class="drop-mark" aria-hidden="true">IMG</div>
           <div class="drop-text">Drag & drop images here, or click to browse</div>
           <div class="drop-hint">Supports PNG, JPG, JPEG, and WebP. Select multiple files.</div>
-          <input aria-label="ImgFileInput" type="file" id="imgFileInput" accept="image/png,image/jpeg,image/webp" multiple style="display:none">
+          <input aria-label="Image files" type="file" id="imgFileInput" accept="image/png,image/jpeg,image/webp" multiple style="display:none">
         </div>
         <div class="file-list" id="imgFileList"></div>
         <div class="settings-row three">
@@ -394,16 +408,16 @@
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Orientation</label>
-            <select class="f-select" id="i2pOrientation" aria-label="I2p Orientation">
+            <label class="f-label" for="i2pOrientation">Orientation</label>
+            <select class="f-select" id="i2pOrientation">
               <option value="auto">Auto</option>
               <option value="portrait">Portrait</option>
               <option value="landscape">Landscape</option>
             </select>
           </div>
           <div class="field">
-            <label class="f-label">Image Fit</label>
-            <select class="f-select" id="i2pFit" aria-label="I2p Fit">
+            <label class="f-label" for="i2pFit">Image Fit</label>
+            <select class="f-select" id="i2pFit">
               <option value="contain">Fit (preserve aspect ratio)</option>
               <option value="cover">Fill page (may crop)</option>
               <option value="stretch">Stretch to page</option>
@@ -412,16 +426,16 @@
         </div>
         <div class="settings-row">
           <div class="field">
-            <label class="f-label">Image Handling</label>
-            <select class="f-select" id="i2pImageMode" aria-label="I2p Image Mode">
+            <label class="f-label" for="i2pImageMode">Image Handling</label>
+            <select class="f-select" id="i2pImageMode">
               <option value="auto">Smart preserve</option>
               <option value="jpeg">Compress to JPG</option>
             </select>
             <span class="field-hint">WebP images are converted for PDF compatibility.</span>
           </div>
           <div class="field">
-            <label class="f-label">Output Name</label>
-            <input aria-label="Images combined.pdf" class="f-input" id="i2pFileName" type="text" placeholder="images_combined.pdf">
+            <label class="f-label" for="i2pFileName">Output Name</label>
+            <input aria-label="Output PDF filename" class="f-input" id="i2pFileName" type="text" placeholder="images_combined.pdf">
           </div>
         </div>
         <div class="slider-wrap">
@@ -429,19 +443,19 @@
             <span class="slider-label">Page Margin</span>
             <span class="slider-val" id="i2pMarginVal">10 mm</span>
           </div>
-          <input aria-label="I2pMargin" type="range" id="i2pMargin" min="0" max="30" value="10" step="1">
+          <input aria-label="Page margin" type="range" id="i2pMargin" min="0" max="30" value="10" step="1">
         </div>
         <div class="slider-wrap hidden" id="i2pQualityWrap">
           <div class="slider-row">
             <span class="slider-label">JPG Quality</span>
             <span class="slider-val" id="i2pQualityVal">86</span>
           </div>
-          <input aria-label="I2pQuality" type="range" id="i2pQuality" min="40" max="100" value="86" step="2">
+          <input aria-label="JPG quality" type="range" id="i2pQuality" min="40" max="100" value="86" step="2">
         </div>
         <button class="calc-btn" id="i2pConvertBtn" disabled type="button">Create PDF from Images</button>
-        <div class="progress-bar" id="i2pProgress"><div class="progress-fill" id="i2pProgressFill"></div></div>
-        <div class="progress-text" id="i2pProgressText"></div>
-        <div class="status-text" id="i2pStatus"></div>
+        <div class="progress-bar" id="i2pProgress" aria-hidden="true"><div class="progress-fill" id="i2pProgressFill"></div></div>
+        <div class="progress-text" id="i2pProgressText" role="status" aria-live="polite"></div>
+        <div class="status-text" id="i2pStatus" role="status" aria-live="polite"></div>
       </div>
     </div>
 
@@ -449,14 +463,13 @@
     <div class="card hidden" id="i2pResultCard">
       <div class="card-head"><span class="card-title">PDF Created</span></div>
       <div class="card-body" style="text-align:center;">
-        <div style="font-size:3rem;margin-bottom:8px;">&#128196;</div>
+        <div class="drop-mark" aria-hidden="true">PDF</div>
         <div style="font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:4px;" id="i2pResultName"></div>
         <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="i2pResultInfo"></div>
-        <div class="result-note" id="i2pResultNote"></div>
+        <div class="result-note" id="i2pResultNote" role="status" aria-live="polite"></div>
         <div class="result-actions" style="justify-content:center;">
           <button class="act-btn act-download" id="i2pDownloadBtn" type="button">Download PDF</button>
           <button class="act-btn act-reset" id="i2pResetBtn" type="button">Create another</button>
-          <share-result-button tool-name="PDF Image Converter" tool-slug="pdf-image-convert"></share-result-button>
         </div>
       </div>
     </div>
@@ -472,36 +485,6 @@
       <div class="tip-item">ZIP download for multi-page PDFs</div>
     </div>
   </div>
-</div>
-
-<!-- SEO Content -->
-<div class="seo-section">
-  <h2>Free PDF to Image and Image to PDF Converter</h2>
-  <p>The AfroTools PDF Image Converter is a free, browser-based tool that lets you convert between PDF documents and images without uploading your files to any server. Export selected PDF pages as high-quality PNG, JPG, or WebP images, or combine multiple photos and scans into a single PDF document.</p>
-
-  <h3>PDF to Image Conversion</h3>
-  <p>Upload a PDF and convert every page, or only the page ranges you need, into crisp images. Choose PNG for lossless text and screenshots, JPG for broad compatibility and smaller files, or WebP for compact modern image output. Resolution controls range from quick 72 DPI exports to high-detail 288 DPI output.</p>
-
-  <h3>Image to PDF Conversion</h3>
-  <p>Combine multiple images into a single, professionally formatted PDF document. Upload PNG, JPG, or WebP images, arrange them in your preferred order, and choose page size, orientation, margins, fit mode, output filename, and image compression behavior.</p>
-
-  <h3>Why Use This Tool?</h3>
-  <ul>
-    <li><strong>100% Private:</strong> All processing happens in your browser. Your files are never uploaded to any server.</li>
-    <li><strong>Batch Processing:</strong> Convert all pages of a multi-page PDF at once, export page ranges, or combine dozens of images into one PDF.</li>
-    <li><strong>High Quality:</strong> Render PDF pages at up to 4x scale for sharp, detailed images.</li>
-    <li><strong>ZIP Download:</strong> Download all converted images as a single ZIP file for easy organization.</li>
-    <li><strong>No Registration:</strong> No account needed. No limits. Just open and use.</li>
-  </ul>
-
-  <h3>Common Use Cases</h3>
-  <ul>
-    <li>Extract charts and diagrams from PDF reports for presentations</li>
-    <li>Convert scanned documents to individual image files</li>
-    <li>Create a PDF portfolio from a collection of photos</li>
-    <li>Turn presentation slides into shareable images</li>
-    <li>Combine receipts and invoices into a single PDF for filing</li>
-  </ul>
 </div>
 
 <section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-image-convert-verification-title">
@@ -540,35 +523,28 @@
 <afro-related-tools category="document-pdf" current="pdf-image-convert"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 
-<section class="df-upgrade" data-df-upgrade="pdf-image-convert">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF ↔ Image Converter decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for pdf ↔ image converter so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: PDF ↔ Image Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: workflowCopy, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="pdf-image-convert">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-image-convert" data-df-base="PDF ↔ Image Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">PDF ↔ Image Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-image-convert">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="pdf-image-convert-faq-title">
-  <h2 id="pdf-image-convert-faq-title">PDF ↔ Image Converter FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <afro-footer></afro-footer>
 
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
 <script src="/tools/pdf-image-convert/app.js?v=8da5c10d"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    [
+      ['pdfDropZone', 'pdfFileInput'],
+      ['imgDropZone', 'imgFileInput']
+    ].forEach(function (pair) {
+      var zone = document.getElementById(pair[0]);
+      var input = document.getElementById(pair[1]);
+      if (!zone || !input) return;
+      zone.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        input.click();
+      });
+    });
+  });
+</script>
 <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
 <script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
@@ -578,8 +554,6 @@
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
-<script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

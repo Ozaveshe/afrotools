@@ -5,11 +5,11 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SQL Formatter & Beautifier | AfroTools</title>
-<meta name="description" content="Free online SQL formatter and beautifier. Format messy SQL queries with proper indentation, keyword capitalization, and syntax highlighting. Supports MySQL, PostgreSQL, SQLite.">
+<meta name="description" content="Format SQL locally with keyword case, indentation, syntax highlighting, minify/copy tools, and query review flags for destructive statements, placeholders, and sharing risks.">
 <link rel="canonical" href="https://afrotools.com/tools/sql-formatter/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="SQL Formatter | AfroTools">
-<meta property="og:description" content="Format and beautify SQL queries with proper indentation and keyword highlighting.">
+<meta property="og:description" content="Format SQL locally with indentation, keyword case, syntax highlighting, minify/copy tools, and query review flags.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/sql-formatter.webp">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/sql-formatter/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c"><script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c"><script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -41,17 +41,21 @@ h1 em{color:#bae6fd;font-style:normal}
 .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
 .card-body{padding:22px}
 label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.78rem;background:#f8fafc;font-family:inherit}
+select{width:auto;min-height:44px;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit}
 .sql-input,.sql-output{width:100%;min-height:220px;padding:14px;border:1.5px solid #cbd5e1;border-radius:7px;font-family:'Courier New',monospace;font-size:.8rem;line-height:1.7;background:#1e293b;color:#e2e8f0;resize:vertical;box-sizing:border-box;tab-size:2;white-space:pre}
 .sql-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
 .options-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;align-items:end}
 .options-row>div{flex:1;min-width:120px}
 .btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.btn{padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}
+.btn{min-height:44px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}
 .btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
 .btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.btn:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid rgba(14,165,233,.35);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.copy-output-btn{padding:8px 12px;font-size:.72rem}
 .stats{display:flex;gap:18px;margin-top:12px;font-size:.72rem;color:#64748b;font-weight:600}
 .stats span{display:inline-flex;gap:4px}
+.copy-status{min-height:20px;margin-top:8px;font-size:.72rem;font-weight:700;color:#0369a1}
 .highlighted{line-height:1.7;font-family:'Courier New',monospace;font-size:.8rem;white-space:pre-wrap;word-break:break-word}
 .highlighted .kw{color:#7dd3fc;font-weight:700}
 .highlighted .fn{color:#c084fc}
@@ -63,13 +67,26 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}
 .info-card ul{padding-left:16px;margin:6px 0}
+.query-review{border-color:#bae6fd}
+.query-review[hidden]{display:none}
+.review-summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.review-chip{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:5px 10px;border-radius:999px;background:#ecfeff;color:#155e75;font-size:.72rem;font-weight:700}
+.review-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.review-item{border:1px solid #e2e8f0;border-left-width:4px;border-radius:8px;padding:11px 12px;background:#fff;color:#334155;font-size:.8rem;line-height:1.55}
+.review-item strong{display:block;margin-bottom:3px;color:#0f172a}
+.review-item.ok{border-left-color:#16a34a;background:#f0fdf4}
+.review-item.info{border-left-color:#0ea5e9;background:#f0f9ff}
+.review-item.warn{border-left-color:#f59e0b;background:#fffbeb}
+.review-item.danger{border-left-color:#dc2626;background:#fef2f2}
+.quality-verification-panel{border-top:1px solid #e2e8f0}
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
 .seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item summary{min-height:44px;display:flex;align-items:center;font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.btn-row .btn{flex:1 1 140px}.card-head{gap:12px;flex-wrap:wrap}.copy-output-btn{width:100%}}
+@media(max-width:520px){.tool-main-inner,.tool-hero-inner{padding-left:16px;padding-right:16px}.options-row>div{min-width:100%}.btn-row .btn{width:100%;flex-basis:100%}.stats{display:grid;gap:6px}.sql-input,.sql-output,.highlighted{font-size:.76rem}}
 </style>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
@@ -79,7 +96,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SQL Formatter | AfroTools">
-<meta name="twitter:description" content="Format and beautify SQL queries with proper indentation and keyword highlighting.">
+<meta name="twitter:description" content="Format SQL locally with indentation, keyword case, syntax highlighting, minify/copy tools, and query review flags.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/sql-formatter.webp">
 <script type="application/ld+json">
 {
@@ -112,7 +129,63 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/formateur-sql/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kirekebisha-sql/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sql-formatter/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SQL Formatter",
+  "url": "https://afrotools.com/tools/sql-formatter/",
+  "description": "Format SQL locally with keyword case, indentation, syntax highlighting, minify/copy tools, and query review flags for destructive statements, placeholders, and sharing risks.",
+  "inLanguage": "en",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript and a modern browser",
+  "featureList": [
+    "Format SQL with configurable keyword case",
+    "Choose 2-space, 4-space, or tab indentation",
+    "Minify SQL text for compact snippets",
+    "Copy formatted SQL output",
+    "Highlight SQL keywords, functions, strings, numbers, comments, and operators",
+    "Flag destructive statements, placeholders, SELECT star, embedded sensitive values, and review reminders"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/sql-formatter.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to format and review SQL with AfroTools",
+  "description": "Paste SQL, choose formatting options, format or minify the query, then review local safety flags before copying.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Paste SQL",
+      "text": "Paste a SQL statement into the editor or load a sample query."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Choose formatting options",
+      "text": "Select keyword case and indentation style."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Format and review",
+      "text": "Format or minify the SQL, then check the local query review flags before copying the output."
+    }
+  ]
+}
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -123,7 +196,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
       "name": "How should I use SQL Formatter & Validator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Paste SQL, choose case and indentation, format or minify it, then copy the output or review brief."
+        "text": "Paste SQL, choose case and indentation, format or minify it, then copy the output after checking the local query review flags."
       }
     },
     {
@@ -131,7 +204,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
       "name": "What should I verify before acting on SQL Formatter & Validator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Verify destructive statements, placeholders, dialect differences, schema assumptions and sensitive values before sharing."
+        "text": "Verify destructive statements, missing WHERE clauses, placeholders, dialect differences, schema assumptions and sensitive values before sharing or running the query."
       }
     },
     {
@@ -165,23 +238,32 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <div class="card-body">
 <div class="options-row">
 <div><label for="keywordCase">Keyword Case</label><select id="keywordCase"><option value="upper" selected>UPPERCASE</option><option value="lower">lowercase</option><option value="preserve">Preserve</option></select></div>
-<div><label>Indent</label><select id="indent" aria-label="Indent"><option value="2" selected>2 spaces</option><option value="4">4 spaces</option><option value="tab">Tab</option></select></div>
-<div><label>Sample</label><select id="sample" onchange="loadSample()" aria-label="Sample"><option value="">-- Choose --</option><option value="select">SELECT query</option><option value="join">JOIN query</option><option value="insert">INSERT</option><option value="create">CREATE TABLE</option><option value="subquery">Subquery</option></select></div>
+<div><label for="indent">Indent</label><select id="indent"><option value="2" selected>2 spaces</option><option value="4">4 spaces</option><option value="tab">Tab</option></select></div>
+<div><label for="sample">Sample</label><select id="sample"><option value="">-- Choose --</option><option value="select">SELECT query</option><option value="join">JOIN query</option><option value="insert">INSERT</option><option value="create">CREATE TABLE</option><option value="subquery">Subquery</option></select></div>
 </div>
-<textarea class="sql-input" id="sqlInput" placeholder="Paste your SQL here..." aria-label="Paste your SQL here...">SELECT u.id, u.name, u.email, o.order_id, o.total FROM users u INNER JOIN orders o ON u.id = o.user_id WHERE o.status = 'completed' AND o.total > 100 ORDER BY o.total DESC LIMIT 50;</textarea>
+<label for="sqlInput">SQL input</label>
+<textarea class="sql-input" id="sqlInput" placeholder="Paste your SQL here...">SELECT u.id, u.name, u.email, o.order_id, o.total FROM users u INNER JOIN orders o ON u.id = o.user_id WHERE o.status = 'completed' AND o.total > 100 ORDER BY o.total DESC LIMIT 50;</textarea>
 <div class="btn-row">
 <button type="button" class="btn btn-primary" onclick="formatSQL()">Format SQL</button>
 <button type="button" class="btn btn-secondary" onclick="minifySQL()">Minify</button>
-<button type="button" class="btn btn-secondary" onclick="document.getElementById('sqlInput').value=''">Clear</button>
+<button type="button" class="btn btn-secondary" onclick="clearSQL()">Clear</button>
 </div>
 </div></div>
 
 <div class="card" id="outputCard" style="display:none">
-<div class="card-head"><span class="card-title">Formatted SQL</span><button type="button" class="btn btn-secondary" style="padding:5px 12px;font-size:.7rem" onclick="copyOutput()">Copy</button></div>
+<div class="card-head"><span class="card-title">Formatted SQL</span><button type="button" class="btn btn-secondary copy-output-btn" onclick="copyOutput()">Copy SQL</button></div>
 <div class="card-body">
 <div class="highlighted" id="highlighted"></div>
-<textarea class="sql-output" id="sqlOutput" style="display:none" readonly aria-label="Sql Output"></textarea>
+<label for="sqlOutput" class="sr-only">SQL output</label>
+<textarea class="sql-output" id="sqlOutput" style="display:none" readonly></textarea>
 <div class="stats" id="stats"></div>
+<div class="copy-status" id="copyStatus" aria-live="polite"></div>
+</div></div>
+<div class="card query-review" id="reviewCard" hidden>
+<div class="card-head"><span class="card-title">Query Review</span><button type="button" class="btn btn-secondary copy-output-btn" onclick="copyReview()">Copy Review</button></div>
+<div class="card-body">
+<div class="review-summary" id="reviewSummary"></div>
+<ul class="review-list" id="reviewList" aria-live="polite"></ul>
 </div></div>
 </div>
 
@@ -234,37 +316,13 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="sql-formatter">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">SQL cleanup brief</span>
-      <h2>Format SQL, then capture the review checks</h2>
-      <p>Format or minify a query above, then copy a short handoff note for review, migration planning or documentation.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: turn hard-to-read SQL into a formatted query with visible stats and copyable output.</li><li>Result output: a SQL cleanup brief that records dialect, query type and safety checks.</li><li>Quality checks: keyword case, indentation, destructive statements, placeholders, schema-specific assumptions and sensitive values.</li><li>Privacy note: formatting runs locally in the browser; remove customer data, secrets or production credentials before sharing.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Formatter only. It does not execute SQL, validate against your database schema or guarantee query performance.</p>
-    </div>
-    <form class="df-form" data-df-form="sql-formatter">
-      <label>Query type<select name="type" aria-label="Query type"><option value="SELECT report">SELECT report</option><option value="INSERT or UPDATE">INSERT or UPDATE</option><option value="DDL migration">DDL migration</option><option value="stored snippet">stored snippet</option></select></label>
-      <label>Lines to review<input name="lines" type="number" value="12" min="1" step="1" aria-label="Lines to review"></label>
-      <label>Review focus<select name="focus" aria-label="Review focus"><option value="readability">readability</option><option value="destructive operations">destructive operations</option><option value="placeholders">placeholders</option><option value="schema assumptions">schema assumptions</option></select></label>
-      <label>Share safety<select name="safety" aria-label="Share safety"><option value="sample query">sample query</option><option value="contains real table names">contains real table names</option><option value="contains customer data">contains customer data</option><option value="contains secrets">contains secrets</option></select></label>
-      <button type="submit">Create SQL brief</button>
-      <output class="df-result" data-df-result="sql-formatter" data-df-base="SQL cleanup brief ready. Format above, then verify keyword case, indentation, destructive statements, placeholders, schema assumptions, and sensitive values before sharing." aria-live="polite">SQL cleanup brief ready. Format above, then verify keyword case, indentation, destructive statements, placeholders, schema assumptions, and sensitive values before sharing.</output>
-      <div class="df-actions"><button type="button" data-df-copy="sql-formatter">Copy SQL brief</button><a href="#outputCard">Review formatted SQL</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq quality-verification-panel" data-tool-verification-panel data-quality-proof="SQL Formatter & Validator" aria-labelledby="sql-formatter-verification-title">
+<section class="seo-section quality-verification-panel" data-tool-verification-panel data-quality-proof="SQL Formatter" aria-labelledby="sql-formatter-verification-title">
   <h2 id="sql-formatter-verification-title">SQL formatter sources and verification</h2>
-  <div class="df-faq__grid">
-    <details open><summary>Sources and methodology</summary><p>The formatter uses the SQL text you paste plus local string-formatting rules for common clauses, indentation, keyword case, line breaks, and minification. The cleanup brief records query type, line count, review focus, and sharing risk.</p></details>
-    <details><summary>Before sharing or running</summary><p>Verify the query in your real database environment, migration tool, or query planner. Check destructive statements, placeholders, schema names, tenant filters, permissions, indexes, explain plans, and whether copied examples contain customer data or secrets.</p></details>
-    <details><summary>Privacy and limitations</summary><p>Formatting runs locally in this browser and does not execute SQL, connect to a database, validate tables or indexes, prove performance, detect every dialect edge case, or replace code review.</p></details>
+  <div>
+    <details class="faq-item" open><summary>Sources and methodology</summary><p>The formatter uses the SQL text you paste plus local string-formatting rules for common clauses, indentation, keyword case, line breaks, minification, syntax highlighting, and query review flags.</p></details>
+    <details class="faq-item"><summary>Before sharing or running</summary><p>Verify the query in your real database environment, migration tool, or query planner. Check destructive statements, placeholders, schema names, tenant filters, permissions, indexes, execution plans, and whether copied examples contain customer data or secrets.</p></details>
+    <details class="faq-item"><summary>Privacy and limitations</summary><p>Formatting runs locally in this browser and does not execute SQL, connect to a database, validate tables or indexes, prove performance, detect every dialect edge case, or replace code review.</p></details>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="sql-formatter-faq-title">
-  <h2 id="sql-formatter-faq-title">SQL Formatter &amp; Validator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste SQL, choose case and indentation, format or minify it, then copy the output or review brief.</p></details><details><summary>What should I verify?</summary><p>Check destructive statements, placeholders, dialect differences, schema assumptions and sensitive values before sharing.</p></details><details><summary>Does it validate against my database?</summary><p>No. It formats text locally and does not execute SQL or verify tables, indexes, permissions or query plans.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -279,6 +337,7 @@ const FUNCTIONS=['COUNT','SUM','AVG','MIN','MAX','CONCAT','SUBSTRING','LENGTH','
 const MAJOR_CLAUSES=['SELECT','FROM','WHERE','GROUP BY','HAVING','ORDER BY','LIMIT','OFFSET','UNION','UNION ALL','INTERSECT','EXCEPT','INSERT INTO','VALUES','UPDATE','SET','DELETE FROM','CREATE TABLE','ALTER TABLE','DROP TABLE','WITH','RETURNING','FETCH'];
 const JOIN_CLAUSES=['INNER JOIN','LEFT JOIN','RIGHT JOIN','FULL JOIN','CROSS JOIN','LEFT OUTER JOIN','RIGHT OUTER JOIN','FULL OUTER JOIN','NATURAL JOIN','JOIN'];
 const SUB_CLAUSES=['AND','OR','ON'];
+let latestReviewText='';
 
 function loadSample(){
   const s=document.getElementById('sample').value;
@@ -482,6 +541,7 @@ function formatSQL(){
   const wordCount=sql.split(/\s+/).length;
   const lineCount=final.split('\n').length;
   document.getElementById('stats').innerHTML=`<span>Lines: ${lineCount}</span><span>Words: ${wordCount}</span><span>Characters: ${sql.length}</span>`;
+  renderQueryReview(sql, final);
 
   document.getElementById('outputCard').style.display='block';
   document.getElementById('outputCard').scrollIntoView({behavior:'smooth'});
@@ -494,12 +554,146 @@ function minifySQL(){
   document.getElementById('sqlOutput').value=minified;
   document.getElementById('highlighted').innerText=minified;
   document.getElementById('stats').innerHTML=`<span>Characters: ${minified.length} (saved ${sql.length-minified.length})</span>`;
+  renderQueryReview(sql, minified);
   document.getElementById('outputCard').style.display='block';
+}
+
+function analyzeSQL(sql, formatted){
+  const trimmed=sql.trim();
+  const upper=trimmed.toUpperCase();
+  const statementMatch=upper.match(/^(WITH\s+)?(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|DROP|TRUNCATE|MERGE|EXPLAIN)\b/);
+  const statement=statementMatch ? statementMatch[2] : 'SQL';
+  const flags=[];
+  const add=(level,title,text)=>flags.push({level,title,text});
+
+  if(/^(UPDATE|DELETE)\b/i.test(trimmed)&&!/\bWHERE\b/i.test(upper)){
+    add('danger','Missing WHERE on destructive statement','UPDATE or DELETE without a WHERE clause can affect every matching row in the target table.');
+  }
+  if(/\b(DROP|TRUNCATE)\b/i.test(upper)){
+    add('danger','Destructive DDL detected','DROP or TRUNCATE should be reviewed against backups, permissions, and the intended environment before running.');
+  }
+  if(/\b(ALTER|CREATE)\b/i.test(upper)){
+    add('warn','Schema change detected','DDL can lock objects or change migrations. Test it in your migration tool or staging database first.');
+  }
+  if(/\bSELECT\s+\*/i.test(upper)){
+    add('warn','SELECT star detected','List only the columns you need before sharing production queries or adding them to application code.');
+  }
+  if(/(\?|:\w+|\$\d+|\{\{\s*[\w.]+\s*\}\})/.test(trimmed)){
+    add('info','Placeholder detected','Confirm placeholder names and binding order in the application or migration runner.');
+  }
+  if(/\b(password|secret|api[_-]?key|token)\b\s*=/i.test(trimmed)||/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(trimmed)){
+    add('warn','Sensitive-looking value detected','Remove credentials, emails, customer identifiers, or production literals before sharing this query.');
+  }
+  if(/\bJOIN\b/i.test(upper)||/\bWHERE\b/i.test(upper)||/\bORDER\s+BY\b/i.test(upper)){
+    add('info','Plan review recommended','Use your database EXPLAIN or query planner to verify joins, filters, sort steps, and index use before relying on performance.');
+  }
+  if(trimmed&&!/;\s*$/.test(trimmed)){
+    add('info','No trailing semicolon','Add a semicolon if your SQL client, migration file, or documentation style expects statement terminators.');
+  }
+  if(flags.length===0){
+    add('ok','No obvious local review flags','Still run the query in the correct database environment before treating formatted SQL as safe.');
+  }
+
+  return {
+    statement,
+    lines: formatted.split('\n').filter(Boolean).length,
+    characters: trimmed.length,
+    flags
+  };
+}
+
+function renderQueryReview(sql, formatted){
+  const review=analyzeSQL(sql, formatted);
+  const reviewCard=document.getElementById('reviewCard');
+  const summary=document.getElementById('reviewSummary');
+  const list=document.getElementById('reviewList');
+  document.getElementById('copyStatus').textContent='';
+  summary.innerHTML='';
+  list.innerHTML='';
+
+  [
+    'Statement: '+review.statement,
+    'Lines: '+review.lines,
+    'Flags: '+review.flags.length
+  ].forEach(text=>{
+    const chip=document.createElement('span');
+    chip.className='review-chip';
+    chip.textContent=text;
+    summary.appendChild(chip);
+  });
+
+  review.flags.forEach(flag=>{
+    const li=document.createElement('li');
+    li.className='review-item '+flag.level;
+    const strong=document.createElement('strong');
+    strong.textContent=flag.title;
+    const span=document.createElement('span');
+    span.textContent=flag.text;
+    li.appendChild(strong);
+    li.appendChild(span);
+    list.appendChild(li);
+  });
+
+  latestReviewText=[
+    'SQL query review',
+    'Statement: '+review.statement,
+    'Lines: '+review.lines,
+    'Characters: '+review.characters,
+    '',
+    'Flags:',
+    ...review.flags.map(flag=>'- '+flag.title+': '+flag.text)
+  ].join('\n');
+  reviewCard.hidden=false;
+}
+
+function copyText(text, successMessage){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>showCopied(successMessage)).catch(()=>fallbackCopyText(text,successMessage));
+    return;
+  }
+  fallbackCopyText(text,successMessage);
+}
+
+function fallbackCopyText(text, successMessage){
+  const textarea=document.createElement('textarea');
+  textarea.value=text;
+  textarea.setAttribute('readonly','');
+  textarea.style.position='fixed';
+  textarea.style.left='-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try{document.execCommand('copy');showCopied(successMessage);}
+  catch(e){showCopied('Copy failed. Select and copy manually.');}
+  document.body.removeChild(textarea);
+}
+
+function showCopied(message){
+  const status=document.getElementById('copyStatus');
+  if(status)status.textContent=message;
 }
 
 function copyOutput(){
   const text=document.getElementById('sqlOutput').value;
-  navigator.clipboard.writeText(text).then(()=>alert('Copied!'));
+  if(!text){formatSQL();return;}
+  copyText(text,'SQL copied');
+}
+
+function copyReview(){
+  if(!latestReviewText){
+    formatSQL();
+  }
+  if(latestReviewText)copyText(latestReviewText,'Review copied');
+}
+
+function clearSQL(){
+  document.getElementById('sqlInput').value='';
+  document.getElementById('sqlOutput').value='';
+  document.getElementById('highlighted').textContent='';
+  document.getElementById('stats').textContent='';
+  document.getElementById('copyStatus').textContent='';
+  document.getElementById('outputCard').style.display='none';
+  document.getElementById('reviewCard').hidden=true;
+  latestReviewText='';
 }
 
 // Keyboard shortcut
@@ -512,6 +706,7 @@ document.getElementById('sqlInput').addEventListener('keydown',function(e){
     this.selectionStart=this.selectionEnd=s+2;
   }
 });
+document.getElementById('sample').addEventListener('change',loadSample);
 </script>
 
 <script>
@@ -527,6 +722,5 @@ document.getElementById('sqlInput').addEventListener('keydown',function(e){
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

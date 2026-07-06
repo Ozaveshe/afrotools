@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Page Manager - Reorder, Rotate, Insert, Extract | AfroTools</title>
-<meta name="description" content="Free private PDF page organizer. Reorder, rotate, delete, duplicate, insert PDF pages, select ranges, extract selected pages, and export locally.">
+<title>Organize PDF Pages Online Free | Reorder, Rotate, Extract | AfroTools</title>
+<meta name="description" content="Organize PDF pages locally. Reorder, rotate, delete, duplicate, insert, extract selected pages, review the visible order, and download without uploads.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-reorder/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF Page Manager | AfroTools">
-<meta property="og:description" content="Reorder, rotate, delete, duplicate, insert, and extract PDF pages with private browser processing and no uploads.">
+<meta property="og:title" content="Organize PDF Pages Online Free | AfroTools">
+<meta property="og:description" content="Reorder, rotate, delete, duplicate, insert, and extract PDF pages locally with visible review before download.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-reorder/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-reorder.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF Page Manager | AfroTools">
-<meta name="twitter:description" content="Organize PDF pages locally: reorder, rotate, delete, insert, duplicate, extract, and download.">
+<meta name="twitter:title" content="Organize PDF Pages Online Free | AfroTools">
+<meta name="twitter:description" content="Organize PDF pages locally: reorder, rotate, delete, insert, duplicate, extract, review, and download.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 
@@ -32,8 +32,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "PDF Page Manager",
-  "description": "Reorder, rotate, delete, duplicate, insert, select ranges, and extract PDF pages in the browser with no uploads.",
+  "name": "Organize PDF Pages Online",
+  "description": "Reorder, rotate, delete, duplicate, insert, select ranges, and extract PDF pages in the browser with visible order review before download.",
   "url": "https://afrotools.com/tools/pdf-reorder/",
   "inLanguage": "en",
   "applicationCategory": "ProductivityApplication",
@@ -79,7 +79,7 @@
   .card-body { padding: 22px; }
 
   /* ── Upload Zone ── */
-  .upload-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: center; min-height: 180px; position: relative; }
+  .upload-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: center; min-height: 180px; position: relative; touch-action: manipulation; }
   .upload-zone:hover, .upload-zone.dragover { border-color: var(--afro-green); background: rgba(0,122,255,0.08); }
   .upload-zone input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
   .upload-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.6; }
@@ -88,9 +88,9 @@
 
   /* ── Toolbar ── */
   .toolbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-  .toolbar-group { display: flex; gap: 4px; align-items: center; }
+  .toolbar-group { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
   .toolbar-sep { width: 1px; height: 24px; background: #e5e7eb; margin: 0 4px; }
-  .tb-btn { padding: 6px 12px; background: #EFF6FF; border: 1px solid #e5e7eb; border-radius: 5px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #374151; transition: all 0.15s; font-family: 'DM Sans', sans-serif; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .tb-btn { min-height: 44px; padding: 6px 12px; background: #EFF6FF; border: 1px solid #e5e7eb; border-radius: 5px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #374151; transition: all 0.15s; font-family: 'DM Sans', sans-serif; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; touch-action: manipulation; }
   .tb-btn:hover { border-color: var(--afro-green); background: #dbeafe; }
   .tb-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .tb-btn.danger { color: #dc2626; }
@@ -98,7 +98,7 @@
   .tb-btn.primary { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
   .tb-btn.primary:hover { background: #0059B3; }
   .tb-btn.primary:disabled { background: #93c5fd; border-color: #93c5fd; }
-  .range-input { width: 116px; padding: 6px 9px; background: #fff; border: 1px solid #e5e7eb; border-radius: 5px; font-size: 0.72rem; font-weight: 700; color: #374151; font-family: 'DM Sans', sans-serif; outline: none; }
+  .range-input { min-height: 44px; width: 116px; padding: 6px 9px; background: #fff; border: 1px solid #e5e7eb; border-radius: 5px; font-size: 0.72rem; font-weight: 700; color: #374151; font-family: 'DM Sans', sans-serif; outline: none; }
   .range-input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); }
   .page-info { font-size: 0.72rem; font-weight: 600; color: #6b7280; padding: 0 6px; white-space: nowrap; }
 
@@ -122,7 +122,7 @@
   .page-card.selected .page-check::after { content: ''; display: block; width: 6px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px); }
   .page-card .page-actions { position: absolute; top: 6px; right: 6px; display: flex; gap: 3px; opacity: 0; transition: opacity 0.15s; z-index: 2; }
   .page-card:hover .page-actions { opacity: 1; }
-  .pa-btn { width: 26px; height: 26px; border-radius: 5px; background: rgba(255,255,255,0.92); border: 1px solid #d1d5db; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.15s; }
+  .pa-btn { width: 34px; height: 34px; border-radius: 5px; background: rgba(255,255,255,0.92); border: 1px solid #d1d5db; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.15s; touch-action: manipulation; }
   .pa-btn:hover { background: #fff; border-color: var(--color-primary); }
   .pa-btn.pa-del:hover { border-color: #dc2626; background: #fef2f2; }
 
@@ -154,7 +154,7 @@
   .modal-title { font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
   .modal-desc { font-size: 0.82rem; color: #6b7280; line-height: 1.5; margin-bottom: 20px; }
   .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
-  .modal-btn { padding: 8px 18px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; border: 1px solid #e5e7eb; background: #fff; color: #374151; transition: all 0.15s; }
+  .modal-btn { min-height: 44px; padding: 8px 18px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; border: 1px solid #e5e7eb; background: #fff; color: #374151; transition: all 0.15s; touch-action: manipulation; }
   .modal-btn:hover { background: #f3f4f6; }
   .modal-btn.confirm-delete { background: #dc2626; color: #fff; border-color: #dc2626; }
   .modal-btn.confirm-delete:hover { background: #b91c1c; }
@@ -164,6 +164,7 @@
     .page-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
     .tips-grid { grid-template-columns: 1fr; }
     .toolbar { gap: 4px; }
+    .toolbar-group { width: 100%; }
     .tb-btn { padding: 5px 8px; font-size: 0.68rem; }
     .page-info { font-size: 0.66rem; }
     .card-head { padding: 12px 16px; }
@@ -173,12 +174,11 @@
     .page-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; }
     .toolbar-sep { display: none; }
     .page-card .page-actions { opacity: 1; }
-    .pa-btn { width: 22px; height: 22px; font-size: 10px; }
+    .pa-btn { width: 34px; height: 34px; font-size: 10px; }
     .tool-main { padding: 16px 12px 48px; }
   }
 </style>
-<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
+<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-reorder.webp">
@@ -213,8 +213,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/reorganiser-pdf/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kupanga-kurasa-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-reorder/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -241,7 +239,7 @@
     <div class="card-head"><span class="card-title">Upload PDF</span></div>
     <div class="card-body">
       <label class="upload-zone" id="dropZone">
-        <input aria-label="FileInput" type="file" id="fileInput" accept=".pdf">
+        <input aria-label="Choose PDF file" type="file" id="fileInput" accept=".pdf">
         <div class="upload-icon">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
         </div>
@@ -298,7 +296,7 @@
         </div>
         <span class="page-info" id="pageInfo">0 pages</span>
         <span class="page-info" id="selectionInfo" style="color:var(--color-primary);display:none;">0 selected</span>
-        <input aria-label="InsertFileInput" type="file" id="insertFileInput" accept=".pdf,application/pdf" multiple style="display:none">
+        <input aria-label="Choose PDF pages to insert" type="file" id="insertFileInput" accept=".pdf,application/pdf" multiple style="display:none">
       </div>
     </div>
     <div class="card-body" style="position:relative;">
@@ -307,6 +305,10 @@
     </div>
     <div class="result-bar" id="resultBar">
       <span class="result-msg" id="resultMsg">Upload a PDF to start organizing pages.</span>
+      <label class="review-check" for="reviewConfirm">
+        <input type="checkbox" id="reviewConfirm">
+        <span>I reviewed the visible page order, rotations, deleted pages, and inserted pages before download or extract.</span>
+      </label>
       <div class="toolbar-group">
         <button type="button" class="tb-btn primary" id="btnDownload">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -331,40 +333,6 @@
   </div>
 </div>
 
-<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-reorder-verification-title">
-  <div class="tool-verification-card">
-    <div class="tool-verification-head">
-      <div>
-        <span class="tool-verification-kicker">PDF workflow proof</span>
-        <h2 class="tool-verification-title" id="pdf-reorder-verification-title">Review the managed PDF before replacing the original</h2>
-        <p class="tool-verification-lead">Reorder, rotate, delete, duplicate, insert, and extract actions run locally. The downloaded copy is generated from the visible page order.</p>
-      </div>
-      <div class="tool-verification-status">
-        <span class="tool-verification-badge">Local-first PDF tool</span>
-        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the recipient before relying on the managed PDF. The shared PDF account gate does not upload your files.</p>
-      </div>
-    </div>
-    <div class="tool-verification-grid">
-      <div class="tool-verification-block">
-        <h3>Methodology</h3>
-        <ul class="tool-verification-list">
-          <li>Loads page thumbnails locally, tracks the current page order, then copies pages into a new PDF or selected-page export.</li>
-          <li>Undo and reset are local workspace actions; they do not change the original source file.</li>
-          <li>Inserted pages are copied from the selected local PDF before export.</li>
-        </ul>
-      </div>
-      <div class="tool-verification-block">
-        <h3>Before sharing</h3>
-        <ul class="tool-verification-list">
-          <li>Confirm page order, rotations, deleted pages, inserted pages, file name, forms, bookmarks, and signatures in another PDF reader.</li>
-          <li>Keep the original file until the managed copy has been accepted by the recipient.</li>
-          <li>For merge, split, and annotation in one place, continue in <a href="/tools/pdf-workspace/">PDF Workspace</a>.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Delete Confirmation Modal -->
 <div class="modal-overlay" id="deleteModal">
   <div class="modal-box">
@@ -378,7 +346,6 @@
 </div>
 
 <afro-related-tools category="document-pdf" current="pdf-reorder"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">PDF Page Manager: How It Works</h2>
@@ -387,33 +354,6 @@
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
-
-<section class="df-upgrade" data-df-upgrade="pdf-reorder">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF Page Manager decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for pdf page manager so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: PDF Page Manager: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: batchWorkflow, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="pdf-reorder">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-reorder" data-df-base="PDF Page Manager: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">PDF Page Manager: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-reorder">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="pdf-reorder-faq-title">
-  <h2 id="pdf-reorder-faq-title">PDF Page Manager FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
   <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How do I reorder pages?</summary>
@@ -449,7 +389,6 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 
@@ -495,6 +434,7 @@
   const deleteDesc    = document.getElementById('deleteModalDesc');
   const btnCancelDel  = document.getElementById('btnCancelDelete');
   const btnConfirmDel = document.getElementById('btnConfirmDelete');
+  const reviewConfirm = document.getElementById('reviewConfirm');
 
   /* ── State ── */
   let currentFile     = null;   // original File
@@ -530,7 +470,22 @@
     return Array.from(selectedSet).sort((a, b) => a - b);
   }
 
+  function resetReview() {
+    if (reviewConfirm) reviewConfirm.checked = false;
+  }
+
+  function requireReview() {
+    if (!reviewConfirm || reviewConfirm.checked) return true;
+    resultBar.classList.remove('error');
+    resultBar.classList.add('on');
+    resultMsg.textContent = 'Review required: tick the checkbox after checking the visible page order before downloading.';
+    if (window.PdfUtils) PdfUtils.showToast('Review the visible page order, then tick the checkbox before download.', true);
+    reviewConfirm.focus();
+    return false;
+  }
+
   function pushHistory(label) {
+    resetReview();
     historyStack.push({
       label: label || 'Edit',
       pages: clonePageList(pages),
@@ -921,6 +876,7 @@
   btnExtract.addEventListener('click', async () => {
     const indices = selectedIndices();
     if (!indices.length) return;
+    if (!requireReview()) return;
     btnExtract.disabled = true;
     btnExtract.textContent = 'Extracting...';
     try {
@@ -1022,6 +978,7 @@
   /* ── Download ── */
   btnDownload.addEventListener('click', async () => {
     if (pages.length === 0) return;
+    if (!requireReview()) return;
 
     btnDownload.disabled = true;
     btnDownload.textContent = 'Building PDF...';
@@ -1157,22 +1114,13 @@
 })();
 </script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Pdf Reorder" tool-slug="pdf-reorder"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>
+  .review-check { align-items: flex-start; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; color: #92400e; display: flex; gap: 10px; margin: 10px 0; padding: 10px 12px; }
+  .review-check input { flex: 0 0 auto; height: 18px; margin-top: 2px; width: 18px; }
+  .review-check label { cursor: pointer; font-size: 0.78rem; font-weight: 750; line-height: 1.45; }
+  .review-check:focus-within { box-shadow: 0 0 0 3px rgba(245,158,11,0.18); }

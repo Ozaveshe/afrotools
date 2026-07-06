@@ -75,6 +75,30 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .uni-row .status.yes{background:#dcfce7;color:#166534}
 .uni-row .status.no{background:#fee2e2;color:#991b1b}
 .uni-row .status.maybe{background:#fef9c3;color:#854d0e}
+.matric-action-pack{margin-top:16px;border:1px solid #ddd6fe;border-radius:10px;background:#fff;padding:16px}
+.matric-action-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+.matric-action-head h3{font-size:1rem;color:#0f1419;margin:0 0 4px}
+.matric-action-head p{font-size:.8rem;line-height:1.55;color:#64748b;margin:0}
+.matric-action-buttons{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.matric-action-buttons .btn{display:inline-flex;width:auto;margin:0;padding:9px 13px;font-size:.78rem}
+.matric-action-buttons .btn-secondary{background:#fff;color:#6d28d9;border:1px solid #c4b5fd}
+.matric-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.matric-action-cell{border:1px solid #e9d5ff;border-radius:9px;background:#faf5ff;padding:12px}
+.matric-action-cell strong{display:block;color:#6d28d9;font-size:1rem;line-height:1.2;overflow-wrap:anywhere}
+.matric-action-cell span{display:block;margin-top:4px;color:#64748b;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.matric-action-list{display:grid;gap:8px}
+.matric-action-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;padding:10px;border:1px solid #e5e7eb;border-radius:9px;background:#fff}
+.matric-action-dot{width:8px;height:8px;border-radius:99px;background:#7c3aed;margin-top:7px}
+.matric-action-item b{display:block;color:#0f1419;font-size:.82rem;line-height:1.35}
+.matric-action-item small{display:block;color:#64748b;font-size:.75rem;line-height:1.45;margin-top:2px}
+.matric-action-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.matric-action-links a{display:inline-flex;align-items:center;min-height:32px;padding:6px 10px;border:1px solid #c4b5fd;border-radius:7px;background:#f5f3ff;color:#6d28d9;font-size:.76rem;font-weight:800;text-decoration:none}
+.matric-action-status{min-height:1.2em;margin-top:10px;color:#64748b;font-size:.76rem}
+.matric-input-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.matric-input-actions .btn-sm{margin-top:0;min-height:34px}
+.matric-form-status{min-height:1.25em;margin:8px 0 0;color:#64748b;font-size:.78rem;font-weight:700}
+.matric-form-status.is-ok{color:#166534}
+.matric-form-status.is-error{color:#991b1b}
 .sidebar .info-card{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:16px;margin-top:14px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6d28d9;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#6d28d9;line-height:1.6}
@@ -85,7 +109,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.subj-row{grid-template-columns:1fr 110px 32px;gap:6px}.subj-row select{font-size:.75rem;padding:8px 6px}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.subj-row{grid-template-columns:1fr 110px 32px;gap:6px}.subj-row select{font-size:.75rem;padding:8px 6px}.matric-action-head{grid-template-columns:1fr}.matric-action-buttons{display:grid;grid-template-columns:1fr}.matric-action-buttons .btn{width:100%;justify-content:center}.matric-action-grid{grid-template-columns:1fr}.matric-input-actions{display:grid;grid-template-columns:1fr}.matric-input-actions .btn-sm{justify-content:center;width:100%}}
 </style>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <meta property="og:locale" content="en_US">
@@ -128,7 +152,12 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-body">
 <p style="font-size:.78rem;color:#64748b;margin-bottom:14px">Enter at least 6 subjects. Life Orientation is NOT counted in APS by most universities. Select your achievement level (1-7) for each subject.</p>
 <div id="subjects"></div>
+<div class="matric-input-actions" aria-label="Matric APS quick actions">
 <button type="button" class="btn-sm" onclick="addSubject()">+ Add Subject</button>
+<button type="button" class="btn-sm" onclick="loadMatricSample()">Load sample results</button>
+<button type="button" class="btn-sm" onclick="resetMatricInputs()">Reset inputs</button>
+</div>
+<div class="matric-form-status" id="matricFormStatus" role="status" aria-live="polite"></div>
 <button type="button" class="btn btn-primary" onclick="calculate()">Calculate APS</button>
 </div></div>
 
@@ -141,6 +170,29 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="pass" id="passType"></div>
 </div>
 <div class="uni-check" id="uniCheck"></div>
+<div class="matric-action-pack" id="matricActionPack" aria-live="polite">
+  <div class="matric-action-head">
+    <div>
+      <h3>APS application action pack</h3>
+      <p>Turn this score into a pass-type check, programme gap list, and next revision plan.</p>
+    </div>
+    <div class="matric-action-buttons">
+      <button type="button" class="btn btn-secondary" onclick="copyMatricActionPack()">Copy plan</button>
+      <button type="button" class="btn btn-primary" onclick="downloadMatricActionPack()">Download TXT</button>
+      <button type="button" class="btn btn-secondary" onclick="saveMatricActionPack()">Save locally</button>
+    </div>
+  </div>
+  <div class="matric-action-grid" id="matricActionGrid"></div>
+  <div class="matric-action-list" id="matricActionList"></div>
+  <div class="matric-action-links">
+    <a href="/tools/study-planner/?exam=south-africa-nsc">Study plan</a>
+    <a href="/tools/exam-timetable/?exam=south-africa-nsc">Prep timetable</a>
+    <a href="/tools/flashcard-maker/?exam=south-africa-nsc">Flashcards</a>
+    <a href="/tools/grade-tracker/?exam=south-africa-nsc">Track marks</a>
+    <a href="https://www.education.gov.za/?link=984&amp;mid=4149&amp;portalid=0&amp;tabid=338" target="_blank" rel="noopener">DBE source</a>
+  </div>
+  <div class="matric-action-status" id="matricActionStatus" role="status"></div>
+</div>
 </div></div>
 </div>
 
@@ -208,6 +260,16 @@ const SUBJECTS = [
 ];
 
 let subjectCount = 0;
+let lastMatricResult = null;
+
+function setMatricFormStatus(message, type) {
+  var el = document.getElementById('matricFormStatus');
+  if (!el) return;
+  el.textContent = message || '';
+  el.classList.remove('is-ok', 'is-error');
+  if (type === 'ok') el.classList.add('is-ok');
+  if (type === 'error') el.classList.add('is-error');
+}
 
 function addSubject() {
   var container = document.getElementById('subjects');
@@ -245,6 +307,47 @@ const defaults = [
   ['Business Studies', '5'],
   ['Life Orientation', '6']
 ];
+
+function setMatricRows(rows) {
+  var container = document.getElementById('subjects');
+  if (!container) return;
+  container.innerHTML = '';
+  subjectCount = 0;
+  rows.forEach(([sub, lvl]) => {
+    addSubject();
+    const idx = subjectCount - 1;
+    document.getElementById('sub-' + idx).value = sub;
+    document.getElementById('lvl-' + idx).value = lvl;
+    document.getElementById('pts-' + idx).textContent = lvl;
+  });
+}
+
+function loadMatricSample() {
+  setMatricRows(defaults);
+  lastMatricResult = null;
+  var resultCard = document.getElementById('resultCard');
+  if (resultCard) resultCard.style.display = 'none';
+  setMatricStatus('');
+  setMatricFormStatus('Sample NSC results loaded. Calculate APS to build the application pack.', 'ok');
+}
+
+function resetMatricInputs() {
+  setMatricRows([
+    ['English First Additional Language', '4'],
+    ['Afrikaans Home Language', '4'],
+    ['Mathematics', '4'],
+    ['Physical Sciences', '4'],
+    ['Life Sciences', '4'],
+    ['Accounting', '4'],
+    ['Life Orientation', '4']
+  ]);
+  lastMatricResult = null;
+  var resultCard = document.getElementById('resultCard');
+  if (resultCard) resultCard.style.display = 'none';
+  setMatricStatus('');
+  setMatricFormStatus('Inputs reset. Choose subjects and levels, then calculate APS.', '');
+}
+
 defaults.forEach(([sub, lvl]) => {
   addSubject();
   const idx = subjectCount - 1;
@@ -294,6 +397,10 @@ function calculate() {
 
   // Exclude Life Orientation
   const filtered = results.filter(r => r.sub !== 'Life Orientation');
+  if (filtered.length < 6) {
+    setMatricFormStatus('Enter at least 6 subjects besides Life Orientation before calculating APS.', 'error');
+    return;
+  }
   // Sort by level descending, take best 6
   filtered.sort((a, b) => b.lvl - a.lvl);
   const best6 = filtered.slice(0, 6);
@@ -321,11 +428,168 @@ function calculate() {
   });
   document.getElementById('uniCheck').innerHTML = uniHtml;
 
+  lastMatricResult = { results, filtered, best6, aps, passType, passClass, level4Plus };
+  renderMatricActionPack();
+  setMatricFormStatus('APS calculated. Review your pass type, programme checks, and action pack.', 'ok');
+
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
+function matricEsc(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+  });
+}
+function cleanMatricName(value) {
+  return String(value || '').replace(/â€”|—/g, '-').replace(/\s+-\s+/g, ' - ');
+}
+function matricProgrammeMatches(aps) {
+  return UNI_REQS.map(function(u) {
+    var diff = aps - u.aps;
+    return {
+      name: cleanMatricName(u.name),
+      aps: u.aps,
+      diff: diff,
+      status: diff >= 2 ? 'Likely' : (diff >= 0 ? 'Possible' : 'Below')
+    };
+  });
+}
+function lowestMatricSubject(result) {
+  if (!result || !result.best6.length) return null;
+  return result.best6.slice().sort(function(a, b) { return a.lvl - b.lvl; })[0] || null;
+}
+function matricSubjectLevel(result, name) {
+  var match = result && result.results ? result.results.find(function(r) { return r.sub === name; }) : null;
+  return match ? match.lvl : null;
+}
+function matricActionItems(result) {
+  var items = [];
+  var matches = matricProgrammeMatches(result.aps);
+  var possible = matches.filter(function(m) { return m.diff >= 0; }).slice(0, 3);
+  var close = matches.filter(function(m) { return m.diff < 0; }).sort(function(a, b) { return b.diff - a.diff; }).slice(0, 3);
+  items.push({
+    title: result.passType,
+    detail: result.passType === "Bachelor's Pass" ? 'Your subject levels meet the broad bachelor-pass planning check. Programme admission still depends on APS, subject rules, space, and current university policy.' : 'Your pass type points to a diploma or higher-certificate route. Check rewrite, bridging, or diploma-to-degree options before applying.'
+  });
+  items.push({
+    title: possible.length ? 'Closest open programmes' : 'Programme gap',
+    detail: possible.length ? possible.map(function(m) { return m.name + ' (' + m.status + ')'; }).join('; ') : 'No listed sample programme is currently at or below this APS. Start with diploma or higher-certificate options, then check official university rules.'
+  });
+  if (close.length) {
+    items.push({
+      title: 'Nearest stretch targets',
+      detail: close.map(function(m) { return m.name + ' needs +' + Math.abs(m.diff) + ' APS'; }).join('; ')
+    });
+  }
+  var weak = lowestMatricSubject(result);
+  if (weak) {
+    items.push({
+      title: 'First revision focus',
+      detail: weak.sub + ' is the lowest counted subject at Level ' + weak.lvl + '. A one-level lift would add 1 APS point if it remains in the best six.'
+    });
+  }
+  var maths = matricSubjectLevel(result, 'Mathematics');
+  var physical = matricSubjectLevel(result, 'Physical Sciences');
+  if (maths !== null || physical !== null) {
+    items.push({
+      title: 'Subject rule check',
+      detail: 'For engineering, medicine, and some science routes, confirm Mathematics and Physical Sciences minimum levels. Current entries: Maths ' + (maths || 'not selected') + ', Physical Sciences ' + (physical || 'not selected') + '.'
+    });
+  }
+  return items;
+}
+function renderMatricActionPack() {
+  var result = lastMatricResult;
+  var grid = document.getElementById('matricActionGrid');
+  var list = document.getElementById('matricActionList');
+  if (!result || !grid || !list) return;
+  grid.innerHTML = [
+    ['APS', String(result.aps)],
+    ['Pass type', result.passType],
+    ['Level 4+', String(result.level4Plus)]
+  ].map(function(item) {
+    return '<div class="matric-action-cell"><strong>' + matricEsc(item[1]) + '</strong><span>' + matricEsc(item[0]) + '</span></div>';
+  }).join('');
+  list.innerHTML = matricActionItems(result).map(function(item) {
+    return '<div class="matric-action-item"><i class="matric-action-dot"></i><div><b>' + matricEsc(item.title) + '</b><small>' + matricEsc(item.detail) + '</small></div></div>';
+  }).join('');
+  try { localStorage.setItem('afrotools_matric_action_pack', JSON.stringify({ aps: result.aps, passType: result.passType, updatedAt: Date.now() })); } catch(e) {}
+}
+function setMatricStatus(message) {
+  var el = document.getElementById('matricActionStatus');
+  if (el) el.textContent = message || '';
+}
+function buildMatricActionText() {
+  var result = lastMatricResult;
+  if (!result) return 'No Matric APS result yet. Enter subjects and calculate first.';
+  var lines = [
+    'AfroTools Matric APS Application Action Pack',
+    'APS: ' + result.aps,
+    'Pass type: ' + result.passType,
+    '',
+    'Best six subjects'
+  ];
+  result.best6.forEach(function(r) { lines.push('- ' + r.sub + ': Level ' + r.lvl); });
+  lines.push('');
+  lines.push('Next checks');
+  matricActionItems(result).forEach(function(item) { lines.push('- ' + item.title + ': ' + item.detail); });
+  lines.push('');
+  lines.push('Tools');
+  lines.push('Study plan: https://afrotools.com/tools/study-planner/?exam=south-africa-nsc');
+  lines.push('Prep timetable: https://afrotools.com/tools/exam-timetable/?exam=south-africa-nsc');
+  lines.push('Flashcards: https://afrotools.com/tools/flashcard-maker/?exam=south-africa-nsc');
+  lines.push('Grade tracker: https://afrotools.com/tools/grade-tracker/?exam=south-africa-nsc');
+  lines.push('Official DBE source: https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338');
+  lines.push('');
+  lines.push('This is a planning estimate, not an official university admission decision. Confirm current programme rules, subject minimums, NBT requirements, and closing dates with each university.');
+  return lines.join('\n');
+}
+function copyMatricActionPack() {
+  var text = buildMatricActionText();
+  function done() { setMatricStatus('Matric action pack copied.'); }
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch(e) { setMatricStatus('Copy failed. Download the TXT plan instead.'); }
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(fallback);
+  else fallback();
+}
+function downloadMatricActionPack() {
+  var text = buildMatricActionText();
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'matric-aps-action-pack.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setMatricStatus('Matric action pack downloaded.');
+}
+function saveMatricActionPack() {
+  if (!lastMatricResult) {
+    setMatricStatus('Calculate APS first, then save the action pack.');
+    return;
+  }
+  try {
+    localStorage.setItem('afrotools_matric_action_pack', JSON.stringify({
+      savedAt: new Date().toISOString(),
+      aps: lastMatricResult.aps,
+      passType: lastMatricResult.passType,
+      text: buildMatricActionText()
+    }));
+    setMatricStatus('Matric action pack saved on this device.');
+  } catch (e) {
+    setMatricStatus('Could not save this pack locally in this browser.');
+  }
+}
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

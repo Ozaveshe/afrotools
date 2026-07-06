@@ -23,7 +23,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c"><script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c"><script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -131,8 +131,9 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/finance-calculator-refresh.css?v=8a18478d">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh finance-calculator-refresh compound-interest-refresh">
 <afro-navbar></afro-navbar>
 
 <section class="tool-hero">
@@ -200,6 +201,11 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <label class="f-label" for="contribution">Monthly Contribution (Optional)</label>
 <input aria-label="E.g. 20,000 (leave blank if none)" type="text" class="f-input" id="contribution" placeholder="e.g. 20,000 (leave blank if none)" inputmode="numeric">
 </div>
+<div class="compound-scenario-strip" aria-label="Quick compound interest scenarios">
+<button type="button" class="compound-action-btn" data-compound-preset="starter">Starter saver</button>
+<button type="button" class="compound-action-btn" data-compound-preset="income">Monthly investor</button>
+<button type="button" class="compound-action-btn" data-compound-preset="long">Long-term growth</button>
+</div>
 <button type="button" class="calc-btn" onclick="calculate()">Calculate Growth</button>
 </div>
 </div>
@@ -222,6 +228,30 @@ h1 em{color:var(--afro-blue);font-style:normal}
 </div>
 </div>
 <div class="insight" id="insight"></div>
+<div class="compound-useful-grid" aria-label="Growth planning highlights">
+<div class="compound-useful-item">
+<div class="compound-useful-label">Double point</div>
+<div class="compound-useful-value" id="rDoublePoint">-</div>
+</div>
+<div class="compound-useful-item">
+<div class="compound-useful-label">Interest share</div>
+<div class="compound-useful-value" id="rInterestShare">-</div>
+</div>
+<div class="compound-useful-item">
+<div class="compound-useful-label">Average annual gain</div>
+<div class="compound-useful-value" id="rAverageGain">-</div>
+</div>
+</div>
+<div class="compound-chart-grid" aria-label="Compound interest graphs">
+<div class="compound-chart-card">
+<div class="compound-chart-title">Balance growth</div>
+<canvas id="compoundGrowthChart" width="640" height="260"></canvas>
+</div>
+<div class="compound-chart-card">
+<div class="compound-chart-title">Contributions vs interest</div>
+<canvas id="compoundBreakdownChart" width="420" height="260"></canvas>
+</div>
+</div>
 <h3 style="font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin:20px 0 8px">Year-by-Year Growth</h3>
 <div class="table-wrap">
 <table class="growth-table" id="growthTable"></table>
@@ -280,9 +310,155 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 <script>
 var symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R ',GHS:'GH\u20B5',TZS:'TSh ',UGX:'USh ',ETB:'Br ',RWF:'RF ',XOF:'CFA ',USD:'$',GBP:'\u00A3'};
+var lastCompoundResult=null;
 
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
 function fmt(n,cur){return(symbols[cur]||cur+' ')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+
+function drawCompoundLineChart(rows,cur){
+  var canvas=document.getElementById('compoundGrowthChart');
+  if(!canvas||!rows.length)return;
+  var ctx=canvas.getContext('2d');
+  var ratio=window.devicePixelRatio||1;
+  var rect=canvas.getBoundingClientRect();
+  var w=Math.max(320,Math.round(rect.width||canvas.width));
+  var h=Math.max(220,Math.round(rect.height||canvas.height));
+  canvas.width=w*ratio;
+  canvas.height=h*ratio;
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.clearRect(0,0,w,h);
+  var pad={top:18,right:16,bottom:36,left:58};
+  var max=Math.max.apply(null,rows.map(function(r){return r.balance;}));
+  var min=0;
+  var x=function(i){return pad.left+(rows.length===1?0:i/(rows.length-1))*(w-pad.left-pad.right);};
+  var y=function(v){return h-pad.bottom-((v-min)/(max-min||1))*(h-pad.top-pad.bottom);};
+  ctx.strokeStyle='#d8e2ef';
+  ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(pad.left,pad.top);
+  ctx.lineTo(pad.left,h-pad.bottom);
+  ctx.lineTo(w-pad.right,h-pad.bottom);
+  ctx.stroke();
+  ctx.fillStyle='#53657d';
+  ctx.font='12px DM Sans, system-ui, sans-serif';
+  ctx.fillText(fmt(Math.round(max),cur),8,pad.top+4);
+  ctx.fillText('Year 1',pad.left,h-12);
+  ctx.fillText('Year '+rows[rows.length-1].year,Math.max(pad.left,w-pad.right-64),h-12);
+  ctx.strokeStyle='#2457c5';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  rows.forEach(function(row,i){
+    var px=x(i), py=y(row.balance);
+    if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
+  });
+  ctx.stroke();
+  ctx.strokeStyle='#0f9f72';
+  ctx.lineWidth=2;
+  ctx.setLineDash([5,5]);
+  ctx.beginPath();
+  rows.forEach(function(row,i){
+    var px=x(i), py=y(row.contributed);
+    if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
+  });
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#2457c5';
+  ctx.beginPath();
+  ctx.arc(x(rows.length-1),y(rows[rows.length-1].balance),4,0,Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle='#0f9f72';
+  ctx.fillRect(pad.left,pad.top,10,10);
+  ctx.fillStyle='#53657d';
+  ctx.fillText('Balance',pad.left+15,pad.top+10);
+  ctx.fillStyle='#0f9f72';
+  ctx.fillRect(pad.left+90,pad.top,10,10);
+  ctx.fillStyle='#53657d';
+  ctx.fillText('Contributed',pad.left+105,pad.top+10);
+}
+
+function drawCompoundBreakdownChart(rows,cur){
+  var canvas=document.getElementById('compoundBreakdownChart');
+  if(!canvas||!rows.length)return;
+  var ctx=canvas.getContext('2d');
+  var ratio=window.devicePixelRatio||1;
+  var rect=canvas.getBoundingClientRect();
+  var w=Math.max(280,Math.round(rect.width||canvas.width));
+  var h=Math.max(220,Math.round(rect.height||canvas.height));
+  canvas.width=w*ratio;
+  canvas.height=h*ratio;
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.clearRect(0,0,w,h);
+  var last=rows[rows.length-1];
+  var total=Math.max(last.balance,1);
+  var contributed=Math.max(last.contributed,0);
+  var interest=Math.max(last.interest,0);
+  var barX=44, barY=38, barW=Math.max(90,w-88), barH=48;
+  var contributedW=barW*(contributed/total);
+  ctx.fillStyle='#0f9f72';
+  ctx.fillRect(barX,barY,contributedW,barH);
+  ctx.fillStyle='#2457c5';
+  ctx.fillRect(barX+contributedW,barY,barW-contributedW,barH);
+  ctx.strokeStyle='#d8e2ef';
+  ctx.strokeRect(barX,barY,barW,barH);
+  ctx.fillStyle='#0f172a';
+  ctx.font='700 16px DM Sans, system-ui, sans-serif';
+  ctx.fillText('Final balance',barX,barY+barH+34);
+  ctx.fillStyle='#53657d';
+  ctx.font='12px DM Sans, system-ui, sans-serif';
+  ctx.fillText(fmt(Math.round(total),cur),barX,barY+barH+54);
+  var legendY=barY+barH+88;
+  ctx.fillStyle='#0f9f72';
+  ctx.fillRect(barX,legendY,10,10);
+  ctx.fillStyle='#53657d';
+  ctx.fillText('Contributed: '+fmt(Math.round(contributed),cur),barX+16,legendY+10);
+  ctx.fillStyle='#2457c5';
+  ctx.fillRect(barX,legendY+28,10,10);
+  ctx.fillStyle='#53657d';
+  ctx.fillText('Interest: '+fmt(Math.round(interest),cur),barX+16,legendY+38);
+}
+
+function updateCompoundHighlights(rows,finalBalance,totalContributed,totalInterest,cur,t){
+  var doublePoint=rows.find(function(row){return row.balance>=totalContributed*2;});
+  document.getElementById('rDoublePoint').textContent=doublePoint?'Year '+doublePoint.year:'Not in '+t+' years';
+  document.getElementById('rInterestShare').textContent=Math.round(totalInterest/finalBalance*100)+'% of final';
+  document.getElementById('rAverageGain').textContent=fmt(Math.round(totalInterest/Math.max(t,1)),cur)+'/year';
+}
+
+function compoundSummaryText(){
+  if(!lastCompoundResult)return '';
+  var r=lastCompoundResult;
+  return [
+    'AfroTools compound interest scenario',
+    'Currency: '+r.currency,
+    'Principal: '+fmt(Math.round(r.principal),r.currency),
+    'Annual rate: '+r.rate+'%',
+    'Years: '+r.years,
+    'Frequency: '+r.frequency,
+    'Monthly contribution: '+fmt(Math.round(r.monthlyContribution),r.currency),
+    'Final balance: '+fmt(Math.round(r.finalBalance),r.currency),
+    'Total contributed: '+fmt(Math.round(r.totalContributed),r.currency),
+    'Interest earned: '+fmt(Math.round(r.totalInterest),r.currency),
+    'Planning estimate only. Confirm current provider terms, fees, taxes, inflation, and withdrawal rules.'
+  ].join('\n');
+}
+
+function setCompoundCopyStatus(message){
+  var el=document.getElementById('compoundCopyStatus');
+  if(el)el.textContent=message;
+}
+
+function copyCompoundText(text){
+  var done=function(){setCompoundCopyStatus('Summary copied.');};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){
+      window.prompt('Copy compound interest summary',text);
+      done();
+    });
+  }else{
+    window.prompt('Copy compound interest summary',text);
+    done();
+  }
+}
 
 // Format number inputs on blur
 ['principal','contribution'].forEach(function(id){
@@ -290,6 +466,25 @@ function fmt(n,cur){return(symbols[cur]||cur+' ')+n.toLocaleString('en',{minimum
   if(!el)return;
   el.addEventListener('blur',function(){var v=parseNum(el.value);if(v>0)el.value=v.toLocaleString('en');});
   el.addEventListener('focus',function(){el.value=el.value.replace(/,/g,'');});
+});
+
+document.querySelectorAll('[data-compound-preset]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var cur=document.getElementById('currency').value;
+    var presets={
+      starter:{principal:500000,rate:12,years:5,freq:12,contribution:20000},
+      income:{principal:2000000,rate:16,years:8,freq:12,contribution:100000},
+      long:{principal:1000000,rate:10,years:20,freq:4,contribution:50000}
+    };
+    var p=presets[btn.getAttribute('data-compound-preset')];
+    if(!p)return;
+    document.getElementById('principal').value=p.principal.toLocaleString('en');
+    document.getElementById('rate').value=p.rate;
+    document.getElementById('years').value=p.years;
+    document.getElementById('freq').value=p.freq;
+    document.getElementById('contribution').value=p.contribution.toLocaleString('en');
+    setCompoundCopyStatus((symbols[cur]||cur+' ')+' sample loaded. Adjust any input, then calculate.');
+  });
 });
 
 function calculate(){
@@ -328,6 +523,19 @@ function calculate(){
 
   var finalBalance=balance;
   var totalInterest=finalBalance-totalContributed;
+  var freqNames={12:'Monthly',4:'Quarterly',2:'Semi-Annual',1:'Annual',365:'Daily'};
+  lastCompoundResult={
+    currency:cur,
+    principal:P,
+    rate:r,
+    years:t,
+    frequency:freqNames[n]||String(n)+' times per year',
+    monthlyContribution:pmt,
+    finalBalance:finalBalance,
+    totalContributed:totalContributed,
+    totalInterest:totalInterest,
+    rows:rows
+  };
 
   // Update summary
   document.getElementById('rFinal').textContent=fmt(Math.round(finalBalance),cur);
@@ -344,9 +552,12 @@ function calculate(){
     insight+='Compounding earned you an extra <strong>'+fmt(Math.round(totalInterest),cur)+'</strong> on top of your original investment — that is '+interestPct+'% pure interest income.';
   }
   document.getElementById('insight').innerHTML=insight;
+  updateCompoundHighlights(rows,finalBalance,totalContributed,totalInterest,cur,t);
+  drawCompoundLineChart(rows,cur);
+  drawCompoundBreakdownChart(rows,cur);
+  setCompoundCopyStatus('Growth scenario ready. Copy, save, or share it before comparing provider terms.');
 
   // Build growth table
-  var freqNames={12:'Monthly',4:'Quarterly',2:'Semi-Annual',1:'Annual',365:'Daily'};
   var html='<thead><tr><th>Year</th><th>Balance</th><th>Total Contributed</th><th>Interest Earned</th></tr></thead><tbody>';
   rows.forEach(function(row){
     html+='<tr><td>Year '+row.year+'</td><td style="color:var(--afro-blue);font-weight:800">'+fmt(Math.round(row.balance),cur)+'</td><td>'+fmt(Math.round(row.contributed),cur)+'</td><td style="color:#10b981">'+fmt(Math.round(Math.max(0,row.interest)),cur)+'</td></tr>';
@@ -364,25 +575,15 @@ function calculate(){
   var target=document.getElementById('results');
   if(!target)return;
   var div=document.createElement('div');
-  div.className='result-actions';
-  div.style.cssText='display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML='<save-result-button tool-slug="compound-interest" tool-name="Compound Interest Calculator"></save-result-button><share-result-button tool-name="Compound Interest Calculator" tool-slug="compound-interest"></share-result-button><button type="button" class="calc-btn" id="compound-copy-summary">Copy summary</button>';
+  div.className='result-actions compound-action-row';
+  div.innerHTML='<save-result-button tool-slug="compound-interest" tool-name="Compound Interest Calculator"></save-result-button><share-result-button tool-name="Compound Interest Calculator" tool-slug="compound-interest"></share-result-button><button type="button" class="compound-action-btn" id="compound-copy-summary">Copy summary</button><p class="compound-copy-status" id="compoundCopyStatus" aria-live="polite"></p>';
   target.appendChild(div);
   document.getElementById('compound-copy-summary').addEventListener('click',function(){
-    var text=[
-      'Compound interest scenario',
-      'Currency: '+document.getElementById('currency').value,
-      'Principal: '+document.getElementById('principal').value,
-      'Rate: '+document.getElementById('rate').value+'%',
-      'Years: '+document.getElementById('years').value,
-      'Frequency: '+document.getElementById('freq').selectedOptions[0].textContent,
-      'Monthly contribution: '+(document.getElementById('contribution').value||'0'),
-      'Final balance: '+document.getElementById('rFinal').textContent,
-      'Total contributed: '+document.getElementById('rContributed').textContent,
-      'Interest earned: '+document.getElementById('rInterest').textContent,
-      'Note: planning estimate only; confirm current provider terms, fees, taxes, inflation, and withdrawal rules.'
-    ].join('\n');
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).catch(function(){alert(text);});}else{alert(text);}
+    if(!lastCompoundResult){
+      setCompoundCopyStatus('Calculate growth first, then copy the summary.');
+      return;
+    }
+    copyCompoundText(compoundSummaryText());
   });
 })();
 </script>

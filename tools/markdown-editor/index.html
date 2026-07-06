@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Markdown Editor — Live Preview | AfroTools</title>
-<meta name="description" content="Free markdown editor with live split preview. Write markdown on left, see rendered HTML on right. Formatting toolbar, word count, export to HTML/MD, auto-save to localStorage.">
+<title>Markdown Editor - Live Preview | AfroTools</title>
+<meta name="description" content="Write Markdown with live GFM preview, toolbar actions, word count, local auto-save, sanitized HTML preview, and Markdown/HTML export tools.">
 <link rel="canonical" href="https://afrotools.com/tools/markdown-editor/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Markdown Editor | AfroTools">
-<meta property="og:description" content="Edit markdown with live preview, toolbar, and export options. Auto-save included.">
+<meta property="og:description" content="Edit Markdown locally with live GFM preview, toolbar actions, word count, local auto-save, and Markdown/HTML exports.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/markdown-editor/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/markdown-editor.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Markdown Editor | AfroTools">
-<meta name="twitter:description" content="Free markdown editor with live preview and export.">
+<meta name="twitter:description" content="Free Markdown editor with live GFM preview, local auto-save and export options.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -208,11 +208,16 @@
   }
 
   .toolbar-btn {
-    padding: 6px 10px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 10px;
     background: #EFF6FF;
     border: 1.5px solid #BFDBFE;
     border-radius: 4px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 0.7rem;
     font-weight: 700;
     color: #244d2c;
@@ -577,8 +582,8 @@
     color: #fff;
   }
 
-  /* AI Advisor Panel */
-  .ai-panel {
+  /* Local publish checklist */
+  .publish-checklist {
     margin-top: 20px;
     border: 1px solid #DBEAFE;
     border-radius: 10px;
@@ -587,161 +592,45 @@
     overflow: hidden;
   }
 
-  .ai-panel-toggle {
-    width: 100%;
+  .publish-checklist-head {
     padding: 14px 20px;
     background: #F5F9FF;
-    border: none;
-    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 12px;
     font-size: 0.85rem;
     font-weight: 700;
     color: #0a4018;
     font-family: 'DM Sans', sans-serif;
-    transition: background 0.15s;
   }
 
-  .ai-panel-toggle:hover {
-    background: #EBF2FF;
-  }
-
-  .ai-panel-toggle svg {
-    transition: transform 0.2s;
-  }
-
-  .ai-panel.open .ai-panel-toggle svg {
-    transform: rotate(180deg);
-  }
-
-  .ai-panel-body {
-    display: none;
+  .publish-checklist-body {
     padding: 16px 20px;
     border-top: 1px solid #EFF6FF;
+    display: grid;
+    gap: 10px;
   }
 
-  .ai-panel.open .ai-panel-body {
-    display: block;
-  }
-
-  .ai-suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 12px;
-  }
-
-  .ai-suggestion-btn {
-    padding: 6px 12px;
-    background: #EFF6FF;
+  .publish-check-item {
+    background: #F8FBFF;
     border: 1px solid #DBEAFE;
-    border-radius: 16px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #244d2c;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.15s;
-  }
-
-  .ai-suggestion-btn:hover {
-    border-color: var(--afro-green);
-    background: rgba(0,113,227,0.06);
-  }
-
-  .ai-input-row {
-    display: flex;
-    gap: 8px;
-  }
-
-  .ai-input-row input {
-    flex: 1;
-    padding: 10px 14px;
-    border: 1.5px solid #BFDBFE;
     border-radius: 8px;
-    font-size: 0.85rem;
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
+    padding: 11px 12px;
   }
 
-  .ai-input-row input:focus {
-    border-color: var(--afro-green);
+  .publish-check-item strong {
+    display: block;
+    font-size: 0.78rem;
+    color: #0d2813;
+    margin-bottom: 4px;
   }
 
-  .ai-input-row button {
-    padding: 10px 18px;
-    background: var(--afro-green);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    white-space: nowrap;
-  }
-
-  .ai-input-row button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .ai-messages {
-    margin-top: 12px;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-
-  .ai-msg {
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 0.82rem;
+  .publish-check-item span {
+    display: block;
+    color: #475569;
+    font-size: 0.76rem;
     line-height: 1.6;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .ai-msg.user {
-    background: #EFF6FF;
-    color: #244d2c;
-    text-align: right;
-  }
-
-  .ai-msg.assistant {
-    background: #f0fdf4;
-    color: #0a4018;
-    border: 1px solid #dcfce7;
-  }
-
-  .ai-msg.error {
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
-  }
-
-  .ai-footer {
-    margin-top: 8px;
-    font-size: 0.65rem;
-    color: #9ca3af;
-    text-align: right;
-  }
-  .ai-consent {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    margin: 0 0 12px;
-    padding: 10px 12px;
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
-    border-radius: 8px;
-    color: #9a3412;
-    font-size: 0.72rem;
-    line-height: 1.45;
-  }
-  .ai-consent input {
-    margin-top: 2px;
-    accent-color: var(--afro-green);
   }
 
   /* Toast */
@@ -802,12 +691,21 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Markdown Editor",
-  "description": "Free markdown editor with live split preview. Write markdown on left, see rendered HTML on right. Formatting toolbar, word count, export to HTML/MD, auto-save.",
+  "description": "Write Markdown with live GFM preview, toolbar actions, word count, local auto-save, sanitized HTML preview, and Markdown/HTML export tools.",
   "url": "https://afrotools.com/tools/markdown-editor/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
+  "browserRequirements": "Requires JavaScript and a modern browser",
+  "featureList": [
+    "Live split-view Markdown preview",
+    "GitHub Flavored Markdown tables, task lists and code fences",
+    "Formatting toolbar and table generator",
+    "Word count and reading-time estimate",
+    "Local browser auto-save",
+    "Download Markdown and HTML exports",
+    "Copy sanitized rendered HTML"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -827,7 +725,7 @@
   "@type": "WebPage",
   "name": "Markdown Editor",
   "url": "https://afrotools.com/tools/markdown-editor/",
-  "description": "Free markdown editor with live split preview. Write markdown on left, see rendered HTML on right. Formatting toolbar, word count, export to HTML/MD, auto-save.",
+  "description": "Browser-based Markdown editor with live GFM preview, local auto-save, formatting toolbar and Markdown/HTML export tools.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -840,6 +738,31 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to preview and export Markdown with AfroTools",
+  "description": "Write Markdown locally, preview the rendered output, then copy or download Markdown and HTML exports.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Write or paste Markdown",
+      "text": "Use the editor pane and toolbar to draft Markdown, tables, lists, links and code blocks."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Review the preview",
+      "text": "Check headings, links, tables, code fences, images, embedded HTML and private notes in the live preview."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Export the draft",
+      "text": "Download Markdown or HTML, or copy the sanitized rendered HTML for your target publishing system."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
     {
@@ -847,7 +770,7 @@
       "name": "Does the AfroTools Markdown Editor support GitHub Flavored Markdown?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box."
+        "text": "Yes. The editor uses marked with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists and autolinks. Rendered HTML is passed through DOMPurify before display and export."
       }
     },
     {
@@ -871,7 +794,7 @@
       "name": "Does the markdown editor work offline?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Once the page loads, all editing, preview rendering, and export features work without an internet connection. The live preview updates instantly as you type, with no server requests required. The AI advisor feature requires internet."
+        "text": "After the required browser libraries have loaded, editing, preview rendering, local auto-save and exports run in your browser without sending draft content to AfroTools."
       }
     },
     {
@@ -879,7 +802,7 @@
       "name": "How do I create a markdown table quickly?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Click the Table+ button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table."
+        "text": "Click the Table+ button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted Markdown table template will be inserted at your cursor position."
       }
     }
   ]
@@ -922,9 +845,50 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/editeur-markdown/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kihariri-markdown/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/markdown-editor/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+  .top-level-page-ui-refresh .tool-main-inner,
+  .top-level-page-ui-refresh .editor-container,
+  .top-level-page-ui-refresh .editor-panel,
+  .top-level-page-ui-refresh .preview-area,
+  .top-level-page-ui-refresh .publish-checklist {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh button,
+  .top-level-page-ui-refresh input,
+  .top-level-page-ui-refresh summary {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh #editor,
+  .top-level-page-ui-refresh #preview,
+  .top-level-page-ui-refresh #preview pre,
+  .top-level-page-ui-refresh #preview table {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, textarea, summary):focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.35);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .top-level-page-ui-refresh .editor-actions,
+    .top-level-page-ui-refresh .export-section {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .top-level-page-ui-refresh .action-btn,
+    .top-level-page-ui-refresh .toolbar-btn,
+    .top-level-page-ui-refresh .export-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -1015,31 +979,26 @@
       <button type="button" class="export-btn" id="downloadMdBtn">Download .md</button>
       <button type="button" class="export-btn" id="downloadHtmlBtn">Download .html</button>
       <button type="button" class="export-btn" id="copyHtmlBtn">Copy HTML</button>
+      <button type="button" class="export-btn" id="copyChecklistBtn">Copy Publish Note</button>
     </div>
 
-    <!-- AI Advisor Panel -->
-    <div class="ai-panel" id="aiPanel">
-      <button type="button" class="ai-panel-toggle" id="aiToggle">
-        <span>&#10022; Ask AI</span>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-left:auto"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </button>
-      <div class="ai-panel-body">
-        <label class="ai-consent" for="aiConsent">
-          <input id="aiConsent" type="checkbox">
-          <span>Send my current markdown excerpt and question to the AI advisor for this request. Keep this off for private drafts, client notes, resumes, contracts, or unreleased content.</span>
-        </label>
-        <div class="ai-suggestions">
-          <button type="button" class="ai-suggestion-btn" data-prompt="Fix the formatting in my markdown">Fix formatting</button>
-          <button type="button" class="ai-suggestion-btn" data-prompt="Convert this text to well-structured markdown">Convert to markdown</button>
-          <button type="button" class="ai-suggestion-btn" data-prompt="Generate a markdown table from this data">Generate table</button>
-          <button type="button" class="ai-suggestion-btn" data-prompt="Improve the readability and structure of my markdown">Improve readability</button>
+    <div class="publish-checklist" aria-labelledby="publishChecklistTitle">
+      <div class="publish-checklist-head">
+        <span id="publishChecklistTitle">Local Publish Checklist</span>
+      </div>
+      <div class="publish-checklist-body">
+        <div class="publish-check-item">
+          <strong>Structure</strong>
+          <span>Check heading order, table alignment, code fences, image paths and link targets before publishing.</span>
         </div>
-        <div class="ai-input-row">
-          <input aria-label="Ask about your markdown" type="text" id="aiInput" placeholder="Ask about your markdown..." maxlength="500">
-          <button type="button" id="aiSendBtn">Send</button>
+        <div class="publish-check-item">
+          <strong>HTML safety</strong>
+          <span>The preview and HTML export are sanitized in the browser, but untrusted HTML still needs review in your target CMS or docs system.</span>
         </div>
-        <div class="ai-messages" id="aiMessages"></div>
-        <div class="ai-footer">Optional AI assist &middot; consent required &middot; max 3 exchanges per session</div>
+        <div class="publish-check-item">
+          <strong>Privacy</strong>
+          <span>Drafts auto-save in this browser. Remove private notes, client details and unreleased content before copying or exporting.</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1070,37 +1029,13 @@
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="markdown-editor">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Markdown publish brief</span>
-      <h2>Draft, preview, then export clean Markdown</h2>
-      <p>Use the editor above to write and preview Markdown, then capture the export and publishing checks before sharing the document.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: edit Markdown, preview rendered HTML and copy or download the output.</li><li>Result output: a publishing brief with document type, word count, export format and review focus.</li><li>Quality checks: headings, links, tables, code blocks, images, HTML safety and whether private notes should be removed.</li><li>Privacy note: drafts stay in the browser unless you copy, download or save them using the page controls.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local editor only. Review rendered output in the target CMS or documentation system before publishing.</p>
-    </div>
-    <form class="df-form" data-df-form="markdown-editor">
-      <label>Document type<select name="type" aria-label="Document type"><option value="README">README</option><option value="blog draft">blog draft</option><option value="release notes">release notes</option><option value="proposal">proposal</option></select></label>
-      <label>Word count<input name="words" type="number" value="250" min="0" step="1" aria-label="Word count"></label>
-      <label>Export format<select name="format" aria-label="Export format"><option value="Markdown">Markdown</option><option value="HTML preview">HTML preview</option><option value="plain text">plain text</option><option value="clipboard handoff">clipboard handoff</option></select></label>
-      <label>Review focus<select name="focus" aria-label="Review focus"><option value="links">links</option><option value="headings">headings</option><option value="tables">tables</option><option value="private notes">private notes</option></select></label>
-      <button type="submit">Create Markdown brief</button>
-      <output class="df-result" data-df-result="markdown-editor" data-df-base="Markdown publish brief ready. Preview above, then verify headings, links, tables, code blocks, images, HTML safety, export format, and private notes before sharing." aria-live="polite">Markdown publish brief ready. Preview above, then verify headings, links, tables, code blocks, images, HTML safety, export format, and private notes before sharing.</output>
-      <div class="df-actions"><button type="button" data-df-copy="markdown-editor">Copy Markdown brief</button><a href="#preview">Review preview</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq quality-verification-panel" data-tool-verification-panel data-quality-proof="Markdown Editor" aria-labelledby="markdown-editor-verification-title">
+<section class="faq-section quality-verification-panel" data-tool-verification-panel data-quality-proof="Markdown Editor" aria-labelledby="markdown-editor-verification-title">
   <h2 id="markdown-editor-verification-title">Markdown editor sources and verification</h2>
-  <div class="df-faq__grid">
-    <details open><summary>Sources and methodology</summary><p>The preview is generated from the Markdown you type or paste, using local browser rendering rules for headings, lists, tables, links, code blocks, images, task lists, and HTML snippets. The publishing brief records document type, word count, export format, and review focus.</p></details>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details open><summary>Sources and methodology</summary><p>The preview is generated from the Markdown you type or paste using marked with GFM mode, then sanitized with DOMPurify before display and export.</p></details>
     <details><summary>Before publishing</summary><p>Check heading order, broken links, image paths, code fences, table alignment, embedded HTML, private comments, client details, and how the exported HTML renders in your target CMS, docs site, repository, or email tool.</p></details>
-    <details><summary>Privacy and limitations</summary><p>Drafts are stored locally in this browser unless you copy, download, or explicitly use the optional AI advisor with consent. This editor does not publish to GitHub, CMS platforms, email systems, or documentation hosts, and it is not a security sanitizer for untrusted HTML.</p></details>
+    <details><summary>Privacy and limitations</summary><p>Drafts are stored locally in this browser unless you copy, download, or clear them. This editor does not publish to GitHub, CMS platforms, email systems, or documentation hosts, and sanitizer output still needs review for your target system.</p></details>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="markdown-editor-faq-title">
-  <h2 id="markdown-editor-faq-title">Markdown Editor FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Write or paste Markdown, preview the rendered result, then copy or download the format you need.</p></details><details><summary>What should I verify?</summary><p>Check headings, links, tables, code blocks, images, HTML safety, export format and private notes before publishing.</p></details><details><summary>Does it publish my document?</summary><p>No. It is a local editor and previewer; review the output in your target CMS or documentation system.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -1140,7 +1075,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Yes. Once the page loads, all editing, preview rendering, and export features work without an internet connection. The AI advisor feature requires an internet connection, but everything else works fully offline.
+        Once the required browser libraries have loaded, editing, preview rendering, local auto-save, and exports run in your browser without sending draft content to AfroTools.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1149,7 +1084,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Click the "Table+" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.
+        Click the "Table+" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position.
       </div>
     </details>
   </div>
@@ -1260,6 +1195,7 @@
   const downloadMdBtn = document.getElementById('downloadMdBtn');
   const downloadHtmlBtn = document.getElementById('downloadHtmlBtn');
   const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+  const copyChecklistBtn = document.getElementById('copyChecklistBtn');
   const wordCountEl = document.getElementById('wordCount');
   const charCountEl = document.getElementById('charCount');
   const readTimeEl = document.getElementById('readTime');
@@ -1278,6 +1214,35 @@
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function copyText(text, successMessage) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast(successMessage);
+      }).catch(function() {
+        fallbackCopyText(text, successMessage);
+      });
+      return;
+    }
+    fallbackCopyText(text, successMessage);
+  }
+
+  function fallbackCopyText(text, successMessage) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showToast(successMessage);
+    } catch (err) {
+      showToast('Copy failed. Select and copy manually.');
+    }
+    document.body.removeChild(textarea);
   }
 
   /* ── Mermaid init ─────────────────────────────────────────────── */
@@ -1506,95 +1471,45 @@
 
   copyHtmlBtn.addEventListener('click', function() {
     const cleanHtml = DOMPurify.sanitize(marked.parse(editor.value));
-    navigator.clipboard.writeText(cleanHtml).then(function() {
-      showToast('HTML copied to clipboard');
-    });
+    copyText(cleanHtml, 'HTML copied to clipboard');
   });
+
+  copyChecklistBtn.addEventListener('click', function() {
+    copyText(buildPublishNote(), 'Publish note copied');
+  });
+
+  function buildPublishNote() {
+    const markdown = editor.value;
+    const words = markdown.trim().split(/\s+/).filter(Boolean).length;
+    const chars = markdown.length;
+    const readMin = words === 0 ? 0 : Math.max(1, Math.ceil(words / 200));
+    const checks = [
+      hasPattern(markdown, /^#\s+/m) ? '[x] Has an H1 heading' : '[ ] Add one H1 heading',
+      hasPattern(markdown, /^#{2,6}\s+/m) ? '[x] Has section headings' : '[ ] Add section headings for scanability',
+      hasPattern(markdown, /\[[^\]]+\]\((https?:\/\/|\/|#)[^)]+\)/) ? '[x] Contains links to review' : '[ ] Review whether supporting links are needed',
+      hasPattern(markdown, /^\|.+\|$/m) ? '[x] Contains Markdown tables' : '[ ] No Markdown tables detected',
+      hasPattern(markdown, /```/) ? '[x] Contains fenced code blocks' : '[ ] No fenced code blocks detected',
+      hasPattern(markdown, /!\[[^\]]*\]\([^)]+\)/) ? '[x] Contains images with alt text to check' : '[ ] No images detected',
+      hasPattern(markdown, /<[^>]+>/) ? '[ ] Review embedded HTML before publishing' : '[x] No embedded HTML detected',
+      '[x] Preview and HTML export are sanitized in the browser',
+      '[ ] Check final output in the target CMS or docs system'
+    ];
+    return [
+      'Markdown publish note',
+      'Words: ' + words,
+      'Characters: ' + chars,
+      'Estimated read time: ' + readMin + ' min',
+      '',
+      'Checklist:',
+      checks.join('\n')
+    ].join('\n');
+  }
+
+  function hasPattern(text, pattern) {
+    return pattern.test(text);
+  }
 
   /* ── AI Advisor ────────────────────────────────────────────────── */
-  const aiPanel = document.getElementById('aiPanel');
-  const aiToggle = document.getElementById('aiToggle');
-  const aiInput = document.getElementById('aiInput');
-  const aiSendBtn = document.getElementById('aiSendBtn');
-  const aiMessages = document.getElementById('aiMessages');
-  const aiConsent = document.getElementById('aiConsent');
-  let aiExchanges = 0;
-  const MAX_AI_EXCHANGES = 3;
-  let aiHistory = [];
-
-  aiToggle.addEventListener('click', function() {
-    aiPanel.classList.toggle('open');
-  });
-
-  document.querySelectorAll('.ai-suggestion-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      aiInput.value = btn.dataset.prompt;
-      sendAiMessage();
-    });
-  });
-
-  aiSendBtn.addEventListener('click', sendAiMessage);
-  aiInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') sendAiMessage();
-  });
-
-  function sendAiMessage() {
-    const question = aiInput.value.trim();
-    if (!question) return;
-    if (!aiConsent || !aiConsent.checked) {
-      showToast('Tick AI consent before sending markdown content.');
-      return;
-    }
-    if (aiExchanges >= MAX_AI_EXCHANGES) {
-      showToast('AI limit reached (3 exchanges). Refresh to reset.');
-      return;
-    }
-
-    aiExchanges++;
-    aiInput.value = '';
-    aiSendBtn.disabled = true;
-
-    // Show user message
-    addAiMsg('user', question);
-
-    // Build context from editor content
-    const editorContent = editor.value.substring(0, 1000);
-    const context = 'Current markdown content (first 1000 chars): ' + editorContent;
-
-    aiHistory.push({ role: 'user', content: question });
-
-    fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        tool: 'markdown-editor',
-        message: question,
-        context: context,
-        history: aiHistory.slice(-4),
-        maxTokens: 500
-      })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      const reply = data.reply || data.message || 'No response received.';
-      aiHistory.push({ role: 'assistant', content: reply });
-      addAiMsg('assistant', reply);
-      aiSendBtn.disabled = false;
-    })
-    .catch(function(err) {
-      addAiMsg('error', 'Failed to reach AI advisor. Check your connection.');
-      aiSendBtn.disabled = false;
-    });
-  }
-
-  function addAiMsg(type, text) {
-    const div = document.createElement('div');
-    div.className = 'ai-msg ' + type;
-    div.textContent = text;
-    aiMessages.appendChild(div);
-    aiMessages.scrollTop = aiMessages.scrollHeight;
-  }
-
   /* ── Input handler ─────────────────────────────────────────────── */
   editor.addEventListener('input', updatePreview);
 
@@ -1616,8 +1531,7 @@
 </script>
 <script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
 <script src="/tools/markdown-editor/js/markdown-workspace-sync.js?v=1b9390c0" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 </body>
 </html>

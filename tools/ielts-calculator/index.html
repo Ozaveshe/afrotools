@@ -89,6 +89,32 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ielts-calculator/" />
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="ielts-pathway-export-style">
+  .ielts-export-pack{border:1px solid var(--ielts-border);border-radius:18px;background:#fbfdff;padding:16px;margin-top:14px}
+  .ielts-export-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+  .ielts-export-head h3{margin:0 0 4px;color:var(--ielts-ink);font-size:1rem;line-height:1.25}
+  .ielts-export-head p{margin:0;color:var(--ielts-muted);font-size:.84rem;line-height:1.55}
+  .ielts-export-buttons{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .ielts-export-buttons .ielts-btn{padding:10px 14px;font-size:.82rem}
+  .ielts-export-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+  .ielts-export-cell{border:1px solid var(--ielts-border);border-radius:14px;background:#fff;padding:12px}
+  .ielts-export-cell strong{display:block;color:var(--ielts-primary);font:800 .98rem var(--ielts-font);line-height:1.25;overflow-wrap:anywhere}
+  .ielts-export-cell:first-child strong{font-family:var(--ielts-mono)}
+  .ielts-export-cell span{display:block;margin-top:4px;color:#8090a5;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  .ielts-export-list{display:grid;gap:8px}
+  .ielts-export-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;border:1px solid var(--ielts-border);border-radius:14px;background:#fff;padding:10px}
+  .ielts-export-dot{width:8px;height:8px;border-radius:99px;background:var(--ielts-primary);margin-top:7px}
+  .ielts-export-item b{display:block;color:var(--ielts-ink);font-size:.82rem;line-height:1.35}
+  .ielts-export-item small{display:block;color:var(--ielts-muted);font-size:.76rem;line-height:1.45;margin-top:2px}
+  .ielts-export-status{min-height:1.2em;margin-top:10px;color:var(--ielts-muted);font-size:.78rem}
+  .ielts-input-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .ielts-input-actions .ielts-btn{padding:10px 14px;font-size:.82rem}
+  .ielts-form-status{min-height:1.25em;margin-top:10px;color:var(--ielts-muted);font-size:.8rem;font-weight:700}
+  .ielts-form-status.is-ok{color:#166534}
+  .ielts-form-status.is-error{color:#991b1b}
+  @media(max-width:640px){.ielts-export-head{grid-template-columns:1fr}.ielts-export-buttons{display:grid;grid-template-columns:1fr;justify-content:stretch}.ielts-export-summary{grid-template-columns:1fr}}
+  @media(max-width:640px){.ielts-input-actions{display:grid;grid-template-columns:1fr}.ielts-input-actions .ielts-btn{width:100%}}
+</style>
 </head>
 <body class="ielts-page top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -245,6 +271,10 @@
         <button class="ielts-btn ielts-btn-primary" id="calculateBtn" type="button">Calculate Pathway Fit</button>
         <button class="ielts-btn ielts-btn-secondary" id="resetBtn" type="button">Reset</button>
       </div>
+      <div class="ielts-input-actions" aria-label="IELTS quick actions">
+        <button class="ielts-btn ielts-btn-secondary" type="button" onclick="loadIELTSSample()">Load sample profile</button>
+      </div>
+      <div class="ielts-form-status" id="ieltsFormStatus" role="status" aria-live="polite"></div>
     </div>
 
     <div class="ielts-card">
@@ -362,6 +392,22 @@
           <a class="ielts-cta-link" href="/tools/degree-checker/">Open degree checker</a>
           <a class="ielts-cta-link" href="/tools/education-hub/">Return to Education Hub</a>
         </div>
+        <div class="ielts-export-pack" id="ieltsExportPack" aria-live="polite">
+          <div class="ielts-export-head">
+            <div>
+              <h3>IELTS pathway action pack</h3>
+              <p>Save the score, target, component gaps, and next route checks as a reusable plan.</p>
+            </div>
+            <div class="ielts-export-buttons">
+              <button class="ielts-btn ielts-btn-secondary" type="button" onclick="copyIELTSActionPack()">Copy plan</button>
+              <button class="ielts-btn ielts-btn-primary" type="button" onclick="downloadIELTSActionPack()">Download TXT</button>
+              <button class="ielts-btn ielts-btn-secondary" type="button" onclick="saveIELTSActionPack()">Save locally</button>
+            </div>
+          </div>
+          <div class="ielts-export-summary" id="ieltsExportSummary"></div>
+          <div class="ielts-export-list" id="ieltsExportList"></div>
+          <div class="ielts-export-status" id="ieltsExportStatus" role="status"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -418,9 +464,197 @@
 <afro-related-tools category="education" current="ielts-calculator"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script>
+(function(){
+  function byId(id){return document.getElementById(id);}
+  function setIELTSFormStatus(message,type){
+    var el=byId('ieltsFormStatus');
+    if(!el)return;
+    el.textContent=message||'';
+    el.classList.remove('is-ok','is-error');
+    if(type==='ok')el.classList.add('is-ok');
+    if(type==='error')el.classList.add('is-error');
+  }
+  function dispatchIELTSField(el,type){
+    if(!el)return;
+    el.dispatchEvent(new Event(type||'change',{bubbles:true}));
+  }
+  function setIELTSField(id,value,type){
+    var el=byId(id);
+    if(!el)return;
+    el.value=value;
+    dispatchIELTSField(el,type||'change');
+  }
+  function waitForIELTSOptions(callback,attempt){
+    var ready=['listening','reading','writing','speaking'].every(function(id){
+      var el=byId(id);
+      return el&&el.options&&el.options.length;
+    });
+    if(ready){callback();return;}
+    if((attempt||0)<10){
+      setIELTSFormStatus('Loading IELTS band options, then the sample will fill automatically.','');
+      setTimeout(function(){waitForIELTSOptions(callback,(attempt||0)+1);},160);
+      return;
+    }
+    setIELTSFormStatus('IELTS band options are still loading. Try the sample again in a moment.','error');
+  }
+  window.loadIELTSSample=function(){
+    waitForIELTSOptions(function(){
+      var academic=byId('modeAcademic');
+      if(academic&&!academic.classList.contains('is-active'))academic.click();
+      setIELTSField('targetDestination','canada');
+      setIELTSField('targetPathway','postgrad-admission');
+      setIELTSField('planningTarget','7.0');
+      setIELTSField('listening','7.5');
+      setIELTSField('reading','7.0');
+      setIELTSField('writing','6.5');
+      setIELTSField('speaking','7.0');
+      setIELTSField('rawListening','35','input');
+      setIELTSField('rawReading','32','input');
+      setIELTSFormStatus('Sample IELTS profile loaded. Calculate pathway fit to build the action pack.','ok');
+      setIELTSExportStatus('');
+      renderIELTSExportPack();
+    },0);
+  };
+  function cleanText(value){
+    return String(value || '')
+      .replace(/â€”|—/g,'-')
+      .replace(/â€™/g,"'")
+      .replace(/â€œ|â€/g,'"')
+      .replace(/Â·/g,'-')
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+  function getText(selector){
+    var el=document.querySelector(selector);
+    return el?cleanText(el.textContent):'';
+  }
+  function selectedText(id){
+    var el=byId(id);
+    return el&&el.selectedOptions&&el.selectedOptions[0]?cleanText(el.selectedOptions[0].textContent):'';
+  }
+  function componentScores(){
+    return Array.from(document.querySelectorAll('#componentScores .ielts-comp')).map(function(el){
+      var value=cleanText(el.querySelector('.ielts-comp-val')&&el.querySelector('.ielts-comp-val').textContent);
+      var label=cleanText(el.querySelector('.ielts-comp-name')&&el.querySelector('.ielts-comp-name').textContent);
+      return label?label+': '+value:'';
+    }).filter(Boolean);
+  }
+  function listItems(selector){
+    return Array.from(document.querySelectorAll(selector)).map(function(el){return cleanText(el.textContent);}).filter(Boolean);
+  }
+  function buildIELTSActionText(){
+    var overall=getText('#overallScore')||'Not calculated';
+    var status=getText('#verdictStatus')||'Run calculator';
+    var title=getText('#verdictTitle')||'No target selected';
+    var mode=document.querySelector('#modeGeneral.is-active')?'IELTS General':'IELTS Academic';
+    var lines=[
+      'AfroTools IELTS Pathway Action Pack',
+      'Mode: '+mode,
+      'Destination: '+selectedText('targetDestination'),
+      'Pathway: '+selectedText('targetPathway'),
+      'Overall band: '+overall,
+      'Verdict: '+status,
+      'Target: '+title,
+      ''
+    ];
+    var comps=componentScores();
+    if(comps.length){
+      lines.push('Component scores');
+      comps.forEach(function(item){lines.push('- '+item);});
+      lines.push('');
+    }
+    lines.push('Gap analysis');
+    var gaps=listItems('#gapList .ielts-gap-item');
+    (gaps.length?gaps:['Run the calculator to show exact component gaps.']).forEach(function(item){lines.push('- '+item);});
+    lines.push('');
+    lines.push('Improvement plan');
+    listItems('#studyTipsContent .ielts-tip-item').slice(0,5).forEach(function(item){lines.push('- '+item);});
+    lines.push('');
+    lines.push('Next tools');
+    lines.push('Scholarship Finder: https://afrotools.com/tools/scholarship-finder/');
+    lines.push('Study abroad cost: https://afrotools.com/tools/study-abroad-cost/');
+    lines.push('Degree checker: https://afrotools.com/tools/degree-checker/');
+    lines.push('Education Hub: https://afrotools.com/tools/education-hub/');
+    lines.push('Official IELTS score guide: https://ielts.idp.com/results/scores');
+    lines.push('');
+    lines.push('This is a planning estimate, not an official IELTS score report, visa decision, scholarship decision, or university admission decision. Confirm the current accepted test version and component rules before applying.');
+    return lines.join('\n');
+  }
+  function setIELTSExportStatus(message){
+    var el=byId('ieltsExportStatus');
+    if(el)el.textContent=message||'';
+  }
+  function renderIELTSExportPack(){
+    var summary=byId('ieltsExportSummary');
+    var list=byId('ieltsExportList');
+    if(!summary||!list)return;
+    var overall=getText('#overallScore')||'--';
+    var status=getText('#verdictStatus')||'Run calculator';
+    var destination=selectedText('targetDestination')||'Destination';
+    summary.innerHTML=[
+      ['Overall',overall],
+      ['Verdict',status],
+      ['Destination',destination]
+    ].map(function(item){return '<div class="ielts-export-cell"><strong>'+item[1]+'</strong><span>'+item[0]+'</span></div>';}).join('');
+    var items=[
+      ['Target route',getText('#verdictTitle')||'Choose a target, then calculate.'],
+      ['Score gap',listItems('#gapList .ielts-gap-item')[0]||'Run the calculator to show exact gaps.'],
+      ['Next step',listItems('#studyTipsContent .ielts-tip-item')[0]||'Calculate first, then copy or download the pathway plan.']
+    ];
+    list.innerHTML=items.map(function(item){return '<div class="ielts-export-item"><i class="ielts-export-dot"></i><div><b>'+item[0]+'</b><small>'+item[1]+'</small></div></div>';}).join('');
+  }
+  window.copyIELTSActionPack=function(){
+    var text=buildIELTSActionText();
+    function done(){setIELTSExportStatus('IELTS pathway plan copied.');renderIELTSExportPack();}
+    function fallback(){
+      var ta=document.createElement('textarea');
+      ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');done();}catch(e){setIELTSExportStatus('Copy failed. Download the TXT plan instead.');}
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(fallback);
+    else fallback();
+  };
+  window.downloadIELTSActionPack=function(){
+    var text=buildIELTSActionText();
+    var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='ielts-pathway-action-pack.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    try{localStorage.setItem('afrotools_ielts_action_pack',JSON.stringify({overall:getText('#overallScore'),verdict:getText('#verdictStatus'),updatedAt:Date.now()}));}catch(e){}
+    setIELTSExportStatus('IELTS pathway plan downloaded.');
+    renderIELTSExportPack();
+  };
+  window.saveIELTSActionPack=function(){
+    var text=buildIELTSActionText();
+    try{
+      localStorage.setItem('afrotools_ielts_action_pack',JSON.stringify({savedAt:new Date().toISOString(),overall:getText('#overallScore'),verdict:getText('#verdictStatus'),destination:selectedText('targetDestination'),text:text}));
+      setIELTSExportStatus('IELTS pathway plan saved on this device.');
+      renderIELTSExportPack();
+    }catch(e){
+      setIELTSExportStatus('Could not save this plan locally in this browser.');
+    }
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    renderIELTSExportPack();
+    var calc=byId('calculateBtn');
+    if(calc)calc.addEventListener('click',function(){setIELTSFormStatus('IELTS pathway fit calculated. Review the verdict and action pack below.','ok');setTimeout(renderIELTSExportPack,0);});
+    var reset=byId('resetBtn');
+    if(reset)reset.addEventListener('click',function(){setIELTSFormStatus('IELTS inputs reset. Enter scores or load the sample profile.','');setIELTSExportStatus('');setTimeout(renderIELTSExportPack,0);});
+    ['targetDestination','targetPathway','planningTarget','listening','reading','writing','speaking'].forEach(function(id){
+      var el=byId(id);
+      if(el)el.addEventListener('change',function(){setTimeout(renderIELTSExportPack,0);});
+    });
+  });
+})();
+</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

@@ -5,18 +5,18 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hash Generator — MD5, SHA-256, SHA-512, HMAC | AfroTools</title>
-<meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC hashes instantly. File hashing with drag-and-drop, checksum verification, and multiple output encodings.">
+<meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC and PBKDF2 values in the browser. Hash files, verify checksums, compare digests and copy results safely.">
 <link rel="canonical" href="https://afrotools.com/tools/hash-generator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Hash Generator — MD5, SHA-256, SHA-512, HMAC | AfroTools">
-<meta property="og:description" content="Generate and compare MD5, SHA-256, SHA-512, HMAC hashes. File hashing, checksum verification, and encoding options.">
+<meta property="og:description" content="Browser-based hash generator with file hashing, checksum verification, HMAC, PBKDF2 and encoding options.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/hash-generator/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hash Generator — MD5, SHA-256, SHA-512, HMAC | AfroTools">
-<meta name="twitter:description" content="Free hash generator with MD5, SHA-256, SHA-512, HMAC, file hashing, and checksum verification.">
+<meta name="twitter:description" content="Free browser hash generator with file hashing, HMAC, PBKDF2 and checksum verification.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -43,7 +43,7 @@
   }
 
   .tool-hero::after {
-    content: '#\FE0F\20E3';
+    content: '#';
     position: absolute;
     right: 5%;
     top: 50%;
@@ -540,137 +540,43 @@
     margin-top: 6px;
   }
 
-  /* AI Panel */
-  .ai-toggle-btn {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
-    color: #fff;
-    border: 1.5px solid rgba(0, 113, 227, 0.3);
-    border-radius: 8px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.18s;
-    font-family: 'DM Sans', sans-serif;
-    margin-top: 18px;
-  }
-
-  .ai-toggle-btn:hover {
-    border-color: var(--afro-green);
-    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.2);
-  }
-
-  .ai-panel {
-    display: none;
-    margin-top: 14px;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
+  /* Local guidance */
+  .security-notes {
     background: #fff;
+    border: 1px solid #dbe7f3;
+    border-radius: 12px;
+    margin-top: 18px;
+    overflow: hidden;
   }
 
-  .ai-panel.visible {
+  .security-notes .card-head {
+    border-bottom-color: #dbe7f3;
+  }
+
+  .security-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .security-item {
+    background: #f8fbff;
+    border: 1px solid #e5edf6;
+    border-radius: 10px;
+    padding: 12px;
+  }
+
+  .security-item strong {
     display: block;
-  }
-
-  .ai-suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 12px;
-  }
-
-  .ai-suggest-btn {
-    padding: 6px 12px;
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 16px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #0d2813;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .ai-suggest-btn:hover {
-    background: rgba(0, 113, 227, 0.1);
-    border-color: var(--afro-green);
-  }
-
-  .ai-messages {
-    max-height: 260px;
-    overflow-y: auto;
-    margin-bottom: 12px;
-  }
-
-  .ai-msg {
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    line-height: 1.6;
-    margin-bottom: 8px;
-  }
-
-  .ai-msg.user {
-    background: #EFF6FF;
-    color: #0d2813;
-    text-align: right;
-  }
-
-  .ai-msg.assistant {
-    background: #F5F9FF;
-    color: #244d2c;
-    border: 1px solid #DBEAFE;
-  }
-
-  .ai-input-row {
-    display: flex;
-    gap: 8px;
-  }
-
-  .ai-input {
-    flex: 1;
-    padding: 10px 12px;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
+    color: #0f172a;
     font-size: 0.82rem;
-    outline: none;
-    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 4px;
   }
 
-  .ai-input:focus {
-    border-color: var(--afro-green);
-  }
-
-  .ai-send-btn {
-    padding: 10px 18px;
-    background: var(--afro-green);
-    color: #fff;
-    border: none;
-    border-radius: 7px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: background 0.15s;
-  }
-
-  .ai-send-btn:hover {
-    background: #0059B3;
-  }
-
-  .ai-send-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .ai-powered {
-    font-size: 0.65rem;
-    color: #6B8CAE;
-    text-align: right;
-    margin-top: 8px;
+  .security-item span {
+    color: #475569;
+    display: block;
+    font-size: 0.76rem;
+    line-height: 1.55;
   }
 
   /* Sidebar */
@@ -788,12 +694,20 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Hash Generator",
-  "description": "Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA-3, HMAC hashes. File hashing, checksum verification, and encoding options.",
+  "description": "Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA-3, HMAC and PBKDF2 values in the browser. Hash files, verify checksums, compare digests and copy results safely.",
   "url": "https://afrotools.com/tools/hash-generator/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
+  "browserRequirements": "Requires JavaScript and a modern browser",
+  "featureList": [
+    "Text hashing with MD5, SHA-1, SHA-2 and SHA-3 options",
+    "File hashing with drag-and-drop input",
+    "Checksum verification and hash comparison",
+    "HMAC-SHA256 and PBKDF2 key derivation helpers",
+    "Hex, Base64 and binary output encodings",
+    "Local browser processing without server upload"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -813,7 +727,7 @@
   "@type": "WebPage",
   "name": "Hash Generator",
   "url": "https://afrotools.com/tools/hash-generator/",
-  "description": "Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA-3, HMAC hashes. File hashing, checksum verification, and encoding options.",
+  "description": "Use a browser-based hash generator for text, files, checksum verification, HMAC, PBKDF2 and digest comparison.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -821,6 +735,31 @@
     "url": "https://afrotools.com/"
   },
   "image": "https://afrotools.com/assets/img/tools/hash-generator.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to verify a checksum with the AfroTools Hash Generator",
+  "description": "Hash text or a selected file locally, then compare the digest with a trusted expected checksum.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Choose input",
+      "text": "Paste text, drop a file, or open the checksum verification tab."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Generate or compare",
+      "text": "Review the generated MD5, SHA-1, SHA-2, SHA-3, HMAC or PBKDF2 output, or compare it against an expected value."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Trust the source",
+      "text": "Use expected checksums from official release pages, package registries, or your own build artifacts."
+    }
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -849,7 +788,7 @@
       "name": "What is HMAC and when should I use it?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "HMAC (Hash-based Message Authentication Code) combines a hash function with a secret key to provide both data integrity and authentication. Use HMAC when you need to verify that a message was sent by a specific party and was not tampered with, such as in API authentication, webhook verification, and secure token generation."
+        "text": "HMAC (Hash-based Message Authentication Code) combines a hash function with a secret key to provide both data integrity and authentication. Use HMAC for workflows such as API authentication and webhook verification, and avoid pasting production secrets into shared or untrusted devices."
       }
     },
     {
@@ -865,7 +804,7 @@
       "name": "What is the difference between SHA-2 and SHA-3?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SHA-2 (including SHA-256 and SHA-512) and SHA-3 are both secure hash standards published by NIST. SHA-2 uses a Merkle-Damgard construction while SHA-3 uses a sponge construction (Keccak). SHA-3 was designed as a backup in case SHA-2 is compromised, but both are currently considered secure. SHA-2 is more widely adopted."
+        "text": "SHA-2 (including SHA-256 and SHA-512) and SHA-3 are both secure hash standards published by NIST. SHA-2 is more widely adopted. This tool uses a dedicated in-browser SHA-3 library for SHA3-256 and SHA3-512 because the browser Web Crypto digest API commonly exposes SHA-1 and SHA-2 algorithms, not SHA-3."
       }
     }
   ]
@@ -909,6 +848,71 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/hash-generator/" />
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+  .top-level-page-ui-refresh .tool-main-inner,
+  .top-level-page-ui-refresh .card,
+  .top-level-page-ui-refresh .sidebar,
+  .top-level-page-ui-refresh .hash-item {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh .tab-btn,
+  .top-level-page-ui-refresh .enc-btn,
+  .top-level-page-ui-refresh .calc-btn,
+  .top-level-page-ui-refresh .copy-btn,
+  .top-level-page-ui-refresh .copy-all-btn,
+  .top-level-page-ui-refresh .drop-zone,
+  .top-level-page-ui-refresh summary {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh .f-input,
+  .top-level-page-ui-refresh .f-select {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh .hmac-toggle input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  .top-level-page-ui-refresh .hash-value {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh .drop-zone-icon {
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    letter-spacing: 0;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, select, textarea, summary, .drop-zone):focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.35);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 520px) {
+    .top-level-page-ui-refresh .tool-main-inner {
+      padding-inline: 16px;
+    }
+
+    .top-level-page-ui-refresh .tabs,
+    .top-level-page-ui-refresh .encoding-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .top-level-page-ui-refresh .tab-btn,
+    .top-level-page-ui-refresh .enc-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .top-level-page-ui-refresh #pbkdf2Row > div {
+      flex-wrap: wrap;
+    }
+  }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -919,7 +923,7 @@
       <a href="/">AfroTools</a> / <span>Hash Generator</span>
     </div>
     <h1>Hash <em>Generator</em></h1>
-    <p class="hero-sub">Generate MD5, SHA-256, SHA-512, SHA-3, HMAC hashes instantly. File hashing with drag-and-drop, checksum verification, and multiple output encodings.</p>
+    <p class="hero-sub">Generate MD5, SHA-256, SHA-512, SHA-3, HMAC and PBKDF2 values in your browser. Hash files, verify checksums, compare digests and copy results safely.</p>
     <div class="hero-badges">
       <span class="badge b-green">10 Algorithms</span>
       <span class="badge b-green">File Hashing</span>
@@ -962,7 +966,7 @@
               </label>
               <div class="hmac-row" id="hmacRow">
                 <input aria-label="Enter HMAC secret key" type="password" class="f-input" id="hmacKey" placeholder="Enter HMAC secret key" style="margin-top:8px">
-                <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">Used for HMAC-SHA256 calculation</div>
+                <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">Used locally for HMAC-SHA256. Avoid production secrets on shared devices.</div>
               </div>
               <label class="hmac-toggle" style="margin-top:10px">
                 <input aria-label="Pbkdf2Toggle" type="checkbox" id="pbkdf2Toggle"> Enable PBKDF2 key derivation
@@ -996,7 +1000,7 @@
           </div>
           <div class="card-body">
             <div class="drop-zone" id="dropZone">
-              <div class="drop-zone-icon">📁</div>
+              <div class="drop-zone-icon" aria-hidden="true">#</div>
               <div class="drop-zone-text">Drop a file here or click to upload</div>
               <div class="drop-zone-sub">Any file type supported</div>
             </div>
@@ -1019,12 +1023,12 @@
           </div>
           <div class="card-body">
             <div class="field">
-              <label class="f-label"><span class="f-label-text">Known Hash / Checksum</span></label>
+              <label class="f-label" for="verifyHash"><span class="f-label-text">Known Hash / Checksum</span></label>
               <input aria-label="Paste the expected hash here" type="text" class="f-input" id="verifyHash" placeholder="Paste the expected hash here...">
               <div class="algo-detected" id="algoDetected"></div>
             </div>
             <div class="field">
-              <label class="f-label"><span class="f-label-text">Text to Verify</span></label>
+              <label class="f-label" for="verifyText"><span class="f-label-text">Text to Verify</span></label>
               <textarea class="f-textarea" id="verifyText" placeholder="Enter the text to check against the hash..." style="min-height:80px" aria-label="Enter the text to check against the hash..."></textarea>
             </div>
             <button type="button" class="calc-btn" id="verifyBtn">Verify Checksum</button>
@@ -1042,11 +1046,11 @@
           <div class="card-body">
             <div class="compare-grid">
               <div class="field">
-                <label class="f-label"><span class="f-label-text">First Hash</span></label>
+                <label class="f-label" for="hash1"><span class="f-label-text">First Hash</span></label>
                 <textarea class="f-textarea" id="hash1" placeholder="Paste first hash..." style="min-height:80px" aria-label="Paste first hash..."></textarea>
               </div>
               <div class="field">
-                <label class="f-label"><span class="f-label-text">Second Hash</span></label>
+                <label class="f-label" for="hash2"><span class="f-label-text">Second Hash</span></label>
                 <textarea class="f-textarea" id="hash2" placeholder="Paste second hash..." style="min-height:80px" aria-label="Paste second hash..."></textarea>
               </div>
             </div>
@@ -1055,21 +1059,25 @@
         </div>
       </div>
 
-      <!-- AI Panel -->
-      <button type="button" class="ai-toggle-btn" id="aiToggleBtn">✦ Ask AI about Hashing</button>
-      <div class="ai-panel" id="aiPanel">
+      <div class="security-notes" aria-labelledby="hash-guidance-title">
+        <div class="card-head">
+          <span class="card-title" id="hash-guidance-title">Algorithm Guidance</span>
+        </div>
         <div class="card-body">
-          <div class="ai-suggestions" id="aiSuggestions">
-            <button type="button" class="ai-suggest-btn" data-q="Which hash algorithm should I use for password storage?">Best for passwords?</button>
-            <button type="button" class="ai-suggest-btn" data-q="Is MD5 still safe for file checksums?">Is MD5 safe?</button>
-            <button type="button" class="ai-suggest-btn" data-q="What is the difference between SHA-256 and SHA-3?">SHA-256 vs SHA-3?</button>
+          <div class="security-list">
+            <div class="security-item">
+              <strong>Integrity checks</strong>
+              <span>Use SHA-256 or SHA-512 for modern file and text verification. Treat MD5 and SHA-1 as legacy, non-security checks.</span>
+            </div>
+            <div class="security-item">
+              <strong>Secrets stay local</strong>
+              <span>HMAC and PBKDF2 inputs are processed in the browser. Use test secrets unless your security policy allows this device.</span>
+            </div>
+            <div class="security-item">
+              <strong>Trust the expected value</strong>
+              <span>A matching checksum proves byte equality with the expected digest, not that the source is trustworthy.</span>
+            </div>
           </div>
-          <div class="ai-messages" id="aiMessages"></div>
-          <div class="ai-input-row">
-            <input aria-label="Ask about hashing" type="text" class="ai-input" id="aiInput" placeholder="Ask about hashing..." maxlength="300">
-            <button type="button" class="ai-send-btn" id="aiSendBtn">Send</button>
-          </div>
-          <div class="ai-powered">Powered by Claude</div>
         </div>
       </div>
     </div>
@@ -1116,7 +1124,7 @@
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>This hash generator creates cryptographic hashes from text or file input using algorithms including MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Hashing is essential for verifying file integrity, storing passwords securely, generating checksums, and validating data transfers. Paste your text or drop a file, select your algorithm, and get the hash instantly. The tool processes everything locally in your browser using the Web Crypto API, so your data is never transmitted to any server. Developers, security professionals, system administrators, and anyone who needs to verify downloads or generate content fingerprints will find this tool fast and reliable.</p>
+    <p>This hash generator creates cryptographic hashes from text or file input using algorithms including MD5, SHA-1, SHA-256, SHA-384, SHA-512, SHA-3, HMAC-SHA256 and PBKDF2. Hashing is useful for verifying file integrity, generating checksums, comparing content fingerprints and validating data transfers. Paste your text or drop a file, select your algorithm, and get the hash instantly. The tool processes input locally in your browser after the page loads, so your text and selected files are not uploaded to AfroTools.</p>
   </div>
 </section>
 <!-- FAQ Section -->
@@ -1147,7 +1155,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        HMAC (Hash-based Message Authentication Code) combines a hash function with a secret key to provide both data integrity and authentication. Use HMAC when you need to verify that a message was sent by a specific party and was not tampered with, such as in API authentication, webhook verification, and secure token generation.
+        HMAC (Hash-based Message Authentication Code) combines a hash function with a secret key to provide both data integrity and authentication. Use HMAC for workflows such as API authentication and webhook verification, and avoid pasting production secrets into shared or untrusted devices.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1165,7 +1173,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        SHA-2 (including SHA-256 and SHA-512) and SHA-3 are both secure hash standards published by NIST. SHA-2 uses a Merkle-Damgard construction while SHA-3 uses a sponge construction (Keccak). SHA-3 was designed as a backup in case SHA-2 is compromised, but both are currently considered secure. SHA-2 is more widely adopted.
+        SHA-2 (including SHA-256 and SHA-512) and SHA-3 are both secure hash standards published by NIST. SHA-2 is more widely adopted. This tool uses a dedicated in-browser SHA-3 library for SHA3-256 and SHA3-512 because the browser Web Crypto digest API commonly exposes SHA-1 and SHA-2 algorithms, not SHA-3.
       </div>
     </details>
   </div>
@@ -1183,7 +1191,7 @@
           <p class="tool-verification-lead">Generate text or file hashes locally, compare expected values, verify checksums, and copy results for release or support workflows.</p>
         </div>
         <div class="tool-verification-status">
-          <span class="tool-verification-badge">Local Web Crypto</span>
+          <span class="tool-verification-badge">Browser-only hashing</span>
           <p class="tool-verification-note">Text and selected files stay in the browser during hashing.</p>
         </div>
       </div>
@@ -1216,16 +1224,14 @@
 <afro-related-tools category="developer" current="hash-generator"></afro-related-tools>
 <afro-footer></afro-footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jssha@3.3.2/dist/sha3.min.js" defer></script>
 <script>
 (function() {
   'use strict';
 
   // State
   let currentEncoding = 'hex';
-  let aiExchanges = 0;
-  const MAX_AI_EXCHANGES = 3;
-  let aiHistory = [];
 
   // Utility: CRC32
   function crc32(str) {
@@ -1248,6 +1254,56 @@
     setTimeout(function() { t.remove(); }, 2000);
   }
 
+  function safeCopy(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(function() { return true; }).catch(function() {
+        return fallbackCopy(text);
+      });
+    }
+    return Promise.resolve(fallbackCopy(text));
+  }
+
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    var copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch (e) {
+      copied = false;
+    }
+    textarea.remove();
+    return copied;
+  }
+
+  function arrayBufferToWordArray(buffer) {
+    var bytes = new Uint8Array(buffer);
+    var words = [];
+    for (var i = 0; i < bytes.length; i++) {
+      words[i >>> 2] |= bytes[i] << (24 - (i % 4) * 8);
+    }
+    return CryptoJS.lib.WordArray.create(words, bytes.length);
+  }
+
+  function sha3Text(input, variant) {
+    if (typeof jsSHA === 'undefined') return null;
+    var shaObj = new jsSHA(variant, 'TEXT', { encoding: 'UTF8' });
+    shaObj.update(input);
+    return shaObj.getHash('HEX');
+  }
+
+  function sha3ArrayBuffer(buffer, variant) {
+    if (typeof jsSHA === 'undefined') return null;
+    var shaObj = new jsSHA(variant, 'ARRAYBUFFER');
+    shaObj.update(buffer);
+    return shaObj.getHash('HEX');
+  }
+
   // Encoding converters
   function hexToBase64(hex) {
     var bytes = hex.match(/.{2}/g).map(function(b) { return parseInt(b, 16); });
@@ -1268,8 +1324,8 @@
 
   // Generate all hashes from text
   function generateHashes(input) {
-    if (typeof CryptoJS === 'undefined') {
-      showToast('Hashing library still loading, please try again');
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') {
+      showToast('Hashing libraries still loading, please try again');
       return null;
     }
     var hmacKey = document.getElementById('hmacKey').value;
@@ -1280,8 +1336,8 @@
         'SHA-256': CryptoJS.SHA256(input).toString(),
         'SHA-384': CryptoJS.SHA384(input).toString(),
         'SHA-512': CryptoJS.SHA512(input).toString(),
-        'SHA3-256': CryptoJS.SHA3(input, { outputLength: 256 }).toString(),
-        'SHA3-512': CryptoJS.SHA3(input, { outputLength: 512 }).toString(),
+        'SHA3-256': sha3Text(input, 'SHA3-256'),
+        'SHA3-512': sha3Text(input, 'SHA3-512'),
         'HMAC-SHA256': hmacKey ? CryptoJS.HmacSHA256(input, hmacKey).toString() : null,
         'CRC32': crc32(input),
         'PBKDF2': (function() {
@@ -1290,7 +1346,11 @@
           var iters = parseInt(document.getElementById('pbkdf2Iters').value) || 100000;
           var keySize = (parseInt(document.getElementById('pbkdf2KeySize').value) || 256) / 32;
           if (!document.getElementById('pbkdf2Salt').value) document.getElementById('pbkdf2Salt').value = salt;
-          return CryptoJS.PBKDF2(input, salt, { keySize: keySize, iterations: iters }).toString();
+          return CryptoJS.PBKDF2(input, salt, {
+            keySize: keySize,
+            iterations: iters,
+            hasher: CryptoJS.algo.SHA256
+          }).toString();
         })()
       };
     } catch (e) {
@@ -1300,8 +1360,8 @@
   }
 
   // Generate file hashes
-  function generateFileHashes(wordArray) {
-    if (typeof CryptoJS === 'undefined') return null;
+  function generateFileHashes(wordArray, buffer) {
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') return null;
     try {
       return {
         'MD5': CryptoJS.MD5(wordArray).toString(),
@@ -1309,8 +1369,8 @@
         'SHA-256': CryptoJS.SHA256(wordArray).toString(),
         'SHA-384': CryptoJS.SHA384(wordArray).toString(),
         'SHA-512': CryptoJS.SHA512(wordArray).toString(),
-        'SHA3-256': CryptoJS.SHA3(wordArray, { outputLength: 256 }).toString(),
-        'SHA3-512': CryptoJS.SHA3(wordArray, { outputLength: 512 }).toString()
+        'SHA3-256': sha3ArrayBuffer(buffer, 'SHA3-256'),
+        'SHA3-512': sha3ArrayBuffer(buffer, 'SHA3-512')
       };
     } catch (e) {
       showToast('Error hashing file');
@@ -1348,10 +1408,11 @@
     // Copy individual
     container.querySelectorAll('.copy-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(btn.dataset.val);
-        btn.textContent = 'Copied!';
-        showToast('Hash copied!');
-        setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+        safeCopy(btn.dataset.val).then(function(copied) {
+          btn.textContent = copied ? 'Copied!' : 'Copy failed';
+          showToast(copied ? 'Hash copied!' : 'Copy failed');
+          setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+        });
       });
     });
 
@@ -1359,10 +1420,11 @@
     var copyAllBtn = document.getElementById('copyAll_' + containerId);
     if (copyAllBtn) {
       copyAllBtn.addEventListener('click', function() {
-        navigator.clipboard.writeText(allText);
-        copyAllBtn.textContent = 'Copied All!';
-        showToast('All hashes copied!');
-        setTimeout(function() { copyAllBtn.textContent = 'Copy All Hashes'; }, 1500);
+        safeCopy(allText).then(function(copied) {
+          copyAllBtn.textContent = copied ? 'Copied All!' : 'Copy failed';
+          showToast(copied ? 'All hashes copied!' : 'Copy failed');
+          setTimeout(function() { copyAllBtn.textContent = 'Copy All Hashes'; }, 1500);
+        });
       });
     }
   }
@@ -1503,8 +1565,8 @@
     };
     reader.onload = function() {
       progressFill.style.width = '100%';
-      var wordArray = CryptoJS.lib.WordArray.create(new Uint8Array(reader.result));
-      var h = generateFileHashes(wordArray);
+      var wordArray = arrayBufferToWordArray(reader.result);
+      var h = generateFileHashes(wordArray, reader.result);
       if (h) renderResults(h, 'fileResults');
       document.getElementById('fileLoading').classList.remove('visible');
       setTimeout(function() { progressBar.classList.remove('visible'); }, 800);
@@ -1545,8 +1607,8 @@
       return;
     }
 
-    if (typeof CryptoJS === 'undefined') {
-      showToast('Hashing library still loading');
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') {
+      showToast('Hashing libraries still loading');
       return;
     }
 
@@ -1587,72 +1649,6 @@
   document.getElementById('hash1').addEventListener('input', compareHashes);
   document.getElementById('hash2').addEventListener('input', compareHashes);
 
-  // AI Panel
-  document.getElementById('aiToggleBtn').addEventListener('click', function() {
-    document.getElementById('aiPanel').classList.toggle('visible');
-  });
-
-  document.querySelectorAll('.ai-suggest-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.getElementById('aiInput').value = btn.dataset.q;
-      sendAiMessage();
-    });
-  });
-
-  document.getElementById('aiSendBtn').addEventListener('click', sendAiMessage);
-  document.getElementById('aiInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') sendAiMessage();
-  });
-
-  function sendAiMessage() {
-    var input = document.getElementById('aiInput');
-    var msg = input.value.trim();
-    if (!msg) return;
-    if (aiExchanges >= MAX_AI_EXCHANGES) {
-      showToast('Maximum ' + MAX_AI_EXCHANGES + ' questions per session');
-      return;
-    }
-
-    var messages = document.getElementById('aiMessages');
-    messages.innerHTML += '<div class="ai-msg user">' + escapeHtml(msg) + '</div>';
-    input.value = '';
-    document.getElementById('aiSendBtn').disabled = true;
-
-    // Hide suggestions after first use
-    document.getElementById('aiSuggestions').style.display = 'none';
-
-    aiHistory.push({ role: 'user', content: msg });
-
-    fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        tool: 'hash-generator',
-        message: msg,
-        history: aiHistory,
-        maxTokens: 500
-      })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      var reply = data.reply || data.message || 'Sorry, I could not get a response.';
-      aiHistory.push({ role: 'assistant', content: reply });
-      messages.innerHTML += '<div class="ai-msg assistant">' + escapeHtml(reply) + '</div>';
-      messages.scrollTop = messages.scrollHeight;
-      aiExchanges++;
-      document.getElementById('aiSendBtn').disabled = false;
-    })
-    .catch(function() {
-      messages.innerHTML += '<div class="ai-msg assistant">Sorry, something went wrong. Please try again.</div>';
-      document.getElementById('aiSendBtn').disabled = false;
-    });
-  }
-
-  function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
 })();
 </script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>

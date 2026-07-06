@@ -24,7 +24,7 @@
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{--teal:#0f766e;--teal-light:#99f6e4;--teal-bg:#f0fdfa;--dark:#0f172a;--slate:#475569;--border:#e2e8f0;--bg-card:#fff;--bg-subtle:#f8fafc;--red:#dc2626;--amber:#ca8a04;--green:#16a34a;--font:'DM Sans',system-ui,sans-serif}
@@ -47,7 +47,8 @@ h1 em{color:var(--teal-light);font-style:normal}
 /* ── Layout ── */
 .tool-main{padding:32px 0 72px}
 .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.dashboard-grid{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,340px);gap:24px;align-items:start}
+.main-col,.sidebar{min-width:0}
 
 /* ── Cards ── */
 .card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04)}
@@ -169,6 +170,8 @@ h1 em{color:var(--teal-light);font-style:normal}
 
 /* ── SEO ── */
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.tool-main + .seo-section{display:none}
+.main-col .seo-section{max-width:none;margin:0;padding:28px 0 0}
 .seo-section h2{font-size:1.3rem;font-weight:800;margin:0 0 14px;color:var(--dark)}
 .seo-section p{font-size:.88rem;color:var(--slate);line-height:1.75;margin:0 0 16px}
 .faq-item{border-bottom:1px solid var(--border);padding:0}
@@ -325,7 +328,6 @@ h1 em{color:var(--teal-light);font-style:normal}
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/interest-rate-ref/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/reference-taux-interet/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/interest-rate-ref/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -435,6 +437,21 @@ h1 em{color:var(--teal-light);font-style:normal}
 <p id="tableCount" style="font-size:.72rem;color:#94a3b8;margin-top:10px;text-align:center"></p>
 </div>
 </div>
+
+<section class="seo-section">
+<h2>Understanding Central Bank Interest Rates in Africa</h2>
+<p>Central bank interest rates (also called policy rates, repo rates, or monetary policy rates) are the primary tool African central banks use to control inflation and stabilize their currencies. When a central bank raises its rate, borrowing becomes more expensive, which slows inflation but may also slow economic growth. Conversely, cutting rates stimulates borrowing and investment but can fuel inflation.</p>
+<p>Africa's monetary landscape is uniquely diverse. Some countries share central banks through regional monetary unions: the BCEAO serves 8 West African nations using the CFA franc, while the BEAC serves 6 Central African countries. The Common Monetary Area (CMA) links South Africa, Namibia, Lesotho, and Eswatini through currency pegs to the rand. Meanwhile, countries like Nigeria, Kenya, and Ghana operate fully independent monetary policies shaped by local inflation, fiscal policy, and exchange rate pressures.</p>
+<p>African central bank rates vary widely across the continent, reflecting different inflation pressures, exchange-rate regimes, and growth conditions. Use the dashboard below to compare the latest available snapshot rather than relying on a fixed yearly ranking.</p>
+
+<h2 style="margin-top:32px">Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What is the CBN Monetary Policy Rate (MPR)?</summary><p>The CBN MPR is Nigeria's benchmark interest rate set by the Central Bank of Nigeria's Monetary Policy Committee (MPC). It serves as the baseline for all lending rates in the Nigerian economy. When the CBN raises the MPR, commercial banks increase their lending and deposit rates accordingly.</p></details>
+<details class="faq-item"><summary>Which African country has the highest interest rate?</summary><p>That changes as central banks meet and revise policy. Sort the dashboard by rate to see the highest-rate countries in the current AfroTools snapshot instead of relying on a fixed ranking.</p></details>
+<details class="faq-item"><summary>What are the BCEAO and BEAC rates?</summary><p>BCEAO (Banque Centrale des Etats de l'Afrique de l'Ouest) sets monetary policy for 8 West African countries sharing the CFA franc (XOF): Senegal, Cote d'Ivoire, Mali, Burkina Faso, Niger, Togo, Benin, and Guinea-Bissau. BEAC (Banque des Etats de l'Afrique Centrale) sets rates for 6 Central African countries using the CFA franc (XAF): Cameroon, Gabon, Chad, Congo Republic, Central African Republic, and Equatorial Guinea.</p></details>
+<details class="faq-item"><summary>How do central bank rates affect me?</summary><p>Higher policy rates mean more expensive loans and mortgages, higher returns on savings and fixed deposits, a potentially stronger local currency, and slower economic growth. Lower rates produce the opposite effects: cheaper borrowing, lower savings returns, and potential currency weakening.</p></details>
+<details class="faq-item"><summary>How often do African central banks change interest rates?</summary><p>Most African central banks meet bi-monthly or quarterly to review rates. Major banks like the CBN (Nigeria), SARB (South Africa), and CBK (Kenya) typically hold 6-8 meetings per year. Rate changes depend on inflation trends, currency stability, and economic conditions.</p></details>
+<details class="faq-item"><summary>What is the Common Monetary Area (CMA)?</summary><p>The CMA includes South Africa, Namibia, Lesotho, and Eswatini. These countries' currencies are pegged to the South African rand, so their central banks typically follow the SARB's rate decisions closely to maintain the currency peg.</p></details>
+</section>
 </div>
 
 <!-- Sidebar -->
@@ -500,30 +517,6 @@ h1 em{color:var(--teal-light);font-style:normal}
 
 <!-- ── Chat, Related Tools, Footer ── -->
 
-<section class="df-upgrade" data-df-upgrade="interest-rate-ref">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>African Central Bank Rates decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for african central bank rates so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: African Central Bank Rates: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, businessCta, verificationPanel.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="interest-rate-ref">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="interest-rate-ref" data-df-base="African Central Bank Rates: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">African Central Bank Rates: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="interest-rate-ref">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="interest-rate-ref-faq-title">
-  <h2 id="interest-rate-ref-faq-title">African Central Bank Rates FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <afro-related-tools category="financial" current="interest-rate-ref"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -1424,6 +1417,5 @@ async function sendAI(){
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

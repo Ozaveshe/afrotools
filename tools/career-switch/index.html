@@ -31,6 +31,14 @@
 .en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)!important}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
+.result-note{border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;color:#475569;font-size:.9rem;line-height:1.65;padding:1rem;margin-top:.75rem}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#1d4ed8;font-weight:800;font-size:.86rem;padding:.65rem .9rem;cursor:pointer}
+.secondary-btn:hover{border-color:#6366f1;background:#eef2ff}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.method-card p{margin:.45rem 0 0;color:#475569;line-height:1.65;font-size:.9rem}
+.method-list{margin:.75rem 0 0;padding-left:1.15rem;color:#475569;line-height:1.65;font-size:.88rem}
+@media(max-width:600px){.result-actions .secondary-btn{width:100%}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Career Tools","item":"https://afrotools.com/career/"},{"@type":"ListItem","position":3,"name":"Career Switch Calculator","item":"https://afrotools.com/tools/career-switch/"}]}</script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/career-switch.webp">
@@ -38,7 +46,6 @@ a{text-decoration:none;color:inherit}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/changement-carriere/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadili-kazi/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/career-switch/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/career-tool-focus.css?v=98967bec">
 <script type="application/ld+json">
 {
@@ -191,17 +198,40 @@ a{text-decoration:none;color:inherit}
       <div class="en-card-title"><div class="en-card-title-icon">💡</div>Alternative Faster Paths</div>
       <div id="alternativePaths" style="font-size:.88rem;color:#475569;line-height:1.8"></div>
     </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">RP</div>Career switch report</div>
+      <p class="result-note" id="switchNote">Use this report to discuss the switch with a coach, partner, training provider, or recruiter. Verify course fees, placement rates, licensing rules, and live salary bands before paying or resigning.</p>
+      <div class="result-actions" aria-label="Career switch report actions">
+        <button type="button" class="secondary-btn" onclick="copySwitchReport()">Copy plan</button>
+        <button type="button" class="secondary-btn" onclick="downloadSwitchReport()">Download TXT</button>
+        <button type="button" class="secondary-btn" onclick="saveSwitchReport()">Save locally</button>
+      </div>
+      <div class="action-status" id="switch-action-status" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="en-card method-card" aria-labelledby="career-switch-method-title">
+    <div class="en-card-title" id="career-switch-method-title"><div class="en-card-title-icon">CK</div>Method and checks</div>
+    <p>This MVP compares your current monthly salary plus benefits against direct retraining cost, income lost while studying, expected search gap, and the first five years of income in the new path.</p>
+    <ul class="method-list">
+      <li>Current-career income is treated as the baseline opportunity cost during retraining and search months.</li>
+      <li>Break-even only appears when the expected new salary is higher than the current monthly package.</li>
+      <li>The projection is a planning estimate, not a job offer, salary guarantee, visa or licensing opinion, or training-provider endorsement.</li>
+    </ul>
   </div>
 
 </div>
 
 <script>
 var CURR_SYM={NGN:'₦',KES:'KES ',ZAR:'R',GHS:'GHS ',USD:'$'};
+var currentSwitchPlan=null;
 
 function fmt(n,sym){return sym+Math.round(Math.abs(n)).toLocaleString();}
 
 function calcSwitch(){
-  var sym=CURR_SYM[document.getElementById('currency').value];
+  var currency=document.getElementById('currency').value;
+  var sym=CURR_SYM[currency];
   var cur=parseFloat(document.getElementById('currentSal').value)||0;
   var ben=parseFloat(document.getElementById('currentBenefits').value)||0;
   var newSal=parseFloat(document.getElementById('newSal').value)||0;
@@ -236,6 +266,7 @@ function calcSwitch(){
   // 5-year projection
   var gap=retrainMos+searchMos;
   var rows='';
+  var projectionRows=[];
   var cumCurrent=0,cumNew=-totalCost;
   for(var yr=1;yr<=5;yr++){
     var moStart=(yr-1)*12;
@@ -248,6 +279,7 @@ function calcSwitch(){
       }
     }
     var diff=cumNew-cumCurrent;
+    projectionRows.push({year:yr,current:cumCurrent,newCareer:Math.max(0,cumNew),difference:diff});
     rows+='<tr>'+
       '<td>Year '+yr+'</td>'+
       '<td>'+fmt(cumCurrent,sym)+'</td>'+
@@ -265,38 +297,120 @@ function calcSwitch(){
     (satisfaction<5?'<strong>Note:</strong> Your satisfaction score ('+satisfaction+'/10) suggests switching is worth pursuing even with financial cost. Low satisfaction reduces productivity and affects long-term earnings anyway.':'<strong>Note:</strong> Your satisfaction score ('+satisfaction+'/10) suggests current role isn\'t critical to escape. Weigh financial impact carefully.');
 
   document.getElementById('alternativePaths').innerHTML=altPaths;
+  currentSwitchPlan={
+    currency:currency,
+    symbol:sym,
+    currentSalary:cur,
+    currentBenefits:ben,
+    currentMonthlyPackage:curTotal,
+    satisfaction:satisfaction,
+    newSalary:newSal,
+    retrainingCost:retrainCost,
+    retrainingMonths:retrainMos,
+    searchMonths:searchMos,
+    incomeDuringRetrainingRatio:partTime,
+    annualGrowthRate:growth,
+    foregoneIncome:forfeited,
+    searchGap:searchGap,
+    totalCost:totalCost,
+    monthlyGain:monthlyGain,
+    breakEven:breakEven,
+    projectionRows:projectionRows
+  };
   document.getElementById('results').className='en-results on';
+}
+
+function buildSwitchReport(){
+  if(!currentSwitchPlan){calcSwitch();}
+  var p=currentSwitchPlan;
+  if(!p){return 'Career switch plan unavailable. Calculate the result first.';}
+  var lines=[
+    'AfroTools Career Switch Plan',
+    'Generated: '+new Date().toLocaleDateString(),
+    '',
+    'Currency: '+p.currency,
+    'Current monthly salary: '+fmt(p.currentSalary,p.symbol),
+    'Monthly benefits value: '+fmt(p.currentBenefits,p.symbol),
+    'Current monthly package: '+fmt(p.currentMonthlyPackage,p.symbol),
+    'Expected new monthly salary: '+fmt(p.newSalary,p.symbol),
+    'Retraining cost: '+fmt(p.retrainingCost,p.symbol),
+    'Retraining months: '+p.retrainingMonths,
+    'Search months after training: '+p.searchMonths,
+    'Income retained during retraining: '+Math.round(p.incomeDuringRetrainingRatio*100)+'%',
+    'Annual growth assumption in new career: '+Math.round(p.annualGrowthRate*100)+'%',
+    '',
+    'Estimated switch cost: '+fmt(p.totalCost,p.symbol),
+    'Monthly gain after switch: '+(p.monthlyGain>=0?'+':'-')+fmt(Math.abs(p.monthlyGain),p.symbol),
+    'Break-even: '+(p.breakEven<900?p.breakEven+' months after starting the new role':'not available because the expected new salary is lower'),
+    '',
+    'Five-year projection'
+  ];
+  p.projectionRows.forEach(function(row){
+    lines.push('Year '+row.year+': current '+fmt(row.current,p.symbol)+' | new '+fmt(row.newCareer,p.symbol)+' | difference '+(row.difference>=0?'+':'-')+fmt(Math.abs(row.difference),p.symbol));
+  });
+  lines.push('');
+  lines.push('Checks before acting: verify course fees, placement rates, licensing rules, visa constraints if relevant, job-market demand, and live salary bands.');
+  lines.push('Planning note: this is not a job offer, salary guarantee, immigration advice, lending advice, or education-provider endorsement.');
+  return lines.join('\n');
+}
+
+function setSwitchStatus(msg){
+  var el=document.getElementById('switch-action-status');
+  if(el){el.textContent=msg;}
+}
+
+function fallbackSwitchCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text;
+  ta.setAttribute('readonly','');
+  ta.style.position='fixed';
+  ta.style.left='-999px';
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+}
+
+function copySwitchReport(){
+  var text=buildSwitchReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setSwitchStatus('Career switch plan copied.');}).catch(function(){
+      fallbackSwitchCopy(text);
+      setSwitchStatus('Career switch plan copied.');
+    });
+    return;
+  }
+  fallbackSwitchCopy(text);
+  setSwitchStatus('Career switch plan copied.');
+}
+
+function downloadSwitchReport(){
+  var text=buildSwitchReport();
+  var blob=new Blob([text],{type:'text/plain'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='career-switch-plan.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setSwitchStatus('Career switch plan downloaded.');
+}
+
+function saveSwitchReport(){
+  var text=buildSwitchReport();
+  try{
+    localStorage.setItem('afrotools-career-switch-plan',JSON.stringify({savedAt:Date.now(),plan:currentSwitchPlan,report:text}));
+    setSwitchStatus('Career switch plan saved in this browser.');
+  }catch(err){
+    setSwitchStatus('Could not save locally. Copy or download the plan instead.');
+  }
 }
 </script>
 
-<section class="df-upgrade" data-df-upgrade="career-switch" data-tool-verification-panel>
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Career switch runway</span>
-      <h2>Estimate the financial impact of a career switch</h2>
-      <p>Compare current income, expected new income, training cost, and transition months before resigning or enrolling.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: switch cost, pay gap, training cost, emergency fund, five-year projection, and break-even warning.</li><li>Methodology: current income, benefits, retraining cost, training months, search gap, part-time income, and new salary assumptions are compared locally.</li><li>Source note: verify course costs, placement rates, visa or licensing rules, job-market demand, and employer salary bands before paying.</li><li>Privacy note: income and career inputs stay in this browser unless you copy the summary.</li></ul>
-      <p class="df-upgrade__note"><strong>Sources &amp; verification:</strong> Reviewed 2026. Career planning guidance only, not a job offer, salary guarantee, immigration advice, lending advice, or education-provider endorsement. Cross-check against live job postings, alumni outcomes, recruiter feedback, and <a href="https://www.onetonline.org/" target="_blank" rel="noopener">O*NET career exploration</a>.</p>
-    </div>
-    <form class="df-form" data-df-form="career-switch">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Current monthly income<input name="currentIncome" type="number" value="500000" min="0" step="any" aria-label="Current monthly income"></label>
-      <label>Expected new monthly income<input name="newIncome" type="number" value="650000" min="0" step="any" aria-label="Expected new monthly income"></label>
-      <label>Training cost<input name="trainingCost" type="number" value="300000" min="0" step="any" aria-label="Training cost"></label>
-      <label>Transition months<input name="transitionMonths" type="number" value="4" min="0" step="any" aria-label="Transition months"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="career-switch" data-df-base="Result: career-switch runway ready with pay gap, training cost, emergency fund, and break-even warning." aria-live="polite">Result: career-switch runway ready with pay gap, training cost, emergency fund, and break-even warning.</output>
-      <div class="df-actions"><button type="button" data-df-copy="career-switch">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="career-switch-faq-title">
-  <h2 id="career-switch-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>Estimate the financial impact of a career switch?</summary><p>Compare current income, expected new income, training cost, and transition months before resigning or enrolling.</p></details><details><summary>What should I verify before acting?</summary><p>Career disclaimer: this is planning guidance, not a job or salary guarantee. Verify training value and market demand before paying.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting.</p></details></div>
-</section>
 <afro-business-cta tool-name="Career Switch Financial Impact Calculator" prospect-segment="career-workforce" save-note="Calculate the switch cost, then copy the runway summary for coaching, training, recruiter, or family budget review."></afro-business-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 <script src="/assets/js/pages/career-tool-focus.js?v=42cb5afb" defer></script>
 </body>
 </html>

@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Redaction Tool | Search, Mark, and Securely Flatten | AfroTools</title>
-<meta name="description" content="Redact PDFs locally with manual boxes, search-based matches, labels, preview, page controls, and secure flattened export. Files stay in your browser.">
+<title>Redact PDF Online Free | Permanently Black Out PDF Text | AfroTools</title>
+<meta name="description" content="Redact PDFs locally with manual boxes, search matches, pattern detection, page review, final safety check, and flattened export. Files stay in your browser.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-redact/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF Redaction Tool | AfroTools">
-<meta property="og:description" content="Search, mark, preview, and securely flatten PDF redactions in your browser. No uploads.">
+<meta property="og:title" content="Redact PDF Online Free | AfroTools">
+<meta property="og:description" content="Black out sensitive PDF text and areas locally, review every page, then export a flattened redacted copy.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-redact/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-redact.webp">
@@ -17,13 +17,13 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF Redaction Tool | AfroTools">
-<meta name="twitter:description" content="Redact PDFs locally with search matches, manual boxes, preview, and secure flattened export.">
+<meta name="twitter:title" content="Redact PDF Online Free | AfroTools">
+<meta name="twitter:description" content="Redact sensitive PDF text and areas locally with manual boxes, search matches, and flattened export.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-redact.webp">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <meta property="article:modified_time" content="2026-04-27">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Redaction Tool","description":"Browser-only PDF redaction with manual boxes, search-based matches, preview, and secure flattened export.","url":"https://afrotools.com/tools/pdf-redact/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-redact.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Redact PDF Online","description":"Browser-only PDF redaction with manual boxes, search matches, common pattern detection, page review, final safety check, and flattened export.","url":"https://afrotools.com/tools/pdf-redact/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-redact.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are the redactions permanent?","acceptedAnswer":{"@type":"Answer","text":"The secure export rebuilds the PDF as flattened page images with the redaction marks burned into the pages. That removes the generated PDF text layer, so redacted text is not selectable or extractable from the output."}},{"@type":"Question","name":"Is my PDF uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. Upload, preview, search, and export run inside your browser. Your file is not sent to AfroTools servers."}},{"@type":"Question","name":"Can I search for words to redact?","acceptedAnswer":{"@type":"Answer","text":"Yes. Enter one or more terms, choose current page or all pages, then add reviewable redaction boxes for matching visible text runs before export."}},{"@type":"Question","name":"What should I keep after exporting?","acceptedAnswer":{"@type":"Answer","text":"Keep the original PDF separately if you need an editable source later. The redacted export is intentionally flattened for safety."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -31,14 +31,10 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=29afdf58">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <style>
   :root {
     --rd-blue: var(--color-primary);
@@ -184,6 +180,7 @@
     cursor: pointer;
     padding: 30px 18px;
     text-align: center;
+    touch-action: manipulation;
     transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
   }
 
@@ -263,8 +260,9 @@
     font-size: 0.75rem;
     font-weight: 800;
     justify-content: center;
-    min-height: 34px;
+    min-height: 44px;
     padding: 8px 12px;
+    touch-action: manipulation;
     transition: background 0.16s, border-color 0.16s, color 0.16s, opacity 0.16s;
   }
 
@@ -346,7 +344,7 @@
     color: #0f172a;
     font-family: inherit;
     font-size: 0.84rem;
-    min-height: 38px;
+    min-height: 44px;
     padding: 9px 10px;
     width: 100%;
   }
@@ -361,7 +359,7 @@
     background: #fff;
     border: 1px solid #d1d5db;
     border-radius: 6px;
-    height: 38px;
+    height: 44px;
     padding: 4px;
     width: 54px;
   }
@@ -533,6 +531,36 @@
     grid-template-columns: 1fr;
   }
 
+  .review-check {
+    align-items: flex-start;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    color: #92400e;
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 11px 12px;
+  }
+
+  .review-check input {
+    flex: 0 0 auto;
+    height: 18px;
+    margin-top: 2px;
+    width: 18px;
+  }
+
+  .review-check label {
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+
+  .review-check:focus-within {
+    box-shadow: 0 0 0 3px rgba(245,158,11,0.18);
+  }
+
   .stats-grid {
     display: grid;
     gap: 8px;
@@ -697,7 +725,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/caviarder-pdf/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kuficha-taarifa-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-redact/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -885,6 +912,10 @@
           <div class="security-note">
             <strong>Secure export:</strong> the output is rebuilt as flattened pages with redactions burned in. This removes selectable text from the generated PDF and avoids unsafe overlay-only redaction.
           </div>
+          <div class="review-check">
+            <input type="checkbox" id="reviewConfirm">
+            <label for="reviewConfirm">I reviewed every marked page and understand the exported PDF is flattened for sharing. I will keep the original separately.</label>
+          </div>
           <div class="status-card" id="resultCard">
             <div class="status-title" id="resultTitle">Ready</div>
             <div class="status-note" id="resultNote"></div>
@@ -913,30 +944,6 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="pdf-redact">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF Redaction Tool decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for pdf redaction tool so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: PDF Redaction Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="pdf-redact">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-redact" data-df-base="PDF Redaction Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">PDF Redaction Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-redact">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="pdf-redact-faq-title">
-  <h2 id="pdf-redact-faq-title">PDF Redaction Tool FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 </main>
 
 <section class="content-section">
@@ -960,56 +967,45 @@
 </section>
 
 
-<section class="tool-verification-sec" data-tool-verification-panel="pdf-redact">
-  <div class="container">
-    <div class="tool-verification-card">
-      <div class="tool-verification-head">
-        <div>
-          <span class="tool-verification-kicker">Redaction safety check</span>
-          <h2 class="tool-verification-title">Confirm redactions are flattened before sharing</h2>
-          <p class="tool-verification-lead">Search, mark, preview, and export redacted PDFs locally, with a flattened output path designed to remove selectable redacted text.</p>
-        </div>
-        <div class="tool-verification-status">
-          <span class="tool-verification-badge">Reviewed 2026</span>
-          <p class="tool-verification-note">Local-first planning and document workflow. No official submission is performed.</p>
-        </div>
-      </div>
-      <div class="tool-verification-grid">
-        <div class="tool-verification-block">
-          <h3>What to check</h3>
-          <ul class="tool-verification-list">
-            <li>Methodology: place manual or search-based redaction boxes, preview them page by page, then rebuild the export with marks burned into the pages.</li>
-            <li>Verify names, IDs, account numbers, barcodes, QR codes, headers, footers, metadata, attachments, and pages without extractable text manually.</li>
-            <li>Keep the original separately and test the exported PDF by trying selection/search on redacted areas before sending.</li>
-          </ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Limitations</h3>
-          <ul class="tool-verification-list">
-            <li>Disclaimer: redaction aid only, not legal review, data-protection certification, court filing approval, or guaranteed forensic sanitization.</li>
-            <li>Image-based documents, hidden metadata, attachments, bookmarks, and non-visible layers may require specialist review.</li>
-            <li>Privacy note: use local redaction for sensitive files and avoid exporting or sharing more document content than necessary.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="tool-verification-actions">
-        <a class="tool-verification-report" href="#resultCard">Review workflow output</a>
-        <p class="tool-verification-disclaimer">Source/freshness note: verify current client, lender, customs, tax, document, or regulator requirements before relying on generated outputs.</p>
-      </div>
-    </div>
-  </div>
-</section>
-<afro-business-cta tool-name="PDF Redaction Tool" prospect-segment="document-security" save-note="Redact locally, review every page, then export a flattened PDF copy through the document workflow gate."></afro-business-cta>
 <afro-related-tools category="document-pdf" current="pdf-redact"></afro-related-tools>
 <afro-footer></afro-footer>
 
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
 <script src="/tools/pdf-redact/app.js?v=8f55db57"></script>
+<script>
+(function(){
+  function ready(fn){ if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
+  ready(function(){
+    var review = document.getElementById('reviewConfirm');
+    var exportBtn = document.getElementById('exportBtn');
+    var resultCard = document.getElementById('resultCard');
+    var resultTitle = document.getElementById('resultTitle');
+    var resultNote = document.getElementById('resultNote');
+    var fileInput = document.getElementById('fileInput');
+    if(!review || !exportBtn) return;
+    function showReviewMessage(){
+      if(resultCard) resultCard.classList.add('on');
+      if(resultTitle) resultTitle.textContent = 'Review required';
+      if(resultNote) resultNote.textContent = 'Confirm the final review checkbox before exporting the flattened redacted PDF.';
+    }
+    exportBtn.addEventListener('click', function(event){
+      if(!review.checked){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        showReviewMessage();
+        review.focus();
+      }
+    }, true);
+    if(fileInput){
+      fileInput.addEventListener('change', function(){ review.checked = false; });
+    }
+  });
+})();
+</script>
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

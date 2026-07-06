@@ -35,12 +35,36 @@
   "operatingSystem": "Web",
   "url": "https://afrotools.com/tools/pwa-manifest/",
   "description": "Generate a modern manifest.webmanifest with install readiness checks, icons, screenshots, shortcuts, share targets, protocol handlers, file handlers and service worker snippets.",
+  "featureList": [
+    "manifest.webmanifest generation",
+    "HTML install tags",
+    "service worker starter",
+    "icon and screenshot checklist",
+    "browser install readiness scoring",
+    "PWA launch checklist"
+  ],
+  "browserRequirements": "Runs locally in a modern browser. Generated code is copied by the user and is not deployed by this page.",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
   "image": "https://afrotools.com/assets/img/tools/pwa-manifest.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to generate and review a PWA manifest",
+  "description": "Create a web app manifest, install tags, service worker starter, asset list, and browser install checklist before testing the PWA on target devices.",
+  "step": [
+    {"@type": "HowToStep", "name": "Enter app identity", "text": "Set the app name, short name, ID, start URL, scope, language, and description."},
+    {"@type": "HowToStep", "name": "Choose display settings", "text": "Select display mode, orientation, theme colors, category, and optional manifest members."},
+    {"@type": "HowToStep", "name": "Copy generated files", "text": "Review the manifest, HTML tags, service worker starter, and launch checklist before adding them to your app."},
+    {"@type": "HowToStep", "name": "Test install behavior", "text": "Validate installability, icons, screenshots, offline behavior, and update behavior in real browsers and devices."}
+  ],
+  "url": "https://afrotools.com/tools/pwa-manifest/"
 }
 </script>
 <script type="application/ld+json">
@@ -93,13 +117,13 @@ h1{font-size:clamp(2rem,5vw,4.5rem);line-height:.98;margin:0 0 14px;font-weight:
 .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .field{min-width:0}
 label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
-input,select,textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+input,select,textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px;min-height:44px}
 textarea{min-height:82px;resize:vertical;line-height:1.45}
-input[type=color]{height:40px;padding:3px}
+input[type=color]{height:44px;padding:3px}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
 .hint{font-size:.78rem;line-height:1.55;color:var(--muted);margin:8px 0 0}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap}
-.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 13px;font:800 .8rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 13px;min-height:44px;font:800 .8rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
 .btn:hover{border-color:#94a3b8;background:#f8fafc}
 .btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
 .btn.primary:hover{background:#1d4ed8}
@@ -127,7 +151,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 .check.ok{border-left-color:var(--green);background:#ecfdf5;color:#064e3b}
 .check.warn{border-left-color:var(--amber);background:#fffbeb;color:#78350f}
 .tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
-.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer}
+.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;min-height:44px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer;white-space:nowrap}
 .tab.active{background:#fff;color:#2563eb}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
@@ -136,8 +160,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 .asset-row{display:grid;grid-template-columns:86px 1fr;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:9px;background:#fff;font-size:.8rem}
 .asset-row code{font-family:var(--mono);color:#1d4ed8}
 .sources{display:grid;gap:8px}
-.sources a{color:#1d4ed8;text-decoration:none;font-weight:800;font-size:.84rem}
+.sources a{color:#1d4ed8;text-decoration:none;font-weight:800;font-size:.84rem;min-height:44px;display:flex;align-items:center}
 .sources a:hover{text-decoration:underline}
+.pwa-faq{max-width:1240px;margin:18px auto 0;display:grid;gap:12px}
+.pwa-faq h2{font-size:1.2rem;margin:0;color:#172033}
+.pwa-faq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pwa-faq details{border:1px solid var(--line);background:#fff;border-radius:8px;padding:14px;box-shadow:var(--shadow)}
+.pwa-faq summary{cursor:pointer;font-weight:800;color:#1f2937;min-height:44px;display:flex;align-items:center}
+.pwa-faq p{margin:8px 0 0;color:#64748b;line-height:1.55;font-size:.9rem}
 .toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:20}
 .toast.show{opacity:1;transform:translateY(0)}
 @media(max-width:980px){
@@ -147,14 +177,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 }
 @media(max-width:680px){
   .hero-inner,.wrap{padding-left:16px;padding-right:16px}
-  .grid,.grid.two,.switch-grid,.hero-grid{grid-template-columns:1fr}
+  .grid,.grid.two,.switch-grid,.hero-grid,.pwa-faq-grid{grid-template-columns:1fr}
 }
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pwa-manifest/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-manifest-pwa/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-pwa-manifest/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pwa-manifest/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -162,26 +191,26 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use PWA Manifest Generator — Web App Manifest for African Devs?",
+      "name": "What does the PWA Manifest Generator create?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "It creates manifest.webmanifest JSON, HTML install tags, a service worker starter, an asset checklist, and a browser install launch checklist for review."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on PWA Manifest Generator — Web App Manifest for African Devs?",
+      "name": "Does this guarantee my PWA is installable?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "No. The page checks common manifest requirements, but install behavior still needs real browser and device testing because requirements differ by browser and operating system."
       }
     },
     {
       "@type": "Question",
-      "name": "Is PWA Manifest Generator — Web App Manifest for African Devs an official result?",
+      "name": "What should I test before launch?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "Test HTTPS, service worker registration, icon files, start URL and scope, offline fallback, update behavior, Android install prompts, desktop Chrome or Edge install, and iOS Add to Home Screen."
       }
     }
   ],
@@ -342,36 +371,30 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
         <div class="card-head"><span class="card-title">Official References</span></div>
         <div class="card-body sources">
           <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference" target="_blank" rel="noopener">MDN manifest members reference</a>
-          <a href="https://web.dev/articles/install-criteria" target="_blank" rel="noopener">web.dev install criteria</a>
+          <a href="https://web.dev/learn/pwa/installation" target="_blank" rel="noopener">web.dev PWA installation guide</a>
           <a href="https://web.dev/learn/pwa/web-app-manifest" target="_blank" rel="noopener">web.dev web app manifest guide</a>
+          <a href="https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest" target="_blank" rel="noopener">Chrome installable manifest audit</a>
         </div>
       </section>
     </aside>
   </section>
 
-<section class="df-upgrade" data-df-upgrade="pwa-manifest">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PWA Manifest Generator — Web App Manifest for African Devs decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for pwa manifest generator — web app manifest for african devs so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: PWA Manifest Generator — Web App Manifest for African Devs: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="pwa-manifest">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pwa-manifest" data-df-base="PWA Manifest Generator — Web App Manifest for African Devs: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">PWA Manifest Generator — Web App Manifest for African Devs: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pwa-manifest">Copy summary</button></div>
-    </form>
+<section class="pwa-faq" aria-labelledby="pwa-manifest-faq-title">
+  <h2 id="pwa-manifest-faq-title">PWA Manifest Generator FAQ</h2>
+  <div class="pwa-faq-grid">
+    <details>
+      <summary>What does this generate?</summary>
+      <p>It creates manifest JSON, install tags, a service worker starter, an asset checklist, and launch checks for your own app repository.</p>
+    </details>
+    <details>
+      <summary>Is installability guaranteed?</summary>
+      <p>No. Browsers and platforms use different install rules, so use the generated output as a starting point and test on real devices.</p>
+    </details>
+    <details>
+      <summary>What should I test first?</summary>
+      <p>Verify HTTPS, icon files, start URL and scope, service worker updates, offline fallback, Android install, desktop install, and iOS Add to Home Screen.</p>
+    </details>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="pwa-manifest-faq-title">
-  <h2 id="pwa-manifest-faq-title">PWA Manifest Generator — Web App Manifest for African Devs FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <section class="tool-verification-sec" data-tool-verification-panel="pwa-manifest">
   <div class="container">
@@ -463,6 +486,44 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
     clearTimeout(toast._timer);
     toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1700);
   }
+  function safeCopy(text){
+    function fallbackCopy(){
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        document.execCommand('copy');
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      } finally {
+        document.body.removeChild(area);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+  function pathOnly(value){
+    var raw = String(value || '/').trim();
+    try {
+      return new URL(raw, window.location.origin).pathname || '/';
+    } catch (error) {
+      return raw.split(/[?#]/)[0] || '/';
+    }
+  }
+  function startInsideScope(manifest){
+    var start = pathOnly(manifest.start_url);
+    var scope = pathOnly(manifest.scope);
+    if (!scope.endsWith('/')) scope += '/';
+    return start === scope.slice(0, -1) || start.indexOf(scope) === 0;
+  }
 
   function buildManifest(){
     var manifest = {
@@ -526,11 +587,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
   }
 
   function scoreManifest(manifest){
+    var inScope = startInsideScope(manifest);
     var checks = [
       {ok:!!manifest.name, text:'Manifest has a full app name.'},
       {ok:!!manifest.short_name && manifest.short_name.length <= 12, text:'Short name exists and is 12 characters or fewer.'},
       {ok:!!manifest.start_url, text:'Start URL is present.'},
       {ok:!!manifest.scope, text:'Scope is present.'},
+      {ok:inScope, text:'Start URL is inside the declared scope.'},
       {ok:['standalone','fullscreen','minimal-ui'].indexOf(manifest.display) !== -1, text:'Display mode is install-friendly.'},
       {ok:!!manifest.theme_color && !!manifest.background_color, text:'Theme and background colors are present.'},
       {ok:manifest.icons.some(function(icon){ return icon.sizes.indexOf('192x192') !== -1; }), text:'192x192 icon is declared.'},
@@ -625,9 +688,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
       '[ ] Register /sw.js from your main HTML or JS bundle.',
       '[ ] Test installability in Chrome DevTools Application panel.',
       '[ ] Test Android install prompt and iOS Add to Home Screen behavior.',
+      '[ ] Test desktop Chrome or Edge install from the browser menu or install badge.',
+      '[ ] Remember iOS and iPadOS require manual Add to Home Screen; there is no browser install prompt.',
+      '[ ] Expect Android installs to vary between WebAPK and browser shortcut behavior.',
       '[ ] Confirm offline fallback does not cache private user data.',
+      '[ ] Verify shortcuts, share targets, protocol handlers and file handlers only on browsers that support them.',
       '[ ] Update screenshots after major UI changes.',
       '[ ] Keep start_url inside scope: ' + manifest.scope,
+      '[ ] Current scope status: ' + (startInsideScope(manifest) ? 'start_url is inside scope' : 'start_url is outside scope'),
       '',
       'Current readiness score: ' + score.percent + '%'
     ].join('\n');
@@ -693,7 +761,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
     }
     if (event.target.id === 'copy-output') {
       var output = activeTab === 'manifest' ? $('manifest-code') : activeTab === 'html' ? $('html-code') : activeTab === 'sw' ? $('sw-code') : $('checks-code');
-      navigator.clipboard.writeText(output.textContent).then(function(){ toast('Output copied'); });
+      safeCopy(output.textContent).then(function(){ toast('Output copied'); }).catch(function(){ toast('Copy failed'); });
     }
   });
 
@@ -702,6 +770,5 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTML Entity Encoder & Decoder | AfroTools</title>
-<meta name="description" content="Encode and decode HTML entities instantly. Convert special characters to HTML entities and back. Supports named entities, numeric codes, and hex codes.">
+<title>HTML Entity Encoder, Decoder and Preview | AfroTools</title>
+<meta name="description" content="Encode and decode HTML entities locally. Convert text to named, decimal or hex entities, decode character references, preview rendered text, and copy or download output.">
 <link rel="canonical" href="https://afrotools.com/tools/html-entities/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="HTML Entity Encoder/Decoder | AfroTools">
-<meta property="og:description" content="Encode/decode HTML entities. Named, numeric, hex. Free.">
+<meta property="og:title" content="HTML Entity Encoder, Decoder and Preview | AfroTools">
+<meta property="og:description" content="Encode or decode HTML character references with named, decimal and hex output modes plus local preview.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/html-entities.webp">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/html-entities/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
 .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
 .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+.breadcrumb a{display:inline-flex;align-items:center;min-height:36px;color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
 h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
 h1 em{color:var(--afro-blue);font-style:normal}
 .hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
@@ -46,17 +46,29 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .io-area{width:100%;min-height:200px;padding:14px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:8px;font-family:'Courier New',monospace;font-size:.88rem;color:var(--afro-dark);outline:none;resize:vertical;line-height:1.6}
 .io-area:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
 .io-area[readonly]{background:#0f172a;color:#38bdf8;border-color:#1e293b}
+.control-row{display:grid;grid-template-columns:minmax(180px,240px) 1fr;gap:12px;align-items:end;margin-bottom:16px}
+.control-label{display:grid;gap:6px;font-size:.72rem;font-weight:700;color:var(--afro-dark);letter-spacing:.06em;text-transform:uppercase}
+.control-select{width:100%;min-height:44px;border:1.5px solid #cbd5e1;border-radius:8px;background:#fff;color:var(--afro-dark);font:inherit;padding:10px 11px;outline:none}
+.control-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
 .action-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.action-btn{flex:1 1 120px;padding:10px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:7px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.action-btn{min-height:44px;flex:1 1 120px;padding:10px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:7px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
 .action-btn:hover{background:#0059B3}
 .action-btn.secondary{background:#f1f5f9;color:#475569;border:1.5px solid #cbd5e1}
 .action-btn.secondary:hover{border-color:var(--afro-blue);color:var(--afro-blue)}
+.tab-btn:focus-visible,.action-btn:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgba(0,113,227,.28);outline-offset:3px}
+.diagnostics{display:grid;gap:8px;margin-top:14px}
+.message{border:1px solid #dbe4ef;border-radius:8px;padding:10px 12px;font-size:.82rem;line-height:1.45;color:#334155;background:#f8fafc}
+.message.warn{border-color:#fed7aa;background:#fff7ed;color:#9a3412}
+.message.good{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+.preview-box{margin-top:14px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:12px}
+.preview-box strong{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;color:#475569}
+.preview-text{white-space:pre-wrap;word-break:break-word;font-family:'Courier New',monospace;font-size:.85rem;color:#111827}
 .ref-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:12px}
 .ref-table th{background:#f8fafc;padding:8px 12px;text-align:left;font-weight:700;border-bottom:2px solid #e2e8f0;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#64748b}
 .ref-table td{padding:8px 12px;border-bottom:1px solid #f1f5f9}
 .ref-table td:first-child{font-family:monospace;color:var(--afro-blue);font-weight:700}
 .ref-table td:nth-child(2){font-family:monospace}
-@media(max-width:600px){.io-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.io-grid,.control-row{grid-template-columns:1fr}}
 details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
 </style>
 <script type="application/ld+json">
@@ -111,8 +123,8 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="HTML Entity Encoder/Decoder | AfroTools">
-<meta name="twitter:description" content="Encode/decode HTML entities. Named, numeric, hex. Free.">
+<meta name="twitter:title" content="HTML Entity Encoder, Decoder and Preview | AfroTools">
+<meta name="twitter:description" content="Encode or decode HTML character references with named, decimal and hex output modes.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/html-entities.webp">
 <script type="application/ld+json">
 {
@@ -128,8 +140,8 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
+      "name": "Developer Tools",
+      "item": "https://afrotools.com/developer-tools/"
     },
     {
       "@type": "ListItem",
@@ -152,10 +164,10 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
 <div class="tool-hero"><div class="tool-hero-inner">
-  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>HTML Entities</span></div>
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Developer Tools</a> / <span>HTML Entities</span></div>
   <h1>HTML Entity <em>Encoder</em></h1>
-  <p class="hero-sub">Encode and decode HTML entities instantly. Convert special characters to HTML-safe representations and vice versa.</p>
-  <div class="hero-badges"><span class="badge b-blue">Encode & Decode</span><span class="badge b-blue">Named Entities</span><span class="badge b-blue">Copy Output</span></div>
+  <p class="hero-sub">Encode and decode HTML character references locally. Choose named, decimal or hex output, then preview the text the browser will display.</p>
+  <div class="hero-badges"><span class="badge b-blue">Encode & Decode</span><span class="badge b-blue">Named / Numeric / Hex</span><span class="badge b-blue">Local Preview</span></div>
 </div></div>
 
 <div class="tool-main"><div class="tool-main-inner">
@@ -165,6 +177,16 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
       <div class="tabs">
         <button type="button" class="tab-btn active" onclick="setMode('encode')">Encode</button>
         <button type="button" class="tab-btn" onclick="setMode('decode')">Decode</button>
+      </div>
+      <div class="control-row">
+        <label class="control-label" for="encodeStyle">Encode style
+          <select class="control-select" id="encodeStyle">
+            <option value="named">Named common entities</option>
+            <option value="decimal">Decimal numeric entities</option>
+            <option value="hex">Hex numeric entities</option>
+          </select>
+        </label>
+        <p id="modeHelp" style="font-size:.82rem;color:#64748b;line-height:1.55;margin:0">Named mode encodes HTML-sensitive characters and common symbols. Decimal and hex modes also encode non-ASCII characters.</p>
       </div>
       <div class="io-grid">
         <div>
@@ -182,6 +204,11 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
         <button type="button" class="action-btn secondary" onclick="downloadOutput()">Download .txt</button>
         <button type="button" class="action-btn secondary" onclick="swapIO()">Swap</button>
         <button type="button" class="action-btn secondary" onclick="clearAll()">Clear</button>
+      </div>
+      <div class="diagnostics" id="diagnostics" aria-live="polite"></div>
+      <div class="preview-box">
+        <strong>Browser text preview</strong>
+        <div class="preview-text" id="previewText"></div>
       </div>
       <p id="copyStatus" style="font-size:.78rem;color:#64748b;margin-top:10px" aria-live="polite"></p>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
@@ -231,7 +258,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
         <li><strong>Email templates:</strong> Some email clients require entity-encoded characters</li>
       </ul>
       <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-        For a complete reference, see the <a href="https://html.spec.whatwg.org/multipage/named-characters.html" target="_blank" rel="noopener" style="color:var(--afro-blue)">HTML Living Standard named character references</a>.
+        For reference, see MDN's <a href="https://developer.mozilla.org/en-US/docs/Glossary/Entity" target="_blank" rel="noopener" style="color:var(--afro-blue)">HTML entity glossary</a> and the <a href="https://html.spec.whatwg.org/multipage/named-characters.html" target="_blank" rel="noopener" style="color:var(--afro-blue)">HTML Living Standard named character references</a>.
       </p>
       <p style="font-size:.85rem;color:#475569;line-height:1.7">See also: <a href="/tools/url-encoder/" style="color:var(--afro-blue)">URL Encoder/Decoder</a> and <a href="/tools/base64/" style="color:var(--afro-blue)">Base64 Encoder</a>.</p>
     </div>
@@ -245,7 +272,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 </section>
     <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What are HTML entities?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">HTML entities are special codes used to represent characters that have meaning in HTML (like &lt; &gt; &amp; ") or characters not easily typed on a keyboard.</div></details>
-    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">When should I use HTML entities?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Use when displaying code snippets in HTML, when you need special characters in attributes, or to prevent XSS by encoding user input.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">When should I use HTML entities?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Use them when displaying code snippets in HTML, when special characters need to appear as text, or when a template requires character references. Use framework escaping and sanitizers for security-sensitive HTML.</div></details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Named vs numeric entities?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Named entities use descriptive names (&amp;amp; for &amp;). Numeric use codes (&amp;#38;). Named are more readable; numeric cover more characters.</div></details>
   </section>
 </div></div>
@@ -254,6 +281,20 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 
 <script>
 let mode='encode';
+const namedEntities={
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&apos;',
+  '\u00a0':'&nbsp;',
+  '\u00a9':'&copy;',
+  '\u00ae':'&reg;',
+  '\u2122':'&trade;',
+  '\u20ac':'&euro;',
+  '\u00a3':'&pound;',
+  '\u2014':'&mdash;'
+};
 function setMode(m){
   mode=m;
   document.querySelectorAll('.tab-btn').forEach((b,i)=>{
@@ -262,15 +303,26 @@ function setMode(m){
   if(m==='encode'){
     document.getElementById('inputLabel').textContent='Input (Plain Text)';
     document.getElementById('outputLabel').textContent='Output (HTML Entities)';
+    document.getElementById('modeHelp').textContent='Named mode encodes HTML-sensitive characters and common symbols. Decimal and hex modes also encode non-ASCII characters.';
   } else {
     document.getElementById('inputLabel').textContent='Input (HTML Entities)';
     document.getElementById('outputLabel').textContent='Output (Decoded Text)';
+    document.getElementById('modeHelp').textContent='Decode mode uses the browser entity parser. Inspect decoded markup before pasting it into a live HTML context.';
   }
   convert();
 }
 
 function encodeHTML(str){
-  return str.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const style=document.getElementById('encodeStyle').value;
+  return Array.from(str).map(function(ch){
+    const code=ch.codePointAt(0);
+    const mustEncode=/[&<>"']/.test(ch);
+    const common=Object.prototype.hasOwnProperty.call(namedEntities,ch);
+    if(style==='named') return common ? namedEntities[ch] : ch;
+    if(style==='decimal') return (mustEncode||code>127) ? '&#'+code+';' : ch;
+    if(style==='hex') return (mustEncode||code>127) ? '&#x'+code.toString(16).toUpperCase()+';' : ch;
+    return ch;
+  }).join('');
 }
 
 function decodeHTML(str){
@@ -283,6 +335,31 @@ function convert(){
   const input=document.getElementById('input').value;
   const output=mode==='encode'?encodeHTML(input):decodeHTML(input);
   document.getElementById('output').value=output;
+  renderDiagnostics(input,output);
+  renderPreview(output);
+}
+
+function renderDiagnostics(input,output){
+  const box=document.getElementById('diagnostics');
+  const messages=[];
+  if(mode==='encode'){
+    const changed=Array.from(input).filter(function(ch){return encodeHTML(ch)!==ch;}).length;
+    messages.push(['good',changed+' character'+(changed===1?'':'s')+' encoded in '+document.getElementById('encodeStyle').selectedOptions[0].textContent.toLowerCase()+'.']);
+    if(/[<>&"']/.test(input)) messages.push(['warn','Entity encoding helps display markup as text, but it is not a complete HTML sanitizer or XSS protection layer.']);
+  } else {
+    if(/<\s*script|<\s*iframe|on[a-z]+\s*=|javascript:/i.test(output)) messages.push(['warn','Decoded text contains markup or script-like content. Inspect it as text before using it in HTML.']);
+    messages.push(['good','Decoded with the browser entity parser. Named, decimal and hex character references are supported by the browser.']);
+  }
+  box.innerHTML=messages.map(function(item){return '<div class="message '+item[0]+'">'+escapeHTML(item[1])+'</div>';}).join('');
+}
+
+function renderPreview(output){
+  const preview=document.getElementById('previewText');
+  preview.textContent=mode==='encode'?decodeHTML(output):output;
+}
+
+function escapeHTML(str){
+  return String(str).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});
 }
 
 function copyOutput(){
@@ -333,9 +410,10 @@ function clearAll(){
 }
 
 document.getElementById('input').addEventListener('input',convert);
+document.getElementById('encodeStyle').addEventListener('change',convert);
 convert();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 

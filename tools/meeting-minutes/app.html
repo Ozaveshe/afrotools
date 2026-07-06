@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Meeting Minutes Generator App | AfroTools">
-<meta name="twitter:description" content="Create structured meeting minutes with PDF, Word, TXT, CSV, ICS, JSON, and share-link export.">
+<meta name="twitter:description" content="Create structured meeting minutes with PDF, Word, TXT, CSV, ICS, JSON, copy, and print export.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-05-01">
 <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
@@ -46,33 +46,33 @@ button{cursor:pointer}
 .btn-danger{color:#b91c1c;border-color:#fecaca}
 .app-shell{width:min(1500px,100%);margin:0 auto;padding:18px clamp(12px,2vw,28px) 32px}
 .hero-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;margin-bottom:16px}
-.eyebrow{margin:0 0 5px;color:#0b63ce;font-size:.72rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.eyebrow{margin:0 0 5px;color:#0b63ce;font-size:.72rem;font-weight:900;text-transform:uppercase}
 .hero-strip h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.4rem);letter-spacing:0;line-height:1.05}
 .hero-strip p{margin:8px 0 0;color:#4b5563;max-width:820px;line-height:1.55}
 .status-line{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .pill{display:inline-flex;align-items:center;border:1px solid #dbeafe;background:#fff;color:#1f2937;border-radius:999px;padding:8px 10px;font-size:.76rem;font-weight:800}
 .workspace{display:grid;grid-template-columns:minmax(330px,430px) minmax(460px,1fr) minmax(300px,350px);gap:16px;align-items:start}
-.panel,.preview-card,.insights-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
+.panel,.preview-card,.insights-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
 .panel{padding:18px;max-height:calc(100vh - 112px);overflow:auto}
 .panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
 .panel h2,.preview-card h2,.insights-card h2{margin:0;font-size:1.02rem;line-height:1.2}
-.panel h3{font-size:.86rem;margin:18px 0 10px;text-transform:uppercase;letter-spacing:.06em;color:#374151}
+.panel h3{font-size:.86rem;margin:18px 0 10px;text-transform:uppercase;color:#374151}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.field span{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase;letter-spacing:.04em}
+.field span{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase}
 .field input,.field select,.field textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.88rem;line-height:1.35}
 .field textarea{min-height:84px;resize:vertical}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
 .field.full{grid-column:1/-1}
 .helper{margin:-4px 0 10px;color:#6b7280;font-size:.78rem;line-height:1.45}
-.row-builder{border:1px solid #e5e7eb;background:#fbfcff;border-radius:10px;padding:12px;margin:10px 0}
+.row-builder{border:1px solid #e5e7eb;background:#fbfcff;border-radius:8px;padding:12px;margin:10px 0}
 .row-builder .form-grid{grid-template-columns:1fr 1fr}
 .list{display:grid;gap:8px;margin:8px 0 12px}
-.list-item{border:1px solid #e5e7eb;border-radius:9px;background:#fff;padding:10px;display:grid;gap:7px}
+.list-item{border:1px solid #e5e7eb;border-radius:8px;background:#fff;padding:10px;display:grid;gap:7px}
 .list-title{font-size:.86rem;font-weight:900;color:#111827}
 .list-meta{font-size:.76rem;color:#6b7280;line-height:1.4}
 .list-actions{display:flex;gap:6px;flex-wrap:wrap}
-.agenda-card{border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;margin-bottom:10px}
+.agenda-card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;margin-bottom:10px}
 .agenda-top{display:flex;gap:8px;align-items:center;margin-bottom:8px}
 .agenda-index{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#eef5ff;color:#0b63ce;font-size:.78rem;font-weight:900;flex:0 0 auto}
 .action-status{display:inline-flex;border-radius:999px;padding:3px 7px;font-size:.68rem;font-weight:900;text-transform:uppercase}
@@ -85,11 +85,11 @@ button{cursor:pointer}
 .preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .minutes-editor{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,430px);gap:0;min-height:760px}
 .minutes-text-wrap{padding:16px;border-right:1px solid #e5e7eb;background:#f9fafb}
-#minutesText{width:100%;min-height:700px;resize:vertical;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;padding:16px;line-height:1.58;font-family:Consolas,'JetBrains Mono',monospace;font-size:13px}
+#minutesText{width:100%;min-height:700px;resize:vertical;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:16px;line-height:1.58;font-family:Consolas,'JetBrains Mono',monospace;font-size:13px}
 #minutesText:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.1)}
 .paper-wrap{padding:18px;background:#eceff3;overflow:auto}
 .paper{width:100%;min-height:650px;background:#fff;border:1px solid #d1d5db;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:34px;color:#1f2937;font-family:Georgia,'Times New Roman',serif;font-size:12.5px;line-height:1.58}
-.paper h3{font-family:'DM Sans',system-ui,sans-serif;margin:18px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#0b63ce}
+.paper h3{font-family:'DM Sans',system-ui,sans-serif;margin:18px 0 8px;font-size:12px;text-transform:uppercase;color:#0b63ce}
 .paper p{margin:0 0 10px;white-space:pre-wrap}
 .paper .paper-title{font-size:19px;font-weight:700;margin-bottom:4px}
 .paper .paper-muted{font-family:'DM Sans',system-ui,sans-serif;color:#6b7280;font-size:10px;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:8px}
@@ -100,15 +100,15 @@ button{cursor:pointer}
 .score-number span{position:relative;font-size:1.45rem}
 .score-copy{font-size:.84rem;color:#4b5563;line-height:1.45}
 .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
-.metric{border:1px solid #e5e7eb;border-radius:9px;padding:10px;background:#fbfcff}
+.metric{border:1px solid #e5e7eb;border-radius:8px;padding:10px;background:#fbfcff}
 .metric strong{display:block;font-size:1.22rem;color:#111827}
-.metric span{font-size:.72rem;color:#6b7280;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.metric span{font-size:.72rem;color:#6b7280;font-weight:800;text-transform:uppercase}
 .checks{display:grid;gap:8px;margin:14px 0}
 .check{border:1px solid #e5e7eb;border-radius:8px;padding:9px 10px;font-size:.8rem;line-height:1.35;color:#374151}
 .check.good{border-color:#bbf7d0;background:#f0fdf4}
 .check.warn{border-color:#fde68a;background:#fffbeb}
 .saved-list{display:grid;gap:8px;max-height:240px;overflow:auto;margin-top:10px}
-.saved-item{border:1px solid #e5e7eb;border-radius:9px;padding:10px;background:#fbfcff}
+.saved-item{border:1px solid #e5e7eb;border-radius:8px;padding:10px;background:#fbfcff}
 .saved-title{font-size:.82rem;font-weight:900;margin-bottom:4px}
 .saved-meta{font-size:.72rem;color:#6b7280;margin-bottom:8px}
 .toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
@@ -134,7 +134,6 @@ button{cursor:pointer}
   <div class="topbar-actions">
     <button class="btn" type="button" data-action="copy">Copy recap</button>
     <button class="btn" type="button" data-action="save">Save</button>
-    <button class="btn btn-soft" type="button" data-action="share">Share link</button>
     <button class="btn btn-primary" type="button" data-action="pdf">PDF</button>
   </div>
 </div>
@@ -290,8 +289,5 @@ button{cursor:pointer}
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="/assets/js/pages/meeting-minutes.js?v=e9e0856d" defer></script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
-<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 </body>
 </html>

@@ -5,11 +5,11 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WCAG Color Contrast Checker | AfroTools</title>
-<meta name="description" content="Check color contrast ratios for WCAG 2.1 compliance. Test text and background color combinations for AA and AAA accessibility standards. Free online tool.">
+<meta name="description" content="Check WCAG 2.2 text contrast ratios for foreground and background colors. Test AA and AAA thresholds, copy CSS tokens, and export a JSON report.">
 <link rel="canonical" href="https://afrotools.com/tools/color-contrast/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="WCAG Color Contrast Checker | AfroTools">
-<meta property="og:description" content="Check WCAG contrast ratios for accessibility. AA and AAA compliance.">
+<meta property="og:description" content="Check WCAG 2.2 text contrast ratios for AA and AAA thresholds, then copy CSS tokens or export a JSON report.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/color-contrast.webp">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/color-contrast/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,9 +44,9 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .color-swatch{width:48px;height:48px;border-radius:8px;border:2px solid #e2e8f0;cursor:pointer;flex-shrink:0}
 .color-swatch input{opacity:0;width:100%;height:100%;cursor:pointer}
 .f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:4px;display:block}
-.f-input{width:100%;padding:10px 12px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.9rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',monospace}
+.f-input{width:100%;min-height:44px;padding:10px 12px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.9rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',monospace}
 .f-input:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
-.swap-btn{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;transition:transform .2s}
+.swap-btn{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;transition:transform .2s}
 .swap-btn:hover{transform:rotate(180deg)}
 .preview-box{border-radius:12px;padding:32px;margin:18px 0;text-align:center;transition:all .3s}
 .preview-normal{font-size:1.1rem;font-weight:400;margin-bottom:8px}
@@ -62,7 +62,17 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .comp-status.pass{color:#16a34a}
 .comp-status.fail{color:#dc2626}
 .comp-label{font-size:.62rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em}
+.contrast-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.contrast-actions button{min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:var(--afro-dark);font-weight:700;cursor:pointer;padding:10px 14px}
+.contrast-actions button:hover{border-color:var(--afro-blue);color:var(--afro-blue)}
+.handoff-card{background:#f8fafc;border:1px solid #dbeafe;border-radius:10px;padding:22px;margin-top:18px}
+.handoff-card h2{font-size:1.05rem;font-weight:800;color:var(--afro-dark);margin-bottom:8px}
+.handoff-card p,.handoff-card li{font-size:.85rem;color:#475569;line-height:1.7}
+.handoff-card ul{padding-left:20px;margin:10px 0}
+.handoff-result{display:block;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f1419;padding:10px 12px;margin-top:8px;font-size:.85rem}
+.f-input:focus-visible,.color-swatch input:focus-visible,.swap-btn:focus-visible,.contrast-actions button:focus-visible,summary:focus-visible{outline:3px solid rgba(0,113,227,.35);outline-offset:2px}
 @media(max-width:600px){.color-row{grid-template-columns:1fr}.compliance-grid{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){.swap-btn,.preview-box{transition:none}}
 details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
 </style>
 <script type="application/ld+json">
@@ -70,7 +80,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "WCAG Color Contrast Checker",
-  "description": "Check color contrast ratios for WCAG 2.1 AA and AAA compliance. Test accessibility of text/background color combinations.",
+  "description": "Check WCAG 2.2 text contrast ratios for AA and AAA thresholds. Test foreground and background color combinations locally.",
   "url": "https://afrotools.com/tools/color-contrast/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
@@ -95,7 +105,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
   "@type": "WebPage",
   "name": "WCAG Color Contrast Checker",
   "url": "https://afrotools.com/tools/color-contrast/",
-  "description": "Check color contrast ratios for WCAG 2.1 AA and AAA compliance. Test accessibility of text/background color combinations.",
+  "description": "Check WCAG 2.2 text contrast ratios for AA and AAA thresholds. Test foreground and background color combinations locally.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -108,7 +118,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"What is WCAG contrast ratio?","acceptedAnswer":{"@type":"Answer","text":"WCAG (Web Content Accessibility Guidelines) defines minimum contrast ratios between text and background colors. AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 for normal text and 4.5:1 for large text."}},
 {"@type":"Question","name":"What counts as large text?","acceptedAnswer":{"@type":"Answer","text":"Large text is defined as 18pt (24px) or larger for regular weight, or 14pt (18.66px) or larger for bold weight. Large text has a lower contrast requirement."}},
-{"@type":"Question","name":"Why does contrast matter?","acceptedAnswer":{"@type":"Answer","text":"Good contrast ensures text is readable by people with visual impairments, color blindness, or those using screens in bright environments. It is also a legal requirement in many jurisdictions."}}
+{"@type":"Question","name":"Why does contrast matter?","acceptedAnswer":{"@type":"Answer","text":"Sufficient luminance contrast helps text remain readable for people with low vision, contrast sensitivity loss, color vision differences, and bright-screen conditions."}}
 ]}</script>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=ed2f7752" defer></script>
@@ -120,7 +130,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="WCAG Color Contrast Checker | AfroTools">
-<meta name="twitter:description" content="Check WCAG contrast ratios for accessibility. AA and AAA compliance.">
+<meta name="twitter:description" content="Check WCAG 2.2 text contrast ratios for AA and AAA thresholds, then copy CSS tokens or export JSON.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/color-contrast.webp">
 <script type="application/ld+json">
 {
@@ -153,7 +163,6 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/contraste-couleurs/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ukaguzi-contrast/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/color-contrast/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -162,8 +171,8 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <div class="tool-hero"><div class="tool-hero-inner">
   <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Color Contrast</span></div>
   <h1>WCAG Contrast <em>Checker</em></h1>
-  <p class="hero-sub">Test color combinations for WCAG 2.1 accessibility compliance. Check AA and AAA contrast ratios for normal and large text instantly.</p>
-  <div class="hero-badges"><span class="badge b-blue">WCAG 2.1</span><span class="badge b-blue">AA & AAA</span><span class="badge b-blue">Live Preview</span></div>
+  <p class="hero-sub">Test foreground and background colors against WCAG 2.2 text contrast thresholds. Check AA and AAA for normal and large text locally.</p>
+  <div class="hero-badges"><span class="badge b-blue">WCAG 2.2</span><span class="badge b-blue">AA & AAA</span><span class="badge b-blue">Live Preview</span></div>
 </div></div>
 
 <div class="tool-main"><div class="tool-main-inner">
@@ -172,21 +181,21 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     <div class="card-body">
       <div class="color-row">
         <div>
-          <label class="f-label">Foreground (Text) Color</label>
+          <label class="f-label" for="fgHex">Foreground (Text) Color</label>
           <div class="color-field">
-            <div class="color-swatch" id="fgSwatch" style="background:#000000"><input aria-label="FgColor" type="color" id="fgColor" value="#000000"></div>
-            <input aria-label="FgHex" type="text" class="f-input" id="fgHex" value="#000000" maxlength="7" style="font-family:monospace">
+            <div class="color-swatch" id="fgSwatch" style="background:#000000"><input aria-label="Foreground color picker" type="color" id="fgColor" value="#000000"></div>
+            <input aria-label="Foreground hex color" type="text" class="f-input" id="fgHex" value="#000000" maxlength="7" style="font-family:monospace">
           </div>
         </div>
         <div>
-          <label class="f-label">Background Color</label>
+          <label class="f-label" for="bgHex">Background Color</label>
           <div class="color-field">
-            <div class="color-swatch" id="bgSwatch" style="background:#FFFFFF"><input aria-label="BgColor" type="color" id="bgColor" value="#FFFFFF"></div>
-            <input aria-label="BgHex" type="text" class="f-input" id="bgHex" value="#FFFFFF" maxlength="7" style="font-family:monospace">
+            <div class="color-swatch" id="bgSwatch" style="background:#FFFFFF"><input aria-label="Background color picker" type="color" id="bgColor" value="#FFFFFF"></div>
+            <input aria-label="Background hex color" type="text" class="f-input" id="bgHex" value="#FFFFFF" maxlength="7" style="font-family:monospace">
           </div>
         </div>
       </div>
-      <button type="button" class="swap-btn" onclick="swapColors()" title="Swap colors">&#x21C5;</button>
+      <button type="button" class="swap-btn" onclick="swapColors()" title="Swap colors" aria-label="Swap foreground and background colors">&#x21C5;</button>
 
       <div class="preview-box" id="preview" style="background:#FFFFFF;color:#000000">
         <div class="preview-normal">Normal text looks like this (16px)</div>
@@ -204,7 +213,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
         <div class="compliance-item pass" id="aaaNormal"><div class="comp-status pass" id="aaaNormalStatus">PASS</div><div class="comp-label">AAA Normal</div></div>
         <div class="compliance-item pass" id="aaaLarge"><div class="comp-status pass" id="aaaLargeStatus">PASS</div><div class="comp-label">AAA Large</div></div>
       </div>
-      <div class="df-actions" style="margin-top:16px">
+      <div class="contrast-actions">
         <button type="button" onclick="copyContrastReport()">Copy report</button>
         <button type="button" onclick="copyContrastCss()">Copy CSS tokens</button>
         <button type="button" onclick="downloadContrastJson()">Download JSON</button>
@@ -213,18 +222,19 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     </div>
   </div>
 
-  <section class="df-upgrade" data-df-upgrade="color-contrast" data-tool-verification-panel>
-    <div class="df-upgrade__card">
+  <section class="handoff-card" data-tool-verification-panel>
+    <div>
       <div>
-        <span class="df-upgrade__kicker">Accessibility handoff</span>
+        <span class="card-title">Accessibility handoff</span>
         <h2>Turn a color pair into a design-system decision</h2>
         <p>Check the contrast ratio, then copy a short report or CSS tokens for a ticket, style guide, or pull request. The result is calculated locally from the WCAG relative-luminance formula.</p>
-        <ul class="df-upgrade__bullets"><li>AA normal text needs at least 4.5:1; AA large text needs at least 3:1.</li><li>AAA normal text needs at least 7:1; AAA large text needs at least 4.5:1.</li><li>Copy CSS tokens when the pair is ready for implementation, or copy the report when a design needs revision.</li><li>Still test real UI states: hover, disabled, focus, borders, icons, charts, dark mode, and mobile brightness.</li></ul>
-        <p class="df-upgrade__note"><strong>Sources &amp; verification:</strong> Reference standard reviewed 2026. <strong>Disclaimer:</strong> this tool follows WCAG contrast math for text color pairs only. It does not audit the whole page, non-text contrast, focus appearance, disabled states, icons, charts, images of text, or all WCAG 2.2 criteria.</p>
+        <ul><li>AA normal text needs at least 4.5:1; AA large text needs at least 3:1.</li><li>AAA normal text needs at least 7:1; AAA large text needs at least 4.5:1.</li><li>WCAG says computed ratios should not be rounded up to pass a threshold.</li><li>Still test hover, disabled, focus, borders, icons, charts, dark mode, mobile brightness, and real fonts.</li></ul>
+        <p><strong>Sources &amp; verification:</strong> WCAG 2.2 contrast minimum. <strong>Disclaimer:</strong> this tool follows WCAG contrast math for text color pairs only. It does not audit the whole page, non-text contrast, focus appearance, disabled states, icons, charts, images of text, or all WCAG 2.2 criteria.</p>
       </div>
-      <div class="df-form" aria-label="Contrast workflow outputs">
-        <label>Current check<output class="df-result" id="contrastWorkflowResult" aria-live="polite">#000000 on #FFFFFF gives 21:1 and passes AA normal text.</output></label>
-        <div class="df-actions"><button type="button" onclick="copyContrastReport()">Copy report</button><button type="button" onclick="copyContrastCss()">Copy CSS tokens</button></div>
+      <div aria-label="Contrast workflow outputs">
+        <label class="f-label" for="contrastWorkflowResult">Current check</label>
+        <output class="handoff-result" id="contrastWorkflowResult" aria-live="polite">#000000 on #FFFFFF gives 21:1 and passes AA normal text.</output>
+        <div class="contrast-actions"><button type="button" onclick="copyContrastReport()">Copy report</button><button type="button" onclick="copyContrastCss()">Copy CSS tokens</button></div>
       </div>
     </div>
   </section>
@@ -234,7 +244,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     <div class="card-body">
       <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">Understanding WCAG Color Contrast</h2>
       <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-        The <strong>Web Content Accessibility Guidelines (WCAG) 2.1</strong> define minimum contrast ratios to ensure text is readable by people with visual impairments. The contrast ratio ranges from 1:1 (no contrast, e.g., white on white) to 21:1 (maximum contrast, black on white).
+        The <strong>Web Content Accessibility Guidelines (WCAG) 2.2</strong> define minimum contrast ratios so text and images of text have enough contrast against their background. The contrast ratio ranges from 1:1 to 21:1.
       </p>
       <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">WCAG Levels</h3>
       <ul style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
@@ -244,7 +254,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
         <li><strong>AAA Large Text:</strong> Minimum 4.5:1 contrast ratio</li>
       </ul>
       <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-        Large text is 18pt (24px) or larger regular weight, or 14pt (18.66px) bold. Most legal requirements ask for AA compliance at minimum. The formula uses <strong>relative luminance</strong> as defined in the <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener" style="color:var(--afro-blue)">WCAG 2.1 guidelines</a>.
+        Large text is 18pt (24px) or larger regular weight, or 14pt (18.66px) bold. The formula uses <strong>relative luminance</strong> as defined in the <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener" style="color:var(--afro-blue)">WCAG 2.2 guidance</a>, and threshold comparisons should use the computed value rather than a rounded display value.
       </p>
       <p style="font-size:.85rem;color:#475569;line-height:1.7">
         For related tools: <a href="/tools/color-picker/" style="color:var(--afro-blue)">Color Picker</a> and <a href="/tools/css-gradient/" style="color:var(--afro-blue)">CSS Gradient Generator</a>.
@@ -255,13 +265,13 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
   <section style="margin-top:18px">
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>This colour contrast checker helps designers and developers verify that their text and background colour combinations meet WCAG 2.1 accessibility guidelines. Simply enter or pick your foreground and background colours and the tool instantly calculates the contrast ratio, showing whether your combination passes AA and AAA standards for both normal and large text. Accessible design is not just good practice, it is a legal requirement in many countries. Whether you are building a website, designing a mobile app, or creating marketing materials, this tool ensures your content is readable by everyone, including people with visual impairments or colour blindness.</p>
+    <p>This color contrast checker helps designers and developers test foreground and background color pairs against WCAG 2.2 text contrast thresholds. Enter or pick colors to calculate AA and AAA results for normal and large text, then copy a report or CSS tokens for review. Use the result as one accessibility check, not a full-page audit.</p>
   </div>
 </section>
     <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What is WCAG contrast ratio?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">WCAG defines minimum contrast between text and background. AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 and 4.5:1 respectively.</div></details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What counts as large text?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">18pt (24px) or larger regular weight, or 14pt (18.66px) bold weight.</div></details>
-    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Why does contrast matter?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Good contrast ensures readability for people with visual impairments, color blindness, or those in bright environments. It is a legal requirement in many jurisdictions.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Why does contrast matter?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Sufficient luminance contrast helps text remain readable for people with low vision, contrast sensitivity loss, color vision differences, and bright-screen conditions.</div></details>
   </section>
 </div></div>
 
@@ -269,6 +279,8 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 
 <script>
 function hexToRgb(hex){
+  hex=normalizeHex(hex);
+  if(!hex)return null;
   hex=hex.replace('#','');
   if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
   const n=parseInt(hex,16);
@@ -289,6 +301,25 @@ function contrastRatio(l1,l2){
   return (lighter+0.05)/(darker+0.05);
 }
 
+function normalizeHex(value){
+  const trimmed=String(value||'').trim();
+  if(/^#[0-9a-fA-F]{6}$/.test(trimmed))return trimmed.toUpperCase();
+  if(/^[0-9a-fA-F]{6}$/.test(trimmed))return '#'+trimmed.toUpperCase();
+  if(/^#[0-9a-fA-F]{3}$/.test(trimmed))return trimmed.toUpperCase();
+  if(/^[0-9a-fA-F]{3}$/.test(trimmed))return '#'+trimmed.toUpperCase();
+  return '';
+}
+
+function formatRatio(ratio){
+  if(ratio>=21)return '21';
+  return (Math.floor(ratio*100)/100).toFixed(2);
+}
+
+function setContrastStatus(message){
+  var el=document.getElementById('contrastStatus');
+  if(el)el.textContent=message;
+}
+
 function updateCompliance(el,statusEl,passes){
   el.className='compliance-item '+(passes?'pass':'fail');
   statusEl.className='comp-status '+(passes?'pass':'fail');
@@ -296,8 +327,18 @@ function updateCompliance(el,statusEl,passes){
 }
 
 function update(){
-  const fgHex=document.getElementById('fgHex').value;
-  const bgHex=document.getElementById('bgHex').value;
+  const fgInput=document.getElementById('fgHex');
+  const bgInput=document.getElementById('bgHex');
+  const fgHex=normalizeHex(fgInput.value);
+  const bgHex=normalizeHex(bgInput.value);
+
+  if(!fgHex||!bgHex){
+    setContrastStatus('Enter valid 3- or 6-digit hex colors, for example #1E293B.');
+    return;
+  }
+
+  fgInput.value=fgHex;
+  bgInput.value=bgHex;
   const fg=hexToRgb(fgHex);
   const bg=hexToRgb(bgHex);
 
@@ -306,13 +347,14 @@ function update(){
   const fgL=relativeLuminance(fg.r,fg.g,fg.b);
   const bgL=relativeLuminance(bg.r,bg.g,bg.b);
   const ratio=contrastRatio(fgL,bgL);
+  const displayRatio=formatRatio(ratio);
 
   // Update preview
   document.getElementById('preview').style.background=bgHex;
   document.getElementById('preview').style.color=fgHex;
 
   // Update ratio display
-  document.getElementById('ratioNum').textContent=ratio.toFixed(2)+':1';
+  document.getElementById('ratioNum').textContent=displayRatio+':1';
   document.getElementById('ratioNum').style.color=ratio>=4.5?'#16a34a':ratio>=3?'#f59e0b':'#dc2626';
 
   // Update swatches
@@ -325,8 +367,9 @@ function update(){
   updateCompliance(document.getElementById('aaaNormal'),document.getElementById('aaaNormalStatus'),ratio>=7);
   updateCompliance(document.getElementById('aaaLarge'),document.getElementById('aaaLargeStatus'),ratio>=4.5);
   var workflow=document.getElementById('contrastWorkflowResult');
-  if(workflow)workflow.textContent=fgHex.toUpperCase()+' on '+bgHex.toUpperCase()+' gives '+ratio.toFixed(2)+':1. AA normal '+(ratio>=4.5?'passes':'fails')+', AAA normal '+(ratio>=7?'passes':'fails')+'.';
-  window.__contrastLatest={foreground:fgHex.toUpperCase(),background:bgHex.toUpperCase(),ratio:ratio,aaNormal:ratio>=4.5,aaLarge:ratio>=3,aaaNormal:ratio>=7,aaaLarge:ratio>=4.5};
+  if(workflow)workflow.textContent=fgHex.toUpperCase()+' on '+bgHex.toUpperCase()+' gives '+displayRatio+':1. AA normal '+(ratio>=4.5?'passes':'fails')+', AAA normal '+(ratio>=7?'passes':'fails')+'.';
+  window.__contrastLatest={foreground:fgHex.toUpperCase(),background:bgHex.toUpperCase(),ratio:ratio,displayRatio:displayRatio,aaNormal:ratio>=4.5,aaLarge:ratio>=3,aaaNormal:ratio>=7,aaaLarge:ratio>=4.5};
+  setContrastStatus('Calculated with WCAG relative luminance. Threshold checks use the unrounded value.');
 }
 
 function swapColors(){
@@ -347,15 +390,19 @@ document.getElementById('bgColor').addEventListener('input',function(){
   document.getElementById('bgHex').value=this.value.toUpperCase();update();
 });
 document.getElementById('fgHex').addEventListener('input',function(){
-  if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('fgColor').value=this.value;update();}
+  const value=normalizeHex(this.value);
+  if(value&&value.length===7){document.getElementById('fgColor').value=value;update();}
+  else setContrastStatus('Enter a valid foreground hex color.');
 });
 document.getElementById('bgHex').addEventListener('input',function(){
-  if(/^#[0-9a-fA-F]{6}$/.test(this.value)){document.getElementById('bgColor').value=this.value;update();}
+  const value=normalizeHex(this.value);
+  if(value&&value.length===7){document.getElementById('bgColor').value=value;update();}
+  else setContrastStatus('Enter a valid background hex color.');
 });
 
 update();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 
@@ -375,32 +422,47 @@ function setContrastStatus(message){
 }
 function contrastReport(){
   var r=currentContrast();
-  return 'WCAG contrast report: foreground '+r.foreground+', background '+r.background+', ratio '+r.ratio.toFixed(2)+':1. AA normal '+(r.aaNormal?'PASS':'FAIL')+', AA large '+(r.aaLarge?'PASS':'FAIL')+', AAA normal '+(r.aaaNormal?'PASS':'FAIL')+', AAA large '+(r.aaaLarge?'PASS':'FAIL')+'. Verify real UI states such as hover, disabled, focus, icons, charts, and dark mode.';
+  return 'WCAG 2.2 contrast report: foreground '+r.foreground+', background '+r.background+', ratio '+r.displayRatio+':1. AA normal '+(r.aaNormal?'PASS':'FAIL')+', AA large '+(r.aaLarge?'PASS':'FAIL')+', AAA normal '+(r.aaaNormal?'PASS':'FAIL')+', AAA large '+(r.aaaLarge?'PASS':'FAIL')+'. Threshold checks use the unrounded value. Verify hover, disabled, focus, icons, charts, images of text, and dark mode.';
 }
 function copyContrastReport(){
   var text=contrastReport();
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){setContrastStatus('Contrast report copied.');});}
-  else setContrastStatus(text);
+  copyText(text,'Contrast report copied.');
 }
 function copyContrastCss(){
   var r=currentContrast();
-  var css='--color-text: '+r.foreground+';\n--color-surface: '+r.background+';\n/* Contrast: '+r.ratio.toFixed(2)+':1, AA normal '+(r.aaNormal?'PASS':'FAIL')+' */';
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(css).then(function(){setContrastStatus('CSS tokens copied.');});}
-  else setContrastStatus(css);
+  var css='--color-text: '+r.foreground+';\n--color-surface: '+r.background+';\n/* WCAG 2.2 contrast: '+r.displayRatio+':1, AA normal '+(r.aaNormal?'PASS':'FAIL')+', checked with unrounded value */';
+  copyText(css,'CSS tokens copied.');
+}
+function copyText(text,message){
+  var fallback=function(){
+    var textarea=document.createElement('textarea');
+    textarea.value=text;
+    textarea.setAttribute('readonly','');
+    textarea.style.position='fixed';
+    textarea.style.opacity='0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try{document.execCommand('copy');}catch(err){}
+    textarea.remove();
+    setContrastStatus(message);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){setContrastStatus(message);}).catch(fallback);}
+  else fallback();
 }
 function downloadContrastJson(){
   var r=currentContrast();
-  var blob=new Blob([JSON.stringify({tool:'color-contrast',checkedAt:new Date().toISOString(),foreground:r.foreground,background:r.background,ratio:Number(r.ratio.toFixed(2)),passes:{aaNormal:r.aaNormal,aaLarge:r.aaLarge,aaaNormal:r.aaaNormal,aaaLarge:r.aaaLarge}},null,2)],{type:'application/json'});
+  var blob=new Blob([JSON.stringify({tool:'color-contrast',standard:'WCAG 2.2 contrast minimum',checkedAt:new Date().toISOString(),foreground:r.foreground,background:r.background,ratio:Number(r.displayRatio),passes:{aaNormal:r.aaNormal,aaLarge:r.aaLarge,aaaNormal:r.aaaNormal,aaaLarge:r.aaaLarge},note:'Pass/fail thresholds use the unrounded computed ratio.'},null,2)],{type:'application/json'});
   var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
+  var url=URL.createObjectURL(blob);
+  a.href=url;
   a.download='afrotools-contrast-report.json';
   document.body.appendChild(a);
   a.click();
   a.remove();
-  URL.revokeObjectURL(a.href);
+  URL.revokeObjectURL(url);
   setContrastStatus('JSON report downloaded.');
 }
-// Save/Share buttons - manual placement needed
+// Save/share button placement
 (function(){
   var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
@@ -412,6 +474,5 @@ function downloadContrastJson(){
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

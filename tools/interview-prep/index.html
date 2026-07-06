@@ -40,13 +40,20 @@ a{text-decoration:none;color:inherit}
 .q-text{font-size:.9rem;font-weight:600;color:#0f172a;margin-bottom:6px}
 .q-star{font-size:.78rem;color:#64748b;line-height:1.6}
 .email-box{background:#f8fafd;border:1.5px solid #e2e8f0;border-radius:10px;padding:20px;font-size:.85rem;color:#374151;line-height:1.8;white-space:pre-wrap;word-wrap:break-word;font-family:'DM Sans',sans-serif}
+.result-note{border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;color:#475569;font-size:.9rem;line-height:1.65;padding:1rem;margin-top:.75rem}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#1d4ed8;font-weight:800;font-size:.86rem;padding:.65rem .9rem;cursor:pointer}
+.secondary-btn:hover{border-color:var(--en-accent);background:var(--en-accent-pale)}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.method-card p{margin:.45rem 0 0;color:#475569;line-height:1.65;font-size:.9rem}
+.method-list{margin:.75rem 0 0;padding-left:1.15rem;color:#475569;line-height:1.65;font-size:.88rem}
+@media(max-width:600px){.result-actions .secondary-btn{width:100%}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/interview-prep.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/interview-prep/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/preparation-entretien/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/maandalizi-ya-mahojiano/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/interview-prep/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -183,6 +190,27 @@ a{text-decoration:none;color:inherit}
       <div class="email-box" id="emailTemplate"></div>
       <button type="button" class="en-btn en-btn-secondary en-btn-sm" onclick="copyEmail()" style="margin-top:12px">📋 Copy Email</button>
     </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">RP</div>Interview prep report</div>
+      <p class="result-note">Use this report as your rehearsal plan: checklist, likely questions, STAR prompts, dress note, and follow-up email. Confirm the interview format, employer instructions, location, timing, and salary range before the interview.</p>
+      <div class="result-actions" aria-label="Interview prep report actions">
+        <button type="button" class="secondary-btn" onclick="copyPrepReport()">Copy plan</button>
+        <button type="button" class="secondary-btn" onclick="downloadPrepReport()">Download TXT</button>
+        <button type="button" class="secondary-btn" onclick="savePrepReport()">Save locally</button>
+      </div>
+      <div class="action-status" id="prep-action-status" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="en-card method-card" aria-labelledby="interview-prep-method-title">
+    <div class="en-card-title" id="interview-prep-method-title"><div class="en-card-title-icon">CK</div>Method and checks</div>
+    <p>This MVP builds a private interview prep kit from country, company type, role level, and interview format. It combines country dress expectations, company-specific research prompts, role-level questions, STAR rehearsal tips, and a follow-up email template.</p>
+    <ul class="method-list">
+      <li>Checklist sections are grouped by timing: three days before, day before, day of interview, and after the interview.</li>
+      <li>Question prompts combine role-level behavioural questions with company-type questions the candidate can ask the employer.</li>
+      <li>This is career preparation support, not hiring advice, legal advice, immigration advice, salary guarantee, or employer endorsement.</li>
+    </ul>
   </div>
 
 </div>
@@ -228,6 +256,12 @@ var COMPANY_QS = {
 };
 
 var checked=0,total=0;
+var currentInterviewPrepPlan=null;
+
+function selectedText(id){
+  var el=document.getElementById(id);
+  return el&&el.options?el.options[el.selectedIndex].text:'';
+}
 
 function tick(){
   checked=document.querySelectorAll('.prep-item input:checked').length;
@@ -235,6 +269,7 @@ function tick(){
   document.querySelectorAll('.prep-item').forEach(function(el){
     el.className='prep-item'+(el.querySelector('input').checked?' done':'');
   });
+  if(currentInterviewPrepPlan){currentInterviewPrepPlan.completed=checked;}
 }
 
 function generatePrep(){
@@ -253,6 +288,8 @@ function generatePrep(){
       {l:'Prepare 5 STAR stories',d:'Situation, Task, Action, Result — covering leadership, conflict, achievement, failure, teamwork.'},
       {l:'Prepare your "Tell me about yourself" (90 sec max)',d:'Start with current role, go back to education, end with why this role.'},
       {l:'Research salary range (use AfroTools Salary Negotiation)',d:'Know your walk-away, target, and counter-offer numbers.'},
+      {l:'Build a role scorecard',d:'Write the 5 things this employer likely cares about most, then match each one to proof from your work.'},
+      {l:'Prepare 3 quantified achievement bullets',d:'Use numbers where possible: revenue, costs saved, customers served, turnaround time, risk reduced, or team size.'},
       {l:'Prepare 5 smart questions to ask the interviewer',d:'See suggestions below. Never say "I have no questions."'},
       {l:'Plan your outfit — '+dressNote.split(':')[0],d:dressNote}
     ]},
@@ -261,6 +298,7 @@ function generatePrep(){
       {l:'Print CV × 3 copies (in-person) or have PDF open',d:'Bring extras even if not asked — it shows preparation.'},
       {l:'Research interviewer on LinkedIn',d:'Find common ground or their background to personalise your questions.'},
       {l:'Do a mock interview with a friend or record yourself',d:'Practise your top 5 answers aloud. Watching yourself is uncomfortable but powerful.'},
+      {l:'Prepare a portfolio or proof pack',d:'Have links, samples, certificates, dashboards, writing samples, or anonymised case studies ready if relevant.'},
       {l:'Company-specific prep: '+compTip.split('.')[0],d:compTip},
       {l:'Plan your route (in-person) or test your tech (video)',d:'Arrive 15 minutes early (in-person). Join the call 5 mins early (video).'},
       {l:'Sleep 7–8 hours. Do not prepare after 10pm.',d:'Rest is more valuable than last-minute cramming.'}
@@ -272,11 +310,13 @@ function generatePrep(){
       {l:'Greet everyone warmly — receptionist, security',d:'Companies often ask support staff about candidates.'},
       {l:'Listen fully before answering — pause 2 seconds before responding',d:'Slow, thoughtful answers demonstrate seniority.'},
       {l:'Salary: do not raise it before round 2 unless directly asked',d:'If pressed, give a range: "Based on my research, I\'m targeting [X] to [Y].\"'},
+      {l:'Clarify the next-step timeline before leaving',d:'Ask when they expect to decide, who owns next steps, and whether there is another assessment or interview round.'},
       {l:'Ask your prepared questions at the end',d:'Questions you ask tell them as much about you as your answers.'}
     ]},
     {title:'📅 After Interview',items:[
       {l:'Send follow-up email within 24 hours',d:'See the template below. Short, warm, professional.'},
       {l:'Note down all questions asked and your answers',d:'For self-improvement and for future rounds.'},
+      {l:'Update your interview tracker',d:'Record interviewer names, questions, salary signals, culture signals, risks, and next-step date.'},
       {l:'Connect with interviewer on LinkedIn (with a personal note)',d:'Optional but memorable.'},
       {l:'If no response in 5 business days, politely follow up once',d:'"I wanted to check on the timeline for next steps..."'}
     ]}
@@ -327,43 +367,133 @@ Warm regards,
 [Your Name]
 [Phone] | [LinkedIn URL]`;
 
+  currentInterviewPrepPlan={
+    country:country,
+    countryLabel:selectedText('country'),
+    companyType:comp,
+    companyTypeLabel:selectedText('compType'),
+    roleLevel:level,
+    roleLevelLabel:selectedText('roleLevel'),
+    format:fmt,
+    formatLabel:selectedText('format'),
+    dressNote:dressNote,
+    companyTip:compTip,
+    sections:sections,
+    questions:qs,
+    emailTemplate:document.getElementById('emailTemplate').textContent,
+    total:total,
+    completed:0
+  };
+
   document.getElementById('results').className='en-results on';
 }
 
 function copyEmail(){
   navigator.clipboard.writeText(document.getElementById('emailTemplate').textContent).then(function(){alert('Email template copied!');});
 }
+
+function buildPrepReport(){
+  if(!currentInterviewPrepPlan){generatePrep();}
+  var p=currentInterviewPrepPlan;
+  if(!p){return 'Interview prep plan unavailable. Generate the prep kit first.';}
+  var lines=[
+    'AfroTools Interview Prep Kit',
+    'Generated: '+new Date().toLocaleDateString(),
+    '',
+    'Country: '+p.countryLabel,
+    'Company type: '+p.companyTypeLabel,
+    'Role level: '+p.roleLevelLabel,
+    'Interview format: '+p.formatLabel,
+    'Checklist progress: '+(p.completed||0)+' of '+p.total+' completed',
+    '',
+    'Dress and format note',
+    p.dressNote,
+    '',
+    'Company-specific prep',
+    p.companyTip,
+    '',
+    'Preparation checklist'
+  ];
+  p.sections.forEach(function(section){
+    lines.push('');
+    lines.push(section.title.replace(/[^\x20-\x7E]/g,'').trim());
+    section.items.forEach(function(item){
+      lines.push('- '+item.l+' | '+item.d);
+    });
+  });
+  lines.push('');
+  lines.push('Likely questions');
+  p.questions.forEach(function(question,index){
+    lines.push((index+1)+'. '+question);
+  });
+  lines.push('');
+  lines.push('Follow-up email template');
+  lines.push(p.emailTemplate);
+  lines.push('');
+  lines.push('Checks before acting: confirm the interview time, interviewer names, role brief, format, employer instructions, location or link, salary range, contract constraints, and work-permit needs if relevant.');
+  lines.push('Planning note: this is interview preparation support, not a hiring guarantee, legal advice, immigration advice, salary guarantee, or employer endorsement.');
+  return lines.join('\n');
+}
+
+function setPrepStatus(message){
+  var el=document.getElementById('prep-action-status');
+  if(el){el.textContent=message;}
+}
+
+function fallbackPrepCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text;
+  ta.setAttribute('readonly','');
+  ta.style.position='fixed';
+  ta.style.left='-999px';
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+}
+
+function copyPrepReport(){
+  var text=buildPrepReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setPrepStatus('Interview prep plan copied.');}).catch(function(){
+      fallbackPrepCopy(text);
+      setPrepStatus('Interview prep plan copied.');
+    });
+    return;
+  }
+  fallbackPrepCopy(text);
+  setPrepStatus('Interview prep plan copied.');
+}
+
+function downloadPrepReport(){
+  var text=buildPrepReport();
+  var blob=new Blob([text],{type:'text/plain'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='interview-prep-kit.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setPrepStatus('Interview prep kit downloaded.');
+}
+
+function savePrepReport(){
+  var text=buildPrepReport();
+  try{
+    localStorage.setItem('afrotools-interview-prep-kit',JSON.stringify({savedAt:Date.now(),plan:currentInterviewPrepPlan,report:text}));
+    setPrepStatus('Interview prep kit saved in this browser.');
+  }catch(err){
+    setPrepStatus('Could not save locally. Copy or download the kit instead.');
+  }
+}
 </script>
 
 
 
-<section class="df-upgrade" data-df-upgrade="interview-prep">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Interview Preparation Checklist for Africa — By Company Type &amp; Role decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for interview preparation checklist for africa — by company type &amp; role so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Interview Preparation Checklist for Africa — By Company Type &amp;amp; Role: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="interview-prep">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="interview-prep" data-df-base="Interview Preparation Checklist for Africa — By Company Type &amp;amp; Role: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Interview Preparation Checklist for Africa — By Company Type &amp;amp; Role: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="interview-prep">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="interview-prep-faq-title">
-  <h2 id="interview-prep-faq-title">Interview Preparation Checklist for Africa — By Company Type &amp; Role FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <afro-footer></afro-footer>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

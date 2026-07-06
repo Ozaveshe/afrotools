@@ -18,7 +18,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
@@ -49,6 +49,9 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 .btn{padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}
 .btn-primary{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff}
 .btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.btn-success{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.btn-danger{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+.action-status{min-height:20px;margin-top:10px;font-size:.78rem;font-weight:700;color:#6d28d9}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:14px}
 .stat-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;text-align:center}
 .stat-box .num{font-size:1.1rem;font-weight:800;color:#7c3aed;word-break:break-all}
@@ -112,7 +115,6 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/statistics-calc/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-statistiques/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/statistics-calc/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -123,7 +125,7 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
       "name": "How should I use Statistics Calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Paste comma-, space-, or newline-separated numbers, then calculate mean, median, mode, standard deviation, variance, quartiles, range, skewness, coefficient of variation, histogram bins, and sorted data. Use the copy or download report actions to keep the summary for classwork or analysis notes."
       }
     },
     {
@@ -131,7 +133,7 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
       "name": "What should I verify before acting on Statistics Calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Verify that your dataset is complete, numeric, and uses the right unit. Confirm whether your assignment or analysis needs sample or population standard deviation, whether outliers should stay in the dataset, and whether skewed data should be summarized with median instead of mean."
       }
     },
     {
@@ -139,7 +141,7 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
       "name": "Is Statistics Calculator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a local descriptive-statistics helper for learning and analysis, not an official statistical audit, research finding, or professional advice."
       }
     }
   ],
@@ -169,8 +171,11 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <button type="button" class="btn btn-primary" onclick="calculate()">Calculate</button>
 <button type="button" class="btn btn-secondary" onclick="loadSample('exam')">Sample: Exam Scores</button>
 <button type="button" class="btn btn-secondary" onclick="loadSample('salary')">Sample: Salaries</button>
-<button type="button" class="btn btn-secondary" onclick="document.getElementById('dataInput').value='';document.getElementById('resultCard').style.display='none'">Clear</button>
+<button type="button" class="btn btn-success" onclick="copyStatsReport()">Copy Report</button>
+<button type="button" class="btn btn-success" onclick="downloadStatsReport()">Download TXT</button>
+<button type="button" class="btn btn-danger" onclick="clearStatsData()">Clear</button>
 </div>
+<div class="action-status" id="statsStatus" aria-live="polite"></div>
 </div></div>
 
 <div class="card" id="resultCard" style="display:none">
@@ -223,35 +228,18 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <details class="faq-item"><summary>What does a high coefficient of variation mean?</summary><p>A CV above 30% is generally considered high variability. It means the standard deviation is large relative to the mean. CV is useful for comparing variability between datasets with different scales — for example, comparing the variability of heights (in cm) vs weights (in kg).</p></details>
 </section>
 
-<section class="df-upgrade" data-df-upgrade="statistics-calc">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Statistics Calculator decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for statistics calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Statistics Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="statistics-calc">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="statistics-calc" data-df-base="Statistics Calculator: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Statistics Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="statistics-calc">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="statistics-calc-faq-title">
-  <h2 id="statistics-calc-faq-title">Statistics Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <afro-related-tools category="education" current="statistics-calc"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <script>
+let currentStatsReport=null;
+
+function setStatsStatus(message){
+  const el=document.getElementById('statsStatus');
+  if(el)el.textContent=message||'';
+}
+
 function loadSample(type){
   const samples={
     exam:'65, 72, 78, 82, 85, 88, 90, 55, 60, 75, 80, 92, 68, 74, 77, 83, 95, 58, 70, 86, 73, 79, 81, 87, 63',
@@ -265,9 +253,102 @@ function parseData(str){
   return str.split(/[\s,;\n\r\t]+/).map(s=>s.trim()).filter(s=>s!=='').map(Number).filter(n=>!isNaN(n));
 }
 
+function clearStatsData(){
+  document.getElementById('dataInput').value='';
+  document.getElementById('resultCard').style.display='none';
+  currentStatsReport=null;
+  setStatsStatus('Dataset cleared.');
+}
+
+function buildStatsReport(){
+  if(!currentStatsReport)calculate();
+  if(!currentStatsReport)return'';
+  const r=currentStatsReport;
+  return [
+    'Statistics Calculator report - AfroTools',
+    'Generated: '+new Date().toLocaleString(),
+    '',
+    'Dataset',
+    '- Count: '+r.n,
+    '- Sum: '+r.sum,
+    '- Minimum: '+r.min,
+    '- Maximum: '+r.max,
+    '- Range: '+r.range,
+    '',
+    'Central tendency',
+    '- Mean: '+r.mean,
+    '- Median: '+r.median,
+    '- Mode: '+r.mode,
+    '',
+    'Spread',
+    '- Sample standard deviation: '+r.sampleSD,
+    '- Population standard deviation: '+r.popSD,
+    '- Sample variance: '+r.sampleVar,
+    '- Q1: '+r.q1,
+    '- Q3: '+r.q3,
+    '- IQR: '+r.iqr,
+    '- Coefficient of variation: '+r.cv,
+    '- Skewness: '+r.skewness,
+    '',
+    'Interpretation notes',
+    '- Use sample standard deviation when this dataset is a sample of a larger population.',
+    '- Compare mean and median to spot skew or outlier influence.',
+    '- Inspect the sorted values before removing any outlier.',
+    '',
+    'Sorted data',
+    r.sorted.join(', ')
+  ].join('\n');
+}
+
+function copyStatsFallback(text){
+  const helper=document.createElement('textarea');
+  helper.value=text;
+  helper.setAttribute('readonly','');
+  helper.style.position='fixed';
+  helper.style.left='-9999px';
+  document.body.appendChild(helper);
+  helper.select();
+  try{
+    document.execCommand('copy');
+    setStatsStatus('Statistics report copied.');
+  }catch(e){
+    setStatsStatus('Copy failed. Download the TXT report instead.');
+  }
+  document.body.removeChild(helper);
+}
+
+function copyStatsReport(){
+  const text=buildStatsReport();
+  if(!text){setStatsStatus('Enter at least two numbers before copying.');return;}
+  if(!navigator.clipboard||!navigator.clipboard.writeText){
+    copyStatsFallback(text);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(function(){
+    setStatsStatus('Statistics report copied.');
+  }).catch(function(){
+    copyStatsFallback(text);
+  });
+}
+
+function downloadStatsReport(){
+  const text=buildStatsReport();
+  if(!text){setStatsStatus('Enter at least two numbers before downloading.');return;}
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='statistics-report-'+new Date().toISOString().slice(0,10)+'.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setStatsStatus('Statistics report downloaded.');
+}
+
 function calculate(){
   const data=parseData(document.getElementById('dataInput').value);
-  if(data.length<2){alert('Please enter at least 2 numbers.');return;}
+  if(data.length<2){setStatsStatus('Please enter at least 2 numbers.');return;}
 
   const n=data.length;
   const sorted=[...data].sort((a,b)=>a-b);
@@ -320,6 +401,26 @@ function calculate(){
     return v.toFixed(4);
   };
 
+  currentStatsReport={
+    n:n,
+    sum:fmt(sum),
+    min:fmt(min),
+    max:fmt(max),
+    range:fmt(range),
+    mean:fmt(mean),
+    median:fmt(median),
+    mode:modeStr,
+    sampleSD:fmt(sampleSD),
+    popSD:fmt(popSD),
+    sampleVar:fmt(sampleVar),
+    q1:fmt(q1),
+    q3:fmt(q3),
+    iqr:fmt(iqr),
+    cv:fmt(cv)+'%',
+    skewness:fmt(skewness),
+    sorted:sorted
+  };
+
   let html='';
   html+=`<div class="stat-box big"><div class="num">${fmt(mean)}</div><div class="lbl">Mean</div></div>`;
   html+=`<div class="stat-box big"><div class="num">${fmt(median)}</div><div class="lbl">Median</div></div>`;
@@ -361,10 +462,10 @@ function calculate(){
   document.getElementById('sortedSection').innerHTML=`<div style="font-size:.7rem;font-weight:700;color:var(--afro-dark);text-transform:uppercase;letter-spacing:.06em;margin-top:18px;margin-bottom:6px">Sorted Data</div><div class="sorted-data">${sorted.join(', ')}</div>`;
 
   document.getElementById('resultCard').style.display='block';
+  setStatsStatus('Statistics calculated for '+n+' values.');
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

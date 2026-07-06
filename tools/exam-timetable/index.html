@@ -67,6 +67,9 @@ h1 em{color:#fbbf24;font-style:normal}
 .hero-sub{font-size:.93rem;color:rgba(255,255,255,.8);max-width:520px;margin:0}
 .card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .card h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem;color:#111}
+.preset-panel{display:grid;gap:12px;margin-bottom:1rem;padding:14px;border:1px solid #dbeafe;border-radius:12px;background:#f8fbff}
+.preset-note{font-size:.8rem;line-height:1.6;color:#475569}
+.preset-note a{color:var(--color-primary);font-weight:700;text-decoration:none}
 label{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem;color:#374151}
 select,input[type=number],input[type=date],input[type=text]{width:100%;padding:.6rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;transition:border .2s;background:#fff}
 select:focus,input:focus{outline:none;border-color:var(--color-primary)}
@@ -80,6 +83,15 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .del-btn{background:#fee2e2;border:none;color:#dc2626;font-weight:700;border-radius:8px;padding:.4rem .6rem;cursor:pointer;font-size:.85rem}
 .result-box{display:none;margin-top:1rem}
 .result-box.show{display:block}
+.prep-pack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:1rem 0}
+.prep-card{border:1px solid #e5e7eb;border-radius:12px;background:#fff;padding:14px}
+.prep-card h3{font-size:.88rem;margin:0 0 8px;color:#111}
+.prep-card ul{margin:0;padding-left:18px;font-size:.78rem;line-height:1.6;color:#475569}
+.prep-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:1rem}
+.prep-actions .btn{justify-content:center}
+.secondary-btn{background:#fff;color:#1e293b;border:1.5px solid #cbd5e1}
+.secondary-btn:hover{background:#f8fafc}
+.tt-action-status{min-height:20px;margin-top:.75rem;color:#1d4ed8;font-size:.82rem;font-weight:800}
 .tt-week{margin-bottom:1.5rem}
 .tt-week-title{font-size:.9rem;font-weight:800;color:#111;margin-bottom:.75rem;padding:.5rem .75rem;background:#f3f4f6;border-radius:8px;display:flex;justify-content:space-between}
 .tt-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem}
@@ -96,7 +108,8 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .print-btn{margin-top:1rem;background:#1e293b;color:#fff}
 .print-btn:hover{background:#0f172a}
 .sec-body{padding:40px 0}
-@media(max-width:700px){.tt-grid{grid-template-columns:repeat(7,1fr)}.tt-slot{font-size:.6rem;padding:.25rem}.tt-day-header{font-size:.55rem}}
+@media(max-width:800px){.prep-pack{grid-template-columns:1fr}}
+@media(max-width:700px){.tt-grid{grid-template-columns:repeat(7,1fr)}.tt-slot{font-size:.6rem;padding:.25rem}.tt-day-header{font-size:.55rem}.row{grid-template-columns:1fr}.prep-actions{display:grid}.prep-actions .btn{width:100%}}
 @media(max-width:500px){.tt-grid{grid-template-columns:1fr}.tt-day{display:flex;flex-wrap:wrap;align-items:center}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/exam-timetable.webp">
@@ -104,7 +117,6 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/planning-examens/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ratiba-ya-mtihani/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/exam-timetable/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -115,7 +127,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "Turn exam dates into a revision schedule?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Map subjects, days left, daily study hours, and weak topics before printing a timetable."
+        "text": "Choose an Africa exam preset or add a custom target date, set your subjects, priorities, daily study hours, and duration, then generate a printable timetable with revision blocks, rest time, prep checklist, flashcard handoff, TXT export, calendar export, and local save."
       }
     },
     {
@@ -123,7 +135,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "What should I verify?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "https://learningcenter.unc.edu/tips-and-tools/studying-101-study-smarter-not-harder/"
+        "text": "Verify the latest official exam timetable, subject paper dates, venue, entry details, calculator or stationery rules, and school guidance before printing or sharing the timetable."
       }
     },
     {
@@ -131,7 +143,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "Is this an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting."
+        "text": "No. It is a local study planning tool, not an official WAEC, KNEC, ECZ, UNEB, NECTA, ZIMSEC, NSC, school, or university timetable."
       }
     }
   ],
@@ -160,6 +172,21 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 
 <div class="card">
   <h2>Set Up Your Timetable</h2>
+  <div class="preset-panel">
+    <div class="row" style="margin-bottom:0">
+      <div>
+        <label for="et-exam-preset">Africa exam preset</label>
+        <select id="et-exam-preset">
+          <option value="">Custom exam plan</option>
+        </select>
+      </div>
+      <div>
+        <label for="et-target-date">Exam or deadline date</label>
+        <input type="date" id="et-target-date">
+      </div>
+    </div>
+    <div class="preset-note" id="et-source-note">Choose a preset to load subjects, target date, and a starter prep pack. Confirm official dates before acting.</div>
+  </div>
   <div class="row">
     <div>
       <label for="et-start">Study Start Date</label>
@@ -186,7 +213,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
     </div>
     <div>
       <label for="et-weeks">Duration (weeks)</label>
-      <input type="number" id="et-weeks" value="4" min="1" max="12">
+      <input type="number" id="et-weeks" value="4" min="1" max="24">
     </div>
   </div>
 
@@ -203,42 +230,24 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 
   <div class="result-box" id="et-result">
     <div id="tt-summary" style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:.85rem 1rem;font-size:.85rem;color:#166534;margin-bottom:1.5rem"></div>
+    <div id="prep-pack" class="prep-pack"></div>
     <div id="tt-weeks"></div>
-    <button type="button" class="btn print-btn" onclick="window.print()">Print Timetable</button>
-  </div>
-</div>
-
-</div>
-</div>
-
-
-
-<section class="df-upgrade" data-df-upgrade="exam-timetable">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Exam study timetable</span>
-      <h2>Turn exam dates into a revision schedule</h2>
-      <p>Map subjects, days left, daily study hours, and weak topics before printing a timetable.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Result: exam timetable ready with daily study blocks, priority method, breaks, and revision checkpoints.</li><li>Methodology: use the fields to create a local planning summary with clear assumptions.</li><li>Source note: confirm live prices, official rules, or platform terms before acting.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education note: adjust for school timetable, sleep, transport, and realistic attention span. Sources/reference: <a href="https://learningcenter.unc.edu/tips-and-tools/studying-101-study-smarter-not-harder/" target="_blank" rel="noopener">University of North Carolina study schedule guide</a></p>
+    <div class="prep-actions">
+      <button type="button" class="btn print-btn" onclick="window.print()">Print Timetable</button>
+      <button type="button" class="btn secondary-btn" onclick="copyPrepPlan()">Copy prep pack</button>
+      <button type="button" class="btn secondary-btn" onclick="downloadTimetableText()">Download TXT</button>
+      <button type="button" class="btn secondary-btn" onclick="downloadTimetableCalendar()">Download calendar</button>
+      <button type="button" class="btn secondary-btn" onclick="savePrepPlan()">Save locally</button>
     </div>
-    <form class="df-form" data-df-form="exam-timetable">
-      <label>Subjects<input name="subjects" type="number" value="6" min="0" step="any" aria-label="Subjects"></label>
-      <label>Days left<input name="daysLeft" type="number" value="21" min="0" step="any" aria-label="Days left"></label>
-      <label>Study hours per day<input name="hoursPerDay" type="number" value="3" min="0" step="any" aria-label="Study hours per day"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="weakest topics">weakest topics</option><option value="earliest exams">earliest exams</option><option value="highest marks">highest marks</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="exam-timetable" data-df-base="Result: exam timetable ready with daily study blocks, priority method, breaks, and revision checkpoints." aria-live="polite">Result: exam timetable ready with daily study blocks, priority method, breaks, and revision checkpoints.</output>
-      <div class="df-actions"><button type="button" data-df-copy="exam-timetable">Copy summary</button></div>
-    </form>
+    <div class="tt-action-status" id="tt-action-status" aria-live="polite"></div>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="exam-timetable-faq-title">
-  <h2 id="exam-timetable-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>Turn exam dates into a revision schedule?</summary><p>Map subjects, days left, daily study hours, and weak topics before printing a timetable.</p></details><details><summary>What should I verify?</summary><p>Education note: adjust for school timetable, sleep, transport, and realistic attention span.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
+
+</div>
+</div>
+
+
+
 <afro-footer></afro-footer>
 <script>
 var DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -314,7 +323,309 @@ document.addEventListener('DOMContentLoaded',function(){
   var today=new Date();today.setDate(today.getDate()+1);
   document.getElementById('et-start').value=today.toISOString().split('T')[0];
 });
+
+var currentPlanText='';
+var lastTimetableSnapshot=null;
+var EXAM_PRESETS={
+  'zambia-gce':{name:'Zambia ECZ GCE 2026',targetDate:'2026-07-22',source:'https://www.exams-council.org.zm/gce/',note:'ECZ lists the 2026 GCE timetable as 3 July to 22 July 2026. Use this for last-mile revision and exam-day readiness.',subjects:['Mathematics','English Language','Biology','Commerce','Civic Education'],checklist:['Check remaining paper dates against the ECZ timetable','Prioritise weak subjects and past papers','Prepare ID, pens, calculator, and centre route','Sleep plan for the final 72 hours'],flashcards:['Formula you always forget','Common command words','One-mark definitions','Last paper mistakes']},
+  'uganda-uneb-registration':{name:'Uganda UNEB PLE/UCE/UACE 2026',targetDate:'2026-07-31',source:'https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/',note:'UNEB says late registration runs from 1 July to 31 July 2026. Use this as a registration and school-readiness deadline.',subjects:['Mathematics','English','Science','Social Studies','CRE/IRE'],checklist:['Confirm registration status with school','List continuous assessment or project gaps','Collect candidate documents','Start weekly revision blocks after registration'],flashcards:['Key definitions','Experiment steps','Essay openings','Map and graph prompts']},
+  'zambia-grade-7':{name:'Zambia ECZ Grade 7 2026',targetDate:'2026-10-26',source:'https://www.exams-council.org.zm/grade-7/',note:'ECZ lists the 2026 Grade 7 exam window as 26 October to 30 October 2026.',subjects:['Mathematics','English','Integrated Science','Social Studies','Special Paper'],checklist:['Print subject timetable','Set parent revision check-ins','Run two timed papers per week','Prepare transport and exam materials'],flashcards:['Times tables','Science vocabulary','Comprehension clues','Civic terms']},
+  'zambia-grade-12':{name:'Zambia ECZ Grade 12 2026',targetDate:'2026-10-30',source:'https://www.exams-council.org.zm/grade-12/',note:'ECZ lists the 2026 School Certificate exam window as 30 October to 17 November 2026.',subjects:['Mathematics','English Language','Biology','Chemistry','Physics'],checklist:['Map every subject to its ECZ paper date','Run practical and theory revision separately','Schedule weekly timed past papers','Check calculator and centre requirements'],flashcards:['Definitions','Formulae','Diagrams','Common essay structures']},
+  'tanzania-csee':{name:'Tanzania NECTA CSEE 2026',targetDate:'2026-11-02',source:'https://necta.go.tz/pages/csee',note:'NECTA states CSEE is administered in the first week of November every year. Treat this date as a planning anchor until the paper timetable is confirmed.',subjects:['Basic Mathematics','English Language','Kiswahili','Biology','Geography'],checklist:['Confirm the final NECTA paper timetable','Separate Kiswahili and English writing practice','Run science diagram drills','Protect final-week sleep and transport plans'],flashcards:['Kiswahili terms','Geography case facts','Biology diagrams','Math methods']},
+  'south-africa-nsc':{name:'South Africa NSC 2026',targetDate:'2026-10-12',source:'https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338',note:'The DBE publishes the 2026 November NSC timetable. Confirm each subject paper on the official PDF before finalising.',subjects:['Mathematics','English Home Language','Life Sciences','Physical Sciences','Geography'],checklist:['Check DBE subject paper dates','Set APS target per university course','Plan past-paper weekends','Prepare exam admission and stationery'],flashcards:['APS goal reminders','Definitions','Formulae','Essay plans']},
+  'ghana-waec':{name:'Ghana WAEC BECE/WASSCE 2026',targetDate:'',source:'https://waecgh.org/timetable/',note:'WAEC Ghana lists 2026 BECE, WASSCE school, and private candidate timetables. Add the exact paper date from the official timetable.',subjects:['Core Mathematics','English Language','Integrated Science','Social Studies','Elective subject'],checklist:['Download the right WAEC Ghana timetable','Add first paper date above','Separate core and elective revision','Prepare index number and centre details'],flashcards:['Core formulas','Science terms','Social Studies facts','Essay outlines']},
+  'kenya-kcse':{name:'Kenya KNEC KCSE 2026',targetDate:'',source:'https://www.knec.ac.ke/2026-kcse-timetable/',note:'KNEC has the 2026 KCSE timetable posted. Add the exact first paper date from the official timetable.',subjects:['Mathematics','English','Kiswahili','Biology','Chemistry'],checklist:['Check KNEC paper order','Set target mean grade and cluster goals','Run one timed paper per subject weekly','Keep practical requirements separate'],flashcards:['Kiswahili terms','Formulae','Biology diagrams','Chemistry reactions']},
+  'zimbabwe-zimsec':{name:'Zimbabwe ZIMSEC O/A Level 2026',targetDate:'',source:'https://www5.zimsec.co.zw/timetables/',note:'ZIMSEC publishes timetable downloads. Add the exact paper date from the official O Level or A Level timetable.',subjects:['Mathematics','English Language','Integrated Science','History','Geography'],checklist:['Download the correct ZIMSEC level timetable','Add first paper date above','Split syllabus gaps from past-paper practice','Prepare centre and candidate details'],flashcards:['Command words','Definitions','Case facts','Essay skeletons']}
+};
+
+function escapeHtml(value){
+  return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+}
+function toIsoDate(date){return date.toISOString().split('T')[0];}
+function addDays(date,days){var d=new Date(date);d.setDate(d.getDate()+days);return d;}
+function setActionStatus(message){var el=document.getElementById('tt-action-status');if(el)el.textContent=message||'';}
+function addSubject(name,priority){
+  var list=document.getElementById('subjects-list');
+  var div=document.createElement('div');
+  div.className='subject-row';
+  div.innerHTML='<input aria-label="Subject name" type="text" placeholder="Subject name" value="'+escapeHtml(name||'')+'" class="subj-name">'+
+    '<input aria-label="Subject priority" type="number" min="1" max="5" value="'+escapeHtml(priority||3)+'" class="subj-pri" style="text-align:center">'+
+    '<button type="button" class="del-btn" onclick="this.parentElement.remove()">x</button>';
+  list.appendChild(div);
+}
+function clearSubjects(){document.getElementById('subjects-list').innerHTML='';}
+function setSubjects(subjects){
+  clearSubjects();
+  (subjects&&subjects.length?subjects:DEFAULT_SUBJECTS).forEach(function(subject,index){addSubject(subject,index<2?5:3);});
+}
+function collectSubjects(){
+  var subjects=[];
+  document.querySelectorAll('.subject-row').forEach(function(row){
+    var name=row.querySelector('.subj-name').value.trim();
+    var pri=parseInt(row.querySelector('.subj-pri').value,10)||3;
+    if(name)subjects.push({name:name,priority:pri});
+  });
+  return subjects;
+}
+function getSelectedPreset(){
+  var key=document.getElementById('et-exam-preset').value;
+  return key?EXAM_PRESETS[key]:null;
+}
+function populatePresetSelect(){
+  var select=document.getElementById('et-exam-preset');
+  if(!select||select.dataset.ready==='1')return;
+  Object.keys(EXAM_PRESETS).forEach(function(key){
+    var option=document.createElement('option');
+    option.value=key;
+    option.textContent=EXAM_PRESETS[key].name;
+    select.appendChild(option);
+  });
+  select.dataset.ready='1';
+}
+function updateSourceNote(preset){
+  var note=document.getElementById('et-source-note');
+  if(!preset){note.textContent='Choose a preset to load subjects, target date, and a starter prep pack. Confirm official dates before acting.';return;}
+  note.innerHTML=escapeHtml(preset.note)+' <a href="'+escapeHtml(preset.source)+'" target="_blank" rel="noopener">Official source</a>';
+}
+function syncDurationFromTarget(){
+  var startValue=document.getElementById('et-start').value;
+  var targetValue=document.getElementById('et-target-date').value;
+  if(!startValue||!targetValue)return;
+  var start=new Date(startValue);
+  var target=new Date(targetValue);
+  if(isNaN(start.getTime())||isNaN(target.getTime()))return;
+  var days=Math.max(1,Math.ceil((target.getTime()-start.getTime())/86400000));
+  document.getElementById('et-weeks').value=Math.max(1,Math.min(24,Math.ceil(days/7)));
+}
+function applyPreset(key){
+  var preset=EXAM_PRESETS[key];
+  if(!preset)return;
+  document.getElementById('et-exam-preset').value=key;
+  document.getElementById('et-target-date').value=preset.targetDate||'';
+  setSubjects(preset.subjects);
+  updateSourceNote(preset);
+  syncDurationFromTarget();
+}
+function getDaysLeft(targetValue){
+  if(!targetValue)return null;
+  var target=new Date(targetValue);
+  if(isNaN(target.getTime()))return null;
+  return Math.ceil((target.getTime()-Date.now())/86400000);
+}
+function getFlashcardHref(){
+  var key=document.getElementById('et-exam-preset').value||'';
+  return key?'/tools/flashcard-maker/?exam='+encodeURIComponent(key):'/tools/flashcard-maker/';
+}
+function getStudyPlannerHref(){
+  var key=document.getElementById('et-exam-preset').value||'';
+  return key?'/tools/study-planner/?exam='+encodeURIComponent(key):'/tools/study-planner/';
+}
+function getGradeTrackerHref(){
+  var key=document.getElementById('et-exam-preset').value||'';
+  return key?'/tools/grade-tracker/?exam='+encodeURIComponent(key):'/tools/grade-tracker/';
+}
+function fullToolUrl(path){return 'https://afrotools.com'+path;}
+function buildPrepPack(preset,subjects,daysLeft,hoursPerDay,weeks){
+  var title=preset?preset.name:'Custom exam plan';
+  var weakest=subjects.slice().sort(function(a,b){return b.priority-a.priority;}).slice(0,3).map(function(s){return s.name;});
+  var checklist=(preset&&preset.checklist?preset.checklist:[]).concat(['Confirm the official paper timetable before final printing','Run at least one timed past paper for each priority subject','Block rest, food, and transport in the final week']).slice(0,6);
+  var flashcards=(preset&&preset.flashcards?preset.flashcards:[]).concat(weakest.map(function(name){return name+' weak-topic card';})).slice(0,6);
+  var flashcardHref=getFlashcardHref();
+  var studyPlannerHref=getStudyPlannerHref();
+  var gradeTrackerHref=getGradeTrackerHref();
+  var milestones=[weeks+' week schedule for '+title,(daysLeft===null?'Add target date to unlock countdown':(daysLeft<0?'Deadline has passed':daysLeft+' days left')),hoursPerDay+' study hours per day target','Priority subjects: '+(weakest.join(', ')||'Set subject priorities')];
+  currentPlanText=[title,milestones.join(' | '),'Checklist: '+checklist.join('; '),'Flashcards: '+flashcards.join('; '),'Study planner: '+fullToolUrl(studyPlannerHref),'Grade tracker: '+fullToolUrl(gradeTrackerHref),'Flashcard deck: '+fullToolUrl(flashcardHref)].join('\n');
+  return '<article class="prep-card"><h3>Prep route</h3><ul>'+milestones.map(function(item){return'<li>'+escapeHtml(item)+'</li>';}).join('')+'</ul></article>'+
+    '<article class="prep-card"><h3>Checklist</h3><ul>'+checklist.map(function(item){return'<li>'+escapeHtml(item)+'</li>';}).join('')+'</ul></article>'+
+    '<article class="prep-card"><h3>Flashcard starters</h3><ul>'+flashcards.map(function(item){return'<li>'+escapeHtml(item)+'</li>';}).join('')+'<li><a href="'+studyPlannerHref+'">Open matching study planner</a></li><li><a href="'+gradeTrackerHref+'">Track CA and exam scores</a></li><li><a href="'+flashcardHref+'">Open matching flashcard deck</a></li></ul></article>';
+}
+function generateTimetable(){
+  var subjects=collectSubjects();
+  if(!subjects.length){alert('Please add at least one subject.');return;}
+  var startDateStr=document.getElementById('et-start').value;
+  var targetDateStr=document.getElementById('et-target-date').value;
+  var startDate=startDateStr?new Date(startDateStr):new Date();
+  var hoursPerDay=parseInt(document.getElementById('et-hours').value,10)||6;
+  var weeks=parseInt(document.getElementById('et-weeks').value,10)||4;
+  var style=document.getElementById('et-style').value;
+  var preset=getSelectedPreset();
+  var sortedSubjects=subjects.slice();
+  if(style==='weak-first')sortedSubjects.sort(function(a,b){return b.priority-a.priority;});
+  else if(style==='exam-order')sortedSubjects.sort(function(a,b){return a.priority-b.priority;});
+  var COLORS=['#EFF6FF','#fef3c7','#f0fdf4','#fdf2f8','#f0f9ff','#fff7ed','#faf5ff'];
+  var TEXTCOLORS=['#1e40af','#92400e','#166534','#9d174d','#0369a1','#92400e','#6b21a8'];
+  var subjectColors={};
+  sortedSubjects.forEach(function(s,i){subjectColors[s.name]={bg:COLORS[i%COLORS.length],text:TEXTCOLORS[i%TEXTCOLORS.length]};});
+  var SLOTS=['Morning 1','Morning 2','Afternoon 1','Afternoon 2','Evening 1','Evening 2','Evening 3','Night'];
+  var usedSlots=Math.min(Math.ceil(hoursPerDay/1.5),SLOTS.length);
+  var subjIdx=0;
+  var timetableEntries=[];
+  var weekHtml='';
+  for(var w=0;w<weeks;w++){
+    var dayHtml='<div class="tt-week"><div class="tt-week-title"><span>Week '+(w+1)+'</span><span style="font-weight:400;font-size:.8rem;color:#6b7280">'+getWeekRange(startDate,w)+'</span></div><div class="tt-grid">';
+    for(var d=0;d<7;d++){
+      var isWeekend=d>=5;
+      var daySlots=isWeekend?Math.floor(usedSlots*0.5):usedSlots;
+      dayHtml+='<div class="tt-day"><div class="tt-day-header '+(isWeekend?'weekend':'weekday')+'">'+DAYS[d]+'</div>';
+      for(var sl=0;sl<Math.max(usedSlots,4);sl++){
+        if(sl===Math.floor(usedSlots/2)&&usedSlots>4){dayHtml+='<div class="tt-slot break">Break</div>';continue;}
+        if(sl>=daySlots||isWeekend&&sl>=daySlots){dayHtml+='<div class="tt-slot rest">'+(isWeekend&&sl===0?'Rest/Review':'-')+'</div>';continue;}
+        var subj=sortedSubjects[subjIdx%sortedSubjects.length];
+        var sc=subjectColors[subj.name];
+        timetableEntries.push({date:toIsoDate(addDays(startDate,w*7+d)),week:w+1,day:DAYS[d],slot:SLOTS[sl]||'Study',subject:subj.name});
+        dayHtml+='<div class="tt-slot study" style="background:'+sc.bg+';color:'+sc.text+'">'+escapeHtml(subj.name)+'</div>';
+        subjIdx++;
+      }
+      dayHtml+='</div>';
+    }
+    dayHtml+='</div></div>';
+    weekHtml+=dayHtml;
+  }
+  var daysLeft=getDaysLeft(targetDateStr);
+  var countdownText=daysLeft===null?'Add the official exam date to unlock countdown.':daysLeft<0?'Target date has passed. Update the date for a new plan.':daysLeft+' days to target date.';
+  document.getElementById('prep-pack').innerHTML=buildPrepPack(preset,subjects,daysLeft,hoursPerDay,weeks);
+  document.getElementById('tt-weeks').innerHTML=weekHtml;
+  document.getElementById('tt-summary').innerHTML='<strong>Prep timetable ready.</strong> '+escapeHtml((preset&&preset.name)||'Custom exam')+' | '+weeks+' weeks | '+subjects.length+' subjects | '+hoursPerDay+' hours/day target | '+escapeHtml(countdownText);
+  lastTimetableSnapshot={title:(preset&&preset.name)||'Custom exam plan',presetKey:document.getElementById('et-exam-preset').value||'',startDate:toIsoDate(startDate),targetDate:targetDateStr,weeks:weeks,hoursPerDay:hoursPerDay,subjects:subjects,entries:timetableEntries,summary:currentPlanText};
+  setActionStatus('');
+  document.getElementById('et-result').classList.add('show');
+}
+function getWeekRange(startDate,weekOffset){
+  var d=new Date(startDate);d.setDate(d.getDate()+weekOffset*7);
+  var d2=new Date(d);d2.setDate(d2.getDate()+6);
+  var fmt=function(date){return date.toLocaleDateString('en-GB',{day:'numeric',month:'short'});};
+  return fmt(d)+' - '+fmt(d2);
+}
+function copyPrepPlan(){
+  if(!currentPlanText){generateTimetable();}
+  var text=currentPlanText||'Exam prep plan ready.';
+  var fallback=function(){
+    var field=document.createElement('textarea');
+    field.value=text;
+    field.setAttribute('readonly','readonly');
+    field.style.position='fixed';
+    field.style.left='-9999px';
+    document.body.appendChild(field);
+    field.select();
+    try{
+      document.execCommand('copy');
+      setActionStatus('Prep pack copied.');
+    }catch(e){
+      window.prompt('Copy prep pack',text);
+      setActionStatus('Copy prompt opened.');
+    }
+    field.remove();
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setActionStatus('Prep pack copied.');}).catch(fallback);
+  }else{
+    fallback();
+  }
+}
+function savePrepPlan(){
+  if(!currentPlanText){generateTimetable();}
+  try{
+    localStorage.setItem('afrotools-exam-prep-plan',JSON.stringify({savedAt:Date.now(),preset:document.getElementById('et-exam-preset').value,targetDate:document.getElementById('et-target-date').value,startDate:document.getElementById('et-start').value,weeks:document.getElementById('et-weeks').value,hoursPerDay:document.getElementById('et-hours').value,subjects:collectSubjects(),summary:currentPlanText}));
+    setActionStatus('Prep plan saved on this device.');
+  }catch(e){setActionStatus('Could not save locally in this browser.');}
+}
+function ensureTimetableSnapshot(){
+  if(!lastTimetableSnapshot){generateTimetable();}
+  return lastTimetableSnapshot;
+}
+function slugify(value){return String(value||'exam-timetable').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'exam-timetable';}
+function downloadBlob(filename,body,type){
+  var blob=new Blob([body],{type:type});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+function buildTimetableText(snapshot){
+  var lines=[
+    snapshot.title+' timetable',
+    'Start date: '+snapshot.startDate,
+    snapshot.targetDate?'Target date: '+snapshot.targetDate:'',
+    'Duration: '+snapshot.weeks+' weeks',
+    'Study target: '+snapshot.hoursPerDay+' hours/day',
+    '',
+    'Subjects: '+snapshot.subjects.map(function(s){return s.name+' (priority '+s.priority+')';}).join(', '),
+    '',
+    'Prep pack:',
+    snapshot.summary,
+    '',
+    'Schedule:'
+  ].filter(Boolean);
+  snapshot.entries.forEach(function(entry){
+    lines.push(entry.date+' | Week '+entry.week+' | '+entry.day+' '+entry.slot+' | '+entry.subject);
+  });
+  lines.push('');
+  lines.push('Confirm the latest official timetable, venue, and paper list before acting.');
+  return lines.join('\n');
+}
+function downloadTimetableText(){
+  var snapshot=ensureTimetableSnapshot();
+  if(!snapshot)return;
+  downloadBlob(slugify(snapshot.presetKey||snapshot.title)+'-timetable.txt',buildTimetableText(snapshot),'text/plain');
+  setActionStatus('TXT timetable downloaded.');
+}
+function icsEscape(value){
+  return String(value||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+}
+function slotTime(slot){
+  var map={
+    'Morning 1':['080000','091500'],
+    'Morning 2':['100000','111500'],
+    'Afternoon 1':['140000','151500'],
+    'Afternoon 2':['160000','171500'],
+    'Evening 1':['180000','191500'],
+    'Evening 2':['200000','211500'],
+    'Evening 3':['213000','224500'],
+    'Night':['223000','234500']
+  };
+  return map[slot]||['090000','101500'];
+}
+function icsDateTime(date,time){return String(date).replace(/-/g,'')+'T'+time;}
+function buildTimetableIcs(snapshot){
+  var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
+  var lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//AfroTools//Exam Timetable//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+  snapshot.entries.forEach(function(entry,index){
+    var time=slotTime(entry.slot);
+    lines.push('BEGIN:VEVENT');
+    lines.push('UID:'+slugify(snapshot.presetKey||snapshot.title)+'-'+index+'@afrotools.com');
+    lines.push('DTSTAMP:'+stamp);
+    lines.push('DTSTART:'+icsDateTime(entry.date,time[0]));
+    lines.push('DTEND:'+icsDateTime(entry.date,time[1]));
+    lines.push('SUMMARY:'+icsEscape(entry.subject+' revision'));
+    lines.push('DESCRIPTION:'+icsEscape(snapshot.title+' | Week '+entry.week+' | '+entry.slot+' | Confirm official exam timetable before acting.'));
+    lines.push('END:VEVENT');
+  });
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n');
+}
+function downloadTimetableCalendar(){
+  var snapshot=ensureTimetableSnapshot();
+  if(!snapshot)return;
+  downloadBlob(slugify(snapshot.presetKey||snapshot.title)+'-timetable.ics',buildTimetableIcs(snapshot),'text/calendar');
+  setActionStatus('Calendar file downloaded.');
+}
+document.addEventListener('DOMContentLoaded',function(){
+  populatePresetSelect();
+  setSubjects(DEFAULT_SUBJECTS);
+  document.querySelectorAll('span').forEach(function(span){if(span.textContent.indexOf('Priority')===0)span.textContent='Priority (1-5)';});
+  var today=new Date();today.setDate(today.getDate()+1);
+  document.getElementById('et-start').value=toIsoDate(today);
+  document.getElementById('et-exam-preset').addEventListener('change',function(){var preset=getSelectedPreset();if(preset){applyPreset(this.value);}else{updateSourceNote(null);}});
+  document.getElementById('et-target-date').addEventListener('change',syncDurationFromTarget);
+  document.getElementById('et-start').addEventListener('change',syncDurationFromTarget);
+  var params=new URLSearchParams(window.location.search);
+  var exam=params.get('exam')||params.get('preset');
+  if(exam&&EXAM_PRESETS[exam]){applyPreset(exam);generateTimetable();}
+});
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

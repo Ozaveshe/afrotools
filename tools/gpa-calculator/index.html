@@ -92,9 +92,24 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kalkuletan-gpa-cgpa/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-gpa/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/gpa-calculator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="gpa-action-pack-css">
+  .gpa-action-pack{max-width:1200px;margin:0 auto 20px;padding:0 20px}
+  .gpa-action-pack__card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;background:#fff;border:1px solid #dbe5f1;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,.05);padding:18px}
+  .gpa-action-pack h2{margin:0 0 6px;color:#0f172a;font-size:1.05rem;letter-spacing:0}
+  .gpa-action-pack p{margin:0;color:#52637a;font-size:.88rem;line-height:1.6}
+  .gpa-action-pack__summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+  .gpa-action-pack__summary span{display:block;border:1px solid #e2e8f0;border-radius:8px;background:#f8fbff;padding:10px;color:#475569;font-size:.76rem;line-height:1.35}
+  .gpa-action-pack__summary strong{display:block;color:#0057b8;font-family:var(--gpa-mono,'JetBrains Mono',monospace);font-size:1rem}
+  .gpa-action-pack__buttons{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .gpa-action-pack__buttons button{min-height:42px;border:1.5px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;font:inherit;font-size:.82rem;font-weight:800;padding:9px 12px;cursor:pointer}
+  .gpa-action-pack__buttons button.primary{background:#0062cc;border-color:#0062cc;color:#fff}
+  .gpa-action-pack__buttons button:hover,.gpa-action-pack__buttons button:focus-visible{border-color:#0062cc;outline:none}
+  .gpa-action-pack__status{min-height:20px;margin-top:8px;color:#0057b8;font-size:.8rem;font-weight:800;text-align:right}
+  @media(max-width:760px){.gpa-action-pack__card{grid-template-columns:1fr}.gpa-action-pack__summary{grid-template-columns:repeat(2,minmax(0,1fr))}.gpa-action-pack__buttons{justify-content:stretch}.gpa-action-pack__buttons button{flex:1 1 150px}.gpa-action-pack__status{text-align:left}}
+  @media(max-width:420px){.gpa-action-pack__summary{grid-template-columns:1fr}}
+</style>
 </head>
 <body class="gpa-page top-level-page-ui-refresh">
 
@@ -197,12 +212,6 @@
                 <div id="csvPreview"></div>
             </div>
 
-            <div class="gpa-divider"></div>
-
-            <div class="gpa-coming-soon">
-                <div class="badge">Coming Soon</div>
-                <p style="color:var(--gpa-text-secondary); font-size:0.88rem; margin-top:4px;">&#x1F4F7; Photo / Screenshot OCR — scan your result sheet and auto-extract grades.</p>
-            </div>
         </div>
 
         <!-- TAB 3: GPA Converter -->
@@ -410,35 +419,31 @@
     <span class="bar-class" id="mobileClass" style="background:rgba(148,163,184,0.08); color:var(--gpa-text-muted);">—</span>
 </div>
 
-<!-- ===== FAQ ===== -->
-
-
-<section class="df-upgrade" data-df-upgrade="gpa-calculator">
-  <div class="df-upgrade__card">
+<!-- ===== GPA ACTION PACK ===== -->
+<section class="gpa-action-pack" aria-labelledby="gpa-action-pack-title">
+  <div class="gpa-action-pack__card">
     <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>GPA/CGPA Calculator decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for gpa/cgpa calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: GPA/CGPA Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
+      <h2 id="gpa-action-pack-title">GPA action pack</h2>
+      <p>Turn the calculated CGPA into a local plan you can copy, download, or save before scholarship, admission, or adviser conversations.</p>
+      <div class="gpa-action-pack__summary" id="gpaActionSummary" aria-live="polite">
+        <span><strong>0.00</strong> CGPA</span>
+        <span><strong>0</strong> Credits</span>
+        <span><strong>Not ready</strong> Class</span>
+        <span><strong>Add courses</strong> Next step</span>
+      </div>
     </div>
-    <form class="df-form" data-df-form="gpa-calculator">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="gpa-calculator" data-df-base="GPA/CGPA Calculator: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">GPA/CGPA Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="gpa-calculator">Copy summary</button></div>
-    </form>
+    <div>
+      <div class="gpa-action-pack__buttons">
+        <button class="primary" type="button" id="gpaCopyPlan">Copy plan</button>
+        <button type="button" id="gpaDownloadPlan">Download TXT</button>
+        <button type="button" id="gpaSavePlan">Save locally</button>
+      </div>
+      <div class="gpa-action-pack__status" id="gpaActionStatus" aria-live="polite"></div>
+    </div>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="gpa-calculator-faq-title">
-  <h2 id="gpa-calculator-faq-title">GPA/CGPA Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
+
+<!-- ===== FAQ ===== -->
 <section class="gpa-faq">
     <h2>Frequently Asked Questions</h2>
     <div class="gpa-faq-grid">
@@ -510,7 +515,7 @@
 <afro-footer></afro-footer>
 
 <!-- ===== SCRIPTS ===== -->
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
@@ -530,6 +535,166 @@
 <script src="/assets/js/edu-cloud-sync.js?v=b14c95ce" defer></script>
 <!-- Main app -->
 <script src="/tools/gpa-calculator/gpa-calculator.js?v=5db7fd4b" defer></script>
+
+<script>
+(function(){
+  function byId(id){return document.getElementById(id);}
+  function clean(value){return String(value||'').replace(/\s+/g,' ').trim();}
+  function text(selector,fallback){
+    var el=document.querySelector(selector);
+    return el?clean(el.textContent):fallback;
+  }
+  function selectedText(id){
+    var el=byId(id);
+    return el&&el.options&&el.selectedIndex>=0?clean(el.options[el.selectedIndex].text):'';
+  }
+  function escapeHtml(value){
+    return String(value||'').replace(/[&<>"']/g,function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function collectCourses(){
+    return Array.prototype.slice.call(document.querySelectorAll('.gpa-course-card')).map(function(card){
+      var name=card.querySelector('input[data-field="name"]');
+      var credits=card.querySelector('input[data-field="credits"]');
+      var grade=card.querySelector('.gpa-grade-select,input[aria-label="Grade score"]');
+      return {
+        name:clean(name&&name.value),
+        credits:clean(credits&&credits.value),
+        grade:clean(grade&&grade.value)
+      };
+    }).filter(function(course){return course.name||course.credits||course.grade;});
+  }
+  function collectScholarships(){
+    return Array.prototype.slice.call(document.querySelectorAll('.gpa-scholarship-item')).map(function(item){
+      return clean(item.textContent);
+    }).filter(Boolean).slice(0,5);
+  }
+  function nextStep(cgpa,credits,className,scholarships){
+    var parsed=parseFloat(cgpa);
+    var total=parseFloat(credits);
+    if(!total){return 'Add courses';}
+    if(scholarships.some(function(item){return /Borderline/i.test(item);})){return 'Review borderline funding';}
+    if(/First|Distinction|Excellent/i.test(className)){return 'Protect current standing';}
+    if(!isNaN(parsed)&&parsed>0){return 'Run what-if target';}
+    return 'Check grades';
+  }
+  function readPack(){
+    var cgpa=text('#resultCgpa','0.00');
+    var scale=text('#resultScale','/ 5.00');
+    var credits=text('#resultCredits','0');
+    var points=text('#resultPoints','0.00');
+    var className=text('#classBadge','Not ready');
+    var system=selectedText('gradingSystem')||'Selected grading system';
+    var scholarships=collectScholarships();
+    var courses=collectCourses();
+    var step=nextStep(cgpa,credits,className,scholarships);
+    return {cgpa:cgpa,scale:scale,credits:credits,points:points,className:className,system:system,scholarships:scholarships,courses:courses,nextStep:step};
+  }
+  function renderSummary(){
+    var pack=readPack();
+    var summary=byId('gpaActionSummary');
+    if(summary){
+      summary.innerHTML=[
+        '<span><strong>'+escapeHtml(pack.cgpa)+'</strong> CGPA '+escapeHtml(pack.scale)+'</span>',
+        '<span><strong>'+escapeHtml(pack.credits)+'</strong> Credits</span>',
+        '<span><strong>'+escapeHtml(pack.className||'Not ready')+'</strong> Class</span>',
+        '<span><strong>'+escapeHtml(pack.nextStep)+'</strong> Next step</span>'
+      ].join('');
+    }
+    return pack;
+  }
+  function buildText(){
+    var pack=renderSummary();
+    var lines=[
+      'GPA action pack - AfroTools',
+      'Grading system: '+pack.system,
+      'CGPA: '+pack.cgpa+' '+pack.scale,
+      'Classification: '+pack.className,
+      'Credits: '+pack.credits,
+      'Grade points: '+pack.points,
+      'Next step: '+pack.nextStep,
+      ''
+    ];
+    if(pack.courses.length){
+      lines.push('Courses entered:');
+      pack.courses.slice(0,24).forEach(function(course){
+        lines.push('- '+(course.name||'Unnamed course')+' | '+(course.credits||'0')+' credits | '+(course.grade||'no grade'));
+      });
+      lines.push('');
+    }else{
+      lines.push('Courses entered: none yet');
+      lines.push('');
+    }
+    if(pack.scholarships.length){
+      lines.push('Scholarship status snapshot:');
+      pack.scholarships.forEach(function(item){lines.push('- '+item);});
+      lines.push('');
+    }
+    lines.push('Verify official grade classification, transcript rules, admission requirements, and scholarship criteria with your university or funder before submitting.');
+    return lines.join('\n');
+  }
+  function setStatus(message){
+    var status=byId('gpaActionStatus');
+    if(status){status.textContent=message||'';}
+  }
+  function fallbackCopy(textValue){
+    var field=document.createElement('textarea');
+    field.value=textValue;
+    field.setAttribute('readonly','');
+    field.style.position='fixed';
+    field.style.left='-9999px';
+    document.body.appendChild(field);
+    field.select();
+    try{document.execCommand('copy');setStatus('GPA plan copied.');}
+    catch(error){window.prompt('Copy GPA plan',textValue);setStatus('Copy prompt opened.');}
+    document.body.removeChild(field);
+  }
+  function copyPack(){
+    var textValue=buildText();
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(textValue).then(function(){setStatus('GPA plan copied.');}).catch(function(){fallbackCopy(textValue);});
+    }else{
+      fallbackCopy(textValue);
+    }
+  }
+  function downloadPack(){
+    var textValue=buildText();
+    var blob=new Blob([textValue],{type:'text/plain;charset=utf-8'});
+    var url=URL.createObjectURL(blob);
+    var link=document.createElement('a');
+    link.href=url;
+    link.download='gpa-action-pack.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setStatus('TXT GPA plan downloaded.');
+  }
+  function savePack(){
+    try{
+      localStorage.setItem('afrotools_gpa_action_pack',JSON.stringify({savedAt:new Date().toISOString(),pack:readPack(),text:buildText()}));
+      setStatus('GPA plan saved in this browser.');
+    }catch(error){
+      setStatus('Browser storage is unavailable. Download the TXT plan instead.');
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var copy=byId('gpaCopyPlan');
+    var download=byId('gpaDownloadPlan');
+    var save=byId('gpaSavePlan');
+    if(copy){copy.addEventListener('click',copyPack);}
+    if(download){download.addEventListener('click',downloadPack);}
+    if(save){save.addEventListener('click',savePack);}
+    var timer=null;
+    function scheduleSummary(){clearTimeout(timer);timer=setTimeout(renderSummary,260);}
+    document.addEventListener('input',function(event){if(event.target&&event.target.closest('.gpa-page')){scheduleSummary();}});
+    document.addEventListener('change',function(event){if(event.target&&event.target.closest('.gpa-page')){scheduleSummary();}});
+    document.addEventListener('click',function(event){if(event.target&&event.target.closest('.gpa-page')){scheduleSummary();}});
+    setTimeout(renderSummary,700);
+  });
+})();
+</script>
 
 
 <script>
@@ -560,6 +725,5 @@ async function sendAI(){
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

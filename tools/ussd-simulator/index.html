@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USSD Code Simulator | AfroTools</title>
-<meta name="description" content="Test and simulate USSD menus for African mobile money, banking, and telecom services. Build and preview USSD flows before deployment.">
+<title>USSD Simulator and Menu Flow Tester for Africa | AfroTools</title>
+<meta name="description" content="Simulate USSD menus for African mobile money, banking and telecom services. Test preset or custom JSON flows, inspect screen length and copy a QA handoff.">
 <link rel="canonical" href="https://afrotools.com/tools/ussd-simulator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="USSD Code Simulator | AfroTools"><meta property="og:description" content="Test and build USSD menu flows.">
+<meta property="og:title" content="USSD Simulator and Menu Flow Tester for Africa | AfroTools"><meta property="og:description" content="Test preset or custom USSD menu flows, inspect session state and copy a QA handoff before provider validation.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/ussd-simulator.webp"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ussd-simulator/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91"><link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957"><script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957"><script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -29,12 +29,12 @@ h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
 .card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
 label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-select,input{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+select,input{width:100%;min-height:44px;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
 select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
 textarea{width:100%;padding:12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.78rem;background:#f8fafc;font-family:'Inter',monospace;box-sizing:border-box;resize:vertical;min-height:200px}
 textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}.btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background-color .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease}.btn:focus-visible,.preset-btn:focus-visible,.faq-item summary:focus-visible,.ussd-input-area button:focus-visible{outline:3px solid rgba(14,165,233,.35);outline-offset:2px}.btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
 .btn-block{display:block;width:100%;text-align:center;justify-content:center;margin-top:18px}
 /* Phone Simulator */
 .phone-frame{background:#1a1a2e;border-radius:28px;padding:12px;max-width:320px;margin:0 auto;box-shadow:0 8px 32px rgba(0,0,0,.3)}
@@ -43,20 +43,25 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 .ussd-display{flex:1;background:#f5f5dc;padding:16px;font-family:'Courier New',monospace;font-size:.82rem;color:#000;line-height:1.5;display:flex;flex-direction:column}
 .ussd-text{flex:1;white-space:pre-wrap;word-wrap:break-word}
 .ussd-input-area{margin-top:10px;display:flex;gap:6px}
-.ussd-input-area input{flex:1;padding:8px;border:1px solid #999;border-radius:4px;font-family:'Courier New',monospace;font-size:.82rem;background:#fff}
-.ussd-input-area button{padding:8px 14px;background:#4CAF50;color:#fff;border:none;border-radius:4px;font-weight:700;font-size:.78rem;cursor:pointer}
+.ussd-input-area input{flex:1;min-height:44px;padding:8px;border:1px solid #999;border-radius:4px;font-family:'Courier New',monospace;font-size:.82rem;background:#fff}
+.ussd-input-area button{min-height:44px;padding:8px 14px;background:#4CAF50;color:#fff;border:none;border-radius:4px;font-weight:700;font-size:.78rem;cursor:pointer;transition:background-color .2s ease,box-shadow .2s ease}
 .ussd-input-area .cancel{background:#f44336}
 .phone-nav{background:#000;padding:12px;display:flex;justify-content:center;gap:24px}
 .phone-nav span{width:36px;height:36px;border-radius:50%;border:1.5px solid #444;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#666}
 .presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.preset-btn{padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#fff;font-size:.72rem;font-weight:600;cursor:pointer;color:#475569}
+.preset-btn{min-height:44px;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#fff;font-size:.72rem;font-weight:600;cursor:pointer;color:#475569;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
 .preset-btn:hover,.preset-btn.active{border-color:var(--accent);color:var(--accent);background:#f0f9ff}
 .sidebar .info-card{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-top:14px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
+.qa-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.qa-chip{border:1px solid #bae6fd;background:#f0f9ff;border-radius:7px;padding:9px;font-size:.74rem;color:#0c4a6e;line-height:1.35}
+.qa-chip strong{display:block;color:#082f49;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.qa-log{font-family:'Courier New',monospace;font-size:.74rem;line-height:1.45;background:#0b1220;color:#dbeafe;border-radius:7px;padding:10px;white-space:pre-wrap;max-height:180px;overflow:auto;margin:0 0 10px}
+.btn-secondary{background:#e0f2fe;color:#075985}
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{min-height:44px;display:flex;align-items:center;font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
 </style>
 
@@ -64,9 +69,48 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="USSD Code Simulator | AfroTools">
-<meta name="twitter:description" content="Test and build USSD menu flows.">
+<meta name="twitter:title" content="USSD Simulator and Menu Flow Tester for Africa | AfroTools">
+<meta name="twitter:description" content="Test preset or custom USSD menu flows, inspect session state and copy a QA handoff before provider validation.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ussd-simulator.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "USSD Simulator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/ussd-simulator/",
+  "description": "Offline browser simulator for testing African USSD menu flows, custom JSON state machines, screen length, session state and QA handoff notes.",
+  "featureList": [
+    "Phone-style USSD menu simulator",
+    "Preset African mobile money and banking sample flows",
+    "Custom JSON flow loader",
+    "Session state, screen length and transcript handoff"
+  ],
+  "browserRequirements": "Requires JavaScript. No live USSD request is sent.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://afrotools.com/assets/img/tools/ussd-simulator.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to test a USSD menu flow",
+  "description": "Load a USSD preset or custom JSON flow, step through menu responses and copy a QA handoff before provider validation.",
+  "step": [
+    {"@type": "HowToStep", "name": "Choose a flow", "text": "Load a preset sample or paste a custom JSON flow into the editor."},
+    {"@type": "HowToStep", "name": "Simulate inputs", "text": "Enter menu responses in the phone emulator and inspect each screen."},
+    {"@type": "HowToStep", "name": "Review constraints", "text": "Check screen length, session state, captured inputs and terminal paths."},
+    {"@type": "HowToStep", "name": "Copy handoff", "text": "Copy the local QA brief before validating short code, pricing, timeout and compliance rules with the provider."}
+  ],
+  "url": "https://afrotools.com/tools/ussd-simulator/"
+}
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -94,7 +138,6 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ussd-simulator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/simulateur-ussd/" />
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/gwajin-ussd/" />
@@ -107,26 +150,26 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use USSD Code Simulator?",
+      "name": "What does the USSD Simulator test?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "It tests local USSD menu logic in a browser phone emulator, including preset or custom JSON flows, menu responses, captured variables, screen length and session transcript."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on USSD Code Simulator?",
+      "name": "Does the simulator connect to a live USSD gateway?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "No. It is an offline simulator. Validate short code access, pricing, session duration, character limits, callbacks and production approval with your telco or USSD gateway."
       }
     },
     {
       "@type": "Question",
-      "name": "Is USSD Code Simulator an official result?",
+      "name": "Can I use real PINs or customer data in the simulator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. Use synthetic phone numbers, account references and PIN placeholders only. The simulator is local-first, but sensitive production data should not be entered into prototypes or copied into QA notes."
       }
     }
   ],
@@ -152,13 +195,14 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <div class="card-head"><span class="card-title">Preset USSD Services</span></div>
 <div class="card-body">
 <div class="presets" id="presets"></div>
-<div class="field"><label>Or Enter Custom USSD Code</label><input aria-label="*123#" type="text" id="ussdCode" placeholder="*123#" value="*182#"></div>
+<div class="field"><label for="ussdCode">Or Enter Custom USSD Code</label><input type="text" id="ussdCode" placeholder="*123#" value="*182#"></div>
 </div></div>
 
 <div class="card">
 <div class="card-head"><span class="card-title">Custom Flow Editor (JSON)</span></div>
 <div class="card-body">
-<textarea id="flowEditor" aria-label="Flow Editor"></textarea>
+<label for="flowEditor">Flow JSON</label>
+<textarea id="flowEditor"></textarea>
 <button type="button" class="btn btn-primary btn-block" onclick="loadCustomFlow()">Load Custom Flow</button>
 </div></div>
 </div>
@@ -179,6 +223,15 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 </div>
 </div>
 
+<div class="card" aria-labelledby="session-qa-title">
+<div class="card-head"><span class="card-title" id="session-qa-title">Session QA Brief</span></div>
+<div class="card-body">
+<div class="qa-grid" id="qaStats"></div>
+<pre class="qa-log" id="qaLog" aria-live="polite" aria-label="Session transcript and status">No session steps yet.</pre>
+<button type="button" class="btn btn-secondary btn-block" onclick="copySessionBrief()">Copy QA Brief</button>
+</div>
+</div>
+
 <div class="info-card">
 <h4>How USSD Works</h4>
 <p>USSD (Unstructured Supplementary Service Data) is a real-time messaging protocol used on GSM networks. Unlike SMS, USSD sessions are interactive and real-time. Dial a code like *123#, navigate menus by entering numbers, and the session closes automatically after ~180 seconds of inactivity.</p>
@@ -186,11 +239,11 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <div class="info-card" style="margin-top:10px">
 <h4>Common African USSD Codes</h4>
 <ul>
-<li><strong>*182#</strong> — M-Pesa (Kenya)</li>
-<li><strong>*737#</strong> — GTBank (Nigeria)</li>
-<li><strong>*170#</strong> — Mobile Money (Ghana)</li>
-<li><strong>*120*321#</strong> — FNB (South Africa)</li>
-<li><strong>*100#</strong> — Airtel Money</li>
+<li><strong>*182#</strong> - M-Pesa (Kenya)</li>
+<li><strong>*737#</strong> - GTBank (Nigeria)</li>
+<li><strong>*170#</strong> - Mobile Money (Ghana)</li>
+<li><strong>*120*321#</strong> - FNB (South Africa)</li>
+<li><strong>*100#</strong> - Airtel Money</li>
 </ul>
 </div>
 </div>
@@ -198,14 +251,14 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 
 <section class="seo-section">
 <h2>Understanding USSD in Africa</h2>
-<p>USSD (Unstructured Supplementary Service Data) is the backbone of digital financial services across Africa. Unlike smartphone apps that require internet connectivity and modern devices, USSD works on any GSM phone — including basic feature phones that cost as little as $10. This universality has made USSD the primary interface for mobile money services like M-Pesa, bank transfers, airtime purchases, and government services across the continent.</p>
-<p>Africa has over 600 million mobile money accounts, with the majority accessed via USSD menus. Kenya's M-Pesa (*182#) processes over $50 billion annually through USSD. Nigeria's bank USSD codes (*737# for GTBank, *901# for Access Bank, *894# for First Bank) have become the primary banking interface for millions who never visit a branch. Ghana's *170# unified mobile money code serves MTN MoMo, Vodafone Cash, and AirtelTigo Money. South African banks offer comprehensive USSD banking — you can transfer money, buy airtime, pay bills, and check balances all without internet.</p>
-<p>For developers building USSD services, testing flows is essential. A USSD session is essentially a state machine: the user dials a short code, receives a menu, responds with a number, and navigates through nested menus until they reach a terminal action. Sessions timeout after about 180 seconds, and the entire interaction must be text-based within the 182-character limit per screen. This simulator helps developers design, test, and preview USSD flows before deploying them to production, ensuring a smooth user experience on any phone.</p>
-<p>USSD services in Africa are increasingly being supplemented by WhatsApp bots and app-based interfaces, but USSD remains critical for financial inclusion — reaching the ~60% of African mobile users who don't have regular internet access. Understanding USSD design principles (short menus, clear options, minimal steps to completion) is essential for any developer building for African markets.</p>
+<p>USSD (Unstructured Supplementary Service Data) remains important for African mobile money, banking, airtime, data collection and account-service flows because it is session-based, real time and does not require a data connection. Gateway providers such as Africa's Talking describe USSD as a way to run interactive services on both feature phones and smartphones.</p>
+<p>For developers, the hard part is usually not drawing the menu. It is keeping each screen short, handling invalid input, reaching terminal screens quickly, avoiding sensitive-data exposure and confirming provider rules before launch. Some markets have strict menu-length and timeout constraints, so a prototype should be checked against the exact telco or USSD gateway you plan to use.</p>
+<p>This simulator models the menu as a local state machine: the user chooses a preset or custom JSON flow, enters responses, and watches the phone-style screen update. It does not dial a real short code, collect live fees, connect to a wallet or validate provider credentials. Use it for product, QA and engineering handoff before implementation.</p>
+<p>Before production, confirm short-code ownership, shared-code routing, callback payloads, session timeout, character limit, user billing, compliance review and support escalation directly with the mobile network operator or gateway provider.</p>
 
 <h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>Do USSD codes work without internet?</summary><p>Yes! USSD operates over the GSM signaling channel, separate from data networks. It works on any phone (even basic feature phones) without internet, WiFi, or data bundles. This is why it's the preferred channel for financial services in Africa where internet penetration is limited.</p></details>
-<details class="faq-item"><summary>How do I build a USSD service?</summary><p>You need: (1) A short code from your telecom provider. (2) A USSD gateway (Africa's Talking, Hubtel, or your MNO's API). (3) A server application that receives requests and returns menu responses. Popular frameworks include Python/Flask, Node.js, and PHP. The flow is: User dials code → Telco sends request to your server → You return menu text → User responds → Repeat until terminal screen.</p></details>
+<details class="faq-item"><summary>Does this send live USSD requests?</summary><p>No. The simulator is local and offline. It models menu logic only, so short-code availability, callbacks, pricing, session duration and gateway approval must be validated with the provider.</p></details>
+<details class="faq-item"><summary>What should I check before launch?</summary><p>Confirm the provider's shared or dedicated code model, session timeout, character limit, callback payload, billing model, production credentials, support path and compliance requirements.</p></details>
 </section>
 
 
@@ -230,7 +283,7 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
         </div>
         <div class="tool-verification-block">
           <h3>Result and export</h3>
-          <ul class="tool-verification-list"><li>Interactive phone-style session.</li><li>Visible session state and menu responses.</li><li>Copyable planning summary for QA review.</li></ul>
+          <ul class="tool-verification-list"><li>Interactive phone-style session.</li><li>Visible session state, screen length, captured variables, and menu responses.</li><li>Copyable QA brief for review before provider validation.</li></ul>
         </div>
         <div class="tool-verification-block">
           <h3>Before you use it</h3>
@@ -283,14 +336,14 @@ const PRESETS={
       '1':{text:'Transfer\n1. GTBank Account\n2. Other Banks\n3. Phone Number',options:{'1':{text:'Enter Account Number:',input:'acct',next:'gt_amount'},'2':{text:'Enter Account Number:',input:'acct',next:'gt_bank_select'},'3':{text:'Enter Phone Number:',input:'phone',next:'gt_amount'}}},
       '2':{text:'Buy Airtime\n1. Self\n2. Others',options:{'1':{text:'Enter Amount:',input:'amount',next:'gt_airtime_confirm'},'2':{text:'Enter Phone Number:',input:'phone',next:'gt_airtime_other'}}},
       '3':{text:'Pay Bills\n1. DSTV\n2. Electricity\n3. Internet\n4. School Fees',end:true},
-      '4':{text:'Your balance is ₦XXX,XXX.XX\nLast transaction: ₦5,000 debit',end:true},
+      '4':{text:'Your balance is NGN XXX,XXX.XX\nLast transaction: NGN 5,000 debit',end:true},
       '5':{text:'Account Opening\nEnter your BVN:',input:'bvn',next:'gt_acct_open'},
       '6':{text:'Cardless Withdrawal\nEnter Amount:',input:'amount',next:'gt_cardless'}
     }},
     gt_amount:{text:'Enter Amount:',input:'amount',next:'gt_pin'},
     gt_bank_select:{text:'Select Bank:\n1. Access\n2. Zenith\n3. First Bank\n4. UBA\n5. Others',next:'gt_amount'},
     gt_pin:{text:'Enter your 4-digit PIN:',end:true},
-    gt_airtime_confirm:{text:'Buy ₦{amount} airtime?\nEnter PIN:',end:true},
+    gt_airtime_confirm:{text:'Buy NGN {amount} airtime?\nEnter PIN:',end:true},
     gt_airtime_other:{text:'Enter Amount:',input:'amount',next:'gt_airtime_confirm'},
     gt_acct_open:{text:'Processing...\nAccount Number: 012XXXXXXX\nVisit any branch to complete.',end:true},
     gt_cardless:{text:'Withdrawal code: XXXX\nValid for 1 hour at any GTBank ATM.',end:true}
@@ -304,7 +357,7 @@ const PRESETS={
       '5':{text:'Cash Out\nEnter Agent Number:',input:'agent',next:'momo_cashout_amt'},
       '6':{text:'My Account\n1. Balance\n2. Mini Statement\n3. PIN Change',end:true}
     }},
-    momo_amount:{text:'Enter Amount (GH₵):',input:'amount',next:'momo_confirm'},
+    momo_amount:{text:'Enter Amount (GHS):',input:'amount',next:'momo_confirm'},
     momo_confirm:{text:'Confirm transaction?\nEnter MoMo PIN:',end:true},
     momo_airtime_amt:{text:'Enter Amount:',input:'amount',next:'momo_confirm'},
     momo_cashout_amt:{text:'Enter Amount:',input:'amount',next:'momo_confirm'}
@@ -327,6 +380,104 @@ const PRESETS={
 let currentFlow=null;
 let currentState='start';
 let sessionVars={};
+let sessionLog=[];
+let currentPresetLabel='M-Pesa (Kenya)';
+let currentUssdCode='*182#';
+
+function safeCopy(text, successMessage){
+  function fallback(){
+    const area=document.createElement('textarea');
+    area.value=text;
+    area.setAttribute('readonly','');
+    area.style.position='fixed';
+    area.style.opacity='0';
+    document.body.appendChild(area);
+    area.select();
+    try{
+      document.execCommand('copy');
+      setStatus(successMessage);
+    }catch(e){
+      setStatus('Copy unavailable in this browser.');
+    }
+    document.body.removeChild(area);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>setStatus(successMessage)).catch(fallback);
+  }else{
+    fallback();
+  }
+}
+
+function setStatus(message){
+  const log=document.getElementById('qaLog');
+  if(!log)return;
+  log.textContent=(log.textContent||'')+'\n\n'+message;
+}
+
+function addSessionLog(role,text){
+  const line=role+': '+String(text||'').replace(/\s*\n\s*/g,' | ');
+  sessionLog.push(line);
+  if(sessionLog.length>18)sessionLog=sessionLog.slice(sessionLog.length-18);
+}
+
+function updateQA(screenText){
+  const stats=document.getElementById('qaStats');
+  const log=document.getElementById('qaLog');
+  if(!stats||!log)return;
+  const text=String(screenText||'');
+  const state=currentFlow&&currentFlow[currentState]?currentState:'ended';
+  const charState=text.length>160?'Review length':text.length+' chars';
+  const vars=Object.keys(sessionVars);
+  stats.innerHTML=[
+    ['Flow',currentPresetLabel],
+    ['Code',currentUssdCode],
+    ['State',state],
+    ['Screen',charState],
+    ['Captured',vars.length?vars.join(', '):'None yet'],
+    ['Mode','Offline simulation']
+  ].map(([label,value])=>'<div class="qa-chip"><strong>'+label+'</strong>'+escapeHtml(value)+'</div>').join('');
+  log.textContent=sessionLog.join('\n')||'No session steps yet.';
+}
+
+function escapeHtml(value){
+  return String(value==null?'':value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+function validateFlow(flow){
+  if(!flow||typeof flow!=='object'||Array.isArray(flow)){
+    return {ok:false,message:'Flow must be a JSON object keyed by state name.'};
+  }
+  if(!flow.start||typeof flow.start!=='object'){
+    return {ok:false,message:'Flow must include a start state.'};
+  }
+  const states=Object.entries(flow);
+  for(const [key,state] of states){
+    if(!state||typeof state!=='object'||typeof state.text!=='string'||!state.text.trim()){
+      return {ok:false,message:'State "'+key+'" needs non-empty text.'};
+    }
+  }
+  const longScreens=states.filter(([,state])=>state.text.length>160).map(([key])=>key);
+  const terminalScreens=states.filter(([,state])=>state.end).length;
+  return {
+    ok:true,
+    message:'Flow check: '+states.length+' states, '+terminalScreens+' terminal screens'+(longScreens.length?', review long screens: '+longScreens.slice(0,4).join(', '):'.')
+  };
+}
+
+function copySessionBrief(){
+  const text=[
+    'USSD simulator QA brief',
+    'Flow: '+currentPresetLabel,
+    'Code: '+currentUssdCode,
+    'Current state: '+currentState,
+    'Captured variables: '+(Object.keys(sessionVars).length?JSON.stringify(sessionVars):'none'),
+    'Transcript:',
+    sessionLog.join('\n'),
+    'Launch checks: validate short code, timeout, character limit, callback payload, billing, credentials and compliance with the provider.',
+    'Sensitive data note: use synthetic phone numbers, accounts and PIN placeholders only.'
+  ].join('\n');
+  safeCopy(text,'QA brief copied.');
+}
 
 function initPresets(){
   const el=document.getElementById('presets');
@@ -339,9 +490,16 @@ function initPresets(){
 
 function loadPreset(key){
   document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector(`.preset-btn[data-key="${key}"]`).classList.add('active');
   const preset=PRESETS[key];
+  if(!preset){
+    setStatus('Preset not found.');
+    return;
+  }
+  const selected=document.querySelector(`.preset-btn[data-key="${key}"]`);
+  if(selected)selected.classList.add('active');
   document.getElementById('ussdCode').value=preset.code;
+  currentPresetLabel=preset.name;
+  currentUssdCode=preset.code;
   currentFlow=preset.flow;
   document.getElementById('flowEditor').value=JSON.stringify(preset.flow,null,2);
   startSession();
@@ -349,16 +507,27 @@ function loadPreset(key){
 
 function loadCustomFlow(){
   try{
-    currentFlow=JSON.parse(document.getElementById('flowEditor').value);
+    const parsed=JSON.parse(document.getElementById('flowEditor').value);
+    const check=validateFlow(parsed);
+    if(!check.ok){
+      setStatus(check.message);
+      return;
+    }
+    currentFlow=parsed;
+    currentPresetLabel='Custom flow';
+    currentUssdCode=document.getElementById('ussdCode').value.trim()||'Custom code';
     startSession();
+    setStatus(check.message);
   }catch(e){
-    alert('Invalid JSON. Please check your flow definition.');
+    setStatus('Invalid JSON. Please check quotes, commas and braces in the flow editor.');
   }
 }
 
 function startSession(){
   currentState='start';
   sessionVars={};
+  sessionLog=[];
+  addSessionLog('SESSION','Started '+currentPresetLabel+' on '+currentUssdCode);
   renderScreen();
 }
 
@@ -373,12 +542,15 @@ function renderScreen(){
   document.getElementById('ussdText').textContent=text;
   document.getElementById('ussdInput').value='';
   document.getElementById('ussdInput').focus();
+  addSessionLog('SYSTEM',text);
+  updateQA(text);
 }
 
 function sendResponse(){
   const input=document.getElementById('ussdInput').value.trim();
   if(!input||!currentFlow)return;
   const screen=currentFlow[currentState];
+  addSessionLog('USER',input);
 
   // Store input if this screen expects it
   if(screen.input){
@@ -386,37 +558,48 @@ function sendResponse(){
   }
 
   // Navigate
-  if(screen.options&&screen.options[input]){
+  if(screen.options){
     const next=screen.options[input];
+    if(!next){
+      const currentText=replaceVars(screen.text);
+      const helpText=currentText+'\n\nInvalid selection. Choose one of: '+Object.keys(screen.options).join(', ');
+      document.getElementById('ussdText').textContent=helpText;
+      addSessionLog('ERROR','Invalid selection '+input);
+      updateQA(helpText);
+      return;
+    }
     if(typeof next==='string'){
       currentState=next;
-    }else if(next.next){
-      // Inline screen with next state
-      if(next.input)sessionVars[next.input]=input;
-      currentState=next.next;
-    }else if(next.options){
-      // Inline nested menu
-      currentFlow['_inline_'+Date.now()]=next;
-      currentState='_inline_'+Date.now();
-      // Store inline for back navigation
     }else if(next.end){
-      document.getElementById('ussdText').textContent=replaceVars(next.text)+'\n\n[Session Ended]';
+      const endText=replaceVars(next.text)+'\n\n[Session Ended]';
+      document.getElementById('ussdText').textContent=endText;
+      addSessionLog('END',endText);
+      updateQA(endText);
       return;
-    }
-    if(next.text&&!next.next&&!next.options){
-      document.getElementById('ussdText').textContent=replaceVars(next.text)+'\n\n[Session Ended]';
-      return;
-    }
-    if(next.text&&next.options){
-      // Create temp state
+    }else if(next.options){
       const tmpKey='_tmp_'+Date.now();
       currentFlow[tmpKey]=next;
       currentState=tmpKey;
+    }else if(next.input&&next.next){
+      const promptKey='_prompt_'+Date.now();
+      currentFlow[promptKey]={text:next.text,input:next.input,next:next.next};
+      currentState=promptKey;
+    }else if(next.next){
+      currentState=next.next;
+    }else if(next.text){
+      const terminalText=replaceVars(next.text)+'\n\n[Session Ended]';
+      document.getElementById('ussdText').textContent=terminalText;
+      addSessionLog('END',terminalText);
+      updateQA(terminalText);
+      return;
     }
   }else if(screen.next){
     currentState=screen.next;
   }else if(screen.end){
-    document.getElementById('ussdText').textContent=replaceVars(screen.text)+'\n\n[Session Ended]';
+    const finalText=replaceVars(screen.text)+'\n\n[Session Ended]';
+    document.getElementById('ussdText').textContent=finalText;
+    addSessionLog('END',finalText);
+    updateQA(finalText);
     return;
   }
 
@@ -432,10 +615,13 @@ function replaceVars(text){
 }
 
 function cancelSession(){
-  document.getElementById('ussdText').textContent='Session cancelled.\n\nDial a USSD code to start again.';
+  const cancelText='Session cancelled.\n\nDial a USSD code to start again.';
+  document.getElementById('ussdText').textContent=cancelText;
+  addSessionLog('SESSION','Cancelled');
   currentFlow=null;
   currentState='start';
   sessionVars={};
+  updateQA(cancelText);
 }
 
 // Init

@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 
@@ -39,6 +39,8 @@ h1 em{color:#bfdbfe;font-style:normal}
 .b-blue{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
 .tool-main{padding:28px 0 72px}
 .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.tool-main-inner>*{min-width:0}
+.calculator,.sidebar,.card,.card-body,.row{min-width:0;max-width:100%}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
 .card+.card{margin-top:18px}
 .card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
@@ -52,14 +54,19 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .btn-primary{background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff}
 .btn-primary:hover{transform:translateY(-1px)}
 .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:left}
 .result-box .num{font-size:1.4rem;font-weight:800;color:#2563eb}
 .result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.schedule{width:100%;border-collapse:collapse;margin-top:14px;font-size:.75rem;max-height:350px;overflow-y:auto;display:block}
+.schedule-wrap{overflow-x:auto;overflow-y:hidden;margin-top:14px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;-webkit-overflow-scrolling:touch;max-width:100%;min-width:0;width:100%}
+.schedule{width:760px!important;min-width:760px!important;max-width:none!important;border-collapse:collapse;font-size:.75rem;display:table!important}
 .schedule th{position:sticky;top:0;background:#eff6ff;color:#1e40af;font-weight:700;padding:7px;text-align:right;font-size:.68rem;text-transform:uppercase;border-bottom:2px solid #bfdbfe}
 .schedule th:first-child{text-align:left}
 .schedule td{padding:6px 7px;border-bottom:1px solid #f1f5f9;text-align:right;color:#475569}
 .schedule td:first-child{text-align:left;font-weight:600}
+.result-note{margin:16px 0 0;padding:14px;border:1px solid #fde68a;border-radius:10px;background:#fffbeb;color:#78350f;font-size:.82rem;line-height:1.65}
+.result-actions{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.result-actions .btn{width:auto;margin-top:0;padding:10px 14px}
+.action-status{min-height:20px;margin-top:10px;color:#1d4ed8;font-size:.78rem;font-weight:800}
 .sidebar .info-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin-top:14px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1e40af;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#1e40af;line-height:1.6}
@@ -70,7 +77,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}.result-actions .btn{width:100%}}
 </style>
 <script type="application/ld+json">
 {
@@ -154,7 +161,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/student-loan/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/pret-etudiant/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/student-loan/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -165,7 +171,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       "name": "How should I use Student Loan Repayment Calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter the loan type, currency, balance, rate, repayment years, grace period, and optional extra payment. The calculator estimates the monthly payment, grace-period interest, total repaid, payoff time, and a repayment schedule you can copy, save, or share."
       }
     },
     {
@@ -173,7 +179,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       "name": "What should I verify before acting on Student Loan Repayment Calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Confirm scheme thresholds, statement balance, interest accrual, grace-period rules, salary deduction thresholds, deferment options, penalties, and official lender or government guidance before acting."
       }
     },
     {
@@ -181,7 +187,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       "name": "Is Student Loan Repayment Calculator an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a local repayment estimate, not an official NSFAS, HELB, SLF, lender, university, or government repayment statement."
       }
     }
   ],
@@ -237,7 +243,16 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Repayment Schedule</span></div>
 <div class="card-body">
 <div class="result-grid" id="resultGrid"></div>
-<div style="overflow-x:auto"><table class="schedule" id="schedule"></table></div>
+<div class="schedule-wrap"><table class="schedule" id="schedule"></table></div>
+<div class="result-note" id="studentLoanNote"></div>
+<div class="result-actions" aria-label="Student loan result actions">
+<button type="button" class="btn btn-primary" id="student-copy-summary">Copy repayment brief</button>
+<button type="button" class="btn" id="student-download-summary">Download TXT</button>
+<button type="button" class="btn" id="student-save-summary">Save in browser</button>
+<save-result-button tool-slug="student-loan" tool-name="Student Loan"></save-result-button>
+<share-result-button tool-name="Student Loan" tool-slug="student-loan"></share-result-button>
+</div>
+<div class="action-status" id="student-loan-action-status" aria-live="polite"></div>
 </div></div>
 </div>
 
@@ -274,36 +289,13 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <details class="faq-item"><summary>What happens if I don't repay HELB?</summary><p>HELB can list defaulters with credit reference bureaus, making it difficult to get other loans. They can also seek court orders for salary deductions. It's best to negotiate a manageable repayment plan.</p></details>
 </section>
 
-<section class="df-upgrade" data-df-upgrade="student-loan" data-tool-verification-panel data-tool-id="student-loan">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Repayment planning check</span>
-      <h2>Estimate repayment, then verify scheme rules</h2>
-      <p>Model monthly payment, grace-period interest, total interest, and payoff timing before you choose a repayment plan or compare an education-loan offer.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: monthly payment, total repaid, interest, payoff time, schedule, save, share, and copyable repayment brief.</li><li>Methodology: deterministic local amortisation from your loan balance, rate, repayment years, grace period, and optional extra payment.</li><li>Verification: confirm scheme thresholds, deduction rules, penalties, deferment, interest accrual, and lender statements before paying.</li><li>Privacy: your education-finance scenario stays in this browser unless you choose save, share, or copy.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning estimate only. Not an official NSFAS, HELB, SLF, lender, university, or government repayment statement.</p>
-    </div>
-    <form class="df-form" data-df-form="student-loan">
-      <label>Loan balance<input name="loanBalance" type="number" value="500000" min="0" step="any" aria-label="Loan balance"></label>
-      <label>Annual rate percent<input name="annualRate" type="number" value="4" min="0" step="any" aria-label="Annual rate percent"></label>
-      <label>Scheme to verify<select name="scheme" aria-label="Scheme to verify"><option value="HELB">HELB</option><option value="NSFAS">NSFAS</option><option value="SLF Ghana">SLF Ghana</option><option value="private lender">private lender</option></select></label>
-      <label>Review priority<select name="priority" aria-label="Review priority"><option value="monthly affordability">monthly affordability</option><option value="total interest">total interest</option><option value="grace period">grace period</option><option value="penalty risk">penalty risk</option></select></label>
-      <button type="submit">Create repayment brief</button>
-      <output class="df-result" data-df-result="student-loan" data-df-base="Repayment brief ready. Calculate the schedule above, then verify scheme rules, interest accrual, deductions, penalties, and statement balance before acting." aria-live="polite">Repayment brief ready. Calculate the schedule above, then verify scheme rules, interest accrual, deductions, penalties, and statement balance before acting.</output>
-      <div class="df-actions"><button type="button" data-df-copy="student-loan">Copy repayment brief</button><a class="df-action-link" href="#resultCard">View repayment result</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="student-loan-faq-title">
-  <h2 id="student-loan-faq-title">Student Loan Repayment Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <afro-related-tools category="financial" current="student-loan"></afro-related-tools>
 <afro-business-cta tool-name="Student Loan Repayment Calculator" prospect-segment="education-finance" save-note="Calculate repayment locally, then save or share the scenario before confirming scheme or lender rules."></afro-business-cta>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <script>
+let currentStudentLoanPlan = null;
 function updateDefaults() {
   const type = document.getElementById('loanType').value;
   if (type === 'nsfas') { document.getElementById('rate').value = 0; document.getElementById('grace').value = 12; document.getElementById('currency').value = 'ZAR'; document.getElementById('loanAmount').value = 150000; }
@@ -313,6 +305,7 @@ function updateDefaults() {
 
 function calculate() {
   const currency = document.getElementById('currency').value;
+  const loanType = document.getElementById('loanType').value;
   let principal = +document.getElementById('loanAmount').value;
   const annualRate = +document.getElementById('rate').value / 100;
   const monthlyRate = annualRate / 12;
@@ -355,7 +348,24 @@ function calculate() {
     }
   }
 
-  const fmt = n => currency + ' ' + Math.round(n).toLocaleString('en');
+  currentStudentLoanPlan = {
+    loanType,
+    currency,
+    originalPrincipal: +document.getElementById('loanAmount').value,
+    balanceAfterGrace,
+    annualRate: annualRate * 100,
+    years,
+    grace,
+    extra,
+    monthlyPayment,
+    baseMonthlyPayment: monthlyPayment - extra,
+    totalPaid,
+    totalInterest,
+    payoffMonths: month,
+    rows
+  };
+
+  const fmt = n => formatStudentLoanMoney(currency, n);
 
   let html = '';
   html += `<div class="result-box"><div class="num">${fmt(monthlyPayment - extra)}</div><div class="lbl">Monthly Payment</div></div>`;
@@ -371,30 +381,116 @@ function calculate() {
     table += `<tr><td>${r.month}</td><td style="text-align:right">${fmt(r.payment)}</td><td style="text-align:right">${fmt(r.interest)}</td><td style="text-align:right">${fmt(r.principal)}</td><td style="text-align:right;font-weight:700">${fmt(r.balance)}</td></tr>`;
   });
   document.getElementById('schedule').innerHTML = table;
+  document.getElementById('studentLoanNote').innerHTML = '<strong>Planning estimate only.</strong> This repayment model uses the balance, rate, grace period, repayment years, and optional extra payment above. Confirm scheme thresholds, statement balance, interest accrual, salary deductions, deferment options, penalties, and official lender or government guidance before paying.';
+  setStudentLoanStatus('');
 
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
 }
-</script>
 
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<button type="button" class="btn" id="student-copy-summary" style="width:auto;margin-top:0;background:#0f172a;color:#fff">Copy summary</button><save-result-button tool-slug="student-loan" tool-name="Student Loan"></save-result-button><share-result-button tool-name="Student Loan" tool-slug="student-loan"></share-result-button>';
-  target.appendChild(div);
-  function studentLoanSummary(){
-    calculate();
-    return 'Student loan repayment estimate: '+document.getElementById('resultGrid').innerText.replace(/\s+/g,' ').trim()+'. Verify scheme rules, statement balance, interest accrual, grace period, salary deduction threshold, deferment options, penalties, and lender or government guidance before acting.';
+function formatStudentLoanMoney(currency, amount) {
+  return currency + ' ' + Math.round(amount).toLocaleString('en');
+}
+
+function setStudentLoanStatus(message) {
+  var el = document.getElementById('student-loan-action-status');
+  if (el) el.textContent = message || '';
+}
+
+function studentLoanSummary() {
+  if (!currentStudentLoanPlan) calculate();
+  var p = currentStudentLoanPlan;
+  return [
+    'Student loan repayment brief - AfroTools',
+    'Loan type: ' + p.loanType,
+    'Currency: ' + p.currency,
+    'Original balance: ' + formatStudentLoanMoney(p.currency, p.originalPrincipal),
+    'Balance after grace: ' + formatStudentLoanMoney(p.currency, p.balanceAfterGrace),
+    'Annual interest rate: ' + p.annualRate.toFixed(2).replace(/\.00$/, '') + '%',
+    'Repayment period: ' + p.years + ' year(s)',
+    'Grace period: ' + p.grace + ' month(s)',
+    'Extra monthly payment: ' + formatStudentLoanMoney(p.currency, p.extra),
+    '',
+    'Estimated result',
+    '- Base monthly payment: ' + formatStudentLoanMoney(p.currency, p.baseMonthlyPayment),
+    '- Total monthly payment with extra: ' + formatStudentLoanMoney(p.currency, p.monthlyPayment),
+    '- Total repaid: ' + formatStudentLoanMoney(p.currency, p.totalPaid),
+    '- Total interest: ' + formatStudentLoanMoney(p.currency, p.totalInterest),
+    '- Payoff time: ' + p.payoffMonths + ' month(s)',
+    '',
+    'Schedule sample',
+    p.rows.slice(0, 12).map(function (row) {
+      return '- Month ' + row.month + ': payment ' + formatStudentLoanMoney(p.currency, row.payment) + ', interest ' + formatStudentLoanMoney(p.currency, row.interest) + ', principal ' + formatStudentLoanMoney(p.currency, row.principal) + ', balance ' + formatStudentLoanMoney(p.currency, row.balance);
+    }).join('\n'),
+    '',
+    'Verify scheme thresholds, statement balance, interest accrual, grace period, salary deduction threshold, deferment options, penalties, and official lender or government guidance before acting. This is a planning estimate, not an official repayment statement.'
+  ].join('\n');
+}
+
+function fallbackStudentLoanCopy(text) {
+  var field = document.createElement('textarea');
+  field.value = text;
+  field.setAttribute('readonly', '');
+  field.style.position = 'fixed';
+  field.style.left = '-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try {
+    document.execCommand('copy');
+    setStudentLoanStatus('Repayment brief copied.');
+  } catch (error) {
+    window.prompt('Copy repayment brief', text);
+    setStudentLoanStatus('Copy prompt opened.');
   }
-  var copyBtn=document.getElementById('student-copy-summary');
-  if(copyBtn){copyBtn.addEventListener('click',function(){var text=studentLoanSummary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);copyBtn.textContent='Copied';setTimeout(function(){copyBtn.textContent='Copy summary';},1600);}});}
-})();
+  document.body.removeChild(field);
+}
+
+function copyStudentLoanSummary() {
+  var text = studentLoanSummary();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () {
+      setStudentLoanStatus('Repayment brief copied.');
+    }).catch(function () {
+      fallbackStudentLoanCopy(text);
+    });
+  } else {
+    fallbackStudentLoanCopy(text);
+  }
+}
+
+function downloadStudentLoanSummary() {
+  var text = studentLoanSummary();
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'student-loan-repayment-brief.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setStudentLoanStatus('TXT repayment brief downloaded.');
+}
+
+function saveStudentLoanSummary() {
+  var text = studentLoanSummary();
+  try {
+    localStorage.setItem('afrotools-student-loan-summary', JSON.stringify({ savedAt: Date.now(), plan: currentStudentLoanPlan, report: text }));
+    setStudentLoanStatus('Repayment plan saved in this browser.');
+  } catch (error) {
+    setStudentLoanStatus('Browser storage is unavailable. Download the TXT brief instead.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var copyBtn = document.getElementById('student-copy-summary');
+  var downloadBtn = document.getElementById('student-download-summary');
+  var saveBtn = document.getElementById('student-save-summary');
+  if (copyBtn) copyBtn.addEventListener('click', copyStudentLoanSummary);
+  if (downloadBtn) downloadBtn.addEventListener('click', downloadStudentLoanSummary);
+  if (saveBtn) saveBtn.addEventListener('click', saveStudentLoanSummary);
+});
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

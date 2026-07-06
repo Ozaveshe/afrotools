@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="education-hub.css?v=03610add">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
@@ -92,7 +92,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/hub-education/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kituo-elimu/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/education-hub/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -103,7 +102,7 @@
       "name": "How should I use Education Hub?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Use Education Hub as a student cockpit: complete your profile, track checklist items, shortlist scholarships and universities, save destination options, review affordability signals, and follow the next-best action into the right AfroTools education workflow."
       }
     },
     {
@@ -111,7 +110,7 @@
       "name": "What should I verify before acting on Education Hub?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Verify scholarship deadlines, university admission requirements, official fees, visa or destination rules, exam dates, accreditation, and adviser or school guidance before applying, paying, or submitting documents."
       }
     },
     {
@@ -119,7 +118,7 @@
       "name": "Is Education Hub an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a local planning cockpit and routing workspace, not an official admission decision, scholarship award, visa result, fee invoice, school record, or guaranteed outcome."
       }
     }
   ],
@@ -128,6 +127,68 @@
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="education-hub-plan-readability">
+  body.top-level-page-ui-refresh.hub-body .hub-system-card{grid-template-columns:minmax(0,1fr);align-items:flex-start;overflow:hidden}
+  body.top-level-page-ui-refresh.hub-body .hub-system-card p{max-width:100%;overflow-wrap:break-word}
+  body.top-level-page-ui-refresh.hub-body .hub-strip-links{justify-content:flex-start}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-grid{grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr)}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-copy{align-content:start;min-width:0;padding:30px}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-copy::after{display:none}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-topline{flex-direction:column;align-items:flex-start}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-statusbar{justify-content:flex-start;max-width:100%}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-statuschip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-copy h1{max-width:14ch;font-size:clamp(2.15rem,4.1vw,3.35rem);line-height:1.04;letter-spacing:0}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-copy p{max-width:58ch;overflow-wrap:break-word}
+  body.top-level-page-ui-refresh.hub-body .hub-hero-rail-card{min-width:0}
+  body.top-level-page-ui-refresh.hub-body select{max-width:100%;min-width:0;text-overflow:ellipsis}
+  .hub-plan-grid{grid-template-columns:repeat(2,minmax(280px,1fr))}
+  .hub-plan-card{display:grid!important;grid-template-columns:1fr!important;align-items:stretch!important}
+  .hub-plan-top,.hub-plan-actions{align-items:flex-start}
+  .hub-plan-actions span{max-width:100%}
+  @media(max-width:1120px){
+    body.top-level-page-ui-refresh.hub-body .hub-hero-grid{grid-template-columns:1fr}
+    body.top-level-page-ui-refresh.hub-body .hub-hero-copy h1{max-width:18ch}
+  }
+  @media(max-width:760px){
+    body.top-level-page-ui-refresh.hub-body .hub-hero-copy{padding:24px}
+    body.top-level-page-ui-refresh.hub-body .hub-hero-copy h1{max-width:100%;font-size:clamp(2rem,10vw,3rem)}
+    .hub-plan-grid{grid-template-columns:1fr}
+    .hub-plan-top,.hub-plan-actions{flex-direction:column;align-items:flex-start}
+  }
+</style>
+<style id="education-hub-exam-radar">
+  .hub-exam-radar-card{border-color:rgba(10,47,115,.12);background:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(248,251,255,.94) 100%)}
+  .hub-exam-radar-card .hub-section-note{max-width:780px}
+  .hub-exam-launcher{display:grid;gap:16px;margin:18px 0 20px;padding:16px;border:1px solid rgba(10,47,115,.12);border-radius:18px;background:#fff}
+  .hub-exam-launcher-controls{display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:10px;align-items:end}
+  .hub-exam-launcher-controls label{display:grid;gap:6px;min-width:0;font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--hub-muted)}
+  .hub-exam-launcher-controls select{width:100%;min-width:0;min-height:44px;border:1px solid var(--hub-border);border-radius:12px;padding:0 12px;background:#fff;color:var(--hub-ink);font:inherit;font-weight:700}
+  .hub-exam-launcher-controls button,.hub-exam-route-actions a{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;min-height:44px;padding:0 14px;border-radius:12px;border:1px solid rgba(var(--color-primary-rgb,0,98,204),.18);background:#f4f8ff;color:var(--hub-blue);font:inherit;font-size:.84rem;font-weight:900;text-decoration:none;cursor:pointer;box-sizing:border-box}
+  .hub-exam-launcher-controls button:hover,.hub-exam-launcher-controls button:focus-visible,.hub-exam-route-actions a:hover,.hub-exam-route-actions a:focus-visible{background:#fff;border-color:rgba(var(--color-primary-rgb,0,98,204),.32)}
+  .hub-exam-launcher-output{display:grid;gap:14px}
+  .hub-exam-route-summary{display:grid;gap:8px;padding:14px;border-radius:14px;background:#f7faff;border:1px solid rgba(10,47,115,.08)}
+  .hub-exam-route-summary h3{margin:0;font-size:1.05rem;line-height:1.25;letter-spacing:0}
+  .hub-exam-route-summary p{margin:0;color:var(--hub-muted);line-height:1.6}
+  .hub-exam-route-meta{display:flex;flex-wrap:wrap;gap:8px}
+  .hub-exam-route-meta span{display:inline-flex;align-items:center;min-height:28px;padding:5px 9px;border-radius:999px;background:#fff;border:1px solid var(--hub-border);font-size:.76rem;font-weight:800;color:var(--hub-ink)}
+  .hub-exam-route-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:14px}
+  .hub-exam-route-checklist{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+  .hub-exam-route-checklist li{position:relative;padding-left:20px;color:var(--hub-muted);line-height:1.55}
+  .hub-exam-route-checklist li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:999px;background:var(--hub-blue)}
+  .hub-exam-route-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start}
+  .hub-exam-route-status{min-height:20px;margin:0;font-size:.8rem;font-weight:800;color:var(--hub-blue)}
+  .hub-exam-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+  .hub-exam-card{display:grid;align-content:start;gap:10px;min-height:260px;padding:16px;border-radius:20px;border:1px solid var(--hub-border);background:#fff;color:var(--hub-ink)}
+  .hub-exam-card-hot{border-color:rgba(var(--color-gold-rgb,245,166,35),.36);background:linear-gradient(180deg,#fffaf0 0%,#fff 58%)}
+  .hub-exam-card h3{margin:0;font-size:1rem;line-height:1.2;letter-spacing:0}
+  .hub-exam-card p{margin:0;font-size:.82rem;line-height:1.62;color:var(--hub-muted)}
+  .hub-exam-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+  .hub-exam-links a{display:inline-flex;align-items:center;min-height:34px;padding:7px 10px;border-radius:12px;background:#f4f8ff;border:1px solid var(--hub-border);font-size:.76rem;font-weight:800;color:var(--hub-blue);text-decoration:none}
+  .hub-exam-links a:hover,.hub-exam-links a:focus-visible{border-color:rgba(var(--color-primary-rgb,0,98,204),.24);background:#fff}
+  .hub-exam-source-note{margin:16px 0 0;font-size:.8rem;line-height:1.65;color:var(--hub-muted)}
+  @media(max-width:1120px){.hub-exam-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:760px){.hub-exam-launcher-controls,.hub-exam-route-grid,.hub-exam-route-actions{grid-template-columns:1fr}.hub-exam-grid{grid-template-columns:1fr}.hub-exam-card{min-height:auto}.hub-plan-actions{flex-wrap:wrap}.hub-plan-actions span{max-width:100%}}
+</style>
 </head>
 <body class="hub-body top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -136,12 +197,13 @@
   <div class="hub-wrap hub-system-card">
     <div>
       <div class="hub-strip-label">AfroTools Education System</div>
-      <p>Education Hub is the student cockpit. Use the category hub for the full map, AfroJAMB for JAMB-focused prep, and AfroStudy for KCSE-focused prep.</p>
+      <p>Education Hub is the student cockpit. Use the category hub for the full map, AfroJAMB for Nigeria, AfroStudy for Kenya, and the exam radar for wider Africa prep opportunities.</p>
     </div>
     <div class="hub-strip-links">
-      <a href="/education/">Education category</a>
-      <a href="/jamb/">AfroJAMB</a>
-      <a href="/education/afrostudy/">AfroStudy</a>
+        <a href="/education/">Education category</a>
+        <a href="/jamb/">AfroJAMB</a>
+        <a href="/education/afrostudy/">AfroStudy</a>
+        <a href="#africa-exam-radar">Africa exam radar</a>
     </div>
   </div>
 </section>
@@ -374,6 +436,147 @@
       </article>
     </section>
 
+    <section class="hub-current-plan" id="africa-exam-radar">
+      <article class="hub-card hub-exam-radar-card">
+        <div class="hub-card-head">
+          <div>
+            <span class="hub-card-label">Africa Exam Radar</span>
+            <h2>Pick an exam and start prep</h2>
+          </div>
+          <span class="hub-badge hub-badge-soft">Checked July 2026</span>
+        </div>
+        <div class="hub-card-body">
+          <p class="hub-section-note">Choose a source-backed exam window, then open the matching countdown, study plan, score tracker, timetable, and flashcard deck.</p>
+          <div class="hub-exam-launcher" id="examPrepLauncher">
+            <div class="hub-exam-launcher-controls">
+              <label for="examPrepSelect">Choose exam
+                <select id="examPrepSelect"></select>
+              </label>
+              <button id="saveExamPrepBtn" type="button">Save route</button>
+              <button id="copyExamPrepBtn" type="button">Copy prep pack</button>
+            </div>
+            <div class="hub-exam-launcher-output" id="examPrepOutput" aria-live="polite"></div>
+          </div>
+          <div class="hub-exam-grid">
+            <article class="hub-exam-card hub-exam-card-hot">
+              <span class="hub-fit hub-fit-warn">Now</span>
+              <h3>Zambia ECZ GCE</h3>
+              <p>Runs 3 July to 22 July 2026. Use the countdown, revision blocks, and exam-day checklist for last-mile prep.</p>
+              <div class="hub-exam-links">
+                <a href="/tools/exam-countdown/?exam=zambia-gce">Countdown</a>
+                <a href="/tools/study-planner/?exam=zambia-gce">Study plan</a>
+                <a href="/tools/grade-tracker/?exam=zambia-gce">Scores</a>
+                <a href="/tools/exam-timetable/?exam=zambia-gce">Prep timetable</a>
+                <a href="/tools/flashcard-maker/?exam=zambia-gce">Flashcards</a>
+                <a href="https://www.exams-council.org.zm/gce/" target="_blank" rel="noopener">Official source</a>
+              </div>
+            </article>
+            <article class="hub-exam-card hub-exam-card-hot">
+              <span class="hub-fit hub-fit-warn">July</span>
+              <h3>Uganda UNEB PLE, UCE, UACE</h3>
+              <p>Late registration is open from 1 July to 31 July 2026. Build registration checklists, CA/project trackers, and parent reminders.</p>
+              <div class="hub-exam-links">
+                <a href="#deadline-form">Track deadline</a>
+                <a href="/tools/exam-countdown/?exam=uganda-uneb-registration">Countdown</a>
+                <a href="/tools/study-planner/?exam=uganda-uneb-registration">Study plan</a>
+                <a href="/tools/grade-tracker/?exam=uganda-uneb-registration">Scores</a>
+                <a href="/tools/exam-timetable/?exam=uganda-uneb-registration">Prep timetable</a>
+                <a href="/tools/flashcard-maker/?exam=uganda-uneb-registration">Flashcards</a>
+                <a href="https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/" target="_blank" rel="noopener">Official source</a>
+              </div>
+            </article>
+            <article class="hub-exam-card">
+              <span class="hub-fit hub-fit-ok">Oct-Nov</span>
+              <h3>Zambia Grade 7 and Grade 12</h3>
+              <p>Grade 7 runs 26 to 30 October 2026; School Certificate runs 30 October to 17 November 2026. Open ECZ subject prep, countdowns, score tracking, and timetable tools.</p>
+              <div class="hub-exam-links">
+                <a href="/tools/exam-timetable/?exam=zambia-grade-7">Grade 7 timetable</a>
+                <a href="/tools/exam-timetable/?exam=zambia-grade-12">Grade 12 timetable</a>
+                <a href="/tools/exam-countdown/?exam=zambia-grade-7">Grade 7 countdown</a>
+                <a href="/tools/exam-countdown/?exam=zambia-grade-12">Countdown</a>
+                <a href="/tools/study-planner/?exam=zambia-grade-7">Grade 7 plan</a>
+                <a href="/tools/study-planner/?exam=zambia-grade-12">Study plan</a>
+                <a href="/tools/grade-tracker/?exam=zambia-grade-7">Grade 7 scores</a>
+                <a href="/tools/grade-tracker/?exam=zambia-grade-12">Scores</a>
+                <a href="/tools/flashcard-maker/?exam=zambia-grade-7">Grade 7 cards</a>
+                <a href="/tools/flashcard-maker/?exam=zambia-grade-12">Grade 12 cards</a>
+                <a href="https://www.exams-council.org.zm/grade-12/" target="_blank" rel="noopener">Official source</a>
+              </div>
+            </article>
+            <article class="hub-exam-card">
+              <span class="hub-fit hub-fit-ok">November</span>
+              <h3>Tanzania NECTA CSEE</h3>
+              <p>CSEE is administered in the first week of November every year. Build CSEE countdowns, subject plans, and Kiswahili-friendly prep packs.</p>
+              <div class="hub-exam-links">
+                <a href="/tools/exam-countdown/?exam=tanzania-csee">Countdown</a>
+                <a href="/tools/study-planner/?exam=tanzania-csee">Study plan</a>
+                <a href="/tools/grade-tracker/?exam=tanzania-csee">Scores</a>
+                <a href="/tools/exam-timetable/?exam=tanzania-csee">Prep timetable</a>
+                <a href="/tools/flashcard-maker/?exam=tanzania-csee">Flashcards</a>
+                <a href="https://necta.go.tz/pages/csee" target="_blank" rel="noopener">Official source</a>
+              </div>
+            </article>
+            <article class="hub-exam-card">
+              <span class="hub-fit hub-fit-ok">Posted</span>
+              <h3>South Africa NSC</h3>
+              <p>The DBE has the 2026 November NSC timetable available. Connect Matric Points, past-paper planning, and weekly revision material.</p>
+              <div class="hub-exam-links">
+                <a href="/tools/matric-points/">Matric points</a>
+                <a href="/tools/exam-countdown/?exam=south-africa-nsc">Countdown</a>
+                <a href="/tools/study-planner/?exam=south-africa-nsc">Study plan</a>
+                <a href="/tools/grade-tracker/?exam=south-africa-nsc">Scores</a>
+                <a href="/tools/exam-timetable/?exam=south-africa-nsc">Prep timetable</a>
+                <a href="/tools/flashcard-maker/?exam=south-africa-nsc">Flashcards</a>
+                <a href="https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338" target="_blank" rel="noopener">Official source</a>
+              </div>
+            </article>
+            <article class="hub-exam-card">
+              <span class="hub-fit hub-fit-ok">Posted</span>
+              <h3>Ghana WAEC BECE and WASSCE</h3>
+              <p>WAEC Ghana lists 2026 BECE, WASSCE school, and WASSCE private timetables. Use the Ghana WAEC prep tools to plan dates, revise subjects, and track scores.</p>
+              <div class="hub-exam-links">
+                <a href="/tools/waec-calculator/">WAEC calculator</a>
+                <a href="/tools/exam-countdown/?exam=ghana-waec">Countdown</a>
+                <a href="/tools/study-planner/?exam=ghana-waec">Study plan</a>
+                <a href="/tools/grade-tracker/?exam=ghana-waec">Scores</a>
+                <a href="/tools/exam-timetable/?exam=ghana-waec">Prep timetable</a>
+                <a href="/tools/flashcard-maker/?exam=ghana-waec">Flashcards</a>
+                <a href="https://waecgh.org/timetable/" target="_blank" rel="noopener">Official source</a>
+              </div>
+            </article>
+            <article class="hub-exam-card">
+              <span class="hub-fit hub-fit-ok">Posted</span>
+              <h3>Kenya KNEC KCSE, KPSEA, KJSEA</h3>
+              <p>KNEC has 2026 timetables posted. Use KCSE prep tools for subject revision, cluster goals, countdowns, and daily study routes.</p>
+              <div class="hub-exam-links">
+                <a href="/tools/kcse-calculator/">KCSE calculator</a>
+                <a href="/tools/exam-countdown/?exam=kenya-kcse">Countdown</a>
+                <a href="/tools/study-planner/?exam=kenya-kcse">Study plan</a>
+                <a href="/tools/grade-tracker/?exam=kenya-kcse">Scores</a>
+                <a href="/tools/exam-timetable/?exam=kenya-kcse">Prep timetable</a>
+                <a href="/tools/flashcard-maker/?exam=kenya-kcse">Flashcards</a>
+                <a href="https://www.knec.ac.ke/2026-kcse-timetable/" target="_blank" rel="noopener">Official source</a>
+              </div>
+            </article>
+            <article class="hub-exam-card">
+              <span class="hub-fit hub-fit-ok">Posted</span>
+              <h3>Zimbabwe ZIMSEC O and A Level</h3>
+              <p>ZIMSEC publishes timetable downloads. Use the O Level and A Level prep tools for study calendars, syllabus checks, and past-paper review.</p>
+              <div class="hub-exam-links">
+                <a href="/tools/exam-timetable/?exam=zimbabwe-zimsec">Prep timetable</a>
+                <a href="/tools/exam-countdown/?exam=zimbabwe-zimsec">Countdown</a>
+                <a href="/tools/study-planner/?exam=zimbabwe-zimsec">Study plan</a>
+                <a href="/tools/grade-tracker/?exam=zimbabwe-zimsec">Scores</a>
+                <a href="/tools/flashcard-maker/?exam=zimbabwe-zimsec">Flashcards</a>
+                <a href="https://www5.zimsec.co.zw/timetables/" target="_blank" rel="noopener">Official source</a>
+              </div>
+            </article>
+          </div>
+          <p class="hub-exam-source-note">Always confirm the current official timetable, subject papers, and registration rules before acting.</p>
+        </div>
+      </article>
+    </section>
+
     <section class="hub-grid-three">
       <article class="hub-card">
         <div class="hub-card-head">
@@ -586,35 +789,340 @@
     </section>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="education-hub">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Education Hub decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for education hub so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Education Hub: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, currentYear, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="education-hub">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="education-hub" data-df-base="Education Hub: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Education Hub: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="education-hub">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="education-hub-faq-title">
-  <h2 id="education-hub-faq-title">Education Hub FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 </main>
 
+<script id="education-hub-exam-launcher-script">
+(function(){
+  var storageKey = "afrotools.educationHub.examPrepRoute.v1";
+  var routes = [
+    {
+      id: "zambia-gce",
+      name: "Zambia ECZ GCE",
+      country: "Zambia",
+      window: "3 July to 22 July 2026",
+      status: "In progress",
+      sourceLabel: "ECZ GCE",
+      sourceUrl: "https://www.exams-council.org.zm/gce/",
+      note: "Last-mile route for daily paper checks, short revision blocks, and exam-day readiness.",
+      tasks: [
+        "Open the countdown and confirm remaining exam days.",
+        "Use the study plan for two focused revision blocks per subject.",
+        "Track latest mock or practice-paper scores before each paper."
+      ]
+    },
+    {
+      id: "uganda-uneb-registration",
+      name: "Uganda UNEB PLE, UCE, UACE registration",
+      country: "Uganda",
+      window: "Late registration: 1 July to 31 July 2026",
+      status: "Registration window",
+      sourceLabel: "UNEB registration notice",
+      sourceUrl: "https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/",
+      note: "Registration route for deadline tracking, required school actions, and parent reminders.",
+      tasks: [
+        "Save the registration deadline in the checklist timeline.",
+        "Use the countdown for school follow-up and document readiness.",
+        "Track coursework, project, or continuous-assessment signals where they apply."
+      ]
+    },
+    {
+      id: "zambia-grade-7",
+      name: "Zambia ECZ Grade 7",
+      country: "Zambia",
+      window: "26 October to 30 October 2026",
+      status: "Posted",
+      sourceLabel: "ECZ Grade 7",
+      sourceUrl: "https://www.exams-council.org.zm/grade-7/",
+      note: "Primary exam route for subject revision, parent check-ins, and a short final-week plan.",
+      tasks: [
+        "Build a four-week revision timetable around the posted paper window.",
+        "Track English, mathematics, science, social studies, and local-language readiness.",
+        "Create flashcards for weak definitions, formulas, and short-answer facts."
+      ]
+    },
+    {
+      id: "zambia-grade-12",
+      name: "Zambia ECZ Grade 12 School Certificate",
+      country: "Zambia",
+      window: "30 October to 17 November 2026",
+      status: "Posted",
+      sourceLabel: "ECZ Grade 12",
+      sourceUrl: "https://www.exams-council.org.zm/grade-12/",
+      note: "School Certificate route for subject priorities, score targets, and paper-by-paper preparation.",
+      tasks: [
+        "Use the countdown to anchor the first official paper date.",
+        "Build a weekly timetable from your six highest-risk subjects.",
+        "Track mock scores, target bands, and flashcard mastery together."
+      ]
+    },
+    {
+      id: "tanzania-csee",
+      name: "Tanzania NECTA CSEE",
+      country: "Tanzania",
+      window: "First week of November 2026",
+      status: "Annual window",
+      sourceLabel: "NECTA CSEE",
+      sourceUrl: "https://necta.go.tz/pages/csee",
+      note: "CSEE route for subject spacing, Kiswahili-friendly revision, and practical paper readiness.",
+      tasks: [
+        "Use the study plan to separate sciences, mathematics, languages, and humanities.",
+        "Make flashcards for common definitions, dates, formulas, and essay outlines.",
+        "Confirm the final official timetable before committing paper-specific dates."
+      ]
+    },
+    {
+      id: "south-africa-nsc",
+      name: "South Africa NSC",
+      country: "South Africa",
+      window: "November 2026 timetable posted",
+      status: "Posted",
+      sourceLabel: "DBE NSC timetable",
+      sourceUrl: "https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338",
+      note: "Matric route for subject plans, APS/matric-point targets, and weekly revision checks.",
+      tasks: [
+        "Use the countdown for the first written paper and final-week checklist.",
+        "Track recent marks against target APS or matric-point goals.",
+        "Build flashcard decks for terminology, formulas, and past-paper corrections."
+      ]
+    },
+    {
+      id: "ghana-waec",
+      name: "Ghana WAEC BECE and WASSCE",
+      country: "Ghana",
+      window: "2026 BECE, WASSCE school, and WASSCE private timetables posted",
+      status: "Posted",
+      sourceLabel: "WAEC Ghana timetables",
+      sourceUrl: "https://waecgh.org/timetable/",
+      note: "Ghana WAEC route for dates, subject weighting, WAEC-grade targets, and printable prep packs.",
+      tasks: [
+        "Choose BECE, WASSCE school, or WASSCE private before building the timetable.",
+        "Track mock scores against the grades you need for the next step.",
+        "Use flashcards for objective questions, formulas, and repeated correction notes."
+      ]
+    },
+    {
+      id: "kenya-kcse",
+      name: "Kenya KNEC KCSE",
+      country: "Kenya",
+      window: "2026 timetable posted",
+      status: "Posted",
+      sourceLabel: "KNEC KCSE timetable",
+      sourceUrl: "https://www.knec.ac.ke/2026-kcse-timetable/",
+      note: "KCSE route for subject balance, cluster goals, school revision blocks, and score tracking.",
+      tasks: [
+        "Build a weekly timetable around your strongest cluster or pathway goal.",
+        "Track subject grades and compare them with the next course target.",
+        "Create flashcards for formulas, definitions, set texts, and correction patterns."
+      ]
+    },
+    {
+      id: "zimbabwe-zimsec",
+      name: "Zimbabwe ZIMSEC O and A Level",
+      country: "Zimbabwe",
+      window: "Timetable downloads posted",
+      status: "Posted",
+      sourceLabel: "ZIMSEC timetables",
+      sourceUrl: "https://www5.zimsec.co.zw/timetables/",
+      note: "ZIMSEC route for O Level and A Level paper spacing, syllabus checks, and past-paper review.",
+      tasks: [
+        "Confirm whether you are planning O Level, A Level, or both.",
+        "Use the timetable to separate practical, theory, and final review days.",
+        "Track past-paper marks and create flashcards from every missed topic."
+      ]
+    }
+  ];
+
+  function byId(id){
+    return document.getElementById(id);
+  }
+
+  function routeLinks(route){
+    return [
+      { label: "Countdown", href: "/tools/exam-countdown/?exam=" + route.id },
+      { label: "Study plan", href: "/tools/study-planner/?exam=" + route.id },
+      { label: "Score tracker", href: "/tools/grade-tracker/?exam=" + route.id },
+      { label: "Prep timetable", href: "/tools/exam-timetable/?exam=" + route.id },
+      { label: "Flashcards", href: "/tools/flashcard-maker/?exam=" + route.id },
+      { label: "Official source", href: route.sourceUrl, external: true }
+    ];
+  }
+
+  function selectedRoute(){
+    var select = byId("examPrepSelect");
+    var id = select && select.value;
+    return routes.find(function(route){ return route.id === id; }) || routes[0];
+  }
+
+  function prepPackText(route){
+    return [
+      route.name + " prep pack",
+      "Country: " + route.country,
+      "Window: " + route.window,
+      "Source: " + route.sourceLabel + " - " + route.sourceUrl,
+      "",
+      "Actions:",
+      route.tasks.map(function(task, index){ return (index + 1) + ". " + task; }).join("\n"),
+      "",
+      "Open:",
+      routeLinks(route).map(function(link){ return link.label + ": " + link.href; }).join("\n"),
+      "",
+      "Confirm the current official timetable, paper list, and registration rules before acting."
+    ].join("\n");
+  }
+
+  function setStatus(message){
+    var status = byId("examPrepStatus");
+    if (status) {
+      status.textContent = message || "";
+    }
+  }
+
+  function render(){
+    var output = byId("examPrepOutput");
+    if (!output) {
+      return;
+    }
+    var route = selectedRoute();
+    output.textContent = "";
+
+    var summary = document.createElement("div");
+    summary.className = "hub-exam-route-summary";
+
+    var meta = document.createElement("div");
+    meta.className = "hub-exam-route-meta";
+    [route.status, route.country, route.window].forEach(function(value){
+      var chip = document.createElement("span");
+      chip.textContent = value;
+      meta.appendChild(chip);
+    });
+
+    var title = document.createElement("h3");
+    title.textContent = route.name;
+    var note = document.createElement("p");
+    note.textContent = route.note;
+    summary.appendChild(meta);
+    summary.appendChild(title);
+    summary.appendChild(note);
+
+    var routeGrid = document.createElement("div");
+    routeGrid.className = "hub-exam-route-grid";
+
+    var list = document.createElement("ul");
+    list.className = "hub-exam-route-checklist";
+    route.tasks.forEach(function(task){
+      var item = document.createElement("li");
+      item.textContent = task;
+      list.appendChild(item);
+    });
+
+    var actions = document.createElement("div");
+    actions.className = "hub-exam-route-actions";
+    routeLinks(route).forEach(function(link){
+      var action = document.createElement("a");
+      action.href = link.href;
+      action.textContent = link.label;
+      if (link.external) {
+        action.target = "_blank";
+        action.rel = "noopener";
+      }
+      actions.appendChild(action);
+    });
+
+    routeGrid.appendChild(list);
+    routeGrid.appendChild(actions);
+    summary.appendChild(routeGrid);
+
+    var status = document.createElement("p");
+    status.className = "hub-exam-route-status";
+    status.id = "examPrepStatus";
+
+    output.appendChild(summary);
+    output.appendChild(status);
+  }
+
+  function saveRoute(){
+    var route = selectedRoute();
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({
+        id: route.id,
+        name: route.name,
+        savedAt: new Date().toISOString()
+      }));
+      window.dispatchEvent(new CustomEvent("afrotools:education-exam-route-saved", { detail: { id: route.id, name: route.name } }));
+      setStatus("Saved " + route.name + " to this browser.");
+    } catch (error) {
+      setStatus("Could not save in this browser. You can still open the tools above.");
+    }
+  }
+
+  function copyRoute(){
+    var route = selectedRoute();
+    var text = prepPackText(route);
+    var done = function(){ setStatus("Copied " + route.name + " prep pack."); };
+    var failed = function(){
+      var field = document.createElement("textarea");
+      field.value = text;
+      field.setAttribute("readonly", "readonly");
+      field.style.position = "fixed";
+      field.style.left = "-9999px";
+      document.body.appendChild(field);
+      field.select();
+      try {
+        document.execCommand("copy");
+        done();
+      } catch (error) {
+        setStatus("Copy was blocked. Select the route links above to continue.");
+      }
+      field.remove();
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(failed);
+    } else {
+      failed();
+    }
+  }
+
+  function init(){
+    var select = byId("examPrepSelect");
+    var output = byId("examPrepOutput");
+    if (!select || !output) {
+      return;
+    }
+    var savedId = "";
+    try {
+      savedId = JSON.parse(localStorage.getItem(storageKey) || "{}").id || "";
+    } catch (error) {
+      savedId = "";
+    }
+    routes.forEach(function(route){
+      var option = document.createElement("option");
+      option.value = route.id;
+      option.textContent = route.name;
+      select.appendChild(option);
+    });
+    select.value = routes.some(function(route){ return route.id === savedId; }) ? savedId : "zambia-grade-12";
+    select.addEventListener("change", render);
+    var saveButton = byId("saveExamPrepBtn");
+    var copyButton = byId("copyExamPrepBtn");
+    if (saveButton) {
+      saveButton.addEventListener("click", saveRoute);
+    }
+    if (copyButton) {
+      copyButton.addEventListener("click", copyRoute);
+    }
+    render();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
 <afro-related-tools category="education" current="education-hub"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

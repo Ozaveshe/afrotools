@@ -6,11 +6,11 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Student Grade Tracker — GPA & CGPA Calculator | AfroTools</title>
-<meta name="description" content="Track your grades and calculate GPA/CGPA for African university grading systems. Supports Nigerian 5.0, Kenyan 4.0, South African percentage, and UK classification systems.">
+<meta name="description" content="Track CA and exam scores for African exam prep, then calculate GPA or CGPA for African university grading systems. Includes ECZ, UNEB, NECTA, KNEC, WAEC and ZIMSEC presets.">
 <meta name="keywords" content="GPA calculator, CGPA calculator, student grade tracker, Nigerian university GPA, African grading system, first class GPA, second class upper">
 <link rel="canonical" href="https://afrotools.com/tools/grade-tracker/">
 <meta property="og:title" content="Student Grade Tracker — GPA & CGPA Calculator">
-<meta property="og:description" content="Calculate your GPA and CGPA using African university grading scales. Track grades across semesters.">
+<meta property="og:description" content="Track CA and exam scores for African exams, plus GPA and CGPA across African grading systems.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/grade-tracker.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/grade-tracker/">
@@ -27,6 +27,16 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#3b0764}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.exam-preset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.6rem;margin-top:.75rem}
+.exam-preset{padding:.75rem .85rem;border:1.5px solid #e2e8f0;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-family:inherit;transition:all .18s}
+.exam-preset:hover,.exam-preset.active{border-color:var(--purple);background:var(--purple-light)}
+.exam-preset strong{display:block;font-size:.84rem;color:#1e293b}
+.exam-preset span{display:block;font-size:.72rem;color:#64748b;margin-top:.15rem}
+.exam-context{margin-top:.9rem;padding:.85rem 1rem;border:1px solid #ddd6fe;border-radius:9px;background:#faf5ff;color:#475569;font-size:.84rem;line-height:1.65}
+.exam-context strong{color:#3b0764}
+.exam-actions{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.55rem}
+.exam-actions a,.exam-actions button{display:inline-flex;align-items:center;min-height:32px;padding:.4rem .7rem;border:1px solid #c4b5fd;border-radius:7px;background:#fff;color:var(--purple);font-size:.76rem;font-weight:800;text-decoration:none;font-family:inherit;cursor:pointer}
+.exam-actions a:hover,.exam-actions button:hover{background:var(--purple-light)}
 .form-group{display:flex;flex-direction:column;gap:.3rem}
 .form-group label{font-weight:600;font-size:.85rem;color:#475569}
 .form-group select,.form-group input{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
@@ -64,6 +74,29 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .grade-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.75rem}
 .grade-table th{background:var(--purple-light);color:#3b0764;padding:.5rem .6rem;text-align:left;font-weight:600;border-bottom:2px solid #c4b5fd}
 .grade-table td{padding:.4rem .6rem;border-bottom:1px solid #f1f5f9}
+@media(max-width:620px){.grade-table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.grade-table thead,.grade-table tbody{display:table;min-width:620px;width:100%}}
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-top:.75rem}
+.risk-card{border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;padding:.8rem}
+.risk-card.good{background:#f0fdf4;border-color:#bbf7d0}
+.risk-card.warn{background:#fffbeb;border-color:#fde68a}
+.risk-card.bad{background:#fef2f2;border-color:#fecaca}
+.risk-title{font-size:.82rem;font-weight:800;color:#1e293b}
+.risk-note{font-size:.78rem;color:#64748b;margin-top:.2rem;line-height:1.55}
+.target-panel{margin-top:1rem;border:1px solid #ddd6fe;border-radius:10px;background:#faf5ff;padding:1rem}
+.target-panel-head{display:flex;justify-content:space-between;gap:1rem;align-items:end;flex-wrap:wrap;margin-bottom:.75rem}
+.target-panel h3{font-size:.95rem;color:#3b0764;margin:0}
+.target-panel p{font-size:.8rem;color:#64748b;margin:.2rem 0 0}
+.target-panel label{font-size:.72rem;font-weight:800;color:#475569;display:block;margin-bottom:.25rem}
+.target-panel select{padding:.45rem .65rem;border:1.5px solid #c4b5fd;border-radius:7px;background:#fff;color:#3b0764;font-family:inherit;font-weight:700}
+.target-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+.target-card{border:1px solid #e2e8f0;border-radius:8px;background:#fff;padding:.85rem}
+.target-card.good{border-color:#bbf7d0;background:#f0fdf4}
+.target-card.warn{border-color:#fde68a;background:#fffbeb}
+.target-card.bad{border-color:#fecaca;background:#fef2f2}
+.target-title{font-size:.82rem;font-weight:800;color:#1e293b}
+.target-value{font-size:1.2rem;font-weight:900;color:var(--purple);margin-top:.15rem}
+.target-note{font-size:.76rem;color:#64748b;line-height:1.55;margin-top:.2rem}
+.target-actions{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.75rem}
 
 .seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
 .seo-section h2{font-size:1.4rem;font-weight:800;color:#3b0764;margin-bottom:1rem}
@@ -84,7 +117,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Student Grade Tracker — GPA & CGPA Calculator">
-<meta name="twitter:description" content="Calculate your GPA and CGPA using African university grading scales. Track grades across semesters.">
+<meta name="twitter:description" content="Track CA and exam scores for African exams, plus GPA and CGPA across African grading systems.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/grade-tracker.webp">
 <script type="application/ld+json">
 {
@@ -126,15 +159,24 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <section class="hero">
 <nav style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;"><a href="/" style="color:rgba(255,255,255,0.5);text-decoration:none;">Home</a> / <a href="/education/" style="color:rgba(255,255,255,0.5);text-decoration:none;">Education</a> / <span style="color:#fff;">Grade Tracker</span></nav>
 <h1>Student Grade Tracker</h1>
-<p>Calculate your GPA and CGPA using African university grading scales. Track your academic performance across semesters.</p>
+<p>Track CA plus exam marks for African exams, spot at-risk subjects, and still calculate GPA or CGPA when you need university grading.</p>
 </section>
 <div class="container">
+<div class="card">
+<h2>Africa Exam Presets</h2>
+<p style="font-size:.86rem;color:#64748b;margin-bottom:.35rem">Load subjects, turn on CA/exam score entry, and track which papers need urgent revision.</p>
+<div class="exam-preset-grid" id="examPresetGrid"></div>
+<div class="exam-context" id="examContext" aria-live="polite">
+<strong>Custom tracker.</strong> Add subjects or courses, then calculate GPA or exam readiness.
+</div>
+</div>
 <div class="card">
 <h2>Grading System</h2>
 <div class="form-grid">
 <div class="form-group">
 <label for="system">Grading Scale</label>
 <select id="system" onchange="updateGradeOptions()">
+<option value="examPct">School exam percentage tracker</option>
 <option value="ng5">Nigerian (5.0 scale)</option>
 <option value="ng4">Nigerian (4.0 scale)</option>
 <option value="ke">Kenyan (4.0 scale)</option>
@@ -184,6 +226,15 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <table class="grade-table" id="breakdownTable"></table>
 </div>
 <div class="card">
+<h2>Exam Readiness</h2>
+<div id="examInsights"></div>
+<div class="exam-actions">
+<button type="button" onclick="copyGradePlan()">Copy result plan</button>
+<button type="button" onclick="downloadGradeSnapshot('txt')">Download TXT</button>
+<button type="button" onclick="downloadGradeSnapshot('json')">Download JSON</button>
+</div>
+</div>
+<div class="card">
 <h2>Grading Scale Reference</h2>
 <table class="grade-table" id="scaleTable"></table>
 </div>
@@ -221,7 +272,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </section>
 <afro-related-tools></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 
 <script src="/assets/js/components/navbar.js?v=e62dd595" defer></script>
 <script src="/assets/js/components/footer.js?v=c792168a" defer></script>
@@ -229,6 +280,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
 <script>
 const SYSTEMS={
+  examPct:{name:'School exam percentage',max:100,grades:[{label:'A / Excellent (75-100%)',gp:85},{label:'B / Strong (65-74%)',gp:70},{label:'C / Credit (50-64%)',gp:57},{label:'D / Pass risk (40-49%)',gp:45},{label:'F / At risk (0-39%)',gp:30}],classes:[{name:'Ready',min:70,css:'class-first'},{name:'On Track',min:55,css:'class-second-upper'},{name:'Borderline',min:45,css:'class-second-lower'},{name:'At Risk',min:0,css:'class-third'}]},
   ng5:{name:'Nigerian 5.0',max:5,grades:[{label:'A (70-100%)',gp:5},{label:'B (60-69%)',gp:4},{label:'C (50-59%)',gp:3},{label:'D (45-49%)',gp:2},{label:'E (40-44%)',gp:1},{label:'F (0-39%)',gp:0}],classes:[{name:'First Class',min:4.5,css:'class-first'},{name:'Second Class Upper',min:3.5,css:'class-second-upper'},{name:'Second Class Lower',min:2.4,css:'class-second-lower'},{name:'Third Class',min:1.5,css:'class-third'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
   ng4:{name:'Nigerian 4.0',max:4,grades:[{label:'A (70-100%)',gp:4},{label:'B+ (65-69%)',gp:3.5},{label:'B (60-64%)',gp:3},{label:'C+ (55-59%)',gp:2.5},{label:'C (50-54%)',gp:2},{label:'D (45-49%)',gp:1.5},{label:'E (40-44%)',gp:1},{label:'F (0-39%)',gp:0}],classes:[{name:'First Class',min:3.5,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.0,css:'class-second-lower'},{name:'Third Class',min:1.5,css:'class-third'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
   ke:{name:'Kenyan 4.0',max:4,grades:[{label:'A (70-100%)',gp:4},{label:'B+ (65-69%)',gp:3.5},{label:'B (60-64%)',gp:3},{label:'B- (55-59%)',gp:2.67},{label:'C+ (50-54%)',gp:2.33},{label:'C (45-49%)',gp:2},{label:'C- (40-44%)',gp:1.67},{label:'D (35-39%)',gp:1},{label:'E (0-34%)',gp:0}],classes:[{name:'First Class Honours',min:3.6,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.5,css:'class-second-lower'},{name:'Pass',min:2.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
@@ -241,6 +293,19 @@ const SYSTEMS={
 
 let courses=[];
 let courseId=0;
+let activeExamKey='';
+let lastGradeSnapshot=null;
+
+const EXAM_PRESETS={
+  'zambia-grade-12':{name:'Zambia ECZ Grade 12',country:'Zambia',source:'https://www.exams-council.org.zm/grade-12/',subjects:['Mathematics','English Language','Biology','Chemistry','Physics'],scores:[['Mathematics',18,31],['English Language',26,39],['Biology',24,34],['Chemistry',16,28],['Physics',17,30]]},
+  'zambia-grade-7':{name:'Zambia ECZ Grade 7',country:'Zambia',source:'https://www.exams-council.org.zm/grade-7/',subjects:['Mathematics','English','Integrated Science','Social Studies','Special Paper'],scores:[['Mathematics',22,34],['English',28,41],['Integrated Science',24,35],['Social Studies',23,33],['Special Paper',19,30]]},
+  'uganda-uneb-registration':{name:'Uganda UNEB PLE/UCE/UACE',country:'Uganda',source:'https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/',subjects:['Mathematics','English','Science','Social Studies','CRE/IRE'],scores:[['Mathematics',18,32],['English',25,39],['Science',22,33],['Social Studies',24,35],['CRE/IRE',27,40]]},
+  'tanzania-csee':{name:'Tanzania NECTA CSEE',country:'Tanzania',source:'https://necta.go.tz/pages/csee',subjects:['Basic Mathematics','English Language','Kiswahili','Biology','Geography'],scores:[['Basic Mathematics',17,29],['English Language',23,34],['Kiswahili',27,40],['Biology',22,35],['Geography',24,36]]},
+  'south-africa-nsc':{name:'South Africa NSC',country:'South Africa',source:'https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338',subjects:['Mathematics','English Home Language','Life Sciences','Physical Sciences','Geography'],scores:[['Mathematics',20,32],['English Home Language',29,42],['Life Sciences',24,38],['Physical Sciences',19,31],['Geography',26,39]]},
+  'ghana-waec':{name:'Ghana WAEC BECE/WASSCE',country:'Ghana',source:'https://waecgh.org/timetable/',subjects:['Core Mathematics','English Language','Integrated Science','Social Studies','Elective subject'],scores:[['Core Mathematics',19,31],['English Language',25,38],['Integrated Science',23,34],['Social Studies',24,37],['Elective subject',20,33]]},
+  'kenya-kcse':{name:'Kenya KNEC KCSE',country:'Kenya',source:'https://www.knec.ac.ke/2026-kcse-timetable/',subjects:['Mathematics','English','Kiswahili','Biology','Chemistry'],scores:[['Mathematics',18,32],['English',25,38],['Kiswahili',26,39],['Biology',23,36],['Chemistry',20,33]]},
+  'zimbabwe-zimsec':{name:'Zimbabwe ZIMSEC O/A Level',country:'Zimbabwe',source:'https://www5.zimsec.co.zw/timetables/',subjects:['Mathematics','English Language','Integrated Science','History','Geography'],scores:[['Mathematics',18,30],['English Language',25,39],['Integrated Science',22,35],['History',24,37],['Geography',23,36]]}
+};
 
 function getSystem(){return SYSTEMS[document.getElementById('system').value];}
 
@@ -259,11 +324,52 @@ function toggleCASplit(){
   document.querySelectorAll('.normal-grade-field').forEach(el=>el.style.display=on?'none':'block');
 }
 
+function renderExamPresets(){
+  const grid=document.getElementById('examPresetGrid');
+  if(!grid)return;
+  grid.innerHTML=Object.keys(EXAM_PRESETS).map(key=>{
+    const p=EXAM_PRESETS[key];
+    return `<button type="button" class="exam-preset${activeExamKey===key?' active':''}" onclick="loadExamPreset('${key}')"><strong>${p.name}</strong><span>${p.country} | ${p.subjects.length} subjects</span></button>`;
+  }).join('');
+}
+
+function presetKeyFromQuery(value){
+  const aliases={'zambia-gce':'zambia-grade-12','ecz-grade-12':'zambia-grade-12','ecz-grade-7':'zambia-grade-7','uganda-uneb':'uganda-uneb-registration','kenya-kcse-exam':'kenya-kcse'};
+  return EXAM_PRESETS[value]?value:(aliases[value]||'');
+}
+
+function loadExamPreset(key){
+  const preset=EXAM_PRESETS[key];
+  if(!preset)return;
+  activeExamKey=key;
+  document.getElementById('system').value='examPct';
+  updateGradeOptions();
+  document.getElementById('caSplitMode').checked=true;
+  document.getElementById('coursesContainer').innerHTML='';
+  courses=[];
+  courseId=0;
+  preset.scores.forEach(item=>addCourse({name:item[0],credits:1,ca:item[1],exam:item[2]}));
+  renderExamPresets();
+  renderExamContext();
+  calculate();
+}
+
+function renderExamContext(){
+  const box=document.getElementById('examContext');
+  if(!box)return;
+  const preset=EXAM_PRESETS[activeExamKey];
+  if(!preset){
+    box.innerHTML='<strong>Custom tracker.</strong> Add subjects or courses, then calculate GPA or exam readiness.';
+    return;
+  }
+  box.innerHTML=`<strong>${preset.name}.</strong> Track CA plus exam marks per subject, then use the risk report to decide what to revise next. Confirm official requirements with the source before acting.<div class="exam-actions"><a href="${preset.source}" target="_blank" rel="noopener">Official source</a><a href="/tools/exam-countdown/?exam=${encodeURIComponent(activeExamKey)}">Countdown</a><a href="/tools/study-planner/?exam=${encodeURIComponent(activeExamKey)}">Study planner</a><a href="/tools/exam-timetable/?exam=${encodeURIComponent(activeExamKey)}">Timetable</a><a href="/tools/flashcard-maker/?exam=${encodeURIComponent(activeExamKey)}">Flashcards</a></div>`;
+}
+
 function addCourse(data){
   const id=courseId++;
   courses.push(id);
   const sys=getSystem();
-  const d=data||{name:'',credits:3,grade:sys.grades[0].gp};
+  const d=data||{name:'',credits:3,grade:sys.grades[0].gp,ca:'',exam:''};
   const caMode=document.getElementById('caSplitMode').checked;
   const div=document.createElement('div');
   div.className='course-row';
@@ -273,8 +379,8 @@ function addCourse(data){
       <div><label>Course Name</label><input aria-label="E.g. MTH 101" type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
       <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1" aria-label="Input value"></div>
       <div class="ca-split-fields" style="display:contents">
-        <div><label>CA Score (40%)</label><input aria-label="Ca score" type="number" class="ca-score" min="0" max="40" step="0.5" placeholder="0-40"></div>
-        <div><label>Exam Score (60%)</label><input aria-label="Exam score" type="number" class="exam-score" min="0" max="60" step="0.5" placeholder="0-60"></div>
+        <div><label>CA Score (40%)</label><input aria-label="Ca score" type="number" class="ca-score" min="0" max="40" step="0.5" placeholder="0-40" value="${d.ca||''}"></div>
+        <div><label>Exam Score (60%)</label><input aria-label="Exam score" type="number" class="exam-score" min="0" max="60" step="0.5" placeholder="0-60" value="${d.exam||''}"></div>
       </div>
       <div><label>&nbsp;</label><button type="button" class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
     `;
@@ -306,15 +412,12 @@ function calculate(){
     const inputs=row.querySelectorAll('input');
     const name=inputs[0].value||'Course';
     const credits=parseInt(inputs[1].value)||0;
-    let gp, gradeLabel;
+    let gp, gradeLabel, caScore=null, examScore=null;
     if(caMode){
-      const caScore=parseFloat(row.querySelector('.ca-score')?.value)||0;
-      const examScore=parseFloat(row.querySelector('.exam-score')?.value)||0;
+      caScore=parseFloat(row.querySelector('.ca-score')?.value)||0;
+      examScore=parseFloat(row.querySelector('.exam-score')?.value)||0;
       const totalPct=caScore+examScore; // out of 100
-      // Map percentage to grade point using current system
-      const matched=sys.grades.slice().reverse().find(g=>g.gp>0)||(sys.grades[0]);
-      // simple mapping: % to gp proportionally
-      gp=parseFloat((totalPct/100*sys.max).toFixed(2));
+      gp=sys.max===100?parseFloat(totalPct.toFixed(2)):parseFloat((totalPct/100*sys.max).toFixed(2));
       gradeLabel=`CA:${caScore} + Exam:${examScore} = ${totalPct.toFixed(1)}%`;
     } else {
       const sel=row.querySelector('select');
@@ -324,7 +427,7 @@ function calculate(){
     const qp=gp*credits;
     totalQP+=qp;
     totalCredits+=credits;
-    courseData.push({name,credits,grade:gradeLabel,gp,qp});
+    courseData.push({name,credits,grade:gradeLabel,gp,qp,score:sys.max===100?gp:null,ca:caScore,exam:examScore});
   });
 
   if(totalCredits===0) return;
@@ -363,6 +466,7 @@ function calculate(){
   sys.classes.forEach(c=>{scale+=`<tr><td></td><td></td><td><span class="class-badge ${c.css}" style="font-size:.75rem;padding:.2rem .5rem">${c.name}</span></td><td>${c.min}</td></tr>`;});
   scale+='</tbody>';
   document.getElementById('scaleTable').innerHTML=scale;
+  renderExamInsights(courseData, gpa, sys);
 
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth'});
@@ -390,33 +494,184 @@ function calculate(){
 
   // Save to localStorage
   try{
-    var saveData={courses:[],system:document.getElementById('system').value,prevGpa:prevGpa,prevCredits:prevCredits};
+    var saveData={courses:[],system:document.getElementById('system').value,prevGpa:prevGpa,prevCredits:prevCredits,activeExamKey:activeExamKey,caSplitMode:document.getElementById('caSplitMode').checked};
     courses.forEach(function(id){
       var row=document.getElementById('course-'+id);
       if(!row)return;
       var inputs=row.querySelectorAll('input');
       var sel=row.querySelector('select');
-      saveData.courses.push({name:inputs[0].value,credits:inputs[1].value,grade:sel.value});
+      saveData.courses.push({name:inputs[0].value,credits:inputs[1].value,grade:sel?sel.value:0,ca:row.querySelector('.ca-score')?.value||'',exam:row.querySelector('.exam-score')?.value||''});
     });
+    lastGradeSnapshot={preset:activeExamKey,system:document.getElementById('system').value,gpa:gpa,courses:courseData,savedAt:new Date().toISOString()};
     localStorage.setItem('afro_grades',JSON.stringify(saveData));
   }catch(e){}
+}
+
+function renderExamInsights(courseData,gpa,sys){
+  const box=document.getElementById('examInsights');
+  if(!box)return;
+  if(sys.max!==100){
+    box.innerHTML='<p style="color:#64748b;font-size:.86rem">Use CA/exam split with the school exam percentage tracker to see subject risk and revision actions.</p>';
+    return;
+  }
+  const weak=courseData.filter(c=>c.score<50);
+  const watch=courseData.filter(c=>c.score>=50&&c.score<65);
+  const strong=courseData.filter(c=>c.score>=65);
+  const cards=[
+    {cls:weak.length?'bad':'good',title:weak.length?weak.length+' at-risk subject'+(weak.length>1?'s':''):'No subjects below 50%',note:weak.length?weak.map(c=>c.name+' needs '+Math.max(0,50-c.score).toFixed(1)+' marks to reach 50%').join('; '):'Keep using timed papers and mistake cards.'},
+    {cls:watch.length?'warn':'good',title:watch.length?watch.length+' watch-list subject'+(watch.length>1?'s':''):'No borderline subjects',note:watch.length?watch.map(c=>c.name+' is between 50% and 65%').join('; '):'Your remaining risk is concentrated in weaker rows only.'},
+    {cls:gpa>=65?'good':gpa>=50?'warn':'bad',title:'Average '+gpa.toFixed(1)+'%',note:gpa>=65?'On track. Protect revision consistency.':gpa>=50?'Credit range. Move one weak subject at a time.':'Below pass line. Start with the two lowest subjects.'}
+  ];
+  const preset=EXAM_PRESETS[activeExamKey];
+  const actions=preset?`<div class="exam-actions"><a href="/tools/study-planner/?exam=${encodeURIComponent(activeExamKey)}">Build study plan</a><a href="/tools/exam-timetable/?exam=${encodeURIComponent(activeExamKey)}">Timed timetable</a><a href="/tools/flashcard-maker/?exam=${encodeURIComponent(activeExamKey)}">Drill flashcards</a></div>`:'';
+  box.innerHTML='<div class="risk-grid">'+cards.map(c=>`<div class="risk-card ${c.cls}"><div class="risk-title">${c.title}</div><div class="risk-note">${c.note}</div></div>`).join('')+'</div>'+renderTargetPlanner(courseData)+actions;
+}
+
+function getTargetValue(){
+  const el=document.getElementById('examTargetSelect');
+  return el?parseInt(el.value,10)||65:65;
+}
+
+function targetCardClass(item){
+  if(item.needed>60)return'bad';
+  if(item.gap<=0)return'good';
+  return item.needed>=50?'warn':'good';
+}
+
+function renderTargetPlanner(courseData){
+  const target=getTargetValue();
+  const rows=courseData.filter(c=>c.score!==null&&c.ca!==null);
+  if(!rows.length)return'';
+  const cards=rows.map(function(c){
+    const needed=Math.max(0,target-c.ca);
+    const clamped=Math.min(60,needed);
+    const gap=Math.max(0,needed-(c.exam||0));
+    const cls=targetCardClass({needed:needed,gap:gap});
+    const status=needed>60?'Not reachable from CA alone':gap<=0?'Target already covered':'Need '+gap.toFixed(1)+' more exam marks';
+    return `<div class="target-card ${cls}"><div class="target-title">${c.name}</div><div class="target-value">${needed>60?'60+':clamped.toFixed(1)}/60</div><div class="target-note">CA ${c.ca.toFixed(1)}/40, current exam ${(c.exam||0).toFixed(1)}/60. ${status} for ${target}%.</div></div>`;
+  }).join('');
+  return `<section class="target-panel"><div class="target-panel-head"><div><h3>Exam target planner</h3><p>See the exam mark needed from each CA score.</p></div><div><label for="examTargetSelect">Target total</label><select id="examTargetSelect" onchange="calculate()"><option value="50"${target===50?' selected':''}>Pass 50%</option><option value="65"${target===65?' selected':''}>Strong 65%</option><option value="75"${target===75?' selected':''}>Excellent 75%</option></select></div></div><div class="target-grid">${cards}</div><div class="target-actions"><button type="button" onclick="copyExamTargetPlan()">Copy target plan</button></div></section>`;
+}
+
+function buildExamTargetText(){
+  if(!lastGradeSnapshot)calculate();
+  const snapshot=lastGradeSnapshot;
+  if(!snapshot)return'';
+  const target=getTargetValue();
+  const preset=EXAM_PRESETS[activeExamKey];
+  const lines=[(preset?preset.name:'Exam score target plan'),'Target total: '+target+'%'];
+  snapshot.courses.filter(c=>c.score!==null&&c.ca!==null).forEach(function(c){
+    const needed=Math.max(0,target-c.ca);
+    const gap=Math.max(0,needed-(c.exam||0));
+    lines.push(c.name+': CA '+c.ca.toFixed(1)+'/40, current exam '+(c.exam||0).toFixed(1)+'/60, needed exam '+(needed>60?'60+':Math.min(60,needed).toFixed(1))+'/60'+(gap>0?', gap '+gap.toFixed(1):', target covered'));
+  });
+  if(preset)lines.push('Official source: '+preset.source);
+  if(activeExamKey){
+    lines.push('Study plan: https://afrotools.com/tools/study-planner/?exam='+encodeURIComponent(activeExamKey));
+    lines.push('Flashcards: https://afrotools.com/tools/flashcard-maker/?exam='+encodeURIComponent(activeExamKey));
+  }
+  return lines.join('\n');
+}
+
+function copyExamTargetPlan(){
+  const text=buildExamTargetText();
+  if(!text)return;
+  copyGradeText(text,'Target plan copied.','Copy exam target plan');
+}
+
+function setGradeStatus(message){
+  let el=document.getElementById('gradeActionStatus');
+  if(!el){
+    el=document.createElement('div');
+    el.id='gradeActionStatus';
+    el.style.cssText='min-height:20px;margin-top:.6rem;color:var(--purple);font-size:.8rem;font-weight:800';
+    const actions=document.querySelector('#examInsights')?.parentElement?.querySelector('.exam-actions');
+    if(actions)actions.insertAdjacentElement('afterend',el);
+  }
+  if(el)el.textContent=message||'';
+}
+
+function copyGradePlan(){
+  if(!lastGradeSnapshot) calculate();
+  const snapshot=lastGradeSnapshot;
+  if(!snapshot)return;
+  const preset=EXAM_PRESETS[activeExamKey];
+  const lines=[(preset?preset.name:'Grade tracker result'),'Average: '+snapshot.gpa.toFixed(1)+(getSystem().max===100?'%':'')];
+  snapshot.courses.forEach(c=>lines.push(c.name+': '+(c.score!==null?c.score.toFixed(1)+'%':c.gp)+' - '+c.grade));
+  const targetText=buildExamTargetText();
+  if(targetText)lines.push('',targetText);
+  if(preset)lines.push('Source: '+preset.source);
+  const text=lines.join('\n');
+  copyGradeText(text,'Grade plan copied.','Copy grade plan');
+}
+
+function copyGradeText(text,successMessage,promptTitle){
+  const fallback=function(){
+    const field=document.createElement('textarea');
+    field.value=text;
+    field.setAttribute('readonly','readonly');
+    field.style.position='fixed';
+    field.style.left='-9999px';
+    document.body.appendChild(field);
+    field.select();
+    try{
+      document.execCommand('copy');
+      setGradeStatus(successMessage);
+    }catch(error){
+      window.prompt(promptTitle,text);
+      setGradeStatus('Copy prompt opened.');
+    }
+    field.remove();
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>setGradeStatus(successMessage)).catch(fallback);
+  }else{
+    fallback();
+  }
+}
+
+function downloadGradeSnapshot(type){
+  if(!lastGradeSnapshot) calculate();
+  const snapshot=lastGradeSnapshot;
+  if(!snapshot)return;
+  const preset=EXAM_PRESETS[activeExamKey];
+  const filename=(activeExamKey||'grade-tracker')+'-snapshot.'+type;
+  const targetText=buildExamTargetText();
+  const body=type==='json'?JSON.stringify({...snapshot,targetPlan:targetText},null,2):[(preset?preset.name:'Grade tracker result'),'Average: '+snapshot.gpa.toFixed(1),...snapshot.courses.map(c=>c.name+': '+(c.score!==null?c.score.toFixed(1)+'%':c.gp)+' - '+c.grade),targetText].filter(Boolean).join('\n');
+  const blob=new Blob([body],{type:type==='json'?'application/json':'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 
 // Load saved data or init with empty rows
 (function(){
   try{
+    const params=new URLSearchParams(window.location.search);
+    const queryKey=presetKeyFromQuery(params.get('exam')||params.get('preset')||'');
+    renderExamPresets();
+    if(queryKey){
+      loadExamPreset(queryKey);
+      return;
+    }
     var saved=JSON.parse(localStorage.getItem('afro_grades'));
     if(saved&&saved.courses&&saved.courses.length){
+      activeExamKey=saved.activeExamKey||'';
       if(saved.system)document.getElementById('system').value=saved.system;
       updateGradeOptions();
+      document.getElementById('caSplitMode').checked=!!saved.caSplitMode;
       if(saved.prevGpa)document.getElementById('prevGpa').value=saved.prevGpa;
       if(saved.prevCredits)document.getElementById('prevCredits').value=saved.prevCredits;
       saved.courses.forEach(function(c){
-        addCourse({name:c.name||'',credits:c.credits||3,grade:c.grade||0});
+        addCourse({name:c.name||'',credits:c.credits||3,grade:c.grade||0,ca:c.ca||'',exam:c.exam||''});
       });
+      renderExamPresets();
+      renderExamContext();
       return;
     }
   }catch(e){}
+  renderExamPresets();
+  renderExamContext();
   // Default: 5 empty rows
   for(var i=0;i<5;i++) addCourse();
 })();

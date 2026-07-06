@@ -30,6 +30,16 @@
   "operatingSystem": "Web",
   "url": "https://afrotools.com/tools/regex-tester/",
   "description": "Test JavaScript regular expressions with flags, live matches, capture groups, replacement preview, code snippets, ReDoS warnings and African validation presets.",
+  "browserRequirements": "Requires JavaScript and a modern browser",
+  "featureList": [
+    "Live JavaScript RegExp testing",
+    "Regex flags including global, multiline, unicode and indices",
+    "Match highlighting and capture group inspection",
+    "Replacement preview and generated code snippets",
+    "African validation starter pattern library",
+    "ReDoS and validation-risk diagnostics",
+    "Local pattern history and review-note copy action"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -39,6 +49,31 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"Regex Tester","item":"https://afrotools.com/tools/regex-tester/"}]}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to test a JavaScript regular expression with AfroTools",
+  "description": "Run a regex against sample text, inspect matches and capture groups, preview replacements, then copy a local review note.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Enter a pattern and samples",
+      "text": "Paste JavaScript RegExp syntax without slash delimiters and add realistic positive and negative sample lines."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Review behavior",
+      "text": "Check flags, highlighted matches, capture groups, replacement output, generated code and diagnostics."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Confirm before production",
+      "text": "Use the review note as a local checklist, then verify official formats and ReDoS risk before shipping."
+    }
+  ]
+}
+</script>
 <style>
 :root{
   --page:#f6f8fb;
@@ -134,7 +169,6 @@ button.danger{background:var(--soft-red);border-color:#fecaca;color:var(--red)}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/testeur-regex/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kijaribu-regex/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/regex-tester/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -170,6 +204,53 @@ button.danger{background:var(--soft-red);border-color:#fecaca;color:var(--red)}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+  .top-level-page-ui-refresh .grid,
+  .top-level-page-ui-refresh .panel,
+  .top-level-page-ui-refresh .split,
+  .top-level-page-ui-refresh .source-grid,
+  .top-level-page-ui-refresh .output {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh button,
+  .top-level-page-ui-refresh input,
+  .top-level-page-ui-refresh select,
+  .top-level-page-ui-refresh summary,
+  .top-level-page-ui-refresh .flag {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh textarea,
+  .top-level-page-ui-refresh .output,
+  .top-level-page-ui-refresh code {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh .flag input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, select, textarea, summary):focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.32);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .top-level-page-ui-refresh .pattern-row,
+    .top-level-page-ui-refresh .tabs,
+    .top-level-page-ui-refresh .toolbar {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .top-level-page-ui-refresh button {
+      width: 100%;
+    }
+  }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -219,6 +300,7 @@ button.danger{background:var(--soft-red);border-color:#fecaca;color:var(--red)}
           </div>
           <div class="toolbar">
             <button id="saveBtn" class="success" type="button">Save Pattern</button>
+            <button id="copyReviewBtn" type="button">Copy Review Note</button>
             <button id="clearBtn" class="danger" type="button">Clear</button>
           </div>
         </div>
@@ -317,30 +399,6 @@ GHA-123456789-1</textarea>
     </div>
   </section>
 
-<section class="df-upgrade" data-df-upgrade="regex-tester">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Pattern test brief</span>
-      <h2>Turn regex experiments into a reviewable test note</h2>
-      <p>Use the workbench above to test JavaScript regex behavior, then capture the purpose, coverage and risk checks before using the pattern in production.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: test a pattern against real sample lines and review match, capture and replacement behavior.</li><li>Result output: a local regex brief that records the intended use, expected matches and risk focus.</li><li>Quality checks: flags, sample coverage, capture groups, replacement output, Unicode mode and ReDoS risk.</li><li>Source note: confirm official formats before enforcing phone, ID, tax, payment or government references.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Runs locally in your browser. It does not prove official validity, identity, authorization or production safety.</p>
-    </div>
-    <form class="df-form" data-df-form="regex-tester">
-      <label>Pattern purpose<select name="purpose" aria-label="Pattern purpose"><option value="form validation">form validation</option><option value="log parsing">log parsing</option><option value="data cleanup">data cleanup</option><option value="routing or rewrite">routing or rewrite</option></select></label>
-      <label>Sample lines<input name="samples" type="number" value="5" min="1" step="1" aria-label="Sample lines"></label>
-      <label>Risk focus<select name="risk" aria-label="Risk focus"><option value="false positives">false positives</option><option value="false negatives">false negatives</option><option value="performance">performance</option><option value="Unicode and locale">Unicode and locale</option></select></label>
-      <label>Match expectation<select name="expectation" aria-label="Match expectation"><option value="exact full-line match">exact full-line match</option><option value="find repeated matches">find repeated matches</option><option value="capture groups">capture groups</option><option value="replacement preview">replacement preview</option></select></label>
-      <button type="submit">Create regex brief</button>
-      <output class="df-result" data-df-result="regex-tester" data-df-base="Regex test brief ready. Run the tester above, then verify flags, sample coverage, capture groups, replacement output, Unicode behavior, and ReDoS risk before shipping the pattern." aria-live="polite">Regex test brief ready. Run the tester above, then verify flags, sample coverage, capture groups, replacement output, Unicode behavior, and ReDoS risk before shipping the pattern.</output>
-      <div class="df-actions"><button type="button" data-df-copy="regex-tester">Copy regex brief</button><a href="#output">Review output</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="regex-tester-faq-title">
-  <h2 id="regex-tester-faq-title">Regex Tester FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste a pattern, test realistic examples, switch tabs for matches, replacement and code, then copy the brief when you need a handoff.</p></details><details><summary>What should I verify?</summary><p>Check false positives, false negatives, flags, capture groups, Unicode behavior, replacement output and slow-pattern risk.</p></details><details><summary>Is this official?</summary><p>No. It is a local JavaScript regex utility, not an official validator or production security guarantee.</p></details></div>
-</section>
 <section class="tool-verification-sec" data-tool-verification-panel="regex-tester">
   <div class="container">
     <div class="tool-verification-card">
@@ -420,6 +478,26 @@ GHA-123456789-1</textarea>
     el.textContent = message;
     el.classList.add('on');
     setTimeout(function(){ el.classList.remove('on'); }, 1400);
+  }
+  function copyToClipboard(text, successMessage){
+    function fallback(){
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      var copied = false;
+      try { copied = document.execCommand('copy'); } catch(_) { copied = false; }
+      textarea.remove();
+      toast(copied ? successMessage : 'Copy failed');
+    }
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(function(){ toast(successMessage); }).catch(fallback);
+    } else {
+      fallback();
+    }
   }
   function getFlags(){
     return ['G','I','M','S','U','Y','D'].map(function(flag){
@@ -602,6 +680,20 @@ GHA-123456789-1</textarea>
     try { return JSON.parse(localStorage.getItem(storageKey) || '[]'); }
     catch(_) { return []; }
   }
+  function reviewNote(){
+    var sampleLines = $('testInput').value ? $('testInput').value.split(/\r?\n/).length : 0;
+    var warnings = state.warnings.length ? state.warnings.join('; ') : 'No local warnings from this sample.';
+    return [
+      'Regex review note',
+      'Pattern: /' + $('patternInput').value + '/' + getFlags(),
+      'Sample lines: ' + sampleLines,
+      'Matches: ' + state.matches.length,
+      'Replacement preview: ' + ($('replaceInput').value || '(empty)'),
+      'Warnings: ' + warnings,
+      'Checklist: verify false positives, false negatives, flags, capture groups, Unicode behavior, replacement output and ReDoS risk before production.',
+      'Source note: confirm official phone, ID, tax, payment or government formats before rejecting users.'
+    ].join('\n');
+  }
   function renderLibrary(){
     var html = '';
     var group = '';
@@ -617,7 +709,8 @@ GHA-123456789-1</textarea>
     ['Highlight','Matches','Replace','Explain','Code','History'].forEach(function(name){
       $('tab' + name).onclick = function(){ currentTab = name.toLowerCase(); render(); };
     });
-    $('copyPatternBtn').onclick = function(){ navigator.clipboard.writeText('/' + $('patternInput').value + '/' + getFlags()).then(function(){ toast('Pattern copied'); }); };
+    $('copyPatternBtn').onclick = function(){ copyToClipboard('/' + $('patternInput').value + '/' + getFlags(), 'Pattern copied'); };
+    $('copyReviewBtn').onclick = function(){ copyToClipboard(reviewNote(), 'Review note copied'); };
     $('saveBtn').onclick = function(){
       saveHistory();
       var jsonPayload = JSON.stringify({ pattern:$('patternInput').value, flags:getFlags(), matches:state.matches.map(function(m){ return { value:m[0], index:m.index, groups:m.groups || null }; }) }, null, 2);
@@ -625,7 +718,7 @@ GHA-123456789-1</textarea>
       try { existing = JSON.parse(localStorage.getItem(jsonHistoryKey) || '[]'); } catch(_) {}
       existing.unshift({ at:new Date().toISOString(), mode:'json', size:jsonPayload.length, text:jsonPayload });
       localStorage.setItem(jsonHistoryKey, JSON.stringify(existing.slice(0, 10)));
-      toast('Saved pattern and JSON handoff');
+      toast('Saved pattern and JSON snapshot');
     };
     $('clearBtn').onclick = function(){ $('patternInput').value = ''; $('testInput').value = ''; evaluate(); };
     $('library').addEventListener('click', function(event){
@@ -656,6 +749,5 @@ GHA-123456789-1</textarea>
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

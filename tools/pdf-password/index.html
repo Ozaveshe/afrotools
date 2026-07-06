@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Password Protect and Unlock | AES-256 Browser Tool | AfroTools</title>
-<meta name="description" content="Protect PDFs with AES-256 passwords, owner permissions, password strength checks, and batch ZIP output. Unlock PDFs when you know the password.">
+<title>Password Protect PDF Online | AES-256 Local Tool | AfroTools</title>
+<meta name="description" content="Password protect PDFs locally with AES-256, strength checks, owner permissions, password copy helper, batch ZIP output, and unlock when you know the password.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-password/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF Password Protect and Unlock | AfroTools">
-<meta property="og:description" content="Encrypt PDFs locally with AES-256, set print/copy/edit permissions, or unlock protected PDFs when you know the password.">
+<meta property="og:title" content="Password Protect PDF Online | AfroTools">
+<meta property="og:description" content="Encrypt PDFs locally with AES-256, set print/copy/edit permissions, generate and copy strong passwords, or unlock PDFs when you know the password.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-password/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
@@ -17,8 +17,8 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF Password Protect and Unlock | AfroTools">
-<meta name="twitter:description" content="AES-256 PDF password protection and unlock in your browser. No uploads.">
+<meta name="twitter:title" content="Password Protect PDF Online | AfroTools">
+<meta name="twitter:description" content="AES-256 PDF password protection, permissions, password helper, and unlock in your browser.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
@@ -28,13 +28,10 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=29afdf58">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
 <style>
   :root {
     --pw-blue: var(--color-primary);
@@ -48,8 +45,9 @@
   }
 
   .tool-hero {
-    background: linear-gradient(135deg, var(--pw-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
+    background: #f7fbff;
+    border-bottom: 1px solid #dbeafe;
+    padding: 34px 0 22px;
   }
 
   .tool-hero-inner,
@@ -61,24 +59,24 @@
 
   .breadcrumb {
     font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.34);
+    font-weight: 800;
+    color: #64748b;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
 
   .breadcrumb a {
-    color: rgba(255,255,255,0.34);
+    color: #64748b;
     text-decoration: none;
   }
 
   .breadcrumb span {
-    color: #60a5fa;
+    color: var(--pw-blue);
   }
 
   h1 {
-    color: #fff;
+    color: #0f172a;
     font-size: clamp(1.65rem, 4vw, 2.55rem);
     font-weight: 800;
     letter-spacing: 0;
@@ -87,12 +85,12 @@
   }
 
   h1 em {
-    color: #60a5fa;
+    color: var(--pw-blue);
     font-style: normal;
   }
 
   .hero-sub {
-    color: rgba(255,255,255,0.55);
+    color: #334155;
     font-size: 0.9rem;
     line-height: 1.62;
     max-width: 720px;
@@ -108,26 +106,67 @@
   .badge {
     display: inline-flex;
     align-items: center;
-    min-height: 26px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    border: 1px solid rgba(96,165,250,0.42);
-    background: rgba(37,99,235,0.18);
-    color: #bfdbfe;
-    font-size: 0.68rem;
+    min-height: 28px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid #bae6fd;
+    background: #fff;
+    color: #075985;
+    font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }
 
-  .badge.gold {
-    border-color: rgba(245,158,11,0.4);
-    background: rgba(245,158,11,0.12);
-    color: #fde68a;
+  .tool-main {
+    padding: 24px 0 56px;
   }
 
-  .tool-main {
-    padding: 28px 0 72px;
+  .workflow-strip {
+    max-width: 1220px;
+    margin: 0 auto 14px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .workflow-step {
+    background: #fff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    flex: 0 0 28px;
+    min-height: 28px;
+    border-radius: 6px;
+    background: #e0f2fe;
+    color: #075985;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .step-title {
+    display: block;
+    font-size: 0.82rem;
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .step-copy {
+    display: block;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.45;
   }
 
   .tool-main-inner {
@@ -194,9 +233,11 @@
     font-family: 'DM Sans', sans-serif;
     font-weight: 800;
     transition: border-color 0.16s, background 0.16s, color 0.16s, box-shadow 0.16s;
+    touch-action: manipulation;
   }
 
   .mode-btn {
+    min-height: 46px;
     padding: 12px 14px;
     font-size: 0.75rem;
   }
@@ -226,6 +267,8 @@
     padding: 30px 18px;
     text-align: center;
     transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
+    min-height: 128px;
+    touch-action: manipulation;
   }
 
   .drop-zone:hover,
@@ -319,8 +362,8 @@
 
   .mini-btn,
   .toggle-password {
-    min-height: 32px;
-    padding: 6px 10px;
+    min-height: 40px;
+    padding: 8px 11px;
     font-size: 0.68rem;
   }
 
@@ -363,7 +406,7 @@
 
   .input {
     width: 100%;
-    min-height: 42px;
+    min-height: 44px;
     padding: 10px 12px;
     border: 1.5px solid #e5e7eb;
     border-radius: 7px;
@@ -460,14 +503,15 @@
     font-size: 0.84rem;
     font-weight: 800;
     padding: 13px 16px;
-    transition: transform 0.16s, box-shadow 0.16s, opacity 0.16s;
+    min-height: 46px;
+    transition: box-shadow 0.16s, opacity 0.16s, background 0.16s;
+    touch-action: manipulation;
   }
 
   .calc-btn:hover,
   .act-btn:hover,
   .calc-btn:focus-visible,
   .act-btn:focus-visible {
-    transform: translateY(-1px);
     box-shadow: 0 10px 22px rgba(0,113,227,0.22);
     outline: none;
   }
@@ -477,7 +521,6 @@
   .toggle-password:disabled {
     cursor: not-allowed;
     opacity: 0.55;
-    transform: none;
     box-shadow: none;
   }
 
@@ -616,55 +659,6 @@
     padding-left: 18px;
   }
 
-  .seo-section {
-    max-width: 920px;
-    margin: 32px auto;
-    padding: 0 20px 44px;
-  }
-
-  .seo-section h2,
-  .seo-section h3 {
-    color: var(--pw-ink);
-    font-weight: 800;
-    letter-spacing: 0;
-  }
-
-  .seo-section h2 {
-    font-size: 1.2rem;
-    margin: 0 0 12px;
-  }
-
-  .seo-section h3 {
-    font-size: 1rem;
-    margin: 22px 0 10px;
-  }
-
-  .seo-section p,
-  .seo-section li {
-    color: #475569;
-    font-size: 0.88rem;
-    line-height: 1.7;
-  }
-
-  .faq-list {
-    display: grid;
-    gap: 8px;
-  }
-
-  .faq-list details {
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background: #f8fafc;
-    padding: 14px 18px;
-  }
-
-  .faq-list summary {
-    color: var(--pw-ink);
-    cursor: pointer;
-    font-size: 0.86rem;
-    font-weight: 800;
-  }
-
   @media (max-width: 900px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
@@ -677,14 +671,16 @@
     }
 
     .tool-hero-inner,
-    .tool-main-inner {
+    .tool-main-inner,
+    .workflow-strip {
       padding: 0 16px;
     }
 
     .segmented,
     .grid-2,
     .permission-grid,
-    .input-row {
+    .input-row,
+    .workflow-strip {
       grid-template-columns: 1fr;
     }
 
@@ -702,13 +698,21 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "PDF Password Protect and Unlock",
-  "description": "Protect PDFs with AES-256 passwords, owner permissions, password strength checks, and batch ZIP output. Unlock PDFs when you know the password.",
+  "name": "Password Protect PDF Online",
+  "description": "Protect PDFs with AES-256 passwords, owner permissions, password strength checks, password copy helper, and batch ZIP output. Unlock PDFs when you know the password.",
   "url": "https://afrotools.com/tools/pdf-password/",
   "inLanguage": "en",
   "applicationCategory": "SecurityApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript and WebAssembly",
+  "featureList": [
+    "AES-256 PDF password protection",
+    "Owner permission controls",
+    "Password generator and copy helper",
+    "Password strength estimate",
+    "Known-password PDF unlock",
+    "Batch ZIP output"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -784,10 +788,14 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/proteger-pdf/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kulinda-pdf-kwa-nenosiri/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-password/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+  body.top-level-page-ui-refresh .tool-hero h1 { color: #0f172a; }
+  body.top-level-page-ui-refresh .tool-hero h1 em,
+  body.top-level-page-ui-refresh .breadcrumb span { color: var(--color-primary); }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -795,18 +803,22 @@
 <section class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
-    <h1>PDF <em>Password</em> Protect and Unlock</h1>
-    <p class="hero-sub">Protect PDFs with AES-256 encryption, set owner permissions, batch export protected files, or unlock PDFs when you already know the password.</p>
+    <h1>Password protect a PDF</h1>
+    <p class="hero-sub">Add an open password, set viewer permissions, batch export protected PDFs, or unlock a file when you already know the password. Files and passwords stay in this browser.</p>
     <div class="hero-badges">
       <span class="badge">AES-256</span>
-      <span class="badge">Local processing</span>
-      <span class="badge gold">Batch ZIP</span>
-      <span class="badge">QPDF WebAssembly</span>
+      <span class="badge">Known-password unlock</span>
+      <span class="badge">Batch ZIP</span>
     </div>
   </div>
 </section>
 
 <main class="tool-main">
+  <div class="workflow-strip" aria-label="PDF password steps">
+    <div class="workflow-step"><span class="step-num">1</span><span><span class="step-title">Choose mode</span><span class="step-copy">Protect a PDF, or unlock with a known password.</span></span></div>
+    <div class="workflow-step"><span class="step-num">2</span><span><span class="step-title">Set password</span><span class="step-copy">Generate, confirm, copy, and store it separately.</span></span></div>
+    <div class="workflow-step"><span class="step-num">3</span><span><span class="step-title">Download</span><span class="step-copy">Save a protected PDF or batch ZIP.</span></span></div>
+  </div>
   <div class="tool-main-inner">
     <section>
       <div class="card">
@@ -831,7 +843,7 @@
           <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-controls="pdfFileInput">
             <div class="drop-title" id="dropTitle">Choose PDFs to password-protect</div>
             <div class="drop-hint" id="dropHint">Single PDF downloads as a PDF. Multiple PDFs download as a ZIP.</div>
-            <input aria-label="PdfFileInput" class="hidden-input" id="pdfFileInput" type="file" accept="application/pdf,.pdf" multiple>
+            <input aria-label="PDF files" class="hidden-input" id="pdfFileInput" type="file" accept="application/pdf,.pdf" multiple>
           </div>
           <div class="file-summary" id="fileSummary">
             <span class="file-summary-text" id="fileSummaryText">No PDFs selected.</span>
@@ -880,6 +892,8 @@
             <div class="field">
               <div class="label-row"><span class="label-text">Password Tool</span></div>
               <button class="mini-btn" id="generatePassword" type="button">Generate Strong Password</button>
+              <button class="mini-btn" id="copyOpenPassword" type="button" style="margin-left:8px;">Copy Password</button>
+              <div class="field-hint" id="passwordToolStatus" role="status" aria-live="polite" style="margin-top:6px;"></div>
               <div class="field-hint" style="margin-top:6px;">Store the password safely. Lost open passwords cannot be recovered.</div>
             </div>
           </div>
@@ -887,12 +901,12 @@
           <div class="field">
             <div class="label-row"><span class="label-text">Viewer Permissions</span><span class="field-hint">Compliant viewers</span></div>
             <div class="permission-grid">
-              <label class="check-option"><input aria-label="AllowPrint" type="checkbox" id="allowPrint" checked> Allow printing</label>
-              <label class="check-option"><input aria-label="AllowCopy" type="checkbox" id="allowCopy" checked> Allow text and image copying</label>
-              <label class="check-option"><input aria-label="AllowEdit" type="checkbox" id="allowEdit" checked> Allow document editing</label>
-              <label class="check-option"><input aria-label="AllowAnnotate" type="checkbox" id="allowAnnotate" checked> Allow comments and annotations</label>
-              <label class="check-option"><input aria-label="AllowForm" type="checkbox" id="allowForm" checked> Allow form filling</label>
-              <label class="check-option"><input aria-label="AllowAssemble" type="checkbox" id="allowAssemble" checked> Allow page extraction and assembly</label>
+              <label class="check-option"><input type="checkbox" id="allowPrint" checked> Allow printing</label>
+              <label class="check-option"><input type="checkbox" id="allowCopy" checked> Allow text and image copying</label>
+              <label class="check-option"><input type="checkbox" id="allowEdit" checked> Allow document editing</label>
+              <label class="check-option"><input type="checkbox" id="allowAnnotate" checked> Allow comments and annotations</label>
+              <label class="check-option"><input type="checkbox" id="allowForm" checked> Allow form filling</label>
+              <label class="check-option"><input type="checkbox" id="allowAssemble" checked> Allow page extraction and assembly</label>
             </div>
           </div>
 
@@ -923,13 +937,12 @@
       <div class="card result-card" id="resultCard">
         <div class="card-head"><span class="card-title">Result</span></div>
         <div class="card-body">
-          <div class="result-text" id="resultText"></div>
-          <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="result-text" id="resultText" role="status" aria-live="polite"></div>
+          <div class="progress-bar" id="progressBar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
           <div class="result-rows" id="resultRows"></div>
-          <div class="result-note" id="resultNote"></div>
+          <div class="result-note" id="resultNote" role="status" aria-live="polite"></div>
           <div class="action-row" id="actionRow">
             <button class="act-btn" id="downloadBtn" type="button">Download PDF</button>
-            <share-result-button tool-name="PDF Password" tool-slug="pdf-password"></share-result-button>
           </div>
         </div>
       </div>
@@ -955,58 +968,7 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="pdf-password">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>PDF Password Protect decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for pdf password protect so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: PDF Password Protect: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="pdf-password">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="pdf-password" data-df-base="PDF Password Protect: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">PDF Password Protect: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="pdf-password">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="pdf-password-faq-title">
-  <h2 id="pdf-password-faq-title">PDF Password Protect FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 </main>
-
-<section class="seo-section">
-  <h2>Free PDF Password Protection Tool</h2>
-  <p>AfroTools protects PDF files in the browser using QPDF compiled to WebAssembly. You can add an open password, use a separate owner password, control printing, copying, editing, comments, forms, and page assembly, then export one protected PDF or a ZIP of protected PDFs.</p>
-  <h3>Unlock PDFs With a Known Password</h3>
-  <p>The unlock mode removes password protection only after the correct open or owner password is accepted. It creates a new unencrypted PDF copy for easier printing, editing, or archiving.</p>
-  <h3>Privacy and Compatibility</h3>
-  <p>The workflow runs locally in your browser tab, so sensitive PDFs and passwords are not uploaded. New protected files use AES-256 PDF standard security. Permission behavior can vary by PDF reader, so always test a protected file in the reader your recipient will use.</p>
-  <div class="faq-list">
-    <details>
-      <summary>Can I protect many PDFs at once?</summary>
-      <p>Yes. Select multiple PDFs, set the password and permissions once, then download a ZIP containing each protected file.</p>
-    </details>
-    <details>
-      <summary>Can this recover a lost PDF password?</summary>
-      <p>No. AfroTools does not guess, crack, or recover unknown passwords. Unlock requires a valid open or owner password.</p>
-    </details>
-    <details>
-      <summary>Does password protection change PDF quality?</summary>
-      <p>No. Encryption does not rasterize pages or recompress images. The document content is preserved while the PDF security dictionary is updated.</p>
-    </details>
-    <details>
-      <summary>Why use an owner password?</summary>
-      <p>The owner password controls permission changes and full access. If you leave it blank, AfroTools generates an internal owner key so the protected file does not use an empty owner password.</p>
-    </details>
-  </div>
-</section>
 
 <section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-password-verification-title">
   <div class="tool-verification-card">
@@ -1047,6 +1009,30 @@
 
 <script src="/assets/js/lib/qpdf-aes.js?v=d44daa51"></script>
 <script src="/tools/pdf-password/app.js?v=a8419072"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var copyButton = document.getElementById('copyOpenPassword');
+    var password = document.getElementById('openPassword');
+    var status = document.getElementById('passwordToolStatus');
+    if (!copyButton || !password || !status) return;
+    copyButton.addEventListener('click', function () {
+      var value = password.value || '';
+      if (!value) {
+        status.textContent = 'Generate or enter a password first.';
+        return;
+      }
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        status.textContent = 'Clipboard is not available in this browser.';
+        return;
+      }
+      navigator.clipboard.writeText(value).then(function () {
+        status.textContent = 'Password copied. Share it through a separate channel.';
+      }).catch(function () {
+        status.textContent = 'Copy blocked. Select and copy the password manually.';
+      });
+    });
+  });
+</script>
 <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
@@ -1054,9 +1040,7 @@
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
-<script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

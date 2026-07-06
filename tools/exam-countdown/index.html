@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exam Countdown Timer — WAEC, NECO, JAMB, KCSE, Matric 2026</title>
-<meta name="description" content="Free exam countdown timer for WAEC, NECO, JAMB UTME, KCSE, KCPE, and SA Matric 2026. Live countdown with days, hours, minutes, seconds. Add custom exams.">
+<title>Exam Countdown Timer - Africa Exam Prep Dashboard 2026</title>
+<meta name="description" content="Free Africa exam countdown dashboard for ECZ, UNEB, NECTA, WAEC Ghana, KNEC, ZIMSEC, NSC and custom exams. Track dates, source notes, and next prep actions.">
 <link rel="canonical" href="https://afrotools.com/tools/exam-countdown/">
 <meta property="og:title" content="Exam Countdown Timer | AfroTools">
 <meta property="og:url" content="https://afrotools.com/tools/exam-countdown/">
 <meta property="og:type" content="website">
-<meta property="og:description" content="Live countdown to WAEC, NECO, JAMB, KCSE, KCPE, SA Matric 2026. Track multiple exams simultaneously.">
+<meta property="og:description" content="Live countdowns for African exam windows with source notes, timetable handoff, flashcards, and prep actions.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/exam-countdown.webp">
 <meta property="og:site_name" content="AfroTools">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -23,8 +23,8 @@
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <meta name="tool-id" content="exam-countdown">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Exam Countdown Timer","description":"Free exam countdown timer for WAEC, NECO, JAMB UTME, KCSE, KCPE, and SA Matric 2026. Live ticking countdown.","url":"https://afrotools.com/tools/exam-countdown/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/exam-countdown.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Exam Countdown Timer","url":"https://afrotools.com/tools/exam-countdown/","description":"Free exam countdown timer for WAEC, NECO, JAMB UTME, KCSE, KCPE, and SA Matric 2026. Live ticking countdown.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/exam-countdown.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Exam Countdown Timer","description":"Free Africa exam countdown dashboard with live timers, source notes, timetable handoff, flashcards, and prep actions.","url":"https://afrotools.com/tools/exam-countdown/","inLanguage":"en","applicationCategory":"EducationalApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/exam-countdown.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Exam Countdown Timer","url":"https://afrotools.com/tools/exam-countdown/","description":"Free Africa exam countdown dashboard with live timers, source notes, timetable handoff, flashcards, and prep actions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/exam-countdown.webp"}</script>
 <style>
   :root { --afro-green: var(--color-primary); --afro-dark: #0f1419; }
   *, *::before, *::after { box-sizing: border-box; }
@@ -49,12 +49,12 @@
   .preset-section { margin-bottom: 28px; }
   .preset-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0a4018; margin-bottom: 12px; }
   .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
-  .preset-btn { padding: 12px 16px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif; text-align: left; transition: all 0.15s; }
+  .preset-btn { display: grid !important; grid-template-columns: minmax(0,1fr) !important; gap: 3px; align-content: start !important; align-items: start !important; justify-content: stretch !important; justify-items: start !important; width: 100%; min-width: 0; padding: 12px 16px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif; text-align: left; transition: all 0.15s; }
   .preset-btn:hover { border-color: var(--afro-green); background: #F5F9FF; }
   .preset-btn.active { border-color: var(--afro-green); background: #EFF6FF; }
-  .preset-name { font-size: 0.82rem; font-weight: 700; color: #111; }
-  .preset-date { font-size: 0.7rem; color: #6B8CAE; margin-top: 2px; }
-  .preset-country { font-size: 0.62rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+  .preset-name { display: block; max-width: 100%; font-size: 0.82rem; font-weight: 700; color: #111; line-height: 1.25; overflow-wrap: anywhere; }
+  .preset-date { display: block; max-width: 100%; font-size: 0.7rem; color: #6B8CAE; margin-top: 2px; line-height: 1.25; overflow-wrap: anywhere; }
+  .preset-country { display: block; max-width: 100%; font-size: 0.62rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; line-height: 1.25; overflow-wrap: anywhere; }
   .custom-section { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; padding: 22px; margin-bottom: 28px; }
   .custom-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0a4018; margin-bottom: 14px; }
   .custom-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
@@ -76,8 +76,24 @@
   .cd-unit { text-align: center; }
   .cd-num { font-size: 2rem; font-weight: 800; color: var(--afro-green); line-height: 1; background: #F5F9FF; border: 1.5px solid #BFDBFE; border-radius: 10px; padding: 12px 14px; min-width: 58px; }
   .cd-lbl { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6B8CAE; margin-top: 6px; }
-  .cd-actions { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+  .cd-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
   .cd-share { padding: 7px 14px; background: #3B82F6; color: #fff; border: none; border-radius: 6px; font-size: 0.72rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .cd-export { padding: 7px 14px; background: #fff; color: var(--color-primary); border: 1px solid #bfdbfe; border-radius: 6px; font-size: 0.72rem; font-weight: 800; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .cd-export:hover,.cd-export:focus-visible { background: #f8fbff; border-color: var(--color-primary); }
+  .cd-export-status { min-height: 18px; margin-top: 8px; text-align: center; color: #1d4ed8; font-size: .72rem; font-weight: 800; }
+  .cd-meta { display: grid; gap: 8px; margin-top: 14px; font-size: .74rem; line-height: 1.55; color: #475569; }
+  .cd-phase { display: inline-flex; align-items: center; width: fit-content; padding: 5px 9px; border-radius: 999px; background: #eff6ff; color: #1d4ed8; font-weight: 800; }
+  .cd-source { color: #64748b; }
+  .cd-source a { color: var(--color-primary); font-weight: 800; text-decoration: none; }
+  .cd-plan { margin: 10px 0 0; padding-left: 18px; color: #334155; }
+  .cd-plan li { margin: 4px 0; }
+  .cd-links { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
+  .cd-link { display: inline-flex; align-items: center; min-height: 32px; padding: 7px 11px; border-radius: 8px; border: 1px solid #bfdbfe; background: #f8fbff; color: var(--color-primary); font-size: .72rem; font-weight: 800; text-decoration: none; }
+  .cd-link:hover,.cd-link:focus-visible { background: #fff; border-color: var(--color-primary); }
+  .countdown-coach { margin: 24px 0 0; border: 1.5px solid #dbeafe; border-radius: 14px; background: #fff; padding: 20px; }
+  .countdown-coach h2 { margin: 0 0 8px; font-size: 1rem; color: #111; }
+  .countdown-coach p { margin: 0; color: #475569; font-size: .86rem; line-height: 1.7; }
+  .countdown-coach ul { margin: 14px 0 0; padding-left: 20px; color: #334155; font-size: .82rem; line-height: 1.65; }
   .cd-done { text-align: center; padding: 30px 20px; }
   .cd-done-text { font-size: 1.2rem; font-weight: 800; color: var(--afro-green); }
   .cd-done-sub { font-size: 0.82rem; color: #6B8CAE; margin-top: 6px; }
@@ -85,6 +101,7 @@
     .preset-grid { grid-template-columns: 1fr 1fr; }
     .countdown-grid { grid-template-columns: 1fr; }
     .cd-num { font-size: 1.5rem; padding: 10px; min-width: 48px; }
+    .cd-digits { gap: 6px; }
     .custom-row { flex-direction: column; }
     .field { min-width: 100%; }
     .tool-hero { padding: 32px 0 28px; }
@@ -94,7 +111,7 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Exam Countdown Timer | AfroTools">
-<meta name="twitter:description" content="Live countdown to WAEC, NECO, JAMB, KCSE, KCPE, SA Matric 2026. Track multiple exams simultaneously.">
+<meta name="twitter:description" content="Live Africa exam countdowns with source notes, timetable handoff, flashcards, and prep actions.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/exam-countdown.webp">
 <script type="application/ld+json">
 {
@@ -128,7 +145,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compte-a-rebours-examen/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/siku-za-mtihani/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/exam-countdown/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -139,7 +155,7 @@
       "name": "How should I use Exam Countdown Timer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Choose an Africa exam preset or enter a custom exam date to create a live countdown. Use the card to track days, hours, minutes, and seconds, copy a prep plan, download a TXT reminder, open a study timetable, and start flashcard practice."
       }
     },
     {
@@ -147,7 +163,7 @@
       "name": "What should I verify before acting on Exam Countdown Timer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Verify the latest official exam timetable, first paper date, registration deadline, venue, subject entry, and any timetable updates from the listed exam body or your school before making travel or study commitments."
       }
     },
     {
@@ -155,7 +171,7 @@
       "name": "Is Exam Countdown Timer an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a local planning countdown and prep dashboard, not an official ECZ, UNEB, NECTA, WAEC, KNEC, ZIMSEC, NSC, school, or examination-board timetable."
       }
     }
   ],
@@ -172,11 +188,11 @@
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Exam Countdown</span></div>
     <h1><em>Exam</em> Countdown Timer</h1>
-    <p class="hero-sub">Track your WAEC, NECO, JAMB, KCSE, KCPE, and Matric exam dates with a live countdown. Stay motivated.</p>
+    <p class="hero-sub">Track real Africa exam windows, keep source notes close, and move from countdown to timetable and flashcard practice.</p>
     <div class="hero-badges">
       <span class="badge b-green">Live Countdown</span>
-      <span class="badge b-green">2026 Dates</span>
-      <span class="badge b-green">WhatsApp Share</span>
+      <span class="badge b-green">Source Notes</span>
+      <span class="badge b-green">Prep Links</span>
     </div>
   </div>
 </div>
@@ -190,7 +206,7 @@
     </div>
 
     <div class="preset-section">
-      <div class="preset-title">Quick Add &mdash; 2026 Exam Dates</div>
+      <div class="preset-title">Quick Add - Africa Exam Windows</div>
       <div class="preset-grid" id="presetGrid"></div>
     </div>
 
@@ -210,41 +226,21 @@
     </div>
 
     <div class="countdown-grid" id="countdownGrid"></div>
+    <section class="countdown-coach" id="countdownCoach" aria-live="polite">
+      <h2>Prep coach</h2>
+      <p>Add an exam countdown to get a source note, next actions, and links into the matching timetable and flashcard deck.</p>
+    </section>
 
   </div>
 </div>
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The Exam Countdown Timer is purpose-built for African students preparing for major examinations including WAEC, NECO, JAMB, KCSE, and Matric. Set your exam date and the tool displays a live countdown in days, hours, minutes, and seconds, helping you stay focused and manage your revision schedule. You can track multiple exam dates simultaneously and the timer persists in your browser so it is always ready when you open the page. Teachers and parents also use it to help students visualise how much preparation time remains, turning an abstract deadline into a concrete, motivating number.</p>
+    <p>The Exam Countdown Timer is now a practical prep dashboard for African exam windows. Add an official exam preset or your own school deadline, then use the live card to open a timetable, start a matching flashcard deck, copy a WhatsApp reminder, and keep the official source note visible. Dates can change, so each preset is treated as a planning aid that should be checked against the listed authority before use.</p>
   </div>
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="exam-countdown">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Exam Countdown Timer decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for exam countdown timer so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Exam Countdown Timer: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, sources, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="exam-countdown">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="exam-countdown" data-df-base="Exam Countdown Timer: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Exam Countdown Timer: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="exam-countdown">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="exam-countdown-faq-title">
-  <h2 id="exam-countdown-faq-title">Exam Countdown Timer FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
@@ -256,7 +252,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        The tool includes 2026 dates for WAEC (May 11), NECO (June 29), JAMB UTME (April 11), KCSE (October 26), KCPE (October 26), and South Africa Matric (October 27). You can also add any custom exam date.
+        The tool includes current Africa exam presets for ECZ, UNEB, NECTA, South Africa NSC, WAEC Ghana, KNEC KCSE, and ZIMSEC. Some presets have a confirmed planning date; others ask you to enter the exact first paper date from the official timetable.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -292,7 +288,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        The pre-loaded dates reflect the officially announced or expected 2026 exam schedules at the time of publishing. Always verify with your exam body for the latest updates, as dates can change.
+        Treat each preset as a planning aid. Always verify the latest paper timetable with the exam body or your school before making study, travel, or registration plans.
       </div>
     </details>
   </div>
@@ -305,12 +301,15 @@
 
 <script>
   var presets = [
-    { name: 'JAMB UTME', date: '2026-04-11', country: 'Nigeria' },
-    { name: 'WAEC', date: '2026-05-11', country: 'Nigeria / West Africa' },
-    { name: 'NECO', date: '2026-06-29', country: 'Nigeria' },
-    { name: 'KCPE', date: '2026-10-26', country: 'Kenya' },
-    { name: 'KCSE', date: '2026-10-26', country: 'Kenya' },
-    { name: 'SA Matric', date: '2026-10-27', country: 'South Africa' }
+    { key: 'zambia-gce', name: 'Zambia ECZ GCE 2026', date: '2026-07-22', country: 'Zambia', source: 'https://www.exams-council.org.zm/gce/', note: 'ECZ lists the 2026 GCE timetable as 3 July to 22 July 2026.', checklist: ['Check remaining paper dates against ECZ', 'Prioritise weak subjects and past papers', 'Prepare ID, stationery, calculator, and centre route'] },
+    { key: 'uganda-uneb-registration', name: 'Uganda UNEB late registration 2026', date: '2026-07-31', country: 'Uganda', source: 'https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/', note: 'UNEB says late registration runs from 1 July to 31 July 2026.', checklist: ['Confirm candidate registration status', 'Collect missing school or identity documents', 'Plan weekly revision blocks after registration'] },
+    { key: 'zambia-grade-7', name: 'Zambia ECZ Grade 7 2026', date: '2026-10-26', country: 'Zambia', source: 'https://www.exams-council.org.zm/grade-7/', note: 'ECZ lists the 2026 Grade 7 exam window as 26 October to 30 October 2026.', checklist: ['Print the official paper timetable', 'Run two timed practice sets per week', 'Prepare transport and exam materials'] },
+    { key: 'zambia-grade-12', name: 'Zambia ECZ Grade 12 2026', date: '2026-10-30', country: 'Zambia', source: 'https://www.exams-council.org.zm/grade-12/', note: 'ECZ lists the 2026 School Certificate exam window as 30 October to 17 November 2026.', checklist: ['Map every subject to its ECZ paper date', 'Separate practical and theory revision', 'Schedule weekly timed past papers'] },
+    { key: 'tanzania-csee', name: 'Tanzania NECTA CSEE 2026', date: '2026-11-02', country: 'Tanzania', source: 'https://necta.go.tz/pages/csee', note: 'NECTA states CSEE is administered in the first week of November every year. Treat this as a planning anchor until the final paper timetable is confirmed.', checklist: ['Confirm final NECTA paper dates', 'Separate Kiswahili and English writing practice', 'Run science diagram drills'] },
+    { key: 'south-africa-nsc', name: 'South Africa NSC 2026', date: '2026-10-12', country: 'South Africa', source: 'https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338', note: 'The DBE publishes the 2026 November NSC timetable. Confirm each subject paper on the official PDF.', checklist: ['Check DBE subject paper dates', 'Set APS target per course', 'Plan past-paper weekends'] },
+    { key: 'ghana-waec', name: 'Ghana WAEC BECE/WASSCE 2026', date: '', country: 'Ghana', source: 'https://waecgh.org/timetable/', note: 'WAEC Ghana lists 2026 BECE, WASSCE school, and private candidate timetables. Enter the exact first paper date from the relevant timetable.', checklist: ['Download the correct WAEC Ghana timetable', 'Add the first paper date', 'Separate core and elective revision'] },
+    { key: 'kenya-kcse', name: 'Kenya KNEC KCSE 2026', date: '', country: 'Kenya', source: 'https://www.knec.ac.ke/2026-kcse-timetable/', note: 'KNEC has the 2026 KCSE timetable posted. Enter the exact first paper date from the official timetable.', checklist: ['Check KNEC paper order', 'Set target mean grade and cluster goals', 'Run one timed paper per subject weekly'] },
+    { key: 'zimbabwe-zimsec', name: 'Zimbabwe ZIMSEC O/A Level 2026', date: '', country: 'Zimbabwe', source: 'https://www5.zimsec.co.zw/timetables/', note: 'ZIMSEC publishes timetable downloads. Enter the exact paper date from the correct O Level or A Level timetable.', checklist: ['Download the correct ZIMSEC level timetable', 'Add the first paper date', 'Split syllabus gaps from past-paper practice'] }
   ];
 
   var quotes = [
@@ -343,18 +342,43 @@
     return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   }
 
-  function addCountdown(name, date) {
+  function findPreset(key) {
+    return presets.find(function(p) { return p.key === key; }) || null;
+  }
+
+  function statusId(id) {
+    return 'cd-status-' + String(id).replace(/[^a-zA-Z0-9_-]/g, '_');
+  }
+
+  function findCountdown(id) {
+    return countdowns.find(function(c) { return String(c.id) === String(id); }) || null;
+  }
+
+  function addCountdown(name, date, meta) {
     var exists = countdowns.find(function(c) { return c.name === name && c.date === date; });
     if (exists) return;
-    countdowns.push({ name: name, date: date, id: Date.now() + Math.random() });
+    meta = meta || {};
+    countdowns.push({
+      name: name,
+      date: date,
+      id: Date.now() + Math.random(),
+      key: meta.key || '',
+      country: meta.country || '',
+      source: meta.source || '',
+      note: meta.note || '',
+      checklist: meta.checklist || []
+    });
     saveCountdowns();
     renderCountdowns();
+    updateCoach();
   }
 
   function removeCountdown(id) {
     countdowns = countdowns.filter(function(c) { return c.id !== id; });
     saveCountdowns();
     renderCountdowns();
+    renderPresets();
+    updateCoach();
   }
 
   function getTimeDiff(dateStr) {
@@ -371,15 +395,50 @@
 
   function pad(n) { return n < 10 ? '0' + n : String(n); }
 
+  function getPhase(days) {
+    if (days === null) return 'Add date';
+    if (days < 0) return 'Update date';
+    if (days <= 7) return 'Final week';
+    if (days <= 30) return 'Past papers';
+    if (days <= 75) return 'Revision build';
+    return 'Foundation phase';
+  }
+
+  function prepLinks(c) {
+    if (!c.key) return '';
+    return '<div class="cd-links">' +
+      '<a class="cd-link" href="/tools/study-planner/?exam=' + encodeURIComponent(c.key) + '">Study planner</a>' +
+      '<a class="cd-link" href="/tools/exam-timetable/?exam=' + encodeURIComponent(c.key) + '">Build timetable</a>' +
+      '<a class="cd-link" href="/tools/flashcard-maker/?exam=' + encodeURIComponent(c.key) + '">Open flashcards</a>' +
+      '<a class="cd-link" href="/tools/grade-tracker/?exam=' + encodeURIComponent(c.key) + '">Track scores</a>' +
+      '</div>';
+  }
+
+  function cardActionsHtml(c) {
+    return '<div class="cd-actions">' +
+      '<button type="button" class="cd-share" onclick="shareWhatsApp(\'' + esc(c.name) + '\',\'' + c.date + '\')">Share on WhatsApp</button>' +
+      '<button type="button" class="cd-export" onclick="copyCountdownPlan(\'' + c.id + '\')">Copy prep plan</button>' +
+      '<button type="button" class="cd-export" onclick="downloadCountdownPlan(\'' + c.id + '\')">Download TXT</button>' +
+      '</div><div class="cd-export-status" id="' + statusId(c.id) + '" aria-live="polite"></div>';
+  }
+
+  function checklistHtml(c, t) {
+    var items = c.checklist && c.checklist.length ? c.checklist.slice(0, 3) : ['Confirm official date and venue', 'Block weekly revision sessions', 'Turn mistakes into flashcards'];
+    if (t && t.days <= 7) items = ['Confirm exam materials and transport', 'Review mistake cards, not new heavy topics', 'Protect sleep and arrival time'];
+    return '<ul class="cd-plan">' + items.map(function(item) { return '<li>' + esc(item) + '</li>'; }).join('') + '</ul>';
+  }
+
   function renderCountdowns() {
     var grid = document.getElementById('countdownGrid');
     if (countdowns.length === 0) {
       grid.innerHTML = '<div style="text-align:center;padding:40px;color:#9ca3af;font-size:0.88rem;">Click an exam above or add a custom date to start a countdown.</div>';
+      updateCoach();
       return;
     }
     grid.innerHTML = countdowns.map(function(c) {
       var t = getTimeDiff(c.date);
       if (t) {
+        var source = c.source ? '<div class="cd-source">' + esc(c.note || 'Confirm the latest official timetable before acting.') + ' <a href="' + esc(c.source) + '" target="_blank" rel="noopener">Official source</a></div>' : '';
         return '<div class="cd-card" data-id="' + c.id + '">' +
           '<div class="cd-card-head"><div><div class="cd-exam-name">' + esc(c.name) + '</div><div class="cd-exam-date">' + fmtDate(c.date) + '</div></div><button type="button" class="cd-remove" onclick="removeCountdown(' + c.id + ')" title="Remove">&times;</button></div>' +
           '<div class="cd-body"><div class="cd-digits">' +
@@ -387,13 +446,14 @@
           '<div class="cd-unit"><div class="cd-num" data-field="hours">' + pad(t.hours) + '</div><div class="cd-lbl">Hours</div></div>' +
           '<div class="cd-unit"><div class="cd-num" data-field="mins">' + pad(t.mins) + '</div><div class="cd-lbl">Minutes</div></div>' +
           '<div class="cd-unit"><div class="cd-num" data-field="secs">' + pad(t.secs) + '</div><div class="cd-lbl">Seconds</div></div>' +
-          '</div><div class="cd-actions"><button type="button" class="cd-share" onclick="shareWhatsApp(\'' + esc(c.name) + '\',\'' + c.date + '\')">Share on WhatsApp</button></div></div></div>';
+          '</div><div class="cd-meta"><span class="cd-phase">' + getPhase(t.days) + '</span>' + source + checklistHtml(c, t) + '</div>' + prepLinks(c) + cardActionsHtml(c) + '</div></div>';
       } else {
         return '<div class="cd-card" data-id="' + c.id + '">' +
           '<div class="cd-card-head"><div><div class="cd-exam-name">' + esc(c.name) + '</div><div class="cd-exam-date">' + fmtDate(c.date) + '</div></div><button type="button" class="cd-remove" onclick="removeCountdown(' + c.id + ')" title="Remove">&times;</button></div>' +
-          '<div class="cd-body"><div class="cd-done"><div class="cd-done-text">Exam Day Has Arrived!</div><div class="cd-done-sub">Good luck! You\'ve got this.</div></div></div></div>';
+          '<div class="cd-body"><div class="cd-done"><div class="cd-done-text">Exam Day Has Arrived!</div><div class="cd-done-sub">Good luck. Update the date if this was a planning anchor.</div></div>' + prepLinks(c) + cardActionsHtml(c) + '</div></div>';
       }
     }).join('');
+    updateCoach();
   }
 
   function updateTimers() {
@@ -421,13 +481,98 @@
     window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
   }
 
+  function countdownPlanText(c) {
+    var t = getTimeDiff(c.date);
+    var daysText = t ? t.days + ' days, ' + t.hours + ' hours left' : 'date has passed or needs updating';
+    var lines = [
+      c.name + ' prep plan',
+      'Date: ' + fmtDate(c.date),
+      'Countdown: ' + daysText,
+      'Phase: ' + getPhase(t ? t.days : -1),
+      c.country ? 'Country: ' + c.country : '',
+      c.note ? 'Source note: ' + c.note : '',
+      c.source ? 'Official source: ' + c.source : '',
+      '',
+      'Checklist:'
+    ].filter(Boolean);
+    var items = c.checklist && c.checklist.length ? c.checklist : ['Confirm official date and venue', 'Block weekly revision sessions', 'Turn mistakes into flashcards'];
+    items.forEach(function(item, index) {
+      lines.push((index + 1) + '. ' + item);
+    });
+    if (c.key) {
+      lines.push('');
+      lines.push('Open tools:');
+      lines.push('Study planner: https://afrotools.com/tools/study-planner/?exam=' + encodeURIComponent(c.key));
+      lines.push('Prep timetable: https://afrotools.com/tools/exam-timetable/?exam=' + encodeURIComponent(c.key));
+      lines.push('Flashcards: https://afrotools.com/tools/flashcard-maker/?exam=' + encodeURIComponent(c.key));
+      lines.push('Score tracker: https://afrotools.com/tools/grade-tracker/?exam=' + encodeURIComponent(c.key));
+    }
+    lines.push('');
+    lines.push('Confirm the latest official timetable, venue, and paper list before acting.');
+    return lines.join('\n');
+  }
+
+  function setCountdownStatus(id, message) {
+    var status = document.getElementById(statusId(id));
+    if (status) status.textContent = message;
+  }
+
+  function copyCountdownPlan(id) {
+    var c = findCountdown(id);
+    if (!c) return;
+    var text = countdownPlanText(c);
+    var done = function() { setCountdownStatus(id, 'Prep plan copied.'); };
+    var fallback = function() {
+      var field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', 'readonly');
+      field.style.position = 'fixed';
+      field.style.left = '-9999px';
+      document.body.appendChild(field);
+      field.select();
+      try {
+        document.execCommand('copy');
+        done();
+      } catch(e) {
+        window.prompt('Copy prep plan', text);
+        setCountdownStatus(id, 'Copy prompt opened.');
+      }
+      field.remove();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  function downloadCountdownPlan(id) {
+    var c = findCountdown(id);
+    if (!c) return;
+    var text = countdownPlanText(c);
+    var slug = (c.key || c.name.toLowerCase()).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'exam-countdown';
+    var blob = new Blob([text], { type: 'text/plain' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = slug + '-prep-plan.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setCountdownStatus(id, 'TXT prep plan downloaded.');
+  }
+
   function addCustom() {
     var name = document.getElementById('customName').value.trim();
     var date = document.getElementById('customDate').value;
     if (!name) { alert('Please enter an exam name.'); return; }
     if (!date) { alert('Please select a date.'); return; }
-    addCountdown(name, date);
+    var key = document.getElementById('customName').dataset.presetKey || '';
+    var preset = key ? findPreset(key) : null;
+    addCountdown(name, date, preset || {});
     document.getElementById('customName').value = '';
+    document.getElementById('customName').dataset.presetKey = '';
     document.getElementById('customDate').value = '';
   }
 
@@ -436,12 +581,50 @@
   function renderPresets() {
     var grid = document.getElementById('presetGrid');
     grid.innerHTML = presets.map(function(p) {
-      return '<button type="button" class="preset-btn" onclick="addCountdown(\'' + esc(p.name) + '\',\'' + p.date + '\')">' +
+      var active = countdowns.some(function(c) { return c.key === p.key; });
+      return '<button type="button" class="preset-btn' + (active ? ' active' : '') + '" onclick="addPreset(\'' + esc(p.key) + '\')">' +
         '<div class="preset-name">' + p.name + '</div>' +
-        '<div class="preset-date">' + fmtDate(p.date) + '</div>' +
+        '<div class="preset-date">' + (p.date ? fmtDate(p.date) : 'Enter date from official timetable') + '</div>' +
         '<div class="preset-country">' + p.country + '</div>' +
         '</button>';
     }).join('');
+  }
+
+  function addPreset(key) {
+    var p = findPreset(key);
+    if (!p) return;
+    if (!p.date) {
+      document.getElementById('customName').value = p.name;
+      document.getElementById('customName').dataset.presetKey = p.key;
+      document.getElementById('customDate').focus();
+      updateCoach(p);
+      return;
+    }
+    addCountdown(p.name, p.date, p);
+    renderPresets();
+  }
+
+  function initFromQuery() {
+    var params = new URLSearchParams(window.location.search);
+    var key = params.get('exam') || params.get('preset');
+    if (key) addPreset(key);
+  }
+
+  function updateCoach(presetHint) {
+    var coach = document.getElementById('countdownCoach');
+    if (!coach) return;
+    var active = countdowns.slice().sort(function(a, b) { return new Date(a.date) - new Date(b.date); })[0];
+    if (presetHint && !presetHint.date) {
+      coach.innerHTML = '<h2>' + esc(presetHint.name) + '</h2><p>' + esc(presetHint.note) + ' Open the official source, enter the first paper date above, then add the countdown.</p><ul><li><a href="' + esc(presetHint.source) + '" target="_blank" rel="noopener">Open official timetable source</a></li><li><a href="/tools/study-planner/?exam=' + encodeURIComponent(presetHint.key) + '">Build study plan</a></li><li><a href="/tools/exam-timetable/?exam=' + encodeURIComponent(presetHint.key) + '">Build prep timetable</a></li><li><a href="/tools/flashcard-maker/?exam=' + encodeURIComponent(presetHint.key) + '">Open starter flashcards</a></li></ul>';
+      return;
+    }
+    if (!active) {
+      coach.innerHTML = '<h2>Prep coach</h2><p>Add an exam countdown to get a source note, next actions, and links into the matching timetable and flashcard deck.</p>';
+      return;
+    }
+    var t = getTimeDiff(active.date);
+    var days = t ? t.days : -1;
+    coach.innerHTML = '<h2>Next deadline: ' + esc(active.name) + '</h2><p>' + (days >= 0 ? days + ' days left. ' : 'This date has passed. ') + esc(active.note || 'Confirm official exam details before acting.') + '</p>' + checklistHtml(active, t) + prepLinks(active);
   }
 
   function rotateQuote() {
@@ -454,13 +637,13 @@
   loadCountdowns();
   renderPresets();
   renderCountdowns();
+  initFromQuery();
   setInterval(updateTimers, 1000);
   setInterval(rotateQuote, 15000);
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

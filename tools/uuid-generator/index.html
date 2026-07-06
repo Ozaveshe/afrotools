@@ -44,7 +44,7 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"UUID Generator","item":"https://afrotools.com/tools/uuid-generator/"}]}</script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -66,7 +66,7 @@
   .hero{background:#101828;color:#fff;padding:44px 0 38px}
   .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
   .crumb{font-size:13px;color:#c5d0df;margin-bottom:16px}
-  .crumb a{color:#dce6f3;text-decoration:none}
+  .crumb a{display:inline-flex;align-items:center;min-height:36px;color:#dce6f3;text-decoration:none}
   .hero h1{font-size:42px;line-height:1.08;margin:0 0 14px;font-weight:800;color:#fff;max-width:860px}
   .lead{font-size:18px;line-height:1.55;color:#d5deea;max-width:850px;margin:0 0 22px}
   .chips{display:flex;flex-wrap:wrap;gap:10px}
@@ -80,13 +80,14 @@
   .panel-sub{font-size:13px;color:var(--muted);margin-top:4px}
   .panel-body{padding:18px}
   label{display:grid;gap:6px;font-size:13px;font-weight:800;color:#344054}
-  textarea,input,select{width:100%;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
+  textarea,input,select{width:100%;min-height:44px;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
   textarea:focus,input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,102,216,.13)}
   textarea{min-height:120px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.5}
   .field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  button{border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
+  button{min-height:44px;border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
   button:hover{border-color:var(--blue);color:var(--blue)}
+  button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgba(11,102,216,.28);outline-offset:3px}
   .primary{background:var(--blue);border-color:var(--blue);color:#fff}
   .primary:hover{background:#0755b7;color:#fff}
   .danger{background:#fef3f2;border-color:#fecdca;color:#b42318}
@@ -108,7 +109,7 @@
   .diff-row code{font-family:var(--mono);word-break:break-all}
   .source-list{display:grid;gap:10px}
   .source-row{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid #e4eaf2;border-radius:8px;padding:11px;background:#fbfdff}
-  .source-row a{color:#0b66d8;font-weight:800}
+  .source-row a{display:inline-flex;align-items:center;min-height:36px;color:#0b66d8;font-weight:800}
   .source-row span{font-size:12px;color:var(--muted)}
   .source-row div span{display:block;margin-top:4px}
   .source-row > span{white-space:nowrap}
@@ -122,7 +123,7 @@
   .mini{font-size:12px;color:var(--muted);line-height:1.5}
   .faq{width:min(900px,calc(100% - 32px));margin:18px auto 0;display:grid;gap:8px}
   details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
-  summary{font-weight:800;cursor:pointer}
+  summary{min-height:44px;display:flex;align-items:center;font-weight:800;cursor:pointer}
   details p{color:var(--muted);line-height:1.6;margin:10px 0 0}
   @media(max-width:960px){
     .grid{grid-template-columns:1fr}
@@ -141,7 +142,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-uuid/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-uuid/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/uuid-generator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -382,30 +382,6 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="uuid-generator">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Identifier handoff brief</span>
-      <h2>Generate IDs, then document the tradeoff</h2>
-      <p>Generate UUID v4, UUID v7, ULID or NanoID-style values above, then capture the format, collision and sortability checks for implementation review.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: create local identifiers, inspect format facts, calculate collision risk and copy/download output.</li><li>Result output: an identifier brief with type, count, storage format and risk focus.</li><li>Quality checks: random bits, timestamp leakage, database indexing, sort behavior, prefix privacy and collision estimate.</li><li>Source note: RFC 9562, MDN Web Crypto, ULID and Nano ID references are linked above.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local generation only. Confirm ID strategy with your database, API and security requirements.</p>
-    </div>
-    <form class="df-form" data-df-form="uuid-generator">
-      <label>ID type<select name="type" aria-label="ID type"><option value="UUID v7">UUID v7</option><option value="UUID v4">UUID v4</option><option value="ULID">ULID</option><option value="NanoID-style">NanoID-style</option></select></label>
-      <label>Count<input name="count" type="number" value="25" min="1" step="1" aria-label="Count"></label>
-      <label>Implementation focus<select name="focus" aria-label="Implementation focus"><option value="database primary key">database primary key</option><option value="public API id">public API id</option><option value="sortable event id">sortable event id</option><option value="short invite code">short invite code</option></select></label>
-      <label>Risk focus<select name="risk" aria-label="Risk focus"><option value="collision estimate">collision estimate</option><option value="timestamp leakage">timestamp leakage</option><option value="index performance">index performance</option><option value="prefix privacy">prefix privacy</option></select></label>
-      <button type="submit">Create ID brief</button>
-      <output class="df-result" data-df-result="uuid-generator" data-df-base="Identifier brief ready. Generate above, then verify ID type, random bits, timestamp leakage, database indexing, sort behavior, prefix privacy, and collision estimate." aria-live="polite">Identifier brief ready. Generate above, then verify ID type, random bits, timestamp leakage, database indexing, sort behavior, prefix privacy, and collision estimate.</output>
-      <div class="df-actions"><button type="button" data-df-copy="uuid-generator">Copy ID brief</button><a href="#idList">Review IDs</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="uuid-generator-faq-title">
-  <h2 id="uuid-generator-faq-title">UUID Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Choose an ID type and count, generate locally, inspect format facts, then copy or download IDs for development use.</p></details><details><summary>What should I verify?</summary><p>Check random bits, sort behavior, timestamp leakage, database indexing, collision estimate and prefix privacy.</p></details><details><summary>Is it a production ID strategy?</summary><p>No. It helps generate and compare IDs locally; confirm the strategy in your real database, API and security model.</p></details></div>
-</section>
 <section class="tool-verification-sec" data-tool-verification-panel="uuid-generator">
   <div class="container">
     <div class="tool-verification-card">
@@ -552,7 +528,20 @@
     return ($('prefixInput').value || '') + id;
   }
   function copyText(text, button){
-    navigator.clipboard.writeText(text || '').then(function(){
+    var write = navigator.clipboard && navigator.clipboard.writeText
+      ? navigator.clipboard.writeText(text || '')
+      : Promise.reject(new Error('Clipboard API unavailable'));
+    write.catch(function(){
+      var area = document.createElement('textarea');
+      area.value = text || '';
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
+    }).then(function(){
       if (!button) return;
       var original = button.textContent;
       button.textContent = 'Copied';
@@ -639,7 +628,7 @@
       $('coloredId').textContent = raw;
       rows.push(['Format', 'Custom or NanoID-style']);
       rows.push(['Length', String(raw.length)]);
-      var configuredAlphabetSize = $('idType').value === 'nanoid' ? ($('nanoAlphabet').value || '').length : uniqueChars(raw);
+    var configuredAlphabetSize = $('idType').value === 'nanoid' ? uniqueChars($('nanoAlphabet').value || '') : uniqueChars(raw);
       rows.push(['Entropy estimate', entropyFor(raw.length, configuredAlphabetSize).toFixed(1) + ' bits based on ' + (configuredAlphabetSize === uniqueChars(raw) ? 'observed' : 'configured') + ' alphabet']);
       rows.push(['Sort behavior', 'Random, not time-sortable']);
     } else {
@@ -680,14 +669,21 @@
     if (type === 'uuidv7') return [['Length','36 chars canonical, 128 bits total'],['Randomness','About 74 random bits plus 48-bit Unix millisecond timestamp'],['Sort','Roughly chronological'],['Standard','RFC 9562']];
     if (type === 'uuidv4') return [['Length','36 chars canonical, 128 bits total'],['Randomness','122 random bits'],['Sort','Random'],['Standard','RFC 9562 and browser crypto.randomUUID']];
     if (type === 'ulid') return [['Length','26 chars'],['Randomness','80 random bits plus 48-bit millisecond timestamp'],['Sort','Lexicographic chronological'],['Alphabet','Crockford Base32']];
-    return [['Length',$('nanoLength').value + ' chars'],['Randomness','About ' + entropyFor(Number($('nanoLength').value || 21), ($('nanoAlphabet').value || '').length).toFixed(1) + ' bits'],['Sort','Random'],['Alphabet size',String(($('nanoAlphabet').value || '').length)]];
+    var alphabet = $('nanoAlphabet').value || '';
+    var unique = uniqueChars(alphabet);
+    return [['Length',$('nanoLength').value + ' chars'],['Randomness','About ' + entropyFor(Number($('nanoLength').value || 21), unique).toFixed(1) + ' bits'],['Sort','Random'],['Alphabet size',unique + ' unique / ' + alphabet.length + ' total']];
   }
   function warningsFor(type){
     var list = [];
     if (!window.crypto || !crypto.getRandomValues) list.push(['bad','Secure browser randomness is unavailable. Do not use generated IDs.']);
+    if (($('prefixInput').value || '').trim()) list.push(['warn','Prefixes are copied into every ID. Do not include tenant names, user meaning, secrets or private business context.']);
     if (type === 'uuidv7' || type === 'ulid') list.push(['warn','Timestamp-sortable IDs expose approximate creation time.']);
+    if (type === 'ulid') list.push(['warn','This browser generator is not monotonic within the same millisecond. Use a vetted monotonic ULID library if strict same-millisecond ordering matters.']);
     if (type === 'nanoid') {
-      if (($('nanoAlphabet').value || '').length < 16) list.push(['bad','Alphabet is very small. Increase alphabet or length to avoid collisions.']);
+      var alphabet = $('nanoAlphabet').value || '';
+      var unique = uniqueChars(alphabet);
+      if (unique < alphabet.length) list.push(['warn','NanoID alphabet contains duplicate characters. Duplicates reduce effective entropy and can bias output.']);
+      if (unique < 16) list.push(['bad','Alphabet is very small. Increase alphabet or length to avoid collisions.']);
       if (Number($('nanoLength').value || 0) < 10) list.push(['warn','Short public IDs are easy to guess and collide at scale.']);
     }
     if (type === 'uuidv4') list.push(['warn','UUID v4 is not sequential. It is safe, but may be less index-friendly for very hot tables.']);
@@ -768,6 +764,5 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

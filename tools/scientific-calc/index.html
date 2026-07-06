@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <meta name="tool-id" content="scientific-calc">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
@@ -82,6 +82,14 @@
   .hist-title { font-size: 0.65rem; font-weight: 700; color: #6B8CAE; text-transform: uppercase; letter-spacing: 0.06em; }
   .hist-clear { background: none; border: none; font-size: 0.62rem; font-weight: 700; color: #c0392b; cursor: pointer; font-family: 'DM Sans', sans-serif; }
   .empty-hist { text-align: center; color: #BFDBFE; font-size: 0.72rem; padding: 8px; }
+  .calc-action-panel { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border-top: 1px solid #EFF6FF; background: #fff; }
+  .calc-action-panel button { min-height: 38px; padding: 0 12px; border: 1px solid #BFDBFE; border-radius: 6px; background: #fff; color: #1e3a5f; font: 800 .72rem/1 'DM Sans', sans-serif; cursor: pointer; }
+  .calc-action-panel button:hover { border-color: var(--afro-blue); background: #EFF6FF; }
+  .calc-action-status { min-height: 1.2rem; padding: 0 12px 12px; color: var(--afro-blue); font-size: .78rem; font-weight: 800; background: #fff; }
+  .method-card { max-width: 900px; margin: 28px auto 0; padding: 18px 20px; border: 1px solid #DBEAFE; border-radius: 10px; background: #fff; }
+  .method-card h2 { margin: 0 0 8px; color: #0f172a; font-size: 1.15rem; }
+  .method-card p, .method-card li { color: #475569; font-size: .86rem; line-height: 1.65; }
+  .method-card ul { margin: 10px 0 0; padding-left: 1.15rem; }
   /* Sidebar */
   .sidebar { display: flex; flex-direction: column; gap: 16px; }
   .info-card { background: #F5F9FF; border: 1px solid #DBEAFE; border-radius: 10px; padding: 16px; }
@@ -190,7 +198,6 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scientific-calc/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculatrice-scientifique/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scientific-calc/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -239,14 +246,14 @@
           <button type="button" class="btn btn-func" onclick="addFunc('tan(')">tan</button>
           <button type="button" class="btn btn-func" onclick="addFunc('log(')">log</button>
           <button type="button" class="btn btn-func" onclick="addFunc('ln(')">ln</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('v(')">v</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('sqrt(')">sqrt</button>
 
           <!-- Row 3: More functions -->
-          <button type="button" class="btn btn-func" onclick="addFunc('asin(')">sin?-</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('acos(')">cos?-</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('atan(')">tan?-</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('asin(')">asin</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('acos(')">acos</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('atan(')">atan</button>
           <button type="button" class="btn btn-func" onclick="addText('!')">n!</button>
-          <button type="button" class="btn btn-func" onclick="addText('p')">p</button>
+          <button type="button" class="btn btn-func" onclick="addText('pi')">pi</button>
           <button type="button" class="btn btn-func" onclick="addText('e')">e</button>
 
           <!-- Row 4: Parens, power, mod -->
@@ -254,8 +261,8 @@
           <button type="button" class="btn btn-op" onclick="addText(')')">)</button>
           <button type="button" class="btn btn-op" onclick="addText('^')">x^y</button>
           <button type="button" class="btn btn-op" onclick="addText('%')">mod</button>
-          <button type="button" class="btn btn-op" onclick="addText('-')">-</button>
-          <button type="button" class="btn btn-op" onclick="addText('-')">-</button>
+          <button type="button" class="btn btn-op" onclick="addText('*')">*</button>
+          <button type="button" class="btn btn-op" onclick="addText('/')">/</button>
 
           <!-- Row 5: Numbers 7-9, minus -->
           <button type="button" class="btn btn-num" onclick="addText('7')">7</button>
@@ -263,7 +270,7 @@
           <button type="button" class="btn btn-num" onclick="addText('9')">9</button>
           <button type="button" class="btn btn-op" onclick="addText('-')">-</button>
           <button type="button" class="btn btn-func" onclick="addFunc('abs(')">|x|</button>
-          <button type="button" class="btn btn-func" onclick="squareVal()">x-</button>
+          <button type="button" class="btn btn-func" onclick="squareVal()">x^2</button>
 
           <!-- Row 6: Numbers 4-6, plus -->
           <button type="button" class="btn btn-num" onclick="addText('4')">4</button>
@@ -278,13 +285,13 @@
           <button type="button" class="btn btn-num" onclick="addText('2')">2</button>
           <button type="button" class="btn btn-num" onclick="addText('3')">3</button>
           <button type="button" class="btn btn-op" onclick="toggleSign()">+/-</button>
-          <button type="button" class="btn btn-eq btn-span2" onclick="evaluate()">=</button>
+          <button type="button" class="btn btn-eq btn-span2" onclick="calcEvaluate()">=</button>
 
           <!-- Row 8: 0, dot, Ans -->
           <button type="button" class="btn btn-num btn-span2" onclick="addText('0')">0</button>
           <button type="button" class="btn btn-num" onclick="addText('.')">.</button>
           <button type="button" class="btn btn-ans" onclick="useAns()">Ans</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('cbrt(')">?</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('cbrt(')">cbrt</button>
           <button type="button" class="btn btn-func" onclick="addFunc('1/(')">1/x</button>
         </div>
 
@@ -296,6 +303,12 @@
           </div>
           <div id="historyList"><div class="empty-hist">No history yet</div></div>
         </div>
+        <div class="calc-action-panel" aria-label="Scientific calculator result actions">
+          <button type="button" onclick="copyHistory()">Copy history</button>
+          <button type="button" onclick="downloadHistory()">Download TXT</button>
+          <button type="button" onclick="saveHistory()">Save in browser</button>
+        </div>
+        <div class="calc-action-status" id="calcActionStatus" role="status" aria-live="polite"></div>
       </div>
     </div>
 
@@ -320,7 +333,7 @@
         <div class="info-text">
           <strong>Trigonometry:</strong> sin, cos, tan and their inverses (asin, acos, atan). Toggle between DEG and RAD mode.<br><br>
           <strong>Logarithms:</strong> log (base 10), ln (natural log)<br><br>
-          <strong>Powers:</strong> x^y (any power), x- (square), v (square root), ? (cube root)<br><br>
+          <strong>Powers:</strong> x^y (any power), x^2 (square), sqrt (square root), cbrt (cube root)<br><br>
           <strong>Constants:</strong> p = 3.14159..., e = 2.71828...<br><br>
           <strong>Memory:</strong> MC (clear), MR (recall), M+ (add to memory), M- (subtract from memory)
         </div>
@@ -331,7 +344,7 @@
         <div class="info-text">
           &bull; Click the result to copy it to clipboard<br>
           &bull; Use <strong>Ans</strong> to reuse the last result<br>
-          &bull; Type expressions naturally: 2+3-(4-1)<br>
+          &bull; Type expressions naturally: 2+3*(4-1)<br>
           &bull; Click history items to reuse values<br>
           &bull; Memory persists until you clear it<br>
           &bull; Toggle DEG/RAD for angle mode
@@ -347,29 +360,14 @@
   </div>
 </section>
 
-<section class="df-upgrade" data-df-upgrade="scientific-calc">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Scientific Calculator decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for scientific calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Scientific Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: formControls, methodology, disclaimer, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="scientific-calc">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="scientific-calc" data-df-base="Scientific Calculator: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Scientific Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="scientific-calc">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="scientific-calc-faq-title">
-  <h2 id="scientific-calc-faq-title">Scientific Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+<section class="method-card" aria-labelledby="scientific-method-title">
+  <h2 id="scientific-method-title">How this calculator evaluates expressions</h2>
+  <p>This MVP runs calculations locally in the browser, supports decimal arithmetic, parentheses, powers, factorials, constants, trigonometry, logarithms, memory, and a reusable session history.</p>
+  <ul>
+    <li>Trig functions use the selected DEG/RAD mode; inverse trig returns degrees in DEG mode.</li>
+    <li>History export stores only the expressions and results shown in this browser session.</li>
+    <li>For school or exam work, confirm the required rounding and angle mode before submitting answers.</li>
+  </ul>
 </section>
 <section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
   <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
@@ -446,9 +444,10 @@
   function copyResult() {
     if (lastResult === '0' && expression === '') return;
     const val = lastResult;
-    navigator.clipboard.writeText(val).then(function() {
+    writeClipboard(val, function() {
       resultDisplay.classList.add('copied-flash');
       resultDisplay.innerHTML = '<span class="copy-hint" style="opacity:1;color:rgba(59,130,246,0.7)">copied!</span>' + escapeHtml(val);
+      setActionStatus('Result copied.');
       setTimeout(function() {
         resultDisplay.classList.remove('copied-flash');
         updateDisplay();
@@ -465,7 +464,7 @@
 
   function addText(t) {
     // If we just evaluated and user types a number, start fresh
-    if (lastResult !== '0' && lastResult !== 'Error' && expression === '' && /[0-9p e]/.test(t) && !/[+\---^%]/.test(t)) {
+    if (lastResult !== '0' && lastResult !== 'Error' && expression === '' && /[0-9pe]/.test(t) && !/[+\-*/^%]/.test(t)) {
       expression = '';
       lastResult = '0';
     }
@@ -486,7 +485,7 @@
   }
 
   function squareVal() {
-    expression += '-';
+    expression += '^2';
     try {
       const val = evalExpression(expression);
       if (!isNaN(val) && isFinite(val)) lastResult = formatResult(val);
@@ -502,8 +501,10 @@
     } else if (expression.endsWith('asin(') || expression.endsWith('acos(') || expression.endsWith('atan(') ||
                expression.endsWith('cbrt(') || expression.endsWith('10^(')) {
       expression = expression.slice(0, -5);
-    } else if (expression.endsWith('ln(') || expression.endsWith('v(') || expression.endsWith('1/(')) {
+    } else if (expression.endsWith('ln(') || expression.endsWith('1/(')) {
       expression = expression.slice(0, -3);
+    } else if (expression.endsWith('sqrt(')) {
+      expression = expression.slice(0, -5);
     } else {
       expression = expression.slice(0, -1);
     }
@@ -538,7 +539,7 @@
     updateDisplay();
   }
 
-  function evaluate() {
+  function calcEvaluate() {
     if (!expression) return;
     try {
       const val = evalExpression(expression);
@@ -557,21 +558,16 @@
 
   function evalExpression(expr) {
     let e = expr
-      .replace(/-/g, '*')
-      .replace(/-/g, '/')
-      .replace(/-/g, '-')
-      .replace(/p/g, `(${Math.PI})`)
-      .replace(/-/g, '**2')
+      .replace(/π/g, 'pi')
+      .replace(/\bpi\b/g, `(${Math.PI})`)
+      .replace(/\be\b/g, `(${Math.E})`)
       .replace(/\^/g, '**');
-
-    // Replace standalone 'e' (Euler's number) not part of function names
-    e = e.replace(/(?<![a-z])e(?![a-z(^x])/g, `(${Math.E})`);
 
     // Factorial
     e = e.replace(/(\d+(?:\.\d+)?)!/g, (_, n) => String(factorial(parseFloat(n))));
 
     // Math functions
-    e = e.replace(/v\(/g, 'Math.sqrt(');
+    e = e.replace(/sqrt\(/g, 'Math.sqrt(');
     e = e.replace(/cbrt\(/g, 'Math.cbrt(');
     e = e.replace(/abs\(/g, 'Math.abs(');
     e = e.replace(/10\^\(/g, 'Math.pow(10,');
@@ -603,8 +599,9 @@
     const closes = (e.match(/\)/g) || []).length;
     for (let i = 0; i < opens - closes; i++) e += ')';
 
-    // Validate - only allow safe chars
-    if (!/^[0-9+\-*/().,%eE \tMathsincotaqrblgpw^]*$/.test(e)) {
+    // Validate transformed expressions against the exact Math tokens this tool emits.
+    var tokenRemainder = e.replace(/Math\.|PI|log10|asin|acos|atan|sin|cos|tan|log|sqrt|cbrt|abs|exp|pow/g, '');
+    if (!/^[0-9+\-*/().,%eE \t]*$/.test(tokenRemainder)) {
       throw new Error('Invalid');
     }
 
@@ -669,11 +666,12 @@
   }
 
   function copyHistVal(val) {
-    navigator.clipboard.writeText(val).then(function() {
+    writeClipboard(val, function() {
       var btn = event.target;
       btn.textContent = 'copied!';
       btn.style.opacity = '1';
       btn.style.color = '#0a4018';
+      setActionStatus('History result copied.');
       setTimeout(function() { btn.textContent = 'copy'; btn.style.opacity = ''; btn.style.color = ''; }, 800);
     });
   }
@@ -688,6 +686,80 @@
     if (confirm('Clear all calculation history?')) {
       history = [];
       renderHistory();
+      setActionStatus('History cleared.');
+    }
+  }
+
+  function setActionStatus(message) {
+    var el = document.getElementById('calcActionStatus');
+    if (el) el.textContent = message || '';
+  }
+
+  function writeClipboard(text, done) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallbackCopy(text, done); });
+      return;
+    }
+    fallbackCopy(text, done);
+  }
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); if (done) done(); }
+    catch (err) { window.prompt('Copy calculation', text); }
+    ta.remove();
+  }
+
+  function historyText() {
+    if (!history.length) return '';
+    return [
+      'Scientific Calculator - AfroTools',
+      'Angle mode: ' + (isDeg ? 'DEG' : 'RAD'),
+      '',
+      history.map(function(item){ return item.expr + ' = ' + item.result; }).join('\n')
+    ].join('\n');
+  }
+
+  function copyHistory() {
+    var text = historyText();
+    if (!text) { setActionStatus('Calculate something first.'); return; }
+    writeClipboard(text, function(){ setActionStatus('Calculation history copied.'); });
+  }
+
+  function downloadHistory() {
+    var text = historyText();
+    if (!text) { setActionStatus('Calculate something first.'); return; }
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'scientific-calculator-history.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    setActionStatus('TXT history downloaded.');
+  }
+
+  function saveHistory() {
+    var text = historyText();
+    if (!text) { setActionStatus('Calculate something first.'); return; }
+    try {
+      localStorage.setItem('afrotools-scientific-calculator-history', JSON.stringify({
+        savedAt: Date.now(),
+        mode: isDeg ? 'DEG' : 'RAD',
+        history: history,
+        report: text
+      }));
+      setActionStatus('Calculation history saved in this browser.');
+    } catch (err) {
+      setActionStatus('Could not save locally. Copy or download the TXT instead.');
     }
   }
 
@@ -702,14 +774,14 @@
     if (/^[0-9.]$/.test(key)) { addText(key); e.preventDefault(); }
     else if (key === '+') { addText('+'); e.preventDefault(); }
     else if (key === '-') { addText('-'); e.preventDefault(); }
-    else if (key === '*') { addText('-'); e.preventDefault(); }
-    else if (key === '/') { addText('-'); e.preventDefault(); }
+    else if (key === '*') { addText('*'); e.preventDefault(); }
+    else if (key === '/') { addText('/'); e.preventDefault(); }
     else if (key === '^') { addText('^'); e.preventDefault(); }
     else if (key === '(' || key === ')') { addText(key); e.preventDefault(); }
-    else if (key === 'Enter' || key === '=') { evaluate(); e.preventDefault(); }
+    else if (key === 'Enter' || key === '=') { calcEvaluate(); e.preventDefault(); }
     else if (key === 'Escape') { clearAll(); e.preventDefault(); }
     else if (key === 'Backspace') { deleteLast(); e.preventDefault(); }
-    else if (key === 'p' || key === 'P') { addText('p'); e.preventDefault(); }
+    else if (key === 'p' || key === 'P') { addText('pi'); e.preventDefault(); }
     else if (key === '!') { addText('!'); e.preventDefault(); }
     else if (key === '%') { addText('%'); e.preventDefault(); }
   });
@@ -718,6 +790,5 @@
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

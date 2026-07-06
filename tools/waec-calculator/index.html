@@ -45,9 +45,39 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kalkuletan-waec-neco/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-waec-neco/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/waec-calculator/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="waec-action-pack-style">
+  .wc-action-pack{max-width:1200px;margin:32px auto;padding:0 20px}
+  .wc-action-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.52fr);gap:18px;align-items:start;background:#fff;border:1px solid var(--wc-border);border-radius:18px;box-shadow:0 14px 34px rgba(15,23,42,.06);padding:22px}
+  .wc-action-card h2{margin:0 0 8px;color:var(--wc-text);font-size:1.2rem;line-height:1.2;letter-spacing:0}
+  .wc-action-card p{margin:0;color:var(--wc-text-secondary);font-size:.88rem;line-height:1.7}
+  .wc-action-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+  .wc-action-summary div{padding:12px;border:1px solid var(--wc-border);border-radius:12px;background:var(--wc-primary-light)}
+  .wc-action-summary strong{display:block;font-family:var(--wc-mono);font-size:1.15rem;color:var(--wc-accent);line-height:1.1}
+  .wc-action-summary span{display:block;margin-top:4px;color:var(--wc-text-secondary);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+  .wc-action-checks{display:grid;gap:8px;margin-top:12px}
+  .wc-action-check{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start;padding:9px 10px;border:1px solid var(--wc-border);border-radius:10px;background:#fff}
+  .wc-action-check b{color:var(--wc-text);font-size:.82rem;line-height:1.35}
+  .wc-action-check small{display:block;color:var(--wc-text-secondary);font-size:.75rem;line-height:1.45;margin-top:2px}
+  .wc-action-dot{width:9px;height:9px;border-radius:999px;background:var(--wc-accent);margin-top:.42rem}
+  .wc-action-links{display:grid;gap:8px}
+  .wc-action-links a,.wc-action-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:10px;border:1px solid var(--wc-border);background:var(--wc-primary-light);color:var(--wc-accent);font:700 .82rem/1 var(--wc-font);text-decoration:none;cursor:pointer;padding:0 12px;text-align:center}
+  .wc-action-links a:hover,.wc-action-actions button:hover{background:#fff;border-color:var(--wc-accent)}
+  .wc-action-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .wc-action-actions .primary{background:var(--wc-accent);border-color:var(--wc-accent);color:#fff}
+  .wc-action-status{min-height:1.2em;margin-top:10px;color:var(--wc-text-secondary);font-size:.8rem}
+  .wc-quick-actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 14px}
+  .wc-quick-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;border-radius:10px;border:1px solid var(--wc-border);background:#fff;color:var(--wc-accent);font:700 .82rem/1 var(--wc-font);cursor:pointer;padding:0 14px}
+  .wc-quick-actions button:hover{border-color:var(--wc-accent);background:var(--wc-primary-light)}
+  .wc-form-status{min-height:1.25em;margin:8px 0 0;color:var(--wc-text-secondary);font-size:.82rem;font-weight:700}
+  .wc-form-status.is-ok{color:#166534}
+  .wc-form-status.is-error{color:#b91c1c}
+  .wc-page .wc-tabs{flex-wrap:wrap;overflow:visible;gap:8px}
+  .wc-page .wc-tab{flex:1 1 160px;min-width:0;white-space:normal;text-align:center}
+  @media(max-width:860px){.wc-action-card{grid-template-columns:1fr}.wc-action-summary{grid-template-columns:1fr}.wc-action-actions{grid-template-columns:1fr}}
+  @media(max-width:640px){.wc-quick-actions{display:grid;grid-template-columns:1fr}.wc-quick-actions button{width:100%}.wc-page .wc-tab{flex:1 1 calc(50% - 8px);padding-inline:10px}}
+</style>
 </head>
 <body class="top-level-page-ui-refresh wc-page">
 
@@ -106,6 +136,11 @@
                 <span>Subject</span><span>Grade</span><span></span>
             </div>
             <div id="subjectsContainer"></div>
+            <div class="wc-quick-actions" aria-label="WAEC quick actions">
+                <button type="button" onclick="loadWaecSample()">Load sample grades</button>
+                <button type="button" onclick="clearWaecGrades()">Clear grades</button>
+            </div>
+            <div class="wc-form-status" id="wcFormStatus" role="status" aria-live="polite"></div>
             <button type="button" class="wc-add-subject" id="addSubjectBtn">+ Add Subject</button>
         </div>
 
@@ -191,32 +226,31 @@
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="waec-calculator">
-  <div class="df-upgrade__card">
+<section class="wc-action-pack" aria-labelledby="wcActionTitle">
+  <div class="wc-action-card">
     <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>WAEC/NECO Grade Calculator decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for waec/neco grade calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: WAEC/NECO Grade Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
+      <h2 id="wcActionTitle">Admissions action pack</h2>
+      <p>After calculating your aggregate, turn the result into a short admission checklist you can send to a parent, counsellor, or study group.</p>
+      <div class="wc-action-summary" id="wcActionSummary" aria-live="polite"></div>
+      <div class="wc-action-checks" id="wcActionChecks"></div>
     </div>
-    <form class="df-form" data-df-form="waec-calculator">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="waec-calculator" data-df-base="WAEC/NECO Grade Calculator: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">WAEC/NECO Grade Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="waec-calculator">Copy summary</button></div>
-    </form>
+    <aside>
+      <div class="wc-action-links">
+        <a href="/tools/university-admission/">Open pathway finder</a>
+        <a href="/tools/jamb-aggregate/">Calculate JAMB aggregate</a>
+        <a href="/tools/study-planner/?exam=ghana-waec">Build study plan</a>
+        <a href="/tools/flashcard-maker/?exam=ghana-waec">Drill flashcards</a>
+        <a href="/tools/exam-timetable/?exam=ghana-waec">Make exam timetable</a>
+      </div>
+      <div class="wc-action-actions">
+        <button type="button" onclick="copyWaecActionPack()">Copy plan</button>
+        <button type="button" class="primary" onclick="downloadWaecActionPack()">Download TXT</button>
+        <button type="button" onclick="saveWaecActionPack()">Save locally</button>
+      </div>
+      <div class="wc-action-status" id="wcActionStatus" role="status"></div>
+    </aside>
   </div>
 </section>
-<section class="df-faq" aria-labelledby="waec-calculator-faq-title">
-  <h2 id="waec-calculator-faq-title">WAEC/NECO Grade Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
 <section class="wc-faq">
     <h2>Frequently Asked Questions</h2>
     <div class="wc-faq-grid">
@@ -255,7 +289,7 @@
 <afro-related-tools category="education" current="waec-calculator"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
@@ -265,6 +299,272 @@
 <script src="/tools/waec-calculator/data/courses.js?v=f55dd8c2" defer></script>
 
 <script src="/tools/waec-calculator/waec-calculator.js?v=f139f52b" defer></script>
+
+<script>
+(function(){
+  function byId(id){return document.getElementById(id);}
+  function setFormStatus(text,type){
+    var el=byId('wcFormStatus');
+    if(!el)return;
+    el.textContent=text||'';
+    el.classList.remove('is-ok','is-error');
+    if(type==='ok')el.classList.add('is-ok');
+    if(type==='error')el.classList.add('is-error');
+  }
+  function dispatchField(el,type){
+    if(!el)return;
+    el.dispatchEvent(new Event(type||'change',{bubbles:true}));
+  }
+  function rowSubjectName(row){
+    var input=row.querySelector('.wc-subject-name input');
+    if(input)return input.value.trim();
+    var name=(row.querySelector('.wc-subject-name')||{}).textContent||'';
+    return name.replace(/Required/g,'').trim();
+  }
+  function rowGradeField(row){
+    var select=row.querySelector('.wc-grade-select');
+    if(select)return select;
+    var inputs=Array.prototype.slice.call(row.querySelectorAll('.wc-input'));
+    return inputs.find(function(input){return !input.closest('.wc-subject-name');})||null;
+  }
+  function restoreWaecRowsFromSaved(saved){
+    if(!saved||!Array.isArray(saved.subjects)||!saved.subjects.length)return;
+    var rows=Array.prototype.slice.call(document.querySelectorAll('.wc-subject-row'));
+    saved.subjects.forEach(function(item,index){
+      var row=rows[index];
+      if(!row||!item)return;
+      var input=row.querySelector('.wc-subject-name input');
+      var grade=rowGradeField(row);
+      if(input&&item.name){
+        input.value=item.name;
+        dispatchField(input,'input');
+      }
+      if(grade&&item.grade){
+        grade.value=item.grade;
+        dispatchField(grade,grade.tagName==='SELECT'?'change':'input');
+      }
+    });
+  }
+  function repairWaecRowsIfMissing(done){
+    if(document.querySelectorAll('.wc-subject-row').length){
+      if(done)done();
+      return true;
+    }
+    var system=byId('examSystem');
+    if(!system||!system.options.length)return false;
+    var saved=readSaved();
+    if(saved.examSystem)system.value=saved.examSystem;
+    dispatchField(system,'change');
+    setTimeout(function(){
+      restoreWaecRowsFromSaved(saved);
+      if(done)done();
+    },260);
+    return true;
+  }
+  function applyWaecSample(attempt){
+    var sample=[
+      ['English Language','B3'],
+      ['Mathematics','B2'],
+      ['Biology','A1'],
+      ['Chemistry','B3'],
+      ['Physics','C4'],
+      ['Civic Education','A1']
+    ];
+    var rows=Array.prototype.slice.call(document.querySelectorAll('.wc-subject-row'));
+    if(!rows.length){
+      if((attempt||0)===0)repairWaecRowsIfMissing();
+      if((attempt||0)<8){
+        setFormStatus('Loading subject rows, then the sample will fill automatically.','');
+        setTimeout(function(){applyWaecSample((attempt||0)+1);},160);
+        return;
+      }
+      setFormStatus('Subject rows are still loading. Try the sample again in a moment.','error');
+      return;
+    }
+    rows.forEach(function(row,index){
+      var input=row.querySelector('.wc-subject-name input');
+      var grade=rowGradeField(row);
+      var current=rowSubjectName(row);
+      var item=sample.find(function(entry){return entry[0]===current;})||sample[index];
+      if(input&&item){
+        input.value=item[0];
+        dispatchField(input,'input');
+      }
+      if(grade&&item){
+        grade.value=item[1];
+        dispatchField(grade,grade.tagName==='SELECT'?'change':'input');
+      }
+    });
+    setTimeout(function(){setFormStatus('Sample WAEC grades loaded. Review the aggregate, eligibility checks, and action pack.','ok');},260);
+  }
+  window.loadWaecSample=function(){
+    var system=byId('examSystem');
+    if(system&&system.value!=='ng-waec'){
+      system.value='ng-waec';
+      dispatchField(system,'change');
+      setTimeout(applyWaecSample,120);
+      return;
+    }
+    applyWaecSample();
+  };
+  window.clearWaecGrades=function(){
+    document.querySelectorAll('.wc-subject-row').forEach(function(row){
+      var input=row.querySelector('.wc-subject-name input');
+      var grade=rowGradeField(row);
+      if(input){
+        input.value='';
+        dispatchField(input,'input');
+      }
+      if(grade){
+        grade.value='';
+        dispatchField(grade,grade.tagName==='SELECT'?'change':'input');
+      }
+    });
+    try{localStorage.removeItem('afrotools_waec');}catch(e){}
+    setTimeout(function(){setFormStatus('Grades cleared. Enter your subjects or load the sample to try the calculator.','');},180);
+  };
+  function readSaved(){
+    try{return JSON.parse(localStorage.getItem('afrotools_waec')||'{}')||{};}catch(e){return {};}
+  }
+  function selectedSystemName(saved){
+    var select=byId('examSystem');
+    if(select&&select.selectedOptions&&select.selectedOptions[0])return select.selectedOptions[0].textContent.trim();
+    if(saved&&saved.examSystem&&window.WAEC_EXAM_SYSTEMS&&WAEC_EXAM_SYSTEMS[saved.examSystem])return WAEC_EXAM_SYSTEMS[saved.examSystem].name;
+    return 'WAEC/NECO';
+  }
+  function resultSnapshot(){
+    var saved=readSaved();
+    var aggregateText=(byId('resultAggregate')||{}).textContent||'--';
+    var creditsText=(byId('resultCredits')||{}).textContent||'0';
+    var classText=(byId('classBadge')||{}).textContent||'Enter grades to see classification';
+    var subjects=Array.isArray(saved.subjects)?saved.subjects.filter(function(item){return item&&item.grade;}):[];
+    var aggregate=aggregateText&&aggregateText!=='--'?aggregateText:(saved.aggregate?String(saved.aggregate):'--');
+    return {
+      system:selectedSystemName(saved),
+      aggregate:aggregate,
+      credits:creditsText,
+      classification:classText,
+      subjects:subjects,
+      ready:aggregate!=='--'
+    };
+  }
+  function actionChecks(snap){
+    if(!snap.ready){
+      return [
+        ['Enter grades','Fill at least the required subjects so the aggregate and credit count can be calculated.'],
+        ['Check course requirements','Use the Subject Requirements tab for your intended course.'],
+        ['Plan next prep','Open the study planner or flashcards when a subject is still weak.']
+      ];
+    }
+    var checks=[
+      ['Aggregate result','Aggregate '+snap.aggregate+' with '+snap.credits+' credit-level subject'+(snap.credits==='1'?'':'s')+'.'],
+      ['Requirement check','Use the University Admission tab for course-specific O-Level and JAMB subject checks.'],
+      ['Admission next step','Compare this result with your chosen institution, then calculate JAMB aggregate if Nigeria applies.']
+    ];
+    var creditNum=parseInt(snap.credits,10)||0;
+    if(creditNum<5)checks.unshift(['Credit gap','You need at least five credit passes for most university admission paths.']);
+    return checks;
+  }
+  function buildActionText(){
+    var snap=resultSnapshot();
+    var lines=[
+      'AfroTools WAEC/NECO Admissions Action Pack',
+      'Exam system: '+snap.system,
+      'Aggregate: '+snap.aggregate,
+      'Credits: '+snap.credits,
+      'Classification: '+snap.classification,
+      ''
+    ];
+    if(snap.subjects.length){
+      lines.push('Entered subjects');
+      snap.subjects.forEach(function(item){lines.push('- '+(item.name||'Subject')+': '+item.grade);});
+      lines.push('');
+    }
+    lines.push('Next checks');
+    actionChecks(snap).forEach(function(item){lines.push('- '+item[0]+': '+item[1]);});
+    lines.push('');
+    lines.push('Tools');
+    lines.push('Pathway finder: https://afrotools.com/tools/university-admission/');
+    lines.push('JAMB aggregate: https://afrotools.com/tools/jamb-aggregate/');
+    lines.push('Study planner: https://afrotools.com/tools/study-planner/?exam=ghana-waec');
+    lines.push('Flashcards: https://afrotools.com/tools/flashcard-maker/?exam=ghana-waec');
+    lines.push('Exam timetable: https://afrotools.com/tools/exam-timetable/?exam=ghana-waec');
+    lines.push('');
+    lines.push('Confirm final admission rules, cutoffs, and subject requirements with the exam body and institution before applying.');
+    return lines.join('\n');
+  }
+  function setStatus(text){
+    var el=byId('wcActionStatus');
+    if(el)el.textContent=text||'';
+  }
+  window.copyWaecActionPack=function(){
+    var text=buildActionText();
+    function done(){setStatus('Admissions plan copied.');}
+    function fallback(){
+      var ta=document.createElement('textarea');
+      ta.value=text;
+      ta.setAttribute('readonly','');
+      ta.style.position='fixed';
+      ta.style.left='-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try{document.execCommand('copy');done();}catch(e){setStatus('Copy failed. Download the TXT plan instead.');}
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(fallback);
+    else fallback();
+  };
+  window.downloadWaecActionPack=function(){
+    var text=buildActionText();
+    var snap=resultSnapshot();
+    var name=(snap.system||'waec-neco').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'waec-neco';
+    var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=name+'-admissions-action-pack.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    setStatus('Admissions plan downloaded.');
+  };
+  window.saveWaecActionPack=function(){
+    var text=buildActionText();
+    var snap=resultSnapshot();
+    try{
+      localStorage.setItem('afrotools_waec_action_pack',JSON.stringify({savedAt:new Date().toISOString(),system:snap.system,aggregate:snap.aggregate,credits:snap.credits,text:text}));
+      setStatus('Admissions plan saved on this device.');
+    }catch(e){
+      setStatus('Could not save this plan locally in this browser.');
+    }
+  };
+  function render(){
+    var summary=byId('wcActionSummary');
+    var checks=byId('wcActionChecks');
+    if(!summary||!checks)return;
+    var snap=resultSnapshot();
+    summary.innerHTML=[
+      ['Aggregate',snap.aggregate],
+      ['Credits',snap.credits],
+      ['Status',snap.ready?snap.classification:'Waiting for grades']
+    ].map(function(item){return '<div><strong>'+item[1]+'</strong><span>'+item[0]+'</span></div>';}).join('');
+    checks.innerHTML=actionChecks(snap).map(function(item){
+      return '<div class="wc-action-check"><span class="wc-action-dot"></span><div><b>'+item[0]+'</b><small>'+item[1]+'</small></div></div>';
+    }).join('');
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){repairWaecRowsIfMissing(render);},450);
+    render();
+    ['resultAggregate','resultCredits','classBadge','examSystem'].forEach(function(id){
+      var el=byId(id);
+      if(!el)return;
+      if(el.tagName==='SELECT')el.addEventListener('change',function(){setTimeout(render,220);});
+      new MutationObserver(render).observe(el,{childList:true,subtree:true,characterData:true});
+    });
+    document.addEventListener('change',function(e){
+      if(e.target&&/wc-grade-select|wc-input|wc-select/.test(e.target.className||''))setTimeout(render,250);
+    });
+  });
+})();
+</script>
 
 <script>
 var AI_MSGS=[];
@@ -294,6 +594,5 @@ async function sendAI(){
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

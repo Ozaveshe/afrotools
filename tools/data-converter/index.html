@@ -25,11 +25,10 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js" defer></script>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <style>
 :root {
   --afro-green: var(--color-primary);
@@ -45,14 +44,7 @@
 }
 
 .tool-hero::after {
-  content: '\1F504';
-  position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 8rem;
-  opacity: 0.06;
-  pointer-events: none;
+  display: none;
 }
 
 .tool-hero-inner {
@@ -198,6 +190,7 @@ h1 em {
 .f-input, .f-select {
   width: 100%;
   padding: 11px 13px;
+  min-height: 44px;
   background: #EFF6FF;
   border: 1.5px solid #BFDBFE;
   border-radius: 7px;
@@ -260,6 +253,7 @@ h1 em {
 .calc-btn {
   width: 100%;
   padding: 13px 20px;
+  min-height: 44px;
   background: var(--afro-green);
   color: #fff;
   border: none;
@@ -285,6 +279,8 @@ h1 em {
 
 .btn-sm {
   padding: 8px 14px;
+  min-height: 44px;
+  min-width: 44px;
   background: #EFF6FF;
   border: 1.5px solid #BFDBFE;
   border-radius: 6px;
@@ -312,6 +308,7 @@ h1 em {
   border: 2px dashed #BFDBFE;
   border-radius: 8px;
   padding: 18px;
+  min-height: 72px;
   text-align: center;
   cursor: pointer;
   background: #F5F9FF;
@@ -509,6 +506,35 @@ h1 em {
   height: 6px;
   border-radius: 50%;
   background: var(--afro-green);
+}
+.safety-list {
+  display: grid;
+  gap: 8px;
+}
+.safety-item {
+  border: 1px solid #DBEAFE;
+  border-radius: 8px;
+  background: #fff;
+  padding: 11px;
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.5;
+}
+.safety-item strong {
+  display: block;
+  color: #0d2813;
+  margin-bottom: 3px;
+}
+.redaction-status {
+  margin-top: 10px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #7c2d12;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 /* AI PANEL */
@@ -726,13 +752,21 @@ h1 em {
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "https://afrotools.com/",
-  "description": "https://afrotools.com/",
-  "url": "https://afrotools.com/",
+  "name": "Data Converter - JSON, CSV, XML, YAML, TOML",
+  "description": "Convert JSON, CSV, XML, YAML, TSV, TOML and SQL INSERT locally in the browser with auto-detection, validation, preview, copy and download.",
+  "url": "https://afrotools.com/tools/data-converter/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
+  "browserRequirements": "Requires JavaScript. Conversion runs locally in the browser.",
+  "featureList": [
+    "JSON, CSV, XML, YAML, TSV and TOML conversion",
+    "SQL INSERT generation",
+    "format auto-detection",
+    "table preview",
+    "direct local download",
+    "redacted output copy"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -750,9 +784,9 @@ h1 em {
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "https://afrotools.com/",
-  "url": "https://afrotools.com/",
-  "description": "https://afrotools.com/",
+  "name": "Data Converter - JSON, CSV, XML, YAML, TOML",
+  "url": "https://afrotools.com/tools/data-converter/",
+  "description": "Convert structured data between common developer formats locally in the browser.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -760,6 +794,21 @@ h1 em {
     "url": "https://afrotools.com/"
   },
   "image": "https://afrotools.com/assets/img/tools/data-converter.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to convert structured data safely",
+  "description": "Paste or upload structured data, detect the format, choose an output format, preview the result, and copy or download only sanitized output.",
+  "step": [
+    {"@type": "HowToStep", "name": "Paste or upload data", "text": "Add JSON, CSV, XML, YAML, TSV or TOML data in the input editor."},
+    {"@type": "HowToStep", "name": "Choose formats", "text": "Use auto-detect or select the input format, then choose the output format including SQL INSERT when needed."},
+    {"@type": "HowToStep", "name": "Validate and preview", "text": "Review validation status, converted output, and the table preview before using the result."},
+    {"@type": "HowToStep", "name": "Sanitize before sharing", "text": "Use redacted copy or manually remove passwords, tokens, customer records and production identifiers before sharing."}
+  ],
+  "url": "https://afrotools.com/tools/data-converter/"
 }
 </script>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -799,7 +848,6 @@ h1 em {
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/convertisseur-donnees/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-data/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/data-converter/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -810,7 +858,7 @@ h1 em {
       "name": "How should I use Data Format Converter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Paste or upload data, confirm the detected input format, choose an output format, convert, preview the result, then copy or download only sanitized output."
       }
     },
     {
@@ -818,7 +866,7 @@ h1 em {
       "name": "What should I verify before acting on Data Format Converter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Check headers, null values, numeric precision, escaped quotes, nested arrays, dates, character encoding, SQL table names, and any sensitive fields before import."
       }
     },
     {
@@ -826,7 +874,7 @@ h1 em {
       "name": "Is Data Format Converter an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a local conversion helper, not an official schema validator, database migration tool, data-quality guarantee, or production import approval."
       }
     }
   ],
@@ -835,6 +883,28 @@ h1 em {
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+.top-level-page-ui-refresh .tool-main,
+.top-level-page-ui-refresh .tool-main *,
+.top-level-page-ui-refresh .tool-main *::before,
+.top-level-page-ui-refresh .tool-main *::after{box-sizing:border-box}
+.top-level-page-ui-refresh .tool-main-inner{width:100%;box-sizing:border-box}
+.top-level-page-ui-refresh .tool-main-inner > *{min-width:0}
+.top-level-page-ui-refresh .btn-sm,
+.top-level-page-ui-refresh .calc-btn,
+.top-level-page-ui-refresh .f-input,
+.top-level-page-ui-refresh .f-select,
+.top-level-page-ui-refresh .file-drop,
+.top-level-page-ui-refresh .faq-item summary,
+.top-level-page-ui-refresh .tool-verification-report{min-height:44px}
+.top-level-page-ui-refresh .btn-sm{min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width: 768px){
+  .top-level-page-ui-refresh .tool-main-inner{max-width:100vw;padding-left:16px;padding-right:16px;grid-template-columns:minmax(0,1fr)}
+  .top-level-page-ui-refresh .card,
+  .top-level-page-ui-refresh .faq-section,
+  .top-level-page-ui-refresh .tool-main section{max-width:100%;min-width:0}
+}
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -927,6 +997,7 @@ h1 em {
           <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
             <button type="button" class="calc-btn" id="convertBtn" style="flex:1;min-width:140px">Convert</button>
             <button type="button" class="btn-sm" id="copyBtn" style="flex:0">Copy</button>
+            <button type="button" class="btn-sm" id="redactCopyBtn" style="flex:0">Copy Redacted</button>
             <button type="button" class="btn-sm" id="downloadBtn" style="flex:0">Download</button>
           </div>
           <!-- PREVIEW TABLE -->
@@ -937,27 +1008,18 @@ h1 em {
         </div>
       </div>
 
-      <!-- AI ADVISOR -->
+      <!-- LOCAL SAFETY CHECKS -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">AI Data Advisor</span>
+          <span class="card-title">Local Safety Checks</span>
         </div>
         <div class="card-body">
-          <button type="button" class="ai-toggle" id="aiToggle">&#10022; Ask AI</button>
-          <div class="ai-panel" id="aiPanel">
-            <div class="ai-suggestions">
-              <button type="button" class="ai-suggest-btn" data-q="Convert this messy data to clean JSON">Clean to JSON</button>
-              <button type="button" class="ai-suggest-btn" data-q="Generate a JSON schema for this data">JSON Schema</button>
-              <button type="button" class="ai-suggest-btn" data-q="What format is this data in?">Detect Format</button>
-              <button type="button" class="ai-suggest-btn" data-q="Explain the structure of this data">Explain Structure</button>
-            </div>
-            <div class="ai-messages" id="aiMessages"></div>
-            <div class="ai-input-row">
-              <input aria-label="Ask about your data" type="text" id="aiInput" class="f-input" placeholder="Ask about your data..." style="font-family:'DM Sans',sans-serif">
-              <button type="button" class="calc-btn" id="aiSendBtn">Ask</button>
-            </div>
-            <div class="ai-footer">Powered by Claude &bull; <span id="aiRemaining">3 questions remaining</span></div>
+          <div class="safety-list">
+            <div class="safety-item"><strong>Client-side conversion</strong>Input and output stay in this browser unless you copy, download, or share the result yourself.</div>
+            <div class="safety-item"><strong>Redacted copy</strong>Use Copy Redacted before pasting examples into tickets, docs, chat, or public bug reports.</div>
+            <div class="safety-item"><strong>Import review</strong>Check headers, null values, dates, encoding, SQL table names, and production constraints before loading converted data.</div>
           </div>
+          <div class="redaction-status" id="redactionStatus" aria-live="polite">Paste data to scan for common sensitive field names.</div>
         </div>
       </div>
 
@@ -968,30 +1030,6 @@ h1 em {
 </section>
 
 
-<section class="df-upgrade" data-df-upgrade="data-converter">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Data Format Converter decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for data format converter so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Data Format Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="data-converter">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="data-converter" data-df-base="Data Format Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Data Format Converter: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="data-converter">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="data-converter-faq-title">
-  <h2 id="data-converter-faq-title">Data Format Converter FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
       <!-- FAQ -->
@@ -1011,7 +1049,7 @@ h1 em {
         </details>
         <details class="faq-item">
           <summary>Is my data secure?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="faq-answer">All conversions happen entirely in your browser. Your data never leaves your device. The only optional network call is the AI advisor, which sends a small context snippet for suggestions. You can use the converter fully offline after the page loads.</div>
+          <div class="faq-answer">All conversions happen entirely in your browser. Your data never leaves your device unless you separately copy, download, or share the result yourself.</div>
         </details>
         <details class="faq-item">
           <summary>What is TOML and when should I use it?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
@@ -1077,7 +1115,6 @@ h1 em {
   </div>
 </div>
 
-<email-gate-modal></email-gate-modal>
 <section class="tool-verification-sec" data-tool-verification-panel="data-converter">
   <div class="container">
     <div class="tool-verification-card">
@@ -1137,6 +1174,7 @@ h1 em {
   var minifyBtn  = document.getElementById('minifyBtn');
   var convertBtn = document.getElementById('convertBtn');
   var copyBtn    = document.getElementById('copyBtn');
+  var redactCopyBtn = document.getElementById('redactCopyBtn');
   var downloadBtn= document.getElementById('downloadBtn');
   var sampleBtn  = document.getElementById('sampleBtn');
   var clearBtn   = document.getElementById('clearBtn');
@@ -1146,6 +1184,7 @@ h1 em {
   var sqlName    = document.getElementById('sqlTableName');
   var previewWrap= document.getElementById('previewWrap');
   var previewTbl = document.getElementById('previewTable');
+  var redactionStatus = document.getElementById('redactionStatus');
 
   var isPretty = true;
 
@@ -1490,13 +1529,12 @@ h1 em {
   function toCSV(data) {
     var arr = Array.isArray(data) ? data : [data];
     if (arr.length === 0) return '';
-    // Flatten if nested
-    arr = arr.map(flattenObj);
-    var headers = Object.keys(arr[0]);
+    arr = arr.map(function(row) { return flattenObj(row); });
+    var headers = collectHeaders(arr);
     var csv = headers.join(',') + '\n';
-    for (var i = 0; i < arr.length; i++) {
+    arr.forEach(function(row) {
       csv += headers.map(function(h) {
-        var val = arr[i][h];
+        var val = row[h];
         if (val === undefined || val === null) val = '';
         val = String(val);
         if (val.indexOf(',') !== -1 || val.indexOf('"') !== -1 || val.indexOf('\n') !== -1) {
@@ -1504,22 +1542,22 @@ h1 em {
         }
         return val;
       }).join(',') + '\n';
-    }
+    });
     return csv;
   }
 
   function toTSV(data) {
     var arr = Array.isArray(data) ? data : [data];
     if (arr.length === 0) return '';
-    arr = arr.map(flattenObj);
-    var headers = Object.keys(arr[0]);
+    arr = arr.map(function(row) { return flattenObj(row); });
+    var headers = collectHeaders(arr);
     var tsv = headers.join('\t') + '\n';
-    for (var i = 0; i < arr.length; i++) {
+    arr.forEach(function(row) {
       tsv += headers.map(function(h) {
-        var val = arr[i][h];
+        var val = row[h];
         return (val === undefined || val === null) ? '' : String(val);
       }).join('\t') + '\n';
-    }
+    });
     return tsv;
   }
 
@@ -1740,13 +1778,13 @@ h1 em {
     tableName = tableName || 'my_table';
     var arr = Array.isArray(data) ? data : [data];
     if (arr.length === 0) return '-- No data to convert';
-    arr = arr.map(flattenObj);
-    var headers = Object.keys(arr[0]);
+    arr = arr.map(function(row) { return flattenObj(row); });
+    var headers = collectHeaders(arr);
     var statements = [];
 
-    for (var i = 0; i < arr.length; i++) {
+    arr.forEach(function(row) {
       var vals = headers.map(function(h) {
-        var v = arr[i][h];
+        var v = row[h];
         if (v === null || v === undefined) return 'NULL';
         if (typeof v === 'number') return String(v);
         if (typeof v === 'boolean') return v ? '1' : '0';
@@ -1754,7 +1792,7 @@ h1 em {
         return "'" + String(v).replace(/'/g, "''") + "'";
       });
       statements.push('INSERT INTO ' + tableName + ' (' + headers.join(', ') + ') VALUES (' + vals.join(', ') + ');');
-    }
+    });
     return statements.join('\n');
   }
 
@@ -1779,12 +1817,81 @@ h1 em {
     return flat;
   }
 
+  function collectHeaders(rows) {
+    var seen = {};
+    var headers = [];
+    rows.forEach(function(row) {
+      if (!row || typeof row !== 'object') return;
+      Object.keys(row).forEach(function(key) {
+        if (!seen[key]) {
+          seen[key] = true;
+          headers.push(key);
+        }
+      });
+    });
+    return headers;
+  }
+
   function showToast(msg) {
     var toast = document.createElement('div');
     toast.className = 'toast';
     toast.textContent = msg;
     document.body.appendChild(toast);
     setTimeout(function() { toast.remove(); }, 2000);
+  }
+
+  function safeCopy(text) {
+    function fallbackCopy() {
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        document.execCommand('copy');
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      } finally {
+        document.body.removeChild(area);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+
+  function sensitiveKey(key) {
+    return /(password|passwd|pwd|token|secret|api[_-]?key|apikey|authorization|auth|bearer|private[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|session|cookie|email|phone|msisdn)/i.test(String(key || ''));
+  }
+
+  function scanSensitive(value) {
+    var found = [];
+    function walk(node, path) {
+      if (!node || typeof node !== 'object') return;
+      Object.keys(node).forEach(function(key) {
+        var nextPath = path ? path + '.' + key : key;
+        if (sensitiveKey(key)) found.push(nextPath);
+        walk(node[key], nextPath);
+      });
+    }
+    walk(value, '');
+    return found.slice(0, 8);
+  }
+
+  function redactValue(value) {
+    if (Array.isArray(value)) return value.map(redactValue);
+    if (value && typeof value === 'object') {
+      return Object.keys(value).reduce(function(acc, key) {
+        acc[key] = sensitiveKey(key) ? '[REDACTED]' : redactValue(value[key]);
+        return acc;
+      }, {});
+    }
+    return value;
   }
 
   function escapeHtml(s) {
@@ -1799,6 +1906,7 @@ h1 em {
     var fmt = inputFmt.value;
     if (!data) {
       validMsg.classList.remove('show');
+      updateRedactionStatus(null);
       return;
     }
 
@@ -1827,15 +1935,67 @@ h1 em {
         parseTOML(data);
         msg = 'Valid TOML';
       }
+      var parsedForScan = parseInputData(data, fmt);
+      var sensitive = scanSensitive(parsedForScan);
+      updateRedactionStatus(sensitive);
+      if (sensitive.length) msg += ' | Sensitive fields: ' + sensitive.join(', ');
     } catch(e) {
       isValid = false;
       msg = e.message;
+      updateRedactionStatus(null);
     }
 
     validMsg.textContent = (isValid ? '\u2713 ' : '\u2717 ') + msg;
     validMsg.classList.add('show');
     validMsg.classList.toggle('valid', isValid);
     validMsg.classList.toggle('invalid', !isValid);
+  }
+
+  function parseInputData(data, fmt) {
+    if (fmt === 'json') return JSON.parse(data);
+    if (fmt === 'csv') return parseCSV(data);
+    if (fmt === 'tsv') return parseTSV(data);
+    if (fmt === 'xml') return parseXML(data);
+    if (fmt === 'yaml') return parseYAML(data);
+    if (fmt === 'toml') return parseTOML(data);
+    return data;
+  }
+
+  function updateRedactionStatus(sensitive) {
+    if (!redactionStatus) return;
+    if (!inputData.value.trim()) {
+      redactionStatus.textContent = 'Paste data to scan for common sensitive field names.';
+      return;
+    }
+    if (!sensitive) {
+      redactionStatus.textContent = 'Could not scan sensitive fields until the input parses successfully.';
+      return;
+    }
+    redactionStatus.textContent = sensitive.length
+      ? 'Possible sensitive fields found: ' + sensitive.join(', ') + '. Use Copy Redacted before sharing examples.'
+      : 'No common sensitive field names detected. Still review output before sharing.';
+  }
+
+  function serializeOutput(parsed, outFmt) {
+    if (outFmt === 'json') {
+      return isPretty ? JSON.stringify(parsed, null, 2) : JSON.stringify(parsed);
+    }
+    if (outFmt === 'csv') return toCSV(parsed);
+    if (outFmt === 'tsv') return toTSV(parsed);
+    if (outFmt === 'xml') {
+      var xmlRaw = toXML(parsed);
+      return isPretty ? xmlRaw : xmlRaw.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
+    }
+    if (outFmt === 'yaml') {
+      var yamlRaw = toYAML(parsed);
+      return isPretty ? yamlRaw : (typeof jsyaml !== 'undefined' ? jsyaml.dump(parsed, { flowLevel: 0, lineWidth: -1 }) : yamlRaw);
+    }
+    if (outFmt === 'toml') return toTOML(parsed);
+    if (outFmt === 'sql') {
+      var sqlRaw = toSQL(parsed, sqlName.value || 'my_table');
+      return isPretty ? sqlRaw : sqlRaw.replace(/\n/g, ' ');
+    }
+    return String(parsed == null ? '' : parsed);
   }
 
   /* ── CONVERT ──────────────────────────────────────── */
@@ -1852,11 +2012,10 @@ h1 em {
 
     try {
       var parsed;
-      if (inFmt === 'json') {
-        try {
-          parsed = JSON.parse(data);
-        } catch(e) {
-          // Better error: find position
+      try {
+        parsed = parseInputData(data, inFmt);
+      } catch(e) {
+        if (inFmt === 'json') {
           var match = e.message.match(/position\s*(\d+)/i);
           if (match) {
             var pos = parseInt(match[1], 10);
@@ -1865,46 +2024,11 @@ h1 em {
             var col = pos - upToError.lastIndexOf('\n');
             throw new Error('JSON parse error at line ' + line + ', column ' + col + ': ' + e.message);
           }
-          throw e;
         }
-      } else if (inFmt === 'csv') {
-        parsed = parseCSV(data);
-      } else if (inFmt === 'tsv') {
-        parsed = parseTSV(data);
-      } else if (inFmt === 'xml') {
-        parsed = parseXML(data);
-      } else if (inFmt === 'yaml') {
-        parsed = parseYAML(data);
-      } else if (inFmt === 'toml') {
-        parsed = parseTOML(data);
+        throw e;
       }
 
-      var output;
-      if (outFmt === 'json') {
-        output = isPretty ? JSON.stringify(parsed, null, 2) : JSON.stringify(parsed);
-      } else if (outFmt === 'csv') {
-        output = toCSV(parsed);
-      } else if (outFmt === 'tsv') {
-        output = toTSV(parsed);
-      } else if (outFmt === 'xml') {
-        var xmlRaw = toXML(parsed);
-        output = isPretty ? xmlRaw : xmlRaw.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
-      } else if (outFmt === 'yaml') {
-        var yamlRaw = toYAML(parsed);
-        if (isPretty) {
-          output = yamlRaw;
-        } else {
-          // Compact YAML: collapse to flow style via JSON round-trip
-          output = typeof jsyaml !== 'undefined'
-            ? jsyaml.dump(parsed, { flowLevel: 0, lineWidth: -1 })
-            : yamlRaw;
-        }
-      } else if (outFmt === 'toml') {
-        output = toTOML(parsed);
-      } else if (outFmt === 'sql') {
-        var sqlRaw = toSQL(parsed, sqlName.value || 'my_table');
-        output = isPretty ? sqlRaw : sqlRaw.replace(/\n/g, ' ');
-      }
+      var output = serializeOutput(parsed, outFmt);
 
       outputData.value = output;
 
@@ -2016,14 +2140,31 @@ h1 em {
   copyBtn.addEventListener('click', function() {
     var text = outputData.value;
     if (!text) { showToast('Nothing to copy'); return; }
-    navigator.clipboard.writeText(text).then(function() {
+    safeCopy(text).then(function() {
       showToast('Copied to clipboard');
     }).catch(function() {
       showToast('Copy failed');
     });
   });
 
-  // Download (with email gate)
+  redactCopyBtn.addEventListener('click', function() {
+    var data = inputData.value.trim();
+    if (!data) { showToast('Nothing to redact'); return; }
+    try {
+      var parsed = parseInputData(data, inputFmt.value);
+      var redacted = redactValue(parsed);
+      var text = serializeOutput(redacted, outputFmt.value);
+      safeCopy(text).then(function() {
+        showToast('Redacted output copied');
+      }).catch(function() {
+        showToast('Copy failed');
+      });
+    } catch(e) {
+      showToast('Fix input before redacting');
+    }
+  });
+
+  // Download
   function doDownload() {
     var data = outputData.value;
     if (!data) { showToast('Nothing to download'); return; }
@@ -2042,12 +2183,7 @@ h1 em {
 
   downloadBtn.addEventListener('click', function() {
     if (!outputData.value) { showToast('Nothing to download'); return; }
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) {
-      gate.show(doDownload);
-    } else {
-      doDownload();
-    }
+    doDownload();
   });
 
   // File upload
@@ -2106,85 +2242,7 @@ h1 em {
   });
 
   /* ═══════════════════════════════════════════════════════
-     AI ADVISOR
      ═══════════════════════════════════════════════════════ */
-  var aiToggle = document.getElementById('aiToggle');
-  var aiPanel  = document.getElementById('aiPanel');
-  var aiInput  = document.getElementById('aiInput');
-  var aiSendBtn= document.getElementById('aiSendBtn');
-  var aiMsgs   = document.getElementById('aiMessages');
-  var aiHistory = [];
-  var aiExchanges = 0;
-  var AI_MAX = 3;
-
-  aiToggle.addEventListener('click', function() {
-    aiPanel.classList.toggle('open');
-    aiToggle.textContent = aiPanel.classList.contains('open') ? '\u2716 Close AI' : '\u2726 Ask AI';
-  });
-
-  document.querySelectorAll('.ai-suggest-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      aiInput.value = btn.getAttribute('data-q');
-      sendAI();
-    });
-  });
-
-  aiSendBtn.addEventListener('click', sendAI);
-  aiInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') sendAI();
-  });
-
-  function sendAI() {
-    var msg = aiInput.value.trim();
-    if (!msg) return;
-    if (aiExchanges >= AI_MAX) {
-      showToast('AI limit reached (3 questions per session)');
-      return;
-    }
-    aiInput.value = '';
-
-    aiMsgs.innerHTML += '<div class="ai-msg user">' + escapeHtml(msg) + '</div>';
-
-    // Add data context
-    var context = '';
-    var dataSnippet = inputData.value.trim();
-    if (dataSnippet) {
-      context = ' [Context: Input format=' + inputFmt.value + ', Output format=' + outputFmt.value + ', Data preview=' + dataSnippet.substring(0, 300) + ']';
-    }
-
-    var body = {
-      message: msg + context,
-      toolContext: 'data-converter',
-      history: aiHistory.slice(-6)
-    };
-
-    aiMsgs.innerHTML += '<div class="ai-msg bot" id="aiLoading" style="opacity:.6">Thinking...</div>';
-    aiMsgs.scrollTop = aiMsgs.scrollHeight;
-
-    fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      var loadEl = document.getElementById('aiLoading');
-      if (loadEl) loadEl.remove();
-      var reply = data.response || data.message || 'Sorry, I could not generate a response.';
-      aiMsgs.innerHTML += '<div class="ai-msg bot">' + escapeHtml(reply) + '</div>';
-      aiHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
-      aiExchanges++;
-      document.getElementById('aiRemaining').textContent = (AI_MAX - aiExchanges) + ' questions remaining';
-      aiMsgs.scrollTop = aiMsgs.scrollHeight;
-    })
-    .catch(function() {
-      var loadEl = document.getElementById('aiLoading');
-      if (loadEl) loadEl.remove();
-      aiMsgs.innerHTML += '<div class="ai-msg err">Connection error. Please try again.</div>';
-      aiMsgs.scrollTop = aiMsgs.scrollHeight;
-    });
-  }
-
 })();
 </script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
@@ -2203,6 +2261,5 @@ h1 em {
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

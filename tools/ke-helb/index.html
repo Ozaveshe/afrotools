@@ -43,7 +43,7 @@
   </noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-  <script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+  <script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
   <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
   <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
@@ -302,6 +302,27 @@
       box-shadow: 0 12px 24px rgba(198, 40, 40, 0.22);
     }
 
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid #d7dde5;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--helb-red-deep);
+      font: inherit;
+      font-size: 0.86rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .secondary-btn:hover {
+      border-color: rgba(198, 40, 40, 0.45);
+      background: #fff7f6;
+    }
+
     .action-note {
       font-size: 0.82rem;
       color: var(--helb-muted);
@@ -317,6 +338,23 @@
 
     .results.show {
       display: grid;
+    }
+
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding: 16px;
+      border: 1px solid #e7ecf2;
+      border-radius: 18px;
+      background: #fcfcff;
+    }
+
+    .result-actions__status {
+      color: var(--helb-muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
     }
 
     .result-grid {
@@ -560,6 +598,11 @@
         padding: 20px;
       }
 
+      .btn,
+      .secondary-btn {
+        width: 100%;
+      }
+
       .hero {
         padding-top: 44px;
         padding-bottom: 32px;
@@ -658,7 +701,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ke-helb/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-helb-kenya/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ke-helb/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -791,6 +833,12 @@
             <div class="results" id="results">
               <div class="result-grid" id="resultGrid"></div>
               <div class="warning-stack" id="warningStack"></div>
+              <div class="result-actions" aria-label="HELB result actions">
+                <button class="secondary-btn" type="button" id="copyHelbReport">Copy report</button>
+                <button class="secondary-btn" type="button" id="downloadHelbReport">Download TXT</button>
+                <button class="secondary-btn" type="button" id="saveHelbReport">Save locally</button>
+                <span class="result-actions__status" id="helbActionStatus" role="status" aria-live="polite"></span>
+              </div>
               <div class="panel">
                 <div class="panel-head">
                   <div class="eyebrow">Repayment schedule</div>
@@ -906,6 +954,38 @@
           </div>
         </section>
 
+        <section class="panel">
+          <div class="panel-head">
+            <div class="eyebrow">Method and limits</div>
+            <h2>Planning estimate, not an official HELB statement</h2>
+            <p>
+              AfroTools models funded years, grace-period carry cost, repayment mode,
+              monthly payment, and an indicative payoff path. Use the output to prepare
+              questions, then confirm your live balance, penalty status, compliance
+              letter needs, and current terms directly with HELB.
+            </p>
+          </div>
+          <div class="panel-body">
+            <div class="guidance-list">
+              <div class="guidance-card">
+                <h3>What the model uses</h3>
+                <p>
+                  Annual award, funded years, grace months, repayment mode, salary or
+                  payment capacity, top-up amount, and a conservative carrying-cost
+                  assumption for planning.
+                </p>
+              </div>
+              <div class="guidance-card">
+                <h3>What to verify</h3>
+                <p>
+                  Current statement balance, employer deduction status, arrears or
+                  penalties, official clearance rules, and any negotiated catch-up plan.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="panel faq">
           <div class="panel-head">
             <div class="eyebrow">FAQ</div>
@@ -953,31 +1033,6 @@
       </div>
 
     </div>
-
-<section class="df-upgrade" data-df-upgrade="ke-helb">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Kenya HELB Calculator decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for kenya helb calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Kenya HELB Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, saveExport, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="ke-helb">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="ke-helb" data-df-base="Kenya HELB Calculator: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Kenya HELB Calculator: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="ke-helb">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="ke-helb-faq-title">
-  <h2 id="ke-helb-faq-title">Kenya HELB Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 </main>
 
   <afro-related-tools category="education" current="ke-helb"></afro-related-tools>
@@ -1018,6 +1073,7 @@
       currency: "KES",
       maximumFractionDigits: 0
     });
+    let currentHelbPlan = null;
 
     function fmtMoney(value) {
       return currency.format(Math.max(0, value || 0));
@@ -1031,6 +1087,96 @@
         month: "long",
         year: "numeric"
       });
+    }
+
+    function modeLabel(mode) {
+      return {
+        employed: "Employed / employer checkoff",
+        "self-employed": "Self-employed / direct pay",
+        default: "Behind on payments / default risk"
+      }[mode] || mode;
+    }
+
+    function setHelbActionStatus(message) {
+      const status = document.getElementById("helbActionStatus");
+      if (status) {
+        status.textContent = message;
+      }
+    }
+
+    function buildHelbReport() {
+      if (!currentHelbPlan) {
+        return "Run the Kenya HELB calculator first to create a report.";
+      }
+
+      const plan = currentHelbPlan;
+      return [
+        "Kenya HELB repayment estimate - AfroTools",
+        "",
+        "Inputs",
+        "- Programme: " + plan.programme,
+        "- Annual HELB amount: " + fmtMoney(plan.annualLoan),
+        "- Years funded: " + plan.studyYears,
+        "- Grace months before repayment: " + plan.graceMonths,
+        "- Repayment mode: " + modeLabel(plan.mode),
+        "- Salary or monthly repayment input: " + fmtMoney(plan.incomeValue),
+        "- Extra monthly top-up: " + fmtMoney(plan.topUp),
+        "",
+        "Estimate",
+        "- Monthly payment modelled: " + fmtMoney(plan.monthlyPayment),
+        "- Total principal borrowed: " + fmtMoney(plan.totalPrincipal),
+        "- Balance at repayment start: " + fmtMoney(plan.openingBalance),
+        "- Projected payoff date: " + (plan.clearsDebt ? fmtDate(plan.payoffOffset) : "Not clearing"),
+        "- Time to clear: " + (plan.clearsDebt ? plan.months + " months" : "Payment too low"),
+        "- Total repaid: " + (plan.clearsDebt ? fmtMoney(plan.totalPaid) : "Keeps rising"),
+        "- Interest and charges: " + fmtMoney(plan.totalCharges),
+        "",
+        "Planning checks",
+        "- Confirm your live HELB statement balance before acting on this estimate.",
+        "- Verify employer deduction status, arrears, penalties, clearance rules, and any negotiated catch-up plan directly with HELB.",
+        "- This is an education-finance planning estimate, not an official HELB statement, filing, quote, legal advice, or guaranteed outcome."
+      ].join("\n");
+    }
+
+    async function copyHelbReport() {
+      const report = buildHelbReport();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(report);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = report;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      }
+      setHelbActionStatus("HELB report copied.");
+    }
+
+    function downloadHelbReport() {
+      const report = buildHelbReport();
+      const blob = new Blob([report], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "kenya-helb-repayment-report.txt";
+      document.body.appendChild(link);
+      link.click();
+      URL.revokeObjectURL(link.href);
+      link.remove();
+      setHelbActionStatus("TXT report downloaded.");
+    }
+
+    function saveHelbReport() {
+      const report = buildHelbReport();
+      localStorage.setItem("afrotools-ke-helb-report", JSON.stringify({
+        savedAt: Date.now(),
+        plan: currentHelbPlan,
+        report
+      }));
+      setHelbActionStatus("Saved in this browser.");
     }
 
     function updateLoanDefaults() {
@@ -1174,6 +1320,23 @@
       const clearsDebt = balance <= 0.5;
       const totalCharges = preRepaymentInterest + totalRepaymentInterest + totalPenalty;
       const payoffOffset = graceMonths + (clearsDebt ? months : 0);
+      currentHelbPlan = {
+        programme: document.getElementById("loanType").selectedOptions[0].textContent,
+        annualLoan,
+        studyYears,
+        graceMonths,
+        mode,
+        incomeValue,
+        topUp,
+        monthlyPayment,
+        totalPrincipal,
+        openingBalance,
+        clearsDebt,
+        months,
+        payoffOffset,
+        totalPaid,
+        totalCharges
+      };
       const resultGrid = document.getElementById("resultGrid");
       const warningStack = document.getElementById("warningStack");
       const scheduleBody = document.getElementById("scheduleBody");
@@ -1328,9 +1491,15 @@
     document.getElementById("loanType").addEventListener("change", updateLoanDefaults);
     document.getElementById("repaymentMode").addEventListener("change", updateModeCopy);
     document.getElementById("calculateBtn").addEventListener("click", calculateHelbPlan);
+    document.getElementById("copyHelbReport").addEventListener("click", function () {
+      copyHelbReport().catch(function () {
+        setHelbActionStatus("Copy failed. Try download instead.");
+      });
+    });
+    document.getElementById("downloadHelbReport").addEventListener("click", downloadHelbReport);
+    document.getElementById("saveHelbReport").addEventListener("click", saveHelbReport);
 
     updateModeCopy();
   </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

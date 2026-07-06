@@ -1001,6 +1001,60 @@
   </style>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="homepage-tool-image-fit">
+  body.top-level-page-ui-refresh #tools .tc > .tc-thumb,
+  body.top-level-page-ui-refresh #new-tools .tc > .tc-thumb,
+  body.top-level-page-ui-refresh #new-tools .ut-thumb {
+    align-items:stretch !important;
+    aspect-ratio:3/2 !important;
+    display:flex !important;
+    height:auto !important;
+    justify-content:stretch !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+    padding:0 !important;
+  }
+  body.top-level-page-ui-refresh #tools .tc > .tc-thumb {
+    width:calc(100% - 28px) !important;
+  }
+  body.top-level-page-ui-refresh #new-tools .tc > .tc-thumb,
+  body.top-level-page-ui-refresh #new-tools .ut-thumb {
+    margin:14px 14px 0 !important;
+    width:calc(100% - 28px) !important;
+  }
+  body.top-level-page-ui-refresh #new-tools .tc--wide > .tc-thumb {
+    aspect-ratio:3/1 !important;
+    min-height:240px !important;
+  }
+  body.top-level-page-ui-refresh #tools .tc > .tc-thumb img,
+  body.top-level-page-ui-refresh #new-tools .tc > .tc-thumb img,
+  body.top-level-page-ui-refresh #new-tools .ut-thumb img {
+    flex:1 1 auto !important;
+    display:block !important;
+    height:100% !important;
+    inset:auto !important;
+    max-height:none !important;
+    max-width:none !important;
+    min-height:100% !important;
+    min-width:100% !important;
+    object-fit:cover !important;
+    object-position:center !important;
+    position:relative !important;
+    width:100% !important;
+  }
+  @media (max-width:640px) {
+    body.top-level-page-ui-refresh #tools .tc > .tc-thumb,
+    body.top-level-page-ui-refresh #new-tools .tc > .tc-thumb,
+    body.top-level-page-ui-refresh #new-tools .ut-thumb {
+      margin:12px 12px 0 !important;
+      width:calc(100% - 24px) !important;
+    }
+    body.top-level-page-ui-refresh #new-tools .tc--wide > .tc-thumb {
+      aspect-ratio:3/2 !important;
+      min-height:0 !important;
+    }
+  }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 
@@ -3599,7 +3653,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(document.querySelector('script[src*="tool-registry"]'))return;
     loaded = true;
     var s=document.createElement('script');
-    s.src='/assets/js/components/tool-registry.min.js?v=0e800cac';
+    s.src='/assets/js/components/tool-registry.min.js?v=0243ac32';
     s.onload=function(){
       if (typeof window.refreshHomepageRegistryStats === 'function') window.refreshHomepageRegistryStats();
       window.dispatchEvent(new CustomEvent('afrotools:registry-ready'));

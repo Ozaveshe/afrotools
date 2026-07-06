@@ -5,18 +5,18 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>.htaccess Generator | AfroTools</title>
-<meta name="description" content="Generate .htaccess files for Apache servers. Redirects, HTTPS forcing, caching, security headers, CORS, gzip compression, custom error pages, and more.">
+<meta name="description" content="Generate Apache .htaccess drafts with redirects, security headers, caching, compression, and staging warnings before you upload.">
 <link rel="canonical" href="https://afrotools.com/tools/htaccess-gen/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content=".htaccess Generator | AfroTools">
-<meta property="og:description" content="Generate .htaccess files with redirects, security headers, caching, and more.">
+<meta property="og:description" content="Create Apache .htaccess drafts with redirects, headers, caching, compression, and compatibility warnings.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/htaccess-gen.webp">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/htaccess-gen/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c"><script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c"><script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -33,33 +33,38 @@ h1 em{color:#bae6fd;font-style:normal}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
 .b-em{background:rgba(186,230,253,.2);color:#bae6fd;border:1px solid rgba(186,230,253,.4)}
 .tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}.tool-main-inner>*{min-width:0}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
 .card+.card{margin-top:18px}
 .card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
 .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
 .card-body{padding:22px}
 label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid #f1f5f9}
 .toggle-row:last-child{border-bottom:none}
 .toggle-label{font-size:.8rem;font-weight:600;color:var(--afro-dark)}
 .toggle-desc{font-size:.7rem;color:#64748b;margin-top:2px}
-.toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle{position:relative;width:52px;height:44px;flex-shrink:0;cursor:pointer}
 .toggle input{opacity:0;width:0;height:0}
-.toggle .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:11px;transition:.2s}
+.toggle .slider{position:absolute;cursor:pointer;top:10px;left:2px;right:2px;bottom:10px;background:#cbd5e1;border-radius:999px;transition:.2s}
 .toggle input:checked+.slider{background:var(--accent)}
-.toggle .slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
-.toggle input:checked+.slider::before{transform:translateX(18px)}
+.toggle .slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(15,20,25,.25)}
+.toggle input:checked+.slider::before{transform:translateX(24px)}
+.toggle input:focus-visible+.slider{outline:3px solid rgba(14,165,233,.35);outline-offset:3px}
 .section-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:18px 0 8px;padding-top:12px;border-top:1px solid #e2e8f0}
 .section-title:first-child{border-top:none;margin-top:0;padding-top:0}
-input[type="text"],select,textarea{width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.8rem;background:#f8fafc;font-family:'DM Sans',monospace;box-sizing:border-box}
+input[type="text"],select,textarea{width:100%;min-height:44px;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.8rem;background:#f8fafc;font-family:'DM Sans',monospace;box-sizing:border-box}
 input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
 .field{margin-bottom:10px}
 .btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.btn{padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}
+.btn{min-height:44px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease,box-shadow .2s ease}
 .btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
 .btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,.faq-item summary:focus-visible{outline:3px solid rgba(14,165,233,.35);outline-offset:2px}
 .output-area{width:100%;min-height:300px;padding:14px;border:1.5px solid #cbd5e1;border-radius:7px;font-family:'Courier New',monospace;font-size:.78rem;background:#1e293b;color:#e2e8f0;resize:vertical;box-sizing:border-box;line-height:1.7;white-space:pre;overflow-x:auto}
+.config-status{border:1px solid #bae6fd;background:#f0f9ff;color:#075985;border-radius:8px;padding:10px 12px;font-size:.78rem;line-height:1.5;margin-bottom:12px}
+.config-status.is-warning{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.config-status.is-error{border-color:#fecaca;background:#fef2f2;color:#991b1b}
 .sidebar .info-card{background:#f0f9ff;border:1px solid #7dd3fc;border-radius:8px;padding:16px;margin-top:14px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}
@@ -68,9 +73,10 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 .seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item summary{min-height:44px;display:flex;align-items:center;font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr;padding:0 14px}.card-body{padding:18px}.btn-row .btn{flex:1 1 180px}.toggle-row{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){.btn,.toggle .slider,.toggle .slider::before{transition:none}}
 </style>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
@@ -80,7 +86,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content=".htaccess Generator | AfroTools">
-<meta name="twitter:description" content="Generate .htaccess files with redirects, security headers, caching, and more.">
+<meta name="twitter:description" content="Create Apache .htaccess drafts with redirects, headers, caching, compression, and compatibility warnings.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/htaccess-gen.webp">
 <script type="application/ld+json">
 {
@@ -154,7 +160,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>.htaccess Generator</span></div>
 <h1>.htaccess <em>Generator</em></h1>
-<p class="hero-sub">Generate production-ready .htaccess files for Apache servers. HTTPS redirects, security headers, caching, gzip compression, custom error pages, and more.</p>
+<p class="hero-sub">Generate Apache .htaccess drafts for redirects, security headers, caching, compression, and error pages. Review the compatibility notes before uploading.</p>
 <div class="hero-badges"><span class="badge b-em">Apache</span><span class="badge b-em">Security Headers</span><span class="badge b-em">Free</span></div>
 </div></section>
 
@@ -170,7 +176,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 <div class="toggle-row"><div><div class="toggle-label">Trailing Slash</div><div class="toggle-desc">Add trailing slash to URLs</div></div><label class="toggle"><input aria-label="TrailingSlash" type="checkbox" id="trailingSlash"><span class="slider"></span></label></div>
 
 <div class="section-title">Security</div>
-<div class="toggle-row"><div><div class="toggle-label">Security Headers</div><div class="toggle-desc">X-Frame-Options, X-Content-Type, XSS-Protection, HSTS</div></div><label class="toggle"><input aria-label="SecHeaders" type="checkbox" id="secHeaders" checked><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">Security Headers</div><div class="toggle-desc">X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, HSTS</div></div><label class="toggle"><input aria-label="Security headers" type="checkbox" id="secHeaders" checked><span class="slider"></span></label></div>
 <div class="toggle-row"><div><div class="toggle-label">Block Directory Browsing</div><div class="toggle-desc">Prevent listing directory contents</div></div><label class="toggle"><input aria-label="BlockDir" type="checkbox" id="blockDir" checked><span class="slider"></span></label></div>
 <div class="toggle-row"><div><div class="toggle-label">Block Sensitive Files</div><div class="toggle-desc">Block .env, .git, .htaccess, etc.</div></div><label class="toggle"><input aria-label="BlockFiles" type="checkbox" id="blockFiles" checked><span class="slider"></span></label></div>
 <div class="toggle-row"><div><div class="toggle-label">Hotlink Protection</div><div class="toggle-desc">Prevent other sites from embedding your images</div></div><label class="toggle"><input aria-label="Hotlink" type="checkbox" id="hotlink"><span class="slider"></span></label></div>
@@ -185,7 +191,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 <div class="toggle-row"><div><div class="toggle-label">CORS Headers</div><div class="toggle-desc">Allow cross-origin requests (Access-Control-Allow-Origin)</div></div><label class="toggle"><input aria-label="Cors" type="checkbox" id="cors"><span class="slider"></span></label></div>
 <div class="toggle-row"><div><div class="toggle-label">PHP Settings</div><div class="toggle-desc">upload_max_filesize, memory_limit, etc.</div></div><label class="toggle"><input aria-label="Php" type="checkbox" id="php"><span class="slider"></span></label></div>
 
-<div class="field" style="margin-top:14px"><label for="domain">Your Domain (for hotlink protection)</label><input aria-label="Yourdomain.com" type="text" id="domain" value="example.com" placeholder="yourdomain.com"></div>
+<div class="field" style="margin-top:14px"><label for="domain">Your Domain (for hotlink protection)</label><input aria-label="Domain for hotlink protection" type="text" id="domain" value="example.com" placeholder="yourdomain.com"></div>
 
 <div class="btn-row">
 <button type="button" class="btn btn-primary" onclick="generate()">Generate .htaccess</button>
@@ -195,9 +201,10 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 <div class="card" id="outputCard" style="display:none">
 <div class="card-head"><span class="card-title">Generated .htaccess</span></div>
 <div class="card-body">
+<div class="config-status" id="configStatus" aria-live="polite"></div>
 <textarea class="output-area" id="output" readonly aria-label="Output"></textarea>
 <div class="btn-row">
-<button type="button" class="btn btn-secondary" onclick="copyOutput()">Copy to Clipboard</button>
+<button type="button" class="btn btn-secondary" onclick="copyOutput(event)" aria-live="polite">Copy to Clipboard</button>
 <button type="button" class="btn btn-secondary" onclick="downloadFile()">Download .htaccess</button>
 </div>
 </div></div>
@@ -207,7 +214,7 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 <div class="card">
 <div class="card-head"><span class="card-title">What is .htaccess?</span></div>
 <div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p>The <strong>.htaccess</strong> file is a configuration file for Apache web servers. It allows you to control URL redirects, security, caching, and more at the directory level without editing the main server config.</p>
+<p>The <strong>.htaccess</strong> file is a per-directory Apache configuration file. It only works when your host permits the selected directives with <code>AllowOverride</code>.</p>
 <p style="margin-top:6px">Place the file in your website's root directory. Changes take effect immediately — no server restart needed.</p>
 <p style="margin-top:6px"><strong>Note:</strong> .htaccess only works on Apache servers. If you use Nginx, you'll need to add equivalent directives to your nginx.conf.</p>
 </div></div>
@@ -231,11 +238,10 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 
 <section class="seo-section">
 <h2>Understanding .htaccess Files</h2>
-<p>The .htaccess (Hypertext Access) file is one of the most powerful configuration tools available to web developers and site administrators using Apache web servers. This distributed configuration file allows you to make configuration changes on a per-directory basis without needing root access to the server or editing the main httpd.conf file.</p>
-<p>One of the most common uses of .htaccess is URL redirection. Forcing HTTPS ensures all traffic is encrypted, which is essential for security and now a ranking factor for search engines. Choosing between www and non-www (canonical URL) prevents duplicate content issues. These redirects use Apache's mod_rewrite module, which is enabled on virtually all modern Apache installations.</p>
-<p>Security headers are another critical use case. Headers like X-Frame-Options prevent clickjacking attacks, X-Content-Type-Options prevents MIME-type sniffing, and HTTP Strict Transport Security (HSTS) tells browsers to always use HTTPS. Content Security Policy (CSP) headers can prevent cross-site scripting (XSS) and data injection attacks. These headers are recommended by security organizations like OWASP.</p>
-<p>Performance optimization through .htaccess includes enabling gzip/deflate compression (which can reduce page size by 60-80%), setting browser cache expiry headers (so returning visitors load pages faster), and disabling ETags (which can cause issues with CDNs and load-balanced servers). These optimizations directly improve page load speed, user experience, and search engine rankings.</p>
-<p>For websites hosted in Africa, where internet speeds can vary significantly, these performance optimizations are especially important. Proper caching and compression can make the difference between a usable and an unusable website for visitors on slower connections. Combined with a CDN, a well-configured .htaccess can dramatically improve your site's accessibility across the continent.</p>
+<p>The .htaccess file lets Apache apply configuration rules per directory. It is useful on shared or managed hosting where you cannot edit the main server config, but it only works when the host allows the relevant directives with AllowOverride.</p>
+<p>If you control the main Apache configuration, put redirects, authentication, and rewrite rules there instead. Apache loads main configuration once at server start, while .htaccess files are checked during requests and can add performance and support risk.</p>
+<p>Common .htaccess tasks include HTTPS redirects, canonical host redirects, directory browsing controls, static-asset caching, compression, and security headers. Each selected feature depends on modules such as mod_rewrite, mod_headers, mod_expires, or mod_deflate being available.</p>
+<p>Use generated .htaccess files as reviewed drafts. Back up the current file, test redirects and login/admin paths on staging, then upload only the rules your Apache host supports.</p>
 
 <h2>Frequently Asked Questions</h2>
 <details class="faq-item"><summary>Where do I put the .htaccess file?</summary><p>Place it in your website's root directory (usually public_html or www). The file affects the directory it's in and all subdirectories. You can have multiple .htaccess files in different directories for directory-specific rules.</p></details>
@@ -290,8 +296,10 @@ input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);
 
 <script>
 function generate(){
-  const domain=document.getElementById('domain').value.trim()||'example.com';
-  let lines=['# Generated by AfroTools .htaccess Generator','# https://afrotools.com/tools/htaccess-gen/',''];
+  const rawDomain=document.getElementById('domain').value.trim();
+  const domain=normalizeHost(rawDomain)||'example.com';
+  const warnings=['Back up your current .htaccess file and confirm AllowOverride permits these directives before uploading.'];
+  let lines=['# Generated by AfroTools .htaccess Generator','# https://afrotools.com/tools/htaccess-gen/','# Draft for Apache-compatible hosts. Test on staging before production.',''];
 
   // Force HTTPS
   if(document.getElementById('forceHttps').checked){
@@ -315,7 +323,8 @@ function generate(){
 
   // Security headers
   if(document.getElementById('secHeaders').checked){
-    lines.push('# Security Headers','<IfModule mod_headers.c>','Header set X-Frame-Options "SAMEORIGIN"','Header set X-Content-Type-Options "nosniff"','Header set X-XSS-Protection "1; mode=block"','Header set Referrer-Policy "strict-origin-when-cross-origin"','Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"','Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"','</IfModule>','');
+    warnings.push('Security headers require mod_headers. HSTS is included without preload; add includeSubDomains/preload only after confirming every subdomain is HTTPS-ready.');
+    lines.push('# Security Headers','<IfModule mod_headers.c>','Header set X-Frame-Options "SAMEORIGIN"','Header set X-Content-Type-Options "nosniff"','Header set Referrer-Policy "strict-origin-when-cross-origin"','Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"','Header always set Strict-Transport-Security "max-age=31536000"','</IfModule>','');
   }
 
   // Block directory browsing
@@ -325,21 +334,25 @@ function generate(){
 
   // Block sensitive files
   if(document.getElementById('blockFiles').checked){
-    lines.push('# Block access to sensitive files','<FilesMatch "^\\.(htaccess|htpasswd|env|git|gitignore|editorconfig)">','Order allow,deny','Deny from all','</FilesMatch>','','<FilesMatch "(composer\\.json|composer\\.lock|package\\.json|package-lock\\.json|yarn\\.lock|\\.sql)$">','Order allow,deny','Deny from all','</FilesMatch>','');
+    lines.push('# Block access to sensitive files','<FilesMatch "^\\.(htaccess|htpasswd|env|git|gitignore|editorconfig)">','<IfModule mod_authz_core.c>','Require all denied','</IfModule>','<IfModule !mod_authz_core.c>','Order allow,deny','Deny from all','</IfModule>','</FilesMatch>','','<FilesMatch "(composer\\.json|composer\\.lock|package\\.json|package-lock\\.json|yarn\\.lock|\\.sql)$">','<IfModule mod_authz_core.c>','Require all denied','</IfModule>','<IfModule !mod_authz_core.c>','Order allow,deny','Deny from all','</IfModule>','</FilesMatch>','');
   }
 
   // Hotlink protection
   if(document.getElementById('hotlink').checked){
-    lines.push('# Hotlink Protection','<IfModule mod_rewrite.c>','RewriteEngine On',`RewriteCond %{HTTP_REFERER} !^$`,`RewriteCond %{HTTP_REFERER} !^https?://(www\\.)?${domain.replace(/\./g,'\\.')}/ [NC]`,`RewriteRule \\.(jpg|jpeg|png|gif|webp|svg)$ - [F,NC,L]`,'</IfModule>','');
+    if(!normalizeHost(rawDomain))warnings.push('Hotlink protection used example.com because the domain field was not a plain host name.');
+    warnings.push('Hotlink protection may need CDN, image proxy, or partner-domain exceptions.');
+    lines.push('# Hotlink Protection','<IfModule mod_rewrite.c>','RewriteEngine On',`RewriteCond %{HTTP_REFERER} !^$`,`RewriteCond %{HTTP_REFERER} !^https?://(www\\.)?${escapeRegExp(domain)}/ [NC]`,`RewriteRule \\.(jpg|jpeg|png|gif|webp|svg)$ - [F,NC,L]`,'</IfModule>','');
   }
 
   // Gzip
   if(document.getElementById('gzip').checked){
+    warnings.push('Compression requires mod_deflate. Some hosts/CDNs already handle compression upstream.');
     lines.push('# Gzip Compression','<IfModule mod_deflate.c>','AddOutputFilterByType DEFLATE text/plain','AddOutputFilterByType DEFLATE text/html','AddOutputFilterByType DEFLATE text/xml','AddOutputFilterByType DEFLATE text/css','AddOutputFilterByType DEFLATE application/xml','AddOutputFilterByType DEFLATE application/xhtml+xml','AddOutputFilterByType DEFLATE application/rss+xml','AddOutputFilterByType DEFLATE application/javascript','AddOutputFilterByType DEFLATE application/x-javascript','AddOutputFilterByType DEFLATE application/json','AddOutputFilterByType DEFLATE image/svg+xml','</IfModule>','');
   }
 
   // Caching
   if(document.getElementById('caching').checked){
+    warnings.push('Cache rules require mod_expires. Use shorter cache windows for assets that are not filename-versioned.');
     lines.push('# Browser Caching','<IfModule mod_expires.c>','ExpiresActive On','ExpiresByType image/jpg "access plus 1 year"','ExpiresByType image/jpeg "access plus 1 year"','ExpiresByType image/png "access plus 1 year"','ExpiresByType image/gif "access plus 1 year"','ExpiresByType image/webp "access plus 1 year"','ExpiresByType image/svg+xml "access plus 1 year"','ExpiresByType text/css "access plus 1 month"','ExpiresByType application/javascript "access plus 1 month"','ExpiresByType text/html "access plus 1 hour"','ExpiresByType application/pdf "access plus 1 month"','ExpiresByType application/x-font-woff2 "access plus 1 year"','</IfModule>','');
   }
 
@@ -355,22 +368,54 @@ function generate(){
 
   // CORS
   if(document.getElementById('cors').checked){
-    lines.push('# CORS Headers','<IfModule mod_headers.c>','Header set Access-Control-Allow-Origin "*"','Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"','Header set Access-Control-Allow-Headers "Content-Type, Authorization"','</IfModule>','');
+    warnings.push('CORS wildcard rules are broad. Restrict Access-Control-Allow-Origin to trusted origins for private APIs or authenticated resources.');
+    lines.push('# CORS Headers','<IfModule mod_headers.c>','Header set Access-Control-Allow-Origin "*"','Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"','Header set Access-Control-Allow-Headers "Content-Type"','</IfModule>','');
   }
 
   // PHP settings
   if(document.getElementById('php').checked){
+    warnings.push('PHP directives only work when the host allows php_value in .htaccess; otherwise they may trigger HTTP 500 errors.');
     lines.push('# PHP Settings','php_value upload_max_filesize 64M','php_value post_max_size 64M','php_value max_execution_time 300','php_value max_input_time 300','php_value memory_limit 256M','');
   }
 
   document.getElementById('output').value=lines.join('\n');
+  showStatus(warnings,warnings.length?'warning':'ok');
   document.getElementById('outputCard').style.display='block';
   document.getElementById('outputCard').scrollIntoView({behavior:'smooth'});
 }
 
-function copyOutput(){
+function normalizeHost(value){
+  if(!value)return '';
+  try{
+    const candidate=/^https?:\/\//i.test(value)?new URL(value).hostname:value;
+    const host=candidate.replace(/^www\./i,'').toLowerCase();
+    return /^[a-z0-9.-]+\.[a-z]{2,}$/.test(host)?host:'';
+  }catch(err){
+    return '';
+  }
+}
+
+function escapeRegExp(value){
+  return value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+}
+
+function showStatus(messages,state){
+  const status=document.getElementById('configStatus');
+  status.className='config-status'+(state==='warning'?' is-warning':state==='error'?' is-error':'');
+  status.textContent=messages.join(' ');
+}
+
+document.getElementById('forceWww').addEventListener('change',function(){
+  if(this.checked)document.getElementById('removeWww').checked=false;
+});
+
+document.getElementById('removeWww').addEventListener('change',function(){
+  if(this.checked)document.getElementById('forceWww').checked=false;
+});
+
+function copyOutput(event){
   const text=document.getElementById('output').value;
-  const btn=typeof event !== 'undefined' && event.target ? event.target : null;
+  const btn=event&&event.target?event.target:document.querySelector('button[onclick^="copyOutput"]');
   const done=function(){
     if(!btn) return;
     var orig=btn.textContent;
@@ -391,10 +436,13 @@ function downloadFile(){
   const content=document.getElementById('output').value;
   const blob=new Blob([content],{type:'text/plain'});
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
+  const url=URL.createObjectURL(blob);
+  a.href=url;
   a.download='.htaccess';
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(a.href);
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 </script>
 

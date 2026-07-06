@@ -76,9 +76,9 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .result-box{display:none;margin-top:1rem}
 .result-box.show{display:block}
 .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.75rem;margin-bottom:1rem}
-.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:center}
+.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:left;display:grid;align-content:start;gap:.18rem;min-width:0}
 .rs .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:.2rem}
-.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary)}
+.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary);line-height:1.15;overflow-wrap:anywhere}
 .rs .sub{font-size:.75rem;color:#6b7280;margin-top:.1rem}
 .gap-box{border-radius:12px;padding:1.25rem;margin-bottom:1rem}
 .gap-box.on-track{background:#f0fdf4;border:1.5px solid #86efac}
@@ -89,14 +89,19 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .milestone-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:1rem}
 .milestone-table th{background:#f3f4f6;padding:.5rem .7rem;text-align:left;font-weight:700;font-size:.72rem;color:#374151;border-bottom:2px solid #e5e7eb}
 .milestone-table td{padding:.45rem .7rem;border-bottom:1px solid #f3f4f6}
+.result-note{margin:1rem 0 0;padding:1rem;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;color:#78350f;font-size:.82rem;line-height:1.65}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;padding:.65rem 1rem;border:1.5px solid #bfdbfe;border-radius:10px;background:#fff;color:#1d4ed8;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.secondary-btn:hover,.secondary-btn:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.method-list{margin:.75rem 0 0;padding-left:1.1rem;color:#4b5563;font-size:.86rem;line-height:1.7}
 .sec-body{padding:40px 0}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
+@media(max-width:600px){.row{grid-template-columns:1fr}.result-actions .secondary-btn{width:100%}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/edu-savings.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/edu-savings/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/epargne-etudes/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/edu-savings/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -107,7 +112,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "How should I use Education Savings Plan Calculator Africa 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Choose a country, institution type, child age, university start age, monthly contribution, and expected return to project the fund value, inflation-adjusted fee target, funding gap, and required monthly savings."
       }
     },
     {
@@ -115,7 +120,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "What should I verify before acting on Education Savings Plan Calculator Africa 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Verify current tuition, living costs, exchange rates, inflation, investment fees, tax treatment, policy terms, withdrawal rules, currency risk, and whether any product used for savings is regulated and suitable for your family."
       }
     },
     {
@@ -123,7 +128,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "Is Education Savings Plan Calculator Africa 2026 an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a planning estimate, not financial advice, an investment recommendation, a guaranteed return, a school fee quote, or an official admission cost."
       }
     }
   ],
@@ -202,36 +207,30 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
     <div class="result-grid" id="es-grid"></div>
     <div id="es-gap"></div>
     <div id="es-milestones"></div>
-  </div>
-</div>
-
-</div>
-</div>
-
-<section class="df-upgrade" data-df-upgrade="edu-savings">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Education Savings Plan Calculator Africa 2026 decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for education savings plan calculator africa 2026 so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Education Savings Plan Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
+    <div class="result-note" id="es-note"></div>
+    <div class="result-actions" aria-label="Education savings report actions">
+      <button type="button" class="secondary-btn" onclick="copySavingsReport()">Copy savings plan</button>
+      <button type="button" class="secondary-btn" onclick="downloadSavingsReport()">Download TXT</button>
+      <button type="button" class="secondary-btn" onclick="saveSavingsReport()">Save in browser</button>
     </div>
-    <form class="df-form" data-df-form="edu-savings">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="edu-savings" data-df-base="Education Savings Plan Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Education Savings Plan Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="edu-savings">Copy summary</button></div>
-    </form>
+    <div class="action-status" id="es-action-status" aria-live="polite"></div>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="edu-savings-faq-title">
-  <h2 id="edu-savings-faq-title">Education Savings Plan Calculator Africa 2026 FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
+</div>
+
+</div>
+</div>
+
+<div class="container">
+  <section class="card" aria-labelledby="edu-savings-method-title">
+    <h2 id="edu-savings-method-title">Method and checks</h2>
+    <p class="help">This projection estimates future school fees using country and institution assumptions, then compares that target with the future value of your monthly savings. It is a planning aid, not advice.</p>
+    <ul class="method-list">
+      <li>Update the target institution type and expected return to match your family plan before trusting the gap figure.</li>
+      <li>Check official fee schedules, living costs, exchange rates, inflation, product fees, tax rules, and withdrawal restrictions.</li>
+      <li>Export the plan before speaking with a school, scholarship adviser, regulated financial adviser, or family decision-maker.</li>
+    </ul>
+  </section>
+</div>
 <afro-footer></afro-footer>
 <script>
 var TUITION_TARGETS={
@@ -241,6 +240,9 @@ var TUITION_TARGETS={
   ghana:{public:{annual:4000,years:4,currency:'GH₵',inflation:0.15},private:{annual:18000,years:4,currency:'GH₵',inflation:0.15},abroad:{annual:120000,years:3,currency:'GH₵',inflation:0.1}},
   rwanda:{public:{annual:500000,years:4,currency:'RWF',inflation:0.08},private:{annual:1500000,years:4,currency:'RWF',inflation:0.08},abroad:{annual:10000000,years:3,currency:'RWF',inflation:0.07}}
 };
+var COUNTRY_LABELS={nigeria:'Nigeria',kenya:'Kenya',southafrica:'South Africa',ghana:'Ghana',rwanda:'Rwanda'};
+var TARGET_LABELS={public:'Public University (government)',private:'Private University (local)',abroad:'Study Abroad (UK/Canada/Australia)'};
+var currentSavingsPlan=null;
 function prefillSavings(){
   var country=document.getElementById('es-country').value;
   var d=TUITION_TARGETS[country];
@@ -281,19 +283,126 @@ function calcEduSavings(){
   var gapMsg=gap<=0?'Your current savings rate of '+fmt(monthly,c)+'/month will be enough to cover the expected '+fmt(inflatedTarget,c)+' in fees (inflation-adjusted). Keep up the good work!':
     'Your savings will fall short by '+fmt(gap,c)+'. You need to save '+fmt(reqMonthly,c)+'/month to fully fund the target. Consider increasing contributions or exploring education insurance plans for higher returns.';
   document.getElementById('es-gap').innerHTML='<div class="gap-box '+gapClass+'"><h3>'+(gap<=0?'✓ ':'⚠ ')+gapTitle+'</h3><p>'+gapMsg+'</p></div>';
+  currentSavingsPlan={
+    country:COUNTRY_LABELS[country]||country,
+    targetType:TARGET_LABELS[targetType]||targetType,
+    childAge:childAge,
+    startAge:startAge,
+    yearsToSave:years,
+    monthly:monthly,
+    annualReturn:annualReturn,
+    currency:c,
+    annualFee:d.annual,
+    studyYears:d.years,
+    feeInflation:d.inflation,
+    baseTarget:targetTotal,
+    inflatedTarget:inflatedTarget,
+    projectedFund:fv,
+    gap:gap,
+    requiredMonthly:reqMonthly,
+    status:gapTitle,
+    milestones:[]
+  };
   // Milestone table
   var milestones='<h3 style="font-size:.9rem;font-weight:700;margin:1rem 0 .5rem">Savings Growth Milestones</h3>'+
     '<table class="milestone-table"><thead><tr><th>Year</th><th>Child\'s Age</th><th>Fund Value</th><th>% of Target</th></tr></thead><tbody>';
   for(var yr=1;yr<=years;yr+=Math.max(1,Math.floor(years/5))){
     var n2=yr*12;var fv2=monthly*((Math.pow(1+r,n2)-1)/r)*(1+r);var pct=(fv2/inflatedTarget*100).toFixed(0);
+    currentSavingsPlan.milestones.push({year:yr,age:Math.min(childAge+yr,startAge),fundValue:fv2,percent:pct});
     milestones+='<tr><td>Year '+yr+'</td><td>'+Math.min(childAge+yr,startAge)+'</td><td>'+fmt(fv2,c)+'</td><td>'+pct+'%</td></tr>';
   }
   milestones+='</tbody></table>';
   document.getElementById('es-milestones').innerHTML=milestones;
+  document.getElementById('es-note').innerHTML='<strong>Planning estimate only.</strong> This projection depends on assumed fee inflation and investment return. Before acting, verify current tuition, living costs, exchange rates, product fees, tax treatment, withdrawal rules, and whether a savings or insurance product is regulated and suitable.';
+  setSavingsStatus('');
   document.getElementById('es-result').classList.add('show');
+}
+function buildSavingsReport(){
+  if(!currentSavingsPlan){calcEduSavings();}
+  var p=currentSavingsPlan;
+  if(!p){return '';}
+  var milestoneRows=p.milestones.map(function(row){
+    return '- Year '+row.year+' (age '+row.age+'): '+fmt(row.fundValue,p.currency)+' / '+row.percent+'% of target';
+  });
+  return [
+    'Education savings plan - AfroTools',
+    'Country: '+p.country,
+    'Target: '+p.targetType,
+    'Child age now: '+p.childAge,
+    'Target start age: '+p.startAge,
+    'Years to save: '+p.yearsToSave,
+    '',
+    'Savings assumptions',
+    '- Monthly savings: '+fmt(p.monthly,p.currency),
+    '- Expected annual return: '+p.annualReturn+'%',
+    '- Current annual fee assumption: '+fmt(p.annualFee,p.currency),
+    '- Study duration assumption: '+p.studyYears+' year(s)',
+    '- Fee inflation assumption: '+Math.round(p.feeInflation*100)+'% per year',
+    '',
+    'Projection',
+    '- Projected fund: '+fmt(p.projectedFund,p.currency),
+    '- Inflation-adjusted target: '+fmt(p.inflatedTarget,p.currency),
+    '- Funding gap: '+(p.gap<=0?'Surplus '+fmt(Math.abs(p.gap),p.currency):fmt(p.gap,p.currency)+' shortfall'),
+    '- Required monthly savings: '+fmt(p.requiredMonthly,p.currency),
+    '- Status: '+p.status,
+    '',
+    'Milestones',
+    milestoneRows.join('\n'),
+    '',
+    'Before acting, verify current tuition, living costs, exchange rates, inflation, product fees, tax treatment, withdrawal restrictions, and regulated financial-advice requirements. This is a planning estimate, not financial advice or a guaranteed return.'
+  ].join('\n');
+}
+function setSavingsStatus(message){
+  var el=document.getElementById('es-action-status');
+  if(el){el.textContent=message||'';}
+}
+function fallbackSavingsCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setSavingsStatus('Savings plan copied.');}
+  catch(e){window.prompt('Copy savings plan',text);setSavingsStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function copySavingsReport(){
+  var text=buildSavingsReport();
+  if(!text){return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setSavingsStatus('Savings plan copied.');}).catch(function(){fallbackSavingsCopy(text);});
+  }else{
+    fallbackSavingsCopy(text);
+  }
+}
+function slugify(value){return String(value||'education-savings-plan').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'education-savings-plan';}
+function downloadSavingsReport(){
+  var text=buildSavingsReport();
+  if(!text){return;}
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download=slugify(currentSavingsPlan.country+' education savings plan')+'.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setSavingsStatus('TXT savings plan downloaded.');
+}
+function saveSavingsReport(){
+  var text=buildSavingsReport();
+  if(!text){return;}
+  try{
+    localStorage.setItem('afrotools-education-savings-plan',JSON.stringify({savedAt:Date.now(),plan:currentSavingsPlan,report:text}));
+    setSavingsStatus('Savings plan saved in this browser.');
+  }catch(e){
+    setSavingsStatus('Browser storage is unavailable. Download the TXT plan instead.');
+  }
 }
 document.addEventListener('DOMContentLoaded',function(){prefillSavings();});
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

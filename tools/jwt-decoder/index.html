@@ -35,6 +35,15 @@
   "operatingSystem": "Web",
   "url": "https://afrotools.com/tools/jwt-decoder/",
   "description": "Decode JWTs locally, inspect claims, check expiration, review JOSE header risks, and verify or generate HS256 test tokens without uploading tokens to a server.",
+  "browserRequirements": "Requires JavaScript and Web Crypto support for HS signature checks",
+  "featureList": [
+    "Local JWT header and payload decode",
+    "Claim timeline for exp, nbf and iat",
+    "JOSE header and JWT risk review",
+    "HS256, HS384 and HS512 signature verification",
+    "Local HS256 test-token generator",
+    "Redacted debug summary copy action"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -44,7 +53,32 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"JWT Decoder","item":"https://afrotools.com/tools/jwt-decoder/"}]}</script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to inspect a JWT safely with AfroTools",
+  "description": "Decode a JWT locally, review claim timing and risk signals, then copy a redacted debugging summary.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Paste a test or redacted token",
+      "text": "Paste a compact JWT into the local decoder. Avoid production bearer or refresh tokens on shared devices."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Review claims and risks",
+      "text": "Check the decoded JOSE header, payload, expiration, not-before, issuer, audience, key id and algorithm warnings."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Verify before trusting",
+      "text": "Use HS verification only for development HMAC tokens, then validate signature, issuer, audience and app rules in the relying backend."
+    }
+  ]
+}
+</script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -140,7 +174,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/decodeur-jwt/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kisimbuzi-jwt/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/jwt-decoder/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -176,6 +209,37 @@
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+  .top-level-page-ui-refresh .grid,
+  .top-level-page-ui-refresh .panel,
+  .top-level-page-ui-refresh .stack,
+  .top-level-page-ui-refresh .json-grid,
+  .top-level-page-ui-refresh .field-grid {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh button,
+  .top-level-page-ui-refresh input,
+  .top-level-page-ui-refresh select,
+  .top-level-page-ui-refresh summary {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh textarea {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, select, textarea, summary):focus-visible {
+    outline: 3px solid rgba(11, 102, 216, 0.32);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .top-level-page-ui-refresh .row > button {
+      width: 100%;
+    }
+  }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -211,6 +275,7 @@
           <div class="row">
             <button class="primary" id="loadSample" type="button">Load HS256 Sample</button>
             <button id="copyToken" type="button">Copy Token</button>
+            <button id="copyDebugSummary" type="button">Copy Redacted Summary</button>
             <button id="clearToken" type="button">Clear</button>
             <button id="sendApiTester" type="button">Save Bearer Header Locally</button>
           </div>
@@ -372,30 +437,6 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="jwt-decoder">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Token debug brief</span>
-      <h2>Decode the token, then verify it in the right system</h2>
-      <p>Use the decoder for header, payload, and claim-timeline inspection, then copy a safe debugging brief without exposing the raw token.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: a JWT debug brief with algorithm, issuer/audience checks, expiry state, key id, and backend validation reminder.</li><li>Use this for local troubleshooting before opening logs, API gateway rules, or auth provider settings.</li><li>Never paste production bearer tokens into tickets, screenshots, chat, or analytics.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Decoding is local, but decoding is not verification. Always validate signatures, issuer, audience, expiry, and scopes server-side.</p>
-    </div>
-    <form class="df-form" data-df-form="jwt-decoder">
-      <label>Token source<select name="source" aria-label="Token source"><option value="local test">local test</option><option value="staging API">staging API</option><option value="auth provider">auth provider</option><option value="production redacted">production redacted</option></select></label>
-      <label>Token age minutes<input name="tokenAge" type="number" value="5" min="0" step="any" aria-label="Token age minutes"></label>
-      <label>Debug focus<select name="focus" aria-label="Debug focus"><option value="expiry">expiry</option><option value="audience">audience</option><option value="issuer">issuer</option><option value="scopes">scopes</option></select></label>
-      <label>Claims to verify<input name="claims" type="number" value="4" min="0" step="any" aria-label="Claims to verify"></label>
-      <button type="submit">Create JWT brief</button>
-      <output class="df-result" data-df-result="jwt-decoder" data-df-base="JWT debug brief ready. Decode above, then verify algorithm, issuer, audience, expiry, not-before, key id, scopes, and server-side signature validation before trusting the token." aria-live="polite">JWT debug brief ready. Decode above, then verify algorithm, issuer, audience, expiry, not-before, key id, scopes, and server-side signature validation before trusting the token.</output>
-      <div class="df-actions"><button type="button" data-df-copy="jwt-decoder">Copy JWT brief</button><a class="df-action-link" href="#timelineOutput">View claims</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="jwt-decoder-faq-title">
-  <h2 id="jwt-decoder-faq-title">JWT Decoder FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste a test or redacted token, inspect claims and timeline status, then copy a debugging brief without exposing the raw token.</p></details><details><summary>What should I verify?</summary><p>Check issuer, audience, expiration, not-before, algorithm, key id, scopes, backend signature validation, and token redaction before sharing.</p></details><details><summary>Does decoding prove the token is valid?</summary><p>No. It decodes token contents locally but does not prove the signature, authorize a request, or replace backend validation.</p></details></div>
-</section>
 <section class="tool-verification-sec" data-tool-verification-panel="jwt-decoder">
   <div class="container">
     <div class="tool-verification-card">
@@ -705,6 +746,31 @@
   function verifySnippet(){
     return "import { jwtVerify } from 'jose';\n\nconst token = request.headers.authorization?.replace(/^Bearer\\s+/i, '');\nconst secret = new TextEncoder().encode(process.env.JWT_SECRET);\n\nconst { payload, protectedHeader } = await jwtVerify(token, secret, {\n  issuer: 'https://issuer.example',\n  audience: 'api://default',\n  algorithms: ['HS256']\n});\n\n// Apply app-specific authorization after signature, issuer and audience checks.\nconsole.log(protectedHeader.alg, payload.sub);";
   }
+  function shortValue(value){
+    if (value == null || value === '') return 'missing';
+    var text = Array.isArray(value) ? value.join(', ') : String(value);
+    return text.length > 48 ? text.slice(0, 18) + '...' + text.slice(-10) : text;
+  }
+  function redactedDebugSummary(){
+    if (!lastDecoded) return 'JWT debug summary: no token decoded.';
+    var header = lastDecoded.header || {};
+    var payload = lastDecoded.payload || {};
+    var lines = [
+      'JWT debug summary (redacted - raw token omitted)',
+      'Format: ' + (lastDecoded.type === 'jwe' ? 'JWE compact, encrypted payload' : 'JWS compact'),
+      'Algorithm: ' + shortValue(header.alg),
+      'Type: ' + shortValue(header.typ),
+      'Key id present: ' + (header.kid ? 'yes' : 'no'),
+      'Issuer: ' + shortValue(payload.iss),
+      'Audience: ' + shortValue(payload.aud),
+      'Subject present: ' + (payload.sub ? 'yes' : 'no'),
+      'Expires: ' + humanDate(unixDate(payload.exp)),
+      'Not before: ' + humanDate(unixDate(payload.nbf)),
+      'Issued at: ' + humanDate(unixDate(payload.iat)),
+      'Backend reminder: validate signature, issuer, audience, expiry, scopes and app-specific authorization before trusting claims.'
+    ];
+    return lines.join('\n');
+  }
   async function generateSample(){
     var now = Math.floor(Date.now() / 1000);
     var ttl = Math.max(1, Number($('buildTtl').value || 15));
@@ -728,11 +794,29 @@
     await verifySignature();
   }
   function copyText(text, button){
-    navigator.clipboard.writeText(text || '').then(function(){
+    function done(copied) {
       var original = button.textContent;
-      button.textContent = 'Copied';
+      button.textContent = copied ? 'Copied' : 'Copy failed';
       setTimeout(function(){ button.textContent = original; }, 1200);
-    });
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text || '').then(function(){ done(true); }).catch(function(){ done(fallbackCopy(text || '')); });
+      return;
+    }
+    done(fallbackCopy(text || ''));
+  }
+  function fallbackCopy(text){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    var copied = false;
+    try { copied = document.execCommand('copy'); } catch(_) { copied = false; }
+    textarea.remove();
+    return copied;
   }
   function saveBearerHeader(){
     if (!lastDecoded || !lastDecoded.token) return;
@@ -756,6 +840,7 @@
   $('generateToken').addEventListener('click', generateSample);
   $('verifyBtn').addEventListener('click', verifySignature);
   $('copyToken').addEventListener('click', function(){ copyText($('jwtInput').value.trim(), this); });
+  $('copyDebugSummary').addEventListener('click', function(){ copyText(redactedDebugSummary(), this); });
   $('copyHeader').addEventListener('click', function(){ copyText(lastDecoded ? pretty(lastDecoded.header) : '', this); });
   $('copyPayload').addEventListener('click', function(){ copyText(lastDecoded ? pretty(lastDecoded.payload) : '', this); });
   $('copyVerifySnippet').addEventListener('click', function(){ copyText(verifySnippet(), this); });
@@ -768,6 +853,5 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

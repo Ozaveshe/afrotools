@@ -64,9 +64,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=29afdf58">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
@@ -84,16 +82,6 @@
     position: relative;
     overflow: hidden;
   }
-  .tool-hero::after {
-    content: '\26D3'; /* chain link */
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
   .tool-hero-inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -104,7 +92,6 @@
     font-size: 0.72rem;
     font-weight: 500;
     color: rgba(255,255,255,0.3);
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
@@ -114,7 +101,6 @@
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 800;
     color: #fff;
-    letter-spacing: -0.02em;
     line-height: 1.1;
     margin-bottom: 10px;
   }
@@ -135,7 +121,6 @@
     border-radius: 4px;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
   }
   .b-green {
     background: rgba(0,113,227,0.18);
@@ -158,7 +143,7 @@
   .card {
     background: #fff;
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 8px rgba(0,0,0,0.05);
   }
@@ -174,7 +159,6 @@
   .card-title {
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #374151;
   }
@@ -195,10 +179,11 @@
     font-size: 0.9rem;
     color: #334155;
     font-weight: 600;
+    min-height: 44px;
   }
   .file-input-label:hover { border-color: var(--afro-green); background: #EFF6FF; }
   .file-input-label.dragover { border-color: var(--afro-green); background: rgba(0,113,227,0.1); }
-  .file-emoji { font-size: 32px; margin-bottom: 10px; }
+  .file-emoji { font-size: 0.78rem; margin-bottom: 10px; font-weight: 800; color: #1e40af; }
   .file-info {
     display: none;
     margin-top: 14px;
@@ -219,6 +204,8 @@
     cursor: pointer;
     margin-top: 6px;
     font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
+    padding: 8px 0;
   }
 
   /* Pipeline Strip */
@@ -239,7 +226,7 @@
     max-width: 150px;
     background: #fff;
     border: 1.5px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 14px 12px 10px;
     text-align: center;
     box-shadow: 0 1px 6px rgba(0,0,0,0.06);
@@ -283,7 +270,7 @@
     height: 88px;
     border: 2px dashed #d1d5db;
     background: transparent;
-    border-radius: 10px;
+    border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
     font-size: 0.82rem;
     font-weight: 700;
@@ -291,6 +278,7 @@
     cursor: pointer;
     transition: 0.15s;
     flex-shrink: 0;
+    min-height: 44px;
   }
   .pipeline-add:hover { border-color: var(--afro-green); background: #EFF6FF; }
   .pipeline-empty {
@@ -319,6 +307,7 @@
     font-weight: 800;
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
   }
 
   .mini-btn:hover {
@@ -346,7 +335,7 @@
   .palette-overlay.on { display: flex; }
   .palette-box {
     background: #fff;
-    border-radius: 16px;
+    border-radius: 8px;
     max-width: 560px;
     width: 100%;
     max-height: 88vh;
@@ -375,6 +364,7 @@
     justify-content: center;
     color: #6b7280;
     transition: 0.15s;
+    min-height: 44px;
   }
   .pal-close:hover { background: #e5e7eb; color: #111; }
   .pal-body { padding: 20px 24px; overflow-y: auto; }
@@ -386,11 +376,12 @@
   .pal-op {
     padding: 18px 12px;
     border: 2px solid #e5e7eb;
-    border-radius: 12px;
+    border-radius: 8px;
     cursor: pointer;
     text-align: center;
     transition: 0.2s;
     background: #fff;
+    font-family: 'DM Sans', sans-serif;
   }
   .pal-op:hover { border-color: var(--afro-green); background: #EFF6FF; }
   .pal-op-icon { font-size: 28px; margin-bottom: 8px; }
@@ -412,7 +403,7 @@
   .config-overlay.on { display: flex; }
   .config-box {
     background: #fff;
-    border-radius: 16px;
+    border-radius: 8px;
     max-width: 480px;
     width: 100%;
     max-height: 88vh;
@@ -441,6 +432,7 @@
     justify-content: center;
     color: #6b7280;
     transition: 0.15s;
+    min-height: 44px;
   }
   .cfg-close:hover { background: #e5e7eb; color: #111; }
   .cfg-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
@@ -459,7 +451,6 @@
     display: block;
     font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
     color: #374151;
     margin-bottom: 6px;
   }
@@ -476,6 +467,7 @@
     transition: border-color 0.18s;
     font-family: 'DM Sans', sans-serif;
     box-sizing: border-box;
+    min-height: 44px;
   }
   .cfg-input:focus { border-color: var(--afro-green); background: #fff; }
   .cfg-select {
@@ -491,6 +483,7 @@
     font-family: 'DM Sans', sans-serif;
     cursor: pointer;
     box-sizing: border-box;
+    min-height: 44px;
   }
   .cfg-slider-row {
     display: flex;
@@ -512,7 +505,7 @@
   }
   .cfg-color-row input[type="color"] {
     width: 44px;
-    height: 36px;
+    height: 44px;
     border: 1.5px solid #e5e7eb;
     border-radius: 6px;
     cursor: pointer;
@@ -626,6 +619,7 @@
     transition: 0.15s;
     background: var(--color-primary);
     color: #fff;
+    min-height: 44px;
   }
   .btn-primary:hover { filter: brightness(1.1); }
   .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -643,6 +637,7 @@
     transition: 0.15s;
     background: #f3f4f6;
     color: #374151;
+    min-height: 44px;
   }
   .btn-secondary:hover { background: #e5e7eb; }
 
@@ -658,7 +653,7 @@
   .run-btn {
     padding: 14px 36px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
     font-size: 1rem;
     font-weight: 800;
@@ -669,6 +664,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    min-height: 44px;
   }
   .run-btn:hover { filter: brightness(1.1); }
   .run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -709,7 +705,7 @@
     padding: 22px;
     text-align: center;
   }
-  .result-icon { font-size: 36px; margin-bottom: 10px; }
+  .result-icon { font-size: 0.9rem; margin-bottom: 10px; font-weight: 800; color: #0f766e; }
   .result-msg { font-size: 0.9rem; font-weight: 600; color: #111; margin-bottom: 6px; }
   .result-size { font-size: 0.78rem; color: #6b7280; margin-bottom: 16px; }
   .download-btn {
@@ -726,6 +722,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    min-height: 44px;
   }
   .download-btn:hover { filter: brightness(1.1); }
 
@@ -790,12 +787,16 @@
     overflow: hidden;
   }
   .faq-q {
+    width: 100%;
     padding: 14px 18px;
     background: #f9fafb;
+    border: none;
     font-size: 0.88rem;
     font-weight: 700;
     color: #111;
     cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    text-align: left;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -812,13 +813,57 @@
   }
   .faq-item.open .faq-a { display: block; }
 
+  .file-input-label:focus-visible,
+  .file-info .fi-clear:focus-visible,
+  .pipeline-add:focus-visible,
+  .mini-btn:focus-visible,
+  .ps-config:focus-visible,
+  .ps-remove:focus-visible,
+  .pal-close:focus-visible,
+  .cfg-close:focus-visible,
+  .pal-op:focus-visible,
+  .cfg-input:focus-visible,
+  .cfg-select:focus-visible,
+  .btn-primary:focus-visible,
+  .btn-secondary:focus-visible,
+  .run-btn:focus-visible,
+  .download-btn:focus-visible,
+  .faq-q:focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.32);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .file-input-label,
+    .pipeline-step,
+    .pipeline-add,
+    .mini-btn,
+    .pal-op,
+    .cfg-input,
+    .cfg-select,
+    .btn-primary,
+    .btn-secondary,
+    .run-btn,
+    .download-btn,
+    .progress-fill,
+    .faq-q::after {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    .pipeline-step.dragging,
+    .run-btn:hover {
+      transform: none;
+    }
+  }
+
   /* Responsive */
   @media (max-width: 640px) {
     .pal-grid { grid-template-columns: repeat(2, 1fr); }
     .pipeline-step { min-width: 110px; }
     .pipeline-strip { flex-wrap: wrap; gap: 8px; }
     .pipeline-arrow { display: none; }
-    .palette-box, .config-box { max-width: 100%; margin: 10px; border-radius: 12px; }
+    .palette-box, .config-box { max-width: 100%; margin: 10px; border-radius: 8px; }
     .preset-grid { grid-template-columns: 1fr 1fr; }
     .pos-grid { grid-template-columns: repeat(3, 1fr); }
     .angle-grid { grid-template-columns: repeat(3, 1fr); }
@@ -826,8 +871,7 @@
     .mini-btn { width: 100%; justify-content: center; }
   }
 </style>
-<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
+<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-workflow.webp">
@@ -870,33 +914,40 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use PDF Workflow Builder?",
+      "name": "Does the order of PDF workflow operations matter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Yes. Operations run from left to right, so merging, rotating, numbering, watermarking, compression, and password protection should be ordered deliberately before export."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on PDF Workflow Builder?",
+      "name": "Are my files uploaded to a server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "No. The workflow runs in the browser using local pdf.js, pdf-lib, and qpdf WebAssembly assets. Your PDF stays on your device unless you intentionally export or share it."
       }
     },
     {
       "@type": "Question",
-      "name": "Is PDF Workflow Builder an official result?",
+      "name": "Can I save a PDF workflow recipe?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "Yes. You can save a recipe in this browser, load it later, or export and import JSON so another workstation can reuse the same operation chain."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the Compress step do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Compress step rasterizes pages at the selected quality and rebuilds the PDF. That can reduce image-heavy files, but text may become image-based."
       }
     }
   ],
   "url": "https://afrotools.com/tools/pdf-workflow/"
 }
 </script>
-<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -933,7 +984,7 @@
         <div class="file-input-wrapper">
           <input type="file" id="pdfFileInput" accept=".pdf,application/pdf">
           <label class="file-input-label" for="pdfFileInput" id="uploadLabel">
-            <div class="file-emoji">&#128196;</div>
+            <div class="file-emoji">PDF</div>
             <div>Drop your PDF here or <span style="color:var(--afro-green);font-weight:700;text-decoration:underline">browse</span></div>
             <div style="font-size:0.72rem;color:#9ca3af;margin-top:6px;">PDF files only</div>
           </label>
@@ -956,7 +1007,7 @@
           <button class="mini-btn" id="loadPresetBtn" type="button">Load recipe</button>
           <button class="mini-btn" id="exportPresetBtn" type="button">Export recipe</button>
           <button class="mini-btn" id="importPresetBtn" type="button">Import recipe</button>
-          <input aria-label="ImportPresetInput" type="file" id="importPresetInput" accept="application/json,.json" hidden>
+          <input aria-label="Import workflow recipe" type="file" id="importPresetInput" accept="application/json,.json" hidden>
           <span style="font-size:0.72rem;color:#9ca3af;font-weight:600;" id="stepCount">0 steps</span>
         </div>
       </div>
@@ -971,7 +1022,7 @@
     <!-- Run Section -->
     <div class="run-section" id="runSection" style="display:none;">
       <button type="button" class="run-btn" id="runBtn" disabled>
-        &#9654; Run Pipeline
+        Run Pipeline
       </button>
       <div class="run-toolbar">
         <button class="mini-btn" id="validateBtn" type="button">Validate workflow</button>
@@ -979,18 +1030,18 @@
       </div>
       <div class="progress-section" id="progressSection">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-label" id="progressLabel">Preparing...</div>
+        <div class="progress-label" id="progressLabel" role="status" aria-live="polite">Preparing...</div>
       </div>
     </div>
 
     <!-- Result -->
     <div class="card result-card" id="resultCard">
       <div class="result-body">
-        <div class="result-icon" id="resultIcon">&#10004;&#65039;</div>
+        <div class="result-icon" id="resultIcon">OK</div>
         <div class="result-msg" id="resultMsg">Pipeline complete!</div>
         <div class="result-size" id="resultSize"></div>
         <div class="result-actions-row">
-          <button type="button" class="download-btn" id="downloadBtn">&#128229; Download PDF</button>
+          <button type="button" class="download-btn" id="downloadBtn">Download PDF</button>
           <button class="mini-btn" id="downloadReportBtn" type="button">Download report</button>
         </div>
         <div class="workflow-report" id="workflowReport" style="display:none"></div>
@@ -1009,56 +1060,56 @@
     </div>
     <div class="pal-body">
       <div class="pal-grid" id="paletteGrid">
-        <div class="pal-op" data-op="repair">
-          <div class="pal-op-icon">&#128295;</div>
+        <button type="button" class="pal-op" data-op="repair">
+          <div class="pal-op-icon">R</div>
           <div class="pal-op-name">Repair</div>
           <div class="pal-op-desc">Rebuild structure</div>
-        </div>
-        <div class="pal-op" data-op="optimize">
-          <div class="pal-op-icon">&#9889;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="optimize">
+          <div class="pal-op-icon">O</div>
           <div class="pal-op-name">Optimize</div>
           <div class="pal-op-desc">Clean output</div>
-        </div>
-        <div class="pal-op" data-op="compress">
-          <div class="pal-op-icon">&#128476;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="compress">
+          <div class="pal-op-icon">C</div>
           <div class="pal-op-name">Compress</div>
           <div class="pal-op-desc">Reduce file size</div>
-        </div>
-        <div class="pal-op" data-op="watermark">
-          <div class="pal-op-icon">&#128167;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="watermark">
+          <div class="pal-op-icon">W</div>
           <div class="pal-op-name">Watermark</div>
           <div class="pal-op-desc">Add text overlay</div>
-        </div>
-        <div class="pal-op" data-op="password">
-          <div class="pal-op-icon">&#128274;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="password">
+          <div class="pal-op-icon">P</div>
           <div class="pal-op-name">Password</div>
           <div class="pal-op-desc">Encrypt PDF</div>
-        </div>
-        <div class="pal-op" data-op="pageNumbers">
-          <div class="pal-op-icon">#&#65039;&#8419;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="pageNumbers">
+          <div class="pal-op-icon">#</div>
           <div class="pal-op-name">Page Numbers</div>
           <div class="pal-op-desc">Number each page</div>
-        </div>
-        <div class="pal-op" data-op="keepPages">
-          <div class="pal-op-icon">&#9986;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="keepPages">
+          <div class="pal-op-icon">K</div>
           <div class="pal-op-name">Keep Pages</div>
           <div class="pal-op-desc">Extract ranges</div>
-        </div>
-        <div class="pal-op" data-op="flatten">
-          <div class="pal-op-icon">&#128444;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="flatten">
+          <div class="pal-op-icon">F</div>
           <div class="pal-op-name">Flatten</div>
           <div class="pal-op-desc">Image-based copy</div>
-        </div>
-        <div class="pal-op" data-op="rotate">
-          <div class="pal-op-icon">&#128260;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="rotate">
+          <div class="pal-op-icon">T</div>
           <div class="pal-op-name">Rotate All</div>
           <div class="pal-op-desc">Rotate every page</div>
-        </div>
-        <div class="pal-op" data-op="merge">
-          <div class="pal-op-icon">&#128209;</div>
+        </button>
+        <button type="button" class="pal-op" data-op="merge">
+          <div class="pal-op-icon">M</div>
           <div class="pal-op-name">Merge</div>
           <div class="pal-op-desc">Append more PDFs</div>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -1089,103 +1140,46 @@
 <!-- FAQ Section -->
 
 
-<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="pdf-workflow" aria-labelledby="pdf-workflow-verification-title">
-  <div class="container">
-    <div class="tool-verification-card">
-      <div class="tool-verification-head">
-        <div>
-          <span class="tool-verification-kicker">PDF workflow check</span>
-          <h2 class="tool-verification-title" id="pdf-workflow-verification-title">Plan the PDF chain before touching the original file</h2>
-          <p class="tool-verification-lead">Build a step-by-step PDF flow for teams that need repeatable merge, split, compress, watermark, reorder, or export work without uploading documents by default.</p>
-        </div>
-        <div class="tool-verification-status">
-          <span class="tool-verification-badge">Local-first PDF workflow</span>
-          <p class="tool-verification-note">Document contents stay in the browser; downloads use the shared PDF gate where configured.</p>
-        </div>
-      </div>
-      <div class="tool-verification-grid">
-        <div class="tool-verification-block">
-          <h3>Primary task</h3>
-          <ul class="tool-verification-list"><li>Upload or select the PDF inputs needed for the workflow.</li><li>Order the operations so destructive steps happen only after review.</li><li>Run the workflow, inspect the result, and export the finished file.</li></ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Result and export</h3>
-          <ul class="tool-verification-list"><li>A visible operation plan with selected steps.</li><li>Processed PDF output when the chosen steps can run locally.</li><li>Download path protected by the existing PDF download gate.</li></ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Before you use it</h3>
-          <ul class="tool-verification-list"><li>Keep a copy of the original PDF before batch operations.</li><li>Check page order, file size, and visual quality before sending.</li><li>Do not rely on this as a legal archive or official records workflow.</li></ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Assumptions and freshness</h3>
-          <p class="tool-verification-meta">Browser workflow only. PDF library behavior, file restrictions, and recipient requirements can vary, so verify important documents after export.</p>
-        </div>
-      </div>
-      <div class="tool-verification-actions">
-        <a class="tool-verification-report" href="/contact/">Report tool issue</a>
-        <p class="tool-verification-disclaimer">Planning utility only. It is not an official provider, legal, tax, security, filing, compliance, or live-data service. Keep sensitive content local unless you intentionally export or share it.</p>
-      </div>
-    </div>
-  </div>
-</section>
-<afro-business-cta tool-name="PDF Workflow Builder" prospect-segment="document-workflows" save-note="Chain the local PDF steps, review the planned order, then use the gated download path for the finished document."></afro-business-cta>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
 <section class="faq-section">
   <h2>Frequently Asked Questions</h2>
   <div class="faq-item">
-    <div class="faq-q">Does the order of operations matter?</div>
+    <button type="button" class="faq-q">Does the order of operations matter?</button>
     <div class="faq-a">Yes. Operations execute in sequence from left to right. For example, if you compress before adding a watermark, the watermark text will be sharp. If you compress after, the watermark may lose some quality. A common order is: merge, rotate, page numbers, watermark, compress, password.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q">Are my files uploaded to a server?</div>
+    <button type="button" class="faq-q">Are my files uploaded to a server?</button>
     <div class="faq-a">No. The workflow runs in your browser using local pdf.js, pdf-lib, and qpdf/WASM assets. Your PDF never leaves your device.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q">Can I use the same operation more than once?</div>
+    <button type="button" class="faq-q">Can I use the same operation more than once?</button>
     <div class="faq-a">Yes. You can add the same operation multiple times with different configurations. For example, you could add two watermark steps to place text at both the top and bottom of each page.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q">Is there a page or file size limit?</div>
+    <button type="button" class="faq-q">Is there a page or file size limit?</button>
     <div class="faq-a">There is no hard limit, but very large PDFs (over 100 MB or hundreds of pages) may be slow to process since everything runs in the browser. For best results, keep files under 50 MB.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q">What does the Compress step actually do?</div>
+    <button type="button" class="faq-q">What does the Compress step actually do?</button>
     <div class="faq-a">The compress step rasterizes pages at the selected quality and rebuilds the PDF. This can reduce file size for image-heavy files, but it can also make text image-based. Use optimize when you only want structural cleanup.</div>
   </div>
   <div class="faq-item">
-    <div class="faq-q">Can I save a workflow?</div>
+    <button type="button" class="faq-q">Can I save a workflow?</button>
     <div class="faq-a">Yes. You can save a recipe in this browser, load it later, or export/import it as JSON so another team member can reuse the same steps.</div>
   </div>
 </section>
 
 <afro-related-tools category="document-pdf" current="pdf-workflow"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
-<script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/vendor/qpdf/qpdf.js?v=5842eaa2"></script>
 <script src="/assets/js/pages/pdf-workflow.js?v=f9d5f5aa"></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="PDF Workflow" tool-slug="pdf-workflow"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

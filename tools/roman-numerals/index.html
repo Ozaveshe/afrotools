@@ -20,7 +20,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
   <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
   <meta name="tool-id" content="roman-numerals">
@@ -109,6 +109,10 @@
     .batch-row { display: flex; justify-content: space-between; padding: .5rem .8rem; border-bottom: 1px solid var(--border); font-size: .9rem; }
     .batch-row:last-child { border-bottom: none; }
     .actions-row { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+    .action-status { min-height: 1.25rem; margin-top: .75rem; color: var(--green); font-size: .85rem; font-weight: 700; }
+    .method-card p { margin: 0 0 .75rem; color: #4b5563; }
+    .method-card ul { margin: .25rem 0 0; padding-left: 1.15rem; color: #4b5563; }
+    .method-card li { margin-bottom: .35rem; }
     .copy-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: .65rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: .9rem; opacity: 0; transition: opacity .3s; z-index: 999; }
     .copy-toast.show { opacity: 1; }
     .faq-section { margin-top: 2rem; }
@@ -161,7 +165,6 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/roman-numerals/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/chiffres-romains/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/roman-numerals/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -172,7 +175,7 @@
       "name": "How should I use Roman Numeral Converter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter a decimal number from 1 to 3999 or a Roman numeral using I, V, X, L, C, D, and M. The converter auto-detects the input, validates subtractive notation, and shows the equivalent value."
       }
     },
     {
@@ -180,7 +183,7 @@
       "name": "What should I verify before acting on Roman Numeral Converter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Verify that the source expects standard Roman numerals. Standard notation on this page supports 1 to 3999 and does not support zero, negative numbers, fractions, or vinculum bar notation."
       }
     },
     {
@@ -188,7 +191,7 @@
       "name": "Is Roman Numeral Converter an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a learning and conversion aid. For exams, forms, legal references, or certificates, follow the exact notation required by the school, publisher, examiner, or issuing authority."
       }
     }
   ],
@@ -197,6 +200,26 @@
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="roman-numerals-refresh-fix">
+body.top-level-page-ui-refresh .container>.hero{
+  background:linear-gradient(135deg,#06356f 0%,#0f5fb8 54%,#123c7d 100%)!important;
+  color:#fff!important;
+}
+body.top-level-page-ui-refresh .container>.hero h1{
+  color:#fff!important;
+  letter-spacing:0!important;
+}
+body.top-level-page-ui-refresh .container>.hero p{
+  color:rgba(255,255,255,.9)!important;
+}
+body.top-level-page-ui-refresh .container>.hero nav,
+body.top-level-page-ui-refresh .container>.hero nav a{
+  color:rgba(255,255,255,.74)!important;
+}
+body.top-level-page-ui-refresh .container>.hero nav span{
+  color:#fff!important;
+}
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -227,7 +250,10 @@
     <div class="actions-row">
       <button type="button" class="btn btn-outline btn-sm" onclick="copyResult()">Copy Result</button>
       <button type="button" class="btn btn-outline btn-sm" onclick="swapResult()">Swap</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="downloadResult()">Download TXT</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="saveResult()">Save in browser</button>
     </div>
+    <div class="action-status" id="resultStatus" role="status" aria-live="polite"></div>
   </div>
 
   <!-- Batch -->
@@ -238,7 +264,9 @@
     <div class="actions-row">
       <button type="button" class="btn btn-primary" onclick="batchConvert()">Convert All</button>
       <button type="button" class="btn btn-outline btn-sm" onclick="copyBatch()">Copy Results</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="downloadBatch()">Download TXT</button>
     </div>
+    <div class="action-status" id="batchStatus" role="status" aria-live="polite"></div>
     <div id="batchResults" class="batch-results" style="margin-top:1rem;"></div>
   </div>
 
@@ -296,32 +324,15 @@
 
 
 
-<section class="df-upgrade" data-df-upgrade="roman-numerals">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Roman Numeral Converter decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for roman numeral converter so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Roman Numeral Converter: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, saveExport, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="roman-numerals">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="roman-numerals" data-df-base="Roman Numeral Converter: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Roman Numeral Converter: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="roman-numerals">Copy summary</button></div>
-    </form>
+  <div class="card method-card" aria-labelledby="roman-method-title">
+    <h2 id="roman-method-title">How the converter checks Roman numerals</h2>
+    <p>The MVP accepts standard Roman numerals from 1 to 3999 and rejects invalid subtractive forms such as IC, IL, VX, or repeated symbols outside the standard pattern.</p>
+    <ul>
+      <li>Decimal input is converted with the standard M, CM, D, CD, C, XC, L, XL, X, IX, V, IV, and I sequence.</li>
+      <li>Roman input is parsed, then converted back to Roman to confirm the notation is canonical.</li>
+      <li>Batch mode uses the same validator for every line, so mixed number and Roman lists can be checked before copying or downloading.</li>
+    </ul>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="roman-numerals-faq-title">
-  <h2 id="roman-numerals-faq-title">Roman Numeral Converter FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
   <div class="faq-section">
     <h2 style="font-size:1.3rem; margin-bottom:1rem;">Frequently Asked Questions</h2>
     <div class="faq-item" onclick="this.classList.toggle('open')">
@@ -422,9 +433,92 @@ function showResult(big, sub, label) {
   lbl.style.display = '';
 }
 
+function setResultStatus(message) {
+  var el = document.getElementById('resultStatus');
+  if (el) el.textContent = message || '';
+}
+
+function setBatchStatus(message) {
+  var el = document.getElementById('batchStatus');
+  if (el) el.textContent = message || '';
+}
+
+function writeClipboard(text, done) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(function(){ fallbackCopy(text, done); });
+    return;
+  }
+  fallbackCopy(text, done);
+}
+
+function fallbackCopy(text, done) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); if (done) done(); }
+  catch (err) { window.prompt('Copy result', text); }
+  ta.remove();
+}
+
+function downloadText(filename, text) {
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+
+function buildResultReport() {
+  var input = document.getElementById('input').value.trim();
+  var result = document.getElementById('resultValue').textContent.trim();
+  var sub = document.getElementById('resultSub').textContent.trim();
+  if (!input || !result) return '';
+  return [
+    'Roman Numeral Converter - AfroTools',
+    'Input: ' + input,
+    'Result: ' + result,
+    sub ? 'Check: ' + sub : '',
+    '',
+    'Method: standard Roman numerals from 1 to 3999. Input is auto-detected, parsed, and Roman notation is revalidated against canonical output.',
+    'Note: standard notation does not support zero, negative numbers, fractions, or vinculum bar notation.'
+  ].filter(Boolean).join('\n');
+}
+
 function copyResult() {
   var t = document.getElementById('resultValue').textContent;
-  if (t) navigator.clipboard.writeText(t).then(function(){ showToast('Copied!'); });
+  if (t) writeClipboard(t, function(){ setResultStatus('Result copied.'); showToast('Copied!'); });
+  else setResultStatus('Convert a value first.');
+}
+
+function downloadResult() {
+  var text = buildResultReport();
+  if (!text) { setResultStatus('Convert a value first.'); return; }
+  downloadText('roman-numeral-conversion.txt', text);
+  setResultStatus('TXT conversion downloaded.');
+}
+
+function saveResult() {
+  var text = buildResultReport();
+  if (!text) { setResultStatus('Convert a value first.'); return; }
+  try {
+    localStorage.setItem('afrotools-roman-numeral-conversion', JSON.stringify({
+      savedAt: Date.now(),
+      input: document.getElementById('input').value.trim(),
+      result: document.getElementById('resultValue').textContent.trim(),
+      report: text
+    }));
+    setResultStatus('Conversion saved in this browser.');
+  } catch (err) {
+    setResultStatus('Could not save locally. Copy or download the TXT instead.');
+  }
 }
 
 function swapResult() {
@@ -457,17 +551,35 @@ function batchConvert() {
       result = (!isNaN(n) && n >= 1 && n <= 3999) ? toRoman(n) : 'Invalid (1-3999)';
     }
     var div = document.createElement('div');
+    var left = document.createElement('span');
+    var right = document.createElement('strong');
     div.className = 'batch-row';
-    div.innerHTML = '<span>' + s + '</span><strong>' + result + '</strong>';
+    left.textContent = s;
+    right.textContent = result;
+    div.appendChild(left);
+    div.appendChild(right);
     container.appendChild(div);
   });
+  setBatchStatus(lines.length ? lines.length + ' row(s) converted.' : 'Add one value per line first.');
 }
 
 function copyBatch() {
   var rows = Array.from(document.querySelectorAll('#batchResults .batch-row'));
-  if (!rows.length) { showToast('Convert first'); return; }
-  var text = rows.map(function(r){ return r.children[0].textContent + ' = ' + r.children[1].textContent; }).join('\n');
-  navigator.clipboard.writeText(text).then(function(){ showToast('Copied!'); });
+  if (!rows.length) { setBatchStatus('Convert first.'); showToast('Convert first'); return; }
+  writeClipboard(batchResultText(), function(){ setBatchStatus('Batch results copied.'); showToast('Copied!'); });
+}
+
+function batchResultText() {
+  return Array.from(document.querySelectorAll('#batchResults .batch-row')).map(function(r){
+    return r.children[0].textContent + ' = ' + r.children[1].textContent;
+  }).join('\n');
+}
+
+function downloadBatch() {
+  var text = batchResultText();
+  if (!text) { setBatchStatus('Convert first.'); return; }
+  downloadText('roman-numeral-batch-results.txt', text);
+  setBatchStatus('Batch TXT downloaded.');
 }
 
 var quizActive = false, quizNum = 0, quizDir = 'toRoman', score = 0, total = 0, streak = 0;
@@ -550,6 +662,5 @@ function showToast(msg) {
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

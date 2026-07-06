@@ -61,6 +61,15 @@
 .sc-optimistic h4 { color: #16a34a; }
 .shortfall-bar { background: #e2e8f0; border-radius: 6px; height: 12px; margin: .5rem 0; overflow: hidden; }
 .shortfall-fill { height: 100%; border-radius: 6px; background: var(--en-accent); transition: width .5s; }
+.rr-method-card{margin-top:1.5rem;padding:1.25rem;border:1.5px solid #e2e8f0;border-radius:14px;background:#f8fafc}
+.rr-method-card h3{margin:0 0 .6rem;font-size:1rem;color:#111827}
+.rr-method-card p{margin:0 0 .65rem;color:#475569;font-size:.88rem;line-height:1.7}
+.rr-method-card ul{margin:0;padding-left:1.1rem;color:#475569;font-size:.84rem;line-height:1.7}
+.rr-result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.rr-secondary-btn{display:inline-flex;align-items:center;justify-content:center;padding:.65rem 1rem;border:1.5px solid #c7d2fe;border-radius:10px;background:#fff;color:#4f46e5;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.rr-secondary-btn:hover,.rr-secondary-btn:focus-visible{background:#eef2ff;border-color:#4f46e5;outline:none}
+.rr-action-status{min-height:20px;margin-top:.7rem;color:#4f46e5;font-size:.8rem;font-weight:800}
+@media(max-width:600px){.rr-result-actions .rr-secondary-btn{width:100%}}
 </style>
 <script type="application/ld+json">
 {
@@ -80,7 +89,6 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/retirement-readiness/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/utayari-wa-kustaafu/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/retirement-readiness/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/career-tool-focus.css?v=98967bec">
 <script type="application/ld+json">
 {
@@ -92,7 +100,7 @@
       "name": "How should I use Retirement Readiness Score?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter your age, retirement age, savings, monthly contribution, salary, expected pension payout, expenses, housing, dependants, health cover, and country to estimate retirement score, shortfall, scenarios, and contribution gap."
       }
     },
     {
@@ -100,7 +108,7 @@
       "name": "What should I verify before acting on Retirement Readiness Score?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Verify current pension scheme rules, employer contributions, contribution limits, fund fees, tax treatment, inflation, healthcare costs, housing costs, and advice from a licensed financial professional before acting."
       }
     },
     {
@@ -108,7 +116,7 @@
       "name": "Is Retirement Readiness Score an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a retirement planning estimate, not financial advice, an official pension statement, investment recommendation, tax advice, or guaranteed outcome."
       }
     }
   ],
@@ -235,6 +243,17 @@
       <button type="button" class="en-btn" onclick="calcRetirement()">Calculate Retirement Score</button>
     </div>
 
+    <section class="rr-method-card" aria-labelledby="rr-method-title">
+      <h3 id="rr-method-title">How the readiness estimate works</h3>
+      <p>The calculator projects your current balance and monthly contributions to retirement, compares the result with an estimated nest egg target, then turns the gap into a score and action plan.</p>
+      <ul>
+        <li><strong>Target:</strong> estimated monthly retirement expenses multiplied by 12 and then by 25.</li>
+        <li><strong>Projection:</strong> current savings plus monthly contributions compounded to retirement at 4%, 7%, and 10% scenarios.</li>
+        <li><strong>Income test:</strong> 4% annual withdrawal from the base projection plus any known or estimated pension payout.</li>
+        <li><strong>Verify:</strong> pension rules, tax treatment, fund fees, inflation, healthcare, housing, and licensed financial advice.</li>
+      </ul>
+    </section>
+
     <div class="en-results" id="rr-results">
       <div class="en-results-hero">
         <div class="score-ring" id="rr-ring" style="--pct:0" data-score="—"></div>
@@ -310,34 +329,15 @@
       <div class="en-card" style="margin-top:1.5rem">
         <h3 style="margin-bottom:.75rem">Action Plan</h3>
         <ol id="rr-actions" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.5rem"></ol>
+        <div class="rr-result-actions" aria-label="Retirement readiness result actions">
+          <button type="button" class="rr-secondary-btn" onclick="copyRetirementReport()">Copy report</button>
+          <button type="button" class="rr-secondary-btn" onclick="downloadRetirementReport()">Download TXT</button>
+          <button type="button" class="rr-secondary-btn" onclick="saveRetirementReport()">Save in browser</button>
+        </div>
+        <div class="rr-action-status" id="rr-action-status" aria-live="polite"></div>
       </div>
     </div>
   </div>
-
-<section class="df-upgrade" data-df-upgrade="retirement-readiness">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Retirement Readiness Score decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for retirement readiness score so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Retirement Readiness Score: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: copyShare, disclaimer, download, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="retirement-readiness">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="retirement-readiness" data-df-base="Retirement Readiness Score: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Retirement Readiness Score: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="retirement-readiness">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="retirement-readiness-faq-title">
-  <h2 id="retirement-readiness-faq-title">Retirement Readiness Score FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 </main>
 
 <afro-footer></afro-footer>
@@ -361,6 +361,7 @@ var COUNTRY_DATA = {
   AO:{ sym:'AOA', name:'Angola', rate:0.0012, avgExpenses:400000, pensionEmployee:0.03, pensionEmployer:0.08, scheme:'INSS — 3% employee + 8% employer. Retirement at 60 (men), 55 (women). Formal sector only.' }
 };
 
+var currentRetirementPlan = null;
 function fmtCur(sym, n) {
   if (n >= 1000000000) return sym + (n/1000000000).toFixed(1) + 'B';
   if (n >= 1000000) return sym + (n/1000000).toFixed(1) + 'M';
@@ -503,12 +504,121 @@ function calcRetirement() {
   actions.push('Review and update this plan every 12 months as income, expenses, and goals change.');
 
   document.getElementById('rr-actions').innerHTML = actions.map(function(a){ return '<li style="padding:.25rem 0">' + a + '</li>'; }).join('');
+  currentRetirementPlan = {
+    country: cd.name,
+    symbol: sym,
+    age: age,
+    retireAge: retireAge,
+    yearsLeft: yearsLeft,
+    savings: savings,
+    contribution: contrib,
+    salary: salary,
+    expenses: expenses,
+    retirementExpenses: retireExpenses,
+    projected: projBase,
+    target: targetNestEgg,
+    monthlyNeed: retireExpenses,
+    estimatedPayout: estimatedPayout,
+    monthlyFromSavings: monthlyFromSavings,
+    totalMonthlyIncome: totalMonthlyIncome,
+    shortfall: shortfall,
+    score: score,
+    grade: grade,
+    extraContrib: extraContrib,
+    pessimistic: projPess,
+    optimistic: projOpt,
+    pensionInfo: cd.scheme,
+    flags: flags.map(function(f){ return f.text; }),
+    actions: actions
+  };
+  setRetirementStatus('');
 
   document.getElementById('rr-results').classList.add('on');
   document.getElementById('rr-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+function buildRetirementReport(){
+  if(!currentRetirementPlan){calcRetirement();}
+  var p=currentRetirementPlan;
+  return [
+    'Retirement readiness report - AfroTools',
+    'Country: '+p.country,
+    'Current age: '+p.age,
+    'Target retirement age: '+p.retireAge,
+    'Years left: '+p.yearsLeft,
+    'Readiness score: '+p.score+'%',
+    'Grade: '+p.grade,
+    '',
+    'Financial snapshot',
+    '- Current savings: '+fmtCur(p.symbol,p.savings),
+    '- Monthly contribution: '+fmtCur(p.symbol,p.contribution),
+    '- Current monthly salary: '+fmtCur(p.symbol,p.salary),
+    '- Estimated monthly retirement need: '+fmtCur(p.symbol,p.monthlyNeed),
+    '- Projected savings at retirement: '+fmtCur(p.symbol,p.projected),
+    '- Nest egg target: '+fmtCur(p.symbol,p.target),
+    '- Monthly income from savings: '+fmtCur(p.symbol,p.monthlyFromSavings),
+    '- Pension payout used: '+fmtCur(p.symbol,p.estimatedPayout),
+    '- Monthly shortfall/surplus: '+(p.shortfall>=0?'+':'')+fmtCur(p.symbol,p.shortfall),
+    '- Extra monthly contribution needed: '+(p.extraContrib>0?fmtCur(p.symbol,p.extraContrib):'None'),
+    '',
+    'Scenarios',
+    '- Pessimistic 4%: '+fmtCur(p.symbol,p.pessimistic),
+    '- Base 7%: '+fmtCur(p.symbol,p.projected),
+    '- Optimistic 10%: '+fmtCur(p.symbol,p.optimistic),
+    '',
+    'Risk flags',
+    p.flags.length?p.flags.map(function(flag){return '- '+flag;}).join('\n'):'- No critical risk flags identified.',
+    '',
+    'Action plan',
+    p.actions.map(function(action){return '- '+action;}).join('\n'),
+    '',
+    'Method and caution: this is a planning estimate using compound-growth assumptions, a 25x target rule, and a 4% annual withdrawal rule. Verify pension rules, fund fees, tax treatment, inflation, healthcare, housing, and licensed financial advice before acting.'
+  ].join('\n');
+}
+function setRetirementStatus(message){
+  var el=document.getElementById('rr-action-status');
+  if(el){el.textContent=message||'';}
+}
+function copyRetirementReport(){
+  var text=buildRetirementReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setRetirementStatus('Retirement report copied.');}).catch(function(){fallbackRetirementCopy(text);});
+  }else{fallbackRetirementCopy(text);}
+}
+function fallbackRetirementCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setRetirementStatus('Retirement report copied.');}
+  catch(e){window.prompt('Copy retirement report',text);setRetirementStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function downloadRetirementReport(){
+  var text=buildRetirementReport();
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='retirement-readiness-report.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setRetirementStatus('TXT retirement report downloaded.');
+}
+function saveRetirementReport(){
+  buildRetirementReport();
+  try{
+    localStorage.setItem('afrotools-retirement-readiness',JSON.stringify({savedAt:Date.now(),plan:currentRetirementPlan,report:buildRetirementReport()}));
+    setRetirementStatus('Retirement plan saved in this browser.');
+  }catch(e){
+    setRetirementStatus('Browser storage is unavailable. Download the TXT report instead.');
+  }
+}
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 <script src="/assets/js/pages/career-tool-focus.js?v=42cb5afb" defer></script>
 </body>
 </html>

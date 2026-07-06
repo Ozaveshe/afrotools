@@ -76,9 +76,9 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .result-box{display:none;margin-top:1rem}
 .result-box.show{display:block}
 .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.75rem;margin-bottom:1rem}
-.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:center}
+.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:left;display:grid;align-content:start;gap:.18rem;min-width:0}
 .rs .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:.2rem}
-.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary)}
+.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary);line-height:1.15;overflow-wrap:anywhere}
 .rs .sub{font-size:.75rem;color:#6b7280;margin-top:.1rem}
 .standard-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:1rem}
 .standard-table th{background:#f3f4f6;padding:.5rem .75rem;text-align:left;font-weight:700;font-size:.75rem;color:#374151;border-bottom:2px solid #e5e7eb}
@@ -86,14 +86,19 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .verdict-ok{background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:1rem;font-size:.85rem;color:#166534;margin-bottom:.75rem}
 .verdict-warn{background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:1rem;font-size:.85rem;color:#92400e;margin-bottom:.75rem}
 .verdict-fail{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:1rem;font-size:.85rem;color:#991b1b;margin-bottom:.75rem}
+.result-note{margin:1rem 0 0;padding:1rem;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;color:#78350f;font-size:.82rem;line-height:1.65}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;padding:.65rem 1rem;border:1.5px solid #bfdbfe;border-radius:10px;background:#fff;color:#1d4ed8;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.secondary-btn:hover,.secondary-btn:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.method-list{margin:.75rem 0 0;padding-left:1.1rem;color:#4b5563;font-size:.86rem;line-height:1.7}
 .sec-body{padding:40px 0}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
+@media(max-width:600px){.row{grid-template-columns:1fr}.result-actions .secondary-btn{width:100%}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/classroom-size.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/classroom-size/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/capacite-salle-classe/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/classroom-size/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -104,7 +109,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "How should I use Classroom Size Calculator Africa?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter the room length, width, school level, country standard, and current enrolment to estimate usable capacity, compare against country reference assumptions, and identify overcrowding or under-use."
       }
     },
     {
@@ -112,7 +117,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "What should I verify before acting on Classroom Size Calculator Africa?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Confirm the latest local building code, school safety rule, fire exit requirements, disability access, furniture layout, ventilation, teacher circulation space, and education authority class-size guidance before changing enrolment or room use."
       }
     },
     {
@@ -120,7 +125,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "Is Classroom Size Calculator Africa an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a planning estimate for school operations, not an official building approval, fire-safety certificate, education authority ruling, or guaranteed compliance result."
       }
     }
   ],
@@ -192,39 +197,29 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
     <div id="cs-verdict"></div>
     <div class="result-grid" id="cs-grid"></div>
     <div id="cs-table"></div>
-  </div>
-</div>
-
-</div>
-</div>
-
-
-
-<section class="df-upgrade" data-df-upgrade="classroom-size">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Classroom Size Calculator Africa decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for classroom size calculator africa so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Classroom Size Calculator Africa: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, saveExport, currentYear, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
+    <div class="result-note" id="cs-note"></div>
+    <div class="result-actions" aria-label="Classroom capacity report actions">
+      <button type="button" class="secondary-btn" onclick="copyClassroomReport()">Copy capacity report</button>
+      <button type="button" class="secondary-btn" onclick="downloadClassroomReport()">Download TXT</button>
+      <button type="button" class="secondary-btn" onclick="saveClassroomReport()">Save in browser</button>
     </div>
-    <form class="df-form" data-df-form="classroom-size">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="classroom-size" data-df-base="Classroom Size Calculator Africa: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Classroom Size Calculator Africa: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="classroom-size">Copy summary</button></div>
-    </form>
+    <div class="action-status" id="cs-action-status" aria-live="polite"></div>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="classroom-size-faq-title">
-  <h2 id="classroom-size-faq-title">Classroom Size Calculator Africa FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+
+</div>
+</div>
+
+<div class="container">
+  <section class="card" aria-labelledby="classroom-method-title">
+    <h2 id="classroom-method-title">Method and checks</h2>
+    <p class="help">This calculator estimates usable capacity from room area after allowing for teacher space, board space, and circulation. It is a planning tool for school operations, not a building approval.</p>
+    <ul class="method-list">
+      <li>Measure the actual room, not the plan drawing, and exclude fixed cupboards or unusable corners.</li>
+      <li>Check local education authority class-size rules, fire exits, ventilation, disability access, desk layout, and supervision needs.</li>
+      <li>Use the exported report as a discussion brief for the head teacher, facilities officer, parent board, or regulator.</li>
+    </ul>
+  </section>
 </div>
 <afro-footer></afro-footer>
 <script>
@@ -235,6 +230,9 @@ var STANDARDS={
   southafrica:{primary:{space:1.4,ideal:35,max:40,label:'DHET Primary Standard'},secondary:{space:1.5,ideal:30,max:40,label:'DHET Secondary Standard'},tertiary:{space:2.0,ideal:50,max:80,label:'CHE Lecture Standard'}},
   general:{primary:{space:1.3,ideal:35,max:45,label:'General African Standard'},secondary:{space:1.5,ideal:30,max:40,label:'General African Standard'},tertiary:{space:1.8,ideal:50,max:100,label:'General Lecture Standard'}}
 };
+var COUNTRY_LABELS={nigeria:'Nigeria',kenya:'Kenya',southafrica:'South Africa',general:'General African'};
+var LEVEL_LABELS={primary:'Primary School',secondary:'Secondary School',tertiary:'Tertiary / Lecture Hall'};
+var currentClassroomPlan=null;
 function calcClassroom(){
   var length=parseFloat(document.getElementById('cs-length').value)||0;
   var width=parseFloat(document.getElementById('cs-width').value)||0;
@@ -246,16 +244,41 @@ function calcClassroom(){
   var std=STANDARDS[country][level];
   var capacity=Math.floor(area/std.space);
   // Account for teacher area (6m²), board area, and circulation (20% of area)
-  var usableArea=area*0.78-4;
-  var usableCapacity=Math.floor(usableArea/std.space);
+  var usableArea=Math.max(0,area*0.78-4);
+  var usableCapacity=Math.max(0,Math.floor(usableArea/std.space));
   var pctUtil=actual>0?Math.round(actual/usableCapacity*100):0;
+  if(!isFinite(pctUtil)){pctUtil=0;}
   var verdict='';
+  var verdictLabel='Capacity estimate ready';
   if(actual>0){
     if(actual>std.max){verdict='<div class="verdict-fail"><strong>Severely Overcrowded:</strong> Your class of '+actual+' students exceeds the maximum recommended capacity of '+std.max+' for '+level+' school by '+(actual-std.max)+' students. This violates '+std.label+' and may impact learning outcomes and safety.</div>';}
     else if(actual>usableCapacity){verdict='<div class="verdict-warn"><strong>Overcrowded:</strong> Your class of '+actual+' students exceeds the usable capacity of '+usableCapacity+' ('+std.label+'). Consider splitting into two groups or requesting additional classroom space.</div>';}
     else if(actual<usableCapacity*0.6){verdict='<div class="verdict-ok"><strong>Under-utilised:</strong> Your class of '+actual+' students is well below the recommended capacity of '+usableCapacity+'. This classroom could accommodate up to '+(usableCapacity-actual)+' more students.</div>';}
     else{verdict='<div class="verdict-ok"><strong>Appropriate Capacity:</strong> Your class of '+actual+' students is within the recommended capacity range for a '+area+'m² '+level+' classroom. Good conditions for learning.</div>';}
   }
+  if(actual>0){
+    if(actual>std.max){verdictLabel='Severely overcrowded';}
+    else if(actual>usableCapacity){verdictLabel='Overcrowded';}
+    else if(actual<usableCapacity*0.6){verdictLabel='Under-utilised';}
+    else{verdictLabel='Appropriate capacity';}
+  }
+  currentClassroomPlan={
+    length:length,
+    width:width,
+    area:area,
+    usableArea:usableArea,
+    level:LEVEL_LABELS[level]||level,
+    country:COUNTRY_LABELS[country]||country,
+    standardLabel:std.label,
+    spacePerStudent:std.space,
+    rawCapacity:capacity,
+    usableCapacity:usableCapacity,
+    ideal:std.ideal,
+    max:std.max,
+    actual:actual,
+    utilisation:pctUtil,
+    verdict:verdictLabel
+  };
   document.getElementById('cs-verdict').innerHTML=verdict;
   document.getElementById('cs-grid').innerHTML=
     '<div class="rs"><div class="lbl">Floor Area</div><div class="val">'+area.toFixed(1)+'m²</div><div class="sub">'+length+'m × '+width+'m</div></div>'+
@@ -274,9 +297,89 @@ function calcClassroom(){
   });
   tbl+='</tbody></table>';
   document.getElementById('cs-table').innerHTML=tbl;
+  document.getElementById('cs-note').innerHTML='<strong>Planning estimate only.</strong> Use this as a first pass for room allocation. Before changing enrolment or declaring compliance, verify the latest local education standard, fire-safety rules, exits, ventilation, furniture layout, disability access, and supervision requirements.';
+  setClassroomStatus('');
   document.getElementById('cs-result').classList.add('show');
 }
+function buildClassroomReport(){
+  if(!currentClassroomPlan){calcClassroom();}
+  var p=currentClassroomPlan;
+  if(!p){return '';}
+  return [
+    'Classroom capacity report - AfroTools',
+    'Country standard: '+p.country,
+    'School level: '+p.level,
+    'Reference label: '+p.standardLabel,
+    '',
+    'Room inputs',
+    '- Length: '+p.length+' m',
+    '- Width: '+p.width+' m',
+    '- Floor area: '+p.area.toFixed(1)+' sq m',
+    '- Usable area estimate: '+p.usableArea.toFixed(1)+' sq m',
+    '',
+    'Capacity result',
+    '- Recommended usable capacity: '+p.usableCapacity+' students',
+    '- Ideal class size: '+p.ideal+' students',
+    '- Maximum reference size: '+p.max+' students',
+    '- Space assumption: '+p.spacePerStudent+' sq m per student',
+    p.actual>0?'- Current enrolment: '+p.actual+' students':'- Current enrolment: not entered',
+    p.actual>0?'- Current utilisation: '+p.utilisation+'%':'- Current utilisation: not calculated',
+    '- Verdict: '+p.verdict,
+    '',
+    'Before acting, confirm local building code, fire exits, ventilation, accessibility, furniture layout, teacher circulation, and current education authority class-size guidance. This is not an official compliance certificate.'
+  ].join('\n');
+}
+function setClassroomStatus(message){
+  var el=document.getElementById('cs-action-status');
+  if(el){el.textContent=message||'';}
+}
+function fallbackClassroomCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setClassroomStatus('Capacity report copied.');}
+  catch(e){window.prompt('Copy capacity report',text);setClassroomStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function copyClassroomReport(){
+  var text=buildClassroomReport();
+  if(!text){return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setClassroomStatus('Capacity report copied.');}).catch(function(){fallbackClassroomCopy(text);});
+  }else{
+    fallbackClassroomCopy(text);
+  }
+}
+function slugify(value){return String(value||'classroom-capacity').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'classroom-capacity';}
+function downloadClassroomReport(){
+  var text=buildClassroomReport();
+  if(!text){return;}
+  var p=currentClassroomPlan;
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download=slugify(p.country+' '+p.level+' classroom capacity')+'.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setClassroomStatus('TXT capacity report downloaded.');
+}
+function saveClassroomReport(){
+  var text=buildClassroomReport();
+  if(!text){return;}
+  try{
+    localStorage.setItem('afrotools-classroom-size-report',JSON.stringify({savedAt:Date.now(),plan:currentClassroomPlan,report:text}));
+    setClassroomStatus('Capacity report saved in this browser.');
+  }catch(e){
+    setClassroomStatus('Browser storage is unavailable. Download the TXT report instead.');
+  }
+}
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

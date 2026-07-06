@@ -24,7 +24,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
@@ -89,8 +89,11 @@
   .action-row button { flex: 1; min-width: 120px; padding: 10px; border-radius: 7px; cursor: pointer; font-size: 0.72rem; font-weight: 700; transition: all 0.15s; font-family: 'Inter', sans-serif; }
   .copy-btn { background: rgba(0,113,227,0.1); border: 1.5px solid rgba(0,113,227,0.35); color: #1e3a5f; }
   .copy-btn:hover { background: rgba(0,113,227,0.2); }
+  .download-btn { background: rgba(16,185,129,0.1); border: 1.5px solid rgba(16,185,129,0.35); color: #065f46; }
+  .download-btn:hover { background: rgba(16,185,129,0.18); }
   .clear-btn { background: rgba(192,57,43,0.1); border: 1.5px solid rgba(192,57,43,0.35); color: #8b2e1f; }
   .clear-btn:hover { background: rgba(192,57,43,0.2); }
+  .action-status { min-height: 20px; margin-top: 8px; font-size: 0.78rem; font-weight: 700; color: #1d4ed8; font-family: 'Inter', sans-serif; }
 
   /* ── Readability card ── */
   .readability-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -176,7 +179,6 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/word-counter/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compteur-mots/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/word-counter/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -238,9 +240,11 @@
         </div>
 
         <div class="action-row">
-          <button type="button" class="copy-btn" id="copyBtn">Copy Stats</button>
+          <button type="button" class="copy-btn" id="copyBtn">Copy Report</button>
+          <button type="button" class="download-btn" id="downloadReportBtn">Download Report</button>
           <button type="button" class="clear-btn" id="clearBtn">Clear Text</button>
         </div>
+        <div class="action-status" id="actionStatus" aria-live="polite"></div>
       </div>
     </div>
 
@@ -311,30 +315,6 @@
   </div>
 </section>
 
-<section class="df-upgrade" data-df-upgrade="word-counter">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Word &amp; Character Counter decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for word &amp; character counter so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Word &amp;amp; Character Counter: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, saveExport, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="word-counter">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="word-counter" data-df-base="Word &amp;amp; Character Counter: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Word &amp;amp; Character Counter: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="word-counter">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="word-counter-faq-title">
-  <h2 id="word-counter-faq-title">Word &amp; Character Counter FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
   <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'Inter',sans-serif">Frequently Asked Questions</h2>
   <div class="faq-list">
@@ -396,6 +376,8 @@
   var textarea   = document.getElementById('textInput');
   var clearBtn   = document.getElementById('clearBtn');
   var copyBtn    = document.getElementById('copyBtn');
+  var downloadReportBtn = document.getElementById('downloadReportBtn');
+  var actionStatus = document.getElementById('actionStatus');
   var fileUpload = document.getElementById('fileUpload');
   var goalToggle = document.getElementById('goalToggle');
   var goalWrap   = document.getElementById('goalWrap');
@@ -442,6 +424,72 @@
   // ── State ──
   var kwNgram = 1;
   var cachedStats = {};
+
+  function setActionStatus(message) {
+    if (actionStatus) actionStatus.textContent = message || '';
+  }
+
+  function buildAnalysisReport() {
+    var s = cachedStats;
+    var goal = parseInt(goalInput.value) || 500;
+    var goalDelta = s.words - goal;
+    var goalLine = goalWrap.classList.contains('visible')
+      ? '\nWriting goal: ' + s.words + ' / ' + goal + ' words (' + (goalDelta >= 0 ? goalDelta + ' over' : Math.abs(goalDelta) + ' remaining') + ')'
+      : '';
+    var topKeywords = Array.from(document.querySelectorAll('#kwList .kw-item')).slice(0, 8).map(function(item) {
+      var word = item.querySelector('.kw-word');
+      var pct = item.querySelector('.kw-pct');
+      var count = item.querySelector('.kw-count');
+      return '- ' + (word ? word.textContent : '') + ': ' + (pct ? pct.textContent : '') + ' (' + (count ? count.textContent : '0') + ' uses)';
+    });
+
+    return [
+      'Word Counter report - AfroTools',
+      'Generated: ' + new Date().toLocaleString(),
+      '',
+      'Core counts',
+      '- Words: ' + s.words,
+      '- Characters: ' + s.chars,
+      '- Characters without spaces: ' + s.charsNoSpace,
+      '- Sentences: ' + s.sentences,
+      '- Paragraphs: ' + s.paras,
+      '- Unique words: ' + s.unique,
+      '- Average word length: ' + s.avgWL,
+      '- Reading time: ' + s.readMin + ' min',
+      '- Speaking time: ' + s.speakMin + ' min',
+      '- Estimated pages: ' + s.pages + goalLine,
+      '',
+      'Readability',
+      '- Flesch Reading Ease: ' + document.getElementById('fleschEase').textContent,
+      '- Grade level: ' + document.getElementById('gradeLevel').textContent,
+      '- Ease note: ' + document.getElementById('fleschEaseDesc').textContent,
+      '',
+      'Top keywords',
+      topKeywords.length ? topKeywords.join('\n') : '- Add more text to generate keyword density.',
+      '',
+      'Privacy note',
+      'This report was generated locally in your browser. AfroTools does not upload pasted text from this tool.'
+    ].join('\n');
+  }
+
+  function copyTextFallback(text) {
+    var helper = document.createElement('textarea');
+    helper.value = text;
+    helper.setAttribute('readonly', '');
+    helper.style.position = 'fixed';
+    helper.style.left = '-9999px';
+    document.body.appendChild(helper);
+    helper.select();
+    try {
+      document.execCommand('copy');
+      setActionStatus('Writing report copied.');
+      copyBtn.textContent = 'Copied!';
+      setTimeout(function() { copyBtn.textContent = 'Copy Report'; }, 1500);
+    } catch (error) {
+      setActionStatus('Copy failed. Download the report instead.');
+    }
+    document.body.removeChild(helper);
+  }
 
   // ── Syllable counter (for readability) ──
   function countSyllables(word) {
@@ -595,19 +643,37 @@
   clearBtn.addEventListener('click', function() {
     textarea.value = '';
     updateStats();
+    setActionStatus('Text cleared.');
     textarea.focus();
   });
 
-  // Copy stats
+  // Copy report
   copyBtn.addEventListener('click', function() {
-    var s = cachedStats;
-    var txt = 'Words: ' + s.words + '\nCharacters: ' + s.chars + '\nCharacters (no spaces): ' + s.charsNoSpace +
-      '\nSentences: ' + s.sentences + '\nParagraphs: ' + s.paras + '\nUnique Words: ' + s.unique +
-      '\nAvg Word Length: ' + s.avgWL + '\nReading Time: ' + s.readMin + ' min\nSpeaking Time: ' + s.speakMin + ' min\nPages: ' + s.pages;
+    var txt = buildAnalysisReport();
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+      copyTextFallback(txt);
+      return;
+    }
     navigator.clipboard.writeText(txt).then(function() {
-      if (window.AfroToast) AfroToast.success('Stats copied!');
-      else { copyBtn.textContent = 'Copied!'; setTimeout(function() { copyBtn.textContent = 'Copy Stats'; }, 1500); }
+      if (window.AfroToast) AfroToast.success('Report copied!');
+      else { copyBtn.textContent = 'Copied!'; setTimeout(function() { copyBtn.textContent = 'Copy Report'; }, 1500); }
+      setActionStatus('Writing report copied.');
+    }).catch(function() {
+      copyTextFallback(txt);
     });
+  });
+
+  downloadReportBtn.addEventListener('click', function() {
+    var blob = new Blob([buildAnalysisReport()], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'word-counter-report-' + new Date().toISOString().slice(0, 10) + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setActionStatus('Writing report downloaded.');
   });
 
   // File upload
@@ -663,6 +729,5 @@
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

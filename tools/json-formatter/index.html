@@ -30,6 +30,14 @@
   "operatingSystem": "Web",
   "url": "https://afrotools.com/tools/json-formatter/",
   "description": "Format, validate, repair, query, diff and document JSON or NDJSON in the browser with JSON Pointer, schema inference, TypeScript output and local history.",
+  "featureList": [
+    "JSON and NDJSON formatting",
+    "best-effort JSON repair",
+    "JSON Pointer query workbench",
+    "schema and TypeScript inference",
+    "JSON Patch-style diff",
+    "redacted output copy"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -37,6 +45,9 @@
   },
   "image": "https://afrotools.com/assets/img/tools/json-formatter.webp"
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"How to format and safely share JSON","description":"Paste JSON or NDJSON, format it locally, inspect structure, run pointer queries, infer schema or TypeScript, and copy a redacted version before sharing examples.","step":[{"@type":"HowToStep","name":"Paste or open JSON","text":"Paste JSON, NDJSON, an API response, or a config file into the local editor."},{"@type":"HowToStep","name":"Format and inspect","text":"Format, repair, sort, query, view the tree, infer schema or TypeScript, or compare payloads."},{"@type":"HowToStep","name":"Redact before sharing","text":"Use the redacted copy action and manually review for tokens, passwords, personal data, and production identifiers."},{"@type":"HowToStep","name":"Validate against your contract","text":"Compare the output with your OpenAPI, JSON Schema, backend tests, or provider documentation before shipping changes."}],"url":"https://afrotools.com/tools/json-formatter/"}
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"JSON Formatter","item":"https://afrotools.com/tools/json-formatter/"}]}</script>
 <style>
@@ -71,13 +82,13 @@ h1{font-size:44px;line-height:1.02;margin:0 0 12px;color:#fff;letter-spacing:0;m
 .layout{max-width:1240px;margin:0 auto;padding:20px 20px 56px}
 .toolbar{position:sticky;top:0;z-index:40;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .toolbar button,.toolbar select,.panel button,.panel input,.panel select{font:inherit}
-button,.file-label{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 11px;font-weight:800;font-size:.82rem;color:#1f2937;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+button,.file-label{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 11px;min-height:44px;min-width:44px;font-weight:800;font-size:.82rem;color:#1f2937;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 button.primary{background:#111827;border-color:#111827;color:#fff}
 button.active{background:var(--soft-blue);border-color:#93c5fd;color:#1d4ed8}
 button.warn{background:var(--soft-amber);border-color:#fcd34d;color:#92400e}
 button.success{background:var(--soft-green);border-color:#86efac;color:#047857}
 button.danger{background:var(--soft-red);border-color:#fecaca;color:var(--red)}
-select,input[type="text"]{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 10px;font:inherit}
+select,input[type="text"]{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 10px;min-height:44px;font:inherit}
 .spacer{flex:1}
 .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
@@ -118,12 +129,19 @@ select,input[type="text"]{border:1px solid var(--line);background:#fff;border-ra
 .source-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px}
 .source-card strong{display:block;font-size:.84rem}
 .source-card p{margin:5px 0 8px;color:var(--muted);font-size:.78rem;line-height:1.5}
+.source-card a{min-height:44px;display:inline-flex;align-items:center;font-weight:800}
+.json-faq{max-width:1240px;margin:14px auto 0;display:grid;gap:12px}
+.json-faq h2{font-size:1.2rem;margin:0;color:#172033}
+.json-faq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.json-faq details{border:1px solid var(--line);background:#fff;border-radius:8px;padding:14px;box-shadow:var(--shadow)}
+.json-faq summary{cursor:pointer;font-weight:800;color:#1f2937;min-height:44px;display:flex;align-items:center}
+.json-faq p{margin:8px 0 0;color:var(--muted);line-height:1.55;font-size:.9rem}
 .helper{color:var(--muted);font-size:.84rem;line-height:1.6}
 .toast{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;border-radius:8px;padding:10px 14px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.18s;z-index:80}
 .toast.on{opacity:1;transform:translateY(0)}
 input[type="file"]{display:none}
 @media(max-width:980px){
-  .grid,.source-grid,.cards{grid-template-columns:1fr}
+  .grid,.source-grid,.cards,.json-faq-grid{grid-template-columns:1fr}
   h1{font-size:32px}
   .toolbar{position:static}
 }
@@ -135,7 +153,6 @@ input[type="file"]{display:none}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/formateur-json/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kirekebisha-json/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/json-formatter/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -212,6 +229,7 @@ input[type="file"]{display:none}
     <label class="file-label" for="fileInput">Open File</label>
     <input id="fileInput" type="file" accept=".json,.jsonl,.ndjson,.txt,application/json">
     <button id="copyBtn" type="button">Copy Output</button>
+    <button id="redactCopyBtn" type="button">Copy Redacted</button>
     <button id="downloadBtn" type="button">Download</button>
     <button id="apiTesterBtn" class="success" type="button">Save To API Tester</button>
     <span class="spacer"></span>
@@ -300,29 +318,22 @@ input[type="file"]{display:none}
     </div>
   </section>
 
-<section class="df-upgrade" data-df-upgrade="json-formatter">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">JSON handoff brief</span>
-      <h2>Turn messy JSON into a reviewable artifact</h2>
-      <p>Format, repair, query, infer schema, or compare payloads locally, then copy a short handoff note for API, QA, or documentation review.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: a JSON review brief with parse status, payload size, selected mode, query/schema checks, and next action.</li><li>Use copy/download for formatted output after validating the payload against your real API contract.</li><li>Remove secrets, tokens, passwords, and personal data before sharing formatted examples.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Processing is local in your browser. This is a developer utility, not a production schema validator, security scanner, or API contract guarantee.</p>
-    </div>
-    <form class="df-form" data-df-form="json-formatter">
-      <label>Payload type<select name="payloadType" aria-label="Payload type"><option value="JSON">JSON</option><option value="NDJSON">NDJSON</option><option value="API response">API response</option><option value="config file">config file</option></select></label>
-      <label>Payload size KB<input name="payloadKb" type="number" value="12" min="0" step="any" aria-label="Payload size KB"></label>
-      <label>Review task<select name="task" aria-label="Review task"><option value="format and validate">format and validate</option><option value="repair">repair</option><option value="query">query</option><option value="schema inference">schema inference</option></select></label>
-      <label>Sample depth<input name="depth" type="number" value="3" min="0" step="any" aria-label="Sample depth"></label>
-      <button type="submit">Create JSON brief</button>
-      <output class="df-result" data-df-result="json-formatter" data-df-base="JSON review brief ready. Format or query above, then verify parse status, schema fit, inferred types, sample depth, and secret redaction before copying or downloading output." aria-live="polite">JSON review brief ready. Format or query above, then verify parse status, schema fit, inferred types, sample depth, and secret redaction before copying or downloading output.</output>
-      <div class="df-actions"><button type="button" data-df-copy="json-formatter">Copy JSON brief</button><a class="df-action-link" href="#output">View output</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="json-formatter-faq-title">
+<section class="json-faq" aria-labelledby="json-formatter-faq-title">
   <h2 id="json-formatter-faq-title">JSON Formatter &amp; Validator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Paste JSON, format or repair it, inspect errors, run a pointer query if needed, then copy or download only the output you intend to share.</p></details><details><summary>What should I verify?</summary><p>Check schema fit, data types, required fields, array depth, date formats, and remove secrets, tokens, passwords, and personal data before sharing.</p></details><details><summary>Is this official?</summary><p>No. It is a local browser utility, not a production schema validator, security scanner, or API contract guarantee.</p></details></div>
+  <div class="json-faq-grid">
+    <details>
+      <summary>How should I use this?</summary>
+      <p>Paste JSON, format or repair it, inspect errors, run a pointer query, infer schema or types, then copy or download only the output you intend to share.</p>
+    </details>
+    <details>
+      <summary>What does redacted copy mask?</summary>
+      <p>It masks common secret fields such as tokens, passwords, API keys, authorization values, email addresses, and phone fields. Review manually before sharing.</p>
+    </details>
+    <details>
+      <summary>Is this a production validator?</summary>
+      <p>No. It is a local browser utility. Compare the result against your OpenAPI, JSON Schema, backend tests, or provider documentation.</p>
+    </details>
+  </div>
 </section>
 <section class="tool-verification-sec" data-tool-verification-panel="json-formatter">
   <div class="container">
@@ -393,6 +404,56 @@ input[type="file"]{display:none}
     el.classList.add('on');
     setTimeout(function(){ el.classList.remove('on'); }, 1500);
   }
+  function safeCopy(text){
+    function fallbackCopy(){
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        document.execCommand('copy');
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      } finally {
+        document.body.removeChild(area);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+  function sensitiveKey(key){
+    return /(password|passwd|pwd|token|secret|api[_-]?key|apikey|authorization|auth|bearer|private[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|session|cookie|email|phone|msisdn)/i.test(String(key || ''));
+  }
+  function scanSensitive(value){
+    var found = [];
+    function walk(node, path){
+      if (!node || typeof node !== 'object') return;
+      Object.keys(node).forEach(function(key){
+        var nextPath = path ? path + '.' + key : key;
+        if (sensitiveKey(key)) found.push(nextPath);
+        walk(node[key], nextPath);
+      });
+    }
+    walk(value, '');
+    return found.slice(0, 8);
+  }
+  function redactValue(value){
+    if (Array.isArray(value)) return value.map(redactValue);
+    if (value && typeof value === 'object') {
+      return Object.keys(value).reduce(function(acc, key){
+        acc[key] = sensitiveKey(key) ? '[REDACTED]' : redactValue(value[key]);
+        return acc;
+      }, {});
+    }
+    return value;
+  }
   function indent(){
     var value = $('indentSelect').value;
     return value === 'tab' ? '\t' : Number(value);
@@ -422,9 +483,13 @@ input[type="file"]{display:none}
           try { return JSON.parse(line); }
           catch(err){ throw new Error('Line ' + (index + 1) + ': ' + err.message); }
         });
+        var rowSecrets = scanSensitive(rows);
+        if(rowSecrets.length) warnings.push('Possible sensitive fields: ' + rowSecrets.join(', '));
         return { ok:true, value:rows, formatted:JSON.stringify(rows, null, indent()), warnings:warnings, mode:mode };
       }
       var parsed = JSON.parse(text);
+      var secretPaths = scanSensitive(parsed);
+      if(secretPaths.length) warnings.push('Possible sensitive fields: ' + secretPaths.join(', '));
       return { ok:true, value:parsed, formatted:JSON.stringify(parsed, null, indent()), warnings:warnings, mode:mode };
     }catch(err){
       return { ok:false, value:null, formatted:'', warnings:warnings, error:err.message, mode:mode };
@@ -674,7 +739,15 @@ input[type="file"]{display:none}
       render();
     };
     $('clearBtn').onclick = function(){ input.value = ''; render(); };
-    $('copyBtn').onclick = function(){ var text = output.textContent || ''; navigator.clipboard.writeText(text).then(function(){ toast('Copied'); }).catch(function(){ toast('Copy failed'); }); };
+    $('copyBtn').onclick = function(){
+      var text = output.textContent || '';
+      safeCopy(text).then(function(){ toast('Copied'); }).catch(function(){ toast('Copy failed'); });
+    };
+    $('redactCopyBtn').onclick = function(){
+      if(!last.ok) { toast('Format valid JSON first'); return; }
+      var text = JSON.stringify(redactValue(last.value), null, indent());
+      safeCopy(text).then(function(){ toast('Redacted copy ready'); }).catch(function(){ toast('Copy failed'); });
+    };
     $('downloadBtn').onclick = function(){
       var content = currentTab === 'formatted' && last.ok ? last.formatted : output.textContent;
       var blob = new Blob([content || input.value], { type:'application/json' });
@@ -717,7 +790,7 @@ input[type="file"]{display:none}
       if(treeButton){
         $('pointerInput').value = treeButton.getAttribute('data-pointer');
         setTab('query');
-        navigator.clipboard.writeText($('pointerInput').value).catch(function(){});
+        safeCopy($('pointerInput').value).catch(function(){});
       }
       if(historyButton){
         var item = readHistory()[Number(historyButton.getAttribute('data-history'))];
@@ -731,6 +804,5 @@ input[type="file"]{display:none}
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

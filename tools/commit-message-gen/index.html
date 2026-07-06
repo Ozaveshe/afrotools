@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Commit Message Generator — Conventional Commits | AfroTools</title>
-<meta name="description" content="Generate conventional commit messages instantly. Select type (feat/fix/docs), add scope, write description. Validates 72-char limit, gitmoji support, copy with one click.">
+<title>Commit Message Generator - Conventional Commits | AfroTools</title>
+<meta name="description" content="Build Conventional Commits with type, optional scope, breaking-change footer, issue reference, 72-character header checks, gitmoji support, and local copy output.">
 <link rel="canonical" href="https://afrotools.com/tools/commit-message-gen/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Commit Message Generator | AfroTools">
-<meta property="og:description" content="Generate conventional commit messages. feat, fix, docs, refactor, chore and more. Includes gitmoji option and validation.">
+<meta property="og:description" content="Build Conventional Commits with type, optional scope, breaking-change footer, issue reference, 72-character header checks, and copy output.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/commit-message-gen.webp">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,45 +18,55 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
-:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
-.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
+:root{--en-accent:#16a34a;--en-accent-dark:#15803d;--en-accent-light:#dcfce7;--en-accent-pale:#f0fdf4;--en-shadow-hover:0 4px 16px rgba(22,163,74,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 58%,#14532d 100%)}
+.en-breadcrumb a,.en-breadcrumb-current{min-height:36px;display:inline-flex;align-items:center}
 .type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:0}
-.type-card{border:2px solid var(--en-border);border-radius:10px;padding:10px 8px;cursor:pointer;transition:all .15s;background:#fff;text-align:center;user-select:none}
+.type-card{border:2px solid var(--en-border);border-radius:10px;padding:10px 8px;cursor:pointer;transition:all .15s;background:#fff;text-align:center;user-select:none;font-family:'DM Sans',sans-serif;min-height:72px}
 .type-card.active{border-color:var(--en-accent);background:var(--en-accent-pale)}
 .type-card:hover:not(.active){border-color:var(--en-accent-light)}
 .type-card-label{font-size:.82rem;font-weight:700;color:var(--en-text);margin-bottom:2px}
 .type-card-desc{font-size:.68rem;color:var(--en-muted)}
-.type-card-emoji{font-size:1.2rem;margin-bottom:4px}
+.type-card-kind{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--en-accent-dark);margin-bottom:4px}
 .output-box{background:#0f0f1a;color:#c9d1d9;border-radius:12px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:.9rem;line-height:1.7;position:relative;min-height:80px;word-break:break-all}
 .output-main{font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px}
 .output-body{font-size:.85rem;color:#94a3b8}
 .output-footer{font-size:.8rem;color:#6272a4;margin-top:6px}
 .char-count{font-size:.76rem;font-weight:700;margin-top:6px}
 .char-ok{color:#22c55e}.char-warn{color:#f59e0b}.char-bad{color:#ef4444}
-.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:9px 18px;background:var(--en-accent);color:#fff;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:filter .15s;margin-top:12px}
+.copy-btn{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:9px 18px;background:var(--en-accent);color:#fff;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:filter .15s;margin-top:12px}
 .copy-btn:hover{filter:brightness(1.1)}
 .copy-btn.copied{background:#22c55e}
 .copy-btn-sec{background:var(--en-accent-light);color:var(--en-accent-dark)}
 .copy-btn-sec:hover{filter:brightness(.97)}
 .validation-list{display:flex;flex-direction:column;gap:5px;margin-top:12px}
 .val-row{display:flex;align-items:center;gap:8px;font-size:.82rem}
-.val-icon{font-size:.9rem;flex-shrink:0}
+.val-icon{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;min-width:38px;flex-shrink:0}
 .examples-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
-.example-card{background:#fff;border:1.5px solid var(--en-border);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s;position:relative}
+.example-card{background:#fff;border:1.5px solid var(--en-border);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s;position:relative;text-align:left;font-family:'DM Sans',sans-serif}
 .example-card:hover{border-color:var(--en-accent);box-shadow:var(--en-shadow-hover)}
 .example-type{font-size:.7rem;font-weight:700;background:var(--en-accent-pale);color:var(--en-accent-dark);padding:2px 8px;border-radius:5px;margin-bottom:8px;display:inline-block}
 .example-msg{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--en-text);line-height:1.5}
 .example-hint{font-size:.7rem;color:var(--en-muted);margin-top:6px}
-.breaking-toggle{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--en-border);border-radius:9px;background:#fff;cursor:pointer;transition:all .15s;user-select:none}
+.breaking-toggle{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border:1.5px solid var(--en-border);border-radius:9px;background:#fff;cursor:pointer;transition:all .15s;user-select:none;text-align:left;font-family:'DM Sans',sans-serif}
 .breaking-toggle.on{border-color:#ef4444;background:#fee2e2}
 .breaking-toggle-label{font-size:.88rem;font-weight:600;color:var(--en-text)}
 .breaking-toggle-desc{font-size:.76rem;color:var(--en-muted)}
-.toggle-icon{font-size:1rem;flex-shrink:0}
+.toggle-icon{font-family:'JetBrains Mono',monospace;font-size:.74rem;font-weight:700;flex-shrink:0;color:#64748b}
+.source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.source-links a{min-height:36px;display:inline-flex;align-items:center;padding:6px 10px;border-radius:7px;background:var(--en-accent-pale);color:var(--en-accent-dark);font-size:.78rem;font-weight:700;text-decoration:none}
+.copy-status{font-size:.78rem;color:var(--en-muted);min-height:22px;margin-top:8px}
+.copy-status.ok{color:#15803d}.copy-status.warn{color:#b45309}
+.gitmoji-label{display:flex;align-items:center;gap:8px;min-height:44px}
+.gitmoji-label input{width:20px;height:20px;accent-color:var(--en-accent)}
+.type-card:focus-visible,.example-card:focus-visible,.breaking-toggle:focus-visible,.copy-btn:focus-visible,.en-input:focus-visible,.source-links a:focus-visible{outline:3px solid rgba(22,163,74,.35);outline-offset:2px}
+@media (max-width:900px){.en-tool-layout-wide{grid-template-columns:1fr!important}.en-tool-layout-wide>div[style*="sticky"]{position:static!important}.type-grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}}
+@media (max-width:520px){.en-tool-layout-wide{padding-left:16px!important;padding-right:16px!important}.examples-grid{grid-template-columns:1fr}.output-box{font-size:.8rem;padding:16px}.copy-btn{width:100%;justify-content:center}.en-tool-hero-pill{font-size:.76rem}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/commit-message-gen.webp">
 <meta property="og:url" content="https://afrotools.com/tools/commit-message-gen/">
@@ -65,40 +75,27 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-ujumbe-wa-commit/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/commit-message-gen/" />
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Commit Message Generator — Conventional Commits | AfroTools">
-<meta name="twitter:description" content="Generate conventional commit messages instantly. Select type (feat/fix/docs), add scope, write description. Validates 72-char limit, gitmoji support, copy with one click.">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<meta name="twitter:title" content="Commit Message Generator - Conventional Commits | AfroTools">
+<meta name="twitter:description" content="Build Conventional Commits with type, scope, breaking-change footer, issue reference, 72-character header checks, gitmoji support, and copy output.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use Commit Message Generator — Conventional Commits?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on Commit Message Generator — Conventional Commits?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Commit Message Generator — Conventional Commits an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
-      }
-    }
+  "@type": "WebApplication",
+  "name": "Commit Message Generator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/commit-message-gen/",
+  "description": "Build Conventional Commits with type, optional scope, breaking-change footer, issue reference, 72-character header checks, gitmoji support, and local copy output.",
+  "isAccessibleForFree": true,
+  "featureList": [
+    "Conventional Commit builder",
+    "Header length validation",
+    "Breaking-change footer",
+    "Issue reference footer",
+    "Gitmoji option",
+    "Clipboard copy"
   ],
-  "url": "https://afrotools.com/tools/commit-message-gen/"
+  "image": "https://afrotools.com/assets/img/tools/commit-message-gen.webp"
 }
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
@@ -110,16 +107,16 @@
 <div class="en-tool-hero">
   <div class="en-tool-hero-inner">
     <nav class="en-breadcrumb">
-      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
-      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">/</span>
+      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">/</span>
       <span class="en-breadcrumb-current">Commit Message Generator</span>
     </nav>
     <h1>Commit Message <em>Generator</em></h1>
-    <p>Generate perfect conventional commit messages. Validate length, check imperative mood, add gitmoji and copy to clipboard instantly.</p>
+    <p>Build Conventional Commits from type, scope, description, body, issue reference, and breaking-change fields. Validate the header before copying it into your repo.</p>
     <div class="en-tool-hero-meta">
-      <span class="en-tool-hero-pill">📝 Conventional Commits</span>
-      <span class="en-tool-hero-pill">✅ Validation</span>
-      <span class="en-tool-hero-pill">😊 Gitmoji support</span>
+      <span class="en-tool-hero-pill">Conventional Commits</span>
+      <span class="en-tool-hero-pill">Header validation</span>
+      <span class="en-tool-hero-pill">Optional gitmoji</span>
     </div>
   </div>
 </div>
@@ -128,45 +125,45 @@
   <!-- Builder -->
   <div>
     <div class="en-card" style="margin-bottom:16px">
-      <div class="en-card-title"><span class="en-card-title-icon">🏷️</span> Commit Type</div>
+      <div class="en-card-title">Commit Type</div>
       <div class="type-grid" id="type-grid"></div>
     </div>
 
     <div class="en-card" style="margin-bottom:16px">
-      <div class="en-card-title"><span class="en-card-title-icon">✏️</span> Details</div>
+      <div class="en-card-title">Details</div>
       <div class="en-form-grid en-form-grid-2">
         <div class="en-field">
-          <label class="en-label">Scope <span class="en-label-hint">(optional)</span></label>
-          <input aria-label="E.g. auth, api, ui, navbar" class="en-input" id="scope" placeholder="e.g. auth, api, ui, navbar…" oninput="generate()">
+          <label class="en-label" for="scope">Scope <span class="en-label-hint">(optional)</span></label>
+          <input aria-label="Scope" class="en-input" id="scope" placeholder="e.g. auth, api, ui, navbar" oninput="generate()">
         </div>
         <div class="en-field">
-          <label class="en-label">Issue / Ticket Reference <span class="en-label-hint">(optional)</span></label>
-          <input aria-label="E.g. #42, JIRA 123" class="en-input" id="issue-ref" placeholder="e.g. #42, JIRA-123…" oninput="generate()">
+          <label class="en-label" for="issue-ref">Issue / Ticket Reference <span class="en-label-hint">(optional)</span></label>
+          <input aria-label="Issue or ticket reference" class="en-input" id="issue-ref" placeholder="e.g. #42, JIRA-123" oninput="generate()">
         </div>
         <div class="en-field en-field-full">
-          <label class="en-label">Short Description <span class="en-label-hint">(imperative, present tense)</span></label>
-          <input aria-label="E.g. add user authentication endpoint" class="en-input" id="description" placeholder="e.g. add user authentication endpoint" oninput="generate()" style="font-size:1rem">
+          <label class="en-label" for="description">Short Description <span class="en-label-hint">(imperative, present tense)</span></label>
+          <input aria-label="Short description" class="en-input" id="description" placeholder="e.g. add user authentication endpoint" oninput="generate()" style="font-size:1rem">
         </div>
         <div class="en-field en-field-full">
-          <label class="en-label">Body <span class="en-label-hint">(optional — what and why)</span></label>
-          <textarea class="en-input" id="body" rows="3" placeholder="Explain motivation, context or more detail…" oninput="generate()" style="resize:vertical" aria-label="Explain motivation, context or more detail…"></textarea>
+          <label class="en-label" for="body">Body <span class="en-label-hint">(optional - what and why)</span></label>
+          <textarea class="en-input" id="body" rows="3" placeholder="Explain motivation, context or more detail" oninput="generate()" style="resize:vertical" aria-label="Commit body"></textarea>
         </div>
         <div class="en-field en-field-full">
-          <div class="breaking-toggle" id="breaking-toggle" onclick="toggleBreaking()">
-            <span class="toggle-icon" id="breaking-icon">⚪</span>
+          <button type="button" class="breaking-toggle" id="breaking-toggle" onclick="toggleBreaking()" aria-pressed="false">
+            <span class="toggle-icon" id="breaking-icon">OFF</span>
             <div>
               <div class="breaking-toggle-label">Breaking Change</div>
               <div class="breaking-toggle-desc">Introduces a change that breaks backward compatibility (adds "!" and BREAKING CHANGE footer)</div>
             </div>
-          </div>
+          </button>
         </div>
         <div class="en-field en-field-full" id="breaking-desc-field" style="display:none">
-          <label class="en-label">Breaking Change Description</label>
+          <label class="en-label" for="breaking-desc">Breaking Change Description</label>
           <input aria-label="Describe what breaks and migration steps" class="en-input" id="breaking-desc" placeholder="Describe what breaks and migration steps" oninput="generate()">
         </div>
         <div class="en-field en-field-full">
-          <label class="en-label" style="display:flex;align-items:center;gap:8px">
-            <input aria-label="Gitmoji toggle" type="checkbox" id="gitmoji-toggle" onchange="generate()" style="width:16px;height:16px;accent-color:var(--en-accent)">
+          <label class="en-label gitmoji-label">
+            <input aria-label="Include gitmoji emoji" type="checkbox" id="gitmoji-toggle" onchange="generate()">
             Include Gitmoji emoji
           </label>
         </div>
@@ -177,20 +174,21 @@
   <!-- Output -->
   <div style="position:sticky;top:80px">
     <div class="en-card" style="margin-bottom:16px">
-      <div class="en-card-title"><span class="en-card-title-icon">📋</span> Generated Message</div>
+      <div class="en-card-title">Generated Message</div>
       <div class="output-box" id="output-box">
-        <div class="output-main" id="output-main" style="color:#555">← Fill in the form</div>
+        <div class="output-main" id="output-main" style="color:#555">Fill in the form</div>
       </div>
       <div class="char-count" id="char-count"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button type="button" class="copy-btn" onclick="copyMsg('oneline')">📋 Copy (one line)</button>
-        <button type="button" class="copy-btn copy-btn-sec" onclick="copyMsg('full')">📄 Copy (full)</button>
+        <button type="button" class="copy-btn" onclick="copyMsg('oneline')">Copy one line</button>
+        <button type="button" class="copy-btn copy-btn-sec" onclick="copyMsg('full')">Copy full message</button>
       </div>
+      <div class="copy-status" id="copy-status" aria-live="polite"></div>
     </div>
 
     <!-- Validation -->
     <div class="en-card">
-      <div class="en-card-title"><span class="en-card-title-icon">✅</span> Validation</div>
+      <div class="en-card-title">Validation</div>
       <div class="validation-list" id="validation-list"></div>
     </div>
   </div>
@@ -199,32 +197,12 @@
 <!-- Examples -->
 <div style="max-width:1100px;margin:0 auto;padding:0 24px 48px">
   <div class="en-card">
-    <div class="en-card-title"><span class="en-card-title-icon">📚</span> Example Commits (click to use)</div>
+    <div class="en-card-title">Example Commits (click to use)</div>
     <div class="examples-grid" id="examples-grid"></div>
   </div>
 </div>
 
 
-<section class="df-upgrade" data-df-upgrade="commit-message-gen" data-tool-verification-panel data-tool-id="commit-message-gen">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Commit handoff check</span>
-      <h2>Commit Message Generator — Conventional Commits decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for commit message generator — conventional commits so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Commit Message Generator — Conventional Commits: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: download, schema, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="commit-message-gen">
-      <label>Commit type<select name="type" aria-label="Commit type"><option value="feat">feat</option><option value="fix">fix</option><option value="docs">docs</option><option value="refactor">refactor</option><option value="chore">chore</option></select></label>
-      <label>Scope<input name="scope" value="ui" aria-label="Scope"></label>
-      <label>Change summary<input name="summary" value="add export controls" aria-label="Change summary"></label>
-      <label>Review focus<select name="focus" aria-label="Review focus"><option value="header length">header length</option><option value="breaking change">breaking change</option><option value="issue reference">issue reference</option><option value="repository convention">repository convention</option></select></label>
-      <button type="submit">Create commit brief</button>
-      <output class="df-result" data-df-result="commit-message-gen" data-df-base="Commit Message Generator — Conventional Commits: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Commit Message Generator — Conventional Commits: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="commit-message-gen">Copy commit brief</button><a href="#output">Review generated message</a></div>
-    </form>
-  </div>
-</section>
 <section class="tool-verification-sec" data-tool-verification-panel data-tool-id="commit-message-gen-checks" aria-labelledby="commit-message-verification-title">
   <div class="container">
     <div class="tool-verification-card">
@@ -233,6 +211,10 @@
           <span class="tool-verification-kicker">Conventional commit check</span>
           <h2 class="tool-verification-title" id="commit-message-verification-title">Generate the message, then compare it with the real diff</h2>
           <p class="tool-verification-lead">The tool creates one-line and full commit messages using the fields above. Copy output is local and explicit.</p>
+          <div class="source-links" aria-label="Commit message references">
+            <a href="https://www.conventionalcommits.org/en/v1.0.0/" rel="noopener">Conventional Commits 1.0.0</a>
+            <a href="https://git-scm.com/docs/git-commit" rel="noopener">Git commit manual</a>
+          </div>
         </div>
         <div class="tool-verification-status">
           <span class="tool-verification-badge">Conventional Commits style</span>
@@ -250,15 +232,11 @@
         </div>
       </div>
       <div class="tool-verification-actions">
-        <a class="tool-verification-report" href="#output">Review generated message</a>
+        <a class="tool-verification-report" href="#output-box">Review generated message</a>
         <p class="tool-verification-disclaimer">Developer writing aid only. Verify against your repository convention and actual change before committing.</p>
       </div>
     </div>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="commit-message-gen-faq-title">
-  <h2 id="commit-message-gen-faq-title">Commit Message Generator — Conventional Commits FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -267,132 +245,165 @@
 
 <script>
 var TYPES=[
-  {type:'feat',label:'feat',desc:'New feature',emoji:'✨',gitmoji:'✨'},
-  {type:'fix',label:'fix',desc:'Bug fix',emoji:'🐛',gitmoji:'🐛'},
-  {type:'docs',label:'docs',desc:'Documentation',emoji:'📚',gitmoji:'📚'},
-  {type:'style',label:'style',desc:'Formatting',emoji:'💅',gitmoji:'💄'},
-  {type:'refactor',label:'refactor',desc:'Code cleanup',emoji:'♻️',gitmoji:'♻️'},
-  {type:'test',label:'test',desc:'Add/fix tests',emoji:'✅',gitmoji:'✅'},
-  {type:'chore',label:'chore',desc:'Maintenance',emoji:'🔧',gitmoji:'🔧'},
-  {type:'perf',label:'perf',desc:'Performance',emoji:'⚡',gitmoji:'⚡'},
-  {type:'ci',label:'ci',desc:'CI/CD pipeline',emoji:'👷',gitmoji:'👷'},
-  {type:'build',label:'build',desc:'Build system',emoji:'📦',gitmoji:'📦'},
-  {type:'revert',label:'revert',desc:'Revert commit',emoji:'⏪',gitmoji:'⏪'},
+  {type:'feat',label:'feat',desc:'New feature',gitmoji:'\u2728'},
+  {type:'fix',label:'fix',desc:'Bug fix',gitmoji:'\uD83D\uDC1B'},
+  {type:'docs',label:'docs',desc:'Documentation',gitmoji:'\uD83D\uDCDD'},
+  {type:'style',label:'style',desc:'Formatting',gitmoji:'\uD83D\uDC84'},
+  {type:'refactor',label:'refactor',desc:'Code cleanup',gitmoji:'\u267B\uFE0F'},
+  {type:'test',label:'test',desc:'Add/fix tests',gitmoji:'\u2705'},
+  {type:'chore',label:'chore',desc:'Maintenance',gitmoji:'\uD83D\uDD27'},
+  {type:'perf',label:'perf',desc:'Performance',gitmoji:'\u26A1'},
+  {type:'ci',label:'ci',desc:'CI/CD pipeline',gitmoji:'\uD83D\uDC77'},
+  {type:'build',label:'build',desc:'Build system',gitmoji:'\uD83D\uDCE6'},
+  {type:'revert',label:'revert',desc:'Revert commit',gitmoji:'\u23EA'}
 ];
 
 var EXAMPLES=[
   {type:'feat',scope:'auth',desc:'add OAuth2 login with Google and GitHub',body:'Implements OAuth2 flow for Google and GitHub providers.\nConfigured via environment variables.',issue:'#123'},
-  {type:'fix',scope:'api',desc:'handle null response from Paystack webhook',body:'Paystack sends null body on timeout. Added null check.',issue:''},
+  {type:'fix',scope:'api',desc:'handle null response from Paystack webhook',body:'Paystack sends null body on timeout. Add a null check before parsing.',issue:''},
   {type:'docs',scope:'',desc:'update README with Netlify deployment steps',body:'',issue:''},
   {type:'feat',scope:'navbar',desc:'add dark mode toggle with system preference detection',body:'',issue:'#45'},
   {type:'refactor',scope:'db',desc:'extract database connection to singleton class',body:'Reduces connection overhead and simplifies testing.',issue:''},
-  {type:'chore',scope:'deps',desc:'upgrade node from 18 to 20 LTS',body:'',issue:''},
-  {type:'feat',scope:'payments',desc:'integrate Flutterwave card payment',body:'Supports NGN, GHS, KES, ZAR. Adds webhook handler.',issue:'JIRA-55'},
-  {type:'fix',scope:'sms',desc:'retry failed Africa\'s Talking SMS 3 times',body:'Exponential backoff: 1s, 2s, 4s. Max 3 attempts.',issue:''},
+  {type:'chore',scope:'deps',desc:'upgrade Node from 18 to 20 LTS',body:'',issue:''},
+  {type:'feat',scope:'payments',desc:'integrate Flutterwave card payment',body:'Supports NGN, GHS, KES, and ZAR. Adds webhook handler.',issue:'JIRA-55'},
+  {type:'fix',scope:'sms',desc:"retry failed Africa's Talking SMS requests",body:'Use exponential backoff for transient provider timeouts.',issue:''}
 ];
 
 var selectedType='feat';
 var isBreaking=false;
 
+function getType(type){return TYPES.find(function(x){return x.type===type;})||TYPES[0];}
+
 function renderTypes(){
-  document.getElementById('type-grid').innerHTML=TYPES.map(function(t){
-    return '<div class="type-card'+(t.type===selectedType?' active':'')+'" onclick="selectType(\''+t.type+'\')">'+
-      '<div class="type-card-emoji">'+t.emoji+'</div>'+
+  var grid=document.getElementById('type-grid');
+  grid.innerHTML=TYPES.map(function(t){
+    var active=t.type===selectedType;
+    return '<button type="button" class="type-card'+(active?' active':'')+'" data-type="'+t.type+'" aria-pressed="'+active+'">'+
+      '<div class="type-card-kind">type</div>'+
       '<div class="type-card-label">'+t.label+'</div>'+
       '<div class="type-card-desc">'+t.desc+'</div>'+
-    '</div>';
+    '</button>';
   }).join('');
+  grid.querySelectorAll('.type-card').forEach(function(btn){
+    btn.addEventListener('click',function(){selectType(btn.getAttribute('data-type'));});
+  });
 }
 
 function selectType(type){selectedType=type;renderTypes();generate();}
 
 function toggleBreaking(){
   isBreaking=!isBreaking;
-  document.getElementById('breaking-toggle').classList.toggle('on',isBreaking);
-  document.getElementById('breaking-icon').textContent=isBreaking?'🔴':'⚪';
+  var toggle=document.getElementById('breaking-toggle');
+  toggle.classList.toggle('on',isBreaking);
+  toggle.setAttribute('aria-pressed',String(isBreaking));
+  document.getElementById('breaking-icon').textContent=isBreaking?'ON':'OFF';
   document.getElementById('breaking-desc-field').style.display=isBreaking?'block':'none';
   generate();
 }
 
-function generate(){
+function buildLines(){
   var scope=(document.getElementById('scope').value||'').trim();
   var desc=(document.getElementById('description').value||'').trim();
   var body=(document.getElementById('body').value||'').trim();
   var issue=(document.getElementById('issue-ref').value||'').trim();
   var breakDesc=(document.getElementById('breaking-desc').value||'').trim();
   var useEmoji=document.getElementById('gitmoji-toggle').checked;
-  var t=TYPES.find(function(x){return x.type===selectedType;})||TYPES[0];
-
-  var prefix=(useEmoji?t.gitmoji+' ':'')+t.type+(isBreaking?'!':'')+(scope?'('+scope+')':'')+': ';
+  var t=getType(selectedType);
+  var typeScope=t.type+(scope?'('+scope+')':'')+(isBreaking?'!':'');
+  var prefix=(useEmoji?t.gitmoji+' ':'')+typeScope+': ';
   var firstLine=desc?prefix+desc:prefix+'<description>';
-  var charCount=firstLine.length;
-
   var lines=[firstLine];
-  if(body){lines.push('');body.split('\n').forEach(function(l){lines.push(l);});}
-  if(isBreaking&&breakDesc){lines.push('');lines.push('BREAKING CHANGE: '+breakDesc);}
-  if(issue){lines.push('');lines.push('Closes '+issue);}
-
-  var outputMain=document.getElementById('output-main');
-  var outputBox=document.getElementById('output-box');
-
-  outputMain.textContent=firstLine;
-  outputMain.style.color=desc?'#fff':'#555';
-
-  // Show body/footer in output
-  var extra=lines.slice(1).join('\n');
-  if(extra.trim()){
-    outputBox.innerHTML='<div class="output-main" id="output-main" style="color:'+(desc?'#fff':'#555')+'">'+escHtml(firstLine)+'</div><div class="output-body">'+escHtml(extra)+'</div>';
-  } else {
-    outputBox.innerHTML='<div class="output-main" id="output-main" style="color:'+(desc?'#fff':'#555')+'">'+escHtml(firstLine)+'</div>';
+  if(body){
+    lines.push('');
+    body.split('\n').forEach(function(line){lines.push(line);});
   }
+  if(isBreaking&&breakDesc){lines.push('');lines.push('BREAKING CHANGE: '+breakDesc);}
+  if(issue){lines.push('');lines.push('Refs: '+issue);}
+  return {scope:scope,desc:desc,body:body,issue:issue,breakDesc:breakDesc,firstLine:firstLine,lines:lines};
+}
 
-  // Char count
-  var ccEl=document.getElementById('char-count');
+function generate(){
+  var state=buildLines();
+  var outputBox=document.getElementById('output-box');
+  var firstLineColor=state.desc?'#fff':'#64748b';
+  var extra=state.lines.slice(1).join('\n');
+  outputBox.innerHTML='<div class="output-main" id="output-main" style="color:'+firstLineColor+'">'+escHtml(state.firstLine)+'</div>'+(extra.trim()?'<div class="output-body">'+escHtml(extra)+'</div>':'');
+
+  var charCount=state.firstLine.length;
   var cls=charCount<=50?'char-ok':charCount<=72?'char-warn':'char-bad';
-  ccEl.innerHTML='<span class="'+cls+'">'+charCount+' / 72 chars</span> '+(charCount<=72?'✓ OK':'⚠ Too long — shorten to ≤72 chars');
+  document.getElementById('char-count').innerHTML='<span class="'+cls+'">'+charCount+' / 72 chars</span> '+(charCount<=72?'OK':'Too long - shorten to 72 chars or less');
 
-  // Validation
+  var lowerStart=state.desc&&/^[a-z0-9]/.test(state.desc);
   var checks=[
-    {ok:!!desc,msg:'Has a description'},
-    {ok:charCount<=72,msg:'First line ≤ 72 characters'},
-    {ok:desc&&!desc[0].match(/[A-Z]/),msg:'Starts with lowercase'},
-    {ok:desc&&!desc.endsWith('.'),msg:'No trailing period'},
-    {ok:!desc.toLowerCase().startsWith('added')&&!desc.toLowerCase().startsWith('fixed')&&!desc.toLowerCase().startsWith('changed'),msg:'Imperative mood (add, fix, change — not added/fixed)'},
-    {ok:!scope||/^[a-z][a-z0-9\-]*$/.test(scope),msg:'Scope is lowercase kebab-case'},
+    {ok:!!state.desc,msg:'Has a description'},
+    {ok:charCount<=72,msg:'Header is 72 characters or less'},
+    {ok:lowerStart,msg:'Description starts lowercase or numeric'},
+    {ok:state.desc&&!state.desc.endsWith('.'),msg:'No trailing period'},
+    {ok:state.desc&&!/^(added|adds|fixed|fixes|changed|changes|updated|updates)\b/i.test(state.desc),msg:'Uses imperative wording such as add, fix, change'},
+    {ok:!state.scope||/^[a-z][a-z0-9-]*$/.test(state.scope),msg:'Scope is lowercase kebab-case'},
+    {ok:!isBreaking||!!state.breakDesc,msg:'Breaking changes include a footer description'}
   ];
   document.getElementById('validation-list').innerHTML=checks.map(function(c){
-    return '<div class="val-row"><span class="val-icon">'+(c.ok?'✅':'❌')+'</span><span style="color:'+(c.ok?'var(--en-muted)':'var(--en-text)')+'">'+c.msg+'</span></div>';
+    return '<div class="val-row"><span class="val-icon">'+(c.ok?'PASS':'FIX')+'</span><span style="color:'+(c.ok?'var(--en-muted)':'var(--en-text)')+'">'+c.msg+'</span></div>';
   }).join('');
 
-  window._fullMsg=lines.join('\n');
-  window._onelineMsg=firstLine;
+  window._fullMsg=state.lines.join('\n');
+  window._onelineMsg=state.firstLine;
 }
 
 function copyMsg(mode){
   var msg=mode==='full'?window._fullMsg||window._onelineMsg:window._onelineMsg||'';
-  if(!msg||msg.includes('<description>'))return;
-  navigator.clipboard.writeText(msg).then(function(){
-    var selector=mode==='full'?'.copy-btn-sec':'.copy-btn:not(.copy-btn-sec)';
-    var btn=document.querySelector(selector);
-    if(!btn)return;
-    var orig=btn.textContent;btn.textContent='✅ Copied!';btn.classList.add('copied');
-    setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
+  if(!msg||msg.includes('<description>')){setCopyStatus('Add a short description before copying.','warn');return;}
+  var selector=mode==='full'?'.copy-btn-sec':'.copy-btn:not(.copy-btn-sec)';
+  var btn=document.querySelector(selector);
+  copyText(msg).then(function(){
+    if(btn){
+      var orig=btn.textContent;
+      btn.textContent='Copied';
+      btn.classList.add('copied');
+      setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},1800);
+    }
+    setCopyStatus(mode==='full'?'Full commit message copied.':'Commit header copied.','ok');
+  }).catch(function(){setCopyStatus('Copy failed. Select the generated message and copy manually.','warn');});
+}
+
+function copyText(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(text);}
+  return new Promise(function(resolve,reject){
+    var ta=document.createElement('textarea');
+    ta.value=text;
+    ta.setAttribute('readonly','');
+    ta.style.position='fixed';
+    ta.style.left='-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try{document.execCommand('copy')?resolve():reject(new Error('copy failed'));}
+    catch(err){reject(err);}
+    finally{document.body.removeChild(ta);}
   });
+}
+
+function setCopyStatus(message,type){
+  var el=document.getElementById('copy-status');
+  el.textContent=message;
+  el.className='copy-status '+(type||'');
 }
 
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function renderExamples(){
   var grid=document.getElementById('examples-grid');
-  grid.innerHTML=EXAMPLES.map(function(ex){
-    var t=TYPES.find(function(x){return x.type===ex.type;})||TYPES[0];
-    var msg=t.type+(ex.scope?'('+ex.scope+')':'')+': '+ex.desc;
-    return '<div class="example-card" onclick="useExample('+JSON.stringify(ex).replace(/"/g,'&quot;')+')">'+
-      '<span class="example-type">'+t.emoji+' '+t.type+'</span>'+
+  grid.innerHTML=EXAMPLES.map(function(ex,i){
+    var msg=ex.type+(ex.scope?'('+ex.scope+')':'')+': '+ex.desc;
+    return '<button type="button" class="example-card" data-example="'+i+'">'+
+      '<span class="example-type">'+ex.type+'</span>'+
       '<div class="example-msg">'+escHtml(msg)+'</div>'+
-      '<div class="example-hint">Click to use this template</div>'+
-    '</div>';
+      '<div class="example-hint">Use this template</div>'+
+    '</button>';
   }).join('');
+  grid.querySelectorAll('.example-card').forEach(function(btn){
+    btn.addEventListener('click',function(){useExample(EXAMPLES[Number(btn.getAttribute('data-example'))]);});
+  });
 }
 
 function useExample(ex){
@@ -401,8 +412,15 @@ function useExample(ex){
   document.getElementById('description').value=ex.desc||'';
   document.getElementById('body').value=ex.body||'';
   document.getElementById('issue-ref').value=ex.issue||'';
+  document.getElementById('breaking-desc').value=ex.breakDesc||'';
+  isBreaking=!!ex.breakDesc;
+  var toggle=document.getElementById('breaking-toggle');
+  toggle.classList.toggle('on',isBreaking);
+  toggle.setAttribute('aria-pressed',String(isBreaking));
+  document.getElementById('breaking-icon').textContent=isBreaking?'ON':'OFF';
+  document.getElementById('breaking-desc-field').style.display=isBreaking?'block':'none';
   generate();
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
 
 renderTypes();
@@ -411,6 +429,5 @@ generate();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

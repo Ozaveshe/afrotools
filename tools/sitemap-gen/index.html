@@ -5,17 +5,17 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XML Sitemap Generator | AfroTools</title>
-<meta name="description" content="Generate XML sitemaps for your website. Enter URLs manually or paste a list. Set priority, change frequency, and download a valid sitemap.xml file.">
+<meta name="description" content="Generate a single-host XML sitemap for your website. Paste paths or URLs, catch duplicates and off-domain entries, then copy or download sitemap.xml.">
 <link rel="canonical" href="https://afrotools.com/tools/sitemap-gen/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="XML Sitemap Generator | AfroTools"><meta property="og:description" content="Generate valid XML sitemaps for SEO.">
+<meta property="og:title" content="XML Sitemap Generator | AfroTools"><meta property="og:description" content="Create single-host XML sitemap files with local checks for duplicates and off-domain URLs.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/sitemap-gen.webp"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/sitemap-gen/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91"><link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957"><script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957"><script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script><script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script><script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
@@ -29,13 +29,14 @@ h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
 .card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
 label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input,select{width:100%;min-height:44px;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
 input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
 textarea{width:100%;padding:12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.78rem;background:#1e293b;font-family:'Courier New',monospace;box-sizing:border-box;resize:vertical;min-height:200px;color:#e2e8f0}
 textarea:focus{outline:none;border-color:var(--accent)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.field{margin-bottom:14px}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}.btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease,box-shadow .2s ease}.btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
 .btn-outline{background:transparent;border:1.5px solid #cbd5e1;color:#475569}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.faq-item summary:focus-visible{outline:3px solid rgba(14,165,233,.35);outline-offset:2px}
 .btn-block{display:block;width:100%;text-align:center;justify-content:center;margin-top:18px}
 .btn-group{display:flex;gap:8px;margin-top:12px}
 .url-list{margin-top:10px}
@@ -44,14 +45,18 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .output-area{background:#1e293b;border-radius:8px;padding:16px;margin-top:14px;max-height:400px;overflow:auto}
 .output-area pre{color:#e2e8f0;font-size:.74rem;font-family:'Courier New',monospace;white-space:pre-wrap;margin:0;line-height:1.5}
 .output-area .tag{color:#7dd3fc}.output-area .attr{color:#fbbf24}.output-area .val{color:#86efac}
+.sitemap-status{border:1px solid #bae6fd;background:#f0f9ff;color:#075985;border-radius:8px;padding:10px 12px;font-size:.78rem;line-height:1.5}
+.sitemap-status.is-warning{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.sitemap-status.is-error{border-color:#fecaca;background:#fef2f2;color:#991b1b}
 .stat{display:inline-block;padding:4px 10px;border-radius:4px;font-size:.72rem;font-weight:700;background:#f0f9ff;color:#0284c7;margin-right:8px}
 .sidebar .info-card{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-top:14px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{min-height:44px;display:flex;align-items:center;font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr;padding:0 14px}.card-head,.card-body{padding-left:16px;padding-right:16px}.row3{grid-template-columns:1fr}.actions{align-items:stretch}.actions .btn{width:100%;justify-content:center}.output-area{max-width:100%;overflow-x:auto}}
+@media(prefers-reduced-motion:reduce){.btn{transition:none}}
 </style>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
@@ -61,7 +66,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="XML Sitemap Generator | AfroTools">
-<meta name="twitter:description" content="Generate valid XML sitemaps for SEO.">
+<meta name="twitter:description" content="Create single-host XML sitemap files with local checks for duplicates and off-domain URLs.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/sitemap-gen.webp">
 <script type="application/ld+json">
 {
@@ -94,7 +99,6 @@ textarea:focus{outline:none;border-color:var(--accent)}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-sitemap/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-sitemap/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sitemap-gen/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -102,26 +106,26 @@ textarea:focus{outline:none;border-color:var(--accent)}
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use Sitemap Generator?",
+      "name": "How should I use this XML sitemap generator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Enter your website base URL, paste one path or URL per line, generate the XML, then copy or download sitemap.xml for review before uploading it to your site."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on Sitemap Generator?",
+      "name": "What should I verify before uploading a sitemap?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "Check that every URL belongs to one host, resolves publicly, uses the intended canonical URL, is not blocked by robots.txt or noindex, and stays under the sitemap protocol limits."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Sitemap Generator an official result?",
+      "name": "Does a sitemap guarantee indexing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. A sitemap helps search engines discover URLs, but it is not an indexing guarantee. Search engines decide what to crawl and index."
       }
     }
   ],
@@ -136,7 +140,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Sitemap Generator</span></div>
 <h1>XML <em>Sitemap</em> Generator</h1>
-<p class="hero-sub">Generate valid XML sitemaps for search engines. Add URLs manually, paste a list, or use bulk patterns. Download a ready-to-upload sitemap.xml file.</p>
+<p class="hero-sub">Generate a single-host XML sitemap for search-engine discovery. Paste paths or URLs, catch off-domain entries, and download a clean sitemap.xml starter.</p>
 <div class="hero-badges"><span class="badge b-em">XML Sitemaps</span><span class="badge b-em">SEO Tool</span><span class="badge b-em">Download .xml</span></div>
 </div></section>
 
@@ -145,18 +149,18 @@ textarea:focus{outline:none;border-color:var(--accent)}
 <div class="card">
 <div class="card-head"><span class="card-title">Add URLs</span></div>
 <div class="card-body">
-<div class="field"><label>Base URL</label><input aria-label="Https://yoursite.com" type="url" id="baseUrl" value="https://example.com" placeholder="https://yoursite.com"></div>
+<div class="field"><label for="baseUrl">Base URL</label><input aria-label="Website base URL" type="url" id="baseUrl" value="https://example.com" placeholder="https://yoursite.com"></div>
 <div class="row field">
-<div><label>Default Change Frequency</label>
-<select id="defaultFreq" aria-label="Default Freq">
+<div><label for="defaultFreq">Default Change Frequency</label>
+<select id="defaultFreq" aria-label="Default change frequency">
 <option value="daily">Daily</option>
 <option value="weekly" selected>Weekly</option>
 <option value="monthly">Monthly</option>
 <option value="yearly">Yearly</option>
 <option value="never">Never</option>
 </select></div>
-<div><label>Default Priority</label>
-<select id="defaultPriority" aria-label="Default Priority">
+<div><label for="defaultPriority">Default Priority</label>
+<select id="defaultPriority" aria-label="Default priority">
 <option value="1.0">1.0 (Highest)</option>
 <option value="0.8" selected>0.8</option>
 <option value="0.6">0.6</option>
@@ -166,7 +170,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 </select></div>
 </div>
 <div class="field">
-<label>Paste URLs (one per line)</label>
+<label for="urlInput">Paste URLs (one per line)</label>
 <textarea id="urlInput" style="background:#f8fafc;color:var(--afro-dark);min-height:120px" placeholder="/
 /about/
 /products/
@@ -188,9 +192,10 @@ textarea:focus{outline:none;border-color:var(--accent)}
 <div><span class="stat" id="urlCount"></span></div>
 </div>
 <div class="card-body">
+<div class="sitemap-status" id="sitemapStatus" aria-live="polite"></div>
 <div class="btn-group">
 <button type="button" class="btn btn-primary" onclick="downloadXML()">Download sitemap.xml</button>
-<button type="button" class="btn btn-outline" onclick="copyXML(event)">Copy to Clipboard</button>
+<button type="button" class="btn btn-outline" onclick="copyXML(event)" aria-live="polite">Copy to Clipboard</button>
 </div>
 <div class="output-area"><pre id="xmlOutput"></pre></div>
 </div></div>
@@ -200,7 +205,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 <div class="card">
 <div class="card-head"><span class="card-title">Sitemap Guide</span></div>
 <div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p><strong>What:</strong> An XML file that lists all pages you want search engines to index.</p>
+<p><strong>What:</strong> An XML file that lists public pages you want search engines to discover.</p>
 <p style="margin-top:6px"><strong>Where:</strong> Upload to your domain root: <code>yoursite.com/sitemap.xml</code></p>
 <p style="margin-top:6px"><strong>Submit to:</strong> Google Search Console, Bing Webmaster Tools</p>
 <p style="margin-top:6px"><strong>Limit:</strong> Max 50,000 URLs or 50MB per sitemap. Use sitemap index for larger sites.</p>
@@ -215,6 +220,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 <li><strong>0.3:</strong> Archive, tag pages</li>
 <li><strong>0.1:</strong> Legal, privacy pages</li>
 </ul>
+<p style="margin-top:8px">Priority is optional and relative within your site. It is not a ranking boost.</p>
 </div>
 <div class="info-card" style="margin-top:10px">
 <h4>robots.txt Entry</h4>
@@ -226,41 +232,16 @@ textarea:focus{outline:none;border-color:var(--accent)}
 
 <section class="seo-section">
 <h2>Why Your Website Needs a Sitemap</h2>
-<p>An XML sitemap is a file that tells search engines about the pages on your website that you want them to crawl and index. While search engines like Google can discover pages by following links, a sitemap ensures that all important pages are found — especially new pages, pages with few incoming links, and pages deep in your site's architecture. For any website serious about SEO, a sitemap is not optional; it's essential.</p>
-<p>Google recommends sitemaps for sites with more than 500 pages, new sites with few external links, sites with rich media content, and sites that are not well internally linked. However, even small sites benefit from having a sitemap because it provides explicit signals about page priority and update frequency, helping search engines allocate their crawl budget more efficiently.</p>
-<p>A valid XML sitemap follows the Sitemap Protocol (sitemaps.org). Each URL entry can include four optional tags: <code>&lt;loc&gt;</code> (the URL itself — required), <code>&lt;lastmod&gt;</code> (last modification date), <code>&lt;changefreq&gt;</code> (how often the page changes), and <code>&lt;priority&gt;</code> (relative importance from 0.0 to 1.0). While Google has stated that it primarily uses <code>&lt;loc&gt;</code> and <code>&lt;lastmod&gt;</code>, providing all tags creates a more complete picture of your site structure.</p>
-<p>After generating your sitemap, upload it to the root of your domain (e.g., https://yoursite.com/sitemap.xml), reference it in your robots.txt file, and submit it through Google Search Console and Bing Webmaster Tools. Monitor the Index Coverage report in Search Console to ensure all submitted URLs are being indexed as expected.</p>
+<p>An XML sitemap is a file that lists pages you want search engines to discover. Search engines can also discover pages by following links, so a sitemap is strongest when it complements clear internal linking and clean canonical URLs.</p>
+<p>Google recommends sitemaps for large sites, new sites with few external links, sites with rich media, and sites whose pages are not well linked together. Smaller sites can still use a sitemap as a tidy discovery file, but it is not an indexing guarantee.</p>
+<p>A sitemap must follow the Sitemap Protocol: one host per file, UTF-8 XML, a required <code>&lt;loc&gt;</code> for each URL, and no more than 50,000 URLs or 50MB uncompressed. Optional fields such as <code>&lt;changefreq&gt;</code> and <code>&lt;priority&gt;</code> are hints, and search engines may ignore them.</p>
+<p>This generator omits <code>&lt;lastmod&gt;</code> because a useful last-modified date should reflect the page's actual modification date, not the moment the sitemap file was generated. Add <code>&lt;lastmod&gt;</code> only when your CMS or release process can provide accurate page dates.</p>
 
 <h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>How many URLs can a sitemap contain?</summary><p>A single sitemap file can contain up to 50,000 URLs and must not exceed 50MB (uncompressed). For larger sites, create a sitemap index file that references multiple sitemap files. You can also gzip compress your sitemaps to reduce file size and bandwidth.</p></details>
-<details class="faq-item"><summary>Does priority actually affect rankings?</summary><p>Google has stated that it "does not currently use the priority signal in sitemaps." However, it's still good practice to include it as other search engines may use it, and it helps document your site's structure for your own reference. Focus more on accurate lastmod dates, which Google does use.</p></details>
+<details class="faq-item"><summary>How many URLs can a sitemap contain?</summary><p>A single sitemap file can contain up to 50,000 URLs and must not exceed 50MB uncompressed. For larger sites, create a sitemap index file that references multiple sitemap files. You can also gzip compress your sitemaps to reduce file size and bandwidth.</p></details>
+<details class="faq-item"><summary>Does priority affect rankings?</summary><p>No. Priority is optional and relative within your own site. It can document which URLs matter most to you, but it is not a search ranking boost.</p></details>
 </section>
 
-
-<section class="df-upgrade" data-df-upgrade="sitemap-gen">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Sitemap Generator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for sitemap generator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Sitemap Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="sitemap-gen">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="sitemap-gen" data-df-base="Sitemap Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Sitemap Generator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="sitemap-gen">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="sitemap-gen-faq-title">
-  <h2 id="sitemap-gen-faq-title">Sitemap Generator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <section class="tool-verification-sec" data-tool-verification-panel="sitemap-gen">
@@ -311,51 +292,111 @@ textarea:focus{outline:none;border-color:var(--accent)}
 let xmlContent='';
 
 function generate(){
-  const baseUrl=document.getElementById('baseUrl').value.replace(/\/$/,'');
+  const baseInput=document.getElementById('baseUrl').value.trim();
+  const baseUrl=parseBaseUrl(baseInput);
   const freq=document.getElementById('defaultFreq').value;
   const priority=document.getElementById('defaultPriority').value;
   const urlText=document.getElementById('urlInput').value.trim();
 
-  if(!baseUrl){alert('Please enter a base URL');return;}
+  if(!baseUrl){
+    showResult('',0,['Enter a valid http or https base URL, such as https://example.com.'],'error');
+    return;
+  }
 
-  const urls=urlText.split('\n').map(u=>u.trim()).filter(u=>u);
-  if(!urls.length){alert('Please add at least one URL');return;}
+  const rawUrls=urlText.split('\n').map(u=>u.trim()).filter(u=>u);
+  if(!rawUrls.length){
+    showResult('',0,['Add at least one URL path or absolute URL.'],'error');
+    return;
+  }
 
-  const today=new Date().toISOString().split('T')[0];
+  const urls=[];
+  const seen=new Set();
+  const warnings=[];
+
+  rawUrls.forEach(raw=>{
+    const parsed=normalizeSitemapUrl(raw,baseUrl);
+    if(!parsed){
+      warnings.push('Skipped invalid URL: '+raw);
+      return;
+    }
+    if(parsed.hostname!==baseUrl.hostname){
+      warnings.push('Skipped different host: '+parsed.href);
+      return;
+    }
+    parsed.hash='';
+    const href=parsed.href;
+    if(seen.has(href)){
+      warnings.push('Skipped duplicate URL: '+href);
+      return;
+    }
+    seen.add(href);
+    urls.push(href);
+  });
+
+  if(urls.length>50000){
+    warnings.push('Only the first 50,000 URLs were included to stay within the sitemap protocol limit.');
+    urls.length=50000;
+  }
+
+  if(!urls.length){
+    showResult('',0,warnings.concat('No same-host URLs were available for the sitemap.'),'error');
+    return;
+  }
 
   let xml='<?xml version="1.0" encoding="UTF-8"?>\n';
   xml+='<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
-  urls.forEach(u=>{
-    let fullUrl=u;
-    if(u.startsWith('/'))fullUrl=baseUrl+u;
-    else if(!u.startsWith('http'))fullUrl=baseUrl+'/'+u;
-
-    // Auto-assign priority
+  urls.forEach(href=>{
+    const parsed=new URL(href);
     let p=priority;
-    if(u==='/'||u==='')p='1.0';
-    else if(u.split('/').filter(s=>s).length===1)p=Math.max(parseFloat(priority),0.8).toString();
+    const depth=parsed.pathname.split('/').filter(Boolean).length;
+    if(parsed.pathname==='/'||parsed.pathname==='')p='1.0';
+    else if(depth===1)p=Math.max(parseFloat(priority),0.8).toFixed(1);
 
     xml+='  <url>\n';
-    xml+=`    <loc>${escapeXml(fullUrl)}</loc>\n`;
-    xml+=`    <lastmod>${today}</lastmod>\n`;
+    xml+=`    <loc>${escapeXml(href)}</loc>\n`;
     xml+=`    <changefreq>${freq}</changefreq>\n`;
     xml+=`    <priority>${p}</priority>\n`;
     xml+='  </url>\n';
   });
 
   xml+='</urlset>';
+  const messages=[urls.length+' same-host URLs generated. Add lastmod only when you have actual page modified dates.'].concat(warnings);
+  showResult(xml,urls.length,messages,warnings.length?'warning':'ok');
+}
+
+function parseBaseUrl(value){
+  try{
+    const url=new URL(value);
+    if(url.protocol!=='http:'&&url.protocol!=='https:')return null;
+    url.pathname=url.pathname.replace(/\/?$/,'/');
+    url.search='';
+    url.hash='';
+    return url;
+  }catch(err){
+    return null;
+  }
+}
+
+function normalizeSitemapUrl(raw,baseUrl){
+  try{
+    const value=raw.trim();
+    const url=/^https?:\/\//i.test(value)?new URL(value):new URL(value,baseUrl.href);
+    if(url.protocol!=='http:'&&url.protocol!=='https:')return null;
+    return url;
+  }catch(err){
+    return null;
+  }
+}
+
+function showResult(xml,count,messages,state){
   xmlContent=xml;
-
-  // Syntax highlight
-  const highlighted=xml
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/(&lt;\/?[\w:]+)/g,'<span class="tag">$1</span>')
-    .replace(/(xmlns|encoding|version)(=)/g,'<span class="attr">$1</span>$2')
-    .replace(/"([^"]*)"/g,'"<span class="val">$1</span>"');
-
-  document.getElementById('xmlOutput').innerHTML=highlighted;
-  document.getElementById('urlCount').textContent=urls.length+' URLs';
+  const status=document.getElementById('sitemapStatus');
+  const output=document.getElementById('xmlOutput');
+  status.className='sitemap-status'+(state==='warning'?' is-warning':state==='error'?' is-error':'');
+  status.textContent=messages.join(' ');
+  output.textContent=xml;
+  document.getElementById('urlCount').textContent=count+' URLs';
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
@@ -368,19 +409,41 @@ function downloadXML(){
   if(!xmlContent)return;
   const blob=new Blob([xmlContent],{type:'application/xml'});
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
+  const url=URL.createObjectURL(blob);
+  a.href=url;
   a.download='sitemap.xml';
+  document.body.appendChild(a);
   a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 function copyXML(event){
   if(!xmlContent)return;
-  navigator.clipboard.writeText(xmlContent).then(()=>{
+  const fallback=()=>{
+    const textarea=document.createElement('textarea');
+    textarea.value=xmlContent;
+    textarea.setAttribute('readonly','');
+    textarea.style.position='fixed';
+    textarea.style.opacity='0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try{document.execCommand('copy');}catch(err){}
+    textarea.remove();
+    markCopied(event);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(xmlContent).then(()=>markCopied(event)).catch(fallback);
+  }else{
+    fallback();
+  }
+}
+
+function markCopied(event){
     const btn=event&&event.target?event.target:document.querySelector('button[onclick^="copyXML"]');
     if(!btn)return;
     btn.textContent='Copied!';
     setTimeout(()=>btn.textContent='Copy to Clipboard',2000);
-  });
 }
 </script>
 
@@ -396,6 +459,5 @@ function copyXML(event){
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

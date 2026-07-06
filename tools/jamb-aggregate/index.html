@@ -70,6 +70,38 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/jamb-aggregate/" />
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="jamb-action-pack-style">
+  .jamb-action-pack{margin-top:16px;padding:18px;border:1px solid var(--jamb-border);border-radius:var(--jamb-radius);background:#fff}
+  .jamb-action-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+  .jamb-action-head h3{margin:0 0 4px;font-size:1rem;letter-spacing:0}
+  .jamb-action-head p{margin:0;color:var(--jamb-text-secondary);font-size:.84rem;line-height:1.55}
+  .jamb-action-buttons{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .jamb-action-buttons .jamb-btn{padding:9px 14px;font-size:.8rem}
+  .jamb-action-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+  .jamb-action-summary div{padding:11px;border:1px solid var(--jamb-border);border-radius:10px;background:var(--jamb-primary-mid)}
+  .jamb-action-summary strong{display:block;color:var(--jamb-accent);font-family:var(--jamb-mono);font-size:1rem;line-height:1.15;overflow-wrap:anywhere}
+  .jamb-action-summary span{display:block;margin-top:4px;color:var(--jamb-text-secondary);font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  .jamb-action-checks{display:grid;gap:8px}
+  .jamb-action-check{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start;padding:10px;border:1px solid var(--jamb-border);border-radius:10px;background:#fff}
+  .jamb-action-check i{width:9px;height:9px;border-radius:99px;background:var(--jamb-accent);margin-top:.42rem}
+  .jamb-action-check b{display:block;color:var(--jamb-text);font-size:.82rem;line-height:1.35}
+  .jamb-action-check small{display:block;color:var(--jamb-text-secondary);font-size:.75rem;line-height:1.45;margin-top:2px}
+  .jamb-action-status{min-height:1.2em;margin-top:10px;color:var(--jamb-text-secondary);font-size:.78rem}
+  .jamb-input-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .jamb-input-actions .jamb-btn{margin:0}
+  .jamb-form-status{min-height:1.35em;margin-top:10px;color:var(--jamb-accent);font-size:.84rem;font-weight:800}
+  .jamb-form-status.is-error{color:#b91c1c}
+  .jamb-form-status.is-ok{color:#166534}
+  .jamb-page .jamb-card{max-width:100%;min-width:0;overflow:hidden}
+  .jamb-page .jamb-tabs{display:flex;flex-wrap:wrap;overflow:visible;gap:8px}
+  .jamb-page .jamb-tab{flex:1 1 96px;min-width:0;white-space:normal;text-align:center}
+  .jamb-page .jamb-table-wrap{max-width:100%;overflow-y:auto;overflow-x:hidden}
+  .jamb-page .jamb-cutoff-table{width:100%;table-layout:fixed}
+  .jamb-page .jamb-cutoff-table th,
+  .jamb-page .jamb-cutoff-table td{overflow-wrap:anywhere;word-break:normal}
+  @media(max-width:640px){.jamb-action-head{grid-template-columns:1fr}.jamb-action-buttons{display:grid;grid-template-columns:1fr;justify-content:stretch}.jamb-action-summary{grid-template-columns:1fr}}
+  @media(max-width:640px){.jamb-input-actions{display:grid;grid-template-columns:1fr}.jamb-page .jamb-tab{flex:1 1 calc(50% - 8px);padding-inline:10px}.jamb-page .jamb-cutoff-table th,.jamb-page .jamb-cutoff-table td{padding-inline:8px;font-size:.78rem}}
+</style>
 </head>
 <body class="jamb-page top-level-page-ui-refresh">
     <afro-navbar active="tools"></afro-navbar>
@@ -106,7 +138,7 @@
           <div style="flex:1;min-width:240px;">
             <div style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);border-radius:100px;font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fbbf24;">2027 PREP</div>
             <div style="font-size:1.1rem;font-weight:800;margin-top:6px;">AfroJAMB: start the next cycle early</div>
-            <div style="font-size:.82rem;color:rgba(255,255,255,.8);margin-top:2px;">Use CBT mocks, past questions and AI explanations to build a baseline before the next official timetable is published.</div>
+            <div style="font-size:.82rem;color:rgba(255,255,255,.8);margin-top:2px;">Use CBT mocks, past questions and worked review notes to build a baseline before the next official timetable is published.</div>
           </div>
           <div style="padding:10px 18px;background:#f59e0b;color:#1a1000;border-radius:8px;font-weight:800;font-size:.82rem;flex-shrink:0;">Start 2027 prep →</div>
         </a>
@@ -165,6 +197,11 @@
                 <button type="button" class="jamb-btn jamb-btn-primary" onclick="calculate()">Calculate Aggregate</button>
                 <button type="button" class="jamb-btn jamb-btn-secondary" onclick="resetForm()">Reset</button>
             </div>
+            <div class="jamb-input-actions" aria-label="JAMB quick actions">
+                <button type="button" class="jamb-btn jamb-btn-secondary" onclick="loadJambSample()">Load sample scores</button>
+                <button type="button" class="jamb-btn jamb-btn-secondary" onclick="clearJambSample()">Clear inputs</button>
+            </div>
+            <div class="jamb-form-status" id="jambFormStatus" aria-live="polite"></div>
         </div>
 
         <!-- Result -->
@@ -186,6 +223,22 @@
             <div class="jamb-breakdown" id="breakdownBox">
                 <h3>Calculation Breakdown</h3>
                 <div class="jamb-breakdown-steps" id="breakdown"></div>
+            </div>
+            <div class="jamb-action-pack" id="jambActionPack" aria-live="polite">
+                <div class="jamb-action-head">
+                    <div>
+                        <h3>Admission action pack</h3>
+                        <p>Turn this score into a shortlist, cutoff gap, and next prep plan.</p>
+                    </div>
+                    <div class="jamb-action-buttons">
+                        <button type="button" class="jamb-btn jamb-btn-secondary" onclick="copyJambActionPack()">Copy plan</button>
+                        <button type="button" class="jamb-btn jamb-btn-primary" onclick="downloadJambActionPack()">Download TXT</button>
+                        <button type="button" class="jamb-btn jamb-btn-secondary" onclick="saveJambActionPack()">Save locally</button>
+                    </div>
+                </div>
+                <div class="jamb-action-summary" id="jambActionSummary"></div>
+                <div class="jamb-action-checks" id="jambActionChecks"></div>
+                <div class="jamb-action-status" id="jambActionStatus" role="status"></div>
             </div>
         </div>
 
@@ -428,6 +481,7 @@
         ];
 
         var selectedFormula = 'standard';
+        var lastJambResult = null;
 
         function init() {
             // Build subject grade selectors
@@ -437,6 +491,8 @@
                 lbl.textContent = 'Subject ' + (i + 1);
                 var sel = document.createElement('select');
                 sel.id = 'subj' + i;
+                lbl.htmlFor = sel.id;
+                sel.setAttribute('aria-label', 'O Level grade for subject ' + (i + 1));
                 sel.className = 'jamb-select';
                 var optDef = document.createElement('option');
                 optDef.value = ''; optDef.textContent = '-- Grade --';
@@ -504,12 +560,54 @@
             return total;
         }
 
+        function setJambFormStatus(message, type) {
+            var el = document.getElementById('jambFormStatus');
+            if (!el) return;
+            el.textContent = message || '';
+            el.classList.toggle('is-error', type === 'error');
+            el.classList.toggle('is-ok', type === 'ok');
+        }
+
+        function setJambField(id, value) {
+            var el = document.getElementById(id);
+            if (el) el.value = value;
+        }
+
+        function loadJambSample() {
+            setJambField('utme', 280);
+            setJambField('postUtme', 68);
+            setJambField('uniSelect', 'University of Lagos (UNILAG)');
+            document.getElementById('uniSelect').dispatchEvent(new Event('change'));
+            setJambField('courseSelect', 'Computer Science');
+            for (var i = 0; i < 5; i++) {
+                setJambField('subj' + i, i < 2 ? 6 : 5);
+            }
+            setJambFormStatus('Sample scores loaded. Calculate to compare the aggregate with a listed cutoff.', 'ok');
+        }
+
+        function clearJambSample() {
+            resetForm();
+            setJambFormStatus('Inputs cleared. Enter your scores or load the sample to try the calculator.', '');
+        }
+
         function calculate() {
             var utme = parseFloat(document.getElementById('utme').value);
             var postUtme = parseFloat(document.getElementById('postUtme').value);
-            if (isNaN(utme) || isNaN(postUtme)) { AfroTools.toast.error('Please enter both UTME and Post-UTME scores.'); return; }
-            if (utme < 0 || utme > 400) { AfroTools.toast.error('UTME score must be between 0 and 400.'); return; }
-            if (postUtme < 0 || postUtme > 100) { AfroTools.toast.error('Post-UTME score must be between 0 and 100.'); return; }
+            if (isNaN(utme) || isNaN(postUtme)) {
+                setJambFormStatus('Enter both UTME and Post-UTME scores before calculating.', 'error');
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Please enter both UTME and Post-UTME scores.');
+                return;
+            }
+            if (utme < 0 || utme > 400) {
+                setJambFormStatus('UTME score must be between 0 and 400.', 'error');
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('UTME score must be between 0 and 400.');
+                return;
+            }
+            if (postUtme < 0 || postUtme > 100) {
+                setJambFormStatus('Post-UTME score must be between 0 and 100.', 'error');
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Post-UTME score must be between 0 and 100.');
+                return;
+            }
 
             var aggregate = 0, steps = '';
             var olevel = getOlevelTotal();
@@ -528,7 +626,11 @@
                     for (var j = 0; j < 5; j++) {
                         if (document.getElementById('subj' + j).value === '') { hasEmptyOlevel = true; break; }
                     }
-                    if (hasEmptyOlevel) { AfroTools.toast.error('Please select a grade for all 5 O\'Level subjects.'); return; }
+                    if (hasEmptyOlevel) {
+                        setJambFormStatus('Select a grade for all 5 O Level subjects before using the UI formula.', 'error');
+                        if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Please select a grade for all 5 O\'Level subjects.');
+                        return;
+                    }
                     aggregate = ((utme / 4) * 0.375) + (postUtme * 0.25) + (olevel * 0.375);
                     steps = 'UTME: (' + utme + ' / 4) × 0.375 = ' + ((utme/4)*0.375).toFixed(2) + '\nPost-UTME: ' + postUtme + ' × 0.25 = ' + (postUtme*0.25).toFixed(2) + '\nO\'Level: ' + olevel + ' × 0.375 = ' + (olevel*0.375).toFixed(2) + '\nAggregate: ' + ((utme/4)*0.375).toFixed(2) + ' + ' + (postUtme*0.25).toFixed(2) + ' + ' + (olevel*0.375).toFixed(2) + ' = ' + aggregate.toFixed(2);
                     break;
@@ -551,19 +653,37 @@
             var uni = document.getElementById('uniSelect').value;
             var course = document.getElementById('courseSelect').value;
             var cutoffDiv = document.getElementById('cutoffResult');
+            var cutoffMatch = null;
+            var passed = null;
             if (uni && course) {
                 var match = CUTOFFS.find(function(c) { return c.uni === uni && c.course === course; });
                 if (match) {
+                    cutoffMatch = match;
                     cutoffDiv.classList.remove('hidden');
                     document.getElementById('cutoffUni').textContent = match.uni;
                     document.getElementById('cutoffCourse').textContent = match.course;
                     document.getElementById('cutoffVal').textContent = match.cutoff;
-                    var passed = aggregate >= match.cutoff;
+                    passed = aggregate >= match.cutoff;
                     var ps = document.getElementById('passStatus');
                     ps.textContent = passed ? 'LIKELY QUALIFIES' : 'BELOW CUTOFF';
                     ps.className = 'jamb-pass-status ' + (passed ? 'pass' : 'fail');
                 } else { cutoffDiv.classList.add('hidden'); }
             } else { cutoffDiv.classList.add('hidden'); }
+
+            lastJambResult = {
+                utme: utme,
+                postUtme: postUtme,
+                formula: FORMULAS[selectedFormula].name,
+                aggregate: aggregate,
+                steps: steps,
+                olevel: FORMULAS[selectedFormula].needsOlevel ? olevel : null,
+                university: uni,
+                course: course,
+                cutoff: cutoffMatch ? cutoffMatch.cutoff : null,
+                passed: passed
+            };
+            renderJambActionPack();
+            setJambFormStatus('Aggregate calculated. Review the cutoff comparison and action pack below.', 'ok');
 
             document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -576,6 +696,137 @@
             if (window.AfroEdu && typeof AfroEdu.recordRealJambScore === 'function') {
               try { AfroEdu.recordRealJambScore(Math.round(utme)); } catch (e) {}
             }
+        }
+
+        function selectedText(id) {
+            var el = document.getElementById(id);
+            return el && el.selectedOptions && el.selectedOptions[0] ? el.selectedOptions[0].textContent.trim() : '';
+        }
+
+        function jambActionChecks(result) {
+            if (!result) return [];
+            var checks = [];
+            if (result.cutoff !== null) {
+                var gap = result.aggregate - result.cutoff;
+                checks.push({
+                    title: result.passed ? 'Cutoff position' : 'Cutoff gap',
+                    detail: result.passed ? 'You are ' + gap.toFixed(2) + ' points above this listed cutoff estimate.' : 'You are ' + Math.abs(gap).toFixed(2) + ' points below this listed cutoff estimate. Build a safer backup list.'
+                });
+            } else {
+                checks.push({ title: 'Select a target', detail: 'Choose a university and course to compare this aggregate with a listed cutoff estimate.' });
+            }
+            checks.push({ title: 'O-Level check', detail: 'Confirm your five relevant O-Level credits and subject combination in the WAEC/NECO calculator.' });
+            checks.push({ title: 'Prep next step', detail: result.passed ? 'Save this result and prepare documents, screening dates, and backup choices.' : 'Use flashcards and a study plan to raise weak subjects before the next screening.' });
+            return checks;
+        }
+
+        function buildJambActionText() {
+            var result = lastJambResult;
+            if (!result) return 'No JAMB aggregate result yet. Enter UTME and Post-UTME scores first.';
+            var uniText = selectedText('uniSelect') || result.university || 'Not selected';
+            var courseText = selectedText('courseSelect') || result.course || 'Not selected';
+            var lines = [
+                'AfroTools JAMB Admission Action Pack',
+                'Formula: ' + result.formula,
+                'UTME: ' + result.utme,
+                'Post-UTME: ' + result.postUtme,
+                'Aggregate: ' + result.aggregate.toFixed(2),
+                'University: ' + uniText,
+                'Course: ' + courseText
+            ];
+            if (result.cutoff !== null) {
+                var gap = result.aggregate - result.cutoff;
+                lines.push('Listed cutoff estimate: ' + result.cutoff);
+                lines.push('Position: ' + (result.passed ? gap.toFixed(2) + ' above cutoff' : Math.abs(gap).toFixed(2) + ' below cutoff'));
+            }
+            if (result.olevel !== null) lines.push('O-Level points used: ' + result.olevel);
+            lines.push('');
+            lines.push('Calculation');
+            lines = lines.concat(result.steps.split('\n').map(function(line) { return '- ' + line; }));
+            lines.push('');
+            lines.push('Next checks');
+            jambActionChecks(result).forEach(function(item) { lines.push('- ' + item.title + ': ' + item.detail); });
+            lines.push('');
+            lines.push('Tools');
+            lines.push('WAEC/NECO action pack: https://afrotools.com/tools/waec-calculator/');
+            lines.push('Flashcards: https://afrotools.com/tools/flashcard-maker/?deck=jamb-english');
+            lines.push('Study planner: https://afrotools.com/tools/study-planner/?exam=jamb');
+            lines.push('Education hub: https://afrotools.com/tools/education-hub/');
+            lines.push('');
+            lines.push('Cutoffs vary by year, applicant pool, and institution. Confirm final screening rules with JAMB and the university before applying.');
+            return lines.join('\n');
+        }
+
+        function setJambActionStatus(message) {
+            var el = document.getElementById('jambActionStatus');
+            if (el) el.textContent = message || '';
+        }
+
+        function copyJambActionPack() {
+            var text = buildJambActionText();
+            function done() { setJambActionStatus('Admission plan copied.'); }
+            function fallback() {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); done(); }
+                catch(e) { setJambActionStatus('Copy failed. Download the TXT plan instead.'); }
+                document.body.removeChild(ta);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(fallback);
+            else fallback();
+        }
+
+        function downloadJambActionPack() {
+            var text = buildJambActionText();
+            var name = 'jamb-admission-action-pack';
+            if (lastJambResult && lastJambResult.course) name = lastJambResult.course.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-jamb-action-pack';
+            var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = name + '.txt';
+            a.click();
+            URL.revokeObjectURL(a.href);
+            setJambActionStatus('Admission plan downloaded.');
+        }
+
+        function saveJambActionPack() {
+            if (!lastJambResult) {
+                setJambActionStatus('Calculate an aggregate before saving.');
+                return;
+            }
+            try {
+                localStorage.setItem('afrotools_jamb_action_pack', JSON.stringify({
+                    savedAt: new Date().toISOString(),
+                    result: lastJambResult,
+                    text: buildJambActionText()
+                }));
+                setJambActionStatus('Admission plan saved on this device.');
+            } catch(e) {
+                setJambActionStatus('Could not save locally in this browser.');
+            }
+        }
+
+        function renderJambActionPack() {
+            var summary = document.getElementById('jambActionSummary');
+            var checks = document.getElementById('jambActionChecks');
+            if (!summary || !checks || !lastJambResult) return;
+            var cutoffText = lastJambResult.cutoff !== null ? String(lastJambResult.cutoff) : 'Pick target';
+            var statusText = lastJambResult.cutoff === null ? 'No cutoff selected' : (lastJambResult.passed ? 'Above cutoff' : 'Below cutoff');
+            summary.innerHTML = [
+                ['Aggregate', lastJambResult.aggregate.toFixed(2)],
+                ['Cutoff', cutoffText],
+                ['Status', statusText]
+            ].map(function(item) {
+                return '<div><strong>' + item[1] + '</strong><span>' + item[0] + '</span></div>';
+            }).join('');
+            checks.innerHTML = jambActionChecks(lastJambResult).map(function(item) {
+                return '<div class="jamb-action-check"><i></i><div><b>' + item.title + '</b><small>' + item.detail + '</small></div></div>';
+            }).join('');
         }
 
         function renderCutoffTable() {
@@ -592,11 +843,14 @@
             document.getElementById('uniSelect').value = '';
             document.getElementById('courseSelect').innerHTML = '<option value="">-- Select University First --</option>';
             document.getElementById('resultCard').classList.add('hidden');
+            lastJambResult = null;
+            setJambActionStatus('');
+            setJambFormStatus('');
         }
 
         init();
     </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
     <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

@@ -43,6 +43,9 @@ a{text-decoration:none;color:inherit}
 .sn-action-btn:hover{background:#eef2ff}
 .sn-action-btn:focus-visible{outline:2px solid var(--en-accent);outline-offset:2px}
 .sn-status{min-height:1.2em;margin-top:8px;font-size:.78rem;color:#64748b}
+.method-card p{margin:.45rem 0 0;color:#475569;line-height:1.65;font-size:.9rem}
+.method-list{margin:.75rem 0 0;padding-left:1.15rem;color:#475569;line-height:1.65;font-size:.88rem}
+@media(max-width:600px){.sn-actions .sn-action-btn{width:100%}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Career Tools","item":"https://afrotools.com/career/"},{"@type":"ListItem","position":3,"name":"Salary Negotiation Calculator","item":"https://afrotools.com/tools/salary-negotiation/"}]}</script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/salary-negotiation.webp">
@@ -50,7 +53,6 @@ a{text-decoration:none;color:inherit}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/negociation-salaire/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/majadiliano-ya-mshahara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/salary-negotiation/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/career-tool-focus.css?v=98967bec">
 <script type="application/ld+json">
 {
@@ -218,9 +220,20 @@ a{text-decoration:none;color:inherit}
       <div class="sn-actions">
         <button type="button" class="sn-action-btn" onclick="copyNegotiationSummary()">Copy plan</button>
         <button type="button" class="sn-action-btn" data-no-gate="true" onclick="downloadNegotiationSummary()">Download TXT</button>
+        <button type="button" class="sn-action-btn" onclick="saveNegotiationSummary()">Save locally</button>
       </div>
       <div class="sn-status" id="sn-status" role="status" aria-live="polite"></div>
     </div>
+  </div>
+
+  <div class="en-card method-card" aria-labelledby="salary-negotiation-method-title">
+    <div class="en-card-title" id="salary-negotiation-method-title"><div class="en-card-title-icon">CK</div>Method and checks</div>
+    <p>This MVP compares your current pay or offer against country, industry, role, experience, company-size, and location assumptions to produce a target, walk-away floor, counter-offer ask, confidence score, and negotiation script.</p>
+    <ul class="method-list">
+      <li>Use the percentile range as a private planning estimate, then verify current market evidence before speaking with HR, a recruiter, or your manager.</li>
+      <li>Check written benefits, bonus rules, equity terms, probation, notice period, tax effects, remote-work terms, non-compete clauses, and timing before accepting or rejecting an offer.</li>
+      <li>This is career planning support, not legal, tax, immigration, financial, employment, union, or HR policy advice, and it does not guarantee a raise, offer, or promotion.</li>
+    </ul>
   </div>
 
 </div>
@@ -516,43 +529,22 @@ function downloadNegotiationSummary() {
   URL.revokeObjectURL(url);
   status.textContent = 'TXT plan downloaded.';
 }
+
+function saveNegotiationSummary() {
+  var text = buildNegotiationSummary();
+  var status = document.getElementById('sn-status');
+  if (!text) { status.textContent = 'Run the calculator first.'; return; }
+  try {
+    localStorage.setItem('afrotools-salary-negotiation-plan', JSON.stringify({ savedAt: Date.now(), plan: LAST_NEGOTIATION_RESULT, report: text }));
+    status.textContent = 'Negotiation plan saved in this browser.';
+  } catch (err) {
+    status.textContent = 'Could not save locally. Copy or download the plan instead.';
+  }
+}
 </script>
 
-<section class="df-upgrade" data-df-upgrade="salary-negotiation">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Counter-offer planner</span>
-      <h2>Prepare a salary negotiation with evidence</h2>
-      <p>Compare current pay, market target, strongest proof, and walk-away number before negotiating.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: a negotiation plan with target pay, proof points, counter-offer range, walk-away line, and fallback asks.</li><li>Use the main calculator first, then copy the plan before speaking with a recruiter or manager.</li><li>Your salary details stay local unless you choose to copy or save the result.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> No salary outcome is guaranteed. This is career planning support, not legal, tax, immigration, or financial advice. Verify market evidence and contract terms before negotiating.</p>
-    </div>
-    <form class="df-form" data-df-form="salary-negotiation">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Current monthly pay<input name="currentPay" type="number" value="500000" min="0" step="any" aria-label="Current monthly pay"></label>
-      <label>Target monthly pay<input name="targetPay" type="number" value="750000" min="0" step="any" aria-label="Target monthly pay"></label>
-      <label>Proof strength<select name="proof" aria-label="Proof strength"><option value="weak">weak</option><option value="medium">medium</option><option value="strong">strong</option></select></label>
-      <button type="submit">Create negotiation plan</button>
-      <output class="df-result" data-df-result="salary-negotiation" data-df-base="Negotiation plan ready. Calculate above, then verify market range, proof points, counter-offer ask, walk-away line, benefits fallback, and contract terms before starting the conversation." aria-live="polite">Negotiation plan ready. Calculate above, then verify market range, proof points, counter-offer ask, walk-away line, benefits fallback, and contract terms before starting the conversation.</output>
-      <div class="df-actions"><button type="button" data-df-copy="salary-negotiation">Copy negotiation plan</button><a class="df-action-link" href="#results">View range</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq quality-verification-panel" data-tool-verification-panel data-quality-proof="Salary Negotiation Calculator" aria-labelledby="salary-negotiation-verification-title">
-  <h2 id="salary-negotiation-verification-title">Salary negotiation sources and verification</h2>
-  <div class="df-faq__grid">
-    <details open><summary>Sources and methodology</summary><p>The calculator combines the country, industry, role level, experience, company size, location, current pay, and offer you enter with an internal planning table reviewed in 2026. It estimates a walk-away floor, counter-offer ask, target range, confidence score, and conversation script for preparation.</p></details>
-    <details><summary>Before negotiating</summary><p>Verify current market evidence from recent offers, recruiter conversations, salary bands, public job posts, professional communities, and written benefits. Confirm bonus rules, equity, remote-work terms, notice period, probation, tax effects, and contract clauses before accepting or rejecting an offer.</p></details>
-    <details><summary>Privacy and limitations</summary><p>Your salary inputs stay in this browser unless you copy or download the plan. This is career planning support, not legal, tax, immigration, financial, employment, union, or HR policy advice, and it does not guarantee a raise, offer, or promotion.</p></details>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="salary-negotiation-faq-title">
-  <h2 id="salary-negotiation-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Calculate the range, prepare proof points, then copy the negotiation plan before speaking with a recruiter, manager, or HR team.</p></details><details><summary>What should I verify before acting?</summary><p>Check market evidence, competing offers, written benefits, bonus rules, notice period, contract clauses, and the timing of the conversation.</p></details><details><summary>Is this an official result?</summary><p>No. It is career planning support, not legal, tax, immigration, financial, or employment advice.</p></details></div>
-</section>
 <afro-business-cta tool-name="Salary Negotiation Calculator" prospect-segment="career-workforce" save-note="Run the salary plan, then copy or download the negotiation script before discussing a raise, offer, or contract terms."></afro-business-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 <script src="/assets/js/pages/career-tool-focus.js?v=42cb5afb" defer></script>
 </body>
 </html>

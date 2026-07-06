@@ -35,12 +35,36 @@
   "operatingSystem": "Web",
   "url": "https://afrotools.com/tools/docker-compose-gen/",
   "description": "Generate Docker Compose stacks with healthchecks, depends_on conditions, profiles, secrets, environment examples and deployment commands.",
+  "featureList": [
+    "compose.yaml generation",
+    ".env example generation",
+    "Dockerfile starter snippets",
+    "Nginx and Caddy proxy snippets",
+    "Healthcheck and depends_on guidance",
+    "Deployment preflight checklist"
+  ],
+  "browserRequirements": "Runs locally in a modern browser. No Docker command is executed by this page.",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
   "image": "https://afrotools.com/assets/img/tools/docker-compose-gen.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to generate a safer Docker Compose starter stack",
+  "description": "Choose a runtime, database, proxy, optional services, and safety options, then review the generated compose.yaml, environment example, commands, proxy config, Dockerfile, and preflight checklist before running Docker Compose.",
+  "step": [
+    {"@type": "HowToStep", "name": "Select the stack shape", "text": "Pick a profile, runtime, database, proxy, and supporting services that match the app you are deploying."},
+    {"@type": "HowToStep", "name": "Enable safety options", "text": "Use healthchecks, file secrets, named volumes, private networking, profiles, and resource limits when they fit your host."},
+    {"@type": "HowToStep", "name": "Review generated files", "text": "Copy the compose, environment, command, proxy, Dockerfile, and preflight outputs into your project and replace placeholders."},
+    {"@type": "HowToStep", "name": "Validate locally", "text": "Run docker compose config and test the stack in staging before exposing services publicly."}
+  ],
+  "url": "https://afrotools.com/tools/docker-compose-gen/"
 }
 </script>
 <script type="application/ld+json">
@@ -91,16 +115,16 @@ h1{font-size:clamp(2rem,5vw,4.5rem);line-height:.98;margin:0 0 14px;font-weight:
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
-select,input{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+select,input{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px;min-height:44px}
 input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:8px 11px;font:800 .76rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:8px 11px;min-height:44px;font:800 .76rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
 .btn:hover{border-color:#94a3b8;background:#f8fafc}
 .btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
 .btn.primary:hover{background:#1d4ed8}
 .btn.small{font-size:.72rem;padding:7px 9px}
 .service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
-.service{border:1px solid var(--line);background:#fff;border-radius:8px;padding:11px;cursor:pointer;display:grid;gap:5px}
+.service{border:1px solid var(--line);background:#fff;border-radius:8px;padding:11px;min-height:72px;cursor:pointer;display:grid;gap:5px;text-align:left}
 .service:hover{border-color:#93c5fd;background:#eff6ff}
 .service.active{border-color:#2563eb;background:#eff6ff}
 .service strong{font-size:.86rem}
@@ -119,14 +143,20 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 .score strong{display:block;font-size:1.35rem}
 .score span{font-size:.72rem;color:#64748b;font-weight:800}
 .tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
-.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer}
+.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;min-height:44px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer;white-space:nowrap}
 .tab.active{background:#fff;color:#2563eb}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 .codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:620px}
 .source-list{display:grid;gap:8px}
-.source-list a{font-size:.84rem;color:#2563eb;text-decoration:none;font-weight:800}
+.source-list a{font-size:.84rem;color:#2563eb;text-decoration:none;font-weight:800;min-height:44px;display:flex;align-items:center}
 .source-list a:hover{text-decoration:underline}
+.compose-faq{max-width:1280px;margin:18px auto 0;display:grid;gap:12px}
+.compose-faq h2{font-size:1.2rem;margin:0;color:#172033}
+.compose-faq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.compose-faq details{border:1px solid var(--line);background:#fff;border-radius:8px;padding:14px;box-shadow:var(--shadow)}
+.compose-faq summary{cursor:pointer;font-weight:800;color:#1f2937;min-height:44px;display:flex;align-items:center}
+.compose-faq p{margin:8px 0 0;color:#64748b;line-height:1.55;font-size:.9rem}
 .toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:40}
 .toast.show{opacity:1;transform:translateY(0)}
 @media(max-width:1080px){
@@ -136,14 +166,13 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 }
 @media(max-width:720px){
   .hero-inner,.wrap{padding-left:16px;padding-right:16px}
-  .grid,.grid.two,.switch-grid,.score-grid,.hero-grid{grid-template-columns:1fr}
+  .grid,.grid.two,.switch-grid,.score-grid,.hero-grid,.compose-faq-grid{grid-template-columns:1fr}
 }
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/docker-compose-gen/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-docker-compose/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-docker-compose/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/docker-compose-gen/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -151,26 +180,26 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How should I use Docker Compose Generator — African Developer Tool?",
+      "name": "What does the Docker Compose Generator create?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "It creates local starter snippets for compose.yaml, an environment file, deploy commands, reverse proxy config, a Dockerfile, and a preflight checklist based on the selected runtime and services."
       }
     },
     {
       "@type": "Question",
-      "name": "What should I verify before acting on Docker Compose Generator — African Developer Tool?",
+      "name": "Does this page deploy containers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
+        "text": "No. The generator runs in the browser and does not build images, execute Docker commands, deploy containers, or send secrets anywhere."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Docker Compose Generator — African Developer Tool an official result?",
+      "name": "What should I verify before production?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "Run docker compose config, replace placeholders, create secret files, test healthchecks, confirm backups and TLS, review open ports, and check your Docker Compose version and hosting provider limits."
       }
     }
   ],
@@ -258,12 +287,14 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
           <button class="tab" data-tab="commands" type="button">commands</button>
           <button class="tab" data-tab="proxyConf" type="button">proxy</button>
           <button class="tab" data-tab="dockerfile" type="button">Dockerfile</button>
+          <button class="tab" data-tab="preflight" type="button">preflight</button>
         </div>
         <div class="tab-panel active" id="panel-compose"><pre class="codebox" id="compose-code"></pre></div>
         <div class="tab-panel" id="panel-env"><pre class="codebox" id="env-code"></pre></div>
         <div class="tab-panel" id="panel-commands"><pre class="codebox" id="commands-code"></pre></div>
         <div class="tab-panel" id="panel-proxyConf"><pre class="codebox" id="proxy-code"></pre></div>
         <div class="tab-panel" id="panel-dockerfile"><pre class="codebox" id="dockerfile-code"></pre></div>
+        <div class="tab-panel" id="panel-preflight"><pre class="codebox" id="preflight-code"></pre></div>
       </section>
 
       <section class="card">
@@ -290,29 +321,22 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
     </aside>
   </section>
 
-<section class="df-upgrade" data-df-upgrade="docker-compose-gen">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Docker Compose Generator — African Developer Tool decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for docker compose generator — african developer tool so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Docker Compose Generator — African Developer Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: download, browserOk.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
-    </div>
-    <form class="df-form" data-df-form="docker-compose-gen">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="docker-compose-gen" data-df-base="Docker Compose Generator — African Developer Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Docker Compose Generator — African Developer Tool: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="docker-compose-gen">Copy summary</button></div>
-    </form>
+<section class="compose-faq" aria-labelledby="docker-compose-gen-faq-title">
+  <h2 id="docker-compose-gen-faq-title">Docker Compose Generator FAQ</h2>
+  <div class="compose-faq-grid">
+    <details>
+      <summary>What files does this create?</summary>
+      <p>It generates local starter snippets for compose.yaml, .env, deploy commands, reverse proxy config, Dockerfile, and a preflight checklist.</p>
+    </details>
+    <details>
+      <summary>Does it run Docker commands?</summary>
+      <p>No. The page only produces text for review. Copy the snippets into your project and run Docker commands from your own terminal.</p>
+    </details>
+    <details>
+      <summary>What must I verify first?</summary>
+      <p>Check secrets, exposed ports, health endpoints, backups, TLS, resource limits, Docker Compose version support, and your hosting provider limits.</p>
+    </details>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="docker-compose-gen-faq-title">
-  <h2 id="docker-compose-gen-faq-title">Docker Compose Generator — African Developer Tool FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <section class="tool-verification-sec" data-tool-verification-panel="docker-compose-gen">
   <div class="container">
@@ -401,6 +425,30 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
     el.classList.add('show');
     clearTimeout(toast._timer);
     toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1700);
+  }
+  function safeCopy(text){
+    function fallbackCopy(){
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        document.execCommand('copy');
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      } finally {
+        document.body.removeChild(area);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(fallbackCopy);
+    }
+    return fallbackCopy();
   }
   function has(id){ return selected.has(id); }
   function addLines(lines, text){ text.split('\n').forEach(function(line){ lines.push(line); }); }
@@ -696,6 +744,44 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
     return lines.join('\n');
   }
 
+  function generatePreflight(compose){
+    var project = slug(val('project'));
+    var checks = [
+      '# ' + project + ' deployment preflight',
+      '',
+      '[ ] Run: docker compose config',
+      '[ ] Replace image tags, APP_URL, passwords, SMTP values and every placeholder in .env',
+      '[ ] Confirm the app health endpoint used by the generated healthcheck exists',
+      '[ ] Confirm open ports match the host firewall and proxy plan',
+      '[ ] Test startup order after a clean volume reset in staging',
+      '[ ] Document restore steps before relying on named volumes',
+      '[ ] Keep production secrets out of screenshots, tickets and shared chat'
+    ];
+    if (checked('secrets')) {
+      checks.push('[ ] Create secrets/postgres_password.txt with a strong value and restrict file permissions');
+    } else {
+      checks.push('[ ] Move database passwords out of compose.yaml and .env before production');
+    }
+    if (has('postgres')) checks.push('[ ] Test Postgres backup and restore, not only pg_dump creation');
+    if (has('mysql')) checks.push('[ ] Test MySQL backup and restore with the selected image version');
+    if (has('redis')) checks.push('[ ] Decide whether Redis persistence and eviction policy fit the workload');
+    if (val('proxy') === 'nginx') checks.push('[ ] Add TLS termination or place Nginx behind a managed HTTPS proxy');
+    if (val('proxy') === 'caddy') checks.push('[ ] Confirm DNS points to the host before relying on automatic TLS');
+    if (has('adminer')) checks.push('[ ] Keep Adminer behind a debug profile, VPN or private network');
+    if (has('prometheus') || has('grafana')) checks.push('[ ] Protect monitoring dashboards and review retention/storage growth');
+    if (checked('resourceLimits')) {
+      checks.push('[ ] Load test the 512M/0.75 CPU limits before using them on real traffic');
+    } else if (val('target') !== 'dev') {
+      checks.push('[ ] Add resource limits or host monitoring before production traffic');
+    }
+    if (!checked('healthchecks')) checks.push('[ ] Re-enable healthchecks before relying on depends_on readiness');
+    if (!checked('privateNetwork')) checks.push('[ ] Add explicit networks or verify the default network is acceptable');
+    checks.push('');
+    checks.push('Generated summary: ' + selected.size + ' services, ' + compose.health + ' healthchecks, ' + compose.volumes + ' named volumes.');
+    checks.push('Reference commands: docker compose config; docker compose up -d --build; docker compose ps; docker compose logs --tail=100 app');
+    return checks.join('\n');
+  }
+
   function generateProxy(){
     var app = runtimeService();
     var domain = val('domain') || 'app.example.com';
@@ -795,6 +881,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
     $('commands-code').textContent = generateCommands();
     $('proxy-code').textContent = generateProxy();
     $('dockerfile-code').textContent = generateDockerfile();
+    $('preflight-code').textContent = generatePreflight(compose);
     $('stat-services').textContent = selected.size;
     $('stat-health').textContent = compose.health;
     warnings(compose);
@@ -823,8 +910,16 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
   document.addEventListener('change', function(event){ if (event.target.closest('main')) render(); });
   $('reset-services').addEventListener('click', function(){ selected = new Set(['app','postgres','redis','nginx']); render(); });
   $('copy-output').addEventListener('click', function(){
-    var node = activeTab === 'compose' ? $('compose-code') : activeTab === 'env' ? $('env-code') : activeTab === 'commands' ? $('commands-code') : activeTab === 'proxyConf' ? $('proxy-code') : $('dockerfile-code');
-    navigator.clipboard.writeText(node.textContent).then(function(){ toast('Copied ' + activeTab); });
+    var nodes = {
+      compose: $('compose-code'),
+      env: $('env-code'),
+      commands: $('commands-code'),
+      proxyConf: $('proxy-code'),
+      dockerfile: $('dockerfile-code'),
+      preflight: $('preflight-code')
+    };
+    var node = nodes[activeTab] || $('compose-code');
+    safeCopy(node.textContent).then(function(){ toast('Copied ' + activeTab); }).catch(function(){ toast('Copy failed'); });
   });
 
   renderChoices();
@@ -833,6 +928,5 @@ input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

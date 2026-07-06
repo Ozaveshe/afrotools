@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 
 <!-- AfroTools shared JS -->
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/lib/live-data.js?v=bd400bd7"></script>
 <script src="/assets/js/components/live-data-status.js?v=79a42de7"></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
@@ -1918,9 +1918,211 @@ body.afrorates-page {
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrorates/" />
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+.afrorates-refresh .hero {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%) !important;
+  border-bottom: 1px solid #d8e2ef;
+  color: #0f172a;
+  overflow: hidden;
+  padding: 46px 0 40px !important;
+}
+
+.afrorates-refresh .hero::before,
+.afrorates-refresh .hero::after {
+  display: none !important;
+}
+
+.afrorates-refresh .hero-inner {
+  max-width: 1120px;
+  padding-inline: 24px;
+  text-align: left;
+}
+
+.afrorates-refresh .breadcrumb {
+  color: #7b8ca5 !important;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 18px;
+}
+
+.afrorates-refresh .breadcrumb a {
+  color: #35517d !important;
+}
+
+.afrorates-refresh .breadcrumb a:hover {
+  color: #2457c5 !important;
+}
+
+.afrorates-refresh .breadcrumb .sep {
+  color: #a5b2c4 !important;
+}
+
+.afrorates-refresh .hero-eyebrow {
+  background: #eef6ff;
+  border: 1px solid #bcd4ff;
+  border-radius: 999px;
+  color: #2457c5;
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  margin-bottom: 14px;
+  padding: 6px 12px;
+}
+
+.afrorates-refresh .hero h1 {
+  color: #0f172a !important;
+  font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+  font-size: clamp(2.15rem, 4vw, 3.45rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.03;
+  margin-bottom: 14px;
+  max-width: 900px;
+}
+
+.afrorates-refresh .hero h1 em {
+  color: #2457c5 !important;
+  font-style: normal;
+}
+
+.afrorates-refresh .hero-sub {
+  color: #53657d !important;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 690px;
+}
+
+.afrorates-refresh .ticker-wrap {
+  background: #0d1728;
+  border-bottom: 1px solid #1c2940;
+}
+
+.afrorates-refresh .ticker-wrap::before {
+  background: linear-gradient(90deg, #0d1728 0%, transparent 100%);
+}
+
+.afrorates-refresh .ticker-wrap::after {
+  background: linear-gradient(270deg, #0d1728 0%, transparent 100%);
+}
+
+.afrorates-refresh .page-wrap {
+  padding-top: 28px;
+}
+
+.afrorates-refresh .stat-card,
+.afrorates-refresh .utility-bar,
+.afrorates-refresh .highlight-card,
+.afrorates-refresh .table-controls,
+.afrorates-refresh .rate-table-wrap,
+.afrorates-refresh .map-container,
+.afrorates-refresh .chart-card,
+.afrorates-refresh .comparison-card,
+.afrorates-refresh .mpc-card,
+.afrorates-refresh .yield-card,
+.afrorates-refresh .faq-list {
+  border: 1px solid #d8e2ef;
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+}
+
+.afrorates-refresh .stat-card,
+.afrorates-refresh .highlight-card {
+  padding: 20px;
+}
+
+.afrorates-refresh .stat-label,
+.afrorates-refresh .highlight-kicker {
+  color: #52637a;
+  letter-spacing: 0.08em;
+}
+
+.afrorates-refresh .stat-value,
+.afrorates-refresh .highlight-value,
+.afrorates-refresh .section-title {
+  color: #0f172a;
+  font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+}
+
+.afrorates-refresh .section-title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.afrorates-refresh .utility-bar {
+  align-items: center;
+  background: #fff;
+  padding: 14px;
+}
+
+.afrorates-refresh .jump-link {
+  border-radius: 8px;
+  min-height: 38px;
+}
+
+.afrorates-refresh .search-box,
+.afrorates-refresh .filter-btn,
+.afrorates-refresh .sort-select,
+.afrorates-refresh .toolbar-btn {
+  border-color: #c7d5e7;
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.afrorates-refresh .filter-btn.active,
+.afrorates-refresh .toolbar-btn.primary {
+  background: #2457c5;
+  border-color: #2457c5;
+}
+
+.afrorates-refresh a:focus-visible,
+.afrorates-refresh button:focus-visible,
+.afrorates-refresh input:focus-visible,
+.afrorates-refresh select:focus-visible {
+  outline: 3px solid rgba(36, 87, 197, 0.25);
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .afrorates-refresh .hero {
+    padding: 34px 0 32px !important;
+  }
+
+  .afrorates-refresh .hero-inner,
+  .afrorates-refresh .page-wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .afrorates-refresh .stats-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .afrorates-refresh .utility-links {
+    width: 100%;
+  }
+
+  .afrorates-refresh .jump-link {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .afrorates-refresh table.rate-table {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .afrorates-refresh .hero h1 {
+    font-size: 2rem;
+  }
+
+  .afrorates-refresh .stats-row {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh afrorates-refresh">
 <!-- ══════════════════════════════════════════════════════════════
      NAVBAR
      ══════════════════════════════════════════════════════════════ -->

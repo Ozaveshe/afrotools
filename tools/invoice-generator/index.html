@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="tool-id" content="invoice-generator">
 <meta name="theme-color" content="var(--color-primary)">
-<title>Free Invoice Generator for Africa | VAT, PDF and Business Invoices | AfroTools</title>
-<meta name="description" content="Create invoices with line items, taxes, discounts, payments and PDF export for African freelancers and businesses. Includes VAT assumptions and business deployment options.">
+<title>Free Invoice Generator Africa | PDF, VAT, Receipts | AfroTools</title>
+<meta name="description" content="Create a PDF invoice, receipt, or estimate with African currencies, VAT, discounts, deposits, payment details, and local draft saving.">
 <meta name="keywords" content="invoice generator, African invoice, Nigerian invoice, VAT calculator, multi-currency invoice, free invoice maker, PDF invoice">
 <meta name="author" content="AfroTools">
 <link rel="canonical" href="https://afrotools.com/tools/invoice-generator/">
 <meta name="content-language" content="en">
-<meta property="og:title" content="Free Invoice Generator for Africa | VAT, PDF and Business Invoices | AfroTools">
-<meta property="og:description" content="Create invoices with line items, taxes, discounts, payments and PDF export for African freelancers and businesses. Includes VAT assumptions and business deployment options.">
+<meta property="og:title" content="Free Invoice Generator Africa | PDF, VAT, Receipts | AfroTools">
+<meta property="og:description" content="Create a PDF invoice, receipt, or estimate with African currencies, VAT, discounts, deposits, payment details, and local draft saving.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/invoice-generator.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/invoice-generator/">
@@ -55,7 +55,7 @@
   padding: 12px 14px;
   border: 1px solid #bfdbfe;
   background: #eff6ff;
-  border-radius: 10px;
+  border-radius: 8px;
   color: #1e3a8a;
   font-size: 0.82rem;
   line-height: 1.55;
@@ -80,9 +80,7 @@
   --inv-muted: var(--color-text-muted, #64748b);
 }
 .inv-hero {
-  background:
-    radial-gradient(circle at 78% 10%, rgba(96,165,250,0.16), transparent 30%),
-    linear-gradient(135deg, #0f172a 0%, #111827 58%, #0b1120 100%);
+  background: #0f172a;
   padding: 56px 0 46px;
 }
 .breadcrumb,
@@ -103,7 +101,6 @@
 .hero-badges .badge {
   border-radius: 999px;
   font-size: 0.72rem;
-  letter-spacing: 0.04em;
 }
 .badge-grey { color: #dbeafe; border-color: rgba(191,219,254,0.24); }
 .inv-main { padding: 32px 0 72px; }
@@ -114,7 +111,7 @@
 .inv-preview-col { top: 84px !important; }
 .card {
   border-color: var(--inv-border);
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 8px 24px rgba(15,23,42,0.045);
 }
 .card-head {
@@ -138,7 +135,7 @@
 .advanced-panel {
   margin-top: 14px;
   border: 1px solid var(--inv-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--inv-muted-surface);
 }
 .advanced-panel summary,
@@ -196,7 +193,7 @@
   gap: 6px;
   padding: 8px;
   border: 1px solid var(--inv-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: #fff;
   box-shadow: 0 18px 40px rgba(15,23,42,0.14);
 }
@@ -222,7 +219,7 @@
 }
 .totals {
   border: 1px solid var(--inv-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--inv-muted-surface);
   padding: 12px 14px;
 }
@@ -235,7 +232,7 @@
   margin: 16px;
   padding: 16px;
   border: 1px dashed #bfdbfe;
-  border-radius: 10px;
+  border-radius: 8px;
   background: #eff6ff;
   color: #1e3a8a;
   font-size: 0.84rem;
@@ -258,7 +255,7 @@
   .inv-hero { padding: 40px 0 34px; }
   .inv-hero h1 { font-size: 2rem; }
   .hero-badges { gap: 6px; }
-  .card { border-radius: 9px; margin-bottom: 14px; }
+  .card { border-radius: 8px; margin-bottom: 14px; }
   .card-body { padding: 16px; }
   .card-head { padding: 15px 16px; }
   .inv-actions-primary { grid-template-columns: 1fr; }
@@ -278,7 +275,7 @@
   .items-table tr {
     padding: 12px;
     border: 1px solid var(--inv-border);
-    border-radius: 10px;
+    border-radius: 8px;
     background: #fff;
     margin-bottom: 12px;
   }
@@ -314,6 +311,40 @@
     font-size: 0.92rem;
     word-break: break-word;
   }
+  .invoice-preview .inv-items-table,
+  .invoice-preview .inv-items-table tbody,
+  .invoice-preview .inv-items-table tr,
+  .invoice-preview .inv-items-table td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+  .invoice-preview .inv-items-table thead { display: none; }
+  .invoice-preview .inv-items-table tr {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--inv-border);
+  }
+  .invoice-preview .inv-items-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border: 0;
+    padding: 5px 0;
+    text-align: right !important;
+    white-space: normal;
+    word-break: break-word;
+  }
+  .invoice-preview .inv-items-table td::before {
+    flex: 0 0 88px;
+    color: var(--inv-muted);
+    font-weight: 800;
+    text-align: left;
+  }
+  .invoice-preview .inv-items-table td:nth-child(1)::before { content: "Item"; }
+  .invoice-preview .inv-items-table td:nth-child(2)::before { content: "Qty"; }
+  .invoice-preview .inv-items-table td:nth-child(3)::before { content: "Unit"; }
+  .invoice-preview .inv-items-table td:nth-child(4)::before { content: "Tax"; }
+  .invoice-preview .inv-items-table td:nth-child(5)::before { content: "Total"; }
   .mobile-primary-bar {
     position: fixed;
     left: 0;
@@ -340,8 +371,8 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Free Invoice Generator for Africa | VAT, PDF and Business Invoices | AfroTools">
-<meta name="twitter:description" content="Create invoices with line items, taxes, discounts, payments and PDF export for African freelancers and businesses. Includes VAT assumptions and business deployment options.">
+<meta name="twitter:title" content="Free Invoice Generator Africa | PDF, VAT, Receipts | AfroTools">
+<meta name="twitter:description" content="Create a PDF invoice, receipt, or estimate with African currencies, VAT, discounts, deposits, payment details, and local draft saving.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/invoice-generator.webp">
 <meta property="article:modified_time" content="2026-05-01">
 <script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
@@ -351,7 +382,6 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kirkiro-invoice/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-ankara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-generator/" />
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 </head>
@@ -362,7 +392,7 @@
 
 <!-- ══════ SAVED INVOICES ══════ -->
 <div id="inv-saved-section" style="display:none;max-width:1140px;margin:0 auto;padding:20px 20px 0;">
-  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;">
+  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:8px;padding:20px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
       <h3 style="font-size:.95rem;font-weight:800;color:#111827;margin:0;">Your Saved Invoices</h3>
     </div>
@@ -923,11 +953,6 @@
 <!-- Wise Affiliate CTA -->
 
 <!-- ══════ FAQ ══════ -->
-<section style="max-width:900px;margin:32px auto;padding:0 20px;">
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The Invoice Generator creates professional, print-ready invoices in seconds without requiring any sign-up or software installation. Fill in your business details, add line items with descriptions, quantities, and rates, and the tool calculates subtotals, taxes, discounts, withholding, amount paid, and balance due automatically. It supports multiple African currencies, saved clients, reusable items, payment links, mobile money instructions, bank details, templates, share links, JSON handoff, and local PDF export. Freelancers, small business owners, agencies, and contractors across Africa use this tool to bill clients professionally, maintain consistent branding, and keep their invoicing process simple and organised.</p>
-  </div>
-</section>
 <section class="faq-sec">
 <div class="container" style="max-width:1140px;margin:0 auto;padding:0 20px;">
   <span class="eyebrow">FAQ</span>
@@ -1013,54 +1038,12 @@
 </section>
 <!-- /money-seo-sales-formula -->
 
-<section class="tool-verification-sec" data-tool-verification-panel="invoice-generator">
-  <div class="container">
-    <div class="tool-verification-card">
-      <div class="tool-verification-head">
-        <div>
-          <span class="tool-verification-kicker">Business document check</span>
-          <h2 class="tool-verification-title">Validate invoice totals before export</h2>
-          <p class="tool-verification-lead">Build invoices with client details, line items, tax, discounts, amount paid, balance due, PDF, print, templates, reminders, and JSON backup.</p>
-        </div>
-        <div class="tool-verification-status">
-          <span class="tool-verification-badge">Reviewed 2026</span>
-          <p class="tool-verification-note">Local-first planning and document workflow. No official submission is performed.</p>
-        </div>
-      </div>
-      <div class="tool-verification-grid">
-        <div class="tool-verification-block">
-          <h3>What to check</h3>
-          <ul class="tool-verification-list">
-            <li>Methodology: calculate subtotal, tax, discount, withholding, amount paid, and balance due from the visible invoice fields and line items.</li>
-            <li>Verify VAT/GST treatment, registration numbers, invoice sequence, due date, payment instructions, withholding, and client purchase-order requirements.</li>
-            <li>Use PDF, print, save invoice, template, reminder, or JSON export before deleting browser data or sending to a client.</li>
-          </ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Limitations</h3>
-          <ul class="tool-verification-list">
-            <li>Disclaimer: invoice builder only, not accounting advice, tax filing, official e-invoicing submission, payment processing, or legal review.</li>
-            <li>Tax rates, invoice format rules, and statutory submission requirements can change by country, customer type, and transaction category.</li>
-            <li>Privacy note: client, bank, payment-link, and invoice details should stay local or account-protected unless you intentionally export or share them.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="tool-verification-actions">
-        <a class="tool-verification-report" href="#invoicePreview">Review workflow output</a>
-        <p class="tool-verification-disclaimer">Source/freshness note: verify current client, lender, customs, tax, document, or regulator requirements before relying on generated outputs.</p>
-      </div>
-    </div>
-  </div>
-</section>
 <afro-business-cta
   tool-name="Invoice Generator"
   save-note="Use the existing PDF, print, save invoice, template, share, or JSON export actions on this page."></afro-business-cta>
-
-<afro-related-tools category="document-pdf" current="invoice-generator"></afro-related-tools>
 <afro-footer></afro-footer>
 
 <!-- Required Scripts -->
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>

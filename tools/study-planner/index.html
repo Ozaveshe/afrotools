@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study Planner & Timetable Generator — Free for Students</title>
-<meta name="description" content="Create a personalised study timetable. Add subjects, set exam dates, allocate hours based on difficulty. Designed for African university and secondary school students.">
+<title>Study Planner & Timetable Generator - Africa Exam Prep</title>
+<meta name="description" content="Create a personalised Africa exam study plan for ECZ, UNEB, NECTA, WAEC Ghana, KNEC, ZIMSEC, NSC, WAEC, JAMB, KCSE, or custom subjects.">
 <link rel="canonical" href="https://afrotools.com/tools/study-planner/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="tool-id" content="study-planner">
 <meta property="og:title" content="Study Planner & Timetable Generator | AfroTools">
-<meta property="og:description" content="Create a personalised study timetable. Add subjects, set exam dates, allocate hours based on difficulty. Free for WAEC, JAMB, KCSE and university students.">
+<meta property="og:description" content="Create a source-aware Africa exam study timetable with subjects, exam dates, weekly hours, countdown, timetable, and flashcard handoffs.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/study-planner.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/study-planner/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Study Planner & Timetable Generator | AfroTools">
-<meta name="twitter:description" content="Create a personalised study timetable for exam preparation. Free for African students.">
+<meta name="twitter:description" content="Create a personalised Africa exam study timetable with source notes and prep-tool handoffs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/education-study-focus.css?v=dcf1c512">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
@@ -75,6 +75,12 @@
 .sp-preset.selected{border-color:var(--green);background:var(--green-pale)}
 .sp-preset-name{font-size:.82rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
 .sp-preset-desc{font-size:.72rem;color:var(--muted);margin-top:3px}
+.sp-exam-context{display:grid;gap:8px;margin:0 0 20px;padding:14px 16px;border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;color:#475569;font-size:.82rem;line-height:1.6}
+.sp-exam-context strong{color:var(--text)}
+.sp-exam-context a{color:var(--green);font-weight:800;text-decoration:none}
+.sp-exam-context .sp-context-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.sp-context-actions a,.sp-context-actions button{display:inline-flex;align-items:center;min-height:32px;padding:7px 11px;border-radius:8px;border:1px solid #bfdbfe;background:#fff;color:var(--green);font-size:.74rem;font-weight:800;text-decoration:none;font-family:inherit;cursor:pointer}
+.sp-context-actions a:hover,.sp-context-actions button:hover{border-color:var(--green);background:var(--green-pale)}
 
 /* ── Subject pills ── */
 .sp-subjects{display:flex;flex-direction:column;gap:10px}
@@ -122,10 +128,23 @@
 .sp-break-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;font-size:.75rem;font-weight:600;border:1px solid var(--border);background:var(--card)}
 .sp-break-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .sp-break-hours{color:var(--muted);font-weight:500}
+.sp-plan-summary{display:grid;gap:10px;margin-bottom:16px;padding:16px;border:1px solid #dbeafe;border-radius:var(--radius);background:#f8fbff;font-size:.82rem;line-height:1.65;color:#475569}
+.sp-plan-summary h2{margin:0;font-size:.95rem;color:var(--text)}
+.sp-plan-summary ul{margin:0;padding-left:18px}
+.sp-plan-summary a{color:var(--green);font-weight:800;text-decoration:none}
+.sp-session-progress{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.sp-progress-card{padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.sp-progress-card strong{display:block;font-size:1.25rem;color:var(--green);line-height:1}
+.sp-progress-card span{display:block;margin-top:4px;font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.sp-slot-session{display:flex;align-items:flex-start;gap:7px;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer}
+.sp-slot-session input{width:15px!important;min-width:15px;height:15px;margin-top:1px;flex:0 0 auto;accent-color:var(--green)}
+.sp-slot-subject{line-height:1.35}
+.sp-slot-session.done .sp-slot-subject{text-decoration:line-through;opacity:.62}
+.sp-action-status{min-height:20px;margin-top:10px;color:var(--green);font-size:.8rem;font-weight:800}
 
 /* ── Timetable ── */
-.sp-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--radius);background:var(--card)}
-.sp-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.sp-table-wrap{display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--radius);background:var(--card)}
+.sp-table{width:100%;min-width:720px;border-collapse:collapse;font-size:.8rem}
 .sp-table th{background:#f8fafc;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);position:sticky;top:0}
 .sp-table td{padding:6px 8px;border-bottom:1px solid #f8fafc;vertical-align:top}
 .sp-table tr:last-child td{border-bottom:none}
@@ -165,6 +184,7 @@
   .sp-app{padding:20px 16px 60px}
   .sp-prefs{grid-template-columns:1fr}
   .sp-stats{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .sp-session-progress{grid-template-columns:1fr 1fr 1fr;gap:8px}
   .sp-stat{padding:12px 8px}
   .sp-stat-num{font-size:1.4rem}
   .sp-subject{grid-template-columns:1fr auto;gap:8px}
@@ -179,6 +199,7 @@
   .sp-slot{padding:5px 7px;font-size:.68rem}
   .sp-actions{flex-direction:column}
   .sp-action-btn{justify-content:center}
+  .sp-action-status{text-align:center}
 }
 @media(max-width:400px){
   .sp-subject{grid-template-columns:1fr;gap:6px}
@@ -224,7 +245,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Study Planner & Timetable Generator",
-  "description": "Create a personalised study timetable for exam preparation. Designed for African students.",
+  "description": "Create a personalised Africa exam study timetable with source notes, weekly schedule, countdown, timetable, and flashcard handoffs.",
   "url": "https://afrotools.com/tools/study-planner/",
   "inLanguage": "en",
   "applicationCategory": "EducationalApplication",
@@ -249,7 +270,7 @@
   "@type": "WebPage",
   "name": "Study Planner & Timetable Generator",
   "url": "https://afrotools.com/tools/study-planner/",
-  "description": "Create a personalised study timetable for exam preparation. Designed for African students.",
+  "description": "Create a personalised Africa exam study timetable with source notes, weekly schedule, countdown, timetable, and flashcard handoffs.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -270,7 +291,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/planificateur-etudes/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mpango-masomo/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/study-planner/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
@@ -287,6 +307,7 @@
     <span class="sp-tag">WAEC / NECO</span>
     <span class="sp-tag">JAMB Prep</span>
     <span class="sp-tag">KCSE</span>
+    <span class="sp-tag">ECZ / UNEB / NECTA</span>
     <span class="sp-tag">University</span>
   </div>
 </div>
@@ -319,6 +340,18 @@
     <div class="sp-preset-name">Kenya KCSE</div>
     <div class="sp-preset-desc">7 subjects</div>
   </button>
+  <button type="button" class="sp-preset" data-key="zambia-grade-12" onclick="loadPreset('zambia-grade-12',this)">
+    <div class="sp-preset-name">Zambia Grade 12</div>
+    <div class="sp-preset-desc">ECZ school certificate</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="tanzania-csee" onclick="loadPreset('tanzania-csee',this)">
+    <div class="sp-preset-name">Tanzania CSEE</div>
+    <div class="sp-preset-desc">NECTA Form Four</div>
+  </button>
+  <button type="button" class="sp-preset" data-key="south-africa-nsc" onclick="loadPreset('south-africa-nsc',this)">
+    <div class="sp-preset-name">South Africa NSC</div>
+    <div class="sp-preset-desc">Matric / APS prep</div>
+  </button>
   <button type="button" class="sp-preset" data-key="uni" onclick="loadPreset('uni',this)">
     <div class="sp-preset-name">University</div>
     <div class="sp-preset-desc">5 courses</div>
@@ -327,6 +360,9 @@
     <div class="sp-preset-name">Custom</div>
     <div class="sp-preset-desc">Start blank</div>
   </button>
+</div>
+<div class="sp-exam-context" id="examContext" aria-live="polite">
+  <div><strong>Custom study plan.</strong> Choose an Africa exam preset to load subjects, dates, source notes, and handoff links.</div>
 </div>
 
 <!-- Subjects -->
@@ -383,15 +419,20 @@
 <!-- Timetable Panel -->
 <div class="sp-panel" id="panel-timetable">
   <div class="sp-results" id="resultsArea">
+    <div class="sp-plan-summary" id="planSummary"></div>
     <div class="sp-stats" id="statsBar"></div>
+    <div class="sp-session-progress" id="sessionProgress" aria-live="polite"></div>
     <div class="sp-breakdown" id="breakdown"></div>
     <div class="sp-table-wrap"><table class="sp-table" id="timetable"></table></div>
     <div class="sp-actions">
       <button type="button" class="sp-action-btn primary" onclick="printTable()">Print / PDF</button>
       <button type="button" class="sp-action-btn" onclick="switchTab('setup')">Edit subjects</button>
       <button type="button" class="sp-action-btn" onclick="regenerate()">Shuffle timetable</button>
+      <button type="button" class="sp-action-btn" onclick="copyStudyProgress()">Copy progress</button>
+      <button type="button" class="sp-action-btn" onclick="resetStudyProgress()">Reset progress</button>
       <button type="button" class="sp-action-btn" onclick="showPomodoro()">Focus timer</button>
     </div>
+    <div class="sp-action-status" id="studyActionStatus" aria-live="polite"></div>
     <!-- Pomodoro Timer -->
     <div class="sp-pomodoro" id="pomodoroTimer" style="display:none">
       <div class="sp-pomodoro-head">
@@ -459,8 +500,8 @@
 <!-- SEO -->
 <section class="sp-seo">
 <h2>Free Study Timetable Generator for African Students</h2>
-<p>Effective study planning is the difference between passing and excelling. Whether you're preparing for WAEC/SSCE, JAMB UTME, Kenya KCSE, or university semester exams, a well-structured timetable ensures you cover all subjects while giving harder topics more attention.</p>
-<p>This study planner automatically allocates more hours to difficult subjects, creates balanced daily schedules, and generates a printable weekly timetable. No signup required — your data stays in your browser.</p>
+<p>Effective study planning is the difference between passing and excelling. Use the planner for ECZ, UNEB, NECTA, WAEC Ghana, KNEC, ZIMSEC, South Africa NSC, WAEC, JAMB, KCSE, or university semester exams. Presets load useful subjects and source notes; custom rows let you add exact paper dates.</p>
+<p>This study planner automatically allocates more hours to difficult subjects, creates balanced daily schedules, and generates a printable weekly timetable. It also links into the matching countdown, exam timetable, and flashcard deck. No signup required; your data stays in your browser.</p>
 
 <h2>Frequently Asked Questions</h2>
 <details class="sp-faq"><summary>How does the difficulty weighting work?</summary><p>Hard subjects get 3x the time allocation, Medium gets 2x, and Easy gets 1x. For example, with 3 subjects (1 hard, 1 medium, 1 easy), the total weight is 6. The hard subject gets 50% of study time, medium gets 33%, easy gets 17%.</p></details>
@@ -470,30 +511,6 @@
 
 
 
-<section class="df-upgrade" data-df-upgrade="study-planner">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Study Planner &amp; Timetable decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for study planner &amp; timetable so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Study Planner &amp;amp; Timetable: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="study-planner">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="study-planner" data-df-base="Study Planner &amp;amp; Timetable: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Study Planner &amp;amp; Timetable: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="study-planner">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="study-planner-faq-title">
-  <h2 id="study-planner-faq-title">Study Planner &amp; Timetable FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <afro-related-tools category="education" current="study-planner"></afro-related-tools>
@@ -507,13 +524,79 @@ var PRESETS_DATA = {
   waec:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium'],['Biology','medium'],['Civic Education','easy'],['Further Maths','hard']],
   jamb:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium']],
   kcse:[['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium'],['Biology','medium'],['Kiswahili','easy'],['History','medium']],
+  'zambia-grade-7':[['Mathematics','hard'],['English','medium'],['Integrated Science','medium'],['Social Studies','medium'],['Special Paper','hard']],
+  'zambia-grade-12':[['Mathematics','hard'],['English Language','medium'],['Biology','medium'],['Chemistry','hard'],['Physics','hard']],
+  'zambia-gce':[['Mathematics','hard'],['English Language','medium'],['Biology','medium'],['Commerce','medium'],['Civic Education','easy']],
+  'uganda-uneb-registration':[['Mathematics','hard'],['English','medium'],['Science','medium'],['Social Studies','medium'],['CRE/IRE','easy']],
+  'tanzania-csee':[['Basic Mathematics','hard'],['English Language','medium'],['Kiswahili','medium'],['Biology','medium'],['Geography','medium']],
+  'south-africa-nsc':[['Mathematics','hard'],['English Home Language','medium'],['Life Sciences','medium'],['Physical Sciences','hard'],['Geography','medium']],
+  'ghana-waec':[['Core Mathematics','hard'],['English Language','medium'],['Integrated Science','medium'],['Social Studies','medium'],['Elective subject','hard']],
+  'kenya-kcse':[['Mathematics','hard'],['English','medium'],['Kiswahili','medium'],['Biology','medium'],['Chemistry','hard']],
+  'zimbabwe-zimsec':[['Mathematics','hard'],['English Language','medium'],['Integrated Science','medium'],['History','medium'],['Geography','medium']],
   uni:[['Course 1','hard'],['Course 2','medium'],['Course 3','medium'],['Course 4','easy'],['Course 5','hard']],
   custom:[]
+};
+
+var EXAM_META = {
+  'zambia-gce':{name:'Zambia ECZ GCE 2026',targetDate:'2026-07-22',source:'https://www.exams-council.org.zm/gce/',note:'ECZ lists the 2026 GCE timetable as 3 July to 22 July 2026.',checklist:['Check remaining paper dates against ECZ','Prioritise weak subjects and past papers','Prepare ID, stationery, calculator, and centre route']},
+  'uganda-uneb-registration':{name:'Uganda UNEB PLE/UCE/UACE 2026',targetDate:'2026-07-31',source:'https://uneb.ac.ug/2026/06/01/uneb-normal-registration-extended-to-30th-june-2026/',note:'UNEB says late registration runs from 1 July to 31 July 2026.',checklist:['Confirm registration status with school','Collect candidate documents','Plan weekly revision after registration']},
+  'zambia-grade-7':{name:'Zambia ECZ Grade 7 2026',targetDate:'2026-10-26',source:'https://www.exams-council.org.zm/grade-7/',note:'ECZ lists the 2026 Grade 7 exam window as 26 October to 30 October 2026.',checklist:['Print the official subject timetable','Run two timed practice sets per week','Prepare transport and exam materials']},
+  'zambia-grade-12':{name:'Zambia ECZ Grade 12 2026',targetDate:'2026-10-30',source:'https://www.exams-council.org.zm/grade-12/',note:'ECZ lists the 2026 School Certificate exam window as 30 October to 17 November 2026.',checklist:['Map every subject to its ECZ paper date','Separate practical and theory revision','Schedule weekly timed past papers']},
+  'tanzania-csee':{name:'Tanzania NECTA CSEE 2026',targetDate:'2026-11-02',source:'https://necta.go.tz/pages/csee',note:'NECTA states CSEE is administered in the first week of November every year. Treat this as a planning anchor until the final paper timetable is confirmed.',checklist:['Confirm final NECTA paper dates','Separate Kiswahili and English writing practice','Run science diagram drills']},
+  'south-africa-nsc':{name:'South Africa NSC 2026',targetDate:'2026-10-12',source:'https://www.education.gov.za/?link=984&mid=4149&portalid=0&tabid=338',note:'The DBE publishes the 2026 November NSC timetable. Confirm each subject paper on the official PDF.',checklist:['Check DBE subject paper dates','Set APS target per course','Plan past-paper weekends']},
+  'ghana-waec':{name:'Ghana WAEC BECE/WASSCE 2026',targetDate:'',source:'https://waecgh.org/timetable/',note:'WAEC Ghana lists 2026 BECE, WASSCE school, and private candidate timetables. Add the exact first paper date to each subject row.',checklist:['Download the correct WAEC Ghana timetable','Add first paper date above','Separate core and elective revision']},
+  'kenya-kcse':{name:'Kenya KNEC KCSE 2026',targetDate:'',source:'https://www.knec.ac.ke/2026-kcse-timetable/',note:'KNEC has the 2026 KCSE timetable posted. Add the exact first paper date to each subject row.',checklist:['Check KNEC paper order','Set target mean grade and cluster goals','Run one timed paper per subject weekly']},
+  'zimbabwe-zimsec':{name:'Zimbabwe ZIMSEC O/A Level 2026',targetDate:'',source:'https://www5.zimsec.co.zw/timetables/',note:'ZIMSEC publishes timetable downloads. Add the exact paper date from the correct O Level or A Level timetable.',checklist:['Download the correct ZIMSEC level timetable','Add the first paper date','Split syllabus gaps from past-paper practice']}
 };
 
 var subjectId = 0;
 var generated = false;
 var subjectList = document.getElementById('subjectList');
+var activePresetKey = '';
+var STUDY_PROGRESS_KEY = 'afrotools.studyPlanner.sessionProgress.v1';
+var completedSessions = {};
+var currentSessionPlan = [];
+var shuffleSeed = 0;
+
+function loadStudyProgress() {
+  try { completedSessions = JSON.parse(localStorage.getItem(STUDY_PROGRESS_KEY) || '{}') || {}; }
+  catch (e) { completedSessions = {}; }
+}
+
+function saveStudyProgress() {
+  try { localStorage.setItem(STUDY_PROGRESS_KEY, JSON.stringify(completedSessions)); } catch (e) {}
+}
+
+function setStudyActionStatus(message) {
+  var el = document.getElementById('studyActionStatus');
+  if (el) el.textContent = message || '';
+}
+
+function slugify(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'session';
+}
+
+function makeSessionId(day, slot, time, subject) {
+  return slugify([activePresetKey || 'custom', day, slot, time].join('-'));
+}
+
+function hashString(value) {
+  var hash = 2166136261;
+  value = String(value || '');
+  for (var i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+  }
+  return hash >>> 0;
+}
+
+function seededRandom(seed) {
+  var state = seed || 1;
+  return function() {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+}
 
 function switchTab(tab) {
   document.querySelectorAll('.sp-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.tab === tab); });
@@ -562,7 +645,50 @@ function loadPreset(key, el) {
   if (el) el.classList.add('selected');
   subjectList.innerHTML = '';
   subjectId = 0;
-  PRESETS_DATA[key].forEach(function(s) { addSubject(s[0], s[1], ''); });
+  activePresetKey = key;
+  var meta = EXAM_META[key];
+  var targetDate = meta ? (meta.targetDate || '') : '';
+  PRESETS_DATA[key].forEach(function(s) { addSubject(s[0], s[1], targetDate); });
+  updateExamContext(key);
+}
+
+function updateExamContext(key) {
+  var box = document.getElementById('examContext');
+  if (!box) return;
+  var meta = EXAM_META[key];
+  if (!meta) {
+    box.innerHTML = '<div><strong>Custom study plan.</strong> Add subjects, exam dates, and weekly hours. Your data stays in this browser.</div>';
+    return;
+  }
+  var dateText = meta.targetDate ? ('Target date: ' + fmtDate(meta.targetDate) + '.') : 'Exact paper date required from the official timetable.';
+  box.innerHTML = '<div><strong>' + esc(meta.name) + '.</strong> ' + esc(dateText) + ' ' + esc(meta.note) + '</div>' +
+    '<div class="sp-context-actions">' +
+    '<a href="' + esc(meta.source) + '" target="_blank" rel="noopener">Official source</a>' +
+    '<a href="/tools/exam-countdown/?exam=' + encodeURIComponent(key) + '">Countdown</a>' +
+    '<a href="/tools/exam-timetable/?exam=' + encodeURIComponent(key) + '">Exam timetable</a>' +
+    '<a href="/tools/flashcard-maker/?exam=' + encodeURIComponent(key) + '">Flashcards</a>' +
+    '<a href="/tools/grade-tracker/?exam=' + encodeURIComponent(key) + '">Score tracker</a>' +
+    '</div>';
+}
+
+function presetKeyFromQuery(value) {
+  var aliases = {
+    'ecz-grade-12': 'zambia-grade-12',
+    'ecz-grade-7': 'zambia-grade-7',
+    'uganda-uneb': 'uganda-uneb-registration',
+    'kenya-kcse-exam': 'kenya-kcse'
+  };
+  return PRESETS_DATA[value] ? value : (aliases[value] || '');
+}
+
+function fmtDate(dateStr) {
+  if (!dateStr) return '';
+  var d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function esc(value) {
+  return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 function getSubjects() {
@@ -610,9 +736,19 @@ function generate() {
   var pool = [];
   subjects.forEach(function(sub) { for (var i = 0; i < sub.sessions; i++) pool.push(sub); });
 
-  // Shuffle pool for variety
+  var random = seededRandom(hashString([
+    activePresetKey || 'custom',
+    hoursPerDay,
+    daysPerWeek,
+    sessionLen,
+    startTime,
+    shuffleSeed,
+    subjects.map(function(s) { return s.name + ':' + s.diff + ':' + (s.examDate || ''); }).join('|')
+  ].join('~')));
+
+  // Shuffle pool for variety, but keep it stable for the same inputs.
   for (var i = pool.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
+    var j = Math.floor(random() * (i + 1));
     var temp = pool[i]; pool[i] = pool[j]; pool[j] = temp;
   }
 
@@ -654,6 +790,10 @@ function generate() {
     '<div class="sp-stat"><div class="sp-stat-num">' + subjects.length + '</div><div class="sp-stat-label">Subjects</div></div>' +
     '<div class="sp-stat"><div class="sp-stat-num">' + (daysLeft !== '' ? daysLeft + 'd' : '--') + '</div><div class="sp-stat-label">' + (daysLeft !== '' ? 'Until Exam' : 'No Exam Date') + '</div></div>';
 
+  renderPlanSummary(subjects, totalWeeklyHours, daysLeft);
+  currentSessionPlan = [];
+  setStudyActionStatus('');
+
   // Breakdown pills
   var bk = '';
   subjects.forEach(function(s) {
@@ -676,7 +816,13 @@ function generate() {
     for (var d3 = 0; d3 < daysPerWeek; d3++) {
       var sub = schedule[d3][slot];
       if (sub) {
-        table += '<td><span class="sp-slot" style="background:' + sub.color + '12;color:' + sub.color + ';border-color:' + sub.color + '">' + sub.name + '</span></td>';
+        var sessionId = makeSessionId(DAYS[d3], slot, timeStr, sub.name);
+        var done = !!completedSessions[sessionId];
+        currentSessionPlan.push({ id: sessionId, day: DAYS[d3], time: timeStr, subject: sub.name, done: done });
+        table += '<td><span class="sp-slot" style="background:' + sub.color + '12;color:' + sub.color + ';border-color:' + sub.color + '">' +
+          '<label class="sp-slot-session' + (done ? ' done' : '') + '">' +
+          '<input type="checkbox" data-session-id="' + esc(sessionId) + '" onchange="toggleStudySession(this)"' + (done ? ' checked' : '') + '>' +
+          '<span class="sp-slot-subject">' + esc(sub.name) + '</span></label></span></td>';
       } else {
         table += '<td><span class="sp-free">Free</span></td>';
       }
@@ -692,6 +838,7 @@ function generate() {
   table += '</tr>';
 
   document.getElementById('timetable').innerHTML = table;
+  updateStudyProgress();
   document.getElementById('resultsArea').classList.add('show');
   document.getElementById('emptyTimetable').style.display = 'none';
   generated = true;
@@ -699,8 +846,120 @@ function generate() {
   saveToLocal();
 }
 
+function renderPlanSummary(subjects, totalWeeklyHours, daysLeft) {
+  var meta = EXAM_META[activePresetKey];
+  var title = meta ? meta.name : 'Custom study plan';
+  var hardSubjects = subjects.filter(function(s) { return s.diff === 'hard'; }).map(function(s) { return s.name; }).slice(0, 3);
+  var checklist = meta && meta.checklist ? meta.checklist.slice(0, 3) : ['Confirm every paper date before printing', 'Use active recall after each session', 'Turn mistakes into flashcards'];
+  var deadlineText = daysLeft !== '' ? (daysLeft + ' days to nearest dated paper') : 'Add paper dates to unlock countdown context';
+  var links = activePresetKey && EXAM_META[activePresetKey] ?
+    '<div class="sp-context-actions"><a href="/tools/exam-countdown/?exam=' + encodeURIComponent(activePresetKey) + '">Open countdown</a><a href="/tools/exam-timetable/?exam=' + encodeURIComponent(activePresetKey) + '">Exam timetable</a><a href="/tools/flashcard-maker/?exam=' + encodeURIComponent(activePresetKey) + '">Flashcards</a><a href="/tools/grade-tracker/?exam=' + encodeURIComponent(activePresetKey) + '">Track scores</a><button type="button" onclick="copyStudyPlan()">Copy plan</button></div>' :
+    '<div class="sp-context-actions"><button type="button" onclick="copyStudyPlan()">Copy plan</button></div>';
+  var list = checklist.map(function(item) { return '<li>' + esc(item) + '</li>'; }).join('');
+  document.getElementById('planSummary').innerHTML =
+    '<h2>' + esc(title) + '</h2>' +
+    '<p>' + esc(deadlineText) + ' | ' + totalWeeklyHours + ' planned study hours per week | Priority subjects: ' + esc(hardSubjects.join(', ') || 'set difficulty per subject') + '</p>' +
+    '<ul>' + list + '</ul>' + links;
+}
+
+function copyStudyText(text, successMessage, promptTitle) {
+  var fallback = function() {
+    var field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', 'readonly');
+    field.style.position = 'fixed';
+    field.style.left = '-9999px';
+    document.body.appendChild(field);
+    field.select();
+    try {
+      document.execCommand('copy');
+      setStudyActionStatus(successMessage);
+    } catch (e) {
+      window.prompt(promptTitle, text);
+      setStudyActionStatus('Copy prompt opened.');
+    }
+    field.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      setStudyActionStatus(successMessage);
+    }).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+
+function copyStudyPlan() {
+  var subjects = getSubjects();
+  var meta = EXAM_META[activePresetKey];
+  var title = meta ? meta.name : 'Custom study plan';
+  var lines = [title, 'Weekly hours: ' + document.getElementById('hoursPerDay').value + ' x ' + document.getElementById('daysPerWeek').value + ' days', 'Subjects: ' + subjects.map(function(s) { return s.name + ' (' + s.diff + ')'; }).join('; ')];
+  if (meta) lines.push('Source: ' + meta.source);
+  copyStudyText(lines.join('\n'), 'Study plan copied.', 'Copy study plan');
+}
+
+function toggleStudySession(input) {
+  var id = input && input.dataset ? input.dataset.sessionId : '';
+  if (!id) return;
+  if (input.checked) completedSessions[id] = { doneAt: new Date().toISOString() };
+  else delete completedSessions[id];
+  saveStudyProgress();
+  var label = input.closest ? input.closest('.sp-slot-session') : null;
+  if (label) label.classList.toggle('done', input.checked);
+  updateStudyProgress();
+}
+
+function updateStudyProgress() {
+  var box = document.getElementById('sessionProgress');
+  if (!box) return;
+  var total = currentSessionPlan.length;
+  var done = currentSessionPlan.filter(function(session) { return !!completedSessions[session.id]; }).length;
+  var pct = total ? Math.round((done / total) * 100) : 0;
+  var next = currentSessionPlan.find(function(session) { return !completedSessions[session.id]; });
+  box.innerHTML =
+    '<div class="sp-progress-card"><strong>' + done + '/' + total + '</strong><span>sessions done</span></div>' +
+    '<div class="sp-progress-card"><strong>' + pct + '%</strong><span>weekly progress</span></div>' +
+    '<div class="sp-progress-card"><strong>' + esc(next ? next.day.slice(0, 3) : 'Done') + '</strong><span>' + esc(next ? next.subject : 'all sessions complete') + '</span></div>';
+}
+
+function copyStudyProgress() {
+  if (!generated) generate();
+  var meta = EXAM_META[activePresetKey];
+  var title = meta ? meta.name : 'Custom study plan';
+  var done = currentSessionPlan.filter(function(session) { return !!completedSessions[session.id]; });
+  var next = currentSessionPlan.filter(function(session) { return !completedSessions[session.id]; }).slice(0, 5);
+  var text = [
+    title + ' progress',
+    'Completed: ' + done.length + ' of ' + currentSessionPlan.length + ' sessions',
+    '',
+    'Next sessions:',
+    next.length ? next.map(function(session, index) { return (index + 1) + '. ' + session.day + ' ' + session.time + ' - ' + session.subject; }).join('\n') : 'All generated sessions are complete.',
+    '',
+    activePresetKey ? 'Open flashcards: https://afrotools.com/tools/flashcard-maker/?exam=' + encodeURIComponent(activePresetKey) : 'Open flashcards: https://afrotools.com/tools/flashcard-maker/',
+    activePresetKey ? 'Track scores: https://afrotools.com/tools/grade-tracker/?exam=' + encodeURIComponent(activePresetKey) : 'Track scores: https://afrotools.com/tools/grade-tracker/'
+  ].join('\n');
+  copyStudyText(text, 'Progress summary copied.', 'Copy study progress');
+}
+
+function resetStudyProgress() {
+  if (!currentSessionPlan.length) { setStudyActionStatus('Generate a timetable first.'); return; }
+  completedSessions = {};
+  saveStudyProgress();
+  document.querySelectorAll('.sp-slot-session input[type="checkbox"]').forEach(function(input) {
+    input.checked = false;
+    var label = input.closest ? input.closest('.sp-slot-session') : null;
+    if (label) label.classList.remove('done');
+  });
+  updateStudyProgress();
+  setStudyActionStatus('Progress reset for this timetable.');
+}
+
 function regenerate() {
+  shuffleSeed++;
+  completedSessions = {};
+  saveStudyProgress();
   generate();
+  setStudyActionStatus('Timetable shuffled and progress reset for the new order.');
 }
 
 function printTable() { window.print(); }
@@ -713,7 +972,9 @@ function saveToLocal() {
       hoursPerDay: document.getElementById('hoursPerDay').value,
       daysPerWeek: document.getElementById('daysPerWeek').value,
       sessionLength: document.getElementById('sessionLength').value,
-      startTime: document.getElementById('startTime').value
+      startTime: document.getElementById('startTime').value,
+      activePresetKey: activePresetKey,
+      shuffleSeed: shuffleSeed
     };
     localStorage.setItem('sp_subjects', JSON.stringify(subjects));
     localStorage.setItem('sp_prefs', JSON.stringify(prefs));
@@ -737,7 +998,10 @@ function loadFromLocal() {
           if (p.daysPerWeek) document.getElementById('daysPerWeek').value = p.daysPerWeek;
           if (p.sessionLength) document.getElementById('sessionLength').value = p.sessionLength;
           if (p.startTime) document.getElementById('startTime').value = p.startTime;
+          if (p.activePresetKey) activePresetKey = p.activePresetKey;
+          if (typeof p.shuffleSeed === 'number') shuffleSeed = p.shuffleSeed;
         }
+        updateExamContext(activePresetKey);
         return true;
       }
     }
@@ -890,13 +1154,79 @@ function pomoSkip() {
   pomoTick();
 }
 
+function initPresetFromQuery() {
+  var params = new URLSearchParams(window.location.search);
+  var key = presetKeyFromQuery(params.get('exam') || params.get('preset') || params.get('deck') || '');
+  if (!key) return false;
+  var btn = document.querySelector('.sp-preset[data-key="' + key + '"]');
+  loadPreset(key, btn);
+  generate();
+  return true;
+}
+
 // Init
-if (!loadFromLocal()) {
+loadStudyProgress();
+if (!initPresetFromQuery() && !loadFromLocal()) {
   loadPreset('waec', document.querySelector('.sp-preset[data-key="waec"]'));
 }
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script src="/assets/js/pages/education-study-focus.js?v=15b48deb" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script>
+document.addEventListener('click', function(event) {
+  var button = event.target && event.target.closest ? event.target.closest('[data-study-copy-plan]') : null;
+  if (!button) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  var panel = button.closest('.study-export-panel');
+  var status = panel ? panel.querySelector('.study-export-status') : null;
+  var stats = document.getElementById('statsBar') ? document.getElementById('statsBar').innerText.trim() : '';
+  var breakdown = document.getElementById('breakdown') ? document.getElementById('breakdown').innerText.trim() : '';
+  var timetable = document.getElementById('timetable') ? document.getElementById('timetable').innerText.trim() : '';
+  var subjects = typeof getSubjects === 'function' ? getSubjects() : [];
+  var text = [
+    'AfroTools Study Planner',
+    '',
+    'Subjects',
+    subjects.length ? subjects.map(function(subject) { return '- ' + subject.name + ' (' + subject.diff + ')'; }).join('\n') : 'No subjects added.',
+    '',
+    'Summary',
+    stats || 'No timetable generated yet.',
+    '',
+    'Breakdown',
+    breakdown || 'Generate a timetable to see weighted hours.',
+    '',
+    'Timetable',
+    timetable || 'Generate a timetable to export the weekly plan.',
+    '',
+    'Note: Planning timetable only. Confirm school, exam, and adviser requirements before relying on this plan.'
+  ].join('\n');
+  var copied = function() {
+    if (status) status.textContent = 'Study plan copied.';
+  };
+  var fallback = function() {
+    var field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', 'readonly');
+    field.style.position = 'fixed';
+    field.style.left = '-9999px';
+    document.body.appendChild(field);
+    field.select();
+    try {
+      document.execCommand('copy');
+      copied();
+    } catch (error) {
+      window.prompt('Copy study plan', text);
+      if (status) status.textContent = 'Copy prompt opened.';
+    }
+    field.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(copied).catch(fallback);
+  } else {
+    fallback();
+  }
+}, true);
+</script>
 </body>
 </html>

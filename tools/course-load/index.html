@@ -57,6 +57,8 @@ body{font-family:'DM Sans',sans-serif;background:#fff;color:#0f1419;line-height:
 .container{max-width:860px;margin:0 auto;padding:0 24px}
 .bc{font-size:.72rem;color:rgba(255,255,255,.6);padding-bottom:16px}
 .bc a{color:rgba(255,255,255,.6);text-decoration:none}.bc a:hover{color:#fff}
+body.top-level-page-ui-refresh .hero .bc,body.top-level-page-ui-refresh .hero .bc a{color:#64748b}
+body.top-level-page-ui-refresh .hero .bc a:hover{color:#0f172a}
 .badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .badge{padding:4px 12px;border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .badge-study{background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);color:#c4b5fd}
@@ -64,6 +66,7 @@ body{font-family:'DM Sans',sans-serif;background:#fff;color:#0f1419;line-height:
 h1{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;margin:0 0 10px;line-height:1.1}
 h1 em{color:#fbbf24;font-style:normal}
 .hero-sub{font-size:.93rem;color:rgba(255,255,255,.8);max-width:520px;margin:0}
+body.top-level-page-ui-refresh .hero-sub{color:#475569}
 .card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .card h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem;color:#111}
 label{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem;color:#374151}
@@ -89,14 +92,29 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .timeline-table tr.current td{background:#EFF6FF;font-weight:700}
 .timeline-table tr.warning td{background:#fffbeb}
 .timeline-table tr.done td{background:#f0fdf4;color:#166534}
+.result-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}
+.result-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:.55rem .9rem;border-radius:9px;border:1.5px solid #cbd5e1;background:#fff;color:#0f172a;font-family:inherit;font-size:.82rem;font-weight:800;cursor:pointer}
+.result-actions button.primary{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.export-status{min-height:1.2rem;color:#64748b;font-size:.8rem}
+.cl-input-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.85rem}
+.cl-input-actions .btn{margin:0!important}
+.cl-input-actions .btn-secondary{background:#fff;color:#0f4fb8;border:1.5px solid #bfdbfe}
+.cl-form-status{min-height:1.35em;margin-top:.75rem;color:#166534;font-size:.84rem;font-weight:800}
+.plan-panel{margin-top:1rem;border:1.5px solid #dbeafe;border-radius:12px;background:#f8fbff;padding:1rem}
+.plan-panel h3{margin:.2rem 0 .7rem;font-size:.98rem;color:#0f172a}
+.plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+.plan-item{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:.75rem}
+.plan-item strong{display:block;font-size:.8rem;color:#0f172a;margin-bottom:.25rem}
+.plan-item span{display:block;color:#475569;font-size:.78rem;line-height:1.45}
+.plan-list{margin:.75rem 0 0;padding-left:1.1rem;color:#334155;font-size:.84rem}
+.plan-list li{margin:.28rem 0}
 .sec-body{padding:40px 0}
-@media(max-width:600px){.row{grid-template-columns:1fr}.row3{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.row,.row3{grid-template-columns:1fr}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/course-load.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/course-load/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/charge-cours/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/course-load/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,8 +150,70 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="course-load-mvp-refresh">
+body.top-level-page-ui-refresh.course-load-page .hero{
+  display:block!important;
+  max-width:100%!important;
+  min-height:auto!important;
+  overflow:hidden!important;
+  padding:52px 0 44px!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.course-load-page .hero::before,
+body.top-level-page-ui-refresh.course-load-page .hero::after{
+  display:none!important;
+}
+body.top-level-page-ui-refresh.course-load-page .hero .container,
+body.top-level-page-ui-refresh.course-load-page .sec-body>.container{
+  width:min(100% - 32px,860px)!important;
+  max-width:860px!important;
+  margin-inline:auto!important;
+  padding-inline:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.course-load-page .bc,
+body.top-level-page-ui-refresh.course-load-page .badges,
+body.top-level-page-ui-refresh.course-load-page .hero h1,
+body.top-level-page-ui-refresh.course-load-page .hero-sub{
+  margin-left:0!important;
+  margin-right:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.course-load-page .hero .bc,
+body.top-level-page-ui-refresh.course-load-page .hero .bc a{
+  color:rgba(255,255,255,.72)!important;
+}
+body.top-level-page-ui-refresh.course-load-page .hero .bc a:hover{
+  color:#fff!important;
+}
+body.top-level-page-ui-refresh.course-load-page .badges{
+  align-items:center!important;
+  justify-content:flex-start!important;
+}
+body.top-level-page-ui-refresh.course-load-page .hero h1{
+  max-width:16ch!important;
+  color:#fff!important;
+  font-size:clamp(1.9rem,4vw,2.45rem)!important;
+  line-height:1.05!important;
+  letter-spacing:0!important;
+}
+body.top-level-page-ui-refresh.course-load-page .hero-sub{
+  max-width:58ch!important;
+  color:rgba(255,255,255,.88)!important;
+}
+@media(max-width:600px){
+  body.top-level-page-ui-refresh.course-load-page .hero{
+    padding:38px 0 34px!important;
+  }
+  body.top-level-page-ui-refresh.course-load-page .hero .container,
+  body.top-level-page-ui-refresh.course-load-page .sec-body>.container{
+    width:min(100% - 24px,860px)!important;
+  }
+  .cl-input-actions{display:grid;grid-template-columns:1fr}
+}
+</style>
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh course-load-page">
 <afro-navbar theme="dark" active="education"></afro-navbar>
 <div class="hero">
   <div class="container">
@@ -191,49 +271,63 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       <input type="number" id="cl-year" value="2026" min="2024" max="2035">
     </div>
   </div>
-  <button type="button" class="btn" onclick="planCourseLoad()">Plan My Schedule</button>
+  <div class="row3">
+    <div>
+      <label for="cl-work">Work Hours Per Week</label>
+      <input type="number" id="cl-work" value="0" min="0" max="80">
+      <div class="help">Paid work, internship, business, or caregiving time</div>
+    </div>
+    <div>
+      <label for="cl-commute">Commute Hours Per Week</label>
+      <input type="number" id="cl-commute" value="0" min="0" max="60">
+      <div class="help">Weekly travel time to campus or study centre</div>
+    </div>
+    <div>
+      <label for="cl-difficulty">Course Difficulty</label>
+      <select id="cl-difficulty">
+        <option value="standard">Standard mix</option>
+        <option value="heavy">Heavy theory/lab mix</option>
+        <option value="project">Project-heavy semester</option>
+      </select>
+    </div>
+  </div>
+  <div class="cl-input-actions" aria-label="Course load actions">
+    <button type="button" class="btn" onclick="planCourseLoad()">Plan My Schedule</button>
+    <button type="button" class="btn btn-secondary" onclick="loadCourseLoadSample()">Load sample semester</button>
+    <button type="button" class="btn btn-secondary" onclick="clearCourseLoadForm()">Clear</button>
+  </div>
+  <div class="cl-form-status" id="cl-form-status" aria-live="polite"></div>
 
   <div class="result-box" id="cl-result">
     <div id="cl-warnings"></div>
     <div class="result-grid" id="cl-grid"></div>
     <div id="cl-timeline"></div>
-  </div>
-</div>
-
-</div>
-</div>
-
-
-
-<section class="df-upgrade" data-df-upgrade="course-load">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Credit-hour workload planner</span>
-      <h2>Check whether a course load is realistic</h2>
-      <p>Compare credit hours, work hours, commute, and study target before registration.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Result: course-load plan ready with study hours, work load, commute, and overload warning.</li><li>Methodology: use the fields to create a local planning summary with visible assumptions.</li><li>Source note: Student workload references should be checked when live prices, policy, or eligibility matters.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education disclaimer: confirm institution credit rules, prerequisites, and adviser guidance before registration. Source/reference: Student workload references.</p>
+    <div class="plan-panel" id="cl-action-panel" hidden></div>
+    <div class="result-actions">
+      <button type="button" class="primary" onclick="copyCourseLoadPlan()">Copy registration plan</button>
+      <button type="button" onclick="downloadCourseLoadPlan()">Download TXT</button>
+      <button type="button" onclick="saveCourseLoadPlan()">Save locally</button>
     </div>
-    <form class="df-form" data-df-form="course-load">
-      <label>Credit hours<input name="credits" type="number" value="18" min="0" step="any" aria-label="Credit hours"></label>
-      <label>Work hours per week<input name="workHours" type="number" value="20" min="0" step="any" aria-label="Work hours per week"></label>
-      <label>Commute hours per week<input name="commute" type="number" value="6" min="0" step="any" aria-label="Commute hours per week"></label>
-      <label>Difficulty<select name="difficulty" aria-label="Difficulty"><option value="standard">standard</option><option value="heavy">heavy</option><option value="project-heavy">project-heavy</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="course-load" data-df-base="Result: course-load plan ready with study hours, work load, commute, and overload warning." aria-live="polite">Result: course-load plan ready with study hours, work load, commute, and overload warning.</output>
-      <div class="df-actions"><button type="button" data-df-copy="course-load">Copy summary</button></div>
-    </form>
+    <div class="export-status" id="cl-export-status" aria-live="polite"></div>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="course-load-faq-title">
-  <h2 id="course-load-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>Check whether a course load is realistic?</summary><p>Compare credit hours, work hours, commute, and study target before registration.</p></details><details><summary>What should I verify before acting?</summary><p>Education disclaimer: confirm institution credit rules, prerequisites, and adviser guidance before registration.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting.</p></details></div>
-</section>
+</div>
+
+</div>
+</div>
+
+
+
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+  <section class="card" aria-labelledby="course-load-faq-title">
+    <h2 id="course-load-faq-title">Before you register courses</h2>
+    <details><summary>How should I use the workload diagnosis?</summary><p>Use it to decide whether to keep the semester, reduce credits, speak to an adviser, or move difficult courses to a lighter term.</p></details>
+    <details><summary>Does this replace my university adviser?</summary><p>No. It is a planning estimate. Confirm prerequisites, minimum-load rules, graduation requirements, and overload approvals with your department or registry.</p></details>
+    <details><summary>Why include work and commute hours?</summary><p>A credit load can look fine on paper but become risky when paid work, caregiving, travel time, labs, and project work leave too few weekly study hours.</p></details>
+  </section>
 </div>
 <afro-footer></afro-footer>
 <script>
-function planCourseLoad(){
+function legacyPlanCourseLoad(){
   var total=parseInt(document.getElementById('cl-total').value)||120;
   var earned=parseInt(document.getElementById('cl-earned').value)||0;
   var min=parseInt(document.getElementById('cl-min').value)||12;
@@ -281,6 +375,198 @@ function planCourseLoad(){
   document.getElementById('cl-result').classList.add('show');
 }
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script>
+var lastCourseLoadPlan=null;
+function clValue(id,fallback){
+  var el=document.getElementById(id);
+  var value=el?parseFloat(el.value):NaN;
+  return Number.isFinite(value)?value:fallback;
+}
+function clText(value){
+  return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+}
+function clSetStatus(message){
+  var status=document.getElementById('cl-export-status');
+  if(status) status.textContent=message||'';
+}
+function clSetFormStatus(message){
+  var status=document.getElementById('cl-form-status');
+  if(status) status.textContent=message||'';
+}
+function clSetField(id,value){
+  var el=document.getElementById(id);
+  if(el) el.value=value;
+}
+function loadCourseLoadSample(){
+  clSetField('cl-total',120);
+  clSetField('cl-earned',45);
+  clSetField('cl-min',12);
+  clSetField('cl-max',21);
+  clSetField('cl-current',18);
+  clSetField('cl-semesters',2);
+  clSetField('cl-year',2026);
+  clSetField('cl-work',12);
+  clSetField('cl-commute',6);
+  clSetField('cl-difficulty','heavy');
+  clSetFormStatus('Sample semester loaded. Run the planner to see workload, graduation pace, and registration checks.');
+}
+function clearCourseLoadForm(){
+  ['cl-total','cl-earned','cl-current','cl-work','cl-commute'].forEach(function(id){clSetField(id,'');});
+  clSetField('cl-min',12);
+  clSetField('cl-max',21);
+  clSetField('cl-semesters',2);
+  clSetField('cl-year',2026);
+  clSetField('cl-difficulty','standard');
+  lastCourseLoadPlan=null;
+  document.getElementById('cl-result').classList.remove('show');
+  document.getElementById('cl-warnings').innerHTML='';
+  document.getElementById('cl-grid').innerHTML='';
+  document.getElementById('cl-timeline').innerHTML='';
+  document.getElementById('cl-action-panel').hidden=true;
+  clSetStatus('');
+  clSetFormStatus('Form cleared. Enter your credits or load the sample semester.');
+}
+function planCourseLoad(){
+  var total=Math.max(1,Math.round(clValue('cl-total',120)));
+  var earned=Math.min(total,Math.max(0,Math.round(clValue('cl-earned',0))));
+  var min=Math.max(1,Math.round(clValue('cl-min',12)));
+  var max=Math.max(min,Math.round(clValue('cl-max',21)));
+  var current=Math.max(0,Math.round(clValue('cl-current',0)));
+  var semPerYear=Math.max(1,Math.round(clValue('cl-semesters',2)));
+  var startYear=Math.round(clValue('cl-year',2026));
+  var workHours=Math.max(0,Math.round(clValue('cl-work',0)));
+  var commuteHours=Math.max(0,Math.round(clValue('cl-commute',0)));
+  var difficulty=document.getElementById('cl-difficulty').value||'standard';
+  var difficultyMap={standard:2,heavy:2.5,project:3};
+  var difficultyLabel={standard:'Standard mix',heavy:'Heavy theory/lab mix',project:'Project-heavy semester'}[difficulty]||'Standard mix';
+  var studyMultiplier=difficultyMap[difficulty]||2;
+  var remaining=Math.max(0,total-earned);
+  var optimal=Math.round((min+max)/2);
+  var semestersLeft=Math.ceil(remaining/optimal);
+  var yearsLeft=semestersLeft/semPerYear;
+  var gradYear=startYear+Math.ceil(yearsLeft);
+  var weeklyStudy=Math.round(current*studyMultiplier);
+  var weeklyLoad=weeklyStudy+workHours+commuteHours;
+  var loadBand=weeklyLoad>72?'unsustainable':weeklyLoad>60?'high risk':weeklyLoad>48?'tight':'manageable';
+  var loadCopy=loadBand==='unsustainable'?'This semester is likely too heavy. Reduce credits or get adviser approval before registration.':loadBand==='high risk'?'This is a high-risk semester. Protect difficult courses and reduce other commitments where possible.':loadBand==='tight'?'This can work, but only with a weekly timetable and early assignment tracking.':'This looks manageable if the course assumptions and prerequisites are correct.';
+  var warnings=document.getElementById('cl-warnings');
+  var warnHtml='';
+  if(current>max){warnHtml+='<div class="warn"><strong>Overload Warning:</strong> You are taking '+current+' credits this semester, which exceeds your maximum of '+max+'. Consider reducing the load or getting written approval before registration.</div>';}
+  else if(current<min){warnHtml+='<div class="warn"><strong>Under-loading Warning:</strong> You are taking only '+current+' credits, below the minimum of '+min+'. This may delay graduation or affect aid, housing, visa, or scholarship rules.</div>';}
+  else{warnHtml+='<div class="ok"><strong>Course load is inside your range.</strong> Your current '+current+' credits sits between '+min+' and '+max+'. Now check the weekly workload before you register.</div>';}
+  warnings.innerHTML=warnHtml;
+  document.getElementById('cl-grid').innerHTML=
+    '<div class="rs"><div class="lbl">Credits Remaining</div><div class="val">'+remaining+'</div><div class="sub">of '+total+' total required</div></div>'+
+    '<div class="rs"><div class="lbl">Progress</div><div class="val">'+(earned/total*100).toFixed(0)+'%</div><div class="sub">'+earned+' credits done</div></div>'+
+    '<div class="rs"><div class="lbl">Semesters Left</div><div class="val">'+semestersLeft+'</div><div class="sub">At '+optimal+' credits/sem</div></div>'+
+    '<div class="rs"><div class="lbl">Est. Graduation</div><div class="val">'+gradYear+'</div><div class="sub">'+semestersLeft+' semesters away</div></div>'+
+    '<div class="rs"><div class="lbl">Weekly Study Target</div><div class="val">'+weeklyStudy+'h</div><div class="sub">'+difficultyLabel+'</div></div>'+
+    '<div class="rs"><div class="lbl">Total Weekly Load</div><div class="val">'+weeklyLoad+'h</div><div class="sub">'+loadBand+'</div></div>';
+  var tbl='<h3 style="font-size:.9rem;font-weight:700;margin:1.25rem 0 .5rem">Semester-by-Semester Plan</h3>'+
+    '<table class="timeline-table"><thead><tr><th>Semester</th><th>Year</th><th>Credits Target</th><th>Cumulative</th><th>Status</th></tr></thead><tbody>';
+  var cumulative=earned;
+  var yr=startYear;
+  var semCount=0;
+  while(cumulative<total&&semCount<20){
+    semCount++;
+    var creditsThisSem=Math.min(optimal,total-cumulative);
+    if(semCount===1&&current>0) creditsThisSem=current;
+    cumulative=Math.min(total,cumulative+creditsThisSem);
+    var isDone=cumulative>=total;
+    var cls=isDone?'done':semCount===1?'current':creditsThisSem>max?'warning':'';
+    var status=isDone?'Graduation':semCount===1?'Current semester':'On track';
+    tbl+='<tr class="'+cls+'"><td>Semester '+semCount+'</td><td>'+yr+'</td><td>'+creditsThisSem+' credits</td><td>'+cumulative+'</td><td>'+status+'</td></tr>';
+    if(semCount%semPerYear===0)yr++;
+    if(isDone)break;
+  }
+  tbl+='</tbody></table>';
+  document.getElementById('cl-timeline').innerHTML=tbl;
+  lastCourseLoadPlan={total:total,earned:earned,remaining:remaining,min:min,max:max,current:current,semPerYear:semPerYear,startYear:startYear,optimal:optimal,semestersLeft:semestersLeft,gradYear:gradYear,workHours:workHours,commuteHours:commuteHours,difficultyLabel:difficultyLabel,weeklyStudy:weeklyStudy,weeklyLoad:weeklyLoad,loadBand:loadBand,loadCopy:loadCopy};
+  renderCourseLoadActionPanel(lastCourseLoadPlan);
+  document.getElementById('cl-result').classList.add('show');
+  clSetStatus('Registration plan ready.');
+  clSetFormStatus('Course load plan calculated.');
+}
+function renderCourseLoadActionPanel(plan){
+  var panel=document.getElementById('cl-action-panel');
+  if(!panel||!plan)return;
+  var action=plan.loadBand==='unsustainable'||plan.current>plan.max?'Reduce or split this semester before registration':plan.loadBand==='high risk'?'Register only after adviser review and a written weekly timetable':plan.current<plan.min?'Add credits or confirm a minimum-load exemption':'Register with a weekly study plan';
+  var checks=[
+    'Confirm prerequisites and failed/repeat course rules with your department.',
+    'Reserve about '+plan.weeklyStudy+' study hours each week before work and commute time.',
+    'Ask whether '+plan.current+' credits affects scholarship, housing, visa, or financial-aid status.',
+    'Put exam-heavy, lab-heavy, or project-heavy courses on different days where possible.'
+  ];
+  panel.hidden=false;
+  panel.innerHTML='<h3>Registration action pack</h3>'+
+    '<div class="plan-grid">'+
+    '<div class="plan-item"><strong>Recommended move</strong><span>'+clText(action)+'</span></div>'+
+    '<div class="plan-item"><strong>Workload diagnosis</strong><span>'+clText(plan.loadCopy)+'</span></div>'+
+    '<div class="plan-item"><strong>Graduation pace</strong><span>'+plan.remaining+' credits left, about '+plan.semestersLeft+' semester(s) at '+plan.optimal+' credits.</span></div>'+
+    '</div><ul class="plan-list">'+checks.map(function(item){return '<li>'+clText(item)+'</li>';}).join('')+'</ul>';
+}
+function buildCourseLoadText(){
+  var plan=lastCourseLoadPlan;
+  if(!plan){planCourseLoad();plan=lastCourseLoadPlan;}
+  if(!plan)return '';
+  return [
+    'AfroTools Course Load Registration Plan',
+    'Credits: '+plan.earned+' earned / '+plan.total+' required',
+    'Current semester: '+plan.current+' credits',
+    'Recommended range: '+plan.min+'-'+plan.max+' credits',
+    'Estimated graduation: '+plan.gradYear+' after about '+plan.semestersLeft+' semester(s)',
+    'Weekly study target: '+plan.weeklyStudy+' hours ('+plan.difficultyLabel+')',
+    'Work hours: '+plan.workHours+' per week',
+    'Commute hours: '+plan.commuteHours+' per week',
+    'Total weekly load: '+plan.weeklyLoad+' hours - '+plan.loadBand,
+    'Diagnosis: '+plan.loadCopy,
+    '',
+    'Before registration:',
+    '- Confirm prerequisites and repeat-course rules.',
+    '- Confirm minimum/maximum credit rules and overload approval.',
+    '- Protect study time before committing to work, commute, and projects.',
+    '- Verify this with your department, faculty adviser, or registry.'
+  ].join('\n');
+}
+function copyCourseLoadPlan(){
+  var text=buildCourseLoadText();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){clSetStatus('Registration plan copied.');}).catch(function(){fallbackCopyCourseLoad(text);});
+  }else{
+    fallbackCopyCourseLoad(text);
+  }
+}
+function fallbackCopyCourseLoad(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');clSetStatus('Registration plan copied.');}
+  catch(e){clSetStatus('Copy failed. Select and copy the plan manually.');}
+  field.remove();
+}
+function downloadCourseLoadPlan(){
+  var text=buildCourseLoadText();
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='course-load-registration-plan.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  clSetStatus('TXT registration plan downloaded.');
+}
+function saveCourseLoadPlan(){
+  if(!lastCourseLoadPlan)planCourseLoad();
+  try{
+    localStorage.setItem('afrotools_course_load_plan',JSON.stringify({savedAt:new Date().toISOString(),plan:lastCourseLoadPlan,text:buildCourseLoadText()}));
+    clSetStatus('Plan saved on this device.');
+  }catch(e){
+    clSetStatus('Could not save locally in this browser.');
+  }
+}
+</script>
 </body>
 </html>

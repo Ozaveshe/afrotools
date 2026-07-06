@@ -5,18 +5,18 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Base64 Encoder &amp; Decoder &mdash; Encode, Decode, Files | AfroTools</title>
-<meta name="description" content="Free Base64 encoder and decoder for text, files and images. URL-safe mode, drag-and-drop, copy/download output, and optional AI analysis with consent.">
+<meta name="description" content="Free Base64 encoder and decoder for text, files and images. URL-safe mode, drag-and-drop, copy/download output, local validation, and Base64 format inspection.">
 <link rel="canonical" href="https://afrotools.com/tools/base64/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Base64 Encoder & Decoder | AfroTools">
-<meta property="og:description" content="Encode and decode Base64 with text, file, image support. URL-safe mode, drag-and-drop, and optional AI analysis with consent.">
+<meta property="og:description" content="Encode and decode Base64 with text, file, image support, URL-safe mode, drag-and-drop uploads, and local format inspection.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/base64/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/base64.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Base64 Encoder & Decoder | AfroTools">
-<meta name="twitter:description" content="Free Base64 encoder/decoder with file upload, image support, and optional AI analysis with consent.">
+<meta name="twitter:description" content="Free Base64 encoder/decoder with file upload, image support, URL-safe mode, and local validation.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
@@ -44,7 +44,7 @@
   }
 
   .tool-hero::after {
-    content: '\1F510';
+    content: '64';
     position: absolute;
     right: 5%;
     top: 50%;
@@ -503,153 +503,49 @@
     margin-bottom: 8px;
   }
 
-  /* AI Advisor */
-  .ai-toggle-btn {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #1a1f2e, #0f1419);
-    color: #fff;
-    border: 1px solid rgba(0, 113, 227, 0.35);
+  /* Local inspector */
+  .inspector-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .inspector-stat {
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
     border-radius: 8px;
+    padding: 10px 12px;
+    min-width: 0;
+  }
+
+  .inspector-label {
+    color: #6B8CAE;
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .inspector-value {
+    color: #0d2813;
+    display: block;
     font-size: 0.82rem;
     font-weight: 700;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.18s;
-    letter-spacing: 0.02em;
+    overflow-wrap: anywhere;
   }
 
-  .ai-toggle-btn:hover {
-    border-color: var(--afro-green);
-    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.2);
-  }
-
-  .ai-panel {
-    display: none;
-    margin-top: 12px;
-  }
-
-  .ai-panel.open {
+  .inspector-summary {
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    color: #334155;
     display: block;
-  }
-
-  .ai-suggestions {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 12px;
-  }
-
-  .ai-suggest-btn {
-    padding: 8px 12px;
-    background: #EFF6FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 6px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #0d2813;
-    cursor: pointer;
-    text-align: left;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.15s;
-  }
-
-  .ai-suggest-btn:hover {
-    border-color: var(--afro-green);
-    background: #DBEAFE;
-  }
-
-  .ai-chat {
-    max-height: 260px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-  }
-
-  .ai-msg {
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-size: 0.78rem;
-    line-height: 1.6;
-    margin-bottom: 8px;
-  }
-
-  .ai-msg.user {
-    background: #EFF6FF;
-    color: #0d2813;
-    font-weight: 600;
-  }
-
-  .ai-msg.assistant {
-    background: #f0fdf4;
-    color: #0d2813;
-    border: 1px solid #bbf7d0;
-  }
-
-  .ai-msg.error {
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
-  }
-
-  .ai-input-row {
-    display: flex;
-    gap: 6px;
-  }
-
-  .ai-input {
-    flex: 1;
-    padding: 9px 12px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    font-size: 0.78rem;
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-  }
-
-  .ai-input:focus {
-    border-color: var(--afro-green);
-  }
-
-  .ai-send-btn {
-    padding: 9px 14px;
-    background: var(--afro-green);
-    color: #fff;
-    border: none;
-    border-radius: 7px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .ai-send-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .ai-powered {
-    font-size: 0.62rem;
-    color: #9ca3af;
-    text-align: center;
-    margin-top: 6px;
-  }
-  .ai-consent {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid #fed7aa;
-    background: #fff7ed;
-    border-radius: 8px;
-    color: #9a3412;
-    font-size: 0.72rem;
-    line-height: 1.45;
-  }
-  .ai-consent input {
-    margin-top: 2px;
-    accent-color: var(--afro-green);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    margin-top: 12px;
+    padding: 12px;
   }
 
   /* Toast */
@@ -711,12 +607,20 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Base64 Encoder & Decoder",
-  "description": "Free Base64 encoder and decoder. Encode text, files, and images to Base64. Decode Base64 strings. URL-safe mode, drag-and-drop, image preview, and optional AI analysis with consent.",
+  "description": "Free Base64 encoder and decoder. Encode text, files, and images to Base64, decode Base64 strings, inspect URL-safe/data URI/JWT-like formats, and copy or download output locally.",
   "url": "https://afrotools.com/tools/base64/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
+  "browserRequirements": "Requires JavaScript and a modern browser",
+  "featureList": [
+    "Text Base64 encode and decode",
+    "URL-safe Base64 conversion",
+    "MIME line breaks at 76 characters",
+    "File and image to Base64 conversion",
+    "Decode Base64 to downloadable files",
+    "Local format inspection and share-safety hints"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -736,7 +640,7 @@
   "@type": "WebPage",
   "name": "Base64 Encoder & Decoder",
   "url": "https://afrotools.com/tools/base64/",
-  "description": "Free Base64 encoder and decoder. Encode text, files, and images to Base64. Decode Base64 strings. URL-safe mode, drag-and-drop, image preview, and optional AI analysis with consent.",
+  "description": "Browser-based Base64 encoder and decoder for text, files and images with URL-safe mode, local format inspection, copy and download output.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -744,6 +648,31 @@
     "url": "https://afrotools.com/"
   },
   "image": "https://afrotools.com/assets/img/tools/base64.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to encode or decode Base64 with AfroTools",
+  "description": "Convert text, files or images to and from Base64 locally in the browser.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Choose a mode",
+      "text": "Use the text, file upload, image or decode-file tab for your input type."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Set options",
+      "text": "Toggle URL-safe Base64, MIME line breaks or data URI prefixes when your target format needs them."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Copy or download",
+      "text": "Review the local inspector output, then copy text or download the converted file when ready."
+    }
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -772,7 +701,7 @@
       "name": "Is my data secure when using the Base64 encoder?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. All encoding and decoding happens entirely in your browser. No data is sent to any server unless you explicitly enable optional AI analysis and send a request. Important: Base64 is an encoding format, not encryption. It should not be used to protect sensitive data."
+        "text": "Yes. All encoding and decoding happens in your browser. Important: Base64 is an encoding format, not encryption. It should not be used to protect sensitive data, and encoded secrets remain easy to decode."
       }
     },
     {
@@ -831,9 +760,62 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/encodeur-base64/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/base64/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/base64/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+  .top-level-page-ui-refresh .tool-main-inner,
+  .top-level-page-ui-refresh .card,
+  .top-level-page-ui-refresh .sidebar,
+  .top-level-page-ui-refresh .info-card {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh .tab-btn,
+  .top-level-page-ui-refresh .dir-btn,
+  .top-level-page-ui-refresh .copy-btn,
+  .top-level-page-ui-refresh .calc-btn,
+  .top-level-page-ui-refresh .drop-zone,
+  .top-level-page-ui-refresh summary {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh .f-input,
+  .top-level-page-ui-refresh .f-select {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh .f-textarea {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh .toggle-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, select, textarea, summary, .drop-zone):focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.35);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .top-level-page-ui-refresh .tabs,
+    .top-level-page-ui-refresh .dir-row,
+    .top-level-page-ui-refresh .inspector-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .top-level-page-ui-refresh .tab-btn,
+    .top-level-page-ui-refresh .dir-btn,
+    .top-level-page-ui-refresh .copy-btn,
+    .top-level-page-ui-refresh .calc-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -844,12 +826,12 @@
       <a href="/">AfroTools</a> / <a href="/">Tools</a> / <span>Base64</span>
     </div>
     <h1>Base64 <em>Encoder &amp; Decoder</em></h1>
-    <p class="hero-sub">Encode and decode Base64 text, files, and images instantly. URL-safe mode, MIME line breaks, drag-and-drop file upload, and AI-powered analysis.</p>
+    <p class="hero-sub">Encode and decode Base64 text, files, and images instantly. URL-safe mode, MIME line breaks, drag-and-drop upload, local format inspection, copy and download output.</p>
     <div class="hero-badges">
       <span class="badge b-green">Text &amp; Files</span>
       <span class="badge b-green">URL-safe</span>
       <span class="badge b-green">Image Preview</span>
-      <span class="badge b-green">Optional AI</span>
+      <span class="badge b-green">Local Inspector</span>
     </div>
   </div>
 </div>
@@ -1016,27 +998,31 @@
         </div>
       </div>
 
-      <!-- AI Advisor Card -->
-      <div class="card">
+      <div class="card" aria-labelledby="base64-inspector-title">
+        <div class="card-head">
+          <span class="card-title" id="base64-inspector-title">Local Base64 Inspector</span>
+          <button type="button" class="copy-btn" id="inspector-refresh">Refresh</button>
+        </div>
         <div class="card-body">
-          <button type="button" class="ai-toggle-btn" id="ai-toggle">&#10022; Ask AI about this Base64</button>
-          <div class="ai-panel" id="ai-panel">
-            <label class="ai-consent" for="ai-consent">
-              <input id="ai-consent" type="checkbox">
-              <span>Send my current Base64 excerpt and question to the AI advisor for this request. Leave unchecked for tokens, keys, private files, IDs, or client data.</span>
-            </label>
-            <div class="ai-suggestions" id="ai-suggestions">
-              <button type="button" class="ai-suggest-btn" data-q="What type of data is this Base64?">What type of data is this Base64?</button>
-              <button type="button" class="ai-suggest-btn" data-q="Is this a valid JWT token? Decode and explain the parts.">Is this a valid JWT?</button>
-              <button type="button" class="ai-suggest-btn" data-q="Decode this Base64 and explain what the content is.">Decode and explain</button>
+          <div class="inspector-grid">
+            <div class="inspector-stat">
+              <span class="inspector-label">Format</span>
+              <span class="inspector-value" id="inspector-format">Waiting for input</span>
             </div>
-            <div class="ai-chat" id="ai-chat"></div>
-            <div class="ai-input-row">
-              <input aria-label="Ask about your Base64 data" class="ai-input" id="ai-input" type="text" placeholder="Ask about your Base64 data...">
-              <button type="button" class="ai-send-btn" id="ai-send">Send</button>
+            <div class="inspector-stat">
+              <span class="inspector-label">Decoded Size</span>
+              <span class="inspector-value" id="inspector-size">--</span>
             </div>
-            <div class="ai-powered">Optional AI assist &middot; consent required &middot; max 3 messages per session</div>
+            <div class="inspector-stat">
+              <span class="inspector-label">Padding</span>
+              <span class="inspector-value" id="inspector-padding">--</span>
+            </div>
+            <div class="inspector-stat">
+              <span class="inspector-label">Share Risk</span>
+              <span class="inspector-value" id="inspector-risk">--</span>
+            </div>
           </div>
+          <output class="inspector-summary" id="inspector-summary" aria-live="polite">Paste or generate Base64 to inspect alphabet, padding, size and share-safety hints locally.</output>
         </div>
       </div>
     </div>
@@ -1069,7 +1055,7 @@
         <div class="info-title">Security Note</div>
         <div class="info-text" style="font-size:0.75rem">
           <strong>Disclaimer:</strong> Base64 is encoding, not encryption. Anyone can decode it. Never use Base64 to protect passwords, tokens, or sensitive data. It is not an official file-authenticity or security check.
-          <div style="margin-top:8px;font-size:0.7rem;color:#6B8CAE">All conversion processing happens in your browser. Content is sent only if you explicitly consent to optional AI analysis.</div>
+          <div style="margin-top:8px;font-size:0.7rem;color:#6B8CAE">All conversion processing happens in your browser after the page loads. Base64 is reversible, so treat encoded tokens and private records as exposed.</div>
           <div style="margin-top:8px;font-size:0.7rem;color:#6B8CAE">Reference: RFC 4648 Base-N Encodings, including standard and URL-safe Base64 alphabets.</div>
         </div>
       </div>
@@ -1093,26 +1079,6 @@
 <!-- FAQ Section -->
 
 
-<section class="df-upgrade" data-df-upgrade="base64">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Encoding handoff brief</span>
-      <h2>Encode or decode, then verify what the bytes mean</h2>
-      <p>Use the text, file or image tabs above, then capture the mode, output type and share-safety checks before copying or downloading encoded data.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: convert text, files or images to and from Base64 in the browser.</li><li>Result output: a local encoding brief that records mode, data type and verification checks.</li><li>Quality checks: text encoding, URL-safe mode, MIME prefix, file size expansion and whether the data is safe to share.</li><li>Privacy note: Base64 is not encryption. Do not paste passwords, tokens, secrets or private records unless you intend to decode or expose them locally.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Local encoding utility only. It does not protect sensitive data or prove file authenticity.</p>
-    </div>
-    <form class="df-form" data-df-form="base64">
-      <label>Data type<select name="type" aria-label="Data type"><option value="plain text">plain text</option><option value="JSON payload">JSON payload</option><option value="image data URI">image data URI</option><option value="file download">file download</option></select></label>
-      <label>Input size KB<input name="size" type="number" value="1" min="0" step="0.1" aria-label="Input size KB"></label>
-      <label>Mode<select name="mode" aria-label="Mode"><option value="encode">encode</option><option value="decode">decode</option><option value="URL-safe encode">URL-safe encode</option><option value="decode to file">decode to file</option></select></label>
-      <label>Share safety<select name="safety" aria-label="Share safety"><option value="safe sample">safe sample</option><option value="contains token or secret">contains token or secret</option><option value="private customer data">private customer data</option><option value="public asset">public asset</option></select></label>
-      <button type="submit">Create Base64 brief</button>
-      <output class="df-result" data-df-result="base64" data-df-base="Base64 handoff brief ready. Encode or decode above, then verify text encoding, URL-safe mode, MIME prefix, file size expansion, and whether the data is safe to share." aria-live="polite">Base64 handoff brief ready. Encode or decode above, then verify text encoding, URL-safe mode, MIME prefix, file size expansion, and whether the data is safe to share.</output>
-      <div class="df-actions"><button type="button" data-df-copy="base64">Copy Base64 brief</button><a href="#text-output">Review output</a></div>
-    </form>
-  </div>
-</section>
 <section class="tool-verification-sec" data-tool-verification-panel data-tool-id="base64" aria-labelledby="base64-verification-title">
   <div class="container">
     <div class="tool-verification-card">
@@ -1120,7 +1086,7 @@
         <div>
           <span class="tool-verification-kicker">Encoding safety check</span>
           <h2 class="tool-verification-title" id="base64-verification-title">Convert locally, then confirm what the encoded data exposes</h2>
-          <p class="tool-verification-lead">Text, file, image and decode workflows run in the browser. Copy and download actions are explicit; optional AI analysis sends data only after consent.</p>
+          <p class="tool-verification-lead">Text, file, image and decode workflows run in the browser. Copy, inspect and download actions are explicit.</p>
         </div>
         <div class="tool-verification-status">
           <span class="tool-verification-badge">RFC 4648 reference model</span>
@@ -1140,7 +1106,7 @@
           <h3>Privacy and limits</h3>
           <ul class="tool-verification-list">
             <li>Do not paste tokens, passwords, secrets, private documents, or customer data unless you intend to reveal them locally.</li>
-            <li>AI analysis is optional and requires the consent checkbox; use the local conversion path for sensitive data.</li>
+            <li>Base64 is reversible. Do not paste tokens, passwords, secrets, private documents, or customer data unless you intend to expose them locally.</li>
             <li>Reference: RFC 4648 Base-N Encodings for standard and URL-safe Base64 alphabets.</li>
           </ul>
         </div>
@@ -1151,10 +1117,6 @@
       </div>
     </div>
   </div>
-</section>
-<section class="df-faq" aria-labelledby="base64-faq-title">
-  <h2 id="base64-faq-title">Base64 Encoder/Decoder FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Choose text, file, image or decode mode, run the conversion locally, then copy or download the output you need.</p></details><details><summary>What should I verify?</summary><p>Check text encoding, URL-safe mode, MIME prefix, file size expansion, and whether the Base64 content exposes sensitive data.</p></details><details><summary>Is this official?</summary><p>No. It is a local encoding utility. Base64 is not encryption and does not protect or verify data.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -1185,7 +1147,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Yes. All encoding and decoding happens entirely in your browser. No data is sent to any server unless you explicitly enable optional AI analysis and send a request. Important: Base64 is an encoding format, not encryption. It should not be used to protect sensitive data.
+        Yes. All encoding and decoding happens in your browser after the page loads. Important: Base64 is an encoding format, not encryption. It should not be used to protect sensitive data, and encoded secrets remain easy to decode.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1216,7 +1178,7 @@
 (function() {
   'use strict';
 
-  /* ── Helpers ─────────────────────────────────── */
+  /* â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function $(id) { return document.getElementById(id); }
   function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -1229,9 +1191,33 @@
   }
 
   function copyText(text) {
-    navigator.clipboard.writeText(text).then(function() {
-      showToast('Copied!');
-    });
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('Copied!');
+      }).catch(function() {
+        fallbackCopy(text);
+      });
+      return;
+    }
+    fallbackCopy(text);
+  }
+
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    var copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch (e) {
+      copied = false;
+    }
+    textarea.remove();
+    showToast(copied ? 'Copied!' : 'Copy failed');
   }
 
   function formatBytes(b) {
@@ -1245,17 +1231,120 @@
     return str.replace(/(.{76})/g, '$1\n');
   }
 
-  /* ── Tabs ─────────────────────────────────────── */
+  function encodeUtf8Base64(str) {
+    var bytes = new TextEncoder().encode(str);
+    var binary = '';
+    for (var i = 0; i < bytes.length; i += 32768) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 32768));
+    }
+    return btoa(binary);
+  }
+
+  function decodeBase64Utf8(str) {
+    var binary = atob(str);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+  }
+
+  function normalizeBase64(value, assumeUrlSafe) {
+    var input = (value || '').trim();
+    var isDataUri = /^data:[^,]+;base64,/i.test(input);
+    if (isDataUri) input = input.split(',')[1] || '';
+    input = input.replace(/\s/g, '');
+    var isUrlSafe = assumeUrlSafe || /[-_]/.test(input);
+    if (isUrlSafe) input = input.replace(/-/g, '+').replace(/_/g, '/');
+    var padding = input.length % 4;
+    if (padding) input += '='.repeat(4 - padding);
+    return { value: input, isDataUri: isDataUri, isUrlSafe: isUrlSafe };
+  }
+
+  function getCurrentInspectorInput() {
+    var activeTab = document.querySelector('.tab-btn.active');
+    var tabId = activeTab ? activeTab.dataset.tab : 'text-tab';
+    if (tabId === 'file-tab') return $('file-output').value || '';
+    if (tabId === 'image-tab') return $('img-output').value || '';
+    if (tabId === 'decode-file-tab') return $('decode-input').value || '';
+    return encodeMode ? (textOutput.value || textInput.value || '') : (textInput.value || textOutput.value || '');
+  }
+
+  function inspectBase64(value) {
+    var raw = (value || '').trim();
+    if (!raw) {
+      return {
+        format: 'Waiting for input',
+        size: '--',
+        padding: '--',
+        risk: '--',
+        summary: 'Paste or generate Base64 to inspect alphabet, padding, size and share-safety hints locally.'
+      };
+    }
+
+    var looksJwt = raw.split('.').length === 3 && /^[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+){2}$/.test(raw);
+    var normalized = normalizeBase64(looksJwt ? raw.split('.')[1] : raw, $('url-safe-toggle').checked);
+    var clean = normalized.value;
+    var base64ish = /^[A-Za-z0-9+/]*={0,2}$/.test(clean) && clean.length % 4 === 0;
+    var decodedBytes = 0;
+    var valid = false;
+
+    if (base64ish) {
+      try {
+        decodedBytes = atob(clean).length;
+        valid = true;
+      } catch (e) {
+        valid = false;
+      }
+    }
+
+    var format = valid ? 'Standard Base64' : 'Needs review';
+    if (normalized.isDataUri) format = 'Data URI';
+    if (normalized.isUrlSafe) format = 'URL-safe Base64';
+    if (looksJwt) format = 'JWT-like token';
+
+    var paddingText = clean.endsWith('==') ? 'Double padding' : clean.endsWith('=') ? 'Single padding' : 'No padding';
+    var risk = 'Low for public samples';
+    if (looksJwt || /token|secret|password|api[_-]?key|authorization/i.test(raw)) {
+      risk = 'High: token or secret-like content';
+    } else if (normalized.isDataUri || decodedBytes > 204800) {
+      risk = 'Check before sharing';
+    }
+
+    var summary = valid
+      ? format + ' detected. Estimated decoded size is ' + formatBytes(decodedBytes) + '. Base64 is reversible, so only share output you are comfortable exposing.'
+      : 'This does not currently parse as valid Base64. Check alphabet, padding, whitespace, or URL-safe mode.';
+
+    return {
+      format: format,
+      size: valid ? formatBytes(decodedBytes) : '--',
+      padding: valid ? paddingText : '--',
+      risk: risk,
+      summary: summary
+    };
+  }
+
+  function updateInspector() {
+    var info = inspectBase64(getCurrentInspectorInput());
+    $('inspector-format').textContent = info.format;
+    $('inspector-size').textContent = info.size;
+    $('inspector-padding').textContent = info.padding;
+    $('inspector-risk').textContent = info.risk;
+    $('inspector-summary').textContent = info.summary;
+  }
+
+  /* â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   document.querySelectorAll('.tab-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('active'); });
       document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
       $(btn.dataset.tab).classList.add('active');
       btn.classList.add('active');
+      updateInspector();
     });
   });
 
-  /* ── TEXT TAB ──────────────────────────────────── */
+  /* â”€â”€ TEXT TAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var encodeMode = true;
   var textInput = $('text-input');
   var textOutput = $('text-output');
@@ -1284,8 +1373,7 @@
       var urlSafe = $('url-safe-toggle').checked;
       var lineBreaks = $('linebreak-toggle').checked;
       if (encodeMode) {
-        // Encode: handle Unicode with UTF-8
-        var encoded = btoa(unescape(encodeURIComponent(input)));
+        var encoded = encodeUtf8Base64(input);
         if (urlSafe) {
           encoded = encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
         }
@@ -1294,19 +1382,15 @@
         }
         textOutput.value = encoded;
       } else {
-        var toDecodeStr = input.replace(/\s/g, ''); // strip whitespace/linebreaks
-        if (urlSafe) {
-          toDecodeStr = toDecodeStr.replace(/-/g, '+').replace(/_/g, '/');
-          var padding = 4 - (toDecodeStr.length % 4);
-          if (padding !== 4) toDecodeStr += '='.repeat(padding);
-        }
-        var decoded = decodeURIComponent(escape(atob(toDecodeStr)));
+        var toDecodeStr = normalizeBase64(input, urlSafe).value;
+        var decoded = decodeBase64Utf8(toDecodeStr);
         textOutput.value = decoded;
       }
     } catch (e) {
       textOutput.value = 'Error: ' + e.message;
     }
     updateStats();
+    updateInspector();
   }
 
   $('encode-btn').addEventListener('click', function() {
@@ -1338,6 +1422,7 @@
     textInput.value = '';
     textOutput.value = '';
     updateStats();
+    updateInspector();
   });
 
   $('text-swap').addEventListener('click', function() {
@@ -1345,9 +1430,10 @@
     textInput.value = textOutput.value;
     textOutput.value = tmp;
     updateStats();
+    updateInspector();
   });
 
-  /* ── Keyboard shortcuts ────────────────────────── */
+  /* â”€â”€ Keyboard shortcuts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   document.addEventListener('keydown', function(e) {
     if (e.ctrlKey && e.key === 'Enter') {
       e.preventDefault();
@@ -1359,7 +1445,7 @@
     }
   });
 
-  /* ── FILE UPLOAD TAB ───────────────────────────── */
+  /* â”€â”€ FILE UPLOAD TAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var fileDropZone = $('file-drop-zone');
   var fileInputEl = $('file-input');
   var currentFileData = null;
@@ -1400,6 +1486,7 @@
       currentFileData = { full: reader.result, raw: parts[1] || '' };
       var prefix = $('file-include-prefix').checked;
       $('file-output').value = prefix ? currentFileData.full : currentFileData.raw;
+      updateInspector();
 
       if (file.type.startsWith('image/')) {
         $('file-image-preview').innerHTML = '<img src="' + reader.result + '" alt="Preview">';
@@ -1416,6 +1503,7 @@
   $('file-include-prefix').addEventListener('change', function() {
     if (!currentFileData) return;
     $('file-output').value = this.checked ? currentFileData.full : currentFileData.raw;
+    updateInspector();
   });
 
   $('file-copy-output').addEventListener('click', function() { copyText($('file-output').value); });
@@ -1430,7 +1518,7 @@
     URL.revokeObjectURL(url);
   });
 
-  /* ── IMAGE TO BASE64 TAB ───────────────────────── */
+  /* â”€â”€ IMAGE TO BASE64 TAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var imgDropZone = $('img-drop-zone');
   var imgInputEl = $('img-input');
   var currentImgData = null;
@@ -1454,6 +1542,7 @@
 
       var includePrefix = $('img-include-prefix').checked;
       $('img-output').value = includePrefix ? currentImgData.full : currentImgData.raw;
+      updateInspector();
 
       // Stats
       var b64Len = (includePrefix ? currentImgData.full : currentImgData.raw).length;
@@ -1470,21 +1559,19 @@
   $('img-include-prefix').addEventListener('change', function() {
     if (!currentImgData) return;
     $('img-output').value = this.checked ? currentImgData.full : currentImgData.raw;
+    updateInspector();
   });
 
   $('img-copy-output').addEventListener('click', function() { copyText($('img-output').value); });
 
-  /* ── DECODE FILE TAB ───────────────────────────── */
+  /* â”€â”€ DECODE FILE TAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   $('decode-download-btn').addEventListener('click', function() {
     var base64Str = $('decode-input').value.trim();
     var filename = $('decode-filename').value || 'output.txt';
     if (!base64Str) { showToast('Please enter Base64 string'); return; }
 
     try {
-      var cleanBase64 = base64Str;
-      if (base64Str.startsWith('data:')) {
-        cleanBase64 = base64Str.split(',')[1];
-      }
+      var cleanBase64 = normalizeBase64(base64Str, /[-_]/.test(base64Str)).value;
       var binaryString = atob(cleanBase64);
       var bytes = new Uint8Array(binaryString.length);
       for (var i = 0; i < binaryString.length; i++) {
@@ -1500,115 +1587,16 @@
       showToast('Error: Invalid Base64 string');
     }
   });
-
-  /* ── AI ADVISOR ────────────────────────────────── */
-  var aiExchanges = 0;
-  var AI_MAX = 3;
-  var aiHistory = [];
-
-  $('ai-toggle').addEventListener('click', function() {
-    $('ai-panel').classList.toggle('open');
-  });
-
-  function getContextBase64() {
-    // Get whichever tab's output has data
-    var txt = textOutput.value || $('file-output').value || $('img-output').value || textInput.value || '';
-    // Truncate to 500 chars for API
-    return txt.substring(0, 500);
-  }
-
-  function sendAiMessage(question) {
-    if (aiExchanges >= AI_MAX) {
-      showToast('AI limit reached (3 per session)');
-      return;
-    }
-    if (!$('ai-consent') || !$('ai-consent').checked) {
-      showToast('Tick AI consent before sending Base64 content.');
-      return;
-    }
-
-    var context = getContextBase64();
-    if (!context && !question) {
-      showToast('Enter some Base64 data first');
-      return;
-    }
-
-    aiExchanges++;
-    var chatEl = $('ai-chat');
-
-    // Show user message
-    var userMsg = document.createElement('div');
-    userMsg.className = 'ai-msg user';
-    userMsg.textContent = question;
-    chatEl.appendChild(userMsg);
-
-    // Show loading
-    var loadMsg = document.createElement('div');
-    loadMsg.className = 'ai-msg assistant';
-    loadMsg.textContent = 'Thinking...';
-    chatEl.appendChild(loadMsg);
-    chatEl.scrollTop = chatEl.scrollHeight;
-
-    $('ai-send').disabled = true;
-
-    aiHistory.push({ role: 'user', content: question });
-
-    var payload = {
-      tool: 'base64',
-      question: question,
-      context: context,
-      history: aiHistory.slice(-4),
-      maxTokens: 500
-    };
-
-    fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-      var answer = (data.answer || data.response || data.message || 'No response received.');
-      loadMsg.textContent = answer;
-      aiHistory.push({ role: 'assistant', content: answer });
-    })
-    .catch(function(err) {
-      loadMsg.className = 'ai-msg error';
-      loadMsg.textContent = 'Error: Could not reach AI advisor.';
-    })
-    .finally(function() {
-      $('ai-send').disabled = false;
-      chatEl.scrollTop = chatEl.scrollHeight;
-      if (aiExchanges >= AI_MAX) {
-        $('ai-send').disabled = true;
-        $('ai-input').disabled = true;
-        $('ai-input').placeholder = 'Limit reached (3/session)';
-      }
-    });
-  }
-
-  $('ai-send').addEventListener('click', function() {
-    var q = $('ai-input').value.trim();
-    if (!q) return;
-    $('ai-input').value = '';
-    sendAiMessage(q);
-  });
-
-  $('ai-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') { $('ai-send').click(); }
-  });
-
-  document.querySelectorAll('.ai-suggest-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      sendAiMessage(btn.dataset.q);
-      $('ai-suggestions').style.display = 'none';
-    });
-  });
+  /* Inspector */
+  $('decode-input').addEventListener('input', updateInspector);
+  $('decode-filename').addEventListener('input', updateInspector);
+  $('inspector-refresh').addEventListener('click', updateInspector);
+  updateInspector();
 })();
 </script>
 
 <script>
-// Save/Share buttons — manual placement needed
+// Save/Share buttons â€” manual placement needed
 (function(){
   var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
@@ -1620,6 +1608,5 @@
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

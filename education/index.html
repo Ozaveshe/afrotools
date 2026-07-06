@@ -55,7 +55,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
-<script src="/assets/js/components/tool-registry.min.js?v=0e800cac" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=0243ac32" defer></script>
 <script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
 <script src="/assets/js/components/education-taxonomy.js?v=aea57edc" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
@@ -96,6 +96,12 @@
   .overview-meta{margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;font-size:.72rem;font-weight:700;color:#94a3b8;letter-spacing:.08em;text-transform:uppercase}
   .product-card{padding:20px;display:flex;flex-direction:column;gap:12px}
   .product-card:hover{border-color:var(--color-primary);box-shadow:0 16px 34px rgba(37,99,235,.08);transform:translateY(-2px)}
+  .education-card-media{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:16/9;height:auto;min-height:0;margin:0 0 4px;overflow:hidden;border:1px solid #e2e8f0;border-radius:8px;background:#fff;color:#0057b8;flex-shrink:0}
+  .education-card-media img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center;background:#fff}
+  .education-card-media.has-img img{opacity:1}
+  .education-card-media .media-fallback{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:8px;background:#eef5ff;color:#0057b8;font-size:.8rem;font-weight:800;letter-spacing:0;line-height:1;z-index:1}
+  .education-card-media.has-img .media-fallback{display:none}
+  .education-card-media.is-error{display:none}
   .product-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .product-icon{font-size:1.7rem}
   .product-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
@@ -112,17 +118,32 @@
   .bucket-head p{margin:0;font-size:.82rem;line-height:1.6;color:#64748b;max-width:620px}
   .bucket-count{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#475569;white-space:nowrap}
   .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-  .tool-card{display:block;background:#fff;border:1.5px solid #e2e8f0;border-radius:18px;padding:18px;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+  .tool-card{display:grid;grid-template-rows:auto 44px minmax(2.56em,auto) minmax(6.4em,1fr) auto;align-content:start;background:#fff;border:1.5px solid #e2e8f0;border-radius:18px;padding:18px;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
   .tool-card:hover{border-color:var(--color-primary);box-shadow:0 18px 34px rgba(37,99,235,.08);transform:translateY(-2px)}
   .tool-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
   .tool-icon{font-size:1.65rem}
   .tool-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
   .tool-badge.new{background:#fef3c7;color:#92400e}
-  .tool-card h4{font-size:.98rem;font-weight:800;line-height:1.28;color:#0f172a;margin:0 0 6px}
+  .tool-card h4{font-size:.98rem;font-weight:800;line-height:1.28;color:#0f172a;margin:0 0 6px;min-height:2.56em}
   .tool-card p{margin:0;font-size:.82rem;line-height:1.6;color:#64748b}
   .tool-foot{margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .tool-country{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8}
   .tool-cta{font-size:.76rem;font-weight:800;color:var(--color-primary)}
+  body.education-ui-refresh.top-level-page-ui-refresh a.tool-card{
+    display:grid!important;
+    grid-template-rows:auto 44px minmax(2.56em,auto) minmax(6.4em,1fr) auto!important;
+    align-content:start!important;
+    align-items:stretch!important;
+    width:100%!important;
+  }
+  body.education-ui-refresh.top-level-page-ui-refresh .education-card-media img{
+    object-fit:contain!important;
+    object-position:center!important;
+  }
+  @media(max-width:640px){
+    .education-card-media{height:auto;min-height:0}
+    .tool-card,body.education-ui-refresh.top-level-page-ui-refresh a.tool-card{grid-template-rows:auto 44px minmax(2.56em,auto) minmax(6.4em,1fr) auto!important}
+  }
   .registry-grid{display:grid;gap:0;background:#fff;border:1.5px solid #e2e8f0;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.04);overflow:hidden}
   .registry-card{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(0,1.35fr);gap:16px;padding:15px 18px;background:#fff}
   .registry-card+.registry-card{border-top:1px solid #e2e8f0}
@@ -243,7 +264,7 @@
   <div class="wrap">
     <div class="ey">Focused Routes</div>
     <h2 class="st">Real sub-hubs for the busiest education jobs</h2>
-    <p class="ss">The old placeholder education subcategory links now point to actual lightweight hubs with focused tool sets and clear purpose.</p>
+    <p class="ss">Open focused education hubs with practical tool sets for fees, loans, scholarships, study abroad, teaching, exam prep, and career planning.</p>
     <div class="subhub-grid">
       <a class="route-card" href="/education/fees/">
         <h3>Education Fees &amp; Cost Planning</h3>
@@ -305,17 +326,86 @@ function compactLabel(value,fallback){
   return (words[0][0]+words[1][0]).toUpperCase();
 }
 
+function getToolImageExtension(imageId){
+  var extensions=window.TOOL_CARD_IMAGE_EXTENSIONS||{};
+  return extensions[imageId]||'webp';
+}
+
+function getToolImageFallbackExtension(imageId,extension){
+  if(!imageId){return'';}
+  return extension==='svg'?'webp':'svg';
+}
+
+function getToolImageId(tool){
+  return tool&&(tool.imageId||tool.sourceId||tool.id)||'education-hub';
+}
+
+function getProductImageId(product){
+  var productImages={
+    'education-hub':'education-hub',
+    'afrojamb':'jamb-aggregate',
+    'afrostudy':'kcse-calculator'
+  };
+  return productImages[product.key]||getToolImageId(product.registryTool)||'education-hub';
+}
+
+function renderEducationMedia(imageId,label){
+  var extension=getToolImageExtension(imageId);
+  var fallbackExtension=getToolImageFallbackExtension(imageId,extension);
+  var imagePath='/assets/img/tools/'+encodeURIComponent(imageId)+'.'+extension;
+  var fallbackPath=fallbackExtension?'/assets/img/tools/'+encodeURIComponent(imageId)+'.'+fallbackExtension:'';
+  return [
+    '<div class="education-card-media" aria-hidden="true">',
+      '<span class="media-fallback" aria-hidden="true">',escapeHtml(compactLabel(label,'Education')),'</span>',
+      '<img src="',escapeHtml(imagePath),'"',
+        fallbackPath?' data-fallback="'+escapeHtml(fallbackPath)+'"':'',
+        ' alt="" loading="lazy" decoding="async">',
+    '</div>'
+  ].join('');
+}
+
+function activateEducationCardImages(root){
+  (root||document).querySelectorAll('.education-card-media img').forEach(function(image){
+    if(image.dataset.boundImageEvents==='1'){return;}
+    image.dataset.boundImageEvents='1';
+    var media=image.closest('.education-card-media');
+    if(image.complete&&image.naturalWidth>0){
+      media.classList.add('has-img');
+      return;
+    }
+    image.addEventListener('load',function(){
+      if(media){media.classList.add('has-img');}
+    },{once:true});
+    image.addEventListener('error',function(){
+      if(image.dataset.fallback&&!image.dataset.fallbackTried){
+        image.dataset.fallbackTried='1';
+        image.src=image.dataset.fallback;
+        return;
+      }
+      if(media){media.classList.add('is-error');}
+      image.remove();
+    });
+  });
+}
+
 function renderToolCard(tool){
   var badgeClass=tool.status==='new'?'tool-badge new':'tool-badge';
   var badgeLabel=tool.status==='new'?'New':'Live';
   var countryLabel=(tool.countries&&tool.countries[0]&&tool.countries[0]!=='ALL')?tool.countries[0]:'Tool';
+  var imageId=getToolImageId(tool);
+  var displayNames={
+    'boarding-school':'Boarding School Cost Calculator',
+    'edu-savings':'Education Savings Plan Calculator'
+  };
+  var displayName=displayNames[tool.id]||tool.name;
   return [
-    '<a href="',escapeHtml(tool.href),'" class="tool-card">',
+    '<a href="',escapeHtml(tool.href),'" class="tool-card" data-tool-id="',escapeHtml(tool.id||''),'" data-image-id="',escapeHtml(imageId),'">',
+      renderEducationMedia(imageId,displayName),
       '<div class="tool-top">',
-        '<span class="tool-icon" aria-hidden="true">',escapeHtml(compactLabel(tool.name,'Education')),'</span>',
+        '<span class="tool-icon" aria-hidden="true">',escapeHtml(compactLabel(displayName,'Education')),'</span>',
         '<span class="',badgeClass,'">',badgeLabel,'</span>',
       '</div>',
-      '<h4>',escapeHtml(tool.name),'</h4>',
+      '<h4>',escapeHtml(displayName),'</h4>',
       '<p>',escapeHtml(tool.desc),'</p>',
       '<div class="tool-foot">',
         '<span class="tool-country">',escapeHtml(countryLabel),'</span>',
@@ -354,8 +444,10 @@ function renderProductCard(product){
     'afrostudy':{accent:'Exam prep',type:'KCSE practice'}
   };
   var publicLabel=labels[product.key]||{accent:'Education',type:'Study tool'};
+  var imageId=getProductImageId(product);
   return [
-    '<a href="',escapeHtml(product.href),'" class="product-card">',
+    '<a href="',escapeHtml(product.href),'" class="product-card" data-image-id="',escapeHtml(imageId),'">',
+      renderEducationMedia(imageId,product.title),
       '<div class="product-top">',
         '<span class="product-icon" aria-hidden="true">',escapeHtml(compactLabel(product.title,'Education')),'</span>',
         '<span class="product-badge">',escapeHtml(publicLabel.accent),'</span>',
@@ -442,6 +534,7 @@ function initEducationHub(){
     .join('');
 
   document.getElementById('registry-groups').innerHTML=buckets.map(renderRegistryBucket).join('');
+  activateEducationCardImages(document);
 
   if(audit.missingIds.length||audit.duplicateIds.length){
     console.warn('Education taxonomy audit',audit);

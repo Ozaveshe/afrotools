@@ -114,6 +114,11 @@ select:focus{outline:none;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,2
 .no-results{text-align:center;padding:48px 20px;color:#94a3b8;font-size:.85rem}
 .no-results .big{font-size:2rem;margin-bottom:8px}
 .disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
+.pack-output{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;color:#1e3a8a;font-size:.78rem;font-weight:700;line-height:1.55;margin-top:12px;padding:12px}
+.pack-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pack-actions button{align-items:center;background:#fff;border:1px solid #bfdbfe;border-radius:8px;color:#1d4ed8;cursor:pointer;display:inline-flex;font-family:inherit;font-size:.74rem;font-weight:800;justify-content:center;min-height:38px;padding:8px 12px}
+.pack-actions button:hover,.pack-actions button:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
+.pack-status{color:#1d4ed8;font-size:.74rem;font-weight:800;margin-top:8px;min-height:18px}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
 @media(max-width:640px){h1{font-size:1.5rem}}
 </style>
@@ -121,7 +126,6 @@ select:focus{outline:none;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,2
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/gov-scholarship/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/bourses-gouvernementales/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/gov-scholarship/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -222,6 +226,54 @@ select:focus{outline:none;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,2
       <div class="disclaimer">
         <strong>Note:</strong> Scholarship details are updated periodically. Always verify deadlines and requirements on the official government or scholarship body website before applying.
       </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">Application Pack Check</div></div>
+        <div class="card-body">
+          <div class="field">
+            <label for="pack-deadline">Days until nearest deadline</label>
+            <select id="pack-deadline">
+              <option value="7">Under 1 week</option>
+              <option value="21">2-3 weeks</option>
+              <option value="45" selected>1-2 months</option>
+              <option value="90">3+ months</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pack-docs">Core documents ready</label>
+            <select id="pack-docs">
+              <option value="2">0-2 documents</option>
+              <option value="4">3-4 documents</option>
+              <option value="6" selected>5-6 documents</option>
+              <option value="8">7+ documents</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pack-references">Recommendation letters</label>
+            <select id="pack-references">
+              <option value="0">Not requested</option>
+              <option value="1" selected>Requested</option>
+              <option value="2">Received</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pack-admission">Admission or offer letter</label>
+            <select id="pack-admission">
+              <option value="0">Not needed yet</option>
+              <option value="1" selected>In progress</option>
+              <option value="2">Available</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="checkApplicationPack()">Check Pack</button>
+          <div class="pack-output" id="pack-output" aria-live="polite">Choose filters and check your pack to see the next action before applying.</div>
+          <div class="pack-actions" aria-label="Scholarship pack actions">
+            <button type="button" onclick="copyScholarshipPack()">Copy shortlist</button>
+            <button type="button" onclick="downloadScholarshipPack()">Download TXT</button>
+            <button type="button" onclick="saveScholarshipPack()">Save in browser</button>
+          </div>
+          <div class="pack-status" id="pack-status" aria-live="polite"></div>
+        </div>
+      </div>
     </div>
 
     <div>
@@ -235,30 +287,6 @@ select:focus{outline:none;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,2
   </div>
 </div>
 
-<section class="df-upgrade" data-df-upgrade="gov-scholarship">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Scholarship readiness</span>
-      <h2>Check whether an application pack is actually ready</h2>
-      <p>Score deadline pressure and document readiness before opening country scholarship routes or sending applications.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: readiness score and missing-document focus.</li><li>Methodology: deadline buffer plus number of core documents ready.</li><li>Source note: official scholarship pages control eligibility, deadlines, and required documents.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education disclaimer: this does not guarantee funding or admission. Verify eligibility, deadline, and required documents with the official scholarship provider. Sources/reference: <a href="https://www.daad.de/en/studying-in-germany/scholarships/" target="_blank" rel="noopener">DAAD scholarship database</a> | <a href="https://cscuk.fcdo.gov.uk/scholarships/" target="_blank" rel="noopener">Commonwealth Scholarships</a></p>
-    </div>
-    <form class="df-form" data-df-form="gov-scholarship">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Study level<select name="level" aria-label="Study level"><option value="undergraduate">undergraduate</option><option value="masters">masters</option><option value="phd">phd</option><option value="short course">short course</option></select></label>
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Core documents ready<input name="documentsReady" type="number" value="5" min="0" step="any" aria-label="Core documents ready"></label>
-      <button type="submit">Check readiness</button>
-      <output class="df-result" data-df-result="gov-scholarship" aria-live="polite">Result: enter deadline and documents to score scholarship readiness.</output>
-      <div class="df-actions"><button type="button" data-df-copy="gov-scholarship">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="gov-scholarship-faq-title">
-  <h2 id="gov-scholarship-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>What documents usually matter first?</summary><p>Transcript, admission letter, ID/passport, recommendation letters, essay, CV, and proof of financial need where required.</p></details><details><summary>Can I apply close to the deadline?</summary><p>Yes, but late applications fail easily because referees, transcripts, portals, and payment confirmations take time.</p></details><details><summary>Should I reuse one essay?</summary><p>Use a base essay, but tailor motivation, country fit, course fit, and impact plan to each scholarship.</p></details></div>
-</section>
 <afro-footer></afro-footer>
 
 <script>
@@ -274,6 +302,13 @@ var GOV_SCHOLARSHIPS = [
   { id:"ma-bourse", country:"MA", name:"Bourse d'Excellence (Morocco)", body:"OFPPT / Ministry of Education Morocco", icon:"⭐", levels:["undergraduate","postgraduate"], fields:["STEM","vocational"], local:false, amount:"Monthly stipend + tuition", deadline:"Varies — typically April/May", link:null, notes:"For high-achieving Moroccan students. Covers study in Morocco, France, and Spain. Priority for STEM and technical fields." },
   { id:"au-prog", country:"ALL", name:"African Union Scholarship Programme", body:"African Union Commission", icon:"🌍", levels:["postgraduate"], fields:["all"], local:false, amount:"Partial scholarship (intra-Africa mobility)", deadline:"Varies — check AUC website", link:"https://au.int", notes:"For intra-African student mobility. Open to all AU member state citizens for postgraduate study at AU partner institutions." }
 ];
+var currentScholarshipResults = GOV_SCHOLARSHIPS.slice();
+var currentPackSummary = '';
+
+function optionText(id) {
+  var el = document.getElementById(id);
+  return el && el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : 'All';
+}
 
 function filterScholarships() {
   var country = document.getElementById('sch-country').value;
@@ -288,10 +323,12 @@ function filterScholarships() {
   });
 
   renderResults(results);
+  checkApplicationPack();
 }
 
 function renderResults(list) {
   var container = document.getElementById('sch-results');
+  currentScholarshipResults = list.slice();
   document.getElementById('results-count').textContent = 'Showing ' + list.length + ' scholarship' + (list.length !== 1 ? 's' : '');
 
   if (list.length === 0) {
@@ -319,9 +356,118 @@ function renderResults(list) {
   });
 }
 
+function checkApplicationPack() {
+  var days = parseInt(document.getElementById('pack-deadline').value, 10) || 0;
+  var docs = parseInt(document.getElementById('pack-docs').value, 10) || 0;
+  var refs = parseInt(document.getElementById('pack-references').value, 10) || 0;
+  var admission = parseInt(document.getElementById('pack-admission').value, 10) || 0;
+  var score = Math.min(100, Math.round((days >= 45 ? 25 : days >= 21 ? 18 : 8) + docs * 6 + refs * 10 + admission * 12));
+  var status = score >= 75 ? 'Strong pack' : score >= 50 ? 'Workable, but tighten it' : 'High-risk application';
+  var focus = [];
+  if (days < 21) focus.push('deadline buffer');
+  if (docs < 6) focus.push('core documents');
+  if (refs < 2) focus.push('recommendation letters');
+  if (admission < 2) focus.push('admission or offer evidence');
+  if (!focus.length) focus.push('official portal verification');
+  currentPackSummary = status + ' (' + score + '/100). Matching scholarships: ' + currentScholarshipResults.length + '. Focus next on ' + focus.join(', ') + '.';
+  document.getElementById('pack-output').textContent = currentPackSummary;
+  setPackStatus('');
+  return currentPackSummary;
+}
+
+function scholarshipPackText() {
+  var summary = checkApplicationPack();
+  var lines = [
+    'Government scholarship shortlist - AfroTools',
+    'Created: ' + new Date().toLocaleString(),
+    '',
+    'Filters',
+    '- Country: ' + optionText('sch-country'),
+    '- Study level: ' + optionText('sch-level'),
+    '- Field: ' + optionText('sch-field'),
+    '',
+    'Application pack check',
+    summary,
+    '',
+    'Shortlisted scholarships'
+  ];
+  if (!currentScholarshipResults.length) {
+    lines.push('- No matches. Broaden the country, level, or field filter.');
+  } else {
+    currentScholarshipResults.forEach(function(s, index) {
+      lines.push((index + 1) + '. ' + s.name);
+      lines.push('   Body: ' + s.body);
+      lines.push('   Amount: ' + s.amount);
+      lines.push('   Deadline: ' + (s.deadline || 'Check official source'));
+      lines.push('   Notes: ' + s.notes);
+      lines.push('   Source: ' + (s.link || 'Check the named scholarship body or ministry site'));
+    });
+  }
+  lines.push('');
+  lines.push('Verify eligibility, deadlines, required documents, portal status, and funding terms on the official provider website before applying. This is planning guidance, not a funding guarantee.');
+  return lines.join('\n');
+}
+
+function setPackStatus(message) {
+  var el = document.getElementById('pack-status');
+  if (el) el.textContent = message || '';
+}
+
+function copyScholarshipPack() {
+  var text = scholarshipPackText();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ setPackStatus('Shortlist copied.'); }).catch(function(){ fallbackCopyPack(text); });
+  } else {
+    fallbackCopyPack(text);
+  }
+}
+
+function fallbackCopyPack(text) {
+  var field = document.createElement('textarea');
+  field.value = text;
+  field.setAttribute('readonly', '');
+  field.style.position = 'fixed';
+  field.style.left = '-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try { document.execCommand('copy'); setPackStatus('Shortlist copied.'); }
+  catch (e) { window.prompt('Copy scholarship shortlist', text); setPackStatus('Copy prompt opened.'); }
+  document.body.removeChild(field);
+}
+
+function downloadScholarshipPack() {
+  var text = scholarshipPackText();
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'government-scholarship-shortlist.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setPackStatus('TXT shortlist downloaded.');
+}
+
+function saveScholarshipPack() {
+  var text = scholarshipPackText();
+  try {
+    localStorage.setItem('afrotools-government-scholarship-shortlist', JSON.stringify({
+      savedAt: Date.now(),
+      filters: { country: optionText('sch-country'), level: optionText('sch-level'), field: optionText('sch-field') },
+      summary: currentPackSummary,
+      results: currentScholarshipResults,
+      report: text
+    }));
+    setPackStatus('Shortlist saved in this browser.');
+  } catch (e) {
+    setPackStatus('Browser storage is unavailable. Download the TXT shortlist instead.');
+  }
+}
+
 // Show all on load
 renderResults(GOV_SCHOLARSHIPS);
+checkApplicationPack();
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

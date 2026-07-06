@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Password Generator — Strong, Random & Secure | AfroTools</title>
-<meta name="description" content="Generate strong, random passwords instantly. Customize length, include uppercase, numbers, symbols. Copy with one click. Free, no signup required.">
+<title>Password Generator - Local Web Crypto Passwords | AfroTools</title>
+<meta name="description" content="Generate random passwords locally with Web Crypto, uniform character selection, entropy estimates, bulk output, and NIST-aligned safety notes. No signup required.">
 <link rel="canonical" href="https://afrotools.com/tools/password-generator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Password Generator | AfroTools">
-<meta property="og:description" content="Generate strong, random passwords instantly. Customize length, characters. Free.">
+<meta property="og:description" content="Generate random passwords locally with Web Crypto, entropy estimates, bulk output, and safety notes.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/password-gen.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/password-generator/">
@@ -24,10 +24,9 @@
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
-.tool-hero::after{content:'🔐';position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.06;pointer-events:none}
 .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
 .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}
+.breadcrumb a{display:inline-flex;align-items:center;min-height:36px;color:rgba(255,255,255,.3);text-decoration:none}
 .breadcrumb span{color:var(--afro-blue)}
 h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
 h1 em{color:var(--afro-blue);font-style:normal}
@@ -44,35 +43,39 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .card-body{padding:22px}
 .pw-display{background:#0f172a;border-radius:8px;padding:18px;margin-bottom:18px;display:flex;align-items:center;gap:12px}
 .pw-text{flex:1;font-family:'Courier New',monospace;font-size:1.15rem;font-weight:700;color:#38bdf8;word-break:break-all;letter-spacing:.5px;line-height:1.4}
-.pw-copy{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .18s}
+.pw-copy{min-height:44px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .18s}
 .pw-copy:hover{background:#0059B3;transform:translateY(-1px)}
 .pw-copy.copied{background:#22c55e}
 .field{margin-bottom:16px}
 .f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .f-value{font-size:.85rem;font-weight:800;color:var(--afro-blue)}
-.slider{width:100%;height:6px;border-radius:3px;background:#cbd5e1;outline:none;-webkit-appearance:none;margin-top:4px}
+.slider{width:100%;min-height:44px;height:6px;border-radius:3px;background:#cbd5e1;outline:none;-webkit-appearance:none;margin-top:4px}
 .slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);cursor:pointer;box-shadow:0 2px 6px rgba(0,113,227,.3)}
 .slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);cursor:pointer;border:none}
 .toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9}
 .toggle-row:last-child{border-bottom:none}
 .toggle-label{font-size:.82rem;font-weight:600;color:#334155}
-.toggle{position:relative;width:44px;height:24px;cursor:pointer}
+.toggle{position:relative;width:52px;height:44px;cursor:pointer}
 .toggle input{opacity:0;width:0;height:0}
-.toggle-track{position:absolute;inset:0;background:#cbd5e1;border-radius:12px;transition:background .2s}
+.toggle-track{position:absolute;left:4px;right:4px;top:10px;height:24px;background:#cbd5e1;border-radius:12px;transition:background .2s}
 .toggle input:checked+.toggle-track{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35)}
-.toggle-knob{position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle-knob{position:absolute;top:12px;left:6px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .toggle input:checked~.toggle-knob{transform:translateX(20px)}
-.gen-btn{width:100%;padding:13px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;margin-top:8px}
+.gen-btn{min-height:44px;width:100%;padding:13px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;margin-top:8px}
 .gen-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
 .strength-bar{height:6px;border-radius:3px;background:#e2e8f0;margin-top:12px;overflow:hidden}
 .strength-fill{height:100%;border-radius:3px;transition:all .3s}
 .strength-text{font-size:.72rem;font-weight:700;margin-top:6px;text-align:right}
+.strength-details{font-size:.78rem;color:#475569;line-height:1.5;margin-top:8px}
+.pw-status{font-size:.8rem;line-height:1.5;margin-top:10px;color:#475569}
+.pw-status.warn{color:#9a3412}
 .bulk-area{width:100%;min-height:120px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;padding:12px;font-family:'Courier New',monospace;font-size:.82rem;color:#334155;resize:vertical}
 .sidebar{display:flex;flex-direction:column;gap:16px}
 .info-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
 .info-title{font-size:.72rem;font-weight:700;color:var(--afro-dark);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
 .info-text{font-size:.8rem;color:#475569;line-height:1.6}
 .info-text strong{color:var(--afro-dark)}
+.info-text a{min-height:36px;display:inline-flex;align-items:center}
 .tip-item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;font-size:.8rem;color:#475569;line-height:1.5}
 .tip-icon{flex-shrink:0;width:18px;text-align:center}
 @media(max-width:768px){
@@ -81,13 +84,14 @@ h1 em{color:var(--afro-blue);font-style:normal}
 }
 details[open] summary svg{transform:rotate(180deg)}
 details summary::-webkit-details-marker{display:none}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid rgba(0,113,227,.28);outline-offset:3px}
 </style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Password Generator",
-  "description": "Generate strong, random passwords instantly. Customize length, include uppercase, numbers, symbols. Free, no signup.",
+  "description": "Generate random passwords locally with Web Crypto, entropy estimates, bulk output, and NIST-aligned safety notes.",
   "url": "https://afrotools.com/tools/password-generator/",
   "inLanguage": "en",
   "applicationCategory": "DeveloperApplication",
@@ -112,7 +116,7 @@ details summary::-webkit-details-marker{display:none}
   "@type": "WebPage",
   "name": "Password Generator",
   "url": "https://afrotools.com/tools/password-generator/",
-  "description": "Generate strong, random passwords instantly. Customize length, include uppercase, numbers, symbols. Free, no signup.",
+  "description": "Generate random passwords locally with Web Crypto, entropy estimates, bulk output, and NIST-aligned safety notes.",
   "inLanguage": "en",
   "isPartOf": {
     "@type": "WebSite",
@@ -129,19 +133,18 @@ details summary::-webkit-details-marker{display:none}
   "mainEntity":[
     {"@type":"Question","name":"How does the password generator work?","acceptedAnswer":{"@type":"Answer","text":"It uses the Web Crypto API (crypto.getRandomValues) to generate cryptographically secure random characters based on your selected criteria: length, uppercase, lowercase, numbers, and symbols."}},
     {"@type":"Question","name":"Are the generated passwords stored anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it."}},
-    {"@type":"Question","name":"What makes a strong password?","acceptedAnswer":{"@type":"Answer","text":"A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites."}},
+    {"@type":"Question","name":"What makes a strong password?","acceptedAnswer":{"@type":"Answer","text":"A strong password is long, unique, not reused, and not found in common or compromised password lists. NIST SP 800-63B uses 15 characters as the minimum for single-factor passwords."}},
     {"@type":"Question","name":"Can I generate multiple passwords at once?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click."}}
   ]
 }
 </script>
-<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
+<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
 
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Password Generator | AfroTools">
-<meta name="twitter:description" content="Generate strong, random passwords instantly. Customize length, characters. Free.">
+<meta name="twitter:description" content="Generate random passwords locally with Web Crypto, entropy estimates, and bulk output.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/password-gen.webp">
 <script type="application/ld+json">
 {
@@ -157,8 +160,8 @@ details summary::-webkit-details-marker{display:none}
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
+      "name": "Developer Tools",
+      "item": "https://afrotools.com/developer-tools/"
     },
     {
       "@type": "ListItem",
@@ -181,9 +184,9 @@ details summary::-webkit-details-marker{display:none}
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Password Generator</span></div>
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Developer Tools</a> / <span>Password Generator</span></div>
     <h1>Password <em>Generator</em></h1>
-    <p class="hero-sub">Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.</p>
+    <p class="hero-sub">Generate random passwords locally with Web Crypto. Customize length and character sets, review entropy, and copy without sending passwords to AfroTools servers.</p>
     <div class="hero-badges">
       <span class="badge b-blue">Cryptographically Secure</span>
       <span class="badge b-blue">Bulk Generate</span>
@@ -205,31 +208,33 @@ details summary::-webkit-details-marker{display:none}
 
           <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
           <div class="strength-text" id="strengthText"></div>
+          <div class="strength-details" id="strengthDetails"></div>
+          <div class="pw-status" id="pwStatus" aria-live="polite"></div>
 
           <div class="field" style="margin-top:18px">
             <div class="f-label"><span>Password Length</span><span class="f-value" id="lenVal">16</span></div>
-            <input aria-label="PwLen" type="range" class="slider" id="pwLen" min="4" max="128" value="16">
+            <input aria-label="Password length" type="range" class="slider" id="pwLen" min="4" max="128" value="16">
           </div>
 
           <div class="toggle-row">
             <span class="toggle-label">Uppercase (A-Z)</span>
-            <label class="toggle"><input aria-label="UseUpper" type="checkbox" id="useUpper" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="Include uppercase letters" type="checkbox" id="useUpper" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
           <div class="toggle-row">
             <span class="toggle-label">Lowercase (a-z)</span>
-            <label class="toggle"><input aria-label="UseLower" type="checkbox" id="useLower" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="Include lowercase letters" type="checkbox" id="useLower" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
           <div class="toggle-row">
             <span class="toggle-label">Numbers (0-9)</span>
-            <label class="toggle"><input aria-label="UseNumbers" type="checkbox" id="useNumbers" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="Include numbers" type="checkbox" id="useNumbers" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
           <div class="toggle-row">
             <span class="toggle-label">Symbols (!@#$%^&*)</span>
-            <label class="toggle"><input aria-label="UseSymbols" type="checkbox" id="useSymbols" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="Include symbols" type="checkbox" id="useSymbols" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
           <div class="toggle-row">
             <span class="toggle-label">Exclude Ambiguous (0OIl1)</span>
-            <label class="toggle"><input aria-label="ExcludeAmbig" type="checkbox" id="excludeAmbig"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input aria-label="Exclude ambiguous characters" type="checkbox" id="excludeAmbig"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
 
           <button type="button" class="gen-btn" onclick="generate()">Generate Password</button>
@@ -241,7 +246,7 @@ details summary::-webkit-details-marker{display:none}
         <div class="card-body">
           <div class="field">
             <div class="f-label"><span>Number of Passwords</span><span class="f-value" id="bulkVal">5</span></div>
-            <input aria-label="BulkCount" type="range" class="slider" id="bulkCount" min="1" max="50" value="5">
+            <input aria-label="Number of passwords" type="range" class="slider" id="bulkCount" min="1" max="50" value="5">
           </div>
           <button type="button" class="gen-btn" onclick="bulkGenerate()" style="margin-bottom:12px">Generate Bulk</button>
           <textarea class="bulk-area" id="bulkArea" readonly placeholder="Bulk passwords will appear here..." aria-label="Bulk passwords will appear here..."></textarea>
@@ -255,22 +260,22 @@ details summary::-webkit-details-marker{display:none}
         <div class="card-body">
           <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How the Password Generator Works</h2>
           <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-            The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in <strong>Web Crypto API</strong> (<code>crypto.getRandomValues()</code>). Unlike many online password generators that use <code>Math.random()</code>, our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.
+            The AfroTools Password Generator creates random passwords in your browser using the <strong>Web Crypto API</strong> (<code>crypto.getRandomValues()</code>). It avoids <code>Math.random()</code> and uses uniform selection across the chosen character set.
           </p>
           <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">How to Use</h3>
           <ol style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
             <li>Adjust the password length using the slider (recommended: 16+ characters)</li>
-            <li>Toggle character types on/off — uppercase, lowercase, numbers, symbols</li>
+            <li>Toggle character types on/off: uppercase, lowercase, numbers, symbols</li>
             <li>Click "Generate Password" to create a new password</li>
             <li>Click "Copy" to copy it to your clipboard</li>
             <li>Use "Bulk Generate" to create multiple passwords at once</li>
           </ol>
           <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Why Strong Passwords Matter</h3>
           <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-            In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like "password123" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a <strong>16-character password with all character types</strong> would take billions of years to brute-force.
+            Long, unique passwords are much harder to guess than reused or predictable passwords. Use a password manager, avoid reuse, and treat crack-time estimates as rough models that depend on attacker hardware, rate limits, hashing cost, and whether a password has appeared in breaches.
           </p>
           <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-            The <a href="https://www.nist.gov/publications/digital-identity-guidelines" target="_blank" rel="noopener" style="color:var(--afro-blue)">NIST Digital Identity Guidelines</a> recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.
+            <a href="https://pages.nist.gov/800-63-4/sp800-63b.html" target="_blank" rel="noopener" style="color:var(--afro-blue)">NIST SP 800-63B</a> says single-factor passwords should be at least 15 characters, should allow long passwords, and should not rely on composition rules alone. This generator defaults to 16 characters and shows the estimated entropy for the selected character set.
           </p>
           <p style="font-size:.85rem;color:#475569;line-height:1.7">
             For more security tools, try our <a href="/tools/hash-generator/" style="color:var(--afro-blue)">Hash Generator</a> to create checksums, or the <a href="/tools/base64/" style="color:var(--afro-blue)">Base64 Encoder</a> for encoding data.
@@ -280,7 +285,7 @@ details summary::-webkit-details-marker{display:none}
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.</p>
+    <p>This password generator creates random passwords locally with the Web Crypto API. Customise length and character sets, review estimated entropy, and generate multiple passwords for setup or migration tasks. Store generated passwords in a password manager and avoid sharing them through screenshots, chat messages, or public documents.</p>
   </div>
 </section>
 
@@ -308,7 +313,7 @@ details summary::-webkit-details-marker{display:none}
             What makes a strong password?
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
           </summary>
-          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.</div>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">A strong password is long, unique, not reused, and not found in common or compromised password lists. NIST SP 800-63B uses 15 characters as the minimum for single-factor passwords.</div>
         </details>
         <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
           <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
@@ -330,14 +335,14 @@ details summary::-webkit-details-marker{display:none}
         <div class="tip-item"><span class="tip-icon">5.</span><span>Change passwords immediately if a service reports a data breach</span></div>
       </div>
       <div class="info-card">
-        <div class="info-title">Crack Time Estimates</div>
+        <div class="info-title">Security Notes</div>
         <div class="info-text">
-          <strong>6 chars (letters):</strong> ~5 seconds<br>
-          <strong>8 chars (mixed):</strong> ~5 minutes<br>
-          <strong>10 chars (mixed):</strong> ~2 weeks<br>
-          <strong>12 chars (mixed):</strong> ~200 years<br>
-          <strong>16 chars (all types):</strong> ~billions of years<br><br>
-          <em style="font-size:.75rem;color:#94a3b8">Source: Hive Systems, 2025 estimates with modern GPUs</em>
+          <strong>Length:</strong> 15+ characters is a practical baseline for single-factor passwords.<br>
+          <strong>Uniqueness:</strong> use a different password for every account.<br>
+          <strong>Storage:</strong> save generated passwords in a password manager, not screenshots or shared docs.<br>
+          <strong>MFA:</strong> prefer phishing-resistant MFA for important accounts.<br><br>
+          <a href="https://pages.nist.gov/800-63-4/sp800-63b.html" target="_blank" rel="noopener" style="color:var(--afro-blue);text-decoration:none">NIST SP 800-63B</a><br>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues" target="_blank" rel="noopener" style="color:var(--afro-blue);text-decoration:none">MDN Web Crypto getRandomValues</a>
         </div>
       </div>
       <div class="info-card">
@@ -374,13 +379,27 @@ function getCharset(){
   return cs;
 }
 
+function setStatus(message,type){
+  const status=document.getElementById('pwStatus');
+  if(!status) return;
+  status.textContent=message||'';
+  status.className='pw-status'+(type?' '+type:'');
+}
+
+function randomIndex(max){
+  const limit=Math.floor(0x100000000/max)*max;
+  const value=new Uint32Array(1);
+  do{
+    crypto.getRandomValues(value);
+  }while(value[0]>=limit);
+  return value[0]%max;
+}
+
 function genPassword(len){
   const cs=getCharset();
-  if(!cs){alert('Select at least one character type');return '';}
-  const arr=new Uint32Array(len);
-  crypto.getRandomValues(arr);
+  if(!cs){setStatus('Select at least one character type before generating.','warn');return '';}
   let pw='';
-  for(let i=0;i<len;i++) pw+=cs[arr[i]%cs.length];
+  for(let i=0;i<len;i++) pw+=cs[randomIndex(cs.length)];
   return pw;
 }
 
@@ -399,6 +418,7 @@ function showStrength(pw){
   const s=calcStrength(pw);
   const fill=document.getElementById('strengthFill');
   const text=document.getElementById('strengthText');
+  const details=document.getElementById('strengthDetails');
   const levels=[
     {w:'20%',c:'#ef4444',t:'Very Weak'},
     {w:'40%',c:'#f97316',t:'Weak'},
@@ -411,6 +431,10 @@ function showStrength(pw){
   fill.style.background=l.c;
   text.textContent=l.t;
   text.style.color=l.c;
+  const bits=entropyBits();
+  details.textContent='Estimated entropy: '+bits.toFixed(1)+' bits from '+getCharset().length+' possible characters over '+pw.length+' positions. Use unique passwords and a password manager.';
+  if(pw.length<15) setStatus('NIST SP 800-63B uses 15 characters as the minimum for single-factor passwords. Increase length for important accounts.','warn');
+  else setStatus('Generated locally with Web Crypto. Nothing is sent to AfroTools servers.');
 }
 
 function generate(){
@@ -424,7 +448,7 @@ function generate(){
 function copyPw(){
   const pw=document.getElementById('pwOutput').textContent;
   if(pw==='Click Generate') return;
-  navigator.clipboard.writeText(pw).then(()=>{
+  copyText(pw).then(()=>{
     const btn=document.getElementById('copyBtn');
     btn.textContent='Copied!';
     btn.classList.add('copied');
@@ -447,7 +471,7 @@ function bulkGenerate(){
 function copyBulk(){
   const area=document.getElementById('bulkArea');
   if(!area.value) return;
-  navigator.clipboard.writeText(area.value).then(()=>{
+  copyText(area.value).then(()=>{
     const btn=area.nextElementSibling;
     btn.textContent='Copied All!';
     btn.classList.add('copied');
@@ -455,34 +479,48 @@ function copyBulk(){
   });
 }
 
+function entropyBits(){
+  const cs=getCharset();
+  const len=parseInt(document.getElementById('pwLen').value);
+  return cs ? Math.log2(cs.length)*len : 0;
+}
+
+function copyText(text){
+  const fallback=function(){
+    const area=document.createElement('textarea');
+    area.value=text;
+    area.setAttribute('readonly','');
+    area.style.position='fixed';
+    area.style.left='-9999px';
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    document.body.removeChild(area);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText) return navigator.clipboard.writeText(text).catch(fallback);
+  return new Promise(function(resolve){fallback();resolve();});
+}
+
 // Slider labels
 document.getElementById('pwLen').addEventListener('input',function(){
   document.getElementById('lenVal').textContent=this.value;
+  generate();
 });
 document.getElementById('bulkCount').addEventListener('input',function(){
   document.getElementById('bulkVal').textContent=this.value;
+});
+['useUpper','useLower','useNumbers','useSymbols','excludeAmbig'].forEach(function(id){
+  document.getElementById(id).addEventListener('change',generate);
 });
 
 // Auto-generate on load
 generate();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=edb42bb1" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Password Generator" tool-slug="password-generator"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

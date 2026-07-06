@@ -79,14 +79,23 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .roi-value{font-size:3.5rem;font-weight:800;color:#fbbf24;line-height:1}
 .roi-label{font-size:.85rem;color:rgba(255,255,255,.75);margin-top:.25rem}
 .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.75rem;margin-bottom:1rem}
-.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:center}
+.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:left;display:grid;gap:.16rem;align-content:start;min-width:0}
 .rs .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:.2rem}
-.rs .val{font-size:1.15rem;font-weight:800;color:var(--color-primary)}
+.rs .val{font-size:1.15rem;font-weight:800;color:var(--color-primary);line-height:1.18;overflow-wrap:anywhere}
 .rs .sub{font-size:.75rem;color:#6b7280;margin-top:.1rem}
 .timeline{background:#f8faff;border:1.5px solid #dbeafe;border-radius:12px;padding:1.25rem;margin-top:1rem}
 .timeline h3{font-size:.9rem;font-weight:700;color:#1e40af;margin:0 0 .75rem}
 .tl-row{display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px dashed #e0e7ff;font-size:.85rem}
 .tl-row:last-child{border-bottom:none;font-weight:700;color:#111}
+.result-note{margin-top:1rem;padding:1rem;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;color:#78350f;font-size:.82rem;line-height:1.65}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem 1rem;border:1.5px solid #bfdbfe;border-radius:10px;background:#fff;color:#1d4ed8;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.secondary-btn:hover,.secondary-btn:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
+.method-card{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:1.25rem;margin-bottom:1.5rem}
+.method-card h2{font-size:1rem;font-weight:800;color:#111;margin:0 0 .65rem}
+.method-card p{margin:0 0 .7rem;color:#475569;font-size:.86rem;line-height:1.7}
+.method-card ul{margin:0;padding-left:1.1rem;color:#475569;font-size:.84rem;line-height:1.7}
 .faq{margin-top:2rem}
 .faq h2{font-size:1.2rem;font-weight:800;color:#111;margin-bottom:1rem}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
@@ -96,13 +105,12 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:.88rem;color:#555;padding:0 1.25rem;line-height:1.7}
 .faq-item.open .faq-a{max-height:300px;padding:.75rem 1.25rem 1rem}
 .sec-body{padding:40px 0}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
+@media(max-width:600px){.row{grid-template-columns:1fr}.result-actions .secondary-btn{width:100%}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cert-roi.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cert-roi/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/roi-certification/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cert-roi/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -113,7 +121,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "How should I use Professional Certification ROI Calculator Africa 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Select a certification, country, salary, all-in cost, expected salary premium, and study time to estimate payback period, five-year net gain, and five-year return on investment."
       }
     },
     {
@@ -121,7 +129,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "What should I verify before acting on Professional Certification ROI Calculator Africa 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Confirm current exam fees, membership fees, exchange rates, employer recognition, salary bands, accreditation, exam dates, study workload, and whether the certification is valued in your target role or country."
       }
     },
     {
@@ -129,7 +137,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "Is Professional Certification ROI Calculator Africa 2026 an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a planning estimate, not a salary guarantee, job offer, official fee quote, financial advice, or accreditation decision."
       }
     }
   ],
@@ -226,32 +234,25 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
     <div class="result-hero" id="cr-hero"></div>
     <div class="result-grid" id="cr-grid"></div>
     <div class="timeline" id="cr-timeline"></div>
+    <div class="result-note" id="cr-note"></div>
+    <div class="result-actions" aria-label="Certification ROI result actions">
+      <button type="button" class="secondary-btn" onclick="copyCertReport()">Copy ROI report</button>
+      <button type="button" class="secondary-btn" onclick="downloadCertReport()">Download TXT</button>
+      <button type="button" class="secondary-btn" onclick="saveCertReport()">Save in browser</button>
+    </div>
+    <div class="action-status" id="cr-action-status" aria-live="polite"></div>
   </div>
 </div>
 
-<section class="df-upgrade" data-df-upgrade="cert-roi">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Professional Certification ROI Calculator Africa 2026 decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for professional certification roi calculator africa 2026 so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Professional Certification ROI Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, saveExport, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="cert-roi">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="cert-roi" data-df-base="Professional Certification ROI Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Professional Certification ROI Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="cert-roi">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="cert-roi-faq-title">
-  <h2 id="cert-roi-faq-title">Professional Certification ROI Calculator Africa 2026 FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+<section class="method-card" aria-labelledby="cert-roi-method-title">
+  <h2 id="cert-roi-method-title">How this estimate works</h2>
+  <p>The calculator compares the all-in certification cost with the salary premium you expect after finishing the credential. It treats the premium as recurring annual income and shows when the upfront cost is recovered.</p>
+  <ul>
+    <li><strong>Payback period:</strong> certification cost divided by the expected monthly salary premium.</li>
+    <li><strong>Five-year net gain:</strong> five years of premium earnings minus the certification cost.</li>
+    <li><strong>Five-year ROI:</strong> five-year net gain divided by certification cost, shown as a percentage.</li>
+    <li><strong>Verify before paying:</strong> current exam fees, exchange rates, employer recognition, salary bands, study workload, exam dates, and local accreditation.</li>
+  </ul>
 </section>
 <div class="faq">
   <h2>Certification ROI FAQs</h2>
@@ -284,6 +285,8 @@ var CERTS={
 };
 var CURRENCY={nigeria:'₦',kenya:'KSh',southafrica:'R',ghana:'GH₵',other:'USD'};
 var FX={nigeria:1600,kenya:130,southafrica:18.5,ghana:15,other:1};
+var COUNTRY_LABELS={nigeria:'Nigeria',kenya:'Kenya',southafrica:'South Africa',ghana:'Ghana',other:'Other African country'};
+var currentCertPlan=null;
 function prefillCert(){
   var cert=document.getElementById('cr-cert').value;
   var d=CERTS[cert];
@@ -302,7 +305,7 @@ function updateCost(){
   document.getElementById('cr-currency-help').textContent='Currency: '+CURRENCY[country]+' (pre-filled at market rate)';
 }
 function fmt(n,c){return c+Math.round(n).toLocaleString();}
-function calcCertROI(){
+function legacyCertROIProjection(){
   var country=document.getElementById('cr-country').value;
   var c=CURRENCY[country];
   var salary=parseFloat(document.getElementById('cr-salary').value)||0;
@@ -333,10 +336,136 @@ function calcCertROI(){
     '<p style="font-size:.75rem;color:#6b7280;margin-top:.75rem">Note: Assumes salary premium is maintained over 5 years. Actual results depend on employer, location, and market conditions. Study time opportunity cost not included.</p>';
   document.getElementById('cr-result').classList.add('show');
 }
+function calcCertROI(){
+  var cert=document.getElementById('cr-cert').value;
+  var d=CERTS[cert];
+  var country=document.getElementById('cr-country').value;
+  var c=CURRENCY[country];
+  var salary=parseFloat(document.getElementById('cr-salary').value)||0;
+  var cost=parseFloat(document.getElementById('cr-cost').value)||0;
+  var premiumPct=parseFloat(document.getElementById('cr-premium').value)||20;
+  var months=parseInt(document.getElementById('cr-time').value)||12;
+  if(!salary){alert('Please enter your current annual salary.');return;}
+  if(!cost||cost<=0){alert('Please enter the all-in certification cost.');return;}
+  if(premiumPct<=0){alert('Please enter a positive expected salary premium.');return;}
+  var annualPremium=salary*(premiumPct/100);
+  var paybackMonths=Math.ceil(cost/(annualPremium/12));
+  var roi5yr=((annualPremium*5-cost)/cost)*100;
+  var net5yr=annualPremium*5-cost;
+  currentCertPlan={
+    cert:d.name,
+    field:d.field,
+    country:COUNTRY_LABELS[country]||country,
+    currency:c,
+    salary:salary,
+    cost:cost,
+    premiumPct:premiumPct,
+    months:months,
+    annualPremium:annualPremium,
+    paybackMonths:paybackMonths,
+    roi5yr:roi5yr,
+    net5yr:net5yr
+  };
+  document.getElementById('cr-hero').innerHTML=
+    '<div class="roi-value">'+roi5yr.toFixed(0)+'%</div>'+
+    '<div class="roi-label">5-Year Return on Investment</div>'+
+    '<div style="margin-top:.75rem;padding:.6rem 1rem;background:rgba(255,255,255,.1);border-radius:8px;font-size:.88rem;color:rgba(255,255,255,.85)">Payback period: <strong>'+paybackMonths+' months</strong> after certification &middot; Annual premium: <strong>'+fmt(annualPremium,c)+'</strong></div>';
+  document.getElementById('cr-grid').innerHTML=
+    '<div class="rs"><div class="lbl">Annual Salary Premium</div><div class="val">'+fmt(annualPremium,c)+'</div><div class="sub">'+premiumPct+'% salary increase</div></div>'+
+    '<div class="rs"><div class="lbl">Total Certification Cost</div><div class="val">'+fmt(cost,c)+'</div><div class="sub">Study + exam + registration</div></div>'+
+    '<div class="rs"><div class="lbl">Payback Period</div><div class="val">'+paybackMonths+' months</div><div class="sub">'+(paybackMonths/12).toFixed(1)+' years to break even</div></div>'+
+    '<div class="rs"><div class="lbl">5-Year Net Gain</div><div class="val">'+fmt(net5yr,c)+'</div><div class="sub">After recovering cert cost</div></div>';
+  document.getElementById('cr-timeline').innerHTML=
+    '<h3>Year-by-Year Financial Projection</h3>'+
+    '<div class="tl-row"><span>Study period ('+months+' months)</span><span style="color:#dc2626">-'+fmt(cost,c)+'</span></div>'+
+    '<div class="tl-row"><span>Year 1 premium earnings</span><span>+'+fmt(annualPremium,c)+'</span></div>'+
+    '<div class="tl-row"><span>Year 2 cumulative</span><span>'+fmt(annualPremium*2-cost,c)+'</span></div>'+
+    '<div class="tl-row"><span>Year 3 cumulative</span><span>'+fmt(annualPremium*3-cost,c)+'</span></div>'+
+    '<div class="tl-row"><span>Year 5 cumulative</span><span>'+fmt(net5yr,c)+'</span></div>'+
+    '<div class="tl-row"><span>5-Year ROI</span><span>'+roi5yr.toFixed(0)+'%</span></div>'+
+    '<p style="font-size:.75rem;color:#6b7280;margin-top:.75rem">Note: Assumes salary premium is maintained over 5 years. Actual results depend on employer, location, and market conditions. Study time opportunity cost is not included.</p>';
+  document.getElementById('cr-note').innerHTML='<strong>Planning estimate only.</strong> This result uses your salary and premium assumptions. Before paying, verify current exam fees, annual membership fees, exchange rates, employer recognition, local accreditation, exam dates, and whether the credential is valued in your target role.';
+  setCertStatus('');
+  document.getElementById('cr-result').classList.add('show');
+}
+function buildCertReport(){
+  if(!currentCertPlan){calcCertROI();}
+  var p=currentCertPlan;
+  return [
+    'Professional certification ROI report - AfroTools',
+    'Certification: '+p.cert,
+    'Field: '+p.field,
+    'Country: '+p.country,
+    'Current annual salary: '+fmt(p.salary,p.currency),
+    'All-in certification cost: '+fmt(p.cost,p.currency),
+    'Expected salary premium: '+p.premiumPct+'%',
+    'Study time: '+p.months+' month(s)',
+    '',
+    'Estimated outcome',
+    '- Annual salary premium: '+fmt(p.annualPremium,p.currency),
+    '- Payback period: '+p.paybackMonths+' months',
+    '- Five-year net gain: '+fmt(p.net5yr,p.currency),
+    '- Five-year ROI: '+p.roi5yr.toFixed(0)+'%',
+    '',
+    'Method',
+    '- Payback period = certification cost / expected monthly salary premium.',
+    '- Five-year net gain = five years of premium earnings minus certification cost.',
+    '- Five-year ROI = five-year net gain / certification cost.',
+    '',
+    'Before paying, verify current exam fees, annual membership fees, exchange rates, employer recognition, local accreditation, exam dates, study workload, and salary bands. This is a planning estimate, not a salary guarantee or official fee quote.'
+  ].join('\n');
+}
+function setCertStatus(message){
+  var el=document.getElementById('cr-action-status');
+  if(el){el.textContent=message||'';}
+}
+function copyCertReport(){
+  var text=buildCertReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setCertStatus('ROI report copied.');}).catch(function(){fallbackCertCopy(text);});
+  }else{
+    fallbackCertCopy(text);
+  }
+}
+function fallbackCertCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setCertStatus('ROI report copied.');}
+  catch(e){window.prompt('Copy ROI report',text);setCertStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function slugify(value){return String(value||'certification-roi').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'certification-roi';}
+function downloadCertReport(){
+  var text=buildCertReport();
+  var filename=slugify(currentCertPlan.cert+' '+currentCertPlan.country)+'-roi-report.txt';
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setCertStatus('TXT ROI report downloaded.');
+}
+function saveCertReport(){
+  buildCertReport();
+  try{
+    localStorage.setItem('afrotools-cert-roi',JSON.stringify({savedAt:Date.now(),plan:currentCertPlan,report:buildCertReport()}));
+    setCertStatus('ROI estimate saved in this browser.');
+  }catch(e){
+    setCertStatus('Browser storage is unavailable. Download the TXT report instead.');
+  }
+}
 document.addEventListener('DOMContentLoaded',function(){prefillCert();updateCost();});
 document.getElementById('cr-country').addEventListener('change',updateCost);
 document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){this.parentElement.classList.toggle('open');});});
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

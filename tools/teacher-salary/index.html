@@ -87,6 +87,16 @@ select:focus{outline:none;border-color:var(--color-primary)}
 .salary-table th{background:#f3f4f6;padding:.55rem .8rem;text-align:left;font-weight:700;font-size:.75rem;color:#374151;border-bottom:2px solid #e5e7eb}
 .salary-table td{padding:.5rem .8rem;border-bottom:1px solid #f3f4f6}
 .salary-table tr.highlight td{background:#EFF6FF;font-weight:700}
+.result-note{margin:1rem 0 0;padding:1rem;border:1.5px solid #fcd34d;border-radius:12px;background:#fffbeb;color:#78350f;font-size:.82rem;line-height:1.65}
+.salary-guidance{display:grid;gap:.75rem;margin-top:1rem}
+.guidance-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}
+.guidance-card{border:1.5px solid #dbeafe;border-radius:12px;background:#f8fbff;padding:.9rem}
+.guidance-card strong{display:block;color:#0f172a;font-size:.86rem;line-height:1.3;margin-bottom:.35rem}
+.guidance-card span{display:block;color:#475569;font-size:.76rem;line-height:1.55}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem 1rem;border:1.5px solid #bfdbfe;border-radius:10px;background:#fff;color:#1d4ed8;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.secondary-btn:hover,.secondary-btn:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
 .faq{margin-top:2rem}
 .faq h2{font-size:1.2rem;font-weight:800;color:#111;margin-bottom:1rem}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
@@ -96,6 +106,7 @@ select:focus{outline:none;border-color:var(--color-primary)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:.88rem;color:#555;padding:0 1.25rem;line-height:1.7}
 .faq-item.open .faq-a{max-height:300px;padding:.75rem 1.25rem 1rem}
 .sec-body{padding:40px 0}
+@media(max-width:760px){.guidance-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.row{grid-template-columns:1fr}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/teacher-salary.webp">
@@ -103,11 +114,75 @@ select:focus{outline:none;border-color:var(--color-primary)}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/salaire-enseignant/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mshahara-wa-mwalimu/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/teacher-salary/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="teacher-salary-refresh-alignment">
+body.top-level-page-ui-refresh.teacher-salary-page .hero{
+  display:block!important;
+  min-height:auto!important;
+  padding:44px 0 40px!important;
+  background:linear-gradient(135deg,#1a1000 0%,#1e293b 40%,#1e3a5f 100%)!important;
+  color:#fff!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.teacher-salary-page .hero::before,
+body.top-level-page-ui-refresh.teacher-salary-page .hero::after{display:none!important}
+body.top-level-page-ui-refresh.teacher-salary-page .hero .container,
+body.top-level-page-ui-refresh.teacher-salary-page .sec-body>.container{
+  width:min(100% - 32px,900px)!important;
+  max-width:900px!important;
+  margin-inline:auto!important;
+  padding-inline:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.teacher-salary-page .bc{
+  display:block!important;
+  margin:0 0 14px!important;
+  min-block-size:0!important;
+  padding:0!important;
+  color:rgba(255,255,255,.72)!important;
+  line-height:1.35!important;
+}
+body.top-level-page-ui-refresh.teacher-salary-page .bc a{
+  display:inline!important;
+  min-block-size:0!important;
+  color:rgba(255,255,255,.72)!important;
+}
+body.top-level-page-ui-refresh.teacher-salary-page .badges{
+  align-items:center!important;
+  justify-content:flex-start!important;
+  margin:0 0 16px!important;
+}
+body.top-level-page-ui-refresh.teacher-salary-page .badge{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-block-size:0!important;
+}
+body.top-level-page-ui-refresh.teacher-salary-page .hero h1{
+  max-width:17ch!important;
+  margin:0 0 12px!important;
+  color:#fff!important;
+  font-size:clamp(1.9rem,4vw,2.45rem)!important;
+  line-height:1.05!important;
+  letter-spacing:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.teacher-salary-page .hero h1 em{color:#fbbf24!important}
+body.top-level-page-ui-refresh.teacher-salary-page .hero-sub{
+  max-width:62ch!important;
+  margin:0!important;
+  color:rgba(255,255,255,.88)!important;
+  line-height:1.6!important;
+  text-align:left!important;
+}
+@media(max-width:600px){
+  body.top-level-page-ui-refresh.teacher-salary-page .hero{padding:34px 0 32px!important}
+  body.top-level-page-ui-refresh.teacher-salary-page .hero .container,
+  body.top-level-page-ui-refresh.teacher-salary-page .sec-body>.container{width:min(100% - 24px,900px)!important}
+}
+</style>
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh teacher-salary-page">
 <afro-navbar theme="dark" active="education"></afro-navbar>
 <div class="hero">
   <div class="container">
@@ -173,33 +248,17 @@ select:focus{outline:none;border-color:var(--color-primary)}
   <div class="result-box" id="ts-result">
     <div class="result-grid" id="ts-grid"></div>
     <div id="ts-table"></div>
+    <div class="salary-guidance" id="ts-guidance"></div>
+    <div class="result-note" id="ts-note"></div>
+    <div class="result-actions" aria-label="Teacher salary result actions">
+      <button type="button" class="secondary-btn" onclick="copyTeacherSalaryReport()">Copy salary brief</button>
+      <button type="button" class="secondary-btn" onclick="downloadTeacherSalaryReport()">Download TXT</button>
+      <button type="button" class="secondary-btn" onclick="saveTeacherSalaryReport()">Save in browser</button>
+    </div>
+    <div class="action-status" id="ts-action-status" aria-live="polite"></div>
   </div>
 </div>
 
-<section class="df-upgrade" data-df-upgrade="teacher-salary">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Teacher Salary Scale Lookup decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for teacher salary scale lookup so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Teacher Salary Scale Lookup: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, saveExport, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="teacher-salary">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="teacher-salary" data-df-base="Teacher Salary Scale Lookup: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Teacher Salary Scale Lookup: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="teacher-salary">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="teacher-salary-faq-title">
-  <h2 id="teacher-salary-faq-title">Teacher Salary Scale Lookup FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div class="faq">
   <h2>Teacher Salary FAQs</h2>
   <div class="faq-item"><div class="faq-q">How much do teachers earn in Nigeria?</div><div class="faq-a">Nigerian government primary school teachers earn ₦35,000–₦80,000/month. Secondary school teachers earn ₦50,000–₦100,000/month depending on grade level. University lecturers can earn ₦150,000–₦500,000+/month. Premium private school teachers may earn significantly more.</div></div>
@@ -225,7 +284,15 @@ var SALARIES={
   rwanda:{primary:{public:{entry:[50000,80000],mid:[70000,110000],senior:[95000,140000],expert:[120000,175000],currency:'RWF',minWage:30000},private:{entry:[45000,100000],mid:[75000,150000],senior:[110000,210000],expert:[150000,300000],currency:'RWF',minWage:30000}},secondary:{public:{entry:[70000,110000],mid:[95000,145000],senior:[120000,180000],expert:[150000,225000],currency:'RWF',minWage:30000},private:{entry:[60000,130000],mid:[95000,180000],senior:[130000,250000],expert:[170000,350000],currency:'RWF',minWage:30000}},tertiary:{public:{entry:[120000,200000],mid:[175000,280000],senior:[240000,360000],expert:[300000,480000],currency:'RWF',minWage:30000},private:{entry:[100000,180000],mid:[150000,260000],senior:[210000,330000],expert:[270000,430000],currency:'RWF',minWage:30000}}},
   egypt:{primary:{public:{entry:[3000,5000],mid:[4500,7000],senior:[6000,9000],expert:[8000,12000],currency:'EGP',minWage:6000},private:{entry:[4000,8000],mid:[6000,12000],senior:[8000,18000],expert:[12000,30000],currency:'EGP',minWage:6000}},secondary:{public:{entry:[4000,6500],mid:[5500,8500],senior:[7000,11000],expert:[9000,14000],currency:'EGP',minWage:6000},private:{entry:[5000,10000],mid:[7500,15000],senior:[10000,22000],expert:[14000,35000],currency:'EGP',minWage:6000}},tertiary:{public:{entry:[8000,14000],mid:[12000,20000],senior:[16000,28000],expert:[22000,40000],currency:'EGP',minWage:6000},private:{entry:[7000,14000],mid:[10000,20000],senior:[14000,28000],expert:[18000,38000],currency:'EGP',minWage:6000}}}
 };
+var COUNTRY_LABELS={nigeria:'Nigeria',kenya:'Kenya',southafrica:'South Africa',ghana:'Ghana',ethiopia:'Ethiopia',tanzania:'Tanzania',uganda:'Uganda',rwanda:'Rwanda',egypt:'Egypt'};
+var LEVEL_LABELS={primary:'Primary school',secondary:'Secondary school',tertiary:'Tertiary / university'};
+var TYPE_LABELS={public:'Public / government',private:'Private'};
+var EXP_LABELS={entry:'0-2 years',mid:'3-7 years',senior:'8-15 years',expert:'15+ years'};
+var currentTeacherSalaryPlan=null;
 function fmt(n,c){return c+n.toLocaleString();}
+function plainCurrency(value){
+  return String(value||'').replace(/â‚¦/g,'NGN ').replace(/GHâ‚µ/g,'GHS ');
+}
 function lookupSalary(){
   var country=document.getElementById('ts-country').value;
   var level=document.getElementById('ts-level').value;
@@ -237,6 +304,19 @@ function lookupSalary(){
   var mid=Math.round((range[0]+range[1])/2);
   var annual=mid*12;
   var mw=d.minWage;
+  currentTeacherSalaryPlan={
+    country:COUNTRY_LABELS[country]||country,
+    level:LEVEL_LABELS[level]||level,
+    type:TYPE_LABELS[type]||type,
+    experience:EXP_LABELS[exp]||exp,
+    currency:c,
+    min:range[0],
+    mid:mid,
+    max:range[1],
+    annual:annual,
+    minimumWage:mw,
+    minimumWageMultiple:mid/mw
+  };
   document.getElementById('ts-grid').innerHTML=
     '<div class="rs"><div class="lbl">Monthly Min</div><div class="val">'+fmt(range[0],c)+'</div><div class="sub">Entry for experience band</div></div>'+
     '<div class="rs"><div class="lbl">Monthly Typical</div><div class="val">'+fmt(mid,c)+'</div><div class="sub">Mid-range estimate</div></div>'+
@@ -252,12 +332,93 @@ function lookupSalary(){
     var isSelected=lv===level?'highlight':'';
     tbl+='<tr class="'+isSelected+'"><td>'+levelNames[lv]+'</td><td>'+fmt(row[0],c)+'</td><td>'+fmt(Math.round((row[0]+row[1])/2),c)+'</td><td>'+fmt(row[1],c)+'</td></tr>';
   });
-  tbl+='</tbody></table><p style="font-size:.75rem;color:#9ca3af;margin-top:.5rem">Note: Figures are estimates based on government pay scales and market data. Actual salaries vary by institution, location and qualifications. Private international school salaries may be significantly higher.</p>';
+  tbl+='</tbody></table>';
   document.getElementById('ts-table').innerHTML=tbl;
+  document.getElementById('ts-guidance').innerHTML=
+    '<div class="guidance-grid">'+
+      '<div class="guidance-card"><strong>Check allowances</strong><span>Ask whether housing, rural posting, transport, marking, pension, medical aid, and lunch benefits are included or separate.</span></div>'+
+      '<div class="guidance-card"><strong>Compare contract type</strong><span>Public salaries may be lower than premium private schools, but benefits, increments, job security, and pension can change the total package.</span></div>'+
+      '<div class="guidance-card"><strong>Prepare negotiation proof</strong><span>Bring certificates, subject specialization, years taught, exam results, leadership duties, and class-size expectations to salary talks.</span></div>'+
+    '</div>';
+  document.getElementById('ts-note').innerHTML='<strong>Planning estimate only.</strong> These ranges are broad salary signals, not an official pay slip or job offer. Confirm the current scale, allowances, deductions, pension, tax, location band, workload, and contract terms with the school or education authority.';
+  setTeacherSalaryStatus('');
   document.getElementById('ts-result').classList.add('show');
+}
+function buildTeacherSalaryReport(){
+  if(!currentTeacherSalaryPlan){lookupSalary();}
+  var p=currentTeacherSalaryPlan;
+  return [
+    'Teacher salary scale brief - AfroTools',
+    'Country: '+p.country,
+    'Education level: '+p.level,
+    'School type: '+p.type,
+    'Experience band: '+p.experience,
+    '',
+    'Estimated salary range',
+    '- Monthly minimum: '+plainCurrency(fmt(p.min,p.currency)),
+    '- Monthly typical: '+plainCurrency(fmt(p.mid,p.currency)),
+    '- Monthly maximum: '+plainCurrency(fmt(p.max,p.currency)),
+    '- Typical annual equivalent: '+plainCurrency(fmt(p.annual,p.currency)),
+    '- Typical monthly vs minimum wage: '+p.minimumWageMultiple.toFixed(1)+'x',
+    '',
+    'Offer checks',
+    '- Confirm whether housing, transport, rural posting, marking, lunch, pension, and medical benefits are included.',
+    '- Compare gross salary against tax, pension, union dues, loan deductions, and payroll timing.',
+    '- Ask for workload details: subjects, periods per week, class size, boarding duties, exam prep, clubs, and holiday work.',
+    '- Verify the current government scale or private-school contract before accepting.',
+    '',
+    'This is a planning estimate, not an official salary scale or job offer.'
+  ].join('\n');
+}
+function setTeacherSalaryStatus(message){
+  var el=document.getElementById('ts-action-status');
+  if(el){el.textContent=message||'';}
+}
+function fallbackTeacherSalaryCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setTeacherSalaryStatus('Salary brief copied.');}
+  catch(e){window.prompt('Copy salary brief',text);setTeacherSalaryStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function copyTeacherSalaryReport(){
+  var text=buildTeacherSalaryReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setTeacherSalaryStatus('Salary brief copied.');}).catch(function(){fallbackTeacherSalaryCopy(text);});
+  }else{
+    fallbackTeacherSalaryCopy(text);
+  }
+}
+function slugify(value){return String(value||'teacher-salary').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'teacher-salary';}
+function downloadTeacherSalaryReport(){
+  var text=buildTeacherSalaryReport();
+  var p=currentTeacherSalaryPlan;
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download=slugify(p.country+' '+p.level+' '+p.type)+'-salary-brief.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setTeacherSalaryStatus('TXT salary brief downloaded.');
+}
+function saveTeacherSalaryReport(){
+  buildTeacherSalaryReport();
+  try{
+    localStorage.setItem('afrotools-teacher-salary-brief',JSON.stringify({savedAt:Date.now(),plan:currentTeacherSalaryPlan,report:buildTeacherSalaryReport()}));
+    setTeacherSalaryStatus('Salary brief saved in this browser.');
+  }catch(e){
+    setTeacherSalaryStatus('Browser storage is unavailable. Download the TXT brief instead.');
+  }
 }
 document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){this.parentElement.classList.toggle('open');});});
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

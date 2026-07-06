@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API Tester for African Developers | AfroTools</title>
-<meta name="description" content="Test REST APIs in your browser with environments, cURL import, saved requests, assertions, response headers, JSON export and African API presets.">
+<title>Online REST API Tester for African Developers | AfroTools</title>
+<meta name="description" content="Test REST APIs in your browser with cURL import, local environments, request preflight, assertions, response headers, JSON export and African API presets.">
 <link rel="canonical" href="https://afrotools.com/tools/api-tester/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="API Tester for African Developers | AfroTools">
-<meta property="og:description" content="A privacy-first API workbench with environments, saved requests, cURL import, assertions, response headers and African API presets.">
+<meta property="og:title" content="Online REST API Tester for African Developers | AfroTools">
+<meta property="og:description" content="A privacy-first API workbench with environments, request preflight, saved requests, cURL import, assertions, response headers and African API presets.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/api-tester.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/api-tester/">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="API Tester for African Developers | AfroTools">
-<meta name="twitter:description" content="Test APIs with environments, saved requests, cURL import, assertions and African API presets.">
+<meta name="twitter:title" content="Online REST API Tester for African Developers | AfroTools">
+<meta name="twitter:description" content="Test APIs with environments, request preflight, saved requests, cURL import, assertions and African API presets.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/api-tester.webp">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
@@ -36,11 +36,22 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "API Tester for African Developers",
+  "name": "Online REST API Tester for African Developers",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
   "url": "https://afrotools.com/tools/api-tester/",
-  "description": "Browser-based REST API tester with environments, cURL import, saved requests, assertions, response headers, code export and African API presets.",
+  "description": "Browser-based REST API tester with environments, cURL import, request preflight, saved requests, assertions, response headers, code export and African API presets.",
+  "featureList": [
+    "Browser REST API requests",
+    "cURL import",
+    "Local environment variables",
+    "Request preflight checks",
+    "Response assertions",
+    "African API presets",
+    "cURL and fetch export",
+    "Redacted request JSON export"
+  ],
+  "browserRequirements": "Requires a modern browser with Fetch API support. Requests are sent directly from the browser to the endpoint you choose.",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -52,6 +63,36 @@
     "url": "https://afrotools.com/"
   },
   "image": "https://afrotools.com/assets/img/tools/api-tester.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to test a REST API request in AfroTools",
+  "description": "Build a browser API request, run local preflight checks, send it when CORS allows, then copy a redacted replay brief.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Choose a method and endpoint",
+      "text": "Select GET, POST, PUT, PATCH or DELETE and enter the endpoint URL or an environment variable such as {{baseUrl}}."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Add headers, body and auth",
+      "text": "Add query parameters, headers, body content and optional authorization values in the browser."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Review request preflight",
+      "text": "Check unresolved variables, mixed-content risk, JSON validity, auth-secret handling and response assertions before sending."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Inspect and export the result",
+      "text": "Review response status, headers, body and assertions, then copy cURL, fetch or a redacted debug brief for replay."
+    }
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -73,6 +114,7 @@
   .stack{display:grid;gap:16px}
   .card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,.05);overflow:hidden}
   .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+  .head-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
   .card-title{font-size:.74rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#334155}
   .card-body{padding:18px}
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -82,18 +124,27 @@
   textarea{font-family:'Consolas','Courier New',monospace;font-size:.78rem;line-height:1.55;resize:vertical}
   input:focus,select:focus,textarea:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.13)}
   .request-line{display:grid;grid-template-columns:126px minmax(0,1fr) auto;gap:10px;align-items:start}
-  .method{font-weight:900}.send{background:#0284c7;color:#fff;border:0;border-radius:8px;padding:11px 22px;font-weight:900;font-size:.84rem;cursor:pointer;min-width:110px}.send:hover{background:#0369a1}
+  .method{font-weight:900}.send{background:#0284c7;color:#fff;border:0;border-radius:8px;padding:11px 22px;font-weight:900;font-size:.84rem;cursor:pointer;min-width:110px;min-height:44px}.send:hover{background:#0369a1}
   .tabs{display:flex;gap:2px;border-bottom:1px solid #e2e8f0;margin:16px -18px 16px;padding:0 18px;overflow:auto}
-  .tab{border:0;background:transparent;color:#64748b;padding:10px 12px;border-bottom:2px solid transparent;font-weight:900;font-size:.77rem;cursor:pointer;white-space:nowrap}
+  .tab{border:0;background:transparent;color:#64748b;padding:10px 12px;border-bottom:2px solid transparent;font-weight:900;font-size:.77rem;cursor:pointer;min-height:44px;white-space:nowrap}
   .tab.active{color:#0284c7;border-bottom-color:#0284c7}
   .tab-panel{display:none}.tab-panel.active{display:block}
   .kv{display:grid;grid-template-columns:minmax(110px,.8fr) minmax(0,1.3fr) 34px;gap:8px;margin-bottom:8px}
-  .kv .remove{border:0;background:#fee2e2;color:#991b1b;border-radius:8px;font-weight:900;cursor:pointer}
-  .link-btn{border:0;background:transparent;color:#0284c7;font-weight:900;font-size:.78rem;cursor:pointer;padding:4px 0}
+  .kv .remove{border:0;background:#fee2e2;color:#991b1b;border-radius:8px;font-weight:900;cursor:pointer;min-height:44px}
+  .link-btn{border:0;background:transparent;color:#0284c7;font-weight:900;font-size:.78rem;cursor:pointer;min-height:44px;padding:4px 0}
   .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .mini{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:8px 11px;font-weight:900;font-size:.76rem;cursor:pointer}
+  .mini{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:8px 11px;font-weight:900;font-size:.76rem;cursor:pointer;min-height:44px}
   .mini.primary{background:#0f172a;color:#fff;border-color:#0f172a}.mini.good{background:#dcfce7;color:#166534;border-color:#bbf7d0}
   .mini.warn{background:#fef3c7;color:#92400e;border-color:#fde68a}
+  .request-inspector{border:1px solid #dbeafe;background:#f8fbff;border-radius:12px;margin-top:16px;overflow:hidden}
+  .inspect-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid #dbeafe}
+  .inspect-title{font-size:.74rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#1e3a8a}
+  .inspect-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px}
+  .inspect-item{border:1px solid #e2e8f0;background:#fff;border-radius:10px;padding:10px;min-width:0}
+  .inspect-item strong{display:flex;align-items:center;gap:7px;font-size:.78rem;color:#0f172a;margin-bottom:4px}
+  .inspect-item strong::before{content:'';width:8px;height:8px;border-radius:999px;background:#64748b;flex:0 0 auto}
+  .inspect-item p{font-size:.74rem;line-height:1.45;color:#475569;margin:0;overflow-wrap:anywhere}
+  .inspect-item.ok strong::before{background:#16a34a}.inspect-item.warn strong::before{background:#d97706}.inspect-item.fail strong::before{background:#dc2626}
   .response-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
   .meta{border-radius:999px;padding:5px 9px;font-size:.72rem;font-weight:900;background:#f1f5f9;color:#475569}
   .meta.ok{background:#dcfce7;color:#166534}.meta.err{background:#fee2e2;color:#991b1b}.meta.info{background:#e0f2fe;color:#075985}
@@ -102,20 +153,20 @@
   .headers-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;max-height:280px;overflow:auto;font-family:'Consolas','Courier New',monospace;font-size:.72rem;color:#334155;white-space:pre-wrap}
   .test-list{display:grid;gap:8px}.test{border:1px solid #e2e8f0;border-radius:9px;padding:9px;font-size:.78rem;font-weight:800}.test.pass{background:#f0fdf4;color:#166534;border-color:#bbf7d0}.test.fail{background:#fef2f2;color:#991b1b;border-color:#fecaca}.test.skip{background:#f8fafc;color:#64748b}
   .side{position:sticky;top:80px;display:grid;gap:16px}
-  .preset{display:block;width:100%;text-align:left;border:1px solid #e2e8f0;background:#fff;border-radius:10px;padding:11px;cursor:pointer;margin-bottom:8px}
+  .preset{display:block;width:100%;text-align:left;border:1px solid #e2e8f0;background:#fff;border-radius:10px;padding:11px;cursor:pointer;margin-bottom:8px;min-height:44px}
   .preset:hover{border-color:#0ea5e9;background:#f8fcff}.preset strong{display:block;font-size:.84rem;color:#0f172a;margin-bottom:3px}.preset span{font-size:.74rem;color:#64748b;line-height:1.45;display:block}
-  .list{display:grid;gap:7px}.item{border:1px solid #e2e8f0;background:#fff;border-radius:9px;padding:9px;cursor:pointer}.item:hover{border-color:#0ea5e9}.item strong{display:block;font-size:.78rem}.item span{display:block;color:#64748b;font-size:.7rem;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .list{display:grid;gap:7px}.item{border:1px solid #e2e8f0;background:#fff;border-radius:9px;padding:9px;cursor:pointer;min-height:44px}.item:hover{border-color:#0ea5e9}.item strong{display:block;font-size:.78rem}.item span{display:block;color:#64748b;font-size:.7rem;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .note{background:#f0f9ff;border:1px solid #bae6fd;color:#075985;border-radius:10px;padding:12px;font-size:.78rem;line-height:1.55}
   .warnbox{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:10px;padding:12px;font-size:.78rem;line-height:1.55}
   .seo-section{max-width:900px;margin:0 auto;padding:42px 24px 72px}.seo-section h2{font-size:1.35rem;font-weight:900;margin:0 0 12px;color:#0f172a}.seo-section p{font-size:.9rem;color:#475569;line-height:1.75;margin:0 0 14px}
   details.faq-item{border:1px solid #e2e8f0;border-radius:10px;margin-bottom:8px;background:#fff}details.faq-item summary{padding:14px 16px;font-weight:900;cursor:pointer;list-style:none}details.faq-item summary::-webkit-details-marker{display:none}details.faq-item p{padding:0 16px 14px;margin:0;font-size:.84rem;color:#475569;line-height:1.7}
-  @media(max-width:980px){.workspace{grid-template-columns:1fr}.side{position:static}.response-grid{grid-template-columns:1fr}.request-line{grid-template-columns:1fr}.send{width:100%}.grid-2,.grid-3{grid-template-columns:1fr}}
+  @media(max-width:980px){.workspace{grid-template-columns:1fr}.side{position:static}.response-grid{grid-template-columns:1fr}.request-line{grid-template-columns:1fr}.send{width:100%}.grid-2,.grid-3,.inspect-grid{grid-template-columns:1fr}}
+  @media(max-width:520px){.main,.hero-inner,.seo-section{padding-left:16px;padding-right:16px}.card-head,.inspect-head{align-items:stretch;flex-direction:column}.head-actions{justify-content:stretch}.head-actions .mini{flex:1}.card-head input{max-width:none!important}.actions .mini,.inspect-head .mini{width:100%}}
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/api-tester/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/testeur-api/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kijaribu-api/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/api-tester/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -167,7 +218,7 @@
   <div class="workspace">
     <div class="stack">
       <section class="card">
-        <div class="card-head"><span class="card-title">Environment</span><button type="button" class="mini" id="save-env">Save variables</button></div>
+        <div class="card-head"><span class="card-title">Environment</span><div class="head-actions"><button type="button" class="mini" id="save-env">Save variables</button><button type="button" class="mini" id="clear-env">Clear saved variables</button></div></div>
         <div class="card-body">
           <div class="grid-3">
             <div><label for="env-name">Environment</label><select id="env-name"><option value="none">No environment</option><option value="local">Local API</option><option value="sandbox">Sandbox</option><option value="staging">Staging</option><option value="production">Production</option></select></div>
@@ -237,13 +288,21 @@
 
           <div class="tab-panel" id="tab-tests">
             <div class="grid-2">
-              <div><label for="test-status">Expected status</label><input id="test-status" type="number" placeholder="200"></div>
-              <div><label for="test-time">Max response time (ms)</label><input id="test-time" type="number" placeholder="1000"></div>
+              <div><label for="test-status">Expected status</label><input id="test-status" type="number" value="200" placeholder="200"></div>
+              <div><label for="test-time">Max response time (ms)</label><input id="test-time" type="number" value="3000" placeholder="1000"></div>
             </div>
             <div class="grid-2" style="margin-top:12px">
-              <div><label for="test-contains">Response contains</label><input id="test-contains" placeholder="success"></div>
-              <div><label for="test-jsonpath">JSON path exists</label><input id="test-jsonpath" placeholder="$.data.id"></div>
+              <div><label for="test-contains">Response contains</label><input id="test-contains" value="userId" placeholder="success"></div>
+              <div><label for="test-jsonpath">JSON path exists</label><input id="test-jsonpath" value="$.id" placeholder="$.data.id"></div>
             </div>
+          </div>
+
+          <div class="request-inspector" aria-live="polite">
+            <div class="inspect-head">
+              <span class="inspect-title">Request preflight</span>
+              <button class="mini" id="copy-safe-brief" type="button">Copy safe debug brief</button>
+            </div>
+            <div class="inspect-grid" id="preflight-list"></div>
           </div>
 
           <div class="actions">
@@ -305,31 +364,6 @@
     </aside>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="api-tester" data-tool-verification-panel>
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">API request brief</span>
-      <h2>Test a request, then hand off the exact replay steps</h2>
-      <p>Build a browser request above, inspect the response or CORS failure, then copy a brief with the method, environment and verification checks.</p>
-      <p><strong>Sources &amp; verification methodology:</strong> the selected endpoint, browser status, response headers, assertions and exported replay snippets are the source evidence. This is a local browser tester, not an official API monitor.</p>
-      <ul class="df-upgrade__bullets"><li>Primary task: compose API requests, save local variables, copy cURL or fetch snippets, download a request JSON, and review response output.</li><li>Result output: a request brief that records method, endpoint type, expected status and next debugging step.</li><li>Quality checks: secrets redacted, auth header mode, request body format, expected status, CORS behavior, downloaded request JSON and replay snippet.</li><li>Privacy note: requests are sent directly from your browser to the endpoint; AfroTools does not proxy or store request bodies.</li></ul>
-      <p class="df-upgrade__note"><strong>Disclaimer:</strong> reviewed 2026. Local browser tester only, not uptime monitoring, security testing, compliance evidence, or an official provider diagnostic. Do not paste production secrets unless you intend the browser to send them to that API endpoint.</p>
-    </div>
-    <form class="df-form" data-df-form="api-tester">
-      <label>Request type<select name="type" aria-label="Request type"><option value="GET read">GET read</option><option value="POST create">POST create</option><option value="auth check">auth check</option><option value="webhook replay">webhook replay</option></select></label>
-      <label>Expected status<input name="status" type="number" value="200" min="100" max="599" step="1" aria-label="Expected status"></label>
-      <label>Debug focus<select name="focus" aria-label="Debug focus"><option value="CORS or network">CORS or network</option><option value="auth header">auth header</option><option value="JSON body">JSON body</option><option value="response tests">response tests</option></select></label>
-      <label>Secret handling<select name="secret" aria-label="Secret handling"><option value="redacted test token">redacted test token</option><option value="no credentials">no credentials</option><option value="local dev secret">local dev secret</option><option value="needs server replay">needs server replay</option></select></label>
-      <button type="submit">Create API brief</button>
-      <output class="df-result" data-df-result="api-tester" data-df-base="API request brief ready. Send or replay above, then verify method, URL, auth mode, body format, expected status, CORS behavior, and copied cURL or fetch snippet before sharing." aria-live="polite">API request brief ready. Send or replay above, then verify method, URL, auth mode, body format, expected status, CORS behavior, and copied cURL or fetch snippet before sharing.</output>
-      <div class="df-actions"><button type="button" data-df-copy="api-tester">Copy API brief</button><a href="#response-card">Review response</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="api-tester-faq-title">
-  <h2 id="api-tester-faq-title">API Tester (Postman Lite) FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Build a request, send it if the API allows browser calls, then copy cURL or fetch for repeatable debugging.</p></details><details><summary>What should I verify?</summary><p>Check method, URL, headers, body, auth mode, expected status, CORS behavior, response tests and secret redaction.</p></details><details><summary>Does AfroTools proxy my request?</summary><p>No. The browser sends directly to the endpoint, so CORS and endpoint security rules still apply.</p></details></div>
-</section>
 </main>
 
 <section class="seo-section">
@@ -564,6 +598,103 @@
     return options;
   }
 
+  function hasUnresolvedVariables(text){
+    return /\{\{[^}]+\}\}/.test(String(text || ''));
+  }
+
+  function isSensitiveKey(key){
+    return /authorization|api[-_]?key|secret|token|password|subscription[-_]?key/i.test(String(key || ''));
+  }
+
+  function redactValue(key, value){
+    if (!value) return '';
+    if (isSensitiveKey(key)) return '[redacted]';
+    var text = String(value);
+    if (/^(Bearer|Basic)\s+\S+/i.test(text)) return text.replace(/\s+\S+$/, ' [redacted]');
+    if (text.length > 16 && /(?:sk_|pk_|FLW|key|token|secret|Bearer)/i.test(text)) return '[redacted]';
+    return text;
+  }
+
+  function bodyIsJson(req){
+    if (!req.body || req.bodyMode !== 'json' || ['POST','PUT','PATCH','DELETE'].indexOf(req.method) === -1) return null;
+    try { JSON.parse(interpolate(req.body)); return true; }
+    catch(e){ return false; }
+  }
+
+  function preflightItems(req){
+    var finalUrl = buildUrl(req);
+    var headers = buildHeaders(req);
+    var assertions = [req.tests.status, req.tests.time, req.tests.contains, req.tests.jsonpath].filter(Boolean).length;
+    var jsonOk = bodyIsJson(req);
+    var authSecret = Boolean(req.auth.token || Object.keys(headers).some(isSensitiveKey));
+    var urlState = !finalUrl ? 'fail' : hasUnresolvedVariables(finalUrl) ? 'fail' : 'ok';
+    var mixedContent = finalUrl.indexOf('http://') === 0 && location.protocol === 'https:' && !/^http:\/\/(localhost|127\.0\.0\.1)/.test(finalUrl);
+    var corsLikely = finalUrl && !/^https?:\/\/(localhost|127\.0\.0\.1)/.test(finalUrl) && finalUrl.indexOf(location.origin) !== 0;
+    return [
+      {
+        state: urlState,
+        title: 'Endpoint',
+        text: !finalUrl ? 'Add a URL before sending.' : hasUnresolvedVariables(finalUrl) ? 'Resolve {{variables}} before sending.' : 'URL is ready for a browser request.'
+      },
+      {
+        state: mixedContent ? 'fail' : corsLikely ? 'warn' : 'ok',
+        title: 'Browser reachability',
+        text: mixedContent ? 'HTTPS pages cannot call insecure HTTP endpoints.' : corsLikely ? 'External APIs may block browser calls with CORS. Keep cURL ready.' : 'Endpoint should be reachable from this browser context.'
+      },
+      {
+        state: jsonOk === false ? 'fail' : jsonOk === true ? 'ok' : 'warn',
+        title: 'Body format',
+        text: jsonOk === false ? 'JSON body is not valid yet.' : jsonOk === true ? 'JSON body parses correctly.' : 'No JSON body validation needed for this request.'
+      },
+      {
+        state: authSecret ? 'warn' : 'ok',
+        title: 'Secret handling',
+        text: authSecret ? 'Auth or secret-like headers will be sent directly by your browser.' : 'No auth secret is configured.'
+      },
+      {
+        state: assertions ? 'ok' : 'warn',
+        title: 'Assertions',
+        text: assertions ? assertions + ' response check' + (assertions > 1 ? 's' : '') + ' configured.' : 'Add expected status, timing, text or JSON-path checks for repeatable debugging.'
+      }
+    ];
+  }
+
+  function renderPreflight(){
+    var el = $('preflight-list');
+    if (!el) return;
+    var req = requestState();
+    el.innerHTML = preflightItems(req).map(function(item){
+      return '<div class="inspect-item '+item.state+'"><strong>'+esc(item.title)+'</strong><p>'+esc(item.text)+'</p></div>';
+    }).join('');
+  }
+
+  function safeDebugBrief(req){
+    var headers = buildHeaders(req);
+    var redactedHeaders = Object.keys(headers).map(function(key){
+      return key + ': ' + redactValue(key, headers[key]);
+    });
+    var jsonOk = bodyIsJson(req);
+    var checks = preflightItems(req).map(function(item){ return '- ' + item.title + ': ' + item.text; }).join('\n');
+    var responseSummary = Array.from($('response-meta').querySelectorAll('.meta')).map(function(item){
+      return item.textContent.trim();
+    }).filter(Boolean).join(' | ') || 'No response yet';
+    return [
+      'AfroTools API Tester debug brief',
+      'Method: ' + req.method,
+      'URL: ' + buildUrl(req),
+      'Auth mode: ' + req.auth.type,
+      'Headers:',
+      redactedHeaders.length ? redactedHeaders.join('\n') : '- none',
+      'Body mode: ' + req.bodyMode,
+      'Body JSON valid: ' + (jsonOk === null ? 'not applicable' : jsonOk ? 'yes' : 'no'),
+      'Assertions: ' + [req.tests.status && ('status ' + req.tests.status), req.tests.time && ('under ' + req.tests.time + 'ms'), req.tests.contains && ('contains "' + req.tests.contains + '"'), req.tests.jsonpath && ('JSON path ' + req.tests.jsonpath)].filter(Boolean).join(', '),
+      'Preflight:',
+      checks,
+      'Response summary: ' + responseSummary,
+      'Note: secrets are redacted in this brief. Replay from a trusted terminal or backend when CORS blocks browser calls.'
+    ].join('\n');
+  }
+
   function curlFor(req){
     var url = buildUrl(req);
     var headers = buildHeaders(req);
@@ -654,6 +785,7 @@
         {text:contentType || 'unknown type', kind:'info'}
       ]);
       runTests(req, {status:res.status, elapsed:elapsed, body:body});
+      renderPreflight();
       pushHistory(req, res.status, elapsed);
     } catch(err) {
       var failedElapsed = Math.round(performance.now() - start);
@@ -661,6 +793,7 @@
       $('response-headers').textContent = 'No headers available.';
       setResponseMeta([{text:'Request failed', kind:'err'}, {text:failedElapsed + 'ms', kind:'info'}]);
       $('test-results').innerHTML = '<div class="test fail">Request failed before assertions could run.</div>';
+      renderPreflight();
     }
   }
 
@@ -721,6 +854,7 @@
           auth: {type:'none', token:'', user:'', prefix:'Bearer'},
           tests: preset.tests
         });
+        renderPreflight();
         toast('Preset loaded');
       });
       $('preset-list').appendChild(btn);
@@ -743,6 +877,17 @@
     current.envName = $('env-name').value;
     write(STORAGE.env, current);
     toast('Environment variables saved in this browser');
+  }
+
+  function clearEnv(){
+    write(STORAGE.env, {});
+    ['env-name','var-baseUrl','var-token','var-paystackSecret','var-flutterwaveSecret','var-mpesaBasic','var-mtnSubscriptionKey','var-africasTalkingUsername','var-africasTalkingApiKey'].forEach(function(id){
+      var el = $(id);
+      if (!el) return;
+      el.value = id === 'env-name' ? 'none' : '';
+    });
+    renderPreflight();
+    toast('Saved environment variables cleared');
   }
 
   function loadEnv(){
@@ -783,7 +928,28 @@
   }
 
   function copyText(text, label){
-    navigator.clipboard.writeText(text).then(function(){ toast(label + ' copied'); }).catch(function(){ toast('Copy failed'); });
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function(){ toast(label + ' copied'); }).catch(function(){ fallbackCopyText(text, label); });
+      return;
+    }
+    fallbackCopyText(text, label);
+  }
+
+  function fallbackCopyText(text, label){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      toast(label + ' copied');
+    } catch(e) {
+      toast('Copy failed');
+    }
+    textarea.remove();
   }
 
   function downloadRequestJson(){
@@ -823,6 +989,7 @@
     $('send-request').addEventListener('click', sendRequest);
     $('save-request').addEventListener('click', saveRequest);
     $('save-env').addEventListener('click', saveEnv);
+    $('clear-env').addEventListener('click', clearEnv);
     $('import-curl').addEventListener('click', importCurl);
     $('copy-curl').addEventListener('click', function(){ copyText(curlFor(requestState()), 'cURL'); });
     $('copy-fetch').addEventListener('click', function(){ copyText(fetchFor(requestState()), 'fetch snippet'); });
@@ -831,10 +998,19 @@
     $('format-body').addEventListener('click', function(){
       try { $('req-body').value = JSON.stringify(JSON.parse($('req-body').value), null, 2); toast('JSON formatted'); }
       catch(e){ toast('Body is not valid JSON'); }
+      renderPreflight();
     });
     $('clear-request').addEventListener('click', function(){
       loadRequest({method:'GET', url:'', params:[], headers:[], body:'', bodyMode:'json', auth:{type:'none',token:'',user:'',prefix:'Bearer'}, tests:{}});
       $('request-name').value = '';
+      renderPreflight();
+    });
+    $('copy-safe-brief').addEventListener('click', function(){ copyText(safeDebugBrief(requestState()), 'Safe debug brief'); });
+    document.addEventListener('input', function(e){
+      if (e.target.closest('.workspace')) renderPreflight();
+    });
+    document.addEventListener('change', function(e){
+      if (e.target.closest('.workspace')) renderPreflight();
     });
     $('clear-saved').addEventListener('click', function(){ write(STORAGE.saved, []); renderSaved(); });
     $('clear-history').addEventListener('click', function(){ write(STORAGE.history, []); renderHistory(); });
@@ -854,6 +1030,7 @@
     renderPresets();
     renderSaved();
     renderHistory();
+    renderPreflight();
   }
 
   init();
@@ -872,6 +1049,5 @@
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

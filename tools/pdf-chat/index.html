@@ -5,18 +5,18 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chat with PDF - Ask, Summarize, Cite Pages | AfroTools</title>
-<meta name="description" content="Upload a PDF, ask questions, get summaries, extract key points, search pages, and receive grounded answers with page citations. Browser-first PDF assistant.">
+<meta name="description" content="Upload a PDF, ask questions locally, get summaries, search pages, and receive grounded answers with page citations. Optional AI Assist requires consent.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-chat/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Chat with PDF | AfroTools">
-<meta property="og:description" content="Ask questions, summarize, search, and extract key points from PDFs with page citations and browser-first processing.">
+<meta property="og:description" content="Ask questions, summarize, search, and extract key points from PDFs with local page citations and optional AI Assist consent.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-chat/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-chat.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Chat with PDF | AfroTools">
-<meta name="twitter:description" content="Ask questions, summarize, search, and get page-cited answers from PDFs.">
+<meta name="twitter:description" content="Ask questions, summarize, search, and get local page-cited answers from PDFs.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <script type="application/ld+json">
@@ -24,7 +24,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Chat with PDF",
-  "description": "Upload a PDF, ask questions, summarize content, search pages, and receive grounded answers with page citations.",
+  "description": "Upload a PDF, ask questions locally, summarize content, search pages, and receive grounded answers with page citations. Optional AI Assist requires consent.",
   "url": "https://afrotools.com/tools/pdf-chat/",
   "inLanguage": "en",
   "applicationCategory": "ProductivityApplication",
@@ -43,17 +43,15 @@
   "image": "https://afrotools.com/assets/img/tools/pdf-chat.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does Chat with PDF work?","acceptedAnswer":{"@type":"Answer","text":"The tool extracts selectable text in your browser, indexes it by page, and answers questions using the AI endpoint when available or a local grounded retrieval fallback."}},{"@type":"Question","name":"Do answers include citations?","acceptedAnswer":{"@type":"Answer","text":"Yes. Responses include page references so you can jump back to the source page."}},{"@type":"Question","name":"Does it work with scanned PDFs?","acceptedAnswer":{"@type":"Answer","text":"Text-based PDFs work best. Scanned or image-only PDFs should be processed with OCR first."}},{"@type":"Question","name":"Can I export the chat?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can copy or download a transcript of the conversation."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does Chat with PDF work?","acceptedAnswer":{"@type":"Answer","text":"The tool extracts selectable text in your browser, indexes it by page, and answers questions locally with grounded retrieval and page citations. Optional AI Assist sends extracted text only after consent."}},{"@type":"Question","name":"Do answers include citations?","acceptedAnswer":{"@type":"Answer","text":"Yes. Responses include page references so you can jump back to the source page."}},{"@type":"Question","name":"Does it work with scanned PDFs?","acceptedAnswer":{"@type":"Answer","text":"Text-based PDFs work best. Scanned or image-only PDFs should be processed with OCR first."}},{"@type":"Question","name":"Can I export the chat?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can copy or download a transcript of the conversation."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -71,19 +69,6 @@
     overflow: hidden;
   }
 
-  .tool-hero::after {
-    content: '';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(0,135,81,.12) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
   .tool-hero-inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -95,7 +80,7 @@
     font-size: 0.72rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
@@ -113,7 +98,7 @@
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 800;
     color: #fff;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     line-height: 1.1;
     margin-bottom: 10px;
   }
@@ -146,7 +131,7 @@
     border-radius: 4px;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0;
   }
 
   .b-green {
@@ -193,6 +178,7 @@
     transition: all 0.25s ease;
     background: #fafbfc;
     position: relative;
+    touch-action: manipulation;
   }
 
   .drop-zone:hover,
@@ -377,6 +363,9 @@
     align-items: center;
     justify-content: center;
     transition: all 0.15s;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .file-bar-close:hover { background: #f1f5f9; color: #475569; }
@@ -402,6 +391,7 @@
     color: #334155;
     outline: none;
     background: #f8fafc;
+    min-height: 44px;
   }
 
   .doc-search:focus {
@@ -458,6 +448,9 @@
     font-weight: 600;
     font-size: 0.78rem;
     transition: all 0.15s;
+    min-height: 44px;
+    min-width: 56px;
+    touch-action: manipulation;
   }
 
   .page-nav button:hover:not(:disabled) { background: #e2e8f0; }
@@ -536,6 +529,8 @@
     font: 700 0.68rem 'DM Sans', sans-serif;
     cursor: pointer;
     transition: all 0.15s;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .chat-tool-btn:hover {
@@ -618,6 +613,36 @@
     font: 700 0.68rem 'DM Sans', sans-serif;
     cursor: pointer;
     vertical-align: baseline;
+    min-height: 32px;
+    touch-action: manipulation;
+  }
+
+  .privacy-choice {
+    margin: 10px 16px 0;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    background: #f8fbff;
+    flex-shrink: 0;
+  }
+
+  .privacy-choice label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #334155;
+    font-size: 0.76rem;
+    line-height: 1.45;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .privacy-choice input {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    flex: 0 0 auto;
+    accent-color: var(--afro-green);
   }
 
   .citation-btn:hover {
@@ -630,7 +655,7 @@
     color: #94a3b8;
     margin-bottom: 3px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0;
   }
 
   .msg-user .msg-label { text-align: right; }
@@ -691,6 +716,8 @@
     cursor: pointer;
     transition: all 0.15s;
     font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .quick-btn:hover {
@@ -734,8 +761,8 @@
   .chat-input-bar textarea::placeholder { color: #94a3b8; }
 
   .send-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     background: var(--afro-green);
     border: none;
     border-radius: 10px;
@@ -745,6 +772,7 @@
     cursor: pointer;
     transition: all 0.15s;
     flex-shrink: 0;
+    touch-action: manipulation;
   }
 
   .send-btn:hover { opacity: 0.85; transform: scale(1.04); }
@@ -903,8 +931,7 @@
     }
   }
 </style>
-<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=e87b4637" defer></script>
+<script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-chat.webp">
@@ -952,7 +979,7 @@
       <a href="/">Home</a> / <a href="/document-pdf/">PDF Tools</a> / <span>Chat with PDF</span>
     </div>
     <h1>Chat with <em>PDF</em></h1>
-    <p class="hero-sub">Upload a PDF, ask questions, summarize, search by page, and get grounded answers with clickable citations.</p>
+    <p class="hero-sub">Upload a text PDF, ask locally by default, and jump from every answer back to the cited page. AI Assist stays off until you choose it.</p>
     <div class="hero-badges">
       <span class="badge b-blue">Grounded Answers</span>
       <span class="badge b-green">Client-side</span>
@@ -972,7 +999,7 @@
     </div>
     <div class="drop-zone-text">Drop your PDF here or click to browse</div>
     <div class="drop-zone-hint">PDF files up to 20 MB</div>
-    <input aria-label="FileInput" type="file" accept=".pdf,application/pdf" id="fileInput">
+    <input aria-label="Choose PDF file" type="file" accept=".pdf,application/pdf" id="fileInput">
   </div>
 
   <div class="upload-error" id="uploadError"></div>
@@ -996,7 +1023,7 @@
     </span>
     <span class="feature-pill">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-      AI + Local Fallback
+      Optional AI Assist
     </span>
     <span class="feature-pill">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5h6M9 12h6m-6 7h6M5 5h.01M5 12h.01M5 19h.01"/></svg>
@@ -1059,9 +1086,16 @@
       <button type="button" class="quick-btn" data-prompt="List risks, warnings, exceptions, or important caveats in this document.">Risks</button>
     </div>
 
+    <div class="privacy-choice">
+      <label for="aiAssistConsent">
+        <input type="checkbox" id="aiAssistConsent">
+        <span>AI Assist optional: send this question and a capped extracted-text excerpt to AfroTools AI for a richer answer. Leave off for local page-cited answers.</span>
+      </label>
+    </div>
+
     <div class="chat-input-bar">
-      <textarea id="chatInput" rows="1" placeholder="Ask a question about this PDF..." aria-label="Ask a question about this PDF..."></textarea>
-      <button type="button" class="send-btn" id="sendBtn" disabled title="Send message">
+      <textarea id="chatInput" rows="1" placeholder="Ask a question about this PDF..." aria-label="Question about this PDF"></textarea>
+      <button type="button" class="send-btn" id="sendBtn" disabled title="Send message" aria-label="Send message">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
     </div>
@@ -1075,7 +1109,7 @@
   <p>Chat with any text-based PDF document. Upload contracts, reports, research papers, textbooks, school notes, or business documents, then ask questions in natural language. The assistant indexes extracted text by page, answers with citations, and lets you search, copy, or download a transcript.</p>
 
   <h3>How It Works</h3>
-  <p>Your PDF is processed in your browser using pdf.js. Selectable text is extracted and indexed locally by page. When the AI endpoint is available, the assistant can use it for richer answers; when it is unavailable or rate-limited, the local page-citation assistant still returns grounded extractive answers from your document.</p>
+  <p>Your PDF is processed in your browser using pdf.js. Selectable text is extracted and indexed locally by page. Local answers are the default. AI Assist is optional and only runs after you choose to send a capped extracted-text excerpt with your question.</p>
 
   <h3>What You Can Do</h3>
   <p>Ask for summaries, extract key points, find dates and amounts, identify obligations or risks, search a term across pages, copy answers, download the transcript, or click a page citation to inspect the source page.</p>
@@ -1090,7 +1124,7 @@
 
   <div class="faq-item">
     <button type="button" class="faq-q">Is my PDF data private and secure?</button>
-    <div class="faq-a"><p>Your PDF file is parsed in your browser. If the AI endpoint is used, extracted text is sent for analysis, not the original file. The local fallback answers from extracted page text without needing the endpoint.</p></div>
+    <div class="faq-a"><p>Your PDF file is parsed in your browser. Local answers do not call the AI endpoint. If you turn on AI Assist, a capped extracted-text excerpt and your current question are sent for analysis, not the original file.</p></div>
   </div>
 
   <div class="faq-item">
@@ -1100,66 +1134,24 @@
 
   <div class="faq-item">
     <button type="button" class="faq-q">How many questions can I ask?</button>
-    <div class="faq-a"><p>AI-backed responses may have daily limits. If the limit is reached, the local page-citation assistant remains available for summaries, search, details, and extractive answers.</p></div>
+    <div class="faq-a"><p>Local page-cited answers are available without a daily AI limit. AI-backed responses may have daily limits if you turn on AI Assist.</p></div>
   </div>
 
   <div class="faq-item">
     <button type="button" class="faq-q">Is there a file size limit?</button>
-    <div class="faq-a"><p>PDFs up to 20 MB are supported. Large documents are indexed locally by page. The AI endpoint receives a capped context window, while local search can still work across all extracted pages.</p></div>
+    <div class="faq-a"><p>PDFs up to 20 MB are supported. Large documents are indexed locally by page. AI Assist receives only a capped context window after consent, while local search can still work across all extracted pages.</p></div>
   </div>
 
   <div class="faq-item">
     <button type="button" class="faq-q">Can I ask follow-up questions?</button>
-    <div class="faq-a"><p>Yes. The AI remembers your recent conversation, so you can ask follow-up questions naturally. The last 10 messages are included for context in each request.</p></div>
+    <div class="faq-a"><p>Yes. Local mode uses the current question and extracted page text. AI Assist also receives the current question with a capped extracted-text excerpt after consent.</p></div>
   </div>
 </section>
 
 
-<section class="tool-verification-sec" data-tool-verification-panel="pdf-chat">
-  <div class="container">
-    <div class="tool-verification-card">
-      <div class="tool-verification-head">
-        <div>
-          <span class="tool-verification-kicker">Document review check</span>
-          <h2 class="tool-verification-title">Keep PDF questions grounded in visible pages</h2>
-          <p class="tool-verification-lead">Use upload, search, summary, extraction, and page-citation workflows to review a PDF while keeping sensitive document handling explicit.</p>
-        </div>
-        <div class="tool-verification-status">
-          <span class="tool-verification-badge">Reviewed 2026</span>
-          <p class="tool-verification-note">Local-first planning and document workflow. No official submission is performed.</p>
-        </div>
-      </div>
-      <div class="tool-verification-grid">
-        <div class="tool-verification-block">
-          <h3>What to check</h3>
-          <ul class="tool-verification-list">
-            <li>Methodology: parse or search document text, ground answers in page references, and keep review notes tied to visible source pages.</li>
-            <li>Verify citations, missing OCR text, scanned pages, tables, signatures, appendices, and any answer that could affect legal, financial, or HR decisions.</li>
-            <li>Export only metadata or summaries you are comfortable saving; keep raw sensitive document contents out of shared notes.</li>
-          </ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Limitations</h3>
-          <ul class="tool-verification-list">
-            <li>Disclaimer: review assistant only, not legal advice, financial advice, medical advice, official interpretation, or a substitute for reading the source PDF.</li>
-            <li>Scanned files, weak OCR, complex tables, images, and handwriting can reduce extraction quality.</li>
-            <li>Privacy note: do not send sensitive PDF text to AI or external services unless the page shows an explicit consent boundary and you choose that path.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="tool-verification-actions">
-        <a class="tool-verification-report" href="#dropZone">Review workflow output</a>
-        <p class="tool-verification-disclaimer">Source/freshness note: verify current client, lender, customs, tax, document, or regulator requirements before relying on generated outputs.</p>
-      </div>
-    </div>
-  </div>
-</section>
-<afro-business-cta tool-name="Chat with PDF" prospect-segment="document-review" save-note="Review the PDF locally where possible, then copy only safe summaries or page-cited notes."></afro-business-cta>
 <afro-related-tools category="document-pdf" current="pdf-chat"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.js?v=ac4154de" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
@@ -1206,6 +1198,7 @@
   const copyChatBtn = document.getElementById('copyChatBtn');
   const downloadChatBtn = document.getElementById('downloadChatBtn');
   const clearChatBtn = document.getElementById('clearChatBtn');
+  const aiAssistConsent = document.getElementById('aiAssistConsent');
 
   /* ── Drag & Drop ── */
   PdfUtils.initDragDrop(dropZone, {
@@ -1274,7 +1267,7 @@
       document.getElementById('fileName').textContent = pdfData.fileName;
       document.getElementById('fileMeta').textContent = totalPages + ' pages  |  ' + PdfUtils.formatSize(pdfData.fileSize);
       chatTitle.textContent = 'Chat about ' + pdfData.fileName;
-      chatMode.textContent = 'Grounded in extracted text with page citations';
+      chatMode.textContent = 'Local page-cited answers by default';
       docStats.textContent = documentStats.words.toLocaleString() + ' words';
 
       /* Render first page */
@@ -1288,7 +1281,7 @@
       messagesEl.innerHTML = '';
       var welcomeMsg = buildDocumentOverview(truncated);
       addMessage('ai', welcomeMsg);
-      chatFooter.textContent = 'Answers are grounded in extracted PDF text. Click page citations to inspect the source.';
+      chatFooter.textContent = 'Local mode is on. Nothing is sent to AI unless you turn on AI Assist.';
 
     } catch (err) {
       console.error('PDF load error:', err);
@@ -1380,6 +1373,7 @@
     fileInput.value = '';
     chatInput.value = '';
     chatFooter.textContent = '';
+    aiAssistConsent.checked = false;
     docSearchInput.value = '';
     docStats.textContent = '0 words';
     updateSendBtn();
@@ -1456,7 +1450,7 @@
     overview += "- Find deadlines, amounts, obligations, risks, or names\n";
     overview += "- Ask about a specific term and jump to the cited page\n";
     if (keywords.length) overview += "\n**Detected themes:** " + keywords.join(', ') + ".";
-    if (truncated) overview += "\n\nNote: the AI endpoint receives the first 18,000 characters, but the local citation assistant can still search all extracted pages.";
+    if (truncated) overview += "\n\nNote: this document is large, so optional AI Assist would receive only the first 18,000 characters after consent. Local citations can still search all extracted pages.";
     return overview;
   }
 
@@ -1517,7 +1511,7 @@
 
     const label = document.createElement('div');
     label.className = 'msg-label';
-    label.textContent = role === 'ai' ? 'AfroTools AI' : 'You';
+    label.textContent = role === 'ai' ? 'AfroTools Assistant' : 'You';
 
     const bubble = document.createElement('div');
     bubble.className = 'msg-bubble';
@@ -1542,7 +1536,7 @@
 
     const label = document.createElement('div');
     label.className = 'msg-label';
-    label.textContent = 'AfroTools AI';
+    label.textContent = 'AfroTools Assistant';
 
     const bubble = document.createElement('div');
     bubble.className = 'msg-bubble';
@@ -1632,9 +1626,18 @@
     addTypingIndicator();
 
     try {
+      if (!aiAssistConsent.checked) {
+        const localText = buildLocalAnswer(userMessage);
+        removeTypingIndicator();
+        addMessage('ai', localText);
+        chatHistory.push({ role: 'assistant', content: localText });
+        chatFooter.textContent = 'Answered locally from extracted page text. Nothing was sent to AI.';
+        return;
+      }
+
       const headers = { 'Content-Type': 'application/json' };
-      if (window.AfroAuth && typeof AfroAuth.getSessionToken === 'function') {
-        const token = AfroAuth.getSessionToken();
+      if (window.AfroAuth && typeof window.AfroAuth.getSessionToken === 'function') {
+        const token = window.AfroAuth.getSessionToken();
         if (token) headers['Authorization'] = 'Bearer ' + token;
       }
 
@@ -1644,7 +1647,7 @@
         body: JSON.stringify({
           tool: 'pdf-chat',
           context: context,
-          messages: chatHistory.slice(-10)
+          messages: [{ role: 'user', content: userMessage }]
         })
       });
 
@@ -1675,13 +1678,16 @@
 
       /* Update remaining count if provided */
       if (data.remaining !== undefined) {
-        chatFooter.textContent = data.remaining + ' questions remaining today';
+        chatFooter.textContent = data.remaining + ' AI Assist questions remaining today. Verify cited pages before relying on answers.';
+      } else {
+        chatFooter.textContent = 'AI Assist answered with your consent. Verify cited pages before relying on answers.';
       }
 
     } catch (err) {
       removeTypingIndicator();
+      console.warn('PDF Chat AI Assist unavailable:', err && err.message ? err.message : 'unknown error');
       const localText = buildLocalAnswer(userMessage);
-      addMessage('ai', localText + '\n\nAI endpoint was unavailable, so this answer was generated locally from extracted page text.');
+      addMessage('ai', localText + '\n\nAI Assist was unavailable, so this answer was generated locally from extracted page text.');
       chatHistory.push({ role: 'assistant', content: localText });
       chatFooter.textContent = 'Using local citation assistant. Answers are extractive and grounded in the PDF text.';
     } finally {
@@ -1724,6 +1730,12 @@
     sendBtn.disabled = !chatInput.value.trim() || isSending || !context;
   }
   updateSendBtn(); /* initial state */
+
+  aiAssistConsent.addEventListener('change', function() {
+    chatFooter.textContent = this.checked
+      ? 'AI Assist is on. Questions may send capped extracted text to AfroTools AI.'
+      : 'Local mode is on. Nothing is sent to AI unless you turn on AI Assist.';
+  });
 
   /* ── Quick Actions ── */
   quickActions.addEventListener('click', function(e) {
@@ -1786,7 +1798,9 @@
     messagesEl.innerHTML = '';
     chatHistory = [];
     addMessage('ai', buildDocumentOverview(context.length >= 18000));
-    chatFooter.textContent = 'Chat cleared. Ask a new question or search the document.';
+    chatFooter.textContent = aiAssistConsent.checked
+      ? 'Chat cleared. AI Assist remains on for new questions.'
+      : 'Chat cleared. Local mode remains on for new questions.';
   });
 
   /* ── FAQs ── */
@@ -1812,18 +1826,6 @@
 })();
 </script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="PDF Chat" tool-slug="pdf-chat"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>

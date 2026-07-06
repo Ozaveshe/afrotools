@@ -63,7 +63,25 @@ body{font-family:'DM Sans',sans-serif;background:#fff;color:#0f1419;line-height:
 .badge-free{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7}
 .hero h1{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;margin:0 0 10px;line-height:1.1;color:#fff}
 .hero h1 em{color:#fbbf24;font-style:normal}
+.hero-title-line{display:block}
 .hero-sub{font-size:.93rem;color:rgba(255,255,255,.85);max-width:520px;margin:0}
+body.top-level-page-ui-refresh.boarding-school-page .hero{background:linear-gradient(135deg,#1a1000 0%,#1e293b 40%,#1e3a5f 100%) !important;color:#fff !important}
+body.top-level-page-ui-refresh.boarding-school-page .hero::before,
+body.top-level-page-ui-refresh.boarding-school-page .hero::after{display:none !important}
+body.top-level-page-ui-refresh.boarding-school-page .container{max-width:860px !important}
+body.top-level-page-ui-refresh.boarding-school-page .hero,
+body.top-level-page-ui-refresh.boarding-school-page .hero .container,
+body.top-level-page-ui-refresh.boarding-school-page .bc,
+body.top-level-page-ui-refresh.boarding-school-page .badges,
+body.top-level-page-ui-refresh.boarding-school-page .hero h1,
+body.top-level-page-ui-refresh.boarding-school-page .hero-sub{text-align:left !important}
+body.top-level-page-ui-refresh.boarding-school-page .badges{justify-content:flex-start !important}
+body.top-level-page-ui-refresh.boarding-school-page .hero h1{color:#fff !important;margin-left:0 !important;margin-right:0 !important}
+body.top-level-page-ui-refresh.boarding-school-page .hero h1 em{color:#fbbf24 !important}
+body.top-level-page-ui-refresh.boarding-school-page .hero-title-line{display:block !important}
+body.top-level-page-ui-refresh.boarding-school-page .hero-sub{color:rgba(255,255,255,.86) !important;margin-left:0 !important;margin-right:0 !important}
+body.top-level-page-ui-refresh.boarding-school-page .bc,
+body.top-level-page-ui-refresh.boarding-school-page .bc a{color:rgba(255,255,255,.72) !important}
 .card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .card h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem;color:#111}
 label{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem;color:#374151}
@@ -75,9 +93,9 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .result-box{display:none;margin-top:1rem}
 .result-box.show{display:block}
 .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.75rem;margin-bottom:1rem}
-.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:center}
+.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:left;display:grid;align-content:start;gap:.18rem;min-width:0}
 .rs .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:.2rem}
-.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary)}
+.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary);line-height:1.15;overflow-wrap:anywhere}
 .rs .sub{font-size:.75rem;color:#6b7280;margin-top:.1rem}
 .breakdown{background:#f8faff;border:1.5px solid #dbeafe;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
 .breakdown h3{font-size:.9rem;font-weight:700;color:#1e40af;margin:0 0 .75rem}
@@ -85,6 +103,16 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .br-row:last-child{border-bottom:none;font-weight:800;font-size:.95rem;color:#111;padding-top:.5rem}
 .compare{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:12px;padding:1.25rem}
 .compare h3{font-size:.9rem;font-weight:700;color:#374151;margin:0 0 .75rem}
+.comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;font-size:.85rem}
+.comparison-option{min-width:0}
+.comparison-option-title{font-weight:700;color:#111;margin-bottom:.3rem}
+.comparison-option-line{color:#374151;overflow-wrap:anywhere}
+.comparison-option-note{font-size:.78rem;color:#6b7280;margin-top:.3rem;line-height:1.45}
+.result-note{margin:1rem 0 0;padding:1rem;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;color:#78350f;font-size:.82rem;line-height:1.65}
+.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+.secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem 1rem;border:1.5px solid #bfdbfe;border-radius:10px;background:#fff;color:#1d4ed8;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
+.secondary-btn:hover,.secondary-btn:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
+.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
 .faq{margin-top:2rem}
 .faq h2{font-size:1.2rem;font-weight:800;color:#111;margin-bottom:1rem}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
@@ -94,13 +122,12 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:.88rem;color:#555;padding:0 1.25rem;line-height:1.7}
 .faq-item.open .faq-a{max-height:300px;padding:.75rem 1.25rem 1rem}
 .sec-body{padding:40px 0}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
+@media(max-width:600px){.row{grid-template-columns:1fr}.comparison-grid{grid-template-columns:1fr}.result-actions .secondary-btn{width:100%}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/boarding-school.webp">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/boarding-school/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-internat/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/boarding-school/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -111,7 +138,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "How should I use Boarding School Cost Calculator Africa 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Choose a country, school type, terms per year, and duration to estimate tuition, boarding, meals, uniforms, extras, and the extra cost over day school. Treat the output as a family planning estimate before requesting the school's latest fee circular."
       }
     },
     {
@@ -119,7 +146,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "What should I verify before acting on Boarding School Cost Calculator Africa 2026?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying."
+        "text": "Confirm the latest school fee circular, boarding rules, meal plan, uniform list, transport costs, PTA or development levies, refund rules, payment deadlines, and safety requirements directly with the school."
       }
     },
     {
@@ -127,7 +154,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       "name": "Is Boarding School Cost Calculator Africa 2026 an official result?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
+        "text": "No. It is a planning estimate, not an official school quote, admission decision, invoice, legal advice, or guaranteed final cost."
       }
     }
   ],
@@ -136,8 +163,76 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style id="boarding-school-refresh-alignment">
+body.top-level-page-ui-refresh.boarding-school-page .hero{
+  display:block!important;
+  min-height:auto!important;
+  padding:44px 0 40px!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.boarding-school-page .hero .container,
+body.top-level-page-ui-refresh.boarding-school-page .sec-body>.container{
+  width:min(100% - 32px,860px)!important;
+  max-width:860px!important;
+  margin-inline:auto!important;
+  padding-inline:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.boarding-school-page .bc{
+  display:block!important;
+  margin:0 0 14px!important;
+  min-block-size:0!important;
+  padding:0!important;
+  line-height:1.35!important;
+}
+body.top-level-page-ui-refresh.boarding-school-page .bc a{
+  display:inline!important;
+  min-block-size:0!important;
+}
+body.top-level-page-ui-refresh.boarding-school-page .badges{
+  align-items:center!important;
+  justify-content:flex-start!important;
+  margin:0 0 16px!important;
+}
+body.top-level-page-ui-refresh.boarding-school-page .badge{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-block-size:0!important;
+}
+body.top-level-page-ui-refresh.boarding-school-page .hero h1{
+  display:block!important;
+  max-width:17ch!important;
+  margin:0 0 12px!important;
+  color:#fff!important;
+  font-size:clamp(1.9rem,4vw,2.45rem)!important;
+  line-height:1.05!important;
+  letter-spacing:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.boarding-school-page .hero-title-line{
+  display:block!important;
+  margin:0!important;
+  text-align:left!important;
+}
+body.top-level-page-ui-refresh.boarding-school-page .hero-sub{
+  max-width:58ch!important;
+  margin:0!important;
+  color:rgba(255,255,255,.88)!important;
+  text-align:left!important;
+  line-height:1.6!important;
+}
+@media(max-width:600px){
+  body.top-level-page-ui-refresh.boarding-school-page .hero{
+    padding:34px 0 32px!important;
+  }
+  body.top-level-page-ui-refresh.boarding-school-page .hero .container,
+  body.top-level-page-ui-refresh.boarding-school-page .sec-body>.container{
+    width:min(100% - 24px,860px)!important;
+  }
+}
+</style>
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh boarding-school-page">
 <afro-navbar theme="dark" active="education"></afro-navbar>
 <div class="hero">
   <div class="container">
@@ -146,7 +241,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
       <span class="badge badge-multi">Multi-Country</span>
       <span class="badge badge-free">Free Tool</span>
     </div>
-    <h1>Boarding School <em>Cost Calculator</em></h1>
+    <h1 aria-label="Boarding School Cost Calculator"><span class="hero-title-line">Boarding School</span> <em class="hero-title-line">Cost Calculator</em></h1>
     <p class="hero-sub">Estimate the total cost of boarding school in Africa. See a full breakdown of tuition, boarding, meals, uniforms and extras — and compare vs day school.</p>
   </div>
 </div>
@@ -197,33 +292,16 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
     <div class="result-grid" id="bs-grid"></div>
     <div class="breakdown" id="bs-breakdown"></div>
     <div class="compare" id="bs-compare"></div>
+    <div class="result-note" id="bs-note"></div>
+    <div class="result-actions" aria-label="Boarding school result actions">
+      <button type="button" class="secondary-btn" onclick="copyBoardingReport()">Copy family report</button>
+      <button type="button" class="secondary-btn" onclick="downloadBoardingReport()">Download TXT</button>
+      <button type="button" class="secondary-btn" onclick="saveBoardingReport()">Save in browser</button>
+    </div>
+    <div class="action-status" id="bs-action-status" aria-live="polite"></div>
   </div>
 </div>
 
-<section class="df-upgrade" data-df-upgrade="boarding-school">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>Boarding School Cost Calculator Africa 2026 decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for boarding school cost calculator africa 2026 so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Boarding School Cost Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: disclaimer, sources, saveExport, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="boarding-school">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="boarding-school" data-df-base="Boarding School Cost Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">Boarding School Cost Calculator Africa 2026: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="boarding-school">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="boarding-school-faq-title">
-  <h2 id="boarding-school-faq-title">Boarding School Cost Calculator Africa 2026 FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 <div class="faq">
   <h2>Boarding School FAQs</h2>
   <div class="faq-item"><div class="faq-q">How much does Federal Government College (FGC) cost in Nigeria?</div><div class="faq-a">Federal Government Colleges in Nigeria are relatively affordable, typically charging ₦30,000–₦80,000 per term for tuition and boarding combined. Additional costs for uniforms, bedding, provisions and school items add ₦50,000–₦150,000 per term, bringing the total to around ₦100,000–₦250,000 per term.</div></div>
@@ -246,6 +324,9 @@ var BOARDING_DATA={
   tanzania:{govt:{tuition_term:100000,boarding_term:80000,meals_term:60000,uniform_once:150000,extras_term:50000,day_annual:250000,currency:'TZS'},mission:{tuition_term:250000,boarding_term:150000,meals_term:100000,uniform_once:250000,extras_term:100000,day_annual:700000,currency:'TZS'},private:{tuition_term:700000,boarding_term:350000,meals_term:250000,uniform_once:500000,extras_term:250000,day_annual:2000000,currency:'TZS'},intl:{tuition_term:2000000,boarding_term:800000,meals_term:500000,uniform_once:1000000,extras_term:500000,day_annual:6000000,currency:'TZS'}},
   uganda:{govt:{tuition_term:250000,boarding_term:200000,meals_term:150000,uniform_once:300000,extras_term:150000,day_annual:600000,currency:'UGX'},mission:{tuition_term:500000,boarding_term:350000,meals_term:250000,uniform_once:500000,extras_term:200000,day_annual:1500000,currency:'UGX'},private:{tuition_term:1500000,boarding_term:800000,meals_term:600000,uniform_once:1000000,extras_term:500000,day_annual:4000000,currency:'UGX'},intl:{tuition_term:4000000,boarding_term:1500000,meals_term:1000000,uniform_once:2000000,extras_term:800000,day_annual:12000000,currency:'UGX'}}
 };
+var COUNTRY_LABELS={nigeria:'Nigeria',kenya:'Kenya',southafrica:'South Africa',ghana:'Ghana',tanzania:'Tanzania',uganda:'Uganda'};
+var SCHOOL_TYPE_LABELS={govt:'Government/Federal Boarding',mission:'Mission/Church School',private:'Private Boarding School',intl:'International School'};
+var currentBoardingPlan=null;
 function fmt(n,c){return c+Math.round(n).toLocaleString();}
 function prefillBoarding(){}
 function calcBoarding(){
@@ -259,11 +340,30 @@ function calcBoarding(){
   var annualFees=termlyFees*terms+d.uniform_once/years;
   var totalAll=(termlyFees*terms*years)+d.uniform_once;
   var daySchoolTotal=d.day_annual*years;
+  var boardingExtra=totalAll-daySchoolTotal;
+  currentBoardingPlan={
+    country:COUNTRY_LABELS[country]||country,
+    type:SCHOOL_TYPE_LABELS[type]||type,
+    terms:terms,
+    years:years,
+    currency:c,
+    tuition:d.tuition_term*terms,
+    boarding:d.boarding_term*terms,
+    meals:d.meals_term*terms,
+    extras:d.extras_term*terms,
+    uniformShare:d.uniform_once/years,
+    termly:termlyFees,
+    annual:annualFees,
+    total:totalAll,
+    dayAnnual:d.day_annual,
+    dayTotal:daySchoolTotal,
+    boardingExtra:boardingExtra
+  };
   document.getElementById('bs-grid').innerHTML=
     '<div class="rs"><div class="lbl">Per Term Cost</div><div class="val">'+fmt(termlyFees,c)+'</div><div class="sub">All-in termly cost</div></div>'+
     '<div class="rs"><div class="lbl">Annual Total</div><div class="val">'+fmt(annualFees,c)+'</div><div class="sub">Including uniform share</div></div>'+
     '<div class="rs"><div class="lbl">Total ('+years+' years)</div><div class="val">'+fmt(totalAll,c)+'</div><div class="sub">Full secondary cost</div></div>'+
-    '<div class="rs"><div class="lbl">vs Day School</div><div class="val">+'+fmt(totalAll-daySchoolTotal,c)+'</div><div class="sub">Extra vs day school</div></div>';
+    '<div class="rs"><div class="lbl">vs Day School</div><div class="val">+'+fmt(boardingExtra,c)+'</div><div class="sub">Extra vs day school</div></div>';
   document.getElementById('bs-breakdown').innerHTML='<h3>Annual Cost Breakdown</h3>'+
     '<div class="br-row"><span>Tuition ('+terms+' terms)</span><span>'+fmt(d.tuition_term*terms,c)+'</span></div>'+
     '<div class="br-row"><span>Boarding/Accommodation ('+terms+' terms)</span><span>'+fmt(d.boarding_term*terms,c)+'</span></div>'+
@@ -272,14 +372,90 @@ function calcBoarding(){
     '<div class="br-row"><span>Uniform & Equipment (annual share)</span><span>'+fmt(d.uniform_once/years,c)+'</span></div>'+
     '<div class="br-row"><span>Total Annual Cost</span><span>'+fmt(annualFees,c)+'</span></div>';
   document.getElementById('bs-compare').innerHTML='<h3>Boarding vs Day School Comparison</h3>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:.85rem">'+
-    '<div><div style="font-weight:700;color:#111;margin-bottom:.3rem">Boarding School</div><div style="color:#374151">Annual: '+fmt(annualFees,c)+'</div><div style="color:#374151">Total ('+years+'yr): '+fmt(totalAll,c)+'</div><div style="font-size:.78rem;color:#6b7280;margin-top:.3rem">Includes: structured study, accommodation, meals</div></div>'+
-    '<div><div style="font-weight:700;color:#111;margin-bottom:.3rem">Day School</div><div style="color:#374151">Annual: '+fmt(d.day_annual,c)+'</div><div style="color:#374151">Total ('+years+'yr): '+fmt(daySchoolTotal,c)+'</div><div style="font-size:.78rem;color:#6b7280;margin-top:.3rem">Excludes: transport, daily meals, study supervision</div></div>'+
+    '<div class="comparison-grid">'+
+    '<div class="comparison-option"><div class="comparison-option-title">Boarding School</div><div class="comparison-option-line">Annual: '+fmt(annualFees,c)+'</div><div class="comparison-option-line">Total ('+years+'yr): '+fmt(totalAll,c)+'</div><div class="comparison-option-note">Includes: structured study, accommodation, meals</div></div>'+
+    '<div class="comparison-option"><div class="comparison-option-title">Day School</div><div class="comparison-option-line">Annual: '+fmt(d.day_annual,c)+'</div><div class="comparison-option-line">Total ('+years+'yr): '+fmt(daySchoolTotal,c)+'</div><div class="comparison-option-note">Excludes: transport, daily meals, study supervision</div></div>'+
     '</div>';
+  document.getElementById('bs-note').innerHTML='<strong>Planning estimate only.</strong> These ranges are built from country and school-type assumptions, not a live school quote. Before paying, confirm the latest tuition, boarding fee, meals, uniforms, levies, transport, payment deadlines, refund rules, and safety requirements directly with the school.';
+  setBoardingStatus('');
   document.getElementById('bs-result').classList.add('show');
+}
+function buildBoardingReport(){
+  if(!currentBoardingPlan){calcBoarding();}
+  var p=currentBoardingPlan;
+  return [
+    'Boarding school cost estimate - AfroTools',
+    'Country: '+p.country,
+    'School type: '+p.type,
+    'Terms per year: '+p.terms,
+    'Duration: '+p.years+' year(s)',
+    '',
+    'Estimated costs',
+    '- Per term: '+fmt(p.termly,p.currency),
+    '- Annual total: '+fmt(p.annual,p.currency),
+    '- Full duration total: '+fmt(p.total,p.currency),
+    '- Day school comparison total: '+fmt(p.dayTotal,p.currency),
+    '- Extra boarding cost over day school: '+fmt(p.boardingExtra,p.currency),
+    '',
+    'Annual breakdown',
+    '- Tuition: '+fmt(p.tuition,p.currency),
+    '- Boarding/accommodation: '+fmt(p.boarding,p.currency),
+    '- Meals/catering: '+fmt(p.meals,p.currency),
+    '- Extras/levies: '+fmt(p.extras,p.currency),
+    '- Uniform/equipment annual share: '+fmt(p.uniformShare,p.currency),
+    '',
+    'Before paying, verify the current school fee circular, boarding rules, meal plan, uniform list, transport, PTA levies, refund rules, payment deadline, and safety requirements. This is a planning estimate, not an official quote.'
+  ].join('\n');
+}
+function setBoardingStatus(message){
+  var el=document.getElementById('bs-action-status');
+  if(el){el.textContent=message||'';}
+}
+function copyBoardingReport(){
+  var text=buildBoardingReport();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){setBoardingStatus('Family report copied.');}).catch(function(){fallbackBoardingCopy(text);});
+  }else{
+    fallbackBoardingCopy(text);
+  }
+}
+function fallbackBoardingCopy(text){
+  var field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.position='fixed';
+  field.style.left='-9999px';
+  document.body.appendChild(field);
+  field.select();
+  try{document.execCommand('copy');setBoardingStatus('Family report copied.');}
+  catch(e){window.prompt('Copy family report',text);setBoardingStatus('Copy prompt opened.');}
+  document.body.removeChild(field);
+}
+function slugify(value){return String(value||'boarding-school-cost').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'boarding-school-cost';}
+function downloadBoardingReport(){
+  var text=buildBoardingReport();
+  var filename=slugify(currentBoardingPlan.country+' '+currentBoardingPlan.type)+'-boarding-cost.txt';
+  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  setBoardingStatus('TXT family report downloaded.');
+}
+function saveBoardingReport(){
+  buildBoardingReport();
+  try{
+    localStorage.setItem('afrotools-boarding-school-cost',JSON.stringify({savedAt:Date.now(),plan:currentBoardingPlan,report:buildBoardingReport()}));
+    setBoardingStatus('Estimate saved in this browser.');
+  }catch(e){
+    setBoardingStatus('Browser storage is unavailable. Download the TXT report instead.');
+  }
 }
 document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){this.parentElement.classList.toggle('open');});});
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>

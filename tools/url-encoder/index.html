@@ -44,7 +44,7 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"URL Encoder","item":"https://afrotools.com/tools/url-encoder/"}]}</script>
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
 <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 <style>
@@ -65,7 +65,7 @@
   .hero{background:#101828;color:#fff;padding:44px 0 38px}
   .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
   .crumb{font-size:13px;color:#c5d0df;margin-bottom:16px}
-  .crumb a{color:#dce6f3;text-decoration:none}
+  .crumb a{display:inline-flex;align-items:center;min-height:36px;color:#dce6f3;text-decoration:none}
   .hero h1{font-size:42px;line-height:1.08;margin:0 0 14px;font-weight:800;color:#fff;max-width:860px}
   .lead{font-size:18px;line-height:1.55;color:#d5deea;max-width:850px;margin:0 0 22px}
   .chips{display:flex;flex-wrap:wrap;gap:10px}
@@ -79,12 +79,13 @@
   .panel-sub{font-size:13px;color:var(--muted);margin-top:4px}
   .panel-body{padding:18px}
   label{display:grid;gap:6px;font-size:13px;font-weight:800;color:#344054}
-  textarea,input,select{width:100%;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
+  textarea,input,select{width:100%;min-height:44px;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
   textarea:focus,input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,102,216,.13)}
   textarea{min-height:150px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.5}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  button{border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
+  button{min-height:44px;border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
   button:hover{border-color:var(--blue);color:var(--blue)}
+  button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgba(11,102,216,.28);outline-offset:3px}
   .primary{background:var(--blue);border-color:var(--blue);color:#fff}
   .primary:hover{background:#0755b7;color:#fff}
   .danger{background:#fef3f2;border-color:#fecdca;color:#b42318}
@@ -113,7 +114,7 @@
   .tab-panel.active{display:block}
   .source-list{display:grid;gap:10px}
   .source-row{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid #e4eaf2;border-radius:8px;padding:11px;background:#fbfdff}
-  .source-row a{color:#0b66d8;font-weight:800}
+  .source-row a{display:inline-flex;align-items:center;min-height:36px;color:#0b66d8;font-weight:800}
   .source-row span{font-size:12px;color:var(--muted)}
   .source-row div span{display:block;margin-top:4px}
   .source-row > span{white-space:nowrap}
@@ -122,7 +123,7 @@
   .history-list button{text-align:left;font-family:var(--mono);font-size:12px;line-height:1.45;white-space:normal}
   .faq{width:min(900px,calc(100% - 32px));margin:18px auto 0;display:grid;gap:8px}
   details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
-  summary{font-weight:800;cursor:pointer}
+  summary{min-height:44px;display:flex;align-items:center;font-weight:800;cursor:pointer}
   details p{color:var(--muted);line-height:1.6;margin:10px 0 0}
   @media(max-width:960px){
     .grid{grid-template-columns:1fr}
@@ -255,6 +256,10 @@
               <div class="light-output" id="rfcOut"></div>
             </div>
             <div>
+              <strong>Form/query value</strong>
+              <div class="light-output" id="formOut"></div>
+            </div>
+            <div>
               <strong>decodeURIComponent</strong>
               <div class="light-output" id="decodeOut"></div>
             </div>
@@ -381,7 +386,7 @@
           </div>
         </div>
         <div class="panel-body source-list">
-          <div class="source-row"><div><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="noopener">MDN encodeURIComponent</a><span>Component encoding, UTF-8 escape sequences and reserved character differences.</span></div><span>MDN</span></div>
+          <div class="source-row"><div><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="noopener">MDN encodeURIComponent</a><span>Component encoding, UTF-8 escape sequences, form spaces and reserved character differences.</span></div><span>MDN</span></div>
           <div class="source-row"><div><a href="https://developer.mozilla.org/en-US/docs/Web/API/URL" target="_blank" rel="noopener">MDN URL API</a><span>Browser URL parsing and component access.</span></div><span>MDN</span></div>
           <div class="source-row"><div><a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams" target="_blank" rel="noopener">MDN URLSearchParams</a><span>Query parameter append, set, delete, getAll and sort behavior.</span></div><span>MDN</span></div>
           <div class="source-row"><div><a href="https://url.spec.whatwg.org/" target="_blank" rel="noopener">WHATWG URL Standard</a><span>Modern browser URL parser, percent-encoding sets and UTF-8 behavior.</span></div><span>WHATWG</span></div>
@@ -467,7 +472,20 @@
     });
   }
   function copyText(text, button){
-    navigator.clipboard.writeText(text || '').then(function(){
+    var write = navigator.clipboard && navigator.clipboard.writeText
+      ? navigator.clipboard.writeText(text || '')
+      : Promise.reject(new Error('Clipboard API unavailable'));
+    write.catch(function(){
+      var area = document.createElement('textarea');
+      area.value = text || '';
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
+    }).then(function(){
       if (!button) return;
       var original = button.textContent;
       button.textContent = 'Copied';
@@ -582,6 +600,7 @@
     if (/\s/.test(raw)) messages.push(['warn','Raw whitespace found. Browsers may normalize it, but APIs and signatures often require explicit encoding.']);
     if (url.username || url.password) messages.push(['bad','URL contains username or password. Avoid sharing credentials in URLs.']);
     if (url.protocol === 'http:') messages.push(['warn','HTTP URL. Avoid sending sensitive query values without HTTPS.']);
+    if (!/^https?:$/.test(url.protocol)) messages.push(['warn','Non-HTTP URL scheme. Browser parsing is useful, but fetch/cURL snippets may not match the target runtime.']);
     if (url.hash) messages.push(['good','Fragment is present. Browsers do not send fragments to servers in normal HTTP requests.']);
     if (url.href.length > 2000) messages.push(['warn','URL is longer than 2000 characters. Some systems, logs and older clients may truncate long URLs.']);
     if (/\/\.\.?(\/|$)/.test(url.pathname)) messages.push(['warn','Path contains dot segments. Normalize carefully before signing or routing.']);
@@ -677,6 +696,7 @@
     set('encodeUriOut', function(){ return encodeURI(value); });
     set('encodeComponentOut', function(){ return encodeURIComponent(value); });
     set('rfcOut', function(){ return fixedEncodeURIComponent(value); });
+    set('formOut', function(){ return encodeURIComponent(value).replace(/%20/g, '+'); });
     set('decodeOut', function(){ return decodeURIComponent(value.replace(/\+/g, ' ')); });
   }
   function saveHistory(){

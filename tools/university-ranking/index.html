@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
 <link rel="stylesheet" href="/tools/university-ranking/university-ranking.css?v=80297880">
 <link rel="stylesheet" href="/tools/university-ranking/university-ranking-release-qa.css?v=0364a3be">
-<script src="/assets/js/components/related-tools-data.min.js?v=ce92c67d" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=694cb0fe" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=8febee3d" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=ab646560" defer></script>
 <script src="/tools/university-ranking/university-ranking.js?v=714442b5" defer></script>
@@ -84,7 +84,6 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/classement-universites/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/orodha-vyuo-vikuu/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/university-ranking/" />
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -95,7 +94,7 @@
       "name": "How should I use African University Rankings?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Check requirements, dates, documents, workload, and readiness before applying or registering. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
+        "text": "Use the table filters to save a realistic university shortlist, compare fee and scholarship signals, export an applications pack, then verify programme requirements on official institution pages before applying."
       }
     },
     {
@@ -120,6 +119,20 @@
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<style>
+.ur-export-panel{margin-top:18px;padding:18px;border:1px solid var(--ur-border);border-radius:20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%)}
+.ur-export-panel h3{margin:0 0 8px;font-size:1rem;line-height:1.24;font-weight:800;color:var(--ur-ink)}
+.ur-export-panel p{margin:0;color:var(--ur-muted);font-size:.82rem;line-height:1.6}
+.ur-export-checks{display:grid;gap:8px;margin-top:14px}
+.ur-export-check{display:flex;gap:9px;align-items:flex-start;padding:10px 12px;border:1px solid var(--ur-border);border-radius:14px;background:#fff;color:var(--ur-muted);font-size:.78rem;line-height:1.5}
+.ur-export-check strong{color:var(--ur-primary-strong)}
+.ur-export-check::before{content:"";width:8px;height:8px;margin-top:6px;border-radius:999px;background:var(--ur-accent);flex:0 0 8px}
+.ur-export-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.ur-export-actions button:disabled{opacity:.52;cursor:not-allowed}
+.ur-export-status{margin-top:10px!important;color:var(--ur-primary-strong)!important;font-weight:700}
+.ur-mvp-status{min-height:20px;margin:10px 0 0;color:var(--ur-primary-strong);font-size:.8rem;font-weight:800;line-height:1.5}
+@media(max-width:640px){.ur-export-panel{padding:16px}.ur-export-actions button,.ur-toolbar-actions .ur-clear-button,.ur-toolbar-actions .ur-pill-button{width:100%}.ur-toolbar-actions{width:100%}}
+</style>
 </head>
 <body class="top-level-page-ui-refresh ur-body">
 <afro-navbar></afro-navbar>
@@ -248,11 +261,14 @@
         <div class="ur-toolbar-meta">
           <p class="ur-heuristic-note">Heuristic fit is based on affordability posture, saved fields, saved destinations, scholarship flags, and relative ranking strength. It is a planning aid, not an admission probability model.</p>
           <div class="ur-toolbar-actions">
+            <button class="ur-pill-button" id="loadSampleShortlistBtn" type="button">Load sample shortlist</button>
+            <button class="ur-clear-button" id="clearShortlistBtn" type="button">Clear this shortlist</button>
             <button class="ur-pill-button" id="shortlistToggle" type="button">Shortlist mode</button>
             <button class="ur-clear-button" id="clearFiltersBtn" type="button">Clear filters</button>
             <span class="ur-count-badge" id="countBadge">0 schools in view</span>
           </div>
         </div>
+        <p class="ur-mvp-status" id="shortlistActionStatus" role="status" aria-live="polite">Tip: load a sample shortlist to see the compare rail and application pack working.</p>
 
         <div class="ur-table-wrap">
           <table class="ur-table" id="uniTable">
@@ -282,6 +298,18 @@
         <div class="ur-rail-metrics" id="shortlistMetrics"></div>
         <p class="ur-compare-note" id="shortlistNote">Saved schools are where the page becomes a decision product, not just a directory.</p>
         <div class="ur-shortlist-grid" id="shortlistGrid"></div>
+        <div class="ur-export-panel" aria-labelledby="urExportTitle">
+          <div class="ur-section-label">Application pack</div>
+          <h3 id="urExportTitle">Turn saved schools into next steps</h3>
+          <p id="urExportSummary">Save at least one university to build a portable applications pack.</p>
+          <div class="ur-export-checks" id="urExportChecks"></div>
+          <div class="ur-export-actions">
+            <button class="ur-pill-button" id="urCopyPack" type="button" disabled>Copy pack</button>
+            <button class="ur-clear-button" id="urDownloadPack" type="button" disabled>Download TXT</button>
+            <button class="ur-clear-button" id="urSavePack" type="button" disabled>Save locally</button>
+          </div>
+          <p class="ur-export-status" id="urExportStatus" role="status" aria-live="polite">No shortlist pack yet.</p>
+        </div>
       </aside>
     </section>
 
@@ -323,30 +351,6 @@
     </section>
   </div>
 
-<section class="df-upgrade" data-df-upgrade="university-ranking">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Education planning workflow</span>
-      <h2>African University Rankings decision workspace</h2>
-      <p>Check requirements, dates, documents, workload, and readiness before applying or registering. This panel is tuned for african university rankings so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: African University Rankings: education readiness summary ready with deadline, documents, level, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, browserOk.</li><li>Source note: school, scholarship, admissions, and education-authority references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying. Source/reference: school, scholarship, admissions, and education-authority references.</p>
-    </div>
-    <form class="df-form" data-df-form="university-ranking">
-      <label>Days until deadline<input name="deadlineDays" type="number" value="30" min="0" step="any" aria-label="Days until deadline"></label>
-      <label>Documents ready<input name="documents" type="number" value="5" min="0" step="any" aria-label="Documents ready"></label>
-      <label>Level<select name="level" aria-label="Level"><option value="school">school</option><option value="undergraduate">undergraduate</option><option value="graduate">graduate</option><option value="professional">professional</option></select></label>
-      <label>Status<select name="status" aria-label="Status"><option value="planning">planning</option><option value="applying">applying</option><option value="submitted">submitted</option><option value="reviewing">reviewing</option></select></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="university-ranking" data-df-base="African University Rankings: education readiness summary ready with deadline, documents, level, and next-step notes." aria-live="polite">African University Rankings: education readiness summary ready with deadline, documents, level, and next-step notes.</output>
-      <div class="df-actions"><button type="button" data-df-copy="university-ranking">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="university-ranking-faq-title">
-  <h2 id="university-ranking-faq-title">African University Rankings FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Check requirements, dates, documents, workload, and readiness before applying or registering. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Education guidance only. Confirm official requirements, deadlines, fees, accreditation, and adviser guidance before applying.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
-</section>
 </main>
 
 <afro-related-tools category="education" current="university-ranking"></afro-related-tools>
@@ -408,7 +412,286 @@
 {rank:49,name:'Lagos Business School (Pan-Atlantic)',country:'Nigeria',flag:'🇳🇬',type:'Private',students:1500,founded:1991,fees:4000,feesLabel:'~USD 3,000–8,000 (MBA)',scholarship:true,strengths:['Business']},
 {rank:50,name:'African Leadership University',country:'Rwanda',flag:'🇷🇼',type:'Private',students:3000,founded:2015,fees:5000,feesLabel:'~USD 4,000–7,000',scholarship:true,strengths:['Business','Technology','Arts']}
 ];</script>
+<script>
+(function(){
+  'use strict';
+  var STORAGE_KEY = 'afrotools_university_shortlist_pack';
+  var lastPack = '';
+
+  function byId(id){return document.getElementById(id);}
+  function clean(value){
+    return String(value == null ? '' : value)
+      .replace(/â€“|â€”/g, '-')
+      .replace(/[\u2013\u2014]/g, '-')
+      .replace(/â€™/g, "'")
+      .replace(/Â·/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  function esc(value){
+    return clean(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  function uniqueSchools(items){
+    var seen = {};
+    return (items || []).filter(function(item){
+      var key = clean((item && item.name) + '|' + (item && item.country)).toLowerCase();
+      if (!item || !item.name || seen[key]) return false;
+      seen[key] = true;
+      return true;
+    });
+  }
+  function getSavedUniversities(){
+    try {
+      if (window.AfroEdu && typeof window.AfroEdu.getCockpitState === 'function') {
+        return uniqueSchools((window.AfroEdu.getCockpitState() || {}).universities || []);
+      }
+    } catch (err) {}
+    return [];
+  }
+  function topLine(school){
+    return clean([
+      school.name,
+      school.country,
+      school.rank ? 'Rank ' + school.rank : '',
+      school.feesLabel || '',
+      school.fitLabel || ''
+    ].filter(Boolean).join(' | '));
+  }
+  function buildPack(schools){
+    var saved = uniqueSchools(schools);
+    var scholarshipCount = saved.filter(function(s){return !!s.scholarship;}).length;
+    var countries = saved.reduce(function(acc, s){
+      var country = clean(s.country);
+      if (country && acc.indexOf(country) === -1) acc.push(country);
+      return acc;
+    }, []);
+    var lines = [
+      'AfroTools University Shortlist Application Pack',
+      'Saved schools: ' + saved.length,
+      'Countries represented: ' + (countries.length ? countries.join(', ') : 'Not set'),
+      'Scholarship flags: ' + scholarshipCount + ' of ' + saved.length,
+      ''
+    ];
+
+    if (!saved.length) {
+      lines.push('Save at least one university from the table before exporting this pack.');
+    } else {
+      lines.push('Shortlist:');
+      saved.forEach(function(s, index){
+        lines.push((index + 1) + '. ' + topLine(s));
+        if (s.fitReasons && s.fitReasons.length) lines.push('   Fit reasons: ' + s.fitReasons.slice(0, 3).map(clean).join('; '));
+        if (s.tradeoffs && s.tradeoffs.length) lines.push('   Watch-outs: ' + s.tradeoffs.slice(0, 2).map(clean).join('; '));
+        if (s.nextTool) lines.push('   Next tool: ' + clean(s.nextTool));
+      });
+      lines.push('');
+      lines.push('Next actions:');
+      lines.push('- Open each official university admissions page and confirm programme-specific entry requirements.');
+      lines.push('- Pressure-test tuition, living costs, payment deadlines, visa costs, and hidden fees before treating a school as affordable.');
+      lines.push('- Pair scholarship-flagged schools with Scholarship Finder and keep cheaper backup routes in the shortlist.');
+      lines.push('- Check degree or credential recognition before using rankings as the final decision signal.');
+      lines.push('- Keep 3 to 5 realistic schools, not just the highest ranked options.');
+    }
+
+    lines.push('');
+    lines.push('Important: this is a planning pack from AfroTools. Rankings, fee bands, scholarship flags, and fit labels are not official admission decisions. Verify current rules, fees, accreditation, deadlines, and documents with each institution.');
+    return lines.join('\n');
+  }
+  function setStatus(message){
+    var el = byId('urExportStatus');
+    if (el) el.textContent = message;
+  }
+  function renderPack(){
+    var schools = getSavedUniversities();
+    var summary = byId('urExportSummary');
+    var checks = byId('urExportChecks');
+    var buttons = ['urCopyPack','urDownloadPack','urSavePack'].map(byId).filter(Boolean);
+    lastPack = buildPack(schools);
+    buttons.forEach(function(button){button.disabled = !schools.length;});
+    if (summary) {
+      summary.textContent = schools.length
+        ? schools.length + ' saved school' + (schools.length === 1 ? '' : 's') + ' ready for an application pack.'
+        : 'Save at least one university to build a portable applications pack.';
+    }
+    if (checks) {
+      var items = schools.length ? [
+        ['Shortlist size', schools.length + ' saved'],
+        ['Countries', schools.map(function(s){return clean(s.country);}).filter(Boolean).slice(0, 3).join(', ') || 'Not set'],
+        ['Funding pressure', schools.filter(function(s){return !!s.scholarship;}).length + ' scholarship flag(s)'],
+        ['Reality check', 'Verify official pages before applying']
+      ] : [
+        ['Start', 'Save a university from the table'],
+        ['Then', 'Return here to copy or download your pack'],
+        ['Verify', 'Use official admissions and funding pages']
+      ];
+      checks.innerHTML = items.map(function(item){
+        return '<div class="ur-export-check"><span><strong>' + esc(item[0]) + ':</strong> ' + esc(item[1]) + '</span></div>';
+      }).join('');
+    }
+    setStatus(schools.length ? 'Pack ready.' : 'No shortlist pack yet.');
+  }
+  function fallbackCopy(text){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try { document.execCommand('copy'); } catch (err) {}
+    document.body.removeChild(textarea);
+  }
+  function copyPack(){
+    if (!lastPack) renderPack();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(lastPack).then(function(){setStatus('Pack copied.');}, function(){fallbackCopy(lastPack);setStatus('Pack copied.');});
+    } else {
+      fallbackCopy(lastPack);
+      setStatus('Pack copied.');
+    }
+  }
+  function downloadPack(){
+    if (!lastPack) renderPack();
+    var blob = new Blob([lastPack], {type:'text/plain;charset=utf-8'});
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'university-shortlist-application-pack.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function(){URL.revokeObjectURL(link.href);}, 500);
+    setStatus('TXT downloaded.');
+  }
+  function savePack(){
+    if (!lastPack) renderPack();
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({savedAt:new Date().toISOString(), text:lastPack}));
+      setStatus('Saved locally.');
+    } catch (err) {
+      setStatus('Could not save locally in this browser.');
+    }
+  }
+  function bind(){
+    renderPack();
+    if (byId('urCopyPack')) byId('urCopyPack').addEventListener('click', copyPack);
+    if (byId('urDownloadPack')) byId('urDownloadPack').addEventListener('click', downloadPack);
+    if (byId('urSavePack')) byId('urSavePack').addEventListener('click', savePack);
+    window.addEventListener('afroedu:cockpit-updated', renderPack);
+    document.addEventListener('click', function(event){
+      if (event.target && event.target.closest && event.target.closest('[data-action="toggle-save"],[data-action="remove-save"]')) {
+        setTimeout(renderPack, 80);
+      }
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script>
+<script>
+(function(){
+  'use strict';
+  var SAMPLE_NAMES = ['University of Cape Town','University of Ghana','University of Nairobi'];
+  var SOURCE = 'university-ranking';
+
+  function byId(id){return document.getElementById(id);}
+  function setStatus(message){
+    var el = byId('shortlistActionStatus');
+    if (el) el.textContent = message;
+  }
+  function slug(value){
+    return String(value || 'school').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'school';
+  }
+  function dataset(){
+    return Array.isArray(window.UNIVERSITIES) ? window.UNIVERSITIES : [];
+  }
+  function sampleSchools(){
+    var byName = {};
+    dataset().forEach(function(school){byName[String(school.name || '').toLowerCase()] = school;});
+    return SAMPLE_NAMES.map(function(name){return byName[name.toLowerCase()];}).filter(Boolean);
+  }
+  function waitForBridge(callback){
+    if (window.AfroEdu && typeof window.AfroEdu.saveUniversity === 'function') {
+      callback();
+      return;
+    }
+    setTimeout(function(){
+      if (window.AfroEdu && typeof window.AfroEdu.saveUniversity === 'function') callback();
+      else setStatus('Shortlist storage is still loading. Try again in a moment.');
+    }, 120);
+  }
+  function saveSampleSchool(school){
+    return window.AfroEdu.saveUniversity({
+      id: slug((school.name || '') + '-' + (school.country || '')),
+      name: school.name,
+      country: school.country,
+      rank: school.rank,
+      fees: school.fees,
+      feesLabel: school.feesLabel,
+      type: school.type,
+      students: school.students,
+      scholarship: !!school.scholarship,
+      strengths: school.strengths || [],
+      href: '/tools/university-ranking/',
+      source: SOURCE,
+      fitLabel: 'Sample shortlist fit',
+      fitReasons: ['Sample route for comparing country, fee, scholarship, and field tradeoffs'],
+      tradeoffs: ['Verify programme-level entry rules on official university pages'],
+      shortlistSignals: ['Sample route', school.scholarship ? 'Scholarship flag' : 'Backup option'],
+      note: 'Loaded from the university shortlist sample workflow'
+    });
+  }
+  function loadSampleShortlist(){
+    waitForBridge(function(){
+      var schools = sampleSchools();
+      if (!schools.length) {
+        setStatus('Sample schools could not be found in this dataset.');
+        return;
+      }
+      schools.forEach(saveSampleSchool);
+      if (window.AfroEdu.recordActivity) {
+        window.AfroEdu.recordActivity(SOURCE, 'Loaded sample university shortlist', {detail: schools.map(function(s){return s.name;}).join(', ')});
+      }
+      setStatus('Loaded a 3-school sample shortlist. The compare rail and application pack are ready.');
+      setTimeout(function(){
+        var rail = document.querySelector('.ur-shortlist-rail');
+        if (rail && typeof rail.scrollIntoView === 'function') rail.scrollIntoView({block:'start', behavior:'smooth'});
+      }, 140);
+    });
+  }
+  function isPageSchool(school){
+    return school && (school.source === SOURCE || String(school.href || '').indexOf('/tools/university-ranking/') !== -1);
+  }
+  function clearShortlist(){
+    waitForBridge(function(){
+      var state = window.AfroEdu.getCockpitState ? window.AfroEdu.getCockpitState() : {};
+      var saved = (state.universities || []).filter(isPageSchool);
+      if (!saved.length) {
+        setStatus('No university-ranking shortlist schools to clear.');
+        return;
+      }
+      saved.forEach(function(school){
+        if (school && school.id) window.AfroEdu.removeUniversity(school.id);
+      });
+      if (window.AfroEdu.recordActivity) {
+        window.AfroEdu.recordActivity(SOURCE, 'Cleared university shortlist', {detail: saved.length + ' school(s) removed'});
+      }
+      setStatus('Cleared this page shortlist. You can load the sample again or save schools from the table.');
+    });
+  }
+  function bind(){
+    var sampleBtn = byId('loadSampleShortlistBtn');
+    var clearBtn = byId('clearShortlistBtn');
+    if (sampleBtn) sampleBtn.addEventListener('click', loadSampleShortlist);
+    if (clearBtn) clearBtn.addEventListener('click', clearShortlist);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 </body>
 </html>
