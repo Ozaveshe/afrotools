@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -22,9 +22,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="style.css?v=83c9b5fa">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+<link rel="stylesheet" href="style.css?v=a76464e1">
 <link rel="stylesheet" href="/assets/css/afroatlas-twemoji.css?v=6d8ec1be">
 <style>
   .aa-brief-section{background:#fff;padding-top:0}
@@ -53,7 +53,8 @@
   @media (max-width:560px){.aa-brief-panel{padding:18px}.aa-brief-grid,.aa-brief-cards{grid-template-columns:1fr}.aa-brief-command-row .aa-btn,.aa-brief-actions .aa-btn{width:100%;justify-content:center}.aa-brief-status{width:100%;text-align:center}}
   .aa-quick-compare{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px auto 20px;max-width:780px}
   .aa-quick-compare a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:0 14px;background:rgba(255,255,255,.06);color:inherit;font-size:.88rem;font-weight:800;text-decoration:none}
-  .aa-quick-compare a:hover,.aa-quick-compare a:focus-visible{border-color:var(--aa-primary,#007aff);color:var(--aa-primary,#007aff);outline:none}
+  .aa-quick-compare a:hover{border-color:var(--aa-blue,#0062CC);color:var(--aa-blue,#0062CC)}
+  .aa-quick-compare a:focus-visible{outline:3px solid rgba(0,98,204,0.55);outline-offset:2px;border-color:var(--aa-blue,#0062CC);color:var(--aa-blue,#0062CC)}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroAtlas — Africa's Resource Intelligence Explorer","description":"Interactive explorer of Africa's natural resources, GDP, trade data, and economic indicators for all 54 countries. Compare any African country with the world.","url":"https://afrotools.com/tools/afroatlas/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afroatlas.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroAtlas — Africa's Resource Intelligence Explorer","url":"https://afrotools.com/tools/afroatlas/","description":"Interactive explorer of Africa's natural resources, GDP, trade data, and economic indicators for all 54 countries. Compare any African country with the world.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afroatlas.webp"}</script>
@@ -62,7 +63,7 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afroatlas.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/african-workflow.css?v=b5a0b1a7">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afroatlas/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/afroatlas/" />
@@ -101,8 +102,8 @@
   "url": "https://afrotools.com/tools/afroatlas/"
 }
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -134,10 +135,10 @@
 
       <div class="aa-search-wrap">
         <div class="aa-search-bar">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          <svg aria-hidden="true" focusable="false" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
           <input aria-label="Search countries, resources, or type 'Nigeria vs Kenya'" type="search" id="aa-search" placeholder="Search countries, resources, or type 'Nigeria vs Kenya'..." autocomplete="off">
         </div>
-        <div class="aa-compare-hint" id="aa-compare-hint"></div>
+        <div class="aa-compare-hint" id="aa-compare-hint" role="status" aria-live="polite"></div>
       </div>
     </div>
   </section>
@@ -208,7 +209,7 @@
         <a href="compare.html?a=AO&amp;b=DZ">Angola vs Algeria</a>
       </div>
       <div style="text-align:center">
-        <button type="button" class="aa-btn aa-btn--primary" id="aa-compare-go">Compare &rarr;</button>
+        <button type="button" class="aa-btn aa-btn--primary" id="aa-compare-go">Compare these countries &rarr;</button>
       </div>
     </div>
   </section>
@@ -220,9 +221,9 @@
         <span class="aa-eyebrow">Rankings</span>
         <h2 class="aa-section-title">Who Has the Most?</h2>
       </div>
-      <div class="aa-resource-tabs" id="aa-res-tabs"></div>
+      <div class="aa-resource-tabs" id="aa-res-tabs" role="group" aria-label="Choose a resource to rank"></div>
       <div class="aa-chart-wrap">
-        <canvas id="aa-rank-chart"></canvas>
+        <canvas id="aa-rank-chart" role="img" aria-label="Bar chart of the top five African countries by share of the selected resource. See full rankings below for the underlying figures."></canvas>
       </div>
       <div style="text-align:center">
         <a href="rankings.html" class="aa-link">See Full Rankings &rarr;</a>
@@ -239,7 +240,7 @@
         <p class="aa-section-sub">The stories the numbers tell</p>
       </div>
     </div>
-    <div class="aa-paradox-track" id="aa-paradoxes"></div>
+    <div class="aa-paradox-track" id="aa-paradoxes" tabindex="0" role="region" aria-label="Resource paradox stories (scroll horizontally)"></div>
   </section>
 
 </div>
@@ -268,7 +269,7 @@
 </section>
 <section class="df-faq" aria-labelledby="afroatlas-faq-title">
   <h2 id="afroatlas-faq-title">AfroAtlas — Africa Resource Explorer FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it as a planning step before you pay, submit, publish, travel, or choose a provider.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it to pressure-test afroatlas numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -281,8 +282,8 @@
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 <script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
 <script src="/assets/js/lib/afroatlas-twemoji.js?v=f792df45"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
@@ -810,7 +811,7 @@
             x: {
               beginAtZero: true,
               grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
-              ticks: { font: { family: 'DM Sans', size: 12 }, color: '#94a3b8' }
+              ticks: { font: { family: 'DM Sans', size: 12 }, color: '#64748b' }
             },
             y: {
               grid: { display: false },
@@ -826,7 +827,7 @@
     } else {
       var chartContainer = chartCanvas ? chartCanvas.parentNode : null;
       if (chartContainer) {
-        chartContainer.innerHTML = '<p class="aa-chart-fallback">Chart library unavailable. <a href="rankings.html">View rankings instead &rarr;</a></p>';
+        chartContainer.innerHTML = '<p class="aa-chart-fallback">Charts could not load. <a href="rankings.html">View rankings instead &rarr;</a></p>';
       }
     }
 

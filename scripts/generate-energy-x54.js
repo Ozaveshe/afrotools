@@ -2,9 +2,25 @@
 "use strict";
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
 const ROOT = path.join(__dirname, "..");
 const SOLAR_ROI_DATASET = require(path.join(ROOT, "data", "energy", "solar-roi-country-dataset.js"));
+
+// Per-country tariff/regulator data (browser global script — evaluate in a VM)
+const ENERGY_INDEX = (() => {
+  const src = fs.readFileSync(path.join(ROOT, "data", "energy", "country-energy-index.js"), "utf8");
+  const ctx = {};
+  vm.createContext(ctx);
+  try {
+    vm.runInContext(src, ctx, { filename: "country-energy-index.js" });
+  } catch (err) {
+    // The file ends with a browser-only live-price fetch(); ENERGY_DATA is
+    // assigned before that line, so a fetch/document error here is expected.
+    if (!ctx.ENERGY_DATA) throw err;
+  }
+  return ctx.ENERGY_DATA || { countries: {} };
+})();
 const SOLAR_ROI_ENGINE = require(path.join(ROOT, "assets", "js", "engines", "solar-roi-engine.js"));
 const FOREX_LATEST = require(path.join(ROOT, "data", "forex", "latest.json"));
 const SOLAR_ROI_ROOT_TITLE = "Solar Panel ROI Calculator for Africa — Payback, Battery & Generator Savings";
@@ -1692,12 +1708,138 @@ ${lazyEnergyAssistantScript()}
 </html>`;
 }
 
+// ─── COUNTRY TARIFF SNAPSHOT (server-rendered so pages carry real, unique data) ──
+function energyCountryRow(country) {
+  return (ENERGY_INDEX.countries && ENERGY_INDEX.countries[country.code]) || null;
+}
+
+function tariffRateLabel(value, unit) {
+  if (value === undefined || value === null || value === "") return "";
+  return `${value} ${unit || ""}`.trim();
+}
+
+function electricityFaqs(country, row) {
+  const t = row.electricityTariff || {};
+  const unit = t.unit || "";
+  const faqs = [];
+  const rates = [];
+  if (t.residential) rates.push(`residential customers pay roughly ${tariffRateLabel(t.residential, unit)}`);
+  if (t.commercial) rates.push(`commercial rates are around ${tariffRateLabel(t.commercial, unit)}`);
+  if (t.industrial) rates.push(`industrial rates are around ${tariffRateLabel(t.industrial, unit)}`);
+  if (rates.length) {
+    faqs.push({
+      question: `How much is electricity per kWh in ${country.name}?`,
+      answer: `As of the AfroTools ${ENERGY_INDEX.lastUpdated || "latest"} dataset, ${rates.join(", ")}.` +
+        (t.vat ? ` VAT of ${t.vat}% may apply.` : "") +
+        (t.notes ? ` ${t.notes}` : "") +
+        ` Always verify against your latest bill or the utility's published tariff.`
+    });
+  }
+  if (row.regulator) {
+    faqs.push({
+      question: `Who sets electricity tariffs in ${country.name}?`,
+      answer: `Electricity prices in ${country.name} are regulated by ${row.regulator}. Tariff reviews can change rates during the year, so treat calculator results as planning estimates.`
+    });
+  }
+  if (row.avgSupplyHours) {
+    faqs.push({
+      question: `How many hours of grid electricity does ${country.name} average per day?`,
+      answer: `Grid supply in ${country.name} averages about ${row.avgSupplyHours} hours per day in the AfroTools dataset` +
+        (row.generatorUsagePct ? `, and roughly ${row.generatorUsagePct}% of businesses rely on generator backup` : "") +
+        `. Supply varies widely by area and season.`
+    });
+  }
+  return faqs;
+}
+
+function electricitySnapshotHTML(country, row) {
+  const t = row.electricityTariff || {};
+  const unit = t.unit || "";
+  const freshness = ENERGY_INDEX.lastUpdated || "";
+  const rows = [];
+  if (t.residential) rows.push(`<tr><td>Residential</td><td>${escapeHtml(tariffRateLabel(t.residential, unit))}</td></tr>`);
+  if (t.commercial) rows.push(`<tr><td>Commercial</td><td>${escapeHtml(tariffRateLabel(t.commercial, unit))}</td></tr>`);
+  if (t.industrial) rows.push(`<tr><td>Industrial</td><td>${escapeHtml(tariffRateLabel(t.industrial, unit))}</td></tr>`);
+  if (t.vat) rows.push(`<tr><td>VAT on electricity</td><td>${escapeHtml(String(t.vat))}%</td></tr>`);
+  if (!rows.length) return "";
+
+  let bandsTable = "";
+  if (Array.isArray(t.bands) && t.bands.length) {
+    const bandRows = t.bands.map(b =>
+      `<tr><td>${escapeHtml(b.name || "")}</td><td>${escapeHtml(b.supply || "")}</td><td>${escapeHtml(tariffRateLabel(b.rate, unit))}${b.notes ? ` <span class="en-muted">(${escapeHtml(b.notes)})</span>` : ""}</td></tr>`
+    ).join("\n");
+    bandsTable = `<h3>Tariff bands</h3>
+<table class="en-results-table"><thead><tr><th>Band</th><th>Supply</th><th>Rate</th></tr></thead><tbody>
+${bandRows}
+</tbody></table>`;
+  }
+
+  const contextBits = [];
+  if (row.regulator) contextBits.push(`Tariffs are regulated by ${escapeHtml(row.regulator)}.`);
+  if (row.avgSupplyHours) contextBits.push(`Average grid supply is about ${escapeHtml(String(row.avgSupplyHours))} hours per day.`);
+  if (t.notes) contextBits.push(escapeHtml(t.notes));
+
+  return `<section class="en-seo" aria-label="${escapeHtml(country.name)} electricity tariff snapshot">
+<h2>${escapeHtml(country.name)} electricity rates at a glance${freshness ? ` (${escapeHtml(freshness)} dataset)` : ""}</h2>
+<table class="en-results-table"><thead><tr><th>Customer type</th><th>Approx. rate</th></tr></thead><tbody>
+${rows.join("\n")}
+</tbody></table>
+${bandsTable}
+<p>${contextBits.join(" ")}</p>
+</section>`;
+}
+
+function faqSectionHTML(faqs) {
+  if (!faqs.length) return "";
+  const items = faqs.map(f =>
+    `<h3>${escapeHtml(f.question)}</h3>\n<p>${escapeHtml(f.answer)}</p>`
+  ).join("\n");
+  return `<section class="en-seo" aria-label="Frequently asked questions">
+<h2>Frequently asked questions</h2>
+${items}
+</section>`;
+}
+
+function faqJsonLd(faqs) {
+  if (!faqs.length) return "";
+  const entities = faqs.map(f => ({
+    "@type": "Question",
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer", text: f.answer }
+  }));
+  return `<script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: entities
+  })}</script>`;
+}
+
+function resultDisclaimerHTML(tool) {
+  if (tool.slug === "electricity-tariff") {
+    return `<p>Use the result as a budgeting estimate, not an official bill. Tariff bands, service charges, and fuel-cost adjustments change during the year — compare the estimate against a recent bill from your utility.</p>`;
+  }
+  if (tool.slug === "prepaid-meter") {
+    return `<p>Use the result as a budgeting estimate, not an official token statement. Service charges, debt recovery, and VAT vary by utility and meter class — compare with your last recharge receipt.</p>`;
+  }
+  return `<p>Use the result as a quote-checking brief, not as a promise that a system will perform exactly this way. If the numbers are close, ask installers to quote the same system size, battery capacity, inverter rating, warranty, and maintenance terms.</p>`;
+}
+
 // ─── HTML TEMPLATE ─────────────────────────────────────────────────────────────
 function makePage(tool, country) {
   if (tool.slug === "solar-roi") return makeSolarRoiCountryPage(tool, country);
-  const title = tool.longTitle.replace(/\{\{COUNTRY_NAME\}\}/g, country.name) + " | AfroTools";
-  const desc = tool.metaDesc.replace(/\{\{COUNTRY_NAME\}\}/g, country.name);
-  const canonical = `https://afrotools.com/tools/${tool.slug}/${country.slug}`;
+  const energyRow = energyCountryRow(country);
+  let title = tool.longTitle.replace(/\{\{COUNTRY_NAME\}\}/g, country.name) + " | AfroTools";
+  let desc = tool.metaDesc.replace(/\{\{COUNTRY_NAME\}\}/g, country.name);
+  if (tool.slug === "electricity-tariff" && energyRow && energyRow.electricityTariff && energyRow.electricityTariff.residential) {
+    const t = energyRow.electricityTariff;
+    title = `${country.name} Electricity Tariffs 2026 — Rates & Bill Calculator | AfroTools`;
+    desc = `${country.name} electricity prices: residential ~${tariffRateLabel(t.residential, t.unit)}` +
+      (t.commercial ? `, commercial ~${tariffRateLabel(t.commercial, t.unit)}` : "") +
+      `. Estimate your monthly bill by customer type and tariff band.`;
+  }
+  const pageFaqs = tool.slug === "electricity-tariff" && energyRow ? electricityFaqs(country, energyRow) : [];
+  const snapshotHTML = tool.slug === "electricity-tariff" && energyRow ? electricitySnapshotHTML(country, energyRow) : "";
+  const canonical = `https://afrotools.com/tools/${tool.slug}/${country.slug}/`;
   const h1 = tool.h1.replace(/\{\{FLAG\}\}/g, country.flag).replace(/\{\{COUNTRY_NAME\}\}/g, country.name);
   const heroSub = tool.heroSub.replace(/\{\{COUNTRY_NAME\}\}/g, country.name);
   const seoBody = tool.seoBody.replace(/\{\{COUNTRY_NAME\}\}/g, country.name);
@@ -1718,6 +1860,7 @@ return `<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"${title}","description":"${desc}","url":"${canonical}","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"${tool.hubTitle}","item":"https://afrotools.com/tools/${tool.slug}/"},{"@type":"ListItem","position":4,"name":"${breadcrumb4}","item":"${canonical}"}]}</script>
+${faqJsonLd(pageFaqs)}
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
@@ -1746,12 +1889,14 @@ ${tool.slug === "solar-roi" ? `<section class="en-notice en-notice-warning solar
 <p>This country page is a quick bill-and-system check. Use the full Solar ROI decision tool to compare grid spend, generator fuel, outage hours, battery backup, financing, and editable tariff, install, battery, maintenance, and quote assumptions.</p>
 <a class="en-btn en-btn-secondary en-btn-sm" href="/tools/solar-roi/">Open the full decision tool</a>
 </section>` : ""}
+${snapshotHTML}
 <section class="en-seo">
 <h2>${seoTitle}</h2>
 <p>${seoBody}</p>
-<p>Use the result as a quote-checking brief, not as a promise that a system will perform exactly this way. If the numbers are close, ask installers to quote the same system size, battery capacity, inverter rating, warranty, and maintenance terms.</p>
+${resultDisclaimerHTML(tool)}
 <p><strong>Disclaimer:</strong> These are planning estimates based on AfroTools dataset assumptions and available market context. Actual tariffs, fuel prices, battery prices, and installation costs may vary. Always verify current utility, regulator, installer, and vendor pricing before buying.</p>
 </section>
+${faqSectionHTML(pageFaqs)}
 ${tool.slug === "solar-roi" ? `<section class="en-seo solar-roi-source-note" aria-label="Sources and freshness">
 <h2>Sources and freshness</h2>
 <p>Default values come from the AfroTools energy country dataset, freshness: <span data-energy-freshness>2026-03</span>. They are editable planning assumptions, not verified installer quotes, not a live tariff integration, and not PVWatts output.</p>

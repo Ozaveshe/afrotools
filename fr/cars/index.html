@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js">
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.da912503.min.js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,9 +22,9 @@
 <meta name="twitter:title" content="Voitures en Afrique francophone | Prix, import et achat local | AfroTools">
 <meta name="twitter:description" content="Point de départ français pour comparer les prix de voitures, les coûts d&amp;#39;importation, les fourchettes locales et les pages utiles avant d&amp;#39;acheter ou d&amp;#39;importer.">
   <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/car-price-intelligence.webp">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-  <link rel="stylesheet" href="/assets/css/cars-directory.css?v=fffc0b31">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+  <link rel="stylesheet" href="/assets/css/cars-directory.css?v=e91b7b3a">
   <style>
     .fr-cars-main{background:#f8fafc;color:#172033}
     .fr-cars-shell{max-width:1180px;margin:0 auto;padding:0 1.25rem}
@@ -123,10 +123,8 @@
   }
 ]
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
 </head>
-<body class="cars-page fr-cars-main top-level-page-ui-refresh">
+<body class="cars-page fr-cars-main">
   <afro-navbar theme="dark" active="transport"></afro-navbar>
   <main>
     <section class="fr-cars-hero">
@@ -838,6 +836,8 @@
     </section>
   </main>
   <afro-footer></afro-footer>
+  <script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 
   <script>
     (function () {
@@ -879,7 +879,12 @@
         local.textContent = fmt(localLow, currency) + ' - ' + fmt(localHigh, currency);
         gap.textContent = (ok ? '+' : '-') + fmt(Math.abs(gapValue), currency);
         risk.textContent = (car.dataset.risk || 'Moyen') + ' / revente ' + (car.dataset.resale || 'a verifier');
-        summary.value = 'Marche: ' + selected(market).text + '\nModele: ' + selected(model).text + '\nCout rendu estime: ' + landed.textContent + '\nFourchette locale: ' + local.textContent + '\nMarge budget: ' + gap.textContent + '\nNote: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
+        summary.value = 'Marche: ' + selected(market).text + '
+Modele: ' + selected(model).text + '
+Cout rendu estime: ' + landed.textContent + '
+Fourchette locale: ' + local.textContent + '
+Marge budget: ' + gap.textContent + '
+Note: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
       }
       form.addEventListener('submit', function(event){ event.preventDefault(); calculate(); });
       ['change','input'].forEach(function(evt){ [market, model, budget, fx, logistics, localFees].forEach(function(el){ el.addEventListener(evt, calculate); }); });
@@ -888,7 +893,5 @@
       calculate();
     })();
   </script>
-  <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
 </body>
 </html>

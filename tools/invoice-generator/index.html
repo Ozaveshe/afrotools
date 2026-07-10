@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
 <head>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
@@ -30,8 +30,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=2f4b8452">
-<link rel="stylesheet" href="/assets/css/invoice-generator.css?v=9cd4cba8">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+<link rel="stylesheet" href="/assets/css/invoice-generator.css?v=f87ce708">
 <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
 <script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
 
@@ -213,8 +213,8 @@
 }
 .btn-primary:disabled,
 .btn-primary[aria-disabled="true"] {
-  background: #94a3b8;
-  border-color: #94a3b8;
+  background: #64748b;
+  border-color: #64748b;
   box-shadow: none;
 }
 .totals {
@@ -375,17 +375,18 @@
 <meta name="twitter:description" content="Create a PDF invoice, receipt, or estimate with African currencies, VAT, discounts, deposits, payment details, and local draft saving.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/invoice-generator.webp">
 <meta property="article:modified_time" content="2026-05-01">
-<script src="/assets/js/components/business-cta.js?v=25d06338" defer></script>
+<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <link rel="stylesheet" href="/assets/css/money-page-commercial.css?v=e5730f07">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/invoice-generator/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-factures/" />
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kirkiro-invoice/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-ankara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-generator/" />
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
 </head>
 <body class="top-level-page-ui-refresh">
+<a class="skip-to-form" href="#invoiceMain">Skip to the invoice form</a>
 <afro-navbar active="ecommerce"></afro-navbar>
 
 <div class="inv-page page-shell">
@@ -455,7 +456,7 @@
 </div>
 </section>
 
-<main class="inv-main" aria-label="Invoice generator form and preview">
+<main class="inv-main" id="invoiceMain" tabindex="-1" aria-label="Invoice generator form and preview">
 <div class="container" style="max-width:1140px;margin:0 auto;padding:0 20px;">
 <div class="inv-grid">
 
@@ -498,7 +499,7 @@
         <label class="f-label" for="logoInput">Business Logo</label>
         <div style="display:flex;gap:12px;align-items:center;">
           <input class="f-input" id="logoInput" type="file" accept="image/*" aria-describedby="logoHelp" style="flex:1;">
-          <div id="logoPreview" style="width:56px;height:56px;border:1.5px dashed #DBEAFE;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:0.65rem;color:#93A3B8;flex-shrink:0;" role="img" aria-label="Logo preview">Logo</div>
+          <div id="logoPreview" style="width:56px;height:56px;border:1.5px dashed #DBEAFE;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:0.65rem;color:#64748B;flex-shrink:0;" role="img" aria-label="Logo preview">Logo</div>
         </div>
         <span class="f-note" id="logoHelp">PNG, JPG or SVG. Max 120x60px on invoice.</span>
       </div>
@@ -556,7 +557,7 @@
         <input class="f-input" id="clientEmail" type="email" placeholder="client@company.com">
       </div>
       <div style="display:flex;gap:8px;margin-top:8px;">
-        <button class="btn" id="btnSaveClient" type="button" style="font-size:0.72rem;padding:8px 14px;" aria-label="Save client to database">+ Save Client</button>
+        <button class="btn" id="btnSaveClient" type="button" style="font-size:0.72rem;padding:8px 14px;" aria-label="Save client">+ Save Client</button>
         <button class="btn" id="btnClearClient" type="button" style="font-size:0.72rem;padding:8px 14px;" aria-label="Clear client fields">Clear</button>
       </div>
         </div>
@@ -789,7 +790,7 @@
 
       <div class="field" style="margin-top:18px;">
         <label class="f-label" for="notes">Notes</label>
-        <textarea class="f-input" id="notes" placeholder="Thank you for your business! Payment should be made to..." rows="3"></textarea>
+        <textarea class="f-input" id="notes" placeholder="Thank you for your business! Payment should be made to…" rows="3"></textarea>
       </div>
 
       <div class="field-checkbox">
@@ -911,7 +912,7 @@
             </tr>
           </thead>
           <tbody id="pItems">
-            <tr><td colspan="5" style="text-align:center;color:#93A3B8;padding:20px;">Add line items to see them here</td></tr>
+            <tr><td colspan="5" style="text-align:center;color:#64748B;padding:20px;">Add line items to see them here</td></tr>
           </tbody>
         </table>
 
@@ -1044,11 +1045,11 @@
 <afro-footer></afro-footer>
 
 <!-- Required Scripts -->
-<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
-<script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
+<script src="/assets/js/favorites-widget.js?v=4b4c6943" defer></script>
 <script src="/assets/js/lib/share-state.js?v=a06e4cb8"></script>
 <script src="/assets/js/toast.js?v=a7f31fe6"></script>
 
@@ -1175,10 +1176,10 @@ function renderClients() {
   list.innerHTML = clients.map((c, i) => `
     <div class="client-item" data-idx="${i}">
       <div>
-        <span class="client-item-name">${c.name}</span>
-        ${c.company ? `<span class="client-item-co"> - ${c.company}</span>` : ''}
+        <span class="client-item-name">${escapeHtml(c.name || '')}</span>
+        ${c.company ? `<span class="client-item-co"> — ${escapeHtml(c.company)}</span>` : ''}
       </div>
-      <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 6px;" onclick="event.stopPropagation();deleteClient(${i})">X</button>
+      <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 6px;" aria-label="Remove saved client ${escapeHtml(c.name || '')}" onclick="event.stopPropagation();deleteClient(${i})">X</button>
     </div>
   `).join('');
   list.querySelectorAll('.client-item').forEach(el => {
@@ -1449,7 +1450,7 @@ function updatePreview() {
   // Preview — items table
   const tbody = $('pItems');
   if (items.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#93A3B8;padding:20px;">Add line items to see them here</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748B;padding:20px;">Add line items to see them here</td></tr>';
   } else {
     tbody.innerHTML = items.map(it => `<tr>
       <td>${escapeHtml(it.desc)}</td>
@@ -1638,7 +1639,7 @@ $('btnPDF').addEventListener('click', () => {
       title: docInfo.title + ' ' + ($('invoiceNumber').value || ''),
       subtitle: ($('companyName').value || 'Invoice') + ' → ' + ($('clientName').value || 'Client'),
       toolId: 'invoice-generator',
-      subtitle: ($('companyName').value || docInfo.title) + ' -> ' + ($('clientName').value || 'Client'),
+      subtitle: ($('companyName').value || docInfo.title) + ' → ' + ($('clientName').value || 'Client'),
       heroStats: [
         {label: docInfo.numberLabel, value: $('invoiceNumber').value},
         {label:'Total', value: $('sumTotal').textContent},
@@ -1776,11 +1777,11 @@ function renderTemplates() {
     <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #EFF6FF;font-size:0.82rem;">
       <div>
         <strong style="color:#2d4a38;">${escapeHtml(t.name)}</strong>
-        <span style="color:#93A3B8;margin-left:8px;">${new Date(t.date).toLocaleDateString()}</span>
+        <span style="color:#64748B;margin-left:8px;">${new Date(t.date).toLocaleDateString()}</span>
       </div>
       <div style="display:flex;gap:6px;">
-        <button type="button" class="btn" style="font-size:0.68rem;padding:4px 10px;" onclick="loadTemplate(${t.id})">Load</button>
-        <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 8px;" onclick="deleteTemplate(${t.id})">X</button>
+        <button type="button" class="btn" style="font-size:0.68rem;padding:4px 10px;" aria-label="Load template ${escapeHtml(t.name)}" onclick="loadTemplate(${t.id})">Load</button>
+        <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 8px;" aria-label="Delete template ${escapeHtml(t.name)}" onclick="deleteTemplate(${t.id})">X</button>
       </div>
     </div>
   `).join('');
@@ -2158,12 +2159,12 @@ init();
     section.style.display='';
     grid.innerHTML=items.map(function(it){
       var d=it.data||{};
-      return '<div style="background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#007AFF\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'">'+
+      return '<div style="background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#0062CC\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'">'+
         '<div style="font-size:.82rem;font-weight:700;color:#111827;margin-bottom:3px;">'+esc(it.title)+'</div>'+
         (d.client?'<div style="font-size:.72rem;color:#6b7280;">Client: '+esc(d.client)+'</div>':'')+
-        (d.total?'<div style="font-size:.78rem;font-weight:800;color:#007AFF;margin-top:4px;">'+esc(d.total)+'</div>':'')+
+        (d.total?'<div style="font-size:.78rem;font-weight:800;color:#0062CC;margin-top:4px;">'+esc(d.total)+'</div>':'')+
         '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
-        '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
+        '<span style="font-size:.6rem;color:#64748b;">'+ago(it.updatedAt)+'</span>'+
         '<button type="button" onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
         '</div></div>';
     }).join('');

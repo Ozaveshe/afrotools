@@ -27,6 +27,49 @@ const LIGHTWEIGHT_INDEX_PAGES = new Set([
   'salary-tax/index.html',
 ]);
 
+// The heavy tool-registry.min.js (~1.25 MB) only needs to load eagerly on pages
+// that render tool data (directory / country / category hubs). Everywhere else
+// it is loaded lazily on demand: the desktop command palette runs off the small
+// nav list, and navbar mobile search injects the registry only when the user
+// actually searches (see ensureToolRegistry in navbar.js). So strip the eager
+// <script> tag from any page that never touches a registry global — checking
+// both inline scripts AND the page-specific external scripts it loads.
+const REGISTRY_TAG_RE = /<script\s+[^>]*src=["'][^"']*\/assets\/js\/components\/tool-registry(?:\.min)?\.js(?:\?[^"']*)?["'][^>]*><\/script>\s*/g;
+// Signals that code consumes the registry (any hit => that code needs it).
+// Covers every global tool-registry.js exposes. Safe default is KEEP: we only
+// strip when NONE of these appear, so a directory/hub page is never broken.
+const REGISTRY_CONSUMER_RE = /\bAFRO_TOOLS\b|\bAFRO_CATEGORIES\b|\bAFRO_COUNTRY_TOOL_COUNTS\b|onRegistryReady|afrotools:registry-ready|renderToolGrid|renderCountry\w*|refreshCountryPulse|bindCountryToolImages|getToolsFor|getToolGridLabels|getCountryHubMeta|sortCountryHubTools|countryHub\w*|getPublicToolStats|getRegistryStats|getTotalToolCount|getToolStatsLocale|formatToolStatValue|getToolCardImagePath|TOOL_CARD_IMAGE_EXTENSIONS|fetchCountryHubJson|toolMatchesCountryGoal|getCountryHubGoal/;
+// Global-shell scripts reference registry globals but tolerate a lazily-loaded
+// or absent registry (navbar lazy-injects it; related-tools falls back to
+// RELATED_TOOLS_DATA; tool-search guards on a missing registry). They must NOT
+// count as "requires the eager tag", or nothing would ever be strippable.
+const SHELL_SCRIPT_RE = /\/(?:navbar|footer|command-palette|tool-search|related-tools|tool-registry)(?:\.min)?\.js|\/bundles\//;
+const registryConsumerFileCache = new Map();
+function scriptFileConsumesRegistry(src) {
+  const clean = src.split('?')[0];
+  if (!clean.startsWith('/assets/js/')) return false;
+  if (SHELL_SCRIPT_RE.test(clean)) return false;
+  if (registryConsumerFileCache.has(clean)) return registryConsumerFileCache.get(clean);
+  let consumes = false;
+  try {
+    const abs = path.join(ROOT, clean);
+    if (fs.existsSync(abs)) consumes = REGISTRY_CONSUMER_RE.test(fs.readFileSync(abs, 'utf8'));
+  } catch { /* unreadable → assume not a consumer */ }
+  registryConsumerFileCache.set(clean, consumes);
+  return consumes;
+}
+// A page needs the eager registry if its inline HTML uses a registry global, or
+// if any page-specific external script it loads does.
+function pageNeedsEagerRegistry(htmlWithoutRegistryTag) {
+  if (REGISTRY_CONSUMER_RE.test(htmlWithoutRegistryTag)) return true;
+  const re = /<script\s+[^>]*src=["']([^"']+)["']/gi;
+  let m;
+  while ((m = re.exec(htmlWithoutRegistryTag)) !== null) {
+    if (scriptFileConsumesRegistry(m[1])) return true;
+  }
+  return false;
+}
+
 function waitSync(ms) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
@@ -86,11 +129,9 @@ for (const htmlPath of htmlFiles) {
   html = html.replaceAll(LEGACY_REGISTRY_PATH, MINIFIED_REGISTRY_PATH);
   html = html.replaceAll(REGISTRY_PATH, MINIFIED_REGISTRY_PATH);
 
-  if (LIGHTWEIGHT_INDEX_PAGES.has(relativeHtmlPath)) {
-    html = html.replace(
-      /<script\s+[^>]*src=["'][^"']*\/assets\/js\/components\/tool-registry(?:\.min)?\.js(?:\?[^"']*)?["'][^>]*><\/script>\s*/g,
-      ''
-    );
+  const htmlWithoutRegistryTag = html.replace(REGISTRY_TAG_RE, '');
+  if (LIGHTWEIGHT_INDEX_PAGES.has(relativeHtmlPath) || !pageNeedsEagerRegistry(htmlWithoutRegistryTag)) {
+    html = htmlWithoutRegistryTag;
   }
 
   // Track which bundles we've already injected for this file

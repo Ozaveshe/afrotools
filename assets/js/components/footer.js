@@ -1,6 +1,6 @@
 /**
  * AFROTOOLS FOOTER — Web Component
- * Colours: dark navy #111827, accent Apple Blue via --color-primary (#007AFF)
+ * Colours: dark navy #111827, accent Apple Blue via --color-primary (#0062CC)
  * Links: readable opacity — no more 0.18/0.25 ghost text
  * Font: DM Sans throughout (Barlow removed)
  */
@@ -15,7 +15,7 @@
     countries:  { en: 'Countries', fr: 'Pays', sw: 'Nchi', yo: 'Orílẹ̀-èdè', ha: 'Ƙasashe' },
     company:    { en: 'Company', fr: 'Entreprise', sw: 'Kampuni', yo: 'Ilé-iṣẹ́', ha: 'Kamfani' },
     legal:      { en: 'Legal', fr: 'Légal', sw: 'Sheria', yo: 'Òfin', ha: 'Doka' },
-    logoTagline:{ en: "Africa's Everything Platform", yo: 'Pẹpẹ irinṣẹ Afirika', ha: 'Dandalin kayan aikin Afirka' },
+    logoTagline:{ en: "Africa's Everything Platform", fr: 'La plateforme africaine', sw: 'Jukwaa la Afrika', yo: 'Pẹpẹ irinṣẹ Afirika', ha: 'Dandalin kayan aikin Afirka' },
     nlEyebrow:  { en: 'Stay Updated', fr: 'Restez informé', sw: 'Pata Habari', yo: 'Ṣe Àjọjú', ha: 'Sabbin kayan aiki' },
     nlTitle:    { en: 'New tools. Every week. Free.', fr: 'Nouveaux outils. Gratuit.', sw: 'Zana mpya. Kila wiki. Bure.', yo: 'Iṣẹ́ tuntun. Ọ̀fẹ́.', ha: 'Sabbin kayan aiki da bayanai, kyauta.' },
     placeholder:{ en: 'your@email.com', fr: 'votre@email.com', sw: 'barua@pepe.com', yo: 'imeeli@rẹ.com', ha: 'adireshin imel dinka' },
@@ -94,11 +94,11 @@
 
   const MARK = `
     <svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:34px;flex-shrink:0">
-      <polygon points="34,20 48,34 34,48 20,34" fill="#007AFF"/>
+      <polygon points="34,20 48,34 34,48 20,34" fill="#0062CC"/>
       <polygon points="34,2  44,14 34,20 24,14" fill="#F5A623"/>
       <polygon points="34,48 44,60 34,68 24,60" fill="#0047AB"/>
-      <polygon points="2,24  14,34 2,44  -10,34" fill="#007AFF" opacity="0.6"/>
-      <polygon points="52,24 64,34 52,44 40,34"  fill="#007AFF" opacity="0.48"/>
+      <polygon points="2,24  14,34 2,44  -10,34" fill="#0062CC" opacity="0.6"/>
+      <polygon points="52,24 64,34 52,44 40,34"  fill="#0062CC" opacity="0.48"/>
     </svg>`;
 
   const CSS = `
@@ -114,7 +114,7 @@
     /* ─────────────────────────────────────────────
        SHELL
        #111827 — dark navy, clean and modern.
-       Accent: Apple Blue #007AFF via --color-primary.
+       Accent: Apple Blue #0062CC via --color-primary.
     ───────────────────────────────────────────── */
     footer {
       background: #111827;
@@ -312,12 +312,21 @@
       if (['fr','sw','yo','ha'].indexOf(first) !== -1) this._lang = first;
       else this._lang = document.documentElement.lang || 'en';
       this._render(); this._bind();
-      document.addEventListener('afrotools:langchange', e => {
+      if (this._langChangeFn) document.removeEventListener('afrotools:langchange', this._langChangeFn);
+      this._langChangeFn = e => {
         this._lang = e.detail.lang; this._render(); this._bind();
-      });
-      document.addEventListener('afrotools:registry-ready', () => {
+      };
+      document.addEventListener('afrotools:langchange', this._langChangeFn);
+      if (this._registryReadyFn) document.removeEventListener('afrotools:registry-ready', this._registryReadyFn);
+      this._registryReadyFn = () => {
         this._render(); this._bind();
-      });
+      };
+      document.addEventListener('afrotools:registry-ready', this._registryReadyFn);
+    }
+
+    disconnectedCallback() {
+      if (this._langChangeFn) document.removeEventListener('afrotools:langchange', this._langChangeFn);
+      if (this._registryReadyFn) document.removeEventListener('afrotools:registry-ready', this._registryReadyFn);
     }
 
     _l(obj) { return obj[this._lang] || obj.en; }

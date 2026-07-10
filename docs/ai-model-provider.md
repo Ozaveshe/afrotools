@@ -92,6 +92,25 @@ Controls:
 - `AFROTOOLS_AI_PROVIDER_RETRIES`
 - method max token overrides such as `AFROTOOLS_AI_CLASSIFY_INTENT_MAX_TOKENS`
 
+Smart-tier routing (AI advisor):
+
+`netlify/functions/ai-advisor.js` scores each question for complexity
+(comparisons, planning, multi-country, math-heavy, high-stakes tools) and
+escalates complex ones to a high-capability model with adaptive thinking,
+falling back to the fast default model if the smart call fails. Controls:
+
+- `AFROTOOLS_AI_SMART_ROUTING` — set `off` to disable escalation (default on)
+- `AFROTOOLS_AI_SMART_MODEL` — smart-tier model (default `claude-opus-4-8`)
+- `AFROTOOLS_AI_SMART_EFFORT` — `low|medium|high|xhigh|max` (default `medium`)
+- `AFROTOOLS_AI_SMART_TIMEOUT_MS` — smart-call timeout, clamped 5–25s (default 20000)
+
+The provider layer only sends `thinking: {type: "adaptive"}` and
+`output_config.effort` to models that support them (Opus 4.6+, Sonnet 4.6/5,
+Fable 5); Haiku and older models never receive these fields.
+
+Validation: `node tests/ai-advisor-smart-routing.test.js` (also part of
+`npm run test:ai`).
+
 ## Privacy Rules
 
 The provider layer must not log raw prompts, documents, CV text, extracted PDF text, invoices, salaries, client names, provider payloads, tokens, or internal diagnostics.

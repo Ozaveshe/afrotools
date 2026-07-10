@@ -98,7 +98,7 @@
     "mobile-money-fees": "/tools/mobile-money-fees/",
     "nda-generator": "/tools/nda-generator/",
     "passport-checklist": "/tools/passport-checklist/",
-    "paye-calculator": "/tools/paye-calculator",
+    "paye-calculator": "/tools/paye-calculator/",
     "pdf-workspace": "/tools/pdf-workspace/",
     "poultry-roi-calculator": "/agriculture/poultry-roi/",
     "rent-affordability": "/tools/rent-affordability/",

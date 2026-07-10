@@ -22,7 +22,9 @@ function getCorsHeaders(event) {
   const isAllowed =
     origin === 'https://afrotools.com' ||
     origin === 'https://www.afrotools.com' ||
-    origin.endsWith('.netlify.app') ||
+    // Only our own afrotools.netlify.app site + branch/deploy-preview subdomains,
+    // not every *.netlify.app tenant.
+    /^https:\/\/([a-z0-9-]+--)?afrotools[a-z0-9-]*\.netlify\.app$/.test(origin) ||
     origin.startsWith('http://localhost') ||
     origin.startsWith('http://127.0.0.1');
   return {

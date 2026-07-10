@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -11,13 +11,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="style.css?v=32f6a027">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+<link rel="stylesheet" href="style.css?v=e0612dc2">
 <link rel="stylesheet" href="icon-system.css?v=e947352b">
 <link rel="stylesheet" href="cuisine-intelligence.css?v=d0ebe756">
 <link rel="stylesheet" href="responsive-fixes.css?v=f72d0d62">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 <style>
   .ak-submit-guidance{display:grid;gap:18px;margin-bottom:28px;padding:22px;border:1px solid var(--ak-line);border-radius:var(--ak-r-lg);background:linear-gradient(135deg,#fff,#fff7ec)}
   .ak-submit-guidance h2{margin:0;font-size:1.7rem}
@@ -183,7 +183,7 @@
 6 fresh tomatoes
 3 scotch bonnet peppers
 1 teaspoon thyme
-..."></textarea>
+…"></textarea>
           <div class="ak-form-hint">List each ingredient on its own line with quantity and unit</div>
         </div>
 
@@ -193,7 +193,7 @@
 Step 1: Blend the tomatoes, peppers, and onions until smooth.
 Step 2: Heat oil in a large pot and fry the sliced onions.
 Step 3: Add the tomato paste and fry for 3 minutes.
-..."></textarea>
+…"></textarea>
           <div class="ak-form-hint">Number each step. Include timing where relevant (e.g., "cook for 20 minutes")</div>
         </div>
 
@@ -219,7 +219,7 @@ Step 3: Add the tomato paste and fry for 3 minutes.
         </div>
 
         <label class="ak-form-check">
-          <input aria-label="F photo permission" id="f-photo-permission" type="checkbox">
+          <input id="f-photo-permission" type="checkbox">
           <span>I have permission to share any photos or links I include, and I understand image links are reviewed before any public use.</span>
         </label>
 
@@ -235,11 +235,11 @@ Step 3: Add the tomato paste and fry for 3 minutes.
         </div>
 
         <div class="ak-submit-actions">
-          <button type="submit" class="ak-btn ak-btn-primary" id="submit-btn">Submit Recipe</button>
+          <button type="submit" class="ak-btn ak-btn-primary" id="submit-btn">Send recipe for review</button>
         </div>
       </form>
-        <div id="submit-success" class="ak-success-state" style="display:none">
-          <div class="ak-success-mark">AK</div>
+        <div id="submit-success" class="ak-success-state" role="status" style="display:none">
+          <div class="ak-success-mark" aria-hidden="true">AK</div>
           <h3>Recipe Submitted!</h3>
           <p>Thank you for sharing your recipe. It has been saved for editorial review with a pending moderation state. If you provided your email, AfroKitchen may contact you with follow-up questions; publication is not automatic.</p>
           <a href="/tools/afrokitchen/" class="ak-btn ak-btn-outline">Browse recipes</a>
@@ -295,8 +295,8 @@ Step 3: Add the tomato paste and fry for 3 minutes.
 </div>
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=4250956b"></script>
 <script src="/engines/afrokitchen-engine.js?v=d9593a0c"></script>
@@ -394,7 +394,7 @@ async function handleSubmit(e) {
     return false;
   }
   btn.disabled = true;
-  btn.textContent = 'Submitting...';
+  btn.textContent = 'Sending…';
   var story = fieldValue('f-story');
   var editorialContext = buildEditorialContext();
 
@@ -413,9 +413,9 @@ async function handleSubmit(e) {
     document.getElementById('submit-form').style.display = 'none';
     document.getElementById('submit-success').style.display = '';
   } else {
-    alert('Error submitting recipe: ' + (res.error || 'Please try again'));
+    alert('We could not send your recipe: ' + (res.error || 'Please try again'));
     btn.disabled = false;
-    btn.textContent = 'Submit Recipe';
+    btn.textContent = 'Send recipe for review';
   }
 }
 </script>

@@ -4,7 +4,7 @@
  *
  * CACHE_VERSION is stamped by `npm run build`; changing it purges old caches.
  */
-const CACHE_VERSION = 'a5464808';
+const CACHE_VERSION = '41c177ba';
 const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
@@ -21,9 +21,9 @@ const PRECACHE = [
   '/assets/js/lib/error-boundary.js',
   '/assets/img/logo-mark.svg',
   '/assets/img/icon-192.svg',
-  '/assets/img/icon-512.svg',  '/assets/js/bundles/core.c7dda24b.min.js',
-  '/assets/js/bundles/tool-page.2916f989.min.js',
-  '/assets/js/bundles/chat.8446833d.min.js',
+  '/assets/img/icon-512.svg',  '/assets/js/bundles/core.fdd629ac.min.js',
+  '/assets/js/bundles/tool-page.315f0428.min.js',
+  '/assets/js/bundles/chat.da912503.min.js',
 ];
 
 self.addEventListener('install', e => {

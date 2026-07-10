@@ -37,7 +37,7 @@
   const THEME_STANDARD_CSS = `
     :root[data-theme="light"]{
       color-scheme:light;
-      --color-primary:#0062CC;--color-primary-dark:#0063D1;--color-primary-light:#4DA3FF;--color-primary-pale:rgba(0,122,255,.08);--color-primary-hover:#0063D1;--color-primary-soft:rgba(0,122,255,.08);--color-primary-rgb:0,122,255;--color-secondary:#0063D1;--color-secondary-rgb:0,99,209;--color-accent:#0063D1;--color-accent-light:#E8F2FF;--color-accent-hover:#004BA0;--color-accent-rgb:0,99,209;--color-bg:#F8FAFD;--color-bg-subtle:#F1F5F9;--color-bg-card:#fff;--color-surface:#fff;--color-surface-muted:#F1F5F9;--color-surface-raised:#fff;--color-surface-inset:#EEF4FA;--color-bg-dark:#0A1628;--color-bg-dark-alt:#111D30;--color-bg-hero:linear-gradient(135deg,#F0F7FF 0%,#E8F4FD 50%,#F5F0FF 100%);--color-text:#0f172a;--color-text-muted:#64748B;--color-text-subtle:#94A3B8;--color-text-inverse:#fff;--color-text-link:#0062CC;--color-link:#0062CC;--color-border:#E2E8F0;--color-border-strong:#CBD5E1;--color-border-subtle:#F1F5F9;--color-gold:#F5A623;--color-gold-pale:#fff3cd;--color-warning:#F59E0B;--color-warning-pale:rgba(245,158,11,.08);--color-success:#22c55e;--color-success-pale:rgba(34,197,94,.08);--color-info:#3B82F6;--color-info-pale:rgba(59,130,246,.08);--color-error:#EF4444;--color-error-pale:rgba(239,68,68,.08);--color-danger:#EF4444;--color-danger-pale:rgba(239,68,68,.08);--color-brand:#0062CC;--color-brand-dark:#0063D1;--color-brand-light:#4DA3FF;--color-brand-pale:#E8F2FF;--color-brand-subtle:rgba(0,122,255,.15);
+      --color-primary:#0062CC;--color-primary-dark:#0063D1;--color-primary-light:#4DA3FF;--color-primary-pale:rgba(0,98,204,.08);--color-primary-hover:#0063D1;--color-primary-soft:rgba(0,98,204,.08);--color-primary-rgb:0,98,204;--color-secondary:#0063D1;--color-secondary-rgb:0,99,209;--color-accent:#0063D1;--color-accent-light:#E8F2FF;--color-accent-hover:#004BA0;--color-accent-rgb:0,99,209;--color-bg:#F8FAFD;--color-bg-subtle:#F1F5F9;--color-bg-card:#fff;--color-surface:#fff;--color-surface-muted:#F1F5F9;--color-surface-raised:#fff;--color-surface-inset:#EEF4FA;--color-bg-dark:#0A1628;--color-bg-dark-alt:#111D30;--color-bg-hero:linear-gradient(135deg,#F0F7FF 0%,#E8F4FD 50%,#F5F0FF 100%);--color-text:#0f172a;--color-text-muted:#64748B;--color-text-subtle:#94A3B8;--color-text-inverse:#fff;--color-text-link:#0062CC;--color-link:#0062CC;--color-border:#E2E8F0;--color-border-strong:#CBD5E1;--color-border-subtle:#F1F5F9;--color-gold:#F5A623;--color-gold-pale:#fff3cd;--color-warning:#F59E0B;--color-warning-pale:rgba(245,158,11,.08);--color-success:#22c55e;--color-success-pale:rgba(34,197,94,.08);--color-info:#3B82F6;--color-info-pale:rgba(59,130,246,.08);--color-error:#EF4444;--color-error-pale:rgba(239,68,68,.08);--color-danger:#EF4444;--color-danger-pale:rgba(239,68,68,.08);--color-brand:#0062CC;--color-brand-dark:#0063D1;--color-brand-light:#4DA3FF;--color-brand-pale:#E8F2FF;--color-brand-subtle:rgba(0,98,204,.15);
     }
     :root[data-theme="dark"]{
       color-scheme:dark;
@@ -570,7 +570,7 @@
       descFr: 'Rendement, semences, engrais, irrigation, profit agricole — 54 pays',
       descSw: 'Mavuno, mbegu, mbolea, umwagiliaji, faida ya shamba — nchi 54',
       descHa: 'Amfanin gona, taki, riba, rogo da kasuwa ga Najeriya',
-      href: '/agriculture/', hrefFr: '/fr/agriculture/', hrefSw: '/sw/kilimo/', hrefHa: '/ha/noma/', hrefYo: '/yo/ogbin/', color: '#E8F2FF', accent: '#007AFF',
+      href: '/agriculture/', hrefFr: '/fr/agriculture/', hrefSw: '/sw/kilimo/', hrefHa: '/ha/noma/', hrefYo: '/yo/ogbin/', color: '#E8F2FF', accent: '#0062CC',
       tools: [
         { label: 'Crop Yield Estimators', href: '/agriculture/crop-yield/', emoji: '🌱', badge: 'LIVE' },
         { label: 'Seed Rate Calculators', href: '/agriculture/seed-rate/', emoji: '🌿', badge: 'LIVE' },
@@ -621,7 +621,7 @@
       desc: 'VAT, margins, break-even', descFr: 'TVA, marges, seuil de rentabilité', descSw: 'VAT, faida, hatua ya usawa',
       href: '/vat-business-tax/', hrefFr: '/fr/vat-business-tax/', hrefSw: '/sw/vat-na-kodi/', hrefHa: '/ha/kasuwanci-da-haraji/', hrefYo: '/yo/owo-ori-owo-ise/', color: '#fff7ed', accent: '#f59e0b',
       tools: [
-        { label: 'Pan-African VAT Calculator', href: '/tools/vat-calculator/vat-calc', emoji: '💱', badge: 'LIVE' },
+        { label: 'Pan-African VAT Calculator', href: '/tools/vat-calculator/', emoji: '💱', badge: 'LIVE' },
         { label: 'Nigeria VAT (7.5%)', href: '/nigeria/ng-vat', emoji: '🇳🇬', badge: 'LIVE' },
         { label: 'South Africa VAT (15%)', href: '/south-africa/za-vat', emoji: '🇿🇦', badge: 'LIVE' },
         { label: 'Kenya VAT (16%)', href: '/kenya/ke-vat', emoji: '🇰🇪', badge: 'LIVE' },
@@ -765,6 +765,7 @@
       desc: 'Japa, generator, ajo, mobile money', descFr: 'Épargne collective, mobile money, recettes', descSw: 'Japa, jenereta, chama, pesa za simu',
       href: '/african/', hrefFr: '/fr/african/', color: '#fef2f2', accent: '#dc2626',
       tools: [
+        { label: 'Lobola Calculator', href: '/tools/lobola-calculator/', emoji: '🐄', badge: 'LIVE' },
         { label: 'AfroPoints — Earn Money', href: '/tools/afropoints/', emoji: '🎯', badge: 'NEW' },
         { label: 'AfroAtlas Explorer', href: '/tools/afroatlas/', emoji: '🌍', badge: 'NEW' },
         { label: 'AfroKitchen Recipes', href: '/tools/afrokitchen/', emoji: '🍲', badge: 'LIVE' },
@@ -803,7 +804,7 @@
     {
       id: 'trade', label: 'Trade & Import', labelFr: 'Commerce & Import', labelSw: 'Biashara na Uagizaji', icon: '🚢',
       desc: 'LC, duties, incoterms, ECOWAS, SADC, AfCFTA', descFr: 'LC, droits de douane, incotermes', descSw: 'LC, ushuru, incoterms, ECOWAS, SADC, AfCFTA',
-      href: '/trade/', hrefFr: '/fr/trade/', color: '#E8F2FF', accent: '#007AFF',
+      href: '/trade/', hrefFr: '/fr/trade/', color: '#E8F2FF', accent: '#0062CC',
       tools: [
         { label: 'AfCFTA Tariff Tracker', href: '/tools/afcfta-tracker/', emoji: '🌍', badge: 'LIVE' },
         { label: 'Landed Cost Calculator', href: '/tools/landed-cost/', emoji: '📦', badge: 'LIVE' },
@@ -1049,15 +1050,6 @@
       href: '/personal-finance/', color: '#f0fdf4', accent: '#16a34a',
       tools: [
         { label: '50/30/20 Budget Calculator', href: '/tools/50-30-20-budget/', emoji: '💰', badge: 'NEW' },
-        { label: 'Zero-Based Budget Planner', href: '/tools/zero-based-budget/', emoji: '📋', badge: 'NEW' },
-        { label: 'Annual Financial Review', href: '/tools/annual-financial-review/', emoji: '📅', badge: 'NEW' },
-        { label: 'Multi-Income Tracker', href: '/tools/multi-income-tracker/', emoji: '💵', badge: 'NEW' },
-        { label: 'Baby Cost Estimator', href: '/tools/baby-cost/', emoji: '👶', badge: 'NEW' },
-        { label: 'Back-to-School Budget', href: '/tools/back-to-school/', emoji: '🎒', badge: 'NEW' },
-        { label: 'WHT Calculator', href: '/tools/wht-calculator/', emoji: '🧾', badge: 'NEW' },
-        { label: 'Side Hustle to Full-Time Calc', href: '/tools/side-hustle-to-fulltime/', emoji: '🚀', badge: 'NEW' },
-        { label: 'Funeral Savings Planner', href: '/tools/funeral-savings/', emoji: '🕊️', badge: 'NEW' },
-        { label: 'Wedding Budget (African)', href: '/tools/wedding-budget-african/', emoji: '💍', badge: 'NEW' },
         { label: 'All Personal Finance Tools →', href: '/personal-finance/', emoji: '💼' },
       ]
     },
@@ -1071,13 +1063,6 @@
         { label: 'Japa Calculator', href: '/tools/japa-calculator/', emoji: '🌍', badge: 'NEW' },
         { label: 'Visa Tracker', href: '/tools/visa-tracker/', emoji: '📝', badge: 'NEW' },
         { label: 'Immigration Points Calculator', href: '/tools/immigration-points/', emoji: '📊', badge: 'NEW' },
-        { label: 'Cultural Adjustment Guide', href: '/tools/cultural-adjustment/', emoji: '🤝', badge: 'NEW' },
-        { label: 'IELTS/TOEFL Score Converter', href: '/tools/ielts-toefl-converter/', emoji: '📚', badge: 'NEW' },
-        { label: 'Embassy Wait Time Tracker', href: '/tools/embassy-wait-time/', emoji: '⏱️', badge: 'NEW' },
-        { label: 'Money Transfer Tracker', href: '/tools/money-transfer-tracker/', emoji: '💸', badge: 'NEW' },
-        { label: 'Cost of Living Comparator', href: '/tools/cost-of-living-compare/', emoji: '🏙️', badge: 'NEW' },
-        { label: 'Double Taxation Checker', href: '/tools/double-taxation/', emoji: '🧾', badge: 'NEW' },
-        { label: 'Diaspora Investment Calculator', href: '/tools/diaspora-investment/', emoji: '📈', badge: 'NEW' },
         { label: 'All Diaspora Tools →', href: '/diaspora/', emoji: '✈️' },
       ]
     },
@@ -1156,16 +1141,7 @@
       descSw: 'Dhahabu, almasi, mafuta, mrabaha wa madini — Afrika ina 30% ya madini',
       href: '/mining/', color: '#fef9c3', accent: '#ca8a04',
       tools: [
-        { label: 'Gold Price Tracker', href: '/tools/gold-price-tracker/', emoji: '🥇', badge: 'NEW' },
-        { label: 'Diamond Valuation Calculator', href: '/tools/diamond-valuation/', emoji: '💎', badge: 'NEW' },
-        { label: 'Mining Royalty Calculator', href: '/tools/mining-royalty/', emoji: '📊', badge: 'NEW' },
-        { label: 'Oil Production Estimator', href: '/tools/oil-production/', emoji: '🛢️', badge: 'NEW' },
-        { label: 'Oil & Gas Revenue Calc', href: '/tools/oil-gas-revenue/', emoji: '⚡', badge: 'NEW' },
-        { label: 'Artisanal Mining Income Calc', href: '/tools/artisanal-mining/', emoji: '⛏️', badge: 'NEW' },
-        { label: 'Mining License Fee Estimator', href: '/tools/mining-license-fee/', emoji: '📋', badge: 'NEW' },
-        { label: 'Mineral Export Duty Calc', href: '/tools/mineral-export-duty/', emoji: '🚢', badge: 'NEW' },
-        { label: 'Mining Env. Impact Assessor', href: '/tools/mining-env-impact/', emoji: '🌿', badge: 'NEW' },
-        { label: 'Petroleum Pricing Calculator', href: '/tools/petroleum-pricing/', emoji: '⛽', badge: 'NEW' },
+        { label: 'Gold Price Tracker', href: '/tools/commodity-tracker/', emoji: '🥇', badge: 'NEW' },
         { label: 'All Mining Tools →', href: '/mining/', emoji: '⛏️' },
       ]
     },
@@ -1229,10 +1205,10 @@
       href: '/tools/afrostream/', color: '#FAF5FF', accent: '#A855F7',
       tools: [
         { label: 'AfroStream — Live Now', href: '/tools/afrostream/', emoji: '🔴', badge: 'NEW' },
-        { label: 'Creator Rankings', href: '/tools/afrostream/rankings.html', emoji: '🏆', badge: 'NEW' },
-        { label: 'Creator News', href: '/tools/afrostream/news.html', emoji: '📰', badge: 'NEW' },
-        { label: 'Stream Calendar', href: '/tools/afrostream/calendar.html', emoji: '📅', badge: 'NEW' },
-        { label: 'Community Hub', href: '/tools/afrostream/community.html', emoji: '🤝', badge: 'NEW' },
+        { label: 'Creator Rankings', href: '/tools/afrostream/rankings', emoji: '🏆', badge: 'NEW' },
+        { label: 'Creator News', href: '/tools/afrostream/news', emoji: '📰', badge: 'NEW' },
+        { label: 'Stream Calendar', href: '/tools/afrostream/calendar', emoji: '📅', badge: 'NEW' },
+        { label: 'Community Hub', href: '/tools/afrostream/community', emoji: '🤝', badge: 'NEW' },
       ]
     },
     {
@@ -1306,7 +1282,6 @@
         { label: 'Compliance Calendar — Statutory Deadlines', href: '/tools/compliance-calendar/', emoji: '📅', badge: 'SOON' },
         { label: 'Regulatory Change Alerts', href: '/tools/regulatory-alerts/', emoji: '🔔', badge: 'NEW' },
         { label: 'AI Labour Law Advisor', href: '/tools/labour-law-advisor/', emoji: '⚖️', badge: 'SOON' },
-        { label: 'AfroSalary Database', href: '/tools/afrosalary-db/', emoji: '📊', badge: 'SOON' },
         { label: 'Document Generator Suite', href: '/tools/doc-generator/', emoji: '📄', badge: 'LIVE' },
         { label: 'Payroll API — B2B', href: '/afrowork/api/', emoji: '🔌', badge: 'SOON' },
         { label: 'WhatsApp Payroll Bot', href: '/afrowork/whatsapp/', emoji: '💬', badge: 'SOON' },
@@ -2462,6 +2437,10 @@
     disconnectedCallback() {
       if (this._bodyLocked) this._unlockBodyScroll();
       if (this._themeChangeFn) document.removeEventListener('afrotools:theme-change', this._themeChangeFn);
+      if (this._scrollFn) window.removeEventListener('scroll', this._scrollFn);
+      if (this._outsideFn) document.removeEventListener('click', this._outsideFn);
+      if (this._langCloseFn) document.removeEventListener('click', this._langCloseFn);
+      if (this._keydownFn) document.removeEventListener('keydown', this._keydownFn);
     }
     get active() { return this.getAttribute('active') || ''; }
 
@@ -2903,19 +2882,23 @@
       if (currentLang === 'yo' && key.indexOf('/yo/') === 0) {
         if (targetLang === 'yo') return key;
         if (targetLang === 'en' && yoEnglishRouteMap[key]) return yoEnglishRouteMap[key];
-        if (targetLang === 'fr') return '/fr/';
-        if (targetLang === 'sw') return '/sw/';
-        if (targetLang === 'ha') return '/ha/';
       }
       if (targetLang === 'yo') {
         for (var yoPath in yoEnglishRouteMap) {
           if (Object.prototype.hasOwnProperty.call(yoEnglishRouteMap, yoPath) && yoEnglishRouteMap[yoPath] === key) return yoPath;
         }
       }
-      if (targetLang === 'yo') return '/yo/';
-      var p = path;
-      if (currentLang !== 'en') p = p.replace(new RegExp('^/' + currentLang + '(/|$)'), '/');
-      return targetLang !== 'en' ? '/' + targetLang + (p.startsWith('/') ? '' : '/') + p : p;
+      // Only link language versions that actually exist: resolve from the page's
+      // own hreflang alternates instead of inventing URLs by prefix-swapping
+      // (prefix-swapped URLs 301/404 and pollute search-engine crawls).
+      var altLink = document.querySelector('link[rel="alternate"][hreflang="' + targetLang + '"]');
+      if (altLink && altLink.getAttribute('href')) return altLink.getAttribute('href');
+      if (targetLang === 'en') {
+        var xDefault = document.querySelector('link[rel="alternate"][hreflang="x-default"]');
+        if (xDefault && xDefault.getAttribute('href')) return xDefault.getAttribute('href');
+      }
+      var langHome = { en: '/', fr: '/fr/', sw: '/sw/', yo: '/yo/', ha: '/ha/' };
+      return langHome[targetLang] || '/';
     }
 
     _langSwitcherHTML() {
@@ -3102,9 +3085,9 @@
       var lang = this._getLang();
       var overrides = {
         'Cabo Verde': 'cape-verde',
-        'Central African Republic': lang === 'sw' ? 'central-african-republic' : 'central-africa',
+        'Central African Republic': 'central-african-republic',
         'Côte d\'Ivoire': 'cote-divoire',
-        'DR Congo': lang === 'en' ? 'drc' : 'dr-congo',
+        'DR Congo': 'dr-congo',
         'Republic of the Congo': 'congo',
         'Congo': 'congo',
         'São Tomé and Príncipe': 'sao-tome',
@@ -3714,16 +3697,20 @@
         e.stopPropagation();
         langDrop.classList.toggle('open');
       });
-      document.addEventListener('click', () => langDrop?.classList.remove('open'));
+      if (this._langCloseFn) document.removeEventListener('click', this._langCloseFn);
+      this._langCloseFn = () => langDrop?.classList.remove('open');
+      document.addEventListener('click', this._langCloseFn);
 
       // Escape
-      document.addEventListener('keydown', e => {
+      if (this._keydownFn) document.removeEventListener('keydown', this._keydownFn);
+      this._keydownFn = e => {
         if (e.key === 'Escape') {
           closeMenus();
           langDrop?.classList.remove('open');
           if (this._menuOpen) setMenuOpen(false);
         }
-      });
+      };
+      document.addEventListener('keydown', this._keydownFn);
 
       // Mobile hamburger
       burger?.addEventListener('click', () => {
@@ -4139,26 +4126,44 @@
         if (toolRegistryLoadPromise) return toolRegistryLoadPromise;
         toolRegistryLoadPromise = new Promise(resolve => {
           let settled = false;
-          const finish = () => {
+          let tries = 0;
+          const MAX_TRIES = 15; // poll ~200ms x15 ≈ 3s before giving up
+          let pollTimer = null;
+          const registryReady = () => (typeof AFRO_TOOLS !== 'undefined' && Array.isArray(AFRO_TOOLS));
+          const finish = value => {
             if (settled) return;
             settled = true;
-            document.removeEventListener('afrotools:registry-ready', onReady);
-            resolve((typeof AFRO_TOOLS !== 'undefined' && Array.isArray(AFRO_TOOLS)) ? AFRO_TOOLS : null);
+            if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
+            document.removeEventListener('afrotools:registry-ready', check);
+            // Never cache a failed (null) resolution permanently — allow a later call to retry.
+            if (!value) toolRegistryLoadPromise = null;
+            resolve(value);
           };
-          const onReady = () => finish();
-          document.addEventListener('afrotools:registry-ready', onReady, { once: true });
+          // Ready-event / script-load handler: only resolve once AFRO_TOOLS is actually present.
+          const check = () => { if (!settled && registryReady()) finish(AFRO_TOOLS); };
+          // Independent poll chain: keeps retrying until the registry appears or MAX_TRIES is hit.
+          const poll = () => {
+            if (settled) return;
+            if (registryReady()) { finish(AFRO_TOOLS); return; }
+            if (tries >= MAX_TRIES) { finish(null); return; }
+            tries++;
+            pollTimer = setTimeout(poll, 200);
+          };
+          document.addEventListener('afrotools:registry-ready', check);
           const existing = document.querySelector('script[src*="tool-registry"]');
           if (existing) {
-            if (typeof AFRO_TOOLS !== 'undefined' && Array.isArray(AFRO_TOOLS)) finish();
-            else setTimeout(finish, 250);
-            return;
+            // Script tag already present but may still be loading — wait for its load event and poll.
+            existing.addEventListener('load', check, { once: true });
+            existing.addEventListener('error', check, { once: true });
+          } else {
+            const script = document.createElement('script');
+            script.src = '/assets/js/components/tool-registry.min.js';
+            script.defer = true;
+            script.onload = check;
+            script.onerror = check;
+            document.head.appendChild(script);
           }
-          const script = document.createElement('script');
-          script.src = '/assets/js/components/tool-registry.min.js';
-          script.defer = true;
-          script.onload = finish;
-          script.onerror = finish;
-          document.head.appendChild(script);
+          poll();
         });
         return toolRegistryLoadPromise;
       };
@@ -4423,7 +4428,7 @@
           if (recent.length > 0) {
             container.innerHTML = '<div class="search-section-label">' + searchUi.recentlyUsed + ' <button class="recent-clear" id="clearRecent">' + searchUi.clearRecent + '</button></div>' +
               recent.map((t, i) => `
-                <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}" role="option" aria-selected="${i === 0}">
+                <a href="${escapeHtml(t.href || '#')}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}" role="option" aria-selected="${i === 0}">
                   <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
                   <div>
                     <div class="search-result-name">${escapeHtml(t.name)}</div>
@@ -4448,7 +4453,7 @@
         }
         _activeIdx = 0;
         container.innerHTML = tools.map((t, i) => `
-          <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}" role="option" aria-selected="${i === 0}">
+          <a href="${escapeHtml(t.href || '#')}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}" role="option" aria-selected="${i === 0}">
             <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
             <div>
               <div class="search-result-name">${highlightMatch(t.name, query)}</div>
@@ -4511,7 +4516,7 @@
           if (mobCountryBlock) mobCountryBlock.style.display = 'none';
           if (mobBusinessBlock) mobBusinessBlock.style.display = 'none';
           mobSearchResults.innerHTML = results.map(t => `
-            <a href="${t.href}" class="search-result" role="option">
+            <a href="${escapeHtml(t.href || '#')}" class="search-result" role="option">
               <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
               <div>
                 <div class="search-result-name">${highlightMatch(t.name, q)}</div>

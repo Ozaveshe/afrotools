@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -24,11 +24,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/tools/afroatlas/style.css?v=83c9b5fa">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+<link rel="stylesheet" href="/tools/afroatlas/style.css?v=a76464e1">
 <link rel="stylesheet" href="/assets/css/afroatlas-twemoji.css?v=6d8ec1be">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 <script type="application/ld+json" data-schema-template="breadcrumb">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[]}</script>
 <script type="application/ld+json" data-schema-template="faq">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[]}</script>
 <meta property="og:locale" content="en_US">
@@ -54,8 +54,8 @@
 
 <!-- Scripts -->
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 <script src="/engines/afroatlas-engine.js?v=57ad0022"></script>
 <script src="/assets/js/lib/afroatlas-twemoji.js?v=f792df45"></script>
 <script>
@@ -71,7 +71,7 @@
     page.innerHTML = '<div class="aa-wrap" style="padding:80px 20px;text-align:center">' +
       '<h1 style="font-family:var(--font-heading,\'Instrument Serif\',Georgia,serif);font-size:2rem;margin-bottom:12px">Country not found</h1>' +
       '<p style="color:var(--color-text-muted,#64748b)">We couldn\'t find data for "<strong>' + slug + '</strong>".</p>' +
-      '<a href="/tools/afroatlas/" style="display:inline-block;margin-top:24px;padding:10px 28px;background:var(--color-primary,#007AFF);color:#fff;border-radius:var(--radius-pill,100px);text-decoration:none;font-weight:600;font-size:0.88rem">Browse All Countries</a>' +
+      '<a href="/tools/afroatlas/" style="display:inline-block;margin-top:24px;padding:12px 28px;min-height:44px;background:var(--color-primary,#0062CC);color:#fff;border-radius:var(--radius-pill,100px);text-decoration:none;font-weight:600;font-size:0.88rem">Browse all 54 countries</a>' +
       '</div>';
     return;
   }
@@ -205,13 +205,13 @@
   html += '<div class="aa-wrap">';
   html += '<h2 class="aa-section-title">Trade Snapshot</h2>';
   var balance = (country.totalExports || 0) - (country.totalImports || 0);
-  var balColor = balance >= 0 ? 'var(--aa-forest)' : 'var(--aa-terra)';
+  var balColor = balance >= 0 ? '#2D6A4F' : '#C43E1C';
   html += '<div style="display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:28px">';
   html += '<span class="aa-stat-pill" style="background:#fff;border:1.5px solid #e2e8f0;color:#0f172a;backdrop-filter:none"><strong style="color:#2D6A4F">' + fmtMoney(country.totalExports) + '</strong> <span style="color:#64748b">Exports</span></span>';
-  html += '<span class="aa-stat-pill" style="background:#fff;border:1.5px solid #e2e8f0;color:#0f172a;backdrop-filter:none"><strong style="color:#E76F51">' + fmtMoney(country.totalImports) + '</strong> <span style="color:#64748b">Imports</span></span>';
+  html += '<span class="aa-stat-pill" style="background:#fff;border:1.5px solid #e2e8f0;color:#0f172a;backdrop-filter:none"><strong style="color:#C43E1C">' + fmtMoney(country.totalImports) + '</strong> <span style="color:#64748b">Imports</span></span>';
   html += '<span class="aa-stat-pill" style="background:#fff;border:1.5px solid #e2e8f0;color:#0f172a;backdrop-filter:none"><strong style="color:' + balColor + '">' + (balance >= 0 ? '+' : '') + fmtMoney(balance) + '</strong> <span style="color:#64748b">Balance</span></span>';
   html += '</div>';
-  html += '<div style="max-width:700px;margin:0 auto;position:relative;height:320px"><canvas id="aa-trade-chart"></canvas></div>';
+  html += '<div style="max-width:700px;margin:0 auto;position:relative;height:320px"><canvas id="aa-trade-chart" role="img" aria-label="Bar chart of ' + esc(country.name) + '\'s top exports and imports by value. The totals appear in the summary above."></canvas></div>';
   html += '</div>';
   html += '</section>';
 
@@ -219,7 +219,7 @@
   html += '<section class="aa-section aa-rv">';
   html += '<div class="aa-wrap">';
   html += '<h2 class="aa-section-title">GDP Over Time</h2>';
-  html += '<div style="max-width:700px;margin:0 auto;position:relative;height:280px"><canvas id="aa-gdp-chart"></canvas></div>';
+  html += '<div style="max-width:700px;margin:0 auto;position:relative;height:280px"><canvas id="aa-gdp-chart" role="img" aria-label="Line chart of ' + esc(country.name) + '\'s GDP over time in US dollars."></canvas></div>';
   html += '</div>';
   html += '</section>';
 
@@ -273,7 +273,7 @@
   html += '<div class="aa-wrap" style="text-align:center">';
   html += '<h2 class="aa-section-title">Compare ' + country.name + ' with&hellip;</h2>';
   html += '<div class="aa-compare-row">';
-  html += '<select id="aa-cmp-select" class="aa-select" aria-label="Aa Cmp Select">';
+  html += '<select id="aa-cmp-select" class="aa-select" aria-label="Choose a country to compare with ' + esc(country.name) + '">';
   html += '<option value="">Select a country</option>';
   for (var ci = 0; ci < allCountries.length; ci++) {
     var oc = allCountries[ci];
@@ -345,7 +345,7 @@
 
   for (var fqi = 0; fqi < faqs.length; fqi++) {
     html += '<div class="aa-faq-item">';
-    html += '<button type="button" class="aa-faq-q" onclick="this.parentElement.classList.toggle(\'open\')">' + faqs[fqi].q + '</button>';
+    html += '<button type="button" class="aa-faq-q" aria-expanded="false" onclick="var _o=this.parentElement.classList.toggle(\'open\');this.setAttribute(\'aria-expanded\',_o?\'true\':\'false\')">' + faqs[fqi].q + '</button>';
     html += '<div class="aa-faq-a"><p>' + faqs[fqi].a + '</p></div>';
     html += '</div>';
   }
@@ -364,7 +364,7 @@
     cmpBtn.addEventListener('click', function() {
       var sel = cmpSel.value;
       if (sel) {
-        window.location.href='/tools/afroatlas/compare.html/?a=' + code + '&b=' + sel;
+        window.location.href='/tools/afroatlas/compare?a=' + encodeURIComponent(code) + '&b=' + encodeURIComponent(sel);
       }
     });
   }

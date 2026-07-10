@@ -37,9 +37,9 @@ const CATEGORY_PROFILES = {
   'document-pdf': {
     label: 'PDF workflow utility',
     competitors: ['iLovePDF', 'Smallpdf', 'Adobe Acrobat online'],
-    requiredFeatures: ['fileUpload', 'download', 'privacyLocal', 'resultOutput', 'primaryAction', 'schema'],
+    requiredFeatures: ['inputSurface', 'download', 'privacyLocal', 'resultOutput', 'primaryAction', 'schema'],
     strongSignals: ['batchWorkflow', 'workflowCopy', 'saveExport', 'appSurface', 'browserOk'],
-    standard: 'A competitive PDF tool should accept files directly, process or explain the workflow clearly, expose an obvious download/export path, state privacy handling, and avoid console/runtime errors.'
+    standard: 'A competitive PDF or document tool should accept files or structured input, process or explain the workflow clearly, expose an obvious download/export path, state privacy handling, and avoid console/runtime errors.'
   },
   'image-design': {
     label: 'Image and design utility',
@@ -355,6 +355,21 @@ function dateSignals(text, html) {
   return { explicit, hasCurrentYear, hasRecentYear };
 }
 
+function readLocalInteractionScripts(html) {
+  const sources = [];
+  for (const match of String(html || '').matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)) {
+    const sourceUrl = String(match[1] || '').split(/[?#]/)[0];
+    if (!sourceUrl || /^https?:|^\/\//i.test(sourceUrl) || /\.min\.js$/i.test(sourceUrl) || /\/bundles\//i.test(sourceUrl)) continue;
+    const relative = sourceUrl.replace(/^\/+/, '');
+    const filePath = path.resolve(ROOT, relative);
+    if (!filePath.startsWith(`${ROOT}${path.sep}`) || !fs.existsSync(filePath)) continue;
+    const stat = fs.statSync(filePath);
+    if (!stat.isFile() || stat.size > 2 * 1024 * 1024) continue;
+    sources.push(fs.readFileSync(filePath, 'utf8'));
+  }
+  return sources.join('\n');
+}
+
 function detectFeatures(tool, html, pageInfo, verificationManifest) {
   const text = stripTags(stripScriptStyle(html));
   const lowerText = text.toLowerCase();
@@ -366,21 +381,27 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
   const links = getExternalLinks(html);
   const imgs = String(html || '').match(/<img\b[^>]*>/gi) || [];
   const missingAlt = imgs.filter((img) => !/\balt=["'][^"']*["']/i.test(img)).length;
-  const inputs = matchCount(html, /<(input|select|textarea)\b/gi);
-  const buttons = matchCount(html, /<button\b|role=["']button["']|class=["'][^"']*\bbtn\b/gi);
-  const labels = matchCount(html, /<label\b|aria-label=|aria-labelledby=/gi);
-  const hasFileInput = /<input\b[^>]*type=["']file["']/i.test(html);
-  const hasCanvas = /<canvas\b/i.test(html);
-  const hasResult = /\b(result|output|preview|summary|breakdown|estimate|calculation|score|total|report|answer|download-ready)\b/i.test(text)
-    || /\b(result|output|preview|summary|breakdown|estimate|score|total|report)\b/i.test(html);
-  const hasPrimaryAction = buttons > 0 && /\b(calculate|generate|convert|compress|merge|split|upload|run|check|create|download|copy|compare|estimate|analy[sz]e|submit|start)\b/i.test(text);
-  const hasDownload = /\bdownload\b|download=|\.pdf\b|\.csv\b|\.docx\b|export/i.test(html);
-  const hasCopyShare = /\b(copy|share|clipboard|copyLink|shareBtn|navigator\.clipboard)\b/i.test(html);
-  const hasSaveExport = /\b(save|export|email|pdf|csv|docx|workspace|history|localStorage|AfroHistory|SaveState)\b/i.test(html);
-  const hasBusinessCta = /afro-business-cta|business-enquiry|custom-calculators|sponsored-tools|widgets\/|\/api\//i.test(html);
-  const hasDisclaimer = /\b(disclaimer|estimate only|not legal advice|not tax advice|not medical advice|informational|verify with|confirm with|not official|does not replace)\b/i.test(text);
-  const hasMethodology = /\b(methodology|how it works|calculation method|formula|assumptions|breakdown|we calculate|calculated by|rules applied)\b/i.test(text);
-  const sourceWords = /\b(source|official|authority|gazette|verified|reference|last verified|data source|based on)\b/i.test(text);
+  const appHtmlPath = pageInfo.exists && path.join(path.dirname(pageInfo.filePath), 'app.html');
+  const hasAppHtml = !!(appHtmlPath && fs.existsSync(appHtmlPath));
+  const appHtml = hasAppHtml ? fs.readFileSync(appHtmlPath, 'utf8') : '';
+  const localInteractionScripts = readLocalInteractionScripts(html);
+  const interactionHtml = [html, appHtml, localInteractionScripts].filter(Boolean).join('\n');
+  const interactionText = stripTags(stripScriptStyle(interactionHtml));
+  const inputs = matchCount(interactionHtml, /<(input|select|textarea)\b/gi);
+  const buttons = matchCount(interactionHtml, /<button\b|role=["']button["']|class=["'][^"']*\b(?:btn|button|cta)[-_\w]*\b/gi);
+  const labels = matchCount(interactionHtml, /<label\b|aria-label=|aria-labelledby=/gi);
+  const hasFileInput = /<input\b[^>]*type=["']file["']/i.test(interactionHtml);
+  const hasCanvas = /<canvas\b/i.test(interactionHtml);
+  const hasResult = /\b(result|output|preview|summary|breakdown|estimate|calculation|score|total|report|answer|download-ready)\b/i.test(interactionText)
+    || /\b(result|output|preview|summary|breakdown|estimate|score|total|report)\b/i.test(interactionHtml);
+  const hasPrimaryAction = buttons > 0 && /\b(calculate|generate|convert|compress|merge|split|upload|run|check|create|download|copy|compare|estimate|analy[sz]e|submit|start)\b/i.test(interactionText);
+  const hasDownload = /\bdownload\b|download=|\.pdf\b|\.csv\b|\.docx\b|export/i.test(interactionHtml);
+  const hasCopyShare = /\b(copy|share|clipboard|copyLink|shareBtn|navigator\.clipboard)\b/i.test(interactionHtml);
+  const hasSaveExport = /\b(save|export|email|pdf|csv|docx|workspace|history|localStorage|AfroHistory|SaveState)\b/i.test(interactionHtml);
+  const hasBusinessCta = /afro-business-cta|business-enquiry|custom-calculators|sponsored-tools|widgets\/|\/api\//i.test(interactionHtml);
+  const hasDisclaimer = /\b(disclaimer|estimate only|planning estimate|not legal advice|not tax advice|not medical advice|informational|verify with|confirm with|not official|does not replace)\b/i.test(interactionText);
+  const hasMethodology = /\b(methodology|how it works|calculation method|formula|assumptions|breakdown|we calculate|calculated by|calculated with|calculated from|calculated using|rules applied)\b/i.test(interactionText);
+  const sourceWords = /\b(source|official|authority|gazette|verified|reference|last verified|data source|based on)\b/i.test(interactionText);
   const hasHausaResult = /\b(sakamako|takaitawa|takaitaccen|maki|rauni|shiri|tsari|jadawali|bincike|jimillar)\b/i.test(text);
   const hasHausaPrimaryAction = buttons > 0 && /\b(tsara|kokoto|kirkiro|kwafi|sauke|duba|fara|sake farawa|cika misali)\b/i.test(text);
   const hasHausaDisclaimer = /\b(ba shafin hukuma ba|ba hukuma ba|ba hukumar|bai tabbatar|ba ya tabbatar|bayani mai muhimmanci|ka duba|kada a dauka)\b/i.test(text);
@@ -406,22 +427,20 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
   const hasSwahiliMethodology = /\b(njia ya kukokotoa|mbinu|formula|kanuni|makisio|dhana|tunachokokotoa|imekokotolewa|tunatumia|kizingiti cha faida|gharama zisizobadilika)\b/i.test(text);
   const hasSwahiliSourceWords = /\b(chanzo|vyanzo|rasmi|mamlaka|imethibitishwa|marejeo|tarehe ya ukaguzi|kiwango cha sasa|upya wa taarifa|hakiki chanzo)\b/i.test(text);
   const hasSwahiliWorkflowCopy = /\b(hatua|njia ya kazi|orodha ya kumbukumbu|muhtasari|ripoti|maamuzi ya biashara|mpango wa hatua|fuatilia)\b/i.test(text);
-  const officialSource = hasOfficialSource(links, text);
-  const hasPrivacyLocal = /\b(browser|local|never leave|no upload|private|privacy|client-side|on your device|files never leave)\b/i.test(text);
-  const hasBatchWorkflow = /\b(batch|bulk|multiple files|all 54|54 African|workflow|queue|multi-item|compare)\b/i.test(text);
-  const hasWorkflowCopy = /\b(workflow|step-by-step|checklist|packet|workspace|handoff|plan|playbook|guide)\b/i.test(text);
+  const officialSource = hasOfficialSource(getExternalLinks(interactionHtml), interactionText);
+  const hasPrivacyLocal = /\b(browser|local|never leave|no upload|private|privacy|client-side|on your device|files never leave)\b/i.test(interactionText);
+  const hasBatchWorkflow = /\b(batch|bulk|multiple files|all 54|54 African|workflow|queue|multi-item|compare)\b/i.test(interactionText);
+  const hasWorkflowCopy = /\b(workflow|step-by-step|checklist|packet|workspace|handoff|plan|playbook|guide)\b/i.test(interactionText);
   const localContext = /\b(Africa|African|Nigeria|Kenya|Ghana|South Africa|Naira|KSh|GHS|SARS|KRA|FIRS|NRS|GRA|AfCFTA|country|currency|local)\b/i.test(text)
     || (Array.isArray(tool.countries) && tool.countries.length > 0);
   const lang = firstMatch(html, /<html[^>]*\blang=["']([^"']+)/i);
   const verificationEntry = verificationManifest.tools && verificationManifest.tools[tool.id];
-  const date = dateSignals(text, html);
-  const forms = matchCount(html, /<form\b/gi);
+  const date = dateSignals(interactionText, interactionHtml);
+  const forms = matchCount(interactionHtml, /<form\b/gi);
   const h1Count = matchCount(html, /<h1[\s>]/gi);
   const internalToolLinks = matchCount(html, /href=["']\/(?:tools|[a-z-]+\/)[^"']*/gi);
-  const hasRelatedLinks = /\b(related tools|next step|popular tools|you may also|more tools|recommended)\b/i.test(text) || internalToolLinks >= 5;
+  const hasRelatedLinks = /\b(related tools|related afrotools|next step|popular tools|you may also|more tools|recommended)\b/i.test(interactionText) || internalToolLinks >= 5;
   const hasNavFooter = /<afro-navbar|<afro-footer|navbar|footer/i.test(html);
-  const appHtmlPath = pageInfo.exists && path.join(path.dirname(pageInfo.filePath), 'app.html');
-  const hasAppHtml = !!(appHtmlPath && fs.existsSync(appHtmlPath));
   const hasInlineOrAppScript = /<script\b/i.test(html) && /\b(addEventListener|querySelector|getElementById|function\s+\w+|const\s+\w+\s*=|let\s+\w+\s*=|new Blob|FileReader|pdf-lib|canvas)\b/i.test(html);
   const hasToolScript = /<script\b[^>]*src=["'][^"']*(?:app|tool|calculator|workspace|engine|sync|lib|pdf|image|invoice|validator)[^"']*\.js/i.test(html);
   const emptyButtons = matchCount(html, /<button\b[^>]*>\s*<\/button>/gi);
@@ -456,6 +475,7 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
       lang: !!lang,
       navFooter: hasNavFooter,
       formControls: inputs > 0 || forms > 0 || hasFileInput,
+      inputSurface: inputs > 0 || forms > 0 || hasFileInput || hasCanvas,
       inputLabels: inputs === 0 || labels >= Math.min(inputs, 2),
       primaryAction: hasPrimaryAction || hasHausaPrimaryAction || hasYorubaPrimaryAction || hasSwahiliPrimaryAction || hasFrenchPrimaryAction,
       resultOutput: hasResult || hasHausaResult || hasYorubaResult || hasSwahiliResult || hasFrenchResult,
@@ -474,7 +494,7 @@ function detectFeatures(tool, html, pageInfo, verificationManifest) {
       batchWorkflow: hasBatchWorkflow,
       workflowCopy: hasWorkflowCopy || hasHausaWorkflowCopy || hasYorubaWorkflowCopy || hasSwahiliWorkflowCopy,
       localContext,
-      verificationPanel: /data-tool-verification-panel|Sources\s*&(?:amp;)?\s*verification/i.test(html) || !!verificationEntry,
+      verificationPanel: /data-tool-verification-panel|Sources\s*&(?:amp;)?\s*verification/i.test(interactionHtml) || !!verificationEntry,
       relatedLinks: hasRelatedLinks,
       appSurface: hasAppHtml || hasToolScript || hasInlineOrAppScript,
       keyboardFriendly: labels > 0 || /aria-|tabindex|:focus/i.test(html),
@@ -508,6 +528,19 @@ function scoreTool(tool, pageInfo, features, browserResult) {
     f.browserOk = !!browserResult.ok;
     f.noConsoleErrors = (browserResult.consoleErrors || 0) === 0 && (browserResult.pageErrors || 0) === 0;
     f.interactiveInBrowser = Number(browserResult.interactiveCount || 0) > 0;
+    f.formControls = f.formControls || Number(browserResult.inputCount || 0) > 0;
+    f.inputSurface = f.inputSurface || Number(browserResult.inputCount || 0) > 0 || Number(browserResult.fileInputCount || 0) > 0;
+    f.fileUpload = f.fileUpload || Number(browserResult.fileInputCount || 0) > 0;
+    f.primaryAction = f.primaryAction || Number(browserResult.buttonCount || 0) > 0;
+    f.resultOutput = f.resultOutput || Number(browserResult.outputMarkerCount || 0) > 0;
+    f.sources = f.sources || !!browserResult.sources;
+    f.officialSource = f.officialSource || !!browserResult.officialSource;
+    f.currentYear = f.currentYear || !!browserResult.currentYear;
+    f.methodology = f.methodology || !!browserResult.methodology;
+    f.disclaimer = f.disclaimer || !!browserResult.disclaimer;
+    f.verificationPanel = f.verificationPanel || !!browserResult.verificationPanel;
+    f.relatedLinks = f.relatedLinks || !!browserResult.relatedLinks;
+    f.businessCta = f.businessCta || !!browserResult.businessCta;
   } else {
     f.browserOk = false;
     f.noConsoleErrors = false;
@@ -531,14 +564,15 @@ function scoreTool(tool, pageInfo, features, browserResult) {
   score.gaps.push(...route.gaps);
 
   const ux = { points: 0, good: [], gaps: [] };
+  const effectiveTextLength = Math.max(features.textLength, Number(browserResult && browserResult.bodyTextLength || 0));
   add(ux, 2, f.h1, 'single h1', 'missing or duplicate h1');
   add(ux, 4, f.formControls || f.fileUpload || f.primaryAction, 'interactive controls', 'thin or no visible controls');
   add(ux, 3, f.primaryAction, 'clear primary action', 'unclear primary action');
   add(ux, 3, f.resultOutput, 'visible output/result model', 'no obvious output/result model');
   add(ux, 2, f.inputLabels, 'input labels or aria labels', 'inputs need labels');
-  add(ux, 2, f.fileUpload || f.formControls || f.canvasSurface, 'domain-appropriate input surface', 'weak input surface');
+  add(ux, 2, f.inputSurface || f.fileUpload || f.formControls || f.canvasSurface, 'domain-appropriate input surface', 'weak input surface');
   add(ux, 2, f.navFooter, 'shared nav/footer shell', 'missing shared shell evidence');
-  add(ux, 2, features.textLength >= 1000, 'substantial visible copy', 'thin visible copy');
+  add(ux, 2, effectiveTextLength >= 1000, 'substantial visible copy', 'thin visible copy');
   dimensionScores.standard_tool_ux = ux.points;
   score.points += ux.points;
   score.good.push(...ux.good);
@@ -546,7 +580,7 @@ function scoreTool(tool, pageInfo, features, browserResult) {
 
   const functional = { points: 0, good: [], gaps: [] };
   add(functional, 4, f.appSurface, 'has app/script surface', 'no app/script evidence');
-  add(functional, 4, f.formControls || f.fileUpload, 'input path exists', 'no input path');
+  add(functional, 4, f.inputSurface || f.formControls || f.fileUpload, 'input path exists', 'no input path');
   add(functional, 4, f.resultOutput || f.download || f.copyShare, 'completion path exists', 'no completion path');
   add(functional, 3, f.workflowCopy || f.batchWorkflow || f.methodology, 'workflow or methodology evidence', 'no workflow or methodology evidence');
   add(functional, 2, f.download || f.saveExport || f.copyShare, 'export/copy/save path', 'missing export/copy/save path');
@@ -562,12 +596,13 @@ function scoreTool(tool, pageInfo, features, browserResult) {
   score.gaps.push(...functional.gaps);
 
   const trust = { points: 0, good: [], gaps: [] };
-  add(trust, 4, f.sources, 'source/reference evidence', 'missing source/reference evidence');
-  add(trust, 4, f.officialSource || f.verificationPanel, 'official source or verification panel', 'missing official/verification evidence');
-  add(trust, 4, f.currentYear, 'current or explicit date signal', 'stale or undated assumptions');
-  add(trust, 3, f.methodology, 'methodology or breakdown', 'missing methodology/breakdown');
-  add(trust, 3, f.disclaimer, 'disclaimer/limitations', 'missing disclaimer/limitations');
-  add(trust, 2, f.verificationPanel, 'verification panel/manifest', 'no verification panel');
+  const expectedTrustSignals = new Set(profile.requiredFeatures.concat(profile.strongSignals));
+  add(trust, 4, !expectedTrustSignals.has('sources') || f.sources, 'source/reference expectations met', expectedTrustSignals.has('sources') ? 'missing source/reference evidence' : '');
+  add(trust, 4, !expectedTrustSignals.has('officialSource') || f.officialSource || f.verificationPanel, 'official-source expectations met', expectedTrustSignals.has('officialSource') ? 'missing official/verification evidence' : '');
+  add(trust, 4, !expectedTrustSignals.has('currentYear') || f.currentYear, 'freshness expectations met', expectedTrustSignals.has('currentYear') ? 'stale or undated assumptions' : '');
+  add(trust, 3, !expectedTrustSignals.has('methodology') || f.methodology, 'methodology expectations met', expectedTrustSignals.has('methodology') ? 'missing methodology/breakdown' : '');
+  add(trust, 3, !expectedTrustSignals.has('disclaimer') || f.disclaimer, 'disclaimer expectations met', expectedTrustSignals.has('disclaimer') ? 'missing disclaimer/limitations' : '');
+  add(trust, 2, !expectedTrustSignals.has('verificationPanel') || f.verificationPanel, 'verification expectations met', expectedTrustSignals.has('verificationPanel') ? 'no verification panel' : '');
   dimensionScores.trust_accuracy = trust.points;
   score.points += trust.points;
   score.good.push(...trust.good);
@@ -645,7 +680,7 @@ function scoreTool(tool, pageInfo, features, browserResult) {
 
 function isHighIntentMoney(tool) {
   const text = `${tool.id} ${tool.name} ${tool.category} ${tool.desc || ''}`.toLowerCase();
-  return /(paye|salary|tax|vat|invoice|payroll|remittance|import|duty|employer|cost|loan|finance|payment|fee)/.test(text)
+  return /\b(?:paye|salary|tax|vat|invoice|payroll|remittance|import|duty|employer|cost|loan|finance|payment|fee)\b/.test(text)
     || ['financial', 'ecommerce', 'fintech', 'hr-payroll', 'personal-finance'].includes(tool.category);
 }
 
@@ -770,7 +805,8 @@ async function runBrowserSmoke(routes) {
         }, BROWSER_TIMEOUT + 5000);
         const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded', timeout: BROWSER_TIMEOUT });
         responseStatus = response ? response.status() : 0;
-        await page.waitForTimeout(100);
+        await page.waitForLoadState('load', { timeout: Math.min(BROWSER_TIMEOUT, 3000) }).catch(() => {});
+        await page.waitForTimeout(650);
         ok = responseStatus > 0 && responseStatus < 400;
       } catch (err) {
         error = String(err.message || err).slice(0, 300);
@@ -789,16 +825,28 @@ async function runBrowserSmoke(routes) {
           }
           const interactive = Array.from(document.querySelectorAll('button, input, select, textarea, a[href], [role="button"]')).filter(isVisible);
           const outputSelectors = '[id*="result" i], [class*="result" i], [id*="output" i], [class*="output" i], [id*="preview" i], [class*="preview" i], [aria-live]';
+          const bodyText = (document.body && document.body.innerText || '').trim();
+          const bodyHtml = document.body && document.body.innerHTML || '';
+          const externalLinks = Array.from(document.querySelectorAll('a[href^="http"]')).map((link) => `${link.href} ${link.textContent || ''}`).join(' ');
+          const sourceWords = /\b(source|official|authority|gazette|verified|reference|last verified|data source|based on)\b/i.test(bodyText);
           const nav = performance.getEntriesByType('navigation')[0];
           return {
             title: document.title || '',
             h1Count: document.querySelectorAll('h1').length,
-            bodyTextLength: (document.body && document.body.innerText || '').trim().length,
+            bodyTextLength: bodyText.length,
             interactiveCount: interactive.length,
             buttonCount: Array.from(document.querySelectorAll('button, [role="button"]')).filter(isVisible).length,
             inputCount: Array.from(document.querySelectorAll('input, select, textarea')).filter(isVisible).length,
             fileInputCount: document.querySelectorAll('input[type="file"]').length,
             outputMarkerCount: document.querySelectorAll(outputSelectors).length,
+            sources: sourceWords || externalLinks.length > 0,
+            officialSource: /\b(gov|gouv|go\.|revenue|tax authority|customs|central bank|sars|firs|nrs|kra|gra|ura|rra|tra|zra|zimra|mra|authority|ministry|official gazette|regulator|commission)\b/i.test(externalLinks),
+            currentYear: /\b(last verified|updated|reviewed|effective|2026|2025\/26|2025-26|2025)\b/i.test(`${bodyText} ${bodyHtml}`),
+            methodology: /\b(methodology|how it works|calculation method|formula|assumptions|breakdown|we calculate|calculated by|calculated with|calculated from|calculated using|rules applied)\b/i.test(bodyText),
+            disclaimer: /\b(disclaimer|estimate only|planning estimate|not legal advice|not tax advice|not medical advice|informational|verify with|confirm with|not official|does not replace)\b/i.test(bodyText),
+            verificationPanel: /sources\s*&\s*verification/i.test(bodyText) || !!document.querySelector('[data-tool-verification-panel]'),
+            relatedLinks: /\b(related tools|related afrotools|next step|popular tools|you may also|more tools|recommended)\b/i.test(bodyText),
+            businessCta: /afro-business-cta|business-enquiry|custom-calculators|sponsored-tools|widgets\//i.test(bodyHtml),
             loadEventMs: nav ? Math.round(nav.loadEventEnd || nav.domContentLoadedEventEnd || 0) : 0,
           };
         }), wait(3000).then(() => ({ evaluationTimedOut: true }))]);
@@ -832,6 +880,14 @@ async function runBrowserSmoke(routes) {
         inputCount: rendered.inputCount || 0,
         fileInputCount: rendered.fileInputCount || 0,
         outputMarkerCount: rendered.outputMarkerCount || 0,
+        sources: !!rendered.sources,
+        officialSource: !!rendered.officialSource,
+        currentYear: !!rendered.currentYear,
+        methodology: !!rendered.methodology,
+        disclaimer: !!rendered.disclaimer,
+        verificationPanel: !!rendered.verificationPanel,
+        relatedLinks: !!rendered.relatedLinks,
+        businessCta: !!rendered.businessCta,
         loadEventMs: rendered.loadEventMs || 0,
       };
     }

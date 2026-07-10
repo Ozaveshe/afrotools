@@ -1,17 +1,19 @@
 # AfroTools Blog Strategy 2026
 
-Updated: 2026-06-17
+Updated: 2026-07-10
 
 This strategy covers the static, repo-backed main blog under `/blog/`. AfroStream creator news is a separate live Supabase-backed publishing surface and should not be mixed into this plan.
 
 ## Current Snapshot
 
-Latest local checks on 2026-06-17:
+Latest local checks on 2026-07-10:
 
-- `npm run blog:editorial:audit`: 203 blog routes, 201 articles, 2 redirects, 0 errors, 3 warnings.
-- `npm run blog:feed:check`: RSS current, 40 items, latest `south-africa-filing-season-2026-dates`.
-- `npm run blog:verify`: 201 publishable articles, 201 hub cards, 40 RSS items.
-- `node scripts/audit-blog-content.js`: 201 hub cards, 80 posts still using default article images, 1 fact-heavy redirect with no outbound sources.
+- `npm run blog:editorial:audit`: 213 blog routes, 211 articles, 2 redirects, 0 errors, and 0 warnings.
+- `npm run blog:feed:check`: RSS current, 40 items, latest `nigeria-employer-payroll-compliance-2026`.
+- `npm run blog:verify`: 211 publishable articles, 211 hub cards, and 40 RSS items.
+- `node scripts/audit-blog-content.js`: 211 publishable posts, 0 default article images, and 0 fact-heavy posts without outbound sources. Redirect shells are excluded from article-quality scoring.
+
+Since the previous snapshot, the dedicated-image backlog fell from 80 posts to 0 and the eight remaining title/description warnings were cleared. The main unresolved queue is freshness review: 211 time-sensitive articles, including 101 that likely need official-source review before factual edits.
 
 The blog is structurally healthy. The strategy gap is no longer "publish enough." It is:
 
@@ -138,7 +140,7 @@ Use this backlog for the next 8 to 12 weeks. A topic can ship only after duplica
 | --- | --- | --- | --- | --- | --- |
 | P0 | Refresh Kenya PAYE and salary-tax guide cluster for 2026 | Tax, payroll, compliance | Searchable | Kenya PAYE, salary-tax hub | KRA, NSSF, SHA/AHL official pages |
 | P0 | Refresh Nigeria Tax Act 2026 changes into a substantial guide | Tax, payroll, compliance | Searchable | Nigeria PAYE, business tax tools | FIRS and official gazette/source notes |
-| P0 | Replace default imagery and refresh the salary-after-tax country cluster | Tax, payroll, compliance | Searchable | Country salary calculators | Country tax authority pages |
+| P1 | Refresh the salary-after-tax country cluster and maintain dedicated imagery | Tax, payroll, compliance | Searchable | Country salary calculators | Country tax authority pages |
 | P0 | Mobile money fees in Africa: tool-led update | Everyday money | Searchable and shareable | Mobile money fees tool | Operator fee pages where available |
 | P1 | Agriculture calculator guide hub: seed, feed, yield, irrigation | Agriculture and household ops | Searchable | Agriculture tools | Source notes for changing prices/yields |
 | P1 | Solar ROI country guides: Nigeria, Kenya, South Africa, Ghana | Energy and household ops | Searchable | Solar ROI and electricity tariff tools | Regulator/tariff source ledgers |
@@ -177,6 +179,8 @@ Default weekly mix for the static blog:
 - 1 new article in an under-served tool category.
 - 1 image/internal-link improvement pass on existing articles.
 
+The AM and PM content automations must run the editorial, content, and feed audits before choosing the static item. A substantive source, freshness, metadata, depth, internal-link, or tool-handoff refresh counts as the batch's static item. Create a new article only when no higher-impact gap fits that automation lane.
+
 Daily cadence can still be used during campaigns, but only after the source and quality bar is met. The blog is large enough that maintenance and cluster depth now matter more than raw post count.
 
 ## Article Brief Template
@@ -206,7 +210,7 @@ Use this before drafting any new post:
 
 ## Image Strategy
 
-The older content audit found 80 posts with default article images. Do not generate images inside the blog publishing task unless the user explicitly asks for image generation.
+The 2026-07-10 content audit found 0 posts using default article images. Keep image cleanup as a regression queue rather than manufacturing replacement work. Do not generate images inside the blog publishing task unless the user explicitly asks for image generation.
 
 Image cleanup order:
 

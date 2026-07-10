@@ -157,6 +157,7 @@
 /signin/  /auth/?mode=login&next=/dashboard/   301
 /signup   /auth/?mode=signup&next=/dashboard/  301
 /signup/  /auth/?mode=signup&next=/dashboard/  301
+/auth/login   /auth/?mode=login&next=/dashboard/   301!
 
 # Vault shortcut
 /vault    /dashboard/vault/  301
@@ -310,19 +311,38 @@
 /eq-guinea     /equatorial-guinea/   301
 /eq-guinea/    /equatorial-guinea/   301
 
+# Duplicate country-slug consolidation — alternate spellings of ONE country.
+# Direction verified via the ISO 2-letter redirects (/cv,/cd,/cf below),
+# sitemap primary slug, and internal link weight (canonical slug wins ~185 to <5).
+# Forced (301!) because each source directory still ships a static index.html.
+# NOTE: navbar.js _countryHref still routes EN users to /drc/ and /central-africa/
+# (lines ~3109/3111); update those to the canonical slug and regenerate
+# navbar.min.js so nav clicks land on the canonical URL without a redirect hop.
+/cabo-verde/*      /cape-verde/:splat                301!
+/cabo-verde        /cape-verde/                      301!
+/drc/*             /dr-congo/:splat                  301!
+/drc               /dr-congo/                        301!
+/central-africa/*  /central-african-republic/:splat  301!
+/central-africa    /central-african-republic/        301!
+
 # Redirect old dev-tools hub to canonical developer-tools page
 /tools/dev-tools   /developer-tools/  301
 /tools/dev-tools/  /developer-tools/  301
 
-# Old category aliases
-/mortgage    /mortgage/index.html    200
-/mortgage/   /mortgage/index.html    200
+# /mortgage/ duplicates the /mortgage-property/ category hub (same 'legal' tool set,
+# same "Mortgage & Property" title). Canonicalize to /mortgage-property/ — the /legal
+# migration target and navbar hub, with 46 vs 9 inbound links. 301! overrides its static file.
+/mortgage    /mortgage-property/    301!
+/mortgage/   /mortgage-property/    301!
 
 # /legal was the old slug — redirect to /mortgage-property/
 /legal       /mortgage-property/     301
 /legal/      /mortgage-property/     301
-/health-insurance    /health-insurance/index.html    200
-/health-insurance/   /health-insurance/index.html    200
+# /health-insurance/ duplicates the /health/ category hub (JS-filters the same 'health'
+# tool set). Canonicalize to /health/ — the navbar Health hub, with 81 vs 6 inbound links.
+# 301! overrides its static file. (Health-insurance as a topic lives at /health/insurance.)
+/health-insurance    /health/    301!
+/health-insurance/   /health/    301!
 
 # Search page
 /search    /search/index.html    200
@@ -787,6 +807,8 @@
 /togo/calculateur-tva/                  /togo/tg-vat             301
 
 # French tool URL aliases — specific redirects to French pages (before generic catch-all)
+/fr/tools/projection-retraite/      /fr/tools/projection-pension/ 301
+/fr/tools/projection-retraite       /fr/tools/projection-pension/ 301
 /fr/tools/vat-calculator/vat-calc/  /fr/tools/calculateur-tva/    301
 /fr/tools/vat-calculator/vat-calc   /fr/tools/calculateur-tva/    301
 /fr/tools/vat-calculator/           /fr/tools/calculateur-tva/    301
@@ -2160,7 +2182,7 @@
 /fr/burkina-faso/bf-vat.html  /fr/burkina-faso/calculateur-tva  301!
 /fr/burkina-faso/calculateur-salaire-net.html  /fr/burkina-faso/calculateur-salaire-net  301!
 /fr/burkina-faso/calculateur-tva.html  /fr/burkina-faso/calculateur-tva  301!
-/fr/burundi/bi-paye.html  /fr/burundi/calculateur-salaire-net  301!
+/fr/burundi/bi-paye.html  /fr/burundi/calculateur-salaire-net/  301!
 /fr/burundi/bi-vat.html  /fr/burundi/calculateur-tva  301!
 /fr/burundi/calculateur-tva.html  /fr/burundi/calculateur-tva  301!
 /fr/cameroon/cm-paye.html  /fr/cameroon/cm-paye  301!
@@ -2169,7 +2191,7 @@
 /fr/cameroun/calculateur-tva.html  /fr/cameroun/calculateur-tva  301!
 /fr/cape-verde/cv-paye.html  /fr/cape-verde/cv-paye/  301!
 /fr/cape-verde/cv-vat.html  /fr/cape-verde/cv-vat/  301!
-/fr/car/cf-paye.html  /fr/centrafrique/calculateur-salaire-net  301!
+/fr/car/cf-paye.html  /fr/centrafrique/calculateur-salaire-net/  301!
 /fr/car/cf-vat.html  /fr/centrafrique/calculateur-tva  301!
 /fr/centrafrique/calculateur-tva.html  /fr/centrafrique/calculateur-tva  301!
 /fr/chad/td-paye.html  /fr/tchad/calculateur-salaire-net/  301!
@@ -3460,3 +3482,27 @@
 
 # Country & top-level pages: /xyz → /xyz/index.html (200, no redirect)
 /:page                /:page/index.html                200
+
+# ── SEO cleanup (Jul 2026): targeted redirects for GSC 404s ──
+# Docs hub was removed from deploy; PDF hub content lives in the Document & PDF category
+/docs/pdf-tools-hub.html   /document-pdf/        301
+/docs/pdf-tools-hub        /document-pdf/        301
+# Renamed / consolidated tools
+/tools/rent-own-abroad/    /tools/rent-vs-buy/   301
+/tools/rent-own-abroad     /tools/rent-vs-buy/   301
+# French country hub reached without /fr/ prefix
+/guinee-equatoriale/*      /fr/guinee-equatoriale/:splat  301
+/guinee-equatoriale        /fr/guinee-equatoriale/        301
+# Retired experiments — tell crawlers these are permanently gone
+/matchday-os/*             /404.html             410
+/wp-admin/*                /404.html             410
+/wp-login.php              /404.html             410
+/xmlrpc.php                /404.html             410
+
+# ── Language-prefix fallbacks (must stay LAST; non-forced so real pages win).
+# Old language-switcher builds emitted prefix-swapped URLs that never existed;
+# send any leftover phantom language path to its English equivalent.
+/fr/*   /:splat   301
+/sw/*   /:splat   301
+/ha/*   /:splat   301
+/yo/*   /:splat   301

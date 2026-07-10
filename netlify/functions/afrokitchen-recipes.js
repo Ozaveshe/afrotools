@@ -22,7 +22,9 @@ function getCorsHeaders(event) {
   const isAllowed =
     origin === 'https://afrotools.com' ||
     origin === 'https://www.afrotools.com' ||
-    origin.endsWith('.netlify.app') ||
+    // Only our own afrotools.netlify.app site + branch/deploy-preview subdomains,
+    // not every *.netlify.app tenant.
+    /^https:\/\/([a-z0-9-]+--)?afrotools[a-z0-9-]*\.netlify\.app$/.test(origin) ||
     origin.startsWith('http://localhost') ||
     origin.startsWith('http://127.0.0.1');
   return {
@@ -48,9 +50,11 @@ exports.handler = async function (event) {
   try {
     if (action === 'list') {
       let url = `${SUPABASE_URL}/rest/v1/recipes?select=*&is_verified=eq.true&order=is_featured.desc,view_count.desc`;
-      if (params.country) url += `&country_code=eq.${params.country}`;
-      if (params.category) url += `&category=eq.${params.category}`;
-      if (params.difficulty) url += `&difficulty=eq.${params.difficulty}`;
+      // Validate + encode filter values before interpolating into the PostgREST query
+      // to prevent operator/filter injection. Invalid values silently skip the filter.
+      if (params.country && /^[A-Za-z]{2}$/.test(params.country)) url += `&country_code=eq.${encodeURIComponent(params.country)}`;
+      if (params.category && /^[a-z0-9 _-]{1,40}$/i.test(params.category)) url += `&category=eq.${encodeURIComponent(params.category)}`;
+      if (params.difficulty && /^[a-z0-9 _-]{1,40}$/i.test(params.difficulty)) url += `&difficulty=eq.${encodeURIComponent(params.difficulty)}`;
       if (params.featured) url += `&is_featured=eq.true`;
       if (params.slug && /^[a-z0-9-]+$/.test(params.slug)) url += `&slug=eq.${params.slug}`;
       if (params.limit) url += `&limit=${parseInt(params.limit, 10) || 20}`;
@@ -58,6 +62,7 @@ exports.handler = async function (event) {
       const res = await fetch(url, {
         headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
       });
+      if (!res.ok) throw new Error('Upstream ' + res.status);
       const data = await res.json();
       return { statusCode: 200, headers, body: JSON.stringify(data) };
     }
@@ -68,6 +73,7 @@ exports.handler = async function (event) {
         `${SUPABASE_URL}/rest/v1/recipes?slug=eq.${params.slug}&is_verified=eq.true&select=*&limit=1`,
         { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
       );
+      if (!recipeRes.ok) throw new Error('Upstream ' + recipeRes.status);
       const recipes = await recipeRes.json();
       if (!recipes.length) return { statusCode: 404, headers, body: JSON.stringify({ error: 'Recipe not found' }) };
 

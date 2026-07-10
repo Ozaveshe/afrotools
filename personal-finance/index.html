@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,13 +26,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
-<script src="/assets/js/components/tool-registry.min.js?v=0243ac32" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<script src="/assets/js/components/tool-registry.min.js?v=2327e88c" defer></script>
 <script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/personal-finance/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/personal-finance/">
 <style>
@@ -120,7 +120,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(
 @media(max-width:720px){.pf-shell{width:min(100% - 24px,1180px)}.pf-hero{padding:26px 0 42px}.pf-hero-grid,.pf-surface-head,.path-grid,.tool-grid,.related-grid,.check-panel{grid-template-columns:1fr}.pf-hero h1{font-size:clamp(2.05rem,13vw,3.2rem)}.pf-stats{grid-template-columns:1fr}.pf-surface{border-radius:18px}.pf-surface-head,.path-board,.pf-tools-section,.related-zone{padding-left:18px;padding-right:18px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:0s!important;animation-duration:0s!important}.pf-btn:hover,.tool-card:hover{transform:none}}
 </style>
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 </head>
 <body class="personal-finance-category-focus top-level-page-ui-refresh">
 <afro-navbar active="personal-finance"></afro-navbar>
@@ -160,9 +160,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(
   <section class="pf-surface" aria-labelledby="personal-finance-title">
     <div class="pf-surface-head">
       <div>
-        <div class="pf-eyebrow">Registry-backed category</div>
+        <div class="pf-eyebrow">Personal finance essentials</div>
         <h2 class="pf-title" id="personal-finance-title">Core Personal Finance tools</h2>
-        <p class="pf-copy">This page counts the English tools registered in the `personal-finance` category. Adjacent tax, savings, net-worth, school-fee, and mortgage tools are still useful, but they are not counted as this category's inventory.</p>
+        <p class="pf-copy">These five tools cover the money decisions people ask about most — budgeting, creator project spend, an emergency buffer, and side-income ideas. Handy tax, savings, net-worth, school-fee, and mortgage tools sit nearby too; you'll find them further down the page.</p>
       </div>
       <div class="privacy-note"><strong>Local-first for sensitive money data.</strong> Income, expenses, family obligations, project budgets, and side-income assumptions should stay in the browser unless a user explicitly copies, downloads, saves, or submits something.</div>
     </div>
@@ -196,7 +196,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(
       <div class="pf-section-head">
         <div>
           <h2>Core Personal Finance apps</h2>
-          <p>Rendered from the live tool registry for the English Personal Finance category.</p>
+          <p>The five core tools for planning your money, kept up to date automatically.</p>
         </div>
       </div>
       <div class="tool-grid" id="pf-core-grid"></div>
@@ -206,7 +206,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid rgba(
       <div class="pf-section-head">
         <div>
           <h2 id="related-pf-title">Related finance companions</h2>
-          <p>These nearby tools support the same money workflow, but they belong to adjacent categories in the registry.</p>
+          <p>These tools help with the same money goals, but they live in nearby categories on AfroTools.</p>
         </div>
       </div>
       <div class="related-grid">
@@ -266,7 +266,7 @@ function initPersonalFinanceCategory() {
     if (!grid) return;
     grid.innerHTML = coreTools.map(function(tool) {
       return '<a class="tool-card" data-pf-tool-card href="' + escapeHtml(tool.href) + '"><span class="pf-mark" aria-hidden="true">' + MARK + '</span><h3>' + escapeHtml(tool.name) + '</h3><p>' + escapeHtml(tool.desc) + '</p><div class="tool-foot"><span>Finance tool</span><span>Open</span></div></a>';
-    }).join("") || '<div class="empty-state">No registry-backed Personal Finance tools found.</div>';
+    }).join("") || '<div class="empty-state">We couldn\'t load the finance tools just now. Please refresh the page to try again.</div>';
   }
   function renderPath() {
     Array.prototype.forEach.call(document.querySelectorAll("[data-pf-path]"), function(card) { card.classList.toggle("is-active", card.getAttribute("data-pf-path") === state.path); });

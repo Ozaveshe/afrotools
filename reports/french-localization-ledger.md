@@ -1,32 +1,32 @@
 # French Localization Ledger
 
-Generated: 2026-06-16
+Generated: 2026-07-10
 
 This is an audit-only ledger. It does not translate or edit French pages. English source inventory follows the skip logic in `scripts/build-i18n.js`.
 
 ## Headline Metrics
 
-- Total English source pages: 5836
-- Total French pages: 3440
-- Raw page-count completion: 58.94%
-- English-backed route-mapping completion: 56.36%
-- Indexable mapped French route owners: 3289
-- French registry coverage: 100% of registry-eligible French tool/money/PDF routes (699/699)
-- French registry entries: 1141
-- English-backed French routes: 3397
-- French-only routes: 34
+- Total English source pages: 5855
+- Total French pages: 3441
+- Raw page-count completion: 58.77%
+- English-backed route-mapping completion: 56.19%
+- Indexable mapped French route owners: 3290
+- French registry coverage: 100% of registry-eligible French tool/money/PDF routes (698/698)
+- French registry entries: 1140
+- English-backed French routes: 3398
+- French-only routes: 33
 - Generated output routes: 2343
-- Hand-authored French pages: 1097
+- Hand-authored French pages: 1098
 - Unclear source-of-truth routes: 0
 
 ## Coverage By Section
 
 | Section | English source pages | French pages | Unique English mapped | Raw coverage | Mapped coverage | Registry coverage |
 |---|---:|---:|---:|---:|---:|---:|
-| tools | 2579 | 1041 | 1025 | 40.36% | 39.74% | 100% |
+| tools | 2587 | 1041 | 1025 | 40.24% | 39.62% | 100% |
 | cars | 1582 | 1081 | 1081 | 68.33% | 68.33% | n/a |
 | agriculture | 645 | 636 | 636 | 98.6% | 98.6% | n/a |
-| blog | 204 | 156 | 153 | 76.47% | 75% | 100% |
+| blog | 214 | 156 | 153 | 72.9% | 71.5% | 100% |
 | salary-tax | 66 | 97 | 62 | 146.97% | 93.94% | 100% |
 | vat-business-tax | 56 | 91 | 54 | 162.5% | 96.43% | 100% |
 | document-pdf | 1 | 1 | 1 | 100% | 100% | 100% |
@@ -38,28 +38,31 @@ This is an audit-only ledger. It does not translate or edit French pages. Englis
 
 ## Top 20 Blockers
 
-1. French pages with no English-backed source mapping (34)
+1. French pages with no English-backed source mapping (33)
    - Recommendation: Decide whether each route is intentional French-only content or should be mapped/canonicalized to an English source before translation work expands.
    - Examples: /fr/404, /fr/api/docs, /fr/blog/frais-orange-money-guide-2026, /fr/blog/guide-irpp-senegal-2026, /fr/blog/wave-vs-orange-money-senegal-2026, /fr/comparer/senegal-vs-cote-divoire-impots, /fr/dashboard/api, /fr/dashboard
-2. French aliases or bridge routes (101)
+2. French pages with English title/H1/UI labels (6)
+   - Recommendation: Use this as a QA queue after the ledger, starting with money and discovery surfaces.
+   - Examples: /fr/tools/generateur-meta-tags, /fr/tools/compte-a-rebours, /fr/tools/cout-cac, /fr/tools/formateur-json, /fr/tools/generateur-qr, /fr/tools/lien-whatsapp
+3. French aliases or bridge routes (102)
    - Recommendation: Keep aliases out of registry/search promotion unless they are deliberate bridge pages.
    - Examples: /fr/algeria/dz-paye, /fr/algeria/dz-vat, /fr/algeria, /fr/benin/bj-paye, /fr/benin/bj-vat, /fr/burkina-faso/bf-paye, /fr/burkina-faso/bf-vat, /fr/burkina-faso/bf-vat
-3. English source pages without a mapped French route (2546)
+4. English source pages without a mapped French route (2564)
    - Recommendation: Use high-value section counts to choose the next implementation batch instead of translating randomly.
    - Examples: afrowork, afrowork/api, afrowork/whatsapp, agriculture/crop-planning-yield, agriculture/equipment-infrastructure, agriculture/farm-finance-roi, agriculture/farm-payroll/_template, agriculture/inputs-feed-operations
-4. Hand-authored French pages that need owner confirmation (1097)
+5. Hand-authored French pages that need owner confirmation (1098)
    - Recommendation: Treat hand-authored pages as source-sensitive and avoid regeneration until ownership is clear.
    - Examples: /fr/404, /fr/algerie/calculateur-salaire-net, /fr/algerie/calculateur-tva, /fr/algerie, /fr/api/docs, /fr/benin/calculateur-salaire-net, /fr/benin/calculateur-tva, /fr/blog/frais-orange-money-guide-2026
-5. salary-tax raw French count materially exceeds mapped coverage (35)
+6. salary-tax raw French count materially exceeds mapped coverage (35)
    - Recommendation: Resolve salary-tax aliases and French-only routes before using raw page volume as completion evidence.
    - Examples: /fr/car/cf-paye, /fr/car/cf-paye, /fr/dr-congo/cd-paye, /fr/dr-congo/cd-paye
-6. vat-business-tax raw French count materially exceeds mapped coverage (37)
+7. vat-business-tax raw French count materially exceeds mapped coverage (37)
    - Recommendation: Resolve vat-business-tax aliases and French-only routes before using raw page volume as completion evidence.
    - Examples: /fr/car/cf-vat, /fr/car/cf-vat, /fr/docs/api/vat/calculate, /fr/docs/api/vat, /fr/dr-congo/cd-vat, /fr/dr-congo/cd-vat
-7. auth has no English-backed French route coverage (2)
+8. auth has no English-backed French route coverage (2)
    - Recommendation: Create a discovery-only auth source/route map before translating this section.
    - Examples: auth, auth/login
-8. country hubs raw French count materially exceeds mapped coverage (13)
+9. country hubs raw French count materially exceeds mapped coverage (13)
    - Recommendation: Resolve country hubs aliases and French-only routes before using raw page volume as completion evidence.
    - Examples: none
 
@@ -68,7 +71,7 @@ This is an audit-only ledger. It does not translate or edit French pages. Englis
 - Duplicate French canonicals: 0
 - English sources mapped to multiple French routes: 0
 - Missing reciprocal hreflang pairs involving French pages: 0
-- French pages with English title/H1/UI labels: 0
+- French pages with English title/H1/UI labels: 6
 - Registry-eligible French pages not represented in registry: 0
 - Registry entries pointing to non-preferred French routes: 0
 - Registry entries pointing to missing French routes: 0

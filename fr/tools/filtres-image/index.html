@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -24,9 +24,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 <style>
 .filter-page {
   background: #f5f7fb;
@@ -517,8 +517,8 @@
   }
 }
 </style>
-<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -572,9 +572,9 @@
         <h1>Filtres photo en ligne</h1>
         <p>Importez une photo, ajustez luminosité, contraste, saturation, noir et blanc ou sépia, puis comparez avant/après et exportez un PNG. L'éditeur est conçu comme un outil direct, utilisable sur mobile.</p>
       </div>
-      <aside class="filter-note-card" aria-label="Confidentialite">
+      <aside class="filter-note-card" aria-label="Confidentialité">
         <strong>Vos images restent sur votre appareil</strong>
-        <span>L'image est lue dans le navigateur, traitee dans un canvas, puis exportee localement. AfroTools ne televerse pas vos fichiers depuis cette page.</span>
+        <span>L'image est lue dans le navigateur, traitee dans un canvas, puis exportée localement. AfroTools ne televerse pas vos fichiers depuis cette page.</span>
       </aside>
     </div>
   </div>
@@ -591,9 +591,9 @@
           <input id="imageInput" type="file" accept="image/*">
           <span class="filter-help">PNG, JPEG, WebP ou tout format lisible par votre navigateur.</span>
         </div>
-        <div id="dropZone" class="filter-drop" tabindex="0" aria-label="Zone de depot pour une image">
+        <div id="dropZone" class="filter-drop" tabindex="0" aria-label="Zone de dépôt pour une image">
           <strong>Deposez une photo ici</strong>
-          <p>Vous pouvez aussi choisir un fichier. La preview se met a jour des que l'image est chargee.</p>
+          <p>Vous pouvez aussi choisir un fichier. La preview se met à jour dès que l'image est chargee.</p>
         </div>
 
         <h2 id="presets-titre" style="margin-top:18px">Presets rapides</h2>
@@ -654,7 +654,7 @@
             <canvas id="filterCanvas" width="1200" height="800" aria-label="Aperçu de la photo filtrée"></canvas>
           </div>
         </div>
-        <div class="filter-metrics" aria-label="Resume du filtre">
+        <div class="filter-metrics" aria-label="Résumé du filtre">
           <div class="filter-metric">
             <span>Preset</span>
             <strong id="presetMetric">Naturel</strong>
@@ -665,7 +665,7 @@
           </div>
           <div class="filter-metric">
             <span>Mode</span>
-            <strong id="modeMetric">Avant/apres</strong>
+            <strong id="modeMetric">Avant/après</strong>
           </div>
           <div class="filter-metric">
             <span>Sortie</span>
@@ -673,7 +673,7 @@
           </div>
         </div>
         <div class="filter-field full" style="margin-top:14px">
-          <label for="summaryOutput">Resume du rendu</label>
+          <label for="summaryOutput">Résumé du rendu</label>
           <textarea id="summaryOutput" data-output="filter-result" readonly>Ajoutez une image pour voir le résumé du rendu.</textarea>
         </div>
       </section>
@@ -681,23 +681,23 @@
 
     <div class="filter-info-stack">
       <section class="filter-info" data-tool-verification-panel aria-labelledby="methode-titre">
-        <h2 id="methode-titre">Methode</h2>
+        <h2 id="methode-titre">Méthode</h2>
         <ol>
           <li>L'image est chargee localement avec FileReader ou un objet URL, puis dessinee dans le canvas.</li>
-          <li>Les controles construisent une chaine de filtre canvas : luminosite, contraste, saturation, noir et blanc et sepia.</li>
+          <li>Les contrôles construisent une chaine de filtre canvas : luminosite, contraste, saturation, noir et blanc et sepia.</li>
           <li>Le mode avant/après affiche l'original d'un côté et le rendu filtré de l'autre pour contrôler l'effet avant export.</li>
           <li>Le téléchargement crée un PNG propre depuis le canvas, sans le trait de comparaison.</li>
         </ol>
-        <p>Verification de page : 16 mai 2026. References de benchmark : effets photo sur <a href="https://www.canva.com/features/photo-effects/" rel="noopener" target="_blank">Canva</a>, filtres photo sur <a href="https://www.adobe.com/express/feature/image/filter" rel="noopener" target="_blank">Adobe Express</a>, edition locale inspiree de <a href="https://github.com/GoogleChromeLabs/squoosh" rel="noopener" target="_blank">Squoosh</a>, et filtres canvas documentes par <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter" rel="noopener" target="_blank">MDN</a>.</p>
+        <p>Vérification de page : 16 mai 2026. Références de benchmark : effets photo sur <a href="https://www.canva.com/features/photo-effects/" rel="noopener" target="_blank">Canva</a>, filtres photo sur <a href="https://www.adobe.com/express/feature/image/filter" rel="noopener" target="_blank">Adobe Express</a>, edition locale inspiree de <a href="https://github.com/GoogleChromeLabs/squoosh" rel="noopener" target="_blank">Squoosh</a>, et filtres canvas documentes par <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter" rel="noopener" target="_blank">MDN</a>.</p>
       </section>
 
       <section class="filter-info" aria-labelledby="limites-titre">
         <h2 id="limites-titre">Limites</h2>
-        <p>Les filtres canvas sont rapides et pratiques, mais ils ne remplacent pas une suite photo avancee pour la retouche fine, les masques, les profils couleur ou les corrections de peau. Le rendu final peut varier legerement selon le navigateur et l'ecran.</p>
+        <p>Les filtres canvas sont rapides et pratiques, mais ils ne remplacent pas une suite photo avancee pour la retouche fine, les masques, les profils couleur ou les corrections de peau. Le rendu final peut varier legerement selon le navigateur et l'écran.</p>
       </section>
 
       <section class="filter-info" aria-labelledby="confidentialite-titre">
-        <h2 id="confidentialite-titre">Confidentialite</h2>
+        <h2 id="confidentialite-titre">Confidentialité</h2>
         <p>Cette page ne fait pas d'envoi serveur pour traiter votre image. Pour les photos sensibles, gardez tout de même une copie originale séparée et vérifiez le fichier exporté avant de le partager.</p>
       </section>
 
@@ -708,7 +708,7 @@
           <a href="/fr/tools/convertir-format-image/">Convertir un format d'image</a>
           <a href="/fr/tools/carte-sociale/">Générer une carte sociale</a>
           <a href="/fr/tools/createur-miniatures/">Créer une miniature</a>
-          <a href="/fr/tools/contraste-couleurs/">Verifier le contraste des couleurs</a>
+          <a href="/fr/tools/contraste-couleurs/">Vérifier le contraste des couleurs</a>
         </div>
       </section>
     </div>

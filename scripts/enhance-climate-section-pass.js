@@ -446,7 +446,7 @@ const TOOLS = [
 const TOOL_ENHANCEMENTS = {
   "drought-risk": {
     competitor: "NASA Earthdata drought monitoring and Cool Farm Tool scenario workflows",
-    upgrade: "Added farm presets, a data-confidence prompt, drought-to-rainfall workflow links, and a PDF action pack for extension or insurance conversations.",
+    upgrade: "Ready-made presets for common African farms, plus a downloadable action plan you can share with extension officers or insurers.",
     workflow: "Farm Resilience",
     audience: ["farmer", "agribusiness"],
     pdfTitle: "Farm drought action pack",
@@ -459,7 +459,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "water-scarcity": {
     competitor: "WRI Aqueduct Water Risk Atlas and utility storage sizing tools",
-    upgrade: "Added operational storage presets, pathway routing from shortage risk into drought and waste-water decisions, and a tank-sizing PDF.",
+    upgrade: "Storage presets for homes, clinics and farms, with a downloadable tank-sizing plan you can act on.",
     workflow: "Water Security",
     audience: ["home", "clinic", "business", "farm"],
     pdfTitle: "Water buffer sizing report",
@@ -472,7 +472,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "rainfall-tracker": {
     competitor: "NASA drought data, FEWS NET-style seasonal monitoring and Cool Farm Tool water metrics",
-    upgrade: "Added field-notebook presets, crop-stage workflow routing, and PDF season notes for farm records.",
+    upgrade: "Simple presets for the field, with downloadable season notes to keep with your farm records.",
     workflow: "Farm Resilience",
     audience: ["farmer", "agribusiness"],
     pdfTitle: "Rainfall season note",
@@ -485,7 +485,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "carbon-credit": {
     competitor: "Verra VCS Project Hub, Gold Standard certification and Cool Farm Tool carbon workflows",
-    upgrade: "Added standard-aware scenario presets, MRV workflow routing, dashboard saves, and an investor-ready PDF gate.",
+    upgrade: "Scenario presets for the major carbon standards, plus an investor-ready report you can download and share.",
     workflow: "Carbon Project",
     audience: ["project", "ngo", "developer"],
     pdfTitle: "Carbon project pre-feasibility note",
@@ -498,7 +498,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "flood-risk": {
     competitor: "FEMA National Risk Index, First Street Flood Factor and Climate Central flood screening",
-    upgrade: "Added property-style risk reporting, insurance budget prompts, companion routing, and a flood preparedness PDF.",
+    upgrade: "A clear property risk read-out, insurance budget guidance, and a downloadable flood preparedness plan.",
     workflow: "Property Resilience",
     audience: ["home", "business", "facility"],
     pdfTitle: "Flood preparedness report",
@@ -511,7 +511,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "air-quality": {
     competitor: "AirNow AQI, IQAir-style exposure dashboards and WHO household-air-pollution guidance",
-    upgrade: "Added exposure presets, AQI health-routing, dashboard saves, and a PDF exposure plan for schools, homes and worksites.",
+    upgrade: "Exposure presets with a downloadable air-quality plan for schools, homes and worksites.",
     workflow: "Healthy Air",
     audience: ["home", "school", "business"],
     pdfTitle: "Air quality exposure plan",
@@ -524,7 +524,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "deforestation": {
     competitor: "Global Forest Watch alerts, GFW dashboards and FAO forest-carbon reporting",
-    upgrade: "Added GFW-inspired alert/checklist framing, carbon-loss presets, and routing into carbon-credit and restoration tools.",
+    upgrade: "Clear alerts and a carbon-loss checklist, with next steps into the carbon-credit and restoration tools.",
     workflow: "Land Use",
     audience: ["project", "ngo", "agribusiness"],
     pdfTitle: "Land-use impact memo",
@@ -537,7 +537,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "waste-management": {
     competitor: "UNEP Zero Waste guidance and EPA WARM policy/program estimator",
-    upgrade: "Added facility presets, circularity workflow routing, and a waste contract PDF that captures email before download.",
+    upgrade: "Facility presets and a downloadable waste-contract summary to take to your collector.",
     workflow: "Circular Operations",
     audience: ["business", "clinic", "school", "municipal"],
     pdfTitle: "Waste operations action plan",
@@ -550,7 +550,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "recycling-revenue": {
     competitor: "EPA WARM material categories and recycling program toolkits",
-    upgrade: "Added buyer-quality presets, contamination workflow links, and a revenue PDF for aggregators and facility managers.",
+    upgrade: "Buyer-quality presets and a downloadable revenue summary for aggregators and facility managers.",
     workflow: "Circular Operations",
     audience: ["business", "collector", "municipal"],
     pdfTitle: "Recycling revenue sheet",
@@ -563,7 +563,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "charcoal-vs-clean": {
     competitor: "WHO clean cooking cost-benefit tools and Clean Cooking Alliance transition analysis",
-    upgrade: "Added household switch presets, fuel transition routing into AQI and sustainability pages, and a clean-cooking PDF gate.",
+    upgrade: "Household switch presets and a downloadable clean-cooking comparison to guide the change.",
     workflow: "Healthy Air",
     audience: ["home", "program", "school"],
     pdfTitle: "Clean cooking switch plan",
@@ -576,7 +576,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "ewaste-value": {
     competitor: "Global E-waste Monitor, formal collection targets and electronics trade-in flows",
-    upgrade: "Added device-batch presets, data-risk routing, and a formal-recycler PDF gate for collection planning.",
+    upgrade: "Device-batch presets and a downloadable collection plan for handing devices to a trusted recycler.",
     workflow: "Circular Operations",
     audience: ["business", "collector", "school"],
     pdfTitle: "E-waste collection report",
@@ -589,7 +589,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "tree-planting-roi": {
     competitor: "Cool Farm Tool sequestration scenarios, Verra land-use MRV and reforestation calculators",
-    upgrade: "Added survival-focused presets, carbon-routing, dashboard saves, and a planting ROI PDF.",
+    upgrade: "Survival-focused presets and a downloadable planting ROI summary you can plan around.",
     workflow: "Carbon Project",
     audience: ["project", "farmer", "ngo"],
     pdfTitle: "Tree planting ROI report",
@@ -602,7 +602,7 @@ const TOOL_ENHANCEMENTS = {
   },
   "sustainability-scorecard": {
     competitor: "GRI Standards, IFC EDGE-style efficiency scoring and ESG reporting checklists",
-    upgrade: "Added sector presets, evidence-first dashboard saves, and a PDF scorecard for operators and lenders.",
+    upgrade: "Sector presets and a downloadable scorecard to share with operators and lenders.",
     workflow: "Business Readiness",
     audience: ["business", "facility", "investor"],
     pdfTitle: "Business sustainability scorecard",
@@ -877,13 +877,13 @@ function climateIndexHtml() {
 <afro-navbar theme="dark" active="climate"></afro-navbar>
 <section class="cl-hero">
 <div class="cl-hero-inner">
-<div class="cl-hero-badge-row"><span class="cl-badge">Category O</span><span class="cl-badge">${TOOLS.length} live tools</span><span class="cl-badge">No dead routes</span></div>
+<div class="cl-hero-badge-row"><span class="cl-badge">Climate &amp; Environment</span><span class="cl-badge">${TOOLS.length} free tools</span><span class="cl-badge">No sign-up needed</span></div>
 <h1>Climate &amp; Environment<br><em>Tools for Africa</em></h1>
 <p>Practical calculators for climate risk, water stress, carbon projects, waste, clean cooking and land-use decisions. Build a pathway, run each app, save the result, then export a PDF action pack when the plan is ready.</p>
 <div class="cl-hero-stats">
 <div class="cl-hero-stat"><span class="cl-hero-stat-num">${TOOLS.length}</span><span class="cl-hero-stat-label">Tools</span></div>
 <div class="cl-hero-stat"><span class="cl-hero-stat-num">15</span><span class="cl-hero-stat-label">Country presets</span></div>
-<div class="cl-hero-stat"><span class="cl-hero-stat-num">PDF</span><span class="cl-hero-stat-label">Report gates</span></div>
+<div class="cl-hero-stat"><span class="cl-hero-stat-num">PDF</span><span class="cl-hero-stat-label">Downloadable reports</span></div>
 </div>
 </div>
 </section>
@@ -893,7 +893,7 @@ function climateIndexHtml() {
 <div>
 <span class="cl-kicker">Start here</span>
 <h2 id="clPathTitle">Build a climate workflow before opening a tool</h2>
-<p>Competitors like risk maps, AQI dashboards and carbon registries are useful, but most users still need a guided operating sequence. Pick a profile and the hub will give you the first four apps to run.</p>
+<p>Risk maps and dashboards show you the numbers, but not what to do next. Tell us your situation and we will line up the first four tools to run, in the right order.</p>
 </div>
 <form class="cl-pathway-form" id="clPathForm">
 <label><span>Country preset</span><select id="clPathCountry">${COUNTRIES.map((c) => `<option value="${esc(c.value)}">${esc(c.label)}</option>`).join("")}</select></label>

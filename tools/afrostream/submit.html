@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,9 +23,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/tools/afrostream/style.css?v=aa1e677d">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+<link rel="stylesheet" href="/tools/afrostream/style.css?v=c57ba2e5">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Submit Creator - AfroStream","url":"https://afrotools.com/tools/afrostream/submit","applicationCategory":"EntertainmentApplication","operatingSystem":"Web","description":"Submit an African streamer to be featured on AfroStream rankings and profiles.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <style>
 img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!important;vertical-align:-.1em!important;display:inline!important}
@@ -53,9 +53,10 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .submit-success h2{font-family:'DM Sans',system-ui,sans-serif;font-size:1.5rem;margin:0 0 8px;color:var(--as-text)}
 .submit-success p{color:var(--as-muted);font-size:.9375rem}
 .char-count{font-size:.75rem;color:var(--as-muted);text-align:right;margin-top:4px}
+.sf-error{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;font-size:.875rem;font-weight:500;padding:10px 14px;border-radius:8px;margin:0 0 4px}
 </style>
 <link rel="stylesheet" href="/tools/afrostream/subnav.css?v=93a02af2">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 <script src="/tools/afrostream/subnav.js?v=bdc266a0" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrostream/submit" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrostream/submit" />
@@ -132,21 +133,22 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 <textarea id="sf-bio" class="as-input as-textarea" maxlength="200" rows="3" placeholder="Brief description of the creator..."></textarea>
 <div class="char-count"><span id="bioCount">0</span>/200</div>
 </div>
+<p id="sf-error" class="sf-error" role="alert" aria-live="assertive" hidden></p>
 <button type="submit" class="as-btn as-btn-primary">Submit Creator</button>
 </form>
 </div>
 </div>
 
-<div class="submit-success" id="successState">
-<div class="check">&#10003;</div>
+<div class="submit-success" id="successState" role="status" aria-live="polite">
+<div class="check" aria-hidden="true">&#10003;</div>
 <h2>Creator Submitted!</h2>
 <p>Thanks for helping grow AfroStream. Our team will review and add them to the rankings soon.</p>
 <a href="/tools/afrostream/" class="as-btn as-btn-outline" style="margin-top:20px">Back to AfroStream</a>
 </div>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=e62dd595" defer></script>
-<script src="/assets/js/components/footer.js?v=c792168a" defer></script>
+<script src="/assets/js/components/navbar.js?v=154063e1" defer></script>
+<script src="/assets/js/components/footer.js?v=0e80067d" defer></script>
 <script>
 (function(){
   var form = document.getElementById('submitForm');
@@ -158,8 +160,10 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     var btn = form.querySelector('button[type="submit"]');
+    var errBox = document.getElementById('sf-error');
+    errBox.hidden = true;
     btn.disabled = true;
-    btn.textContent = 'Submitting...';
+    btn.textContent = 'Submitting…';
 
     var platform = document.getElementById('sf-platform').value;
     var url = document.getElementById('sf-url').value.trim();
@@ -190,7 +194,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     } catch(err) {
       btn.disabled = false;
       btn.textContent = 'Submit Creator';
-      alert('Something went wrong. Please try again.');
+      errBox.textContent = 'Something went wrong while sending your submission. Please check your connection and try again.';
+      errBox.hidden = false;
     }
   });
 })();

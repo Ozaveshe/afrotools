@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -24,9 +24,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 <style>
 .compress-page {
   background: #f5f7fb;
@@ -497,8 +497,8 @@
   }
 }
 </style>
-<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -551,7 +551,7 @@
         <h1>Compresser une image</h1>
         <p>Importez une ou plusieurs images, réglez la qualité, choisissez une largeur maximale et comparez le poids avant/après. Le rendu utilise le canvas du navigateur pour produire un fichier plus léger à télécharger.</p>
       </div>
-      <aside class="compress-note-card" aria-label="Note de confidentialite">
+      <aside class="compress-note-card" aria-label="Note de confidentialité">
         <strong>Vos images restent locales</strong>
         <span>Cette page lit vos fichiers dans le navigateur avec FileReader et canvas. AfroTools ne televerse pas vos images vers un serveur depuis cet outil.</span>
       </aside>
@@ -569,16 +569,16 @@
           <label for="fileInput">Images à compresser</label>
           <input id="fileInput" type="file" accept="image/*" multiple>
         </div>
-        <div id="dropZone" class="compress-drop" tabindex="0" aria-label="Zone de depot pour des images">
+        <div id="dropZone" class="compress-drop" tabindex="0" aria-label="Zone de dépôt pour des images">
           <strong>Deposez vos images ici</strong>
-          <p>JPG, PNG, WebP et autres formats lisibles par votre navigateur. Plusieurs fichiers peuvent etre mis en file pour un traitement un par un.</p>
+          <p>JPG, PNG, WebP et autres formats lisibles par votre navigateur. Plusieurs fichiers peuvent être mis en file pour un traitement un par un.</p>
         </div>
         <div id="queueList" class="compress-queue" aria-label="File d'images">
           Aucun fichier dans la file.
         </div>
         <div class="compress-grid">
           <div class="compress-field">
-            <label for="qualityRange">Qualite <span id="qualityValue">76 %</span></label>
+            <label for="qualityRange">Qualité <span id="qualityValue">76 %</span></label>
             <input id="qualityRange" type="range" min="35" max="95" value="76">
           </div>
           <div class="compress-field">
@@ -612,7 +612,7 @@
           <button id="copySummaryBtn" class="compress-btn compress-muted" type="button">Copier le résumé</button>
           <button id="resetBtn" class="compress-btn compress-danger" type="button">Réinitialiser</button>
         </div>
-        <p id="statusText" class="compress-status" role="status" aria-live="polite">Ajoutez une image pour commencer. Les controles restent disponibles avant compression.</p>
+        <p id="statusText" class="compress-status" role="status" aria-live="polite">Ajoutez une image pour commencer. Les contrôles restent disponibles avant compression.</p>
       </section>
 
       <section class="compress-panel" aria-labelledby="apercu-titre">
@@ -625,7 +625,7 @@
           </div>
           <div class="compress-preview">
             <div class="compress-preview-head"><span>Compresse</span><span id="compressedSizeLabel">0 Ko</span></div>
-            <div id="compressedEmpty" class="compress-preview-empty">Le resultat apparaitra ici.</div>
+            <div id="compressedEmpty" class="compress-preview-empty">Le résultat apparaitra ici.</div>
             <canvas id="outputCanvas" width="1200" height="800" aria-label="Aperçu de l'image compressée" hidden></canvas>
           </div>
         </div>
@@ -635,11 +635,11 @@
             <strong id="beforeMetric">0 Ko</strong>
           </div>
           <div class="compress-metric">
-            <span>Apres</span>
+            <span>Après</span>
             <strong id="afterMetric">0 Ko</strong>
           </div>
           <div class="compress-metric">
-            <span>Economie</span>
+            <span>Économie</span>
             <strong id="savingMetric">0 %</strong>
           </div>
           <div class="compress-metric">
@@ -648,7 +648,7 @@
           </div>
         </div>
         <div class="compress-field full" style="margin-top:14px">
-          <label for="summaryOutput">Resume du resultat</label>
+          <label for="summaryOutput">Résumé du résultat</label>
           <textarea id="summaryOutput" data-output="compression-result" readonly>Ajoutez une image pour voir le résumé.</textarea>
         </div>
       </section>
@@ -656,14 +656,14 @@
 
     <div class="compress-info-stack">
       <section class="compress-info" data-tool-verification-panel aria-labelledby="methode-titre">
-        <h2 id="methode-titre">Methode</h2>
+        <h2 id="methode-titre">Méthode</h2>
         <ol>
           <li>Le fichier est charge localement avec FileReader, puis dessine dans un canvas.</li>
           <li>La largeur maximale redimensionne l'image si elle depasse le seuil choisi.</li>
           <li>Le format JPEG ou WebP utilise le niveau de qualité du navigateur. PNG reste surtout utile quand vous voulez garder la transparence.</li>
           <li>Le poids final est estimé depuis le Blob produit par canvas.toBlob avant téléchargement.</li>
         </ol>
-        <p>Verification de page : 16 mai 2026. References de benchmark : compression WebP, PNG et JPEG chez <a href="https://tinypng.com/" rel="noopener" target="_blank">TinyPNG</a>, compression locale dans le navigateur avec <a href="https://github.com/GoogleChromeLabs/squoosh" rel="noopener" target="_blank">Squoosh</a>, redimensionnement et export sur <a href="https://www.canva.com/features/image-resizer/" rel="noopener" target="_blank">Canva</a> et <a href="https://www.adobe.com/express/feature/image/resize" rel="noopener" target="_blank">Adobe Express</a>.</p>
+        <p>Vérification de page : 16 mai 2026. Références de benchmark : compression WebP, PNG et JPEG chez <a href="https://tinypng.com/" rel="noopener" target="_blank">TinyPNG</a>, compression locale dans le navigateur avec <a href="https://github.com/GoogleChromeLabs/squoosh" rel="noopener" target="_blank">Squoosh</a>, redimensionnement et export sur <a href="https://www.canva.com/features/image-resizer/" rel="noopener" target="_blank">Canva</a> et <a href="https://www.adobe.com/express/feature/image/resize" rel="noopener" target="_blank">Adobe Express</a>.</p>
       </section>
 
       <section class="compress-info" aria-labelledby="limites-titre">
@@ -672,7 +672,7 @@
       </section>
 
       <section class="compress-info" aria-labelledby="confidentialite-titre">
-        <h2 id="confidentialite-titre">Confidentialite et file de lots</h2>
+        <h2 id="confidentialite-titre">Confidentialité et file de lots</h2>
         <p>Les images restent sur votre appareil pendant la session. La file accepte plusieurs images pour préparer un lot, mais l'interface compresse l'image sélectionnée afin que vous puissiez vérifier chaque résultat avant téléchargement.</p>
       </section>
 
@@ -683,7 +683,7 @@
           <a href="/fr/tools/convertir-format-image/">Convertir un format d'image</a>
           <a href="/fr/tools/carte-sociale/">Générer une carte sociale</a>
           <a href="/fr/tools/image-en-texte/">Image en texte OCR</a>
-          <a href="/fr/tools/contraste-couleurs/">Verifier le contraste des couleurs</a>
+          <a href="/fr/tools/contraste-couleurs/">Vérifier le contraste des couleurs</a>
         </div>
       </section>
     </div>

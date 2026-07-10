@@ -246,10 +246,13 @@ function parsePost(filePath) {
   const aiHits = countMatches(bodyText, AI_TERMS);
   const hedgeHits = countMatches(bodyText, HEDGING_TERMS);
   const badEncodingHits = countBadEncoding(raw);
+  const isRedirect = /<meta\b[^>]*http-equiv=["']refresh["']/i.test(raw)
+    || /\b(?:window\.)?location\.(?:replace|assign)\s*\(/i.test(raw)
+    || /\bthis article now lives\b|\bredirecting\b/i.test(title);
   const defaultImage = [ogImage, featuredImage].some((value) => value.includes('og-default'));
   const factHeavy = slugToTopic(slug, title);
   const staleRisk = /\btoday\b/i.test(slug) || /\btoday\b/i.test(title);
-  const missingSources = factHeavy && officialLinks === 0 && externalLinks.length === 0;
+  const missingSources = !isRedirect && factHeavy && officialLinks === 0 && externalLinks.length === 0;
   const readTimeMismatch = declaredReadTime > 0 ? Math.abs(declaredReadTime - expectedReadTime) : 0;
 
   let qualityScore = 100;
@@ -275,6 +278,7 @@ function parsePost(filePath) {
     slug,
     title,
     description,
+    isRedirect,
     ogImage,
     featuredImage,
     defaultImage,
@@ -343,11 +347,14 @@ function buildMarkdown(summary) {
 
 function main() {
   const hub = parseHub();
-  const posts = getPostFiles().map(parsePost);
+  const routes = getPostFiles().map(parsePost);
+  const posts = routes.filter((post) => !post.isRedirect);
 
   const summary = {
     generatedAt: new Date().toISOString(),
     totalPosts: posts.length,
+    totalRoutes: routes.length,
+    redirectCount: routes.length - posts.length,
     hub: {
       totalCards: hub.totalCards,
       featuredCount: hub.featuredCount,

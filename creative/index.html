@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -39,16 +39,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
 <link rel="stylesheet" href="/assets/css/creative-focus.css?v=62db8de1">
-<script src="/assets/js/components/tool-registry.min.js?v=0243ac32"></script>
+<script src="/assets/js/components/tool-registry.min.js?v=2327e88c" defer></script>
 <script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
 <script src="/assets/js/components/creative-taxonomy.js?v=e874eb00"></script>
 <script src="/assets/js/pages/creative-focus.js?v=bb419cd9"></script>
-<script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-<script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
 <style>
 * {
   box-sizing: border-box;
@@ -187,9 +187,9 @@ button:focus-visible {
 }
 
 .creative-button.primary {
-  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 48%, #2563eb 100%);
+  background: #0062CC;
   color: #fff;
-  box-shadow: 0 18px 36px rgba(14, 29, 61, 0.35);
+  box-shadow: 0 18px 36px rgba(0, 98, 204, 0.32);
 }
 
 .creative-button.secondary {
@@ -987,7 +987,7 @@ button:focus-visible {
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/ubunifu-na-watayarishi/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/creative/" />
 <link rel="stylesheet" href="/assets/css/category-hub-ui-refresh.css?v=b22eec77">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 </head>
 <body class="creative-ui-refresh top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -1084,7 +1084,7 @@ button:focus-visible {
     <div class="creative-cta-copy">
       <div class="creative-section-eyebrow">AfroStream</div>
       <h2 id="afrostream-spotlight-title">A clearer front door for African creator discovery.</h2>
-      <p>Use AfroStream when you want the live surface: creator news, rankings, community, calendar, and Streamer University without guessing which registry tool to open first.</p>
+      <p>Use AfroStream when you want the live view: creator news, rankings, community, the calendar, and Streamer University, all in one place instead of opening separate tools.</p>
       <div class="creative-cta-actions">
         <a class="creative-button primary" href="/tools/afrostream/">Open AfroStream</a>
         <a class="creative-button secondary" href="/tools/afrostream/news">Latest creator news</a>
@@ -1092,8 +1092,8 @@ button:focus-visible {
       </div>
     </div>
 
-    <div class="creative-cta-panel" aria-label="AfroStream route map">
-      <div class="creative-cta-panel-label">Live surface map</div>
+    <div class="creative-cta-panel" aria-label="What's inside AfroStream">
+      <div class="creative-cta-panel-label">Inside AfroStream</div>
       <a class="creative-stream-item" href="/tools/afrostream/rankings">
         <span><strong>Rankings</strong>AfroScore, creator tiers, and cross-platform discovery.</span>
       </a>
@@ -1181,7 +1181,7 @@ button:focus-visible {
       + '<h3>' + escapeHtml(surface.title) + '</h3>'
       + '<p>' + escapeHtml(surface.summary) + '</p>'
       + '<div class="creative-surface-chip-row">' + chips + '</div>'
-      + '<div class="creative-surface-cta"><span>' + escapeHtml(detail) + '</span><span>' + escapeHtml(ctaLabel) + ' -&gt;</span></div>'
+      + '<div class="creative-surface-cta"><span>' + escapeHtml(detail) + '</span><span>' + escapeHtml(ctaLabel) + ' &rarr;</span></div>'
       + '</a>';
   }
 
@@ -1190,7 +1190,7 @@ button:focus-visible {
       return '<span class="creative-taxonomy-chip">' + escapeHtml(label) + '</span>';
     }).join('');
 
-    var meta = bucket.productBucket ? 'Registry-backed platforms' : 'Registry bucket';
+    var meta = bucket.productBucket ? 'Creator platforms' : 'Creator tools';
 
     return '<a href="#' + escapeHtml(bucket.key) + '" class="creative-taxonomy-card creative-theme-' + escapeHtml(bucket.theme) + ' creative-reveal">'
       + '<div class="creative-taxonomy-top">'
@@ -1205,7 +1205,7 @@ button:focus-visible {
 
   function renderToolCard(tool, bucket) {
     var badge = bucket.productBucket ? 'Platform' : 'Featured';
-    var footer = tool.revenue || (bucket.productBucket ? 'Registry-backed platform' : 'Creative tool');
+    var footer = tool.revenue || (bucket.productBucket ? 'Creator platform' : 'Creative tool');
     var subtitle = tool.fullName !== tool.label
       ? '<div class="creative-tool-subtitle">' + escapeHtml(tool.fullName) + '</div>'
       : '';
@@ -1218,7 +1218,7 @@ button:focus-visible {
       + '<h3>' + escapeHtml(tool.label) + '</h3>'
       + subtitle
       + '<p>' + escapeHtml(tool.summary || 'Open the tool to continue.') + '</p>'
-      + '<div class="creative-tool-footer"><span>' + escapeHtml(footer) + '</span><span>Open -&gt;</span></div>'
+      + '<div class="creative-tool-footer"><span>' + escapeHtml(footer) + '</span><span>Open &rarr;</span></div>'
       + '</a>';
   }
 
@@ -1241,11 +1241,11 @@ button:focus-visible {
     }).join('');
 
     var note = bucket.productBucket
-      ? 'These entries are platform-style registry tools and still count inside the 46-tool creative total.'
-      : bucket.featuredCount + ' featured tools surfaced here, plus '
-        + bucket.remainingTools.length + ' more registry tools in the same bucket.';
+      ? 'These are full creator platforms, and they count toward your creative toolkit too.'
+      : bucket.featuredCount + ' featured tools shown here, plus '
+        + bucket.remainingTools.length + ' more in this area.';
 
-    var eyebrow = bucket.productBucket ? 'Creative products / platforms' : 'Registry tools';
+    var eyebrow = bucket.productBucket ? 'Creator platforms' : 'Creator tools';
 
     return '<section id="' + escapeHtml(bucket.key) + '" class="creative-bucket creative-theme-' + escapeHtml(bucket.theme) + ' creative-reveal">'
       + '<div class="creative-bucket-header">'
@@ -1364,7 +1364,7 @@ button:focus-visible {
 
     document.getElementById('hero-count-copy').textContent =
       overview.standardToolCount + ' focused tools plus ' + overview.productBucketCount
-      + ' platform-style entries for creators who need a bigger starting point.';
+      + ' creator platforms for when you need a bigger starting point.';
 
     document.getElementById('hero-bucket-chips').innerHTML = buckets.map(function (bucket) {
       return renderChip(bucket.title + ' ', bucket.registryCount, null);

@@ -12,6 +12,10 @@ const PROVIDER_METHODS = [
   'improveCVText',
   'explainResult',
 ];
+// Models that accept adaptive thinking and the effort parameter (Opus 4.6+,
+// Sonnet 4.6/5, Fable 5). Haiku and older models must not receive these fields.
+const ADAPTIVE_THINKING_MODELS = /opus-4-[678]|sonnet-4-6|sonnet-5|fable-5/;
+const EFFORT_LEVELS = /^(low|medium|high|xhigh|max)$/;
 
 function text(value) {
   return value === null || value === undefined ? '' : String(value);
@@ -47,6 +51,14 @@ function providerDisabledByEnv(env) {
 function getAnthropicKey(env, purpose) {
   if (purpose === 'routing') return env.AFROTOOLS_AI_ROUTER_ANTHROPIC_API_KEY || env.ANTHROPIC_API_KEY || '';
   return env.AFROTOOLS_AI_ANTHROPIC_API_KEY || env.ANTHROPIC_API_KEY || '';
+}
+
+function supportsAdaptiveThinking(model) {
+  return ADAPTIVE_THINKING_MODELS.test(text(model));
+}
+
+function getSmartGenerationModel(env) {
+  return text((env || process.env).AFROTOOLS_AI_SMART_MODEL || 'claude-opus-4-8');
 }
 
 function getModelForMethod(env, method, purpose) {
@@ -175,12 +187,21 @@ function buildAnthropicPayload(config, method, request) {
   const messages = Array.isArray(req.messages)
     ? sanitizeMessages(req.messages, config.inputCharLimit || 120000)
     : [{ role: 'user', content: safeAnthropicText(text(req.prompt), 'AI provider prompt', config.inputCharLimit || 120000) }];
-  return {
+  const payload = {
     model: config.model,
     max_tokens: maxTokens,
     system: safeAnthropicText(system, 'AI provider system prompt', config.systemCharLimit || 180000),
     messages,
   };
+  // Adaptive thinking + effort only on models that accept them; sending either
+  // to Haiku or pre-4.6 models returns a 400 from the API.
+  if (req.thinking && supportsAdaptiveThinking(config.model)) {
+    payload.thinking = { type: 'adaptive' };
+    if (EFFORT_LEVELS.test(text(req.effort))) {
+      payload.output_config = { effort: text(req.effort) };
+    }
+  }
+  return payload;
 }
 
 async function fetchWithTimeout(fetchImpl, url, init, timeoutMs) {
@@ -197,10 +218,16 @@ async function fetchWithTimeout(fetchImpl, url, init, timeoutMs) {
 
 function extractAnthropicText(payload) {
   if (!payload || !Array.isArray(payload.content)) return '';
-  const first = payload.content.find(function (item) {
-    return item && typeof item.text === 'string';
-  });
-  return first ? first.text : '';
+  // Skip thinking blocks (no `text` field) and join every text block —
+  // adaptive-thinking responses can interleave more than one.
+  return payload.content
+    .filter(function (item) {
+      return item && item.type !== 'thinking' && typeof item.text === 'string';
+    })
+    .map(function (item) {
+      return item.text;
+    })
+    .join('\n');
 }
 
 async function callAnthropic(method, request, config) {
@@ -431,4 +458,6 @@ module.exports = {
   getProviderInfo,
   validateRequest,
   jsonTextFromMarkdown,
+  supportsAdaptiveThinking,
+  getSmartGenerationModel,
 };

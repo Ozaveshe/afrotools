@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,14 +11,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=optional" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=optional"></noscript>
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b7df8b91">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=2ab3665c">
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=9ce63fd3">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
   <link rel="stylesheet" href="/assets/css/ai-page-ui-refresh.css?v=a2c61d9b">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=1401215d">
-  <script src="/assets/js/components/navbar.min.js?v=30a5a441" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=5d66142b" defer></script>
-  <script src="/assets/js/bundles/core.c7dda24b.min.js" defer></script>
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
+  <script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
+  <script src="/assets/js/bundles/core.fdd629ac.min.js" defer></script>
   <style>
     :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5}
     body{margin:0;background:var(--ai-bg);color:var(--ai-text);font-family:"DM Sans",system-ui,sans-serif}
@@ -349,6 +349,44 @@
     @media(min-width:761px) and (max-width:1060px){.ai-lane-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(min-width:761px) and (max-width:980px){.ai-fallback-grid,.ai-education-tools,.ai-career-tools,.ai-import-tools,.ai-country-tools,.ai-local-life-tools{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-education-grid,.ai-career-grid,.ai-import-grid,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-source-grid,.ai-result-grid,.ai-proof-grid{grid-template-columns:1fr 1fr}}
     @media(prefers-reduced-motion:reduce){.ai-spinner,.ai-skeleton-line{animation:none}}
+    .ai-answer{max-width:900px;margin:16px auto 0;border:1px solid #c9ddf6;border-radius:16px;background:linear-gradient(180deg,#fff 0%,#f7fbff 100%);box-shadow:0 16px 38px rgba(15,23,42,.07);padding:14px 15px}
+    .ai-answer[hidden]{display:none}
+    .ai-answer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .ai-answer-head-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .ai-answer-head strong{color:#0f172a;font-size:.92rem;font-weight:900}
+    .ai-answer-tier{display:inline-flex;align-items:center;min-height:26px;border-radius:999px;background:#ede9fe;color:#5b21b6;padding:3px 9px;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+    .ai-answer-tier[hidden]{display:none}
+    .ai-answer-quota{color:#64748b;font-size:.74rem;font-weight:800}
+    .ai-answer-consent{margin-top:10px;border:1px solid #dbeafe;border-radius:12px;background:#fff;padding:11px 12px}
+    .ai-answer-consent[hidden]{display:none}
+    .ai-answer-consent p{margin:0;color:#475569;font-size:.82rem;line-height:1.55}
+    .ai-answer-consent-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:9px}
+    .ai-answer-consent-actions span{color:#64748b;font-size:.74rem;font-weight:800}
+    .ai-answer-consent-actions .ai-small-button.primary{background:var(--ai-primary);border-color:var(--ai-primary);color:#fff}
+    .ai-answer-thread{display:grid;gap:9px;margin-top:10px}
+    .ai-answer-thread[hidden]{display:none}
+    .ai-answer-bubble{border:1px solid #dbeafe;border-radius:12px;background:#fff;color:#1e293b;padding:11px 13px;font-size:.9rem;line-height:1.62}
+    .ai-answer-bubble p{margin:0 0 8px}
+    .ai-answer-bubble p:last-of-type{margin-bottom:0}
+    .ai-answer-bubble.is-user{justify-self:end;max-width:88%;background:#eff6ff;border-color:#bfdbfe;color:#0f3f83;font-weight:600}
+    .ai-answer-bubble.is-notice{background:#fffbeb;border-color:#fde68a;color:#6b4f1d;font-size:.82rem}
+    .ai-answer-bubble.is-notice a{color:#92400e;font-weight:900}
+    .ai-answer-bubble.is-typing{display:flex;align-items:center;min-height:40px}
+    .ai-answer-dots{display:inline-flex;gap:5px}
+    .ai-answer-dots i{width:7px;height:7px;border-radius:50%;background:#93c5fd;animation:ai-answer-bounce 1s ease-in-out infinite}
+    .ai-answer-dots i:nth-child(2){animation-delay:.15s}
+    .ai-answer-dots i:nth-child(3){animation-delay:.3s}
+    @keyframes ai-answer-bounce{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-4px);opacity:1}}
+    .ai-answer-actions{display:flex;justify-content:flex-end;margin-top:8px}
+    .ai-answer-copy{min-height:32px;border:1px solid #dbe6f4;border-radius:999px;background:#fff;color:#0057b8;font:inherit;font-size:.72rem;font-weight:900;padding:4px 11px;cursor:pointer}
+    .ai-answer-copy:hover,.ai-answer-copy:focus-visible{border-color:#2563eb;background:#eff6ff}
+    .ai-answer-followup{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:10px}
+    .ai-answer-followup[hidden]{display:none}
+    .ai-answer-followup input{min-width:0;min-height:44px;border:1px solid #cbdff7;border-radius:11px;background:#fbfdff;color:#0f172a;font:inherit;font-size:16px;padding:8px 12px}
+    .ai-answer-followup input:focus{outline:3px solid rgba(0,98,204,.16);outline-offset:1px;border-color:#8bb8f4}
+    .ai-answer-followup .ai-small-button.primary{background:var(--ai-primary);border-color:var(--ai-primary);color:#fff}
+    .ai-answer-note{margin:10px 0 0;color:#64748b;font-size:.72rem;line-height:1.45}
+    @media (max-width:640px){.ai-answer{padding:12px}.ai-answer-bubble.is-user{max-width:100%}}
   </style>
   <meta property="og:url" content="https://afrotools.com/ai/">
   <meta property="og:title" content="AfroTools AI | Find and set up African tools fast">
@@ -464,6 +502,30 @@
           </div>
           <div class="ai-project-list" id="aiSavedProjectList"></div>
           <p class="ai-project-status" id="aiProjectStatus" aria-live="polite"></p>
+        </section>
+
+        <section class="ai-answer" id="aiDirectAnswer" aria-labelledby="aiAnswerTitle" hidden>
+          <div class="ai-answer-head">
+            <div class="ai-answer-head-left">
+              <strong id="aiAnswerTitle">Direct answer</strong>
+              <span class="ai-answer-tier" id="aiAnswerTier" hidden>Deep reasoning</span>
+            </div>
+            <span class="ai-answer-quota" id="aiAnswerQuota" aria-live="polite"></span>
+          </div>
+          <div class="ai-answer-consent" id="aiAnswerConsent" hidden>
+            <p>Get a written answer to your exact question — with figures in your local currency — while the matched tools load below. Your question is sent to AfroTools AI only after you turn this on once.</p>
+            <div class="ai-answer-consent-actions">
+              <button type="button" class="ai-small-button primary" id="aiAnswerEnable">Answer with AI</button>
+              <span>One click, remembered on this device.</span>
+            </div>
+          </div>
+          <div class="ai-answer-thread" id="aiAnswerThread" hidden aria-live="polite"></div>
+          <form class="ai-answer-followup" id="aiAnswerFollowup" hidden>
+            <label class="sr-only" for="aiAnswerFollowupInput">Ask a follow-up question</label>
+            <input type="text" id="aiAnswerFollowupInput" placeholder="Ask a follow-up…" autocomplete="off">
+            <button type="submit" class="ai-small-button primary">Ask</button>
+          </form>
+          <p class="ai-answer-note">Planning guidance, not professional advice. Verify high-stakes figures with the official authority.</p>
         </section>
 
         <div class="ai-state" id="aiEmptyState">
@@ -633,9 +695,10 @@
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
   <script src="/assets/js/ai/orchestrator.js?v=538b122c"></script>
   <script src="/assets/js/ai/i18n.js?v=1da5ad7c"></script>
-  <script src="/assets/js/ai/example-registry.js?v=112f1edd"></script>
+  <script src="/assets/js/ai/example-registry.js?v=ee83a08c"></script>
   <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4"></script>
   <script src="/assets/js/ai/pro-monetization.js?v=a8b2d54a"></script>
+  <script src="/assets/js/ai/direct-answer.js?v=3eadf13c"></script>
   <script>
   (function () {
     "use strict";
@@ -3877,6 +3940,11 @@
       }
       setState("loading");
       clearWorkflowCards();
+      // Notify the direct-answer panel (assets/js/ai/direct-answer.js);
+      // it answers the question itself only with stored advisor consent.
+      try {
+        document.dispatchEvent(new CustomEvent("afrotools:ai-query", { detail: { query: clean } }));
+      } catch (err) {}
       track("ai_command_query_submit", { has_query: true, query_length: clean.length, consent_to_model: consentToModel });
       recordIntent("ai_prompt_submitted", {
         query: clean,

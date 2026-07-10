@@ -437,7 +437,7 @@
           .chat-input::placeholder { color: var(--ac-text-muted); opacity: .6; }
           .chat-input:focus {
             border-color: var(--ac-primary);
-            box-shadow: 0 0 0 3px rgba(0,122,255,.1);
+            box-shadow: 0 0 0 3px rgba(0,98,204,.1);
           }
           .chat-send {
             background: var(--ac-primary);

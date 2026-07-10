@@ -918,8 +918,7 @@ function renderMakePage(page) {
       { name: "Voitures", url: absUrl("fr/cars") },
       { name: country.frName, url: absUrl(`fr/cars/${country.frSlug}`) },
       { name: makeLabel, url: absUrl(route) }
-    ]),
-    faqSchema()
+    ])
   ];
 
   const body = `<main>
@@ -989,8 +988,7 @@ function renderModelIndexPage(page) {
       { name: country.frName, url: absUrl(`fr/cars/${country.frSlug}`) },
       { name: ctx.vehicle.make, url: absUrl(`fr/cars/${country.frSlug}/${ctx.vehicle.makeSlug}`) },
       { name: ctx.vehicle.model, url: absUrl(route) }
-    ]),
-    faqSchema()
+    ])
   ];
 
   const body = `<main>
@@ -1053,8 +1051,7 @@ function renderModelPage(page) {
       { name: "Voitures", url: absUrl("fr/cars") },
       { name: country.frName, url: absUrl(`fr/cars/${country.frSlug}`) },
       { name: vehicleName, url: absUrl(route) }
-    ]),
-    faqSchema()
+    ])
   ];
 
   const body = `<main>

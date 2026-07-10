@@ -35,13 +35,19 @@ async function getRateStore() {
   }
 }
 
-async function checkRateLimit(event) {
+async function checkRateLimit(event, body) {
   const store = await getRateStore();
   if (!store) return { allowed: true, remaining: 999 };
 
   const ip = (event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown').split(',')[0].trim();
   const today = new Date().toISOString().slice(0, 10);
-  const key = `ai_rate_${ip}_${today}`;
+  // Prefer a stable per-client id over raw IP for the rate-limit key. Carrier-grade
+  // NAT (CGNAT) puts many mobile/ISP users behind a single shared public IP, so an
+  // IP-only key causes false-positive rate limits for unrelated users. Fall back to
+  // IP only when the client sends no anonymous session id.
+  const rawSession = (event.headers['x-afro-session'] || (body && (body.sessionId || body.clientId)) || '').toString().trim();
+  const clientKey = /^[A-Za-z0-9_-]{8,64}$/.test(rawSession) ? `sid_${rawSession}` : `ip_${ip}`;
+  const key = `ai_rate_${clientKey}_${today}`;
 
   // Check if user is authenticated (higher limit)
   // Pro status verified server-side via Supabase Auth API — never trust client JWT claims
@@ -67,7 +73,8 @@ async function checkRateLimit(event) {
           );
           if (profileRes.ok) {
             const subs = await profileRes.json();
-            if (subs && subs[0] && new Date(subs[0].expires_at) > new Date()) {
+            // A null/absent expires_at means a lifetime/non-expiring Pro plan — treat as active.
+            if (subs && subs[0] && (!subs[0].expires_at || new Date(subs[0].expires_at) > new Date())) {
               isPro = true;
             }
           }
@@ -96,7 +103,21 @@ async function commitRateLimit(rateResult) {
   if (!rateResult || !rateResult._key) return;
   const store = await getRateStore();
   if (!store) return;
-  try { await store.set(rateResult._key, String(rateResult._count + 1), { metadata: { ttl: 86400 } }); } catch {}
+  // NOTE: Netlify Blobs has no atomic increment or compare-and-set, so this
+  // read-then-write is best-effort — two concurrent requests from the same client
+  // can race and under-count. Acceptable for a soft daily quota. Re-read the current
+  // value here (rather than trusting the stale count captured at check time) so the
+  // stored counter reflects the latest committed writes as closely as possible.
+  try {
+    let current = 0;
+    try {
+      const stored = await store.get(rateResult._key, { type: 'text' });
+      if (stored) current = parseInt(stored, 10) || 0;
+    } catch {}
+    // Netlify Blobs has no TTL/metadata expiry — the old { metadata: { ttl: 86400 } }
+    // was a no-op. Dated `ai_rate_*` keys must be pruned by a separate scheduled job.
+    await store.set(rateResult._key, String(current + 1));
+  } catch {}
 }
 
 // Extract user_id from Supabase JWT (decode without verification — Supabase handles auth)
@@ -942,6 +963,87 @@ const TOOL_AFFINITY = {
   'doc-generator': ['labour-law-advisor', 'leave-calculator', 'minimum-wage', 'payslip-generator'],
 };
 
+// ── Smart model routing ─────────────────────────────────────────────
+// Complex questions (comparisons, planning, multi-country, math-heavy) are
+// escalated to a high-capability model with adaptive thinking; simple lookups
+// stay on the fast default model to control cost and latency.
+const SMART_ROUTING_ENABLED = !/^(off|false|0|disabled)$/i.test(process.env.AFROTOOLS_AI_SMART_ROUTING || 'on');
+const SMART_MODEL = aiProvider.getSmartGenerationModel(process.env);
+const SMART_TIMEOUT_MS = Math.max(5000, Math.min(25000, Number(process.env.AFROTOOLS_AI_SMART_TIMEOUT_MS) || 20000));
+const SMART_EFFORT = /^(low|medium|high|xhigh|max)$/.test(process.env.AFROTOOLS_AI_SMART_EFFORT || '')
+  ? process.env.AFROTOOLS_AI_SMART_EFFORT
+  : 'medium';
+
+// Tools whose questions are almost always high-stakes/multi-step
+const ALWAYS_SMART_TOOLS = new Set([
+  'medical-report', 'pdf-chat', 'pdf-translate', 'cover-letter',
+  'za-gepf', 'za-uif', 'ng-pension', 'gh-ssnit', 'social-security',
+  'labour-law-advisor', 'doc-generator', 'retirement-planner',
+]);
+
+const COMPLEX_KEYWORDS = /\b(compare|versus|vs\.?|which is better|worth it|should i|what if|scenario|strateg(?:y|ies)|plan(?:ning)?|optimi[sz]e|projection|forecast|retire(?:ment)?|over \d+ (?:years|months)|break(?: |-)?down|step by step|explain (?:why|how)|difference between|pros and cons|trade[- ]?offs?|comparer|devrais[- ]je|vaut[- ]il|stratégie|planifier|scénario|différence entre|optimiser)\b/i;
+
+const AFRICAN_COUNTRY_NAMES = [
+  'nigeria', 'kenya', 'south africa', 'ghana', 'egypt', 'ethiopia', 'tanzania',
+  'uganda', 'rwanda', 'senegal', 'morocco', 'tunisia', 'algeria', 'cameroon',
+  "côte d'ivoire", 'ivory coast', 'zambia', 'zimbabwe', 'botswana', 'namibia',
+  'mauritius', 'malawi', 'mozambique', 'angola', 'mali', 'burkina', 'niger',
+  'benin', 'togo', 'gabon', 'congo', 'madagascar', 'eswatini', 'lesotho',
+  'sierra leone', 'liberia', 'gambia', 'somalia', 'sudan', 'libya',
+];
+
+function latestUserText(messages) {
+  if (!Array.isArray(messages)) return '';
+  for (let i = messages.length - 1; i >= 0; i -= 1) {
+    const m = messages[i];
+    if (m && m.role === 'user') {
+      if (typeof m.content === 'string') return m.content;
+      if (Array.isArray(m.content)) {
+        return m.content.map(b => (b && typeof b.text === 'string') ? b.text : '').join(' ');
+      }
+    }
+  }
+  return '';
+}
+
+// Heuristic complexity score → { tier: 'smart' | 'fast', score }
+function classifyQueryComplexity(messages, tool, context) {
+  if (!SMART_ROUTING_ENABLED) return { tier: 'fast', score: 0 };
+  if (tool && (ALWAYS_SMART_TOOLS.has(tool) || tool.startsWith('japa'))) {
+    return { tier: 'smart', score: 99 };
+  }
+  const queryText = latestUserText(messages);
+  let score = 0;
+  if (queryText.length > 280) score += 2;
+  else if (queryText.length > 160) score += 1;
+  if (COMPLEX_KEYWORDS.test(queryText)) score += 2;
+  const numberCount = (queryText.match(/\d[\d,.]*/g) || []).length;
+  if (numberCount >= 4) score += 2;
+  else if (numberCount >= 2) score += 1;
+  const lower = queryText.toLowerCase();
+  let countries = 0;
+  for (const name of AFRICAN_COUNTRY_NAMES) {
+    if (lower.includes(name)) countries += 1;
+    if (countries >= 2) break;
+  }
+  if (countries >= 2) score += 2;
+  if (Array.isArray(messages) && messages.length >= 5) score += 1;
+  if (context && String(context).length > 1500) score += 1;
+  return { tier: score >= 3 ? 'smart' : 'fast', score };
+}
+
+// Shared reasoning core injected into every expert prompt. Keeps answers
+// numerate, current-date aware, and grounded in African economic reality.
+function buildCoreIntelligencePrompt() {
+  const today = new Date().toISOString().slice(0, 10);
+  return "CORE REASONING RULES: Work through every calculation internally step by step and verify the arithmetic before answering; state final figures once, confidently. " +
+    `Today's date is ${today} — use it to reason about the current tax year, filing deadlines, and which rates apply now. ` +
+    "If a statutory rate may have changed since your knowledge was last updated, give your best figure and name the exact authority to verify with (e.g. FIRS, KRA, SARS, GRA, PenCom, NSSF). " +
+    "African context you must apply: many users combine formal salary with informal or side income, so cover both when relevant; mobile money (M-Pesa, MTN MoMo, OPay, Wave) is a mainstream payment rail; several markets run official and parallel exchange rates — say which rate you are using; inflation is high in many markets, so for any multi-year projection mention the real (inflation-adjusted) value, not just the nominal one. " +
+    "When the user compares countries, give a like-for-like comparison with actual figures for each country. " +
+    "Format amounts in the user's local currency with the correct symbol and thousands separators; add a USD equivalent only when it aids comparison. ";
+}
+
 // Strip lone surrogates that break JSON serialization to the Anthropic API
 function sanitizeString(str) {
   if (typeof str !== 'string') return str;
@@ -1055,7 +1157,9 @@ exports.handler = async function(event) {
   const isAllowed =
     origin === "https://afrotools.com" ||
     origin === "https://www.afrotools.com" ||
-    origin.endsWith(".netlify.app") ||
+    // Only our own afrotools.netlify.app site + its branch/deploy-preview subdomains,
+    // not every *.netlify.app tenant (which any third party could deploy under).
+    /^https:\/\/([a-z0-9-]+--)?afrotools[a-z0-9-]*\.netlify\.app$/.test(origin) ||
     origin.startsWith("http://localhost") ||
     origin.startsWith("http://127.0.0.1");
 
@@ -1110,7 +1214,7 @@ exports.handler = async function(event) {
   }
 
   // ── Rate limiting ──
-  const rateResult = await checkRateLimit(event);
+  const rateResult = await checkRateLimit(event, body);
   if (!rateResult.allowed) {
     return {
       statusCode: 429, headers,
@@ -1145,6 +1249,13 @@ exports.handler = async function(event) {
   const isSiteAssistant = !tool || tool === "site-assistant";
   const isDashboard = tool === "dashboard" || tool === "general";
 
+  // Route complex questions to the high-capability model
+  const routingMessages = Array.isArray(messages) && messages.length > 0
+    ? messages
+    : (message ? [{ role: "user", content: String(message) }] : []);
+  const routing = classifyQueryComplexity(routingMessages, tool, context);
+  const isSmart = routing.tier === 'smart';
+
   let systemPrompt;
 
   // Client-provided assistant text is page context, not a privileged system prompt.
@@ -1168,6 +1279,8 @@ exports.handler = async function(event) {
     if (tool && TOOL_CONTEXT[tool]) {
       systemPrompt += TOOL_CONTEXT[tool] + " ";
     }
+
+    systemPrompt += buildCoreIntelligencePrompt();
 
     // French tool or French page detection — ensure AI responds in French
     if (isFrench) {
@@ -1203,7 +1316,10 @@ exports.handler = async function(event) {
     } else if (isCoverLetter) {
       systemPrompt += "Rules: Write clear, polished job application copy. If asked for a cover letter, produce a complete editable letter without markdown headers, analysis, or out-of-band notes. If asked for missing proof points or interview talking points, use short labeled sections and include a practical reminder to verify all facts before sending. Do not mention that you are an AI. Do not include sensitive contact details unless the user provided them in the selected payload. Keep cover letters between 250 and 420 words unless the user selected a shorter format. Use plain professional language, not hype.";
     } else {
-      systemPrompt += "Rules: Under 220 words. Specific with numbers and percentages. Use the user's local currency. Be direct and practical. Do not invent source URLs, official citations, live rates, formulas, or authority claims. Source links are rendered only by AfroTools source metadata, not by model text. Do NOT use markdown headers (#), bullet lists with dashes, or code blocks. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official authority.";
+      const lengthRule = isSmart
+        ? "Under 220 words for simple answers; up to 400 words when a comparison, plan, or multi-step calculation genuinely needs it. Lead with the direct answer, then the supporting numbers."
+        : "Under 220 words.";
+      systemPrompt += "Rules: " + lengthRule + " Specific with numbers and percentages. Use the user's local currency. Be direct and practical. Do not invent source URLs, official citations, live rates, formulas, or authority claims. Source links are rendered only by AfroTools source metadata, not by model text. Do NOT use markdown headers (#), bullet lists with dashes, or code blocks. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official authority.";
     }
   }
 
@@ -1229,22 +1345,33 @@ exports.handler = async function(event) {
     );
     const messageBudget = Math.max(5000, ANTHROPIC_INPUT_CHAR_LIMIT - safeSystem.length);
     const safeMessages = sanitizeMessages(trimMessagesForAnthropic(apiMessages, messageBudget));
-    const maxTokens = isMedical ? 1500 : isCoverLetter ? 1800 : isPdfDoc ? 1200 : isJapa ? 800 : isSiteAssistant ? 700 : isDashboard ? 800 : 600;
+    let maxTokens = isMedical ? 1500 : isCoverLetter ? 1800 : isPdfDoc ? 1200 : isJapa ? 800 : isSiteAssistant ? 700 : isDashboard ? 800 : 600;
+    if (isSmart) maxTokens = Math.max(maxTokens, 1000);
     const domain = guardrails.domainForTool(tool, isMedical ? "health" : isJapa ? "immigration" : isCoverLetter ? "employment" : "finance");
     const providerMethod = isCoverLetter ? "improveCVText" : "explainResult";
     const provider = aiProvider.createModelProvider({
       purpose: 'generation',
       method: providerMethod,
-      timeoutMs: 15000,
+      timeoutMs: isSmart ? SMART_TIMEOUT_MS : 15000,
       maxTokens
     });
-    const providerResult = await provider[providerMethod]({
+    const baseRequest = {
       system: safeSystem,
       messages: safeMessages,
       maxTokens,
       domain,
       allowedSourceUrls: []
-    });
+    };
+    let providerResult = await provider[providerMethod](
+      isSmart
+        ? Object.assign({}, baseRequest, { model: SMART_MODEL, thinking: true, effort: SMART_EFFORT })
+        : baseRequest
+    );
+    // Smart-tier resilience: if the high-capability model times out or errors,
+    // retry once on the fast default model so the user still gets an answer.
+    if (!providerResult.ok && isSmart && providerResult.errorReason !== 'request_validation_failed') {
+      providerResult = await provider[providerMethod](baseRequest);
+    }
 
     if (!providerResult.ok) {
       console.error("AI provider error:", providerResult.errorReason);
@@ -1270,7 +1397,7 @@ exports.handler = async function(event) {
     return {
       statusCode: 200, headers,
       // Return both 'reply' and 'text' — some pages read data.reply, others data.text
-      body: JSON.stringify({ reply, text: reply, remaining: rateResult.remaining, suggestedTools, usage, guardrails: providerResult.guardrails || { sourceUrlsRemoved: false } })
+      body: JSON.stringify({ reply, text: reply, remaining: rateResult.remaining, suggestedTools, usage, model: providerResult.model || '', tier: routing.tier, guardrails: providerResult.guardrails || { sourceUrlsRemoved: false } })
     };
 
   } catch (err) {
@@ -1286,4 +1413,10 @@ exports.handler = async function(event) {
       })
     };
   }
+};
+
+// Exposed for offline tests only — not part of the HTTP contract.
+exports.__test__ = {
+  classifyQueryComplexity,
+  buildCoreIntelligencePrompt,
 };

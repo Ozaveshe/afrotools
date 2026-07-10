@@ -1,27 +1,26 @@
 # Blog Audit
 
-Generated: 2026-06-18T03:38:54.161Z
+Generated: 2026-07-10T04:03:21.109Z
 
 ## Summary
-- Posts audited: 203
-- Hub cards: 201 (0 still using default imagery before cleanup)
+- Posts audited: 211
+- Hub cards: 211 (0 still using default imagery before cleanup)
 - Posts using default images: 0
-- Posts with no external sources on fact-heavy topics: 1
+- Posts with no external sources on fact-heavy topics: 0
 - Posts with obvious encoding issues: 0
-- Average quality score: 94.8/100
-- Average word count: 660
+- Average quality score: 94.7/100
+- Average word count: 648
 - Average AI-pattern hits: 0.2
 
 ## Category Counts
-- tax: 57
-- business: 45
-- tools: 38
+- tax: 62
+- business: 47
+- tools: 41
 - data: 29
 - currency: 23
 - francais: 9
 
 ## Highest-Priority Posts
-- francophone-africa-tax-guide-2026: score 86, priority 4, defaultImage=false, missingSources=true, aiHits=0, badEncoding=0
 - dollar-to-cedi-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
 - dollar-to-naira-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
 - dollar-to-rand-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
@@ -41,6 +40,7 @@ Generated: 2026-06-18T03:38:54.161Z
 - hawala-remittance: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
 - how-to-choose-business-name-africa: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
 - japa-guide-nigeria-canada-2026: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
+- kenya-shilling-words: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=4, badEncoding=0
 
 ## Notes
 - "Missing sources" means a fact-heavy post had no outbound sources at all. It does not automatically mean the content is wrong, but it does mean trust is weaker.

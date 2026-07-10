@@ -24,6 +24,7 @@ The free side is close-out ready for maintenance mode after this pass, with Pro 
 - Source-ledger GitHub Actions now split daily check mode from weekly refresh PR mode.
 - Daily maintenance workflow has `AFROTOOLS_DAILY_MAINTENANCE_PAUSED` as a pause switch.
 - 2026-06-04 shipping pass removes Matchday OS from public discovery, API redirects, sitemap output, and deploy artifacts while archiving its Netlify endpoint files under `ops/archived-matchday-os/` for later reuse.
+- 2026-07-10 website, content, AI-catalog, and automation improvement pass upgraded all 73 active Codex automations from `gpt-5.5` to `gpt-5.6` through the Codex automation API and changed the AM/PM content batches to choose evidence-backed refreshes before new posts. Repo work cleared all 8 blog editorial warnings, localized generated source/method/limitations/test panels across 108 French PAYE/VAT pages, made tool-quality scoring hydration- and app-route-aware, and synchronized the 1,247-tool AI catalog plus its 159-record synthetic corpus and 100/29/30 model splits. Proof: `npm test`, `npm run check-links`, `npm run tools:quality`, `npm run blog:editorial:audit`, `npm run blog:feed:check`, `npm run blog:verify`, `npm run build:i18n:validate`, `npm run validate:hreflang`, `npm run salary-tax:verify`, `npm run vat-business-tax:verify`, and targeted browser smoke passed. The final static tool-quality distribution was 3,244 A, 14 B, and 0 C/D/F rows. No deploy or live-production verification was performed.
 
 ## Sunset or Deferred
 

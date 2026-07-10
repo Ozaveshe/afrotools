@@ -177,10 +177,10 @@ class AfroRelatedTools extends HTMLElement {
           white-space: nowrap;
           padding: 8px 18px;
           border-radius: 980px;
-          background: rgba(0,122,255,.08);
+          background: rgba(0,98,204,.08);
           transition: background .18s;
         }
-        .all-link:hover { background: rgba(0,122,255,.16); }
+        .all-link:hover { background: rgba(0,98,204,.16); }
 
         /* ── Card grid ── */
         .grid {
