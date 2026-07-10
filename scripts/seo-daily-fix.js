@@ -39,6 +39,11 @@ const REFRESH_SITEMAP_LASTMOD = process.env.AFROTOOLS_REFRESH_SITEMAP_LASTMOD ==
 const SKIP_DIRS = new Set([
   'node_modules',
   '.git',
+  '.claude',
+  '.codex',
+  '.jamb',
+  '.jamb-tools',
+  '.worktrees',
   'assets',
   'scripts',
   '.netlify',
