@@ -12,31 +12,57 @@
  *   - placeholder / aria-label / title / value attributes with exact match
  * The shim is left in place so runtime-generated strings keep translating.
  *
+ * An external repair map can be supplied instead of the page's inline shim
+ * map. The file is JSON: { "<repo-relative page path>": { "EN": "SW", ... },
+ * "*": { ...applied to every listed page... } }.
+ *
  * Usage:
  *   node scripts/bake-inline-textmap.js sw            # bake all pages under sw/
  *   node scripts/bake-inline-textmap.js sw --dry-run  # report only
+ *   node scripts/bake-inline-textmap.js --map lang/sw-visible-copy-repairs.json
  */
 
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const targetDir = process.argv[2];
 const DRY = process.argv.includes('--dry-run');
+const mapIdx = process.argv.indexOf('--map');
+const mapFile = mapIdx !== -1 ? process.argv[mapIdx + 1] : null;
+const targetDir = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : null;
 
-if (!targetDir) {
-  console.error('Usage: node scripts/bake-inline-textmap.js <dir> [--dry-run]');
+if (!targetDir && !mapFile) {
+  console.error('Usage: node scripts/bake-inline-textmap.js <dir> [--dry-run] | --map <file> [--dry-run]');
   process.exit(1);
 }
 
 const pages = [];
-(function walk(dir) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p);
-    else if (e.name.endsWith('.html')) pages.push(p);
+if (targetDir) {
+  (function walk(dir) {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith('.html')) pages.push(p);
+    }
+  })(path.join(ROOT, targetDir));
+}
+
+let repairMap = null; // Map<absPath, Map<en, sw>>
+if (mapFile) {
+  const raw = JSON.parse(fs.readFileSync(path.join(ROOT, mapFile), 'utf8'));
+  const globals = Object.entries(raw['*'] || {});
+  repairMap = new Map();
+  for (const [rel, entries] of Object.entries(raw)) {
+    if (rel === '*') continue;
+    const abs = path.join(ROOT, rel);
+    if (!fs.existsSync(abs)) {
+      console.warn(`[skip] missing page: ${rel}`);
+      continue;
+    }
+    repairMap.set(abs, new Map([...globals, ...Object.entries(entries)]));
+    if (!pages.includes(abs)) pages.push(abs);
   }
-})(path.join(ROOT, targetDir));
+}
 
 function extractTextMap(html) {
   const m = html.match(/const textMap = new Map\((\[[\s\S]*?\])\);/);
@@ -85,7 +111,7 @@ function bakeMarkup(html, map) {
 
     // bake translatable attributes on the tag itself
     tag = tag.replace(
-      /\b(placeholder|aria-label|title|value)="([^"]*)"/g,
+      /\b(placeholder|aria-label|title|value|alt)="([^"]*)"/g,
       (whole, attr, val) => {
         const key = val.trim();
         if (map.has(key) && map.get(key) !== key) {
@@ -126,7 +152,7 @@ let touched = 0;
 let totalReplacements = 0;
 for (const p of pages) {
   const html = fs.readFileSync(p, 'utf8');
-  const map = extractTextMap(html);
+  const map = repairMap ? repairMap.get(p) : extractTextMap(html);
   if (!map) continue;
   const { html: baked, replaced } = bakeMarkup(html, map);
   if (replaced > 0) {

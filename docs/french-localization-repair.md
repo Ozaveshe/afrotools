@@ -20,6 +20,11 @@ JS. This reads as machine-generated to francophone users and suppresses CTR/trus
 | `node scripts/fix-fr-html-lang.js --fix` | `lang="fr"` + missing self/x-default hreflang. |
 | `node scripts/fix-fr-internal-links.js --fix` | Rewrites `/tools/...`-style anchors in fr pages to `/fr/...`. |
 | `node scripts/fix-hreflang-reciprocity.js` | Adds missing reciprocal hreflang on English pages. |
+| `node scripts/repair-fr-registry-accents.js [--fix]` | Accents the `name`/`desc` of `lang:'fr'` rows in `tool-registry.js` (card/search copy). Re-minify afterwards. |
+
+Note: `generate-fr-tool-gap-pages.js` now pipes its output through the accent
+repairer at write time, so regenerating legacy PAGES entries can no longer
+reintroduce unaccented copy.
 
 ## Post-generation pipeline (run after any FR generation batch)
 

@@ -562,7 +562,7 @@ const SW_SLUG_TO_EN = {
   'hati-na-pdf': 'document-pdf',
   'kazi-na-nyaraka': 'document-pdf',
   'kilimo': 'agriculture',
-  'mali-na-mikopo': 'mortgage-property',
+  'nyumba-na-ardhi': 'mortgage-property',
   'mshahara-na-kodi': 'salary-tax',
   'sarafu': 'currency',
   'vat-na-kodi': 'vat-business-tax',
