@@ -51,7 +51,7 @@
   "image": "https://afrotools.com/assets/img/tools/receipt-generator.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this receipt generator free?","acceptedAnswer":{"@type":"Answer","text":"Yes. AfroTools Receipt Generator is free to use. You can create receipts, save drafts locally, print, and export PDF, TXT, CSV, and JSON files without signup."}},{"@type":"Question","name":"Does the receipt data leave my browser?","acceptedAnswer":{"@type":"Answer","text":"No receipt data is sent to AfroTools servers by this tool. Saved receipts, logos, and drafts stay in your browser unless you export a file yourself."}},{"@type":"Question","name":"Which payment methods are supported?","acceptedAnswer":{"@type":"Answer","text":"The tool supports cash, bank transfer, POS/card, cheque, mobile money, payment links, and custom payment references for providers such as M-Pesa, MTN MoMo, Airtel Money, Paystack, Flutterwave, OPay, and bank transfers."}},{"@type":"Question","name":"Can I make VAT or tax receipts?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose a country preset to apply common VAT rates and labels, then add your TIN, VAT, PIN, or registration number. Always verify compliance requirements with your accountant or tax authority."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this receipt generator free?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can create receipts, save drafts locally, and print for free. File downloads require a free AfroTools account."}},{"@type":"Question","name":"Does the receipt data leave my browser?","acceptedAnswer":{"@type":"Answer","text":"No receipt data is sent to AfroTools servers by this tool. Saved receipts, logos, and drafts stay in your browser unless you export a file yourself."}},{"@type":"Question","name":"Which payment methods are supported?","acceptedAnswer":{"@type":"Answer","text":"The tool supports cash, bank transfer, POS/card, cheque, mobile money, payment links, and custom payment references for providers such as M-Pesa, MTN MoMo, Airtel Money, Paystack, Flutterwave, OPay, and bank transfers."}},{"@type":"Question","name":"Can I make VAT or tax receipts?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose a country preset to apply common VAT rates and labels, then add your TIN, VAT, PIN, or registration number. Always verify compliance requirements with your accountant or tax authority."}}]}</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,13 +86,13 @@
         <div>
           <p class="receipt-kicker">Business records</p>
           <h1>Receipt Generator</h1>
-          <p class="receipt-sub">Create a clean payment receipt, check the totals, then download or print it without an account gate.</p>
+          <p class="receipt-sub">Create a clean payment receipt, check the totals, then print it or use a free AfroTools account to download files.</p>
         </div>
         <div class="receipt-hero-metrics" aria-label="Receipt generator highlights">
           <span><strong>16+</strong> currencies</span>
           <span><strong>6</strong> exports</span>
           <span><strong>4</strong> layouts</span>
-          <span><strong>0</strong> signup</span>
+          <span><strong>Free</strong> account</span>
         </div>
       </div>
     </div>
@@ -446,5 +446,22 @@
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+<script>
+document.addEventListener('click', function (event) {
+  var button = event.target && event.target.closest ? event.target.closest('#downloadPdfBtn') : null;
+  var gate = window.AfroPdfDownloadGate;
+  if (!button || !gate || gate.isRegistered()) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  gate.guard(function () { button.click(); }, {
+    toolSlug: 'receipt-generator',
+    toolName: 'Receipt Generator',
+    reportTitle: 'Receipt PDF'
+  });
+}, true);
+</script>
 </body>
 </html>

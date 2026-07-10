@@ -10,7 +10,7 @@ const workflowPath = path.join(root, 'docs/PDF-CATEGORY-WORKFLOW.md');
 
 const failures = [];
 const warnings = [];
-const localFirstSensitiveGateExemptions = new Set(['cv-builder']);
+const localFirstSensitiveGateExemptions = new Set(['cv-builder', 'cover-letter-generator']);
 
 function read(file) {
   return fs.readFileSync(file, 'utf8');
@@ -86,11 +86,15 @@ function verifyToolPages(tools) {
       checked.push(file);
       const gateCount = (html.match(/pdf-download-gate\.js/g) || []).length;
       const modalCount = (html.match(/<email-gate-modal/g) || []).length;
+      const reportSyncCount = (html.match(/document-pdf-report-sync\.js/g) || []).length;
       const oldGateCount = (html.match(/auto-email-gate\.js/g) || []).length;
       const gateExempt = localFirstSensitiveGateExemptions.has(tool.slug);
       if (!gateExempt && gateCount !== 1) failures.push(`${rel(file)} should load pdf-download-gate.js exactly once, found ${gateCount}.`);
       if (!gateExempt && modalCount < 1) failures.push(`${rel(file)} is missing <email-gate-modal>.`);
-      if (gateExempt && (gateCount > 0 || modalCount > 0)) failures.push(`${rel(file)} is local-first and should not load the PDF/email gate.`);
+      if (gateExempt && (gateCount > 0 || modalCount > 0 || reportSyncCount > 0)) failures.push(`${rel(file)} is local-first and should not load the PDF/email gate or report sync.`);
+      if (tool.slug === 'receipt-generator' && name === 'index.html' && !html.includes("event.target.closest('#downloadPdfBtn')")) {
+        failures.push(`${rel(file)} must explicitly guard its jsPDF button callback; anchor interception does not cover jsPDF.save().`);
+      }
       if (oldGateCount > 0) failures.push(`${rel(file)} still loads auto-email-gate.js.`);
       [...html.matchAll(/["'](\/assets\/vendor\/[^"']+)["']/g)].forEach((match) => {
         const cleanRef = match[1].split('?')[0].split('#')[0];
