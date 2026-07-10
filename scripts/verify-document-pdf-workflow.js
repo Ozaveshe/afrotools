@@ -85,6 +85,21 @@ function verifyHub() {
   assert(/\/assets\/js\/lib\/workspace-sync\.js\?v=/.test(hub), 'document-pdf/index.html is missing workspace-sync.js');
   assert(/\/assets\/js\/lib\/document-pdf-report-sync\.js\?v=/.test(hub), 'document-pdf/index.html is missing report sync script');
   assert(/\/assets\/js\/lib\/document-pdf-workflow\.js\?v=/.test(hub), 'document-pdf/index.html is missing workflow script');
+  assert(hub.includes('id="pdf-tool-catalog"'), 'document-pdf/index.html is missing the visible PDF tool catalog');
+  assert(hub.includes('data-docpdf-filter="popular"'), 'document-pdf/index.html is missing job-family catalog filters');
+  assert(hub.includes('escapeHtml(query)'), 'document-pdf/index.html must escape empty-search result copy before rendering it as HTML');
+  assert(hub.includes('/assets/css/document-pdf-hub.css'), 'document-pdf/index.html is missing PDF hub styles');
+  assert(hub.includes('/assets/js/pages/document-pdf-hub.js'), 'document-pdf/index.html is missing PDF hub behavior');
+}
+
+function verifyPdfWorkspace() {
+  const workspace = read('tools/pdf-workspace/index.html');
+  const coreBundleCount = (workspace.match(/\/assets\/js\/bundles\/core\.[^"']+\.min\.js/g) || []).length;
+  assert(coreBundleCount === 1, `tools/pdf-workspace/index.html should load the shared core bundle exactly once, found ${coreBundleCount}.`);
+  assert(workspace.includes('aria-label="Specialist PDF tools"'), 'PDF Workspace is missing specialist-tool handoffs');
+  ['/tools/pdf-ocr/', '/tools/pdf-compare/', '/tools/pdf-translate/', '/tools/pdf-redact/', '/tools/pdf-repair/'].forEach((route) => {
+    assert(workspace.includes(route), `PDF Workspace specialist handoff is missing ${route}`);
+  });
 }
 
 function main() {
@@ -93,6 +108,7 @@ function main() {
 
   verifyToolReportSync(tools);
   verifyHub();
+  verifyPdfWorkspace();
   verifyWorkflowRoutes();
 
   assertIncludes('assets/js/lib/document-pdf-report-sync.js', 'afro_document_pdf_reports_v1', 'document PDF report local store');

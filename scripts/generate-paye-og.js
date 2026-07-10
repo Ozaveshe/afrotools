@@ -56,7 +56,7 @@ function buildSvg(cc, { name, flag }) {
       <stop offset="100%" stop-color="#111827"/>
     </linearGradient>
     <linearGradient id="bar" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#007AFF"/>
+      <stop offset="0%" stop-color="#0062CC"/>
       <stop offset="100%" stop-color="#4DA3FF"/>
     </linearGradient>
     <pattern id="dots" width="30" height="30" patternUnits="userSpaceOnUse">
@@ -72,14 +72,14 @@ function buildSvg(cc, { name, flag }) {
   <rect y="0" width="1200" height="4" fill="url(#bar)"/>
 
   <!-- Glow circles -->
-  <circle cx="1060" cy="130" r="200" fill="#007AFF" opacity="0.05"/>
+  <circle cx="1060" cy="130" r="200" fill="#0062CC" opacity="0.05"/>
   <circle cx="1100" cy="500" r="130" fill="#4DA3FF" opacity="0.04"/>
 
   <!-- Flag watermark -->
   <text x="980" y="400" font-size="160" text-anchor="middle" opacity="0.08">${flag}</text>
 
   <!-- Logo -->
-  <text x="80" y="165" font-family="system-ui,-apple-system,sans-serif" font-size="26" font-weight="900" letter-spacing="3" fill="#E2E8F0">AFRO<tspan fill="#007AFF">TOOLS</tspan></text>
+  <text x="80" y="165" font-family="system-ui,-apple-system,sans-serif" font-size="26" font-weight="900" letter-spacing="3" fill="#E2E8F0">AFRO<tspan fill="#0062CC">TOOLS</tspan></text>
 
   <!-- Country name -->
   <text x="80" y="275" font-family="system-ui,-apple-system,sans-serif" font-size="56" font-weight="800" fill="#E2E8F0" letter-spacing="-1">${escapedName}</text>
@@ -88,7 +88,7 @@ function buildSvg(cc, { name, flag }) {
   <text x="80" y="330" font-family="system-ui,-apple-system,sans-serif" font-size="28" fill="#94A3B8">PAYE Calculator</text>
 
   <!-- Accent line -->
-  <rect x="80" y="350" width="80" height="4" rx="2" fill="#007AFF"/>
+  <rect x="80" y="350" width="80" height="4" rx="2" fill="#0062CC"/>
 
   <!-- Flag display (visible) -->
   <text x="80" y="440" font-size="64">${flag}</text>

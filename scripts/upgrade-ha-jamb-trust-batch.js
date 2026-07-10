@@ -4,16 +4,16 @@ const path = require('path');
 const ROOT = process.cwd();
 
 const pages = [
-  ['ha/jamb/cbt/index.html', 'JAMB CBT', '/jamb/cbt/', 'practice mode, time, keyboard shortcuts and review plan'],
-  ['ha/jamb/lissafi/index.html', 'JAMB Lissafi', '/jamb/mathematics/', 'math topics, weak areas, timed practice and revision plan'],
-  ['ha/jamb/tutor/index.html', 'Mai taimakon JAMB', '/jamb/tutor/', 'study prompt, subject, weak topic and teacher follow-up'],
-  ['ha/jamb/halittu/index.html', 'JAMB Biology', '/jamb/biology/', 'biology topics, past questions and revision plan'],
-  ['ha/jamb/tattalin-arziki/index.html', 'JAMB Economics', '/jamb/economics/', 'economics topics, definitions, diagrams and timed practice'],
-  ['ha/jamb/gwamnati/index.html', 'JAMB Government', '/jamb/government/', 'government topics, civic concepts and past-question practice'],
-  ['ha/jamb/kasuwanci/index.html', 'JAMB Commerce', '/jamb/commerce/', 'commerce topics, business terms and timed practice'],
-  ['ha/jamb/adabi/index.html', 'JAMB Literature', '/jamb/literature/', 'literature texts, themes, devices and revision plan'],
-  ['ha/jamb/tarihi/index.html', 'JAMB History', '/jamb/history/', 'history topics, dates, causes and revision plan'],
-  ['ha/jamb/crk/index.html', 'JAMB CRK', '/jamb/crk/', 'CRK topics, passages, themes and revision plan']
+  ['ha/jamb/cbt/index.html', 'JAMB CBT', '/jamb/cbt/', 'yanayin atisaye, lokaci, gajerun hanyoyin madannai da shirin dubawa'],
+  ['ha/jamb/lissafi/index.html', 'JAMB Lissafi', '/jamb/mathematics/', 'batutuwan lissafi, wuraren rauni, atisayen lokaci da shirin bita'],
+  ['ha/jamb/tutor/index.html', 'Mai taimakon JAMB', '/jamb/tutor/', 'tambayar karatu, darasi, batu mai rauni da bin diddigin malami'],
+  ['ha/jamb/halittu/index.html', 'JAMB Halittu', '/jamb/biology/', 'batutuwan halittu, tsoffin tambayoyi da shirin bita'],
+  ['ha/jamb/tattalin-arziki/index.html', 'JAMB Tattalin Arziki', '/jamb/economics/', "batutuwan tattalin arziki, ma\'anoni, zane-zane da atisayen lokaci"],
+  ['ha/jamb/gwamnati/index.html', 'JAMB Gwamnati', '/jamb/government/', 'batutuwan gwamnati, ilimin dan kasa da atisayen tsoffin tambayoyi'],
+  ['ha/jamb/kasuwanci/index.html', 'JAMB Kasuwanci', '/jamb/commerce/', 'batutuwan kasuwanci, kalmomin kasuwanci da atisayen lokaci'],
+  ['ha/jamb/adabi/index.html', 'JAMB Adabi', '/jamb/literature/', 'rubutun adabi, jigogi, salon rubutu da shirin bita'],
+  ['ha/jamb/tarihi/index.html', 'JAMB Tarihi', '/jamb/history/', 'batutuwan tarihi, ranaku, dalilai da shirin bita'],
+  ['ha/jamb/crk/index.html', 'JAMB CRK', '/jamb/crk/', 'batutuwan CRK, sassan littafi, jigogi da shirin bita']
 ].map(([file, title, source, prompt]) => ({ file, title, source, prompt }));
 
 function escHtml(value) {
@@ -47,9 +47,9 @@ function section(page) {
   return `
 <section class="ha-jamb-export" data-ha-jamb-batch="export" data-jamb-title="${escHtml(page.title)}" data-jamb-source="${escHtml(page.source)}" data-jamb-prompt="${escHtml(page.prompt)}">
   <div>
-    <span class="ha-jamb-kicker">Study brief export</span>
+    <span class="ha-jamb-kicker">Fitar da takaitaccen shirin karatu</span>
     <h2>Ajiye shirin karatu</h2>
-    <p>Rubuta ko sabunta ${escHtml(page.prompt)}. Takaitawar tana zama a browser kuma za ka iya kwafi ko sauke ta a matsayin .txt.</p>
+    <p>Rubuta ko sabunta ${escHtml(page.prompt)}. Takaitawar tana zama a burauzarka kuma za ka iya kwafa ko sauke ta a matsayin TXT.</p>
   </div>
   <div class="ha-jamb-actions">
     <button type="button" data-jamb-copy>Kwafi shirin</button>
@@ -58,13 +58,13 @@ function section(page) {
   </div>
 </section>
 <section class="ha-jamb-trust" data-tool-verification-panel data-ha-jamb-batch="trust">
-  <span class="ha-jamb-kicker">Source / freshness / methodology</span>
+  <span class="ha-jamb-kicker">Tushe, sabuntawa da hanyar aiki</span>
   <h2>Tushe, sabuntawa da iyaka</h2>
   <div class="ha-jamb-trust-grid">
-    <p><strong>Source:</strong> This Hausa guide points to the AfroJAMB workflow at <a href="${escHtml(page.source)}">${escHtml(page.source)}</a>. It is not the official JAMB portal.</p>
-    <p><strong>Official verification:</strong> Confirm exam dates, syllabus, subject combinations, registration rules, admission cut-offs and centre instructions with JAMB, the school, or an approved adviser.</p>
-    <p><strong>Methodology:</strong> The page captures the student's subject, goal and weak areas, then links to the matching AfroJAMB practice or guide route for study planning.</p>
-    <p><strong>Limitations:</strong> This is revision support only. It is not an official score, admission promise, malpractice tool, or replacement for a teacher.</p>
+    <p><strong>Tushe:</strong> Wannan jagorar Hausa tana kai ka zuwa hanyar AfroJAMB a <a href="${escHtml(page.source)}">${escHtml(page.source)}</a>. Ba portal din JAMB na hukuma ba ne.</p>
+    <p><strong>Tabbacin hukuma:</strong> Ka tabbatar da ranar jarrabawa, manhaja, hadin darussa, kaidar rajista, iyakar admission da umarnin cibiya daga JAMB, makaranta ko mai ba da shawara da aka amince da shi.</p>
+    <p><strong>Hanyar aiki:</strong> Shafin yana tattara darasin dalibi, burinsa da wuraren rauni, sannan ya kai shi hanyar atisayen AfroJAMB ko jagorar da ta dace.</p>
+    <p><strong>Iyaka:</strong> Wannan taimakon bita ne kawai. Ba makin hukuma ba ne, ba alkawarin admission ba ne, ba kayan magudin jarrabawa ba ne, kuma ba ya maye gurbin malami.</p>
   </div>
 </section>`;
 }
@@ -84,14 +84,14 @@ function scriptBlock() {
     }).filter(Boolean);
   }
   function brief(panel){
-    var title = panel.getAttribute('data-jamb-title') || 'JAMB study plan';
+    var title = panel.getAttribute('data-jamb-title') || 'Shirin karatun JAMB';
     var source = panel.getAttribute('data-jamb-source') || location.pathname;
-    var prompt = panel.getAttribute('data-jamb-prompt') || 'study plan';
-    var lines = ['AfroTools Hausa - ' + title, 'Route: ' + location.pathname, 'Practice workflow: ' + source, 'Focus: ' + prompt, ''];
+    var prompt = panel.getAttribute('data-jamb-prompt') || 'shirin karatu';
+    var lines = ['AfroTools Hausa - ' + title, 'Hanya: ' + location.pathname, 'Hanyar atisaye: ' + source, 'Abin da za a maida hankali a kai: ' + prompt, ''];
     var fields = fieldLines();
-    if(fields.length) lines.push('Student notes', fields.join('\\n'), '');
-    lines.push('Verification', 'Confirm official dates, syllabus, registration rules, subject combinations and admission requirements with JAMB or the school.');
-    lines.push('', 'Privacy: generated locally in this browser.');
+    if(fields.length) lines.push('Bayanan dalibi', fields.join('\\n'), '');
+    lines.push('Tabbatarwa', 'Ka tabbatar da ranakun hukuma, manhaja, kaidar rajista, hadin darussa da bukatun admission daga JAMB ko makaranta.');
+    lines.push('', 'Sirri: an gina wannan a cikin burauzarka.');
     return lines.join('\\n');
   }
   function downloadText(filename, text){

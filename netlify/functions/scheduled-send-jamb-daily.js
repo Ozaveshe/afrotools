@@ -230,7 +230,7 @@ function buildDailyHtml(packet, timeWindow, unsubscribeUrl) {
             '</td></tr>' +
             '<tr><td style="padding:20px 28px 28px;">' +
               '<div style="font-size:14px;line-height:1.7;color:#475569;margin-bottom:16px;">Want the full explanation and more practice in the same subject? Open AfroJAMB and keep the momentum going.</div>' +
-              '<a href="' + SITE_URL + '/jamb/tutor/" style="display:inline-block;background:#007AFF;color:#ffffff;text-decoration:none;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;margin-right:8px;">Open AI Tutor</a>' +
+              '<a href="' + SITE_URL + '/jamb/tutor/" style="display:inline-block;background:#0062CC;color:#ffffff;text-decoration:none;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;margin-right:8px;">Open AI Tutor</a>' +
               '<a href="' + SITE_URL + '/jamb/cbt/" style="display:inline-block;background:#ffffff;color:#0063D1;text-decoration:none;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;border:1.5px solid #bfdbfe;">Start CBT Mock</a>' +
               '<div style="margin-top:16px;font-size:12px;line-height:1.7;color:#64748b;">No spam. <a href="' + unsubscribeUrl + '" style="color:#2563eb;">Stop these daily emails</a>.</div>' +
             '</td></tr>' +

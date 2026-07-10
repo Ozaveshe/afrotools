@@ -472,48 +472,14 @@ function imageFor(page) {
 
 function css() {
   return `
-  <style>
-    *{box-sizing:border-box}
-    body{margin:0;background:#f8fafc;color:#0f172a;font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65}
-    a{color:inherit;text-decoration:none}
-    .skip-link{position:absolute;top:-120px;left:16px;z-index:10000;padding:10px 14px;border-radius:8px;background:#0f172a;color:#fff;font-weight:900}
-    .skip-link:focus{top:16px;outline:3px solid #facc15;outline-offset:2px}
-    .wrap{width:min(1120px,calc(100% - 32px));margin-inline:auto}
-    .hero{padding:86px 0 56px;background:linear-gradient(135deg,rgba(15,23,42,.96),rgba(20,83,45,.82)),var(--hero-image) center/cover;color:#fff}
-    .crumb{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;color:rgba(255,255,255,.78);font-size:.84rem;font-weight:800}
-    .eyebrow{display:inline-flex;margin-bottom:16px;padding:7px 11px;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(255,255,255,.1);font-size:.76rem;font-weight:900;text-transform:uppercase}
-    h1{max-width:840px;margin:0;color:#fff;font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:0}
-    .hero p{max-width:820px;margin:18px 0 0;color:rgba(255,255,255,.88);font-size:1.05rem}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:11px 16px;border-radius:8px;font-weight:900;border:1px solid transparent}
-    .primary{background:#f8fafc;color:#0f172a}
-    .secondary{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff}
-    main{padding:36px 0 68px}
-    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-    .layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
-    .card,.note{background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 14px 32px rgba(15,23,42,.06);padding:20px}
-    .card h2,.note h2{margin:0 0 8px;font-size:1.12rem;letter-spacing:0}
-    .card p,.note p,.note li{color:#475569}
-    .tag{display:inline-flex;margin-bottom:12px;padding:5px 9px;border-radius:999px;background:#ecfdf5;color:#166534;font-size:.78rem;font-weight:900}
-    .tag.warn{background:#fff7ed;color:#9a3412}
-    .steps{display:grid;gap:12px;margin:0;padding:0;list-style:none}
-    .steps li{padding:14px 0;border-bottom:1px solid #edf2f7;color:#475569}
-    .steps li:last-child{border-bottom:0}
-    .links{display:grid;gap:10px}
-    .links a{display:flex;flex-direction:column;justify-content:center;min-height:44px;border:1px solid #dcfce7;border-radius:8px;padding:12px;background:#fff}
-    .links strong{color:#111827}
-    .links span{color:#64748b;font-size:.88rem}
-    .warn{border-color:#fed7aa;background:#fff7ed}
-    .warn p,.warn li{color:#7c2d12}
-    @media(max-width:940px){.grid,.layout{grid-template-columns:1fr}}
-    @media(max-width:560px){.wrap{width:min(100% - 24px,1120px)}.actions{display:grid;grid-template-columns:1fr}.btn{width:100%}}
-  </style>`;
+  <link rel="stylesheet" href="/ha/assets/ha-lane.css">
+  <link rel="stylesheet" href="/ha/assets/ha-improvements.css?v=20260710">`;
 }
 
 function head(page) {
   const image = imageFor(page);
   return `<!doctype html>
-<html data-chat-bundle="/assets/js/bundles/chat.e5a3e11c.min.js" lang="ha">
+<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="ha">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -538,11 +504,12 @@ function head(page) {
   <meta name="twitter:title" content="${esc(page.title)} | AfroTools Hausa">
   <meta name="twitter:description" content="${esc(page.desc)}">
   <meta name="twitter:image" content="${image}">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=d2e4e77a">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=c0c9d6ea">
-  <script src="/assets/js/components/navbar.min.js?v=48a38e5f" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=5ba0f525" defer></script>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=b6d25198">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
+  <script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+  <script src="/ha/assets/ha-surface.js?v=20260710" defer></script>
   <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"WebPage","name":page.title,"description":page.desc,"url":site+page.route,"inLanguage":"ha","isPartOf":{"@type":"WebSite","name":"AfroTools","url":site+"/"},"image":image})}</script>
   <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools Hausa","item":site+"/ha/"},{"@type":"ListItem","position":2,"name":page.route.startsWith('/ha/jamb/')?"JAMB":page.route.startsWith('/ha/noma/')?"Noma":"Kayan aiki","item":site+(page.route.startsWith('/ha/jamb/')?"/ha/jamb/":page.route.startsWith('/ha/noma/')?"/ha/noma/":"/ha/kayan-aiki/")},{"@type":"ListItem","position":3,"name":page.title,"item":site+page.route}]})}</script>
 ${css()}

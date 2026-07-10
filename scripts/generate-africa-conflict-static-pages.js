@@ -547,7 +547,7 @@ function buildConflictHubIndexHtml(manifest) {
     .acd-static-hub-toolbar h2 { margin: 0; font-size: clamp(1.4rem, 3vw, 2rem); }
     .acd-static-hub-toolbar p { margin: 6px 0 0; color: #475569; line-height: 1.6; }
     .acd-static-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
-    .acd-static-hub-card { display: grid; gap: 8px; padding: 18px; border: 1px solid #e2e8f0; border-left: 4px solid #007aff; border-radius: 8px; background: #fff; color: inherit; text-decoration: none; }
+    .acd-static-hub-card { display: grid; gap: 8px; padding: 18px; border: 1px solid #e2e8f0; border-left: 4px solid #0062cc; border-radius: 8px; background: #fff; color: inherit; text-decoration: none; }
     .acd-static-hub-card span, .acd-static-hub-card small { color: #64748b; font-size: .78rem; }
     .acd-static-hub-card strong { font-size: 1rem; color: #0f172a; }
     .acd-static-hub-card p { margin: 0; color: #475569; line-height: 1.55; }

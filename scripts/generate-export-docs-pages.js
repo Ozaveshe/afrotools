@@ -138,7 +138,7 @@ function pageHtml(c) {
 '\n' +
 '<style>\n' +
 ':root {\n' +
-'  --ed-blue: #007AFF;\n' +
+'  --ed-blue: #0062CC;\n' +
 '  --ed-blue-dark: #0063D1;\n' +
 '  --ed-blue-light: #E8F2FF;\n' +
 '  --ed-bg: #F8F9FA;\n' +

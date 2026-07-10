@@ -270,7 +270,7 @@
     {
       id: 'hr-payroll', label: 'HR & Payroll', labelFr: 'RH & Paie', labelSw: 'Rasilimali Watu', icon: '💼',
       desc: 'Employee cost, leave, severance', descFr: 'Coût employé, congés, licenciement', descSw: 'Gharama, likizo, fidia',
-      href: '/hr-payroll/', color: '#f0fdfa', accent: '#0d9488',
+      href: '/hr-payroll/', hrefHa: '/ha/albashi-da-haraji/', color: '#f0fdfa', accent: '#0d9488',
       tools: [
         { label: 'Employee Cost Calculator', href: '/tools/employee-cost/', emoji: '💸', badge: 'NEW' },
         { label: 'Contractor vs Employee', href: '/tools/contractor-vs-employee/', emoji: '⚖️', badge: 'NEW' },
@@ -281,6 +281,13 @@
         { label: 'Freelancer Rate Card', href: '/tools/freelancer-rate/', emoji: '📋', badge: 'NEW' },
         { label: 'Domestic Worker Guide', href: '/tools/domestic-worker/', emoji: '🏠', badge: 'NEW' },
         { label: 'All HR & Payroll Tools →', href: '/hr-payroll/', emoji: '💼' },
+      ],
+      toolsHa: [
+        { label: 'Kudin maikaci', href: '/ha/kayan-aiki/kudin-maikaci/', emoji: 'COST', badge: 'HA' },
+        { label: 'Takardar albashi', href: '/ha/kayan-aiki/takardar-albashi/', emoji: 'PAY', badge: 'HA' },
+        { label: 'PAYE na Najeriya', href: '/ha/najeriya/harajin-albashi/', emoji: 'PAYE', badge: 'HA' },
+        { label: 'Fansho Najeriya', href: '/ha/kayan-aiki/fansho-najeriya/', emoji: 'PEN', badge: 'HA' },
+        { label: 'Duk kayan albashi', href: '/ha/albashi-da-haraji/', emoji: 'ALL', badge: 'HA' }
       ]
     },
     {
@@ -340,6 +347,8 @@
         { label: 'Wurin aikin PDF', href: '/ha/kayan-aiki/wurin-aikin-pdf/', emoji: 'PDF', badge: 'HA' },
         { label: 'Canja PDF', href: '/ha/kayan-aiki/canza-pdf/', emoji: 'PDF', badge: 'HA' },
         { label: 'Sa hannu a PDF', href: '/ha/kayan-aiki/sanya-hannu-pdf/', emoji: 'PDF', badge: 'HA' },
+        { label: 'Gyara PDF', href: '/ha/kayan-aiki/gyara-pdf/', emoji: 'PDF', badge: 'HA' },
+        { label: 'Lambar shafi a PDF', href: '/ha/kayan-aiki/lambar-shafi-pdf/', emoji: 'PDF', badge: 'HA' },
         { label: 'Duk kayan PDF ->', href: '/ha/takardu-da-pdf/', emoji: 'ALL' }
       ],
       toolsYo: [
@@ -599,6 +608,8 @@
         { label: 'Ribar kiwon kifi', href: '/ha/kayan-aiki/ribar-kiwon-kifi/', emoji: 'FISH', badge: 'HA' },
         { label: 'Ban ruwa Najeriya', href: '/ha/noma/ban-ruwa-najeriya/', emoji: 'H2O', badge: 'HA' },
         { label: 'Yawan iri Najeriya', href: '/ha/noma/yawan-iri-najeriya/', emoji: 'IRI', badge: 'HA' },
+        { label: 'Kalandar shuka', href: '/ha/noma/kalandar-shuka/', emoji: 'CAL', badge: 'HA' },
+        { label: 'Hadarin fari', href: '/ha/noma/hadarin-fari/', emoji: 'DRY', badge: 'HA' },
         { label: 'Duk kayan noma ->', href: '/ha/noma/', emoji: 'ALL' }
       ],
       toolsYo: [
@@ -654,7 +665,7 @@
         { label: 'WHT na Najeriya', href: '/ha/kayan-aiki/wht-najeriya/', emoji: 'WHT', badge: 'HA' },
         { label: 'Jagorar TIN', href: '/ha/kayan-aiki/jagorar-tin-najeriya/', emoji: 'TIN', badge: 'HA' },
         { label: 'Rajistar kasuwanci', href: '/ha/kayan-aiki/rajistar-kasuwanci/', emoji: 'REG', badge: 'HA' },
-        { label: 'Matakin rufe kudi - shafi na Turanci', href: '/tools/break-even/', emoji: 'BE', badge: 'EN' },
+        { label: 'Dawo da jari', href: '/ha/kayan-aiki/dawo-da-jari/', emoji: 'BE', badge: 'HA' },
         { label: 'Duk kayan VAT ->', href: '/ha/kasuwanci-da-haraji/', emoji: 'ALL' }
       ],
       toolsYo: [
@@ -868,7 +879,7 @@
         { label: 'Rajistar layin waya da NIN', href: '/ha/kayan-aiki/rajistar-layin-waya-nin/', emoji: 'NIN', badge: 'HA' },
         { label: 'Kwatanta kunshin intanet', href: '/ha/kayan-aiki/kwatanta-kunshin-intanet/', emoji: 'GB', badge: 'HA' },
         { label: 'Darajar katin waya', href: '/ha/kayan-aiki/darajar-katin-waya/', emoji: 'KTN', badge: 'HA' },
-        { label: 'Mai gwada USSD - shafi na Turanci', href: '/tools/ussd-simulator/', emoji: 'DEV', badge: 'EN' },
+        { label: 'Gwajin USSD', href: '/ha/kayan-aiki/gwajin-ussd/', emoji: 'DEV', badge: 'HA' },
         { label: 'Duk kayan sadarwa ->', href: '/ha/sadarwa/', emoji: 'ALL' }
       ],
       toolsYo: [
@@ -1327,6 +1338,7 @@
 
   const HA_CATEGORY_HREFS = {
     financial: '/ha/albashi-da-haraji/',
+    'hr-payroll': '/ha/albashi-da-haraji/',
     'document-pdf': '/ha/takardu-da-pdf/',
     education: '/ha/ilimi/',
     health: '/ha/lafiya/',
@@ -1334,6 +1346,10 @@
     ecommerce: '/ha/kasuwanci-da-haraji/',
     language: '/ha/harshe-da-fassara/',
     telecom: '/ha/sadarwa/',
+    fintech: '/ha/kayan-aiki/',
+    legal: '/ha/kasuwanci-da-haraji/',
+    government: '/ha/najeriya/',
+    'personal-finance': '/ha/kayan-aiki/',
     african: '/countries/'
   };
 
@@ -1399,22 +1415,22 @@
       financial: { label: 'Albashi da PAYE', desc: 'PAYE, VAT, FX da harajin Najeriya' },
       'document-pdf': { label: 'Takardu da PDF', desc: 'Takardar kudi, CV, PDF da Naira cikin kalmomi' },
       ecommerce: { label: 'VAT da Haraji', desc: 'VAT, TIN, takardar kudi da harajin kasuwanci a Hausa' },
-      'image-design': { label: 'Hoto da Zane', desc: 'Matsa hoto, resize, QR da OCR' },
-      developer: { label: 'Kayan Masu gini', desc: 'JSON, API, USSD da kayan gwaji' },
+      'image-design': { label: 'Hoto da Zane - Turanci', desc: 'Shafi na Turanci: matsa hoto, resize, QR da OCR' },
+      developer: { label: 'Kayan Masu gini - Turanci', desc: 'Shafi na Turanci: JSON, API, USSD da kayan gwaji' },
       education: { label: 'Ilimi da Jarrabawa', desc: 'JAMB, WAEC, NECO, GPA da tallafin karatu' },
       health: { label: 'Lafiya da Asibiti', desc: 'Kudin asibiti, magani, genotype da abinci a Hausa' },
-      insurance: { label: 'Inshora', desc: 'Mota, lafiya, rayuwa, kasuwanci da tafiya' },
+      insurance: { label: 'Inshora - Turanci', desc: 'Shafi na Turanci: mota, lafiya, rayuwa, kasuwanci da tafiya' },
       fintech: { label: 'Fasahar kudi da banki', desc: 'Lamuni, ajiya, kudin wayar hannu da canjin kudi' },
       agriculture: { label: 'Noma', desc: 'Amfanin gona, taki, ban ruwa da ribar gona' },
       legal: { label: "Doka da Bin Ka'ida", desc: 'Rajista, TIN, kwangila da sirrin bayanai' },
       language: { label: 'Harshe da Fassara', desc: 'Hausa, Yoruba, Swahili, Pidgin da Amharic; shafukan Turanci suna a fili' },
-      trade: { label: 'Kasuwanci da Shigo da Kaya', desc: 'Kwastam, HS code, AfCFTA da LC' },
+      trade: { label: 'Shigo da Kaya - Turanci', desc: 'Shafi na Turanci: Kwastam, HS code, AfCFTA da LC' },
       telecom: { label: 'Sadarwa da Wayar Hannu', desc: 'Intanet, USSD, yawo da ISP' },
-      energy: { label: 'Wuta da Makamashi', desc: 'Wutar lantarki, solar, generator da ruwa' },
-      engineering: { label: 'Gini da Injiniya', desc: 'BOQ, kankare, lantarki da kudin gini' },
+      energy: { label: 'Wuta da Makamashi - Turanci', desc: 'Shafi na Turanci: wutar lantarki, solar, generator da ruwa' },
+      engineering: { label: 'Gini da Injiniya - Turanci', desc: 'Shafi na Turanci: BOQ, kankare, lantarki da kudin gini' },
       government: { label: "Gwamnati da Takardu", desc: 'Passport, ID, NIN, BVN, KYC da permit' },
       african: { label: 'Kasashe da kayan Afirka', desc: 'Najeriya, kasashe, Naira, japa da kudin wayar hannu' },
-      transport: { label: 'Sufuri da Motoci', desc: 'Mai, mota, farashin tafiya da sufuri' },
+      transport: { label: 'Sufuri da Motoci - Turanci', desc: 'Shafi na Turanci: mai, mota, farashin tafiya da sufuri' },
       'personal-finance': { label: 'Kudin Kai', desc: 'Kasafi, rance, ajiya, PAYE da VAT' }
     }
   };
@@ -4804,9 +4820,9 @@
   }
 
   function _markEnglishOnlyToolsForLang(tools, lang) {
-    if ((lang !== 'sw' && lang !== 'yo') || !Array.isArray(tools)) return tools;
+    if ((lang !== 'sw' && lang !== 'yo' && lang !== 'ha') || !Array.isArray(tools)) return tools;
     var localizedRoot = '/' + lang + '/';
-    var marker = lang === 'yo' ? '(ojú ìwé Gẹẹsi)' : '(Kiingereza tu)';
+    var marker = lang === 'yo' ? '(ojú ìwé Gẹẹsi)' : lang === 'ha' ? '- shafi na Turanci' : '(Kiingereza tu)';
     return tools.map(function(tool) {
       var href = tool.href || '';
       if (href.indexOf(localizedRoot) === 0 || tool.badge === 'EN') return tool;
@@ -4840,7 +4856,7 @@
         if (haHref) copy.href = haHref;
         copy.label = localizedItemText(item, 'label', lang);
         copy.desc = localizedItemText(item, 'desc', lang);
-        if (item.toolsHa) copy.tools = item.toolsHa;
+        copy.tools = item.toolsHa || _markEnglishOnlyToolsForLang(item.tools, lang);
       } else if (lang === 'yo') {
         var yoHref = YO_CATEGORY_HREFS[item.id] || item.hrefYo;
         if (yoHref) copy.href = yoHref;

@@ -195,7 +195,7 @@ updateFile('fr/tools/assurance-auto/index.html', (html) => {
 updateFile('nigeria/ng-salary-tax.html', (html) => {
   let out = html;
   if (!out.includes('class="regime-helper-v3"')) {
-    out = out.replace('<div style="background:rgba(0,122,255,0.06);border-bottom:1px solid rgba(0,122,255,0.12);padding:12px 0;">', '<div class="regime-helper-v3" style="background:rgba(0,122,255,0.06);border-bottom:1px solid rgba(0,122,255,0.12);padding:12px 0;">');
+    out = out.replace('<div style="background:rgba(0,98,204,0.06);border-bottom:1px solid rgba(0,98,204,0.12);padding:12px 0;">', '<div class="regime-helper-v3" style="background:rgba(0,98,204,0.06);border-bottom:1px solid rgba(0,98,204,0.12);padding:12px 0;">');
   }
   if (!out.includes('V3 dark mode guardrails for PAYE helper')) {
     out = out.replace('\n    @media (max-width: 720px) {', `${nigeriaPayeDarkBlock}\n    @media (max-width: 720px) {`);

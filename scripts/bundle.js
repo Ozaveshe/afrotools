@@ -52,6 +52,7 @@ const BUNDLE_DEFS = {
 
 const LEGACY_BUNDLE_ALIASES = {
   core: [
+    'core.fdd629ac.min.js',
     'core.a778d1f9.min.js',
     'core.8bd20673.min.js',
     'core.6b2634cc.min.js',
@@ -70,6 +71,7 @@ const LEGACY_BUNDLE_ALIASES = {
   ],
   // Current pages lazy-load this historical chat bundle through data-chat-bundle.
   chat: [
+    'chat.da912503.min.js',
     'chat.e57fe38a.min.js',
   ],
 };

@@ -24,7 +24,7 @@ exports.handler = async function(event) {
         '<stop offset="100%" stop-color="#001845"/>' +
       '</linearGradient>' +
       '<linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">' +
-        '<stop offset="0%" stop-color="#007AFF"/>' +
+        '<stop offset="0%" stop-color="#0062CC"/>' +
         '<stop offset="100%" stop-color="#34AAFF"/>' +
       '</linearGradient>' +
       '<linearGradient id="avatar" x1="0" y1="0" x2="1" y2="1">' +

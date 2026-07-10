@@ -4,6 +4,15 @@
 // Apple-quality UI · Custom tool cards · Image support
 // ═══════════════════════════════════════════════════════════
 
+const HA_RELATED_FALLBACK = [
+  { id:'ng-paye-ha', name:'Kalkuleta PAYE Najeriya', icon:'PAYE', desc:'Lissafa albashin hannu da cire-ciren PAYE a Hausa.', href:'/ha/najeriya/harajin-albashi/', category:'financial', status:'live', lang:'ha' },
+  { id:'vat-calculator-ha', name:'Kalkuletan VAT', icon:'VAT', desc:'Kara ko cire VAT sannan ka tabbatar da adadin da hukumar da ta dace.', href:'/ha/kayan-aiki/kalkuletan-vat/', category:'ecommerce', status:'live', lang:'ha' },
+  { id:'pdf-workspace-ha', name:'Wurin Aikin PDF', icon:'PDF', desc:'Zabi hada, raba, matsa ko saka lambobin shafi a PDF.', href:'/ha/kayan-aiki/wurin-aikin-pdf/', category:'document-pdf', status:'live', lang:'ha' },
+  { id:'jamb-aggregate-ha', name:'Kalkuletan JAMB', icon:'JAMB', desc:'Lissafa jimillar UTME da Post-UTME don shirin admission.', href:'/ha/kayan-aiki/kalkuletan-jamb/', category:'education', status:'live', lang:'ha' },
+  { id:'cv-builder-ha', name:'Mai Gina CV a Hausa', icon:'CV', desc:'Shirya bayanan CV a burauzarka ba tare da loda fayil ba.', href:'/ha/kayan-aiki/gina-cv/', category:'document-pdf', status:'live', lang:'ha' },
+  { id:'farm-profit-nigeria-ha', name:'Ribar Gona Najeriya', icon:'ROI', desc:'Kiyasta kudin shiga, kashe kudi da ribar gona.', href:'/ha/kayan-aiki/ribar-gona/', category:'agriculture', status:'live', lang:'ha' }
+];
+
 class AfroRelatedTools extends HTMLElement {
   constructor() {
     super();
@@ -61,6 +70,16 @@ class AfroRelatedTools extends HTMLElement {
     const pageLang = document.documentElement.lang || 'en';
     const relatedData = (typeof AFRO_RELATED_TOOLS !== 'undefined') ? AFRO_RELATED_TOOLS : null;
 
+    if (pageLang.toLowerCase().startsWith('ha')) {
+      const registry = (typeof AFRO_TOOLS !== 'undefined' && Array.isArray(AFRO_TOOLS)) ? AFRO_TOOLS : HA_RELATED_FALLBACK;
+      const live = registry.filter(t => t.status === 'live' && t.id !== current && t.lang === 'ha' && String(t.href || '').startsWith('/ha/'));
+      const same = live.filter(t => t.category === cat).sort((a,b)=>(b.priority||0)-(a.priority||0));
+      const others = live.filter(t => t.category !== cat).sort((a,b)=>(b.priority||0)-(a.priority||0));
+      const res = same.slice(0, 6);
+      const ids = new Set(res.map(t => t.id));
+      return res.concat(others.filter(t => !ids.has(t.id)).slice(0, Math.max(0, 6 - res.length))).slice(0, 6);
+    }
+
     if (relatedData && !Array.isArray(relatedData) && relatedData.buckets && relatedData.fallback) {
       const bucketKey = `${pageLang}::${cat}`;
       const same = (relatedData.buckets[bucketKey] || []).filter(t => t.id !== current);
@@ -90,6 +109,13 @@ class AfroRelatedTools extends HTMLElement {
   _render() {
     const tools = this._getTools();
     if (!tools.length) { this.shadowRoot.innerHTML=''; return; }
+    const isHausa = (document.documentElement.lang || '').toLowerCase().startsWith('ha');
+    const categoryHa = {
+      african:'Na Afirka', education:'Ilimi', financial:'Kudi', 'document-pdf':'Takardu da PDF',
+      engineering:'Injiniya', 'data-productivity':'Tsarin aiki', health:'Lafiya', legal:'Doka',
+      ecommerce:'Kasuwanci', 'image-design':'Zane', developer:'Masu gini', language:'Harshe',
+      agriculture:'Noma', telecom:'Sadarwa'
+    };
     const fallbackOnlyIds = new Set(['html-to-pdf','pdf-bates','pdf-chat','pdf-compare','pdf-convert','pdf-find-replace','pdf-image-convert','pdf-reorder','pdf-repair','pdf-to-audio','pdf-translate','pdf-workflow']);
 
     const cards = tools.map(t => {
@@ -105,18 +131,18 @@ class AfroRelatedTools extends HTMLElement {
       return `
         <a class="card" href="${t.href}" aria-label="${t.name}">
           <div class="card-visual" style="background:${cs.gradient}">
-            ${useImage ? `<img class="card-img" src="${img}" alt="${t.name} icon"
+            ${useImage ? `<img class="card-img" src="${img}" alt=""
                  loading="lazy"
                  onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.classList.add('card-img--icon');this.src='${imgFallback}'">` : ''}
             <div class="card-emoji" style="display:${useImage ? 'none' : 'flex'}" aria-hidden="true">${t.icon||'PDF'}</div>
           </div>
           <div class="card-body">
-            <span class="pill" style="background:${cs.pill};color:${cs.pillTxt}">${cs.label}</span>
+            <span class="pill" style="background:${cs.pill};color:${cs.pillTxt}">${isHausa ? (categoryHa[t.category] || 'Kayan aiki') : cs.label}</span>
             <div class="card-name">${t.name}</div>
             <div class="card-desc">${desc}</div>
           </div>
           <div class="card-cta">
-            <span class="cta-btn">Open tool</span>
+            <span class="cta-btn">${isHausa ? 'Bude kayan aiki' : 'Open tool'}</span>
             <svg class="cta-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -331,11 +357,11 @@ class AfroRelatedTools extends HTMLElement {
       <div class="wrap">
         <div class="header">
           <div class="header-left">
-            <p class="eyebrow">More from AfroTools</p>
-            <h2 class="title">You might also like</h2>
+            <p class="eyebrow">${isHausa ? 'Karin kayan AfroTools' : 'More from AfroTools'}</p>
+            <h2 class="title">${isHausa ? 'Wata kila za ka kuma so' : 'You might also like'}</h2>
           </div>
-          <a href="/all-tools/" class="all-link">
-            Browse all tools
+          <a href="${isHausa ? '/ha/kayan-aiki/' : '/all-tools/'}" class="all-link">
+            ${isHausa ? 'Duba duk kayan aiki' : 'Browse all tools'}
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M2.5 6h7M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>

@@ -10,7 +10,14 @@ const workflowPath = path.join(root, 'docs/PDF-CATEGORY-WORKFLOW.md');
 
 const failures = [];
 const warnings = [];
-const localFirstSensitiveGateExemptions = new Set(['cv-builder']);
+const localFirstSensitiveGateExemptions = new Set([
+  'cv-builder',
+  'cover-letter-generator',
+  'meeting-minutes',
+  'receipt-generator',
+  'business-plan',
+  'freelance-invoice',
+]);
 
 function read(file) {
   return fs.readFileSync(file, 'utf8');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -14,7 +14,7 @@
   .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
   .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
   .dash-header .badge { background: #D6E8FF; color: #0063CC; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
-  .back-link { font-size: .82rem; color: #007AFF; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link { font-size: .82rem; color: #0062CC; text-decoration: none; margin-bottom: 16px; display: inline-block; }
   .back-link:hover { text-decoration: underline; }
   /* Gate */
   .gate { position: fixed; inset: 0; z-index: 200; background: #F5F9FF; display: flex; align-items: center; justify-content: center; }
@@ -45,7 +45,7 @@
   .form-grow { flex: 2; }
   .form-group label { display: block; font-size: .78rem; font-weight: 600; color: #6B7F99; margin-bottom: 5px; }
   .input { width: 100%; padding: 9px 12px; border: 1.5px solid #E5E7EB; border-radius: 8px; font-family: inherit; font-size: .85rem; color: #1a2e22; background: #fff; outline: none; transition: border-color .15s; }
-  .input:focus { border-color: #0063CC; box-shadow: 0 0 0 3px rgba(0,122,255,.08); }
+  .input:focus { border-color: #0063CC; box-shadow: 0 0 0 3px rgba(0,98,204,.08); }
   .input::placeholder { color: #94a3b8; }
   select.input { cursor: pointer; }
   textarea.input { resize: vertical; min-height: 100px; }
@@ -88,7 +88,7 @@
   .toast.error { background: #dc2626; }
   /* Submission cards */
   .sub-card { background: #FAFBFC; border: 1.5px solid #E8F0FE; border-radius: 10px; padding: 16px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
-  .sub-card:hover { border-color: #0063CC; box-shadow: 0 2px 12px rgba(0,122,255,.08); }
+  .sub-card:hover { border-color: #0063CC; box-shadow: 0 2px 12px rgba(0,98,204,.08); }
   .sub-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; flex-wrap: wrap; }
   .sub-type { font-size: .65rem; font-weight: 700; padding: 2px 8px; border-radius: 8px; text-transform: uppercase; letter-spacing: .04em; }
   .sub-type-creator { background: #DBEAFE; color: #1D4ED8; }
@@ -1274,7 +1274,7 @@
     var prev = document.getElementById('newsPreview');
     var content = document.getElementById('newsPreviewContent');
     content.innerHTML =
-      '<span class="as-cat-badge" style="background:#007AFF">' + (CAT_LABELS[fd.get('category')] || fd.get('category')) + '</span>' +
+      '<span class="as-cat-badge" style="background:#0062CC">' + (CAT_LABELS[fd.get('category')] || fd.get('category')) + '</span>' +
       '<h2 style="margin:12px 0 8px">' + (fd.get('title') || 'Untitled') + '</h2>' +
       '<p style="color:rgba(255,255,255,0.5)">' + (fd.get('author') || 'Author') + ' &middot; Just now</p>' +
       '<p style="margin:12px 0;color:rgba(255,255,255,0.7)">' + (fd.get('excerpt') || '') + '</p>' +
@@ -1294,7 +1294,7 @@
       return '<div class="as-admin-list-item">' +
         '<div class="as-admin-list-info">' +
           '<strong>' + a.title + '</strong>' +
-          '<span class="as-cat-badge as-badge-sm" style="background:#007AFF;margin-left:8px">' + (CAT_LABELS[a.category] || a.category) + '</span>' +
+          '<span class="as-cat-badge as-badge-sm" style="background:#0062CC;margin-left:8px">' + (CAT_LABELS[a.category] || a.category) + '</span>' +
           '<span class="muted" style="margin-left:8px">' + new Date(dateStr).toLocaleDateString() + '</span>' +
           (a.is_featured ? ' <span style="color:#F59E0B;margin-left:4px">&#9733;</span>' : '') +
         '</div>' +
@@ -1428,7 +1428,7 @@
         '<div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1">' +
           thumbMarkup +
           '<div class="as-admin-list-info">' +
-          '<span class="as-platform-badge" style="background:' + (PLAT_COLORS[s.platform] || '#007AFF') + ';font-size:11px;padding:2px 8px;border-radius:20px;color:#fff;margin-right:8px">' + (PLAT_LABELS[s.platform] || s.platform) + '</span>' +
+          '<span class="as-platform-badge" style="background:' + (PLAT_COLORS[s.platform] || '#0062CC') + ';font-size:11px;padding:2px 8px;border-radius:20px;color:#fff;margin-right:8px">' + (PLAT_LABELS[s.platform] || s.platform) + '</span>' +
           '<strong>' + name + '</strong> — ' + s.title +
           '<span class="muted" style="margin-left:8px">' + dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) + '</span>' +
           (isLive ? ' <span style="color:#22C55E;font-weight:700;margin-left:8px">LIVE</span>' : '') +
@@ -1568,7 +1568,7 @@
       var subs = c.subscribers ? (c.subscribers >= 1e6 ? (c.subscribers/1e6).toFixed(1)+'M' : c.subscribers >= 1e3 ? (c.subscribers/1e3).toFixed(0)+'K' : c.subscribers) : '';
       return '<div class="as-admin-list-item">' +
         '<div class="as-admin-list-info">' +
-          '<span style="background:' + (PLAT_CLR[pp]||'#007AFF') + ';color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;margin-right:6px;font-weight:700">' + (PLAT_ICON[pp]||pp) + '</span>' +
+          '<span style="background:' + (PLAT_CLR[pp]||'#0062CC') + ';color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;margin-right:6px;font-weight:700">' + (PLAT_ICON[pp]||pp) + '</span>' +
           '<strong>' + c.name + '</strong>' +
           '<span class="muted" style="margin-left:8px">' + c.country + '</span>' +
           (c.verified ? ' <span style="color:#22C55E;margin-left:4px" title="Verified">&#10003;</span>' : '') +

@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="sw">
+<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="sw">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -105,13 +105,13 @@
 <section class="section panel"><h2>Maswali ya haraka</h2><h3>Je, faili zangu zinabaki za faragha?</h3><p>Kurasa hizi hutumia browser na tabia ya chanzo kilichopo, lakini usipakie au kushiriki faili nyeti bila kuhakiki mazingira yako na sera za zana unayotumia.</p><h3>Je, matokeo yatakubaliwa na jukwaa?</h3><p>Hapana. Hakiki ukubwa, muundo, copyright, leseni na sera za TikTok, Instagram, YouTube, LinkedIn au portal husika.</p></section>
   </main>
   <afro-footer></afro-footer>
-  <script src="/assets/js/components/navbar.min.js?v=5ac46dd6"></script>
-  <script src="/assets/js/components/footer.min.js?v=ae996767"></script>
-  <script src="/assets/js/bundles/core.fdd629ac.min.js" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=301b9d0a"></script>
+  <script src="/assets/js/components/footer.min.js?v=9dc86d07"></script>
+  <script src="/assets/js/bundles/core.1ecbb30b.min.js" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6"></script>
   <script src="/assets/js/components/share-button.js?v=f8342961"></script>
   <script src="/assets/js/components/related-tools-data.min.js?v=5af5f2d6"></script>
-  <script src="/assets/js/components/related-tools.min.js?v=e740bbf3"></script>
+  <script src="/assets/js/components/related-tools.min.js?v=f09d0feb"></script>
   <script>
 const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').trim();const num=id=>Number(q(id)?.value||0);function metric(l,v,h){return '<div class="metric"><span>'+l+'</span><strong>'+v+'</strong>'+(h?'<small>'+h+'</small>':'')+'</div>'}function setResults(h){q('results').innerHTML=h}function setDetail(h){q('detail').innerHTML=h}function rows(a){return '<div class="output-list">'+a.map(x=>'<div>'+x+'</div>').join('')+'</div>'}function bind(c,r){q('calculate').addEventListener('click',c);q('reset').addEventListener('click',()=>{r();c()});if(q('download'))q('download').addEventListener('click',downloadCanvas);c()}function canvas(){return q('canvas')}function ctx(){return canvas().getContext('2d')}function downloadCanvas(){const a=document.createElement('a');const format=q('format')?val('format'):'image/png';const ext=format.includes('webp')?'webp':format.includes('jpeg')?'jpg':'png';a.href=canvas().toDataURL(format,(q('quality')?num('quality')/100:0.92));a.download='afrotools-picha.'+ext;a.click()}function drawTextBox(c,t,x,y,w,size,color){c.fillStyle=color;c.font='800 '+size+'px Inter, Arial';const words=t.split(' ');let line='',yy=y;words.forEach(word=>{const test=line+word+' ';if(c.measureText(test).width>w&&line){c.fillText(line,x,yy);line=word+' ';yy+=size*1.15}else line=test});c.fillText(line,x,yy)}function basicCanvas(title,sub,bg='#1d4ed8',fg='#fff'){const c=ctx();c.fillStyle=bg;c.fillRect(0,0,canvas().width,canvas().height);drawTextBox(c,title,70,180,920,72,fg);drawTextBox(c,sub,70,520,900,34,fg);c.fillStyle='rgba(255,255,255,.18)';c.fillRect(70,790,420,90);c.fillStyle=fg;c.font='700 28px Inter, Arial';c.fillText('Imetengenezwa na AfroTools',95,845)}function readImage(file,cb){const img=new Image();img.onload=()=>cb(img);img.src=URL.createObjectURL(file)}function money(n,c='USD'){try{return new Intl.NumberFormat('sw',{style:'currency',currency:c,maximumFractionDigits:0}).format(Number(n)||0)}catch(e){return Math.round(Number(n)||0).toLocaleString('sw')}}
 function calc(){const f=q('file').files[0];if(!f){basicCanvas('Chagua picha','Kisha bonyeza tengeneza');setResults(metric('Hali','Hakuna faili','Pakia picha'));return}readImage(f,img=>{canvas().width=img.width;canvas().height=img.height;ctx().drawImage(img,0,0);const data=canvas().toDataURL(val('format'),num('quality')/100);setResults(metric('Faili asili',(f.size/1024).toFixed(0)+' KB','Makadirio ya browser')+metric('Matokeo',(data.length*0.75/1024).toFixed(0)+' KB',q('format').selectedOptions[0].text))})}function reset(){q('quality').value=72;q('format').value='image/jpeg';basicCanvas('Kubana picha','Chagua picha ili kuona muonekano wa awali')}bind(calc,reset);

@@ -176,7 +176,7 @@ function buildDigestEmail(name, monthName, year, lastMonthName, calcs, fxData, b
   var fxHtml = '';
   if (fxData && fxData.length > 0) {
     fxHtml = '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:13px;font-weight:700;color:#007AFF;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCB1 FX Rates</div>';
+      '<div style="font-size:13px;font-weight:700;color:#0062CC;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCB1 FX Rates</div>';
     for (var i = 0; i < fxData.length; i++) {
       var fx = fxData[i];
       var pair = (fx.base_currency || 'USD') + '/' + (fx.quote_currency || '');
@@ -193,7 +193,7 @@ function buildDigestEmail(name, monthName, year, lastMonthName, calcs, fxData, b
   var benchHtml = '';
   if (benchmark) {
     benchHtml = '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:13px;font-weight:700;color:#007AFF;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCC8 Salary Benchmark</div>' +
+      '<div style="font-size:13px;font-weight:700;color:#0062CC;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCC8 Salary Benchmark</div>' +
       '<div style="font-size:14px;color:#1e293b;">Median salary in your country: <strong>' +
       (benchmark.currency || '') + ' ' + Number(benchmark.median_gross || benchmark.median_net || 0).toLocaleString() + '</strong></div>' +
       '</td></tr>';
@@ -203,15 +203,15 @@ function buildDigestEmail(name, monthName, year, lastMonthName, calcs, fxData, b
     'Your ' + monthName + ' ' + year + ' Numbers',
     'Hi ' + esc(name) + ',',
     '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:13px;font-weight:700;color:#007AFF;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCCA Your Activity</div>' +
+      '<div style="font-size:13px;font-weight:700;color:#0062CC;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDCCA Your Activity</div>' +
       activityHtml +
     '</td></tr>' +
     fxHtml +
     benchHtml +
     '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:13px;font-weight:700;color:#007AFF;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDD27 Recommended For You</div>' +
-      '<div style="font-size:14px;color:#1e293b;margin-bottom:4px;">\u2022 <a href="https://afrotools.com/tools/savings-goal/" style="color:#007AFF;text-decoration:none;">Savings Goal Calculator</a> \u2014 plan your targets</div>' +
-      '<div style="font-size:14px;color:#1e293b;">\u2022 <a href="https://afrotools.com/tools/inflation-calc/" style="color:#007AFF;text-decoration:none;">Inflation Calculator</a> \u2014 see real purchasing power</div>' +
+      '<div style="font-size:13px;font-weight:700;color:#0062CC;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">\uD83D\uDD27 Recommended For You</div>' +
+      '<div style="font-size:14px;color:#1e293b;margin-bottom:4px;">\u2022 <a href="https://afrotools.com/tools/savings-goal/" style="color:#0062CC;text-decoration:none;">Savings Goal Calculator</a> \u2014 plan your targets</div>' +
+      '<div style="font-size:14px;color:#1e293b;">\u2022 <a href="https://afrotools.com/tools/inflation-calc/" style="color:#0062CC;text-decoration:none;">Inflation Calculator</a> \u2014 see real purchasing power</div>' +
     '</td></tr>',
     unsubUrl
   );
@@ -227,9 +227,9 @@ function buildGetStartedEmail(name, monthName, year, unsubUrl) {
       '<div style="font-size:14px;color:#475569;line-height:1.6;">You haven\'t used any tools yet this month. Here are some great ones to get started:</div>' +
     '</td></tr>' +
     '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:14px;color:#1e293b;margin-bottom:6px;">\u2022 <a href="https://afrotools.com/nigeria/ng-salary-tax.html" style="color:#007AFF;text-decoration:none;">Nigeria PAYE Calculator</a> \u2014 know your take-home</div>' +
-      '<div style="font-size:14px;color:#1e293b;margin-bottom:6px;">\u2022 <a href="https://afrotools.com/tools/savings-goal/" style="color:#007AFF;text-decoration:none;">Savings Goal Calculator</a> \u2014 set a target</div>' +
-      '<div style="font-size:14px;color:#1e293b;">\u2022 <a href="https://afrotools.com/crypto/" style="color:#007AFF;text-decoration:none;">Crypto Dashboard</a> \u2014 track your portfolio</div>' +
+      '<div style="font-size:14px;color:#1e293b;margin-bottom:6px;">\u2022 <a href="https://afrotools.com/nigeria/ng-salary-tax.html" style="color:#0062CC;text-decoration:none;">Nigeria PAYE Calculator</a> \u2014 know your take-home</div>' +
+      '<div style="font-size:14px;color:#1e293b;margin-bottom:6px;">\u2022 <a href="https://afrotools.com/tools/savings-goal/" style="color:#0062CC;text-decoration:none;">Savings Goal Calculator</a> \u2014 set a target</div>' +
+      '<div style="font-size:14px;color:#1e293b;">\u2022 <a href="https://afrotools.com/crypto/" style="color:#0062CC;text-decoration:none;">Crypto Dashboard</a> \u2014 track your portfolio</div>' +
     '</td></tr>',
     unsubUrl
   );
@@ -258,7 +258,7 @@ function emailShell(headline, greeting, bodyRows, unsubUrl) {
         bodyRows +
         // CTA
         '<tr><td style="padding:8px 24px 24px;text-align:center;">' +
-          '<a href="https://afrotools.com/dashboard/" style="display:inline-block;background:#007AFF;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:14px 32px;border-radius:10px;">Open Your Dashboard \u2192</a>' +
+          '<a href="https://afrotools.com/dashboard/" style="display:inline-block;background:#0062CC;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:14px 32px;border-radius:10px;">Open Your Dashboard \u2192</a>' +
         '</td></tr>' +
         // Footer
         '<tr><td style="background:#F8FAFD;padding:20px 24px;border-top:1px solid #E2E8F0;text-align:center;">' +

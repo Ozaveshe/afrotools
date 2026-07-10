@@ -161,10 +161,10 @@ ${toolGridScript}
   .hero-meta{display:flex;justify-content:center;margin-top:16px}
   .hero-meta span{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);font-size:.78rem;color:rgba(255,255,255,.82)}
   .hero-meta-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#34D399}
-  .btn-blue{display:inline-flex;align-items:center;gap:6px;background:#007AFF;color:#fff;font-weight:700;padding:13px 26px;border-radius:10px;font-size:.95rem}
+  .btn-blue{display:inline-flex;align-items:center;gap:6px;background:#0062CC;color:#fff;font-weight:700;padding:13px 26px;border-radius:10px;font-size:.95rem}
   .btn-outline{display:inline-flex;align-items:center;gap:6px;background:transparent;color:rgba(255,255,255,.78);font-weight:600;padding:11px 22px;border-radius:10px;font-size:.9rem;border:1.5px solid rgba(255,255,255,.25)}
   .sec{padding:60px 0}
-  .eyebrow{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#007AFF;margin-bottom:8px}
+  .eyebrow{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#0062CC;margin-bottom:8px}
   .sec-title{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;color:#0f172a;letter-spacing:-.03em;margin-bottom:8px}
   .sec-sub{font-size:.95rem;color:#6B7280;line-height:1.65;max-width:670px;margin-bottom:28px}
   .info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:20px}
@@ -174,23 +174,23 @@ ${toolGridScript}
   .info-card-note{font-size:.78rem;color:#6B7280;line-height:1.55}
   .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:24px}
   .tool-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:22px 18px;transition:border-color .2s,box-shadow .2s,transform .2s;display:block}
-  .tool-card:hover{border-color:#007AFF;box-shadow:0 4px 20px rgba(0,122,255,.12);transform:translateY(-2px)}
+  .tool-card:hover{border-color:#0062CC;box-shadow:0 4px 20px rgba(0,98,204,.12);transform:translateY(-2px)}
   .tc-icon{display:inline-flex;align-items:center;justify-content:center;min-width:54px;padding:6px 10px;border-radius:999px;background:#EFF6FF;color:#1D4ED8;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
   .tc-name{font-size:.9rem;font-weight:700;color:#0f172a;margin-bottom:6px}
   .tc-desc{font-size:.78rem;color:#6B7280;line-height:1.55;margin-bottom:14px}
-  .tc-cta{font-size:.78rem;font-weight:700;color:#007AFF}
+  .tc-cta{font-size:.78rem;font-weight:700;color:#0062CC}
   .badge-live{background:#ECFDF5;color:#065F46;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-left:6px}
-  .cta-box{margin-top:34px;background:linear-gradient(135deg,#007AFF 0%,#0d2b5e 100%);border-radius:16px;padding:28px 24px;color:#fff}
+  .cta-box{margin-top:34px;background:linear-gradient(135deg,#0062CC 0%,#0d2b5e 100%);border-radius:16px;padding:28px 24px;color:#fff}
   .cta-box h3{font-size:1.2rem;font-weight:800;margin-bottom:8px}
   .cta-box p{font-size:.9rem;color:rgba(255,255,255,.82);line-height:1.6;margin-bottom:16px}
-  .cta-box a{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#007AFF;font-weight:700;padding:11px 20px;border-radius:999px}
+  .cta-box a{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#0062CC;font-weight:700;padding:11px 20px;border-radius:999px}
   .back-links{font-size:.82rem;color:#6B7280;margin-top:40px;padding-top:24px;border-top:1px solid #E5E7EB}
-  .back-links a{color:#007AFF;font-weight:600}
+  .back-links a{color:#0062CC;font-weight:600}
   .seo-links{max-width:1100px;margin:0 auto 72px;padding:0 20px}
   .seo-links-title{font-size:1.05rem;font-weight:800;color:#0f172a;margin-bottom:14px}
   .seo-links-list{list-style:none;display:flex;flex-wrap:wrap;gap:12px}
   .seo-links-list a{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #E5E7EB;border-radius:999px;background:#fff;padding:10px 14px;font-size:.86rem;font-weight:600;color:#0f172a}
-  .seo-links-list a:hover{border-color:#007AFF;color:#007AFF}
+  .seo-links-list a:hover{border-color:#0062CC;color:#0062CC}
   @media (max-width:640px){
     .hero{padding:64px 20px 52px}
     .cta-box{padding:24px 20px}

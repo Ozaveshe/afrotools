@@ -1,6 +1,6 @@
 // Dynamic OG image generator for AfroTools
 // Generates a 1200x630 SVG with tool name, country flag, and optional result
-// Brand colours: #007AFF (primary blue), #0A1628 (dark bg), #4DA3FF (light blue)
+// Brand colours: #0062CC (primary blue), #0A1628 (dark bg), #4DA3FF (light blue)
 
 export default async (request) => {
   const url = new URL(request.url);
@@ -28,7 +28,7 @@ export default async (request) => {
     <rect width="1200" height="630" fill="url(#bg)"/>
 
     <!-- Blue accent bar top -->
-    <rect x="0" y="0" width="1200" height="6" fill="#007AFF"/>
+    <rect x="0" y="0" width="1200" height="6" fill="#0062CC"/>
 
     <!-- AfroTools wordmark -->
     <text x="60" y="80" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#4DA3FF" letter-spacing="2">
@@ -50,8 +50,8 @@ export default async (request) => {
 
     ${result ? `
     <!-- Result highlight box -->
-    <rect x="60" y="380" width="1080" height="100" rx="16" fill="#007AFF" opacity="0.12"/>
-    <rect x="60" y="380" width="4" height="100" rx="2" fill="#007AFF"/>
+    <rect x="60" y="380" width="1080" height="100" rx="16" fill="#0062CC" opacity="0.12"/>
+    <rect x="60" y="380" width="4" height="100" rx="2" fill="#0062CC"/>
     <text x="90" y="443" font-family="system-ui, sans-serif" font-size="36" font-weight="700" fill="#4DA3FF">
       ${escapeXml(result)}
     </text>
@@ -63,7 +63,7 @@ export default async (request) => {
     </text>
 
     <!-- Blue accent bar bottom -->
-    <rect x="0" y="624" width="1200" height="6" fill="#007AFF"/>
+    <rect x="0" y="624" width="1200" height="6" fill="#0062CC"/>
   </svg>`;
 
   return new Response(svg, {

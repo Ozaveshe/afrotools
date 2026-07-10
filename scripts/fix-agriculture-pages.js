@@ -2,7 +2,7 @@
  * fix-agriculture-pages.js
  * Fixes all agriculture HTML pages:
  * 1. Replace hardcoded "Nigeria" with correct country name (fertilizer + crop-yield)
- * 2. Replace green brand colors with blue (#007AFF) across all agriculture pages
+ * 2. Replace green brand colors with blue (#0062CC) across all agriculture pages
  */
 
 'use strict';
@@ -25,26 +25,26 @@ fs.readdirSync(agriDataDir).filter(f => /^[a-z]{2}-agri-data\.js$/.test(f)).forE
 function fixColors(html) {
   return html
     // CSS vars
-    .replace(/--calc-accent:#008751/g, '--calc-accent:#007AFF')
-    .replace(/--calc-accent-rgb:0,135,81/g, '--calc-accent-rgb:0,122,255')
+    .replace(/--calc-accent:#008751/g, '--calc-accent:#0062CC')
+    .replace(/--calc-accent-rgb:0,135,81/g, '--calc-accent-rgb:0,98,204')
     .replace(/--calc-accent-dark:#006B3F/g, '--calc-accent-dark:#0063D1')
     .replace(/--calc-accent-light:#E6F5ED/g, '--calc-accent-light:#E8F2FF')
     .replace(/--calc-accent-pale:#F0FAF5/g, '--calc-accent-pale:#EBF4FF')
     // Irrigation uses different var names
-    .replace(/--ir-green:#([0-9a-fA-F]{6})/g, '--ir-green:#007AFF')
+    .replace(/--ir-green:#([0-9a-fA-F]{6})/g, '--ir-green:#0062CC')
     .replace(/--ir-green-pale:#([0-9a-fA-F]{6})/g, '--ir-green-pale:#E8F2FF')
     .replace(/--ir-green-light:#([0-9a-fA-F]{6})/g, '--ir-green-light:#E8F2FF')
     // index page green accent vars
-    .replace(/--hub-accent:#008751/g, '--hub-accent:#007AFF')
-    .replace(/--hub-accent:#22c55e/g, '--hub-accent:#007AFF')
-    .replace(/--hub-accent:#16a34a/g, '--hub-accent:#007AFF')
-    .replace(/--hub-green:#([0-9a-fA-F]{6})/g, '--hub-green:#007AFF')
+    .replace(/--hub-accent:#008751/g, '--hub-accent:#0062CC')
+    .replace(/--hub-accent:#22c55e/g, '--hub-accent:#0062CC')
+    .replace(/--hub-accent:#16a34a/g, '--hub-accent:#0062CC')
+    .replace(/--hub-green:#([0-9a-fA-F]{6})/g, '--hub-green:#0062CC')
     // Other green occurrences
-    .replace(/#008751/g, '#007AFF')
+    .replace(/#008751/g, '#0062CC')
     .replace(/#006B3F/g, '#0063D1')
     .replace(/#E6F5ED/g, '#E8F2FF')
     .replace(/#F0FAF5/g, '#EBF4FF')
-    .replace(/#22c55e/g, '#007AFF')
+    .replace(/#22c55e/g, '#0062CC')
     .replace(/#16a34a/g, '#0063D1')
     .replace(/#15803d/g, '#0052B4')
     .replace(/#bbf7d0/g, '#BFDBFE')

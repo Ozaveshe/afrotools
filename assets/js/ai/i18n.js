@@ -47,8 +47,8 @@
         trust: "AfroTools routes you into practical tools. Local matching works without model consent, and AI-assisted flows ask before sending private content.",
       },
       page: {
-        title: "Get the right African tool for the job.",
-        copy: "Describe what you're trying to do. AfroTools will find the right calculator, checklist, planner, or document flow, fill what it can, and show the next step.",
+        title: "Ask. Get an answer. Open the right tool.",
+        copy: "Describe what you're trying to do. AfroTools AI answers your question directly — figures in your local currency — then finds the right calculator, checklist, planner, or document flow, fills what it can, and shows the next step.",
         inputLabel: "What are you trying to finish today?",
         inputPlaceholder: "Example: I want to calculate take-home pay in Nigeria",
         submit: "Find my tool",

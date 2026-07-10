@@ -84,7 +84,7 @@ exports.handler = async function (event) {
       body: htmlPage(
         'Unsubscribed',
         "You've been unsubscribed from AfroTools lifecycle, newsletter, and digest emails.<br><br>" +
-        'You can re-enable them anytime from your <a href="https://afrotools.com/dashboard/" style="color:#007AFF;">Dashboard</a>.'
+        'You can re-enable them anytime from your <a href="https://afrotools.com/dashboard/" style="color:#0062CC;">Dashboard</a>.'
       ),
   };
 };
@@ -99,7 +99,7 @@ function htmlPage(title, message) {
     '.card{background:#fff;border-radius:16px;padding:40px;max-width:460px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.08)}' +
     'h1{font-size:1.5rem;margin:0 0 12px;font-weight:700}' +
     'p{font-size:1rem;color:#475569;line-height:1.6;margin:0}' +
-    'a{color:#007AFF;text-decoration:none}a:hover{text-decoration:underline}' +
+    'a{color:#0062CC;text-decoration:none}a:hover{text-decoration:underline}' +
     '</style></head>' +
     '<body><div class="card"><h1>' + title + '</h1><p>' + message + '</p></div></body></html>'
   );

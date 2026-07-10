@@ -91,8 +91,8 @@ function generatePage(c) {
 
 <style>
 :root {
-  --calc-accent: #007AFF;
-  --calc-accent-rgb: 0, 122, 255;
+  --calc-accent: #0062CC;
+  --calc-accent-rgb: 0, 98, 204;
   --calc-accent-dark: #0063D1;
   --calc-accent-light: #E8F2FF;
   --calc-accent-pale: #EBF4FF;
@@ -101,7 +101,7 @@ function generatePage(c) {
 body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; margin: 0; }
 
 .tool-hero { background: #0A1628; padding: 36px 0 32px; position: relative; overflow: hidden; }
-.tool-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(0,122,255,0.12) 0%, transparent 60%); pointer-events: none; }
+.tool-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(0,98,204,0.12) 0%, transparent 60%); pointer-events: none; }
 .tool-hero .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 .breadcrumb { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
 .breadcrumb a { color: rgba(255,255,255,0.5); text-decoration: none; }
@@ -112,7 +112,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 .tool-hero-sub { font-size: 0.875rem; color: rgba(255,255,255,0.65); max-width: 600px; line-height: 1.6; margin: 0 0 16px; }
 .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
 .badge { padding: 4px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
-.badge-blue { background: rgba(0,122,255,0.15); color: var(--calc-accent); }
+.badge-blue { background: rgba(0,98,204,0.15); color: var(--calc-accent); }
 .badge-grey { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); }
 
 .tool-main { max-width: 1100px; margin: -20px auto 48px; padding: 0 24px; position: relative; z-index: 2; }
@@ -131,7 +131,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 .f-label-text { display: block; font-size: 0.75rem; font-weight: 700; color: #2D3A5A; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
 .f-label-hint { font-size: 0.7rem; font-weight: 400; color: #64748b; margin-left: 5px; text-transform: none; }
 .f-input, .f-select { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 10px 12px; border: 1.5px solid #CBD5E1; border-radius: 6px; background: #F4F7FA; color: #0f172a; outline: none; width: 100%; }
-.f-input:focus, .f-select:focus { border-color: var(--calc-accent); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+.f-input:focus, .f-select:focus { border-color: var(--calc-accent); background: #fff; box-shadow: 0 0 0 3px rgba(0,98,204,0.1); }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media(max-width:820px) { .form-grid { grid-template-columns: 1fr; } }
 
@@ -211,7 +211,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 /* Cross-tools */
 .cross-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 8px; margin-top: 10px; }
 .cross-tool-card { background: var(--calc-accent-pale); border: 1px solid var(--calc-accent-light); border-radius: 8px; padding: 11px; text-decoration: none; color: #1A1A2E; display: flex; align-items: center; gap: 9px; transition: box-shadow 0.2s; }
-.cross-tool-card:hover { box-shadow: 0 4px 12px rgba(0,122,255,0.12); }
+.cross-tool-card:hover { box-shadow: 0 4px 12px rgba(0,98,204,0.12); }
 .cross-tool-icon { font-size: 1.3rem; flex-shrink: 0; }
 .cross-tool-name { font-size: 0.8rem; font-weight: 700; color: var(--calc-accent); }
 .cross-tool-desc { font-size: 0.7rem; color: #64748b; margin-top: 1px; }
@@ -527,7 +527,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 
   var COUNTRY_CODE = '${c.code}';
   var D = null; // loaded from AquaData after DOMContentLoaded
-  var DONUT_COLORS = ['#007AFF','#0063D1','#4DA3FF','#34D399','#F59E0B','#EF4444','#8B5CF6','#EC4899'];
+  var DONUT_COLORS = ['#0062CC','#0063D1','#4DA3FF','#34D399','#F59E0B','#EF4444','#8B5CF6','#EC4899'];
 
   // ── helpers ──────────────────────────────────────────────────────
   function $(id) { return document.getElementById(id); }

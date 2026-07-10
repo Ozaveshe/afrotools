@@ -131,7 +131,7 @@ generate_page() {
 
 <style>
 :root {
-  --calc-accent: #007AFF;
+  --calc-accent: #0062CC;
   --calc-accent-rgb: 0, 122, 255;
   --calc-accent-dark: #0063D1;
   --calc-accent-light: #E8F2FF;

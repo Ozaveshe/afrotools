@@ -43,12 +43,26 @@
     { icon: '🌍', label: 'All Tools',        href: '/all-tools' },
   ];
 
+  const QUICK_LINKS_HA = [
+    { icon: 'PAYE', label: 'Albashi da haraji', href: '/ha/albashi-da-haraji/' },
+    { icon: 'PDF', label: 'Kayan PDF', href: '/ha/takardu-da-pdf/' },
+    { icon: 'HOTO', label: 'Hoto - Turanci', href: '/image-design/' },
+    { icon: 'LAF', label: 'Kayan lafiya', href: '/ha/lafiya/' },
+    { icon: 'ILM', label: 'Ilimi', href: '/ha/ilimi/' },
+    { icon: 'DEV', label: 'Masu gini - Turanci', href: '/developer-tools/' },
+    { icon: 'VAT', label: 'VAT da kasuwanci', href: '/ha/kasuwanci-da-haraji/' },
+    { icon: 'DUK', label: 'Duk kayan aiki', href: '/ha/kayan-aiki/' },
+  ];
+
   /* ═══════════════════════════════════════════════════
      BUILD TOOL DIRECTORY from registry (for AI context)
   ═══════════════════════════════════════════════════ */
-  function buildToolDirectory() {
+  function buildToolDirectory(lang) {
     if (typeof AFRO_TOOLS === 'undefined' || !Array.isArray(AFRO_TOOLS)) return '';
-    const liveTools = AFRO_TOOLS.filter(t => t.status === 'live');
+    const allLiveTools = AFRO_TOOLS.filter(t => t.status === 'live');
+    const liveTools = lang === 'ha'
+      ? allLiveTools.filter(t => t.lang === 'ha' && String(t.href || '').startsWith('/ha/'))
+      : allLiveTools;
     const lines = liveTools.map(t => `- ${t.name} (${t.icon}): ${t.href}`);
     return '\n\nTool directory with direct links (ALWAYS use these exact hrefs when recommending tools):\n' + lines.join('\n');
   }
@@ -84,6 +98,37 @@ IMPORTANT RULES:
     'How do I calculate import duty?',
     'What mortgage tools do you have?',
   ];
+
+  const SUGGESTIONS_HA = [
+    'Ina kalkuletan PAYE na Najeriya?',
+    'Wadanne kayan PDF ne ake da su?',
+    'Ina bukatar lissafin kudin asibiti',
+    'Taimaka min in gina CV',
+    'Ta yaya zan lissafa VAT?',
+    'Nuna min kayan noma a Hausa',
+  ];
+
+  const UI_COPY_HA = {
+    open: 'Bude mataimakin AfroTools AI',
+    drag: 'Tambayi AfroTools AI - ja don matsarwa',
+    title: 'Tambayi AfroTools AI',
+    subtitle: 'Mai taimakon aiki',
+    theme: 'Canza launin shafi',
+    themeTitle: 'Canza haske ko duhu',
+    clear: 'Share tattaunawa',
+    clearTitle: 'Share duk tattaunawar',
+    close: 'Rufe',
+    welcome: 'Tambayi kayan aiki, aikin kasa, kalkuleta ko takarda. Zan kai ka zuwa hanyar AfroTools da ta dace.',
+    placeholder: 'Tambayi kowane kayan aiki...',
+    send: 'Aika',
+    cleared: 'An share tattaunawar. Tambaye ni wani abu.',
+    copy: 'Kwafi',
+    copied: 'An kwafa!',
+    viewing: 'Kana kallon:',
+    error: 'Wani abu ya samu matsala. Sake gwadawa.',
+    darkMode: 'Canza zuwa duhu',
+    lightMode: 'Canza zuwa haske'
+  };
 
   /* ═══════════════════════════════════════════════════
      DESIGN TOKENS — light-first Apple-inspired palette
@@ -189,6 +234,7 @@ IMPORTANT RULES:
     constructor() {
       super();
       this.attachShadow({ mode: 'open' });
+      this._lang = (document.documentElement.lang || 'en').substring(0, 2);
       this._open     = false;
       this._messages = [];
       this._loading  = false;
@@ -202,6 +248,11 @@ IMPORTANT RULES:
       // Theme: use localStorage if set, otherwise default to light (white)
       const stored = localStorage.getItem('afrobot_theme');
       this._theme = stored || 'light';
+    }
+
+    _ui(key, fallback) {
+      if (this._lang === 'ha' && UI_COPY_HA[key]) return UI_COPY_HA[key];
+      return fallback || '';
     }
 
     connectedCallback() {
@@ -241,6 +292,8 @@ IMPORTANT RULES:
     }
 
     _render() {
+      const quickLinks = this._lang === 'ha' ? QUICK_LINKS_HA : QUICK_LINKS;
+      const suggestions = this._lang === 'ha' ? SUGGESTIONS_HA : SUGGESTIONS;
       this.shadowRoot.innerHTML = `
         <style>
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -635,7 +688,7 @@ IMPORTANT RULES:
         </style>
 
         <!-- FAB button -->
-        <button class="fab" id="fab" aria-label="Open Ask AfroTools AI" title="Ask AfroTools AI - drag to move">
+        <button class="fab" id="fab" aria-label="${this._ui('open', 'Open Ask AfroTools AI')}" title="${this._ui('drag', 'Ask AfroTools AI - drag to move')}">
           ${BOT_SVG}
           <div class="badge" id="badge"></div>
         </button>
@@ -660,19 +713,19 @@ IMPORTANT RULES:
                 <rect x="27" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
               </svg>
               <div class="p-head-text">
-                <div class="p-title">Ask AfroTools AI</div>
-                <div class="p-sub">Workflow helper</div>
+                <div class="p-title">${this._ui('title', 'Ask AfroTools AI')}</div>
+                <div class="p-sub">${this._ui('subtitle', 'Workflow helper')}</div>
               </div>
               <div class="live-dot"></div>
               <span class="p-badge">AI</span>
               <div class="head-actions">
-                <button class="head-btn" id="themeBtn" aria-label="Toggle theme" title="Switch light/dark">
+                <button class="head-btn" id="themeBtn" aria-label="${this._ui('theme', 'Toggle theme')}" title="${this._ui('themeTitle', 'Switch light/dark')}">
                   <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                 </button>
-                <button class="head-btn" id="clearBtn" aria-label="Clear chat" title="Clear conversation">
+                <button class="head-btn" id="clearBtn" aria-label="${this._ui('clear', 'Clear chat')}" title="${this._ui('clearTitle', 'Clear conversation')}">
                   <svg viewBox="0 0 16 16" fill="none"><path d="M4 5h8M6 5V4a1 1 0 011-1h2a1 1 0 011 1v1M5 5v7a1 1 0 001 1h4a1 1 0 001-1V5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
-                <button class="head-btn" id="close" aria-label="Close">
+                <button class="head-btn" id="close" aria-label="${this._ui('close', 'Close')}">
                   <svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                 </button>
               </div>
@@ -680,7 +733,7 @@ IMPORTANT RULES:
 
             <!-- Quick category navigation -->
             <div class="quick-nav" id="quicknav">
-              ${QUICK_LINKS.map(l => `
+              ${quickLinks.map(l => `
                 <a class="qn-item" href="${l.href}" title="${l.label}">
                   <span class="qn-icon">${l.icon}</span>
                   <span>${l.label}</span>
@@ -689,18 +742,18 @@ IMPORTANT RULES:
 
             <!-- Messages -->
             <div class="msgs" id="msgs">
-              <div class="msg msg-sys">Ask for a tool, country workflow, calculator, or document task. I can route you to practical AfroTools links.</div>
+              <div class="msg msg-sys">${this._ui('welcome', 'Ask for a tool, country workflow, calculator, or document task. I can route you to practical AfroTools links.')}</div>
             </div>
 
             <!-- Suggestion chips -->
             <div class="suggestions" id="sugs">
-              ${SUGGESTIONS.map(s => `<button class="sug-btn" data-q="${s}">${s}</button>`).join('')}
+              ${suggestions.map(s => `<button class="sug-btn" data-q="${s}">${s}</button>`).join('')}
             </div>
 
             <!-- Input -->
             <div class="input-row">
-              <input class="chat-input" id="inp" type="text" placeholder="Ask about any tool..." autocomplete="off">
-              <button class="send-btn" id="send">Send</button>
+              <input class="chat-input" id="inp" type="text" placeholder="${this._ui('placeholder', 'Ask about any tool...')}" autocomplete="off">
+              <button class="send-btn" id="send">${this._ui('send', 'Send')}</button>
             </div>
 
           </div>
@@ -756,7 +809,7 @@ IMPORTANT RULES:
       clearBtn.addEventListener('click', () => {
         this._messages = [];
         const msgs = sr.getElementById('msgs');
-        msgs.innerHTML = '<div class="msg msg-sys">Chat cleared. Ask me anything!</div>';
+        msgs.innerHTML = '<div class="msg msg-sys">' + this._ui('cleared', 'Chat cleared. Ask me anything!') + '</div>';
         sr.getElementById('sugs').style.display = '';
       });
 
@@ -766,10 +819,13 @@ IMPORTANT RULES:
         if (!copyBtn) return;
         const msg = copyBtn.closest('.msg');
         if (!msg) return;
-        const text = msg.innerText.replace(/Copy$/, '').trim();
+        const copyLabel = this._ui('copy', 'Copy');
+        const text = msg.innerText.endsWith(copyLabel)
+          ? msg.innerText.slice(0, -copyLabel.length).trim()
+          : msg.innerText.trim();
         navigator.clipboard.writeText(text).then(() => {
-          copyBtn.textContent = 'Copied!';
-          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1500);
+          copyBtn.textContent = this._ui('copied', 'Copied!');
+          setTimeout(() => { copyBtn.textContent = this._ui('copy', 'Copy'); }, 1500);
         });
       });
 
@@ -954,10 +1010,10 @@ IMPORTANT RULES:
       const btn = sr.getElementById('themeBtn');
       if (this._theme === 'light') {
         btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M13.5 8.5a5.5 5.5 0 01-6-6C4 3.5 1.5 6.5 1.5 10a5.5 5.5 0 0011 0c0-.5 0-1-.5-1.5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-        btn.title = 'Switch to dark mode';
+        btn.title = this._ui('darkMode', 'Switch to dark mode');
       } else {
         btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
-        btn.title = 'Switch to light mode';
+        btn.title = this._ui('lightMode', 'Switch to light mode');
       }
     }
 
@@ -997,7 +1053,7 @@ IMPORTANT RULES:
       const toolH1 = document.querySelector('h1')?.textContent?.trim() || '';
       if (path !== '/' && path !== '/index.html') {
         const ctx = toolH1 || title.split('\u2014')[0].trim();
-        this._addMsg('sys', '\uD83D\uDCCD You\'re viewing: ' + ctx);
+        this._addMsg('sys', '\uD83D\uDCCD ' + this._ui('viewing', 'You\'re viewing:') + ' ' + ctx);
       }
     }
 
@@ -1023,8 +1079,11 @@ IMPORTANT RULES:
 
       // Build context
       const pageCtx = 'User is on page: ' + window.location.pathname + '. Page title: ' + document.title;
-      const toolDir = buildToolDirectory();
-      const systemPrompt = BASE_SYSTEM_PROMPT + toolDir + '\n\nPage context: ' + pageCtx;
+      const toolDir = buildToolDirectory(this._lang);
+      const languageInstruction = this._lang === 'ha'
+        ? '\n\nThe page language is Hausa. Reply in natural Hausa. Keep necessary Nigerian technical terms such as PAYE, VAT, PDF, JAMB, WAEC, NECO, NYSC, NIN and USSD, but use Hausa sentences and prioritize real /ha/ routes from the directory.'
+        : '';
+      const systemPrompt = BASE_SYSTEM_PROMPT + languageInstruction + toolDir + '\n\nPage context: ' + pageCtx;
 
       try {
         let reply;
@@ -1045,7 +1104,7 @@ IMPORTANT RULES:
         this._injectToolCards(reply);
       } catch (err) {
         this._hideTyping();
-        const msg = err.message || 'Something went wrong. Please try again.';
+        const msg = err.message || this._ui('error', 'Something went wrong. Please try again.');
         this._addMsg('err', msg);
       }
       this._loading = false;
@@ -1054,6 +1113,7 @@ IMPORTANT RULES:
 
     _offlineReply(q) {
       q = q.toLowerCase();
+      if (this._lang === 'ha') return this._offlineReplyHa(q);
       // Try to find matching tools from registry
       if (typeof AFRO_TOOLS !== 'undefined') {
         const matches = AFRO_TOOLS.filter(t => t.status === 'live' && (
@@ -1078,6 +1138,34 @@ IMPORTANT RULES:
       if (q.includes('link') || q.includes('url'))
         return 'I can give you direct links to any tool! Just tell me which tool you need. For example: "Give me the link to the Nigeria PAYE calculator" or "Where is the PDF merger?"';
       return 'I can help you find the right AfroTools workflow and give you **direct links**. Try asking:\n\n"Give me the link to Nigeria PAYE"\n"What PDF tools do you have?"\n"I need a CV builder"';
+    }
+
+    _offlineReplyHa(q) {
+      if (typeof AFRO_TOOLS !== 'undefined') {
+        const matches = AFRO_TOOLS.filter(t => t.status === 'live' && t.lang === 'ha' && String(t.href || '').startsWith('/ha/') && (
+          q.includes(String(t.name || '').toLowerCase()) ||
+          String(t.name || '').toLowerCase().split(/\s+/).some(w => w.length > 3 && q.includes(w))
+        )).slice(0, 3);
+        if (matches.length > 0) {
+          return matches.map(t => t.name + ': https://afrotools.com' + t.href).join('\n') + '\n\nDanna hanyar da ta dace domin bude kayan aikin.';
+        }
+      }
+      if (q.includes('paye') || q.includes('haraji') || q.includes('albashi')) {
+        return 'Ga [kalkuletan PAYE na Najeriya](https://afrotools.com/ha/najeriya/harajin-albashi/) da [cibiyar albashi da haraji](https://afrotools.com/ha/albashi-da-haraji/). Ka tabbatar da sabon kaida daga FIRS ko kwararren haraji kafin yanke hukunci.';
+      }
+      if (q.includes('pdf')) {
+        return 'Bude [cibiyar Takardu da PDF](https://afrotools.com/ha/takardu-da-pdf/) domin hada, raba, matsa ko shirya PDF. Shafukan suna bayyana a fili idan cikakken aikin yana Turanci.';
+      }
+      if (q.includes('cv')) {
+        return 'Bude [Mai gina CV](https://afrotools.com/ha/kayan-aiki/gina-cv/) domin shirya bayanan CV, sannan ka duba komai kafin fitarwa ko aika wa mai daukar aiki.';
+      }
+      if (q.includes('vat') || q.includes('kasuwanci')) {
+        return 'Bude [Kalkuletan VAT](https://afrotools.com/ha/kayan-aiki/kalkuletan-vat/) ko [cibiyar kasuwanci da haraji](https://afrotools.com/ha/kasuwanci-da-haraji/). Sakamako kiyasi ne; ka tabbatar da FIRS ko kwararre.';
+      }
+      if (q.includes('noma') || q.includes('gona')) {
+        return 'Bude [cibiyar Noma](https://afrotools.com/ha/noma/) domin ribar gona, taki, ban ruwa, iri da farashin kayayyaki.';
+      }
+      return 'Zan taimaka maka nemo hanyar AfroTools da ta dace. Ka tambayi PAYE, VAT, PDF, CV, JAMB, USSD, noma ko wani kayan aiki.';
     }
 
     /** Inject clickable tool cards if the AI response mentions known tools */
@@ -1120,7 +1208,7 @@ IMPORTANT RULES:
         // Add copy button
         const copyBtn = document.createElement('button');
         copyBtn.className = 'msg-copy';
-        copyBtn.textContent = 'Copy';
+        copyBtn.textContent = this._ui('copy', 'Copy');
         div.appendChild(copyBtn);
       } else if (type === 'sys') {
         div.innerHTML = parseMd(text);

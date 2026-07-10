@@ -14,9 +14,9 @@ const pages = [
     copy: 'Kwafi shirin',
     download: 'Sauke .txt',
     trustTitle: 'Tushe, sabuntawa da iyaka',
-    privacy: 'Bayananka yana zama a browser. Ba mu tura bayanan lafiya ko kudi zuwa server daga wannan shafi ba.',
+    privacy: 'Bayananka yana zama a burauzarka. Ba mu tura bayanan lafiya ko kudi zuwa uwar garke daga wannan shafi ba.',
     methodology: 'Hanyar lissafi: shafin yana amfani da jadawalin farashi na AfroTools don kasa, irin asibiti da aikin lafiya, sannan ya nuna kwatance tsakanin wurare.',
-    freshness: 'Freshness: farashin lafiya yana canzawa. Tabbatar da farashi kai tsaye da asibiti, clinic, HMO ko kamfanin inshora kafin biya.',
+    freshness: 'Sabuntawa: farashin lafiya yana canzawa. Tabbatar da farashi kai tsaye da asibiti, cibiyar lafiya, HMO ko kamfanin inshora kafin biya.',
     limitations: 'Iyaka: ba takardar kudi ba ce, ba shawarar likita ba ce, kuma ba ta maye gurbin kulawar gaggawa ko ganewar cuta ba.'
   },
   {
@@ -44,9 +44,9 @@ const pages = [
     copy: 'Kwafi sakamako',
     download: 'Sauke .txt',
     trustTitle: 'Tushe, sabuntawa da iyaka',
-    privacy: 'Bayananka yana zama a browser. Kada ka saka cikakken sunan mutum ko sakamakon lab na sirri idan kana rabawa.',
+    privacy: 'Bayananka yana zama a burauzarka. Kada ka saka cikakken sunan mutum ko sakamakon lab na sirri idan kana rabawa.',
     methodology: 'Hanyar lissafi: shafin yana amfani da jadawalin Punnett don hada alleles daga genotype biyu, sannan ya nuna yiwuwar kaso-kaso.',
-    freshness: 'Freshness: kaidojin gado ba sa canzawa sau da yawa, amma fassarar lafiya da shawarwari na iya bukatar kwararren likita.',
+    freshness: 'Sabuntawa: kaidojin gado ba sa canzawa sau da yawa, amma fassarar lafiya da shawarwari na iya bukatar kwararren likita.',
     limitations: 'Iyaka: ba sakamakon lab ba ne, ba ganewar cuta ba ne, kuma ba shawarar aure, ciki ko magani ba ce.'
   },
   {
@@ -74,9 +74,9 @@ const pages = [
     copy: 'Kwafi sakamako',
     download: 'Sauke .txt',
     trustTitle: 'Tushe, sabuntawa da iyaka',
-    privacy: 'Bayananka yana zama a browser. Kar a saka bayanan sirri na yara, iyali ko sakamakon lab idan za a raba takaitawa.',
+    privacy: 'Bayananka yana zama a burauzarka. Kar a saka bayanan sirri na yara, iyali ko sakamakon lab idan za a raba takaitawa.',
     methodology: 'Hanyar lissafi: jadawalin Punnett yana hada genotype biyu, yana kirga kaso na AA, AS, SS, AC, SC ko CC a kowane ciki.',
-    freshness: 'Freshness: tsarin gado na genotype yana da karko, amma shawarar kula da lafiya da gwaje-gwaje na bukatar kwararren lafiya.',
+    freshness: 'Sabuntawa: tsarin gado na genotype yana da karko, amma shawarar kula da lafiya da gwaje-gwaje na bukatar kwararren lafiya.',
     limitations: 'Iyaka: ba ganewar cuta ba ce, ba sakamakon lab ba ce, kuma ba ta maye gurbin genetic counselling ko kulawar likita ba.'
   },
   {
@@ -89,9 +89,9 @@ const pages = [
     copy: 'Kwafi shirin',
     download: 'Sauke .txt',
     trustTitle: 'Tushe, sabuntawa da iyaka',
-    privacy: 'Bayananka yana zama a browser. Ba mu tura bayanan ciki, haihuwa, lafiya ko kudi zuwa server daga wannan shafi ba.',
+    privacy: 'Bayananka yana zama a burauzarka. Ba mu tura bayanan ciki, haihuwa, lafiya ko kudi zuwa uwar garke daga wannan shafi ba.',
     methodology: 'Hanyar lissafi: shafin yana tara ziyarar antenatal, kudin haihuwa, kiyasin magani da kulawar bayan haihuwa bisa kasa da irin asibiti.',
-    freshness: 'Freshness: farashin haihuwa, tsarin inshora da abin da asibiti ke rufewa suna canzawa. Tabbatar da antenatal clinic ko asibiti.',
+    freshness: 'Sabuntawa: farashin haihuwa, tsarin inshora da abin da asibiti ke rufewa suna canzawa. Tabbatar da cibiyar kula da masu ciki ko asibiti.',
     limitations: 'Iyaka: ba shawarar likita ba ce, ba ta zabar irin haihuwa ba, kuma ba ta maye gurbin kulawar antenatal ko gaggawa ba.'
   },
   {
@@ -104,10 +104,10 @@ const pages = [
     copy: 'Kwafi tsarin',
     download: 'Sauke .txt',
     trustTitle: 'Tushe, sabuntawa da iyaka',
-    privacy: 'Bayananka yana zama a browser. Ba mu tura nauyi, tsayi, buri ko bayanan lafiya zuwa server daga wannan shafi ba.',
+    privacy: 'Bayananka yana zama a burauzarka. Ba mu tura nauyi, tsayi, buri ko bayanan lafiya zuwa uwar garke daga wannan shafi ba.',
     methodology: 'Hanyar lissafi: shafin yana kiyasta BMR/TDEE, ya daidaita calories bisa buri, sannan ya zabi abincin Afirka da jerin siyayya.',
-    freshness: 'Freshness: lissafin calories da macro kiyasi ne. Girman abinci, girki, mai, sukari da gishiri suna sauya sakamako.',
-    limitations: 'Iyaka: ba tsarin abinci na likita ba ne, ba diabetes treatment plan ba ne, kuma ba ya maye gurbin dietitian ko likita.'
+    freshness: 'Sabuntawa: lissafin kuzarin abinci da manyan sinadarai kiyasi ne. Girman abinci, girki, mai, sukari da gishiri suna sauya sakamako.',
+    limitations: 'Iyaka: ba tsarin abinci na likita ba ne, ba tsarin maganin ciwon sukari ba ne, kuma ba ya maye gurbin masanin abinci ko likita.'
   }
 ];
 
@@ -120,10 +120,30 @@ function escHtml(value) {
 }
 
 function section(page) {
+  const ha = page.file.startsWith('ha/');
+  const copy = ha ? {
+    kicker: 'Fitarwa a cikin burauza',
+    trustKicker: 'Tushe, sabuntawa da hanyar aiki',
+    source: 'Tushe',
+    sourceLead: 'An tsara shi bisa hanyar asalin AfroTools a',
+    verify: 'Ka tabbatar da duk shawarar lafiya, gwaji, asibiti, inshora ko farashi daga kwararren maikacin lafiya.',
+    freshness: 'Sabuntawa',
+    methodology: 'Hanyar aiki',
+    limitations: 'Iyaka'
+  } : {
+    kicker: 'Local-first export',
+    trustKicker: 'Source / freshness / methodology',
+    source: 'Source',
+    sourceLead: 'Based on the AfroTools source workflow at',
+    verify: 'Verify any health, lab, facility, insurance or price decision with a qualified provider.',
+    freshness: 'Freshness',
+    methodology: 'Methodology',
+    limitations: 'Limitations'
+  };
   return `
-<section class="localized-health-export" data-localized-health-batch="export" data-health-title="${escHtml(page.title)}" data-health-source="${escHtml(page.source)}" data-health-note="${escHtml(page.note)}">
+<section class="localized-health-export" data-localized-health-batch="export" data-health-lang="${ha ? 'ha' : 'yo'}" data-health-title="${escHtml(page.title)}" data-health-source="${escHtml(page.source)}" data-health-note="${escHtml(page.note)}">
   <div class="localized-health-export__copy">
-    <span class="localized-health-kicker">Local-first export</span>
+    <span class="localized-health-kicker">${escHtml(copy.kicker)}</span>
     <h2>${escHtml(page.exportTitle)}</h2>
     <p>${escHtml(page.prompt)}. ${escHtml(page.privacy)}</p>
   </div>
@@ -134,13 +154,13 @@ function section(page) {
   </div>
 </section>
 <section class="localized-health-trust" data-tool-verification-panel data-localized-health-batch="trust">
-  <span class="localized-health-kicker">Source / freshness / methodology</span>
+  <span class="localized-health-kicker">${escHtml(copy.trustKicker)}</span>
   <h2>${escHtml(page.trustTitle)}</h2>
   <div class="localized-health-trust-grid">
-    <p><strong>Source:</strong> Based on the AfroTools source workflow at <a href="${escHtml(page.source)}">${escHtml(page.source)}</a>. Verify any health, lab, facility, insurance or price decision with a qualified provider.</p>
-    <p><strong>Freshness:</strong> ${escHtml(page.freshness)}</p>
-    <p><strong>Methodology:</strong> ${escHtml(page.methodology)}</p>
-    <p><strong>Limitations:</strong> ${escHtml(page.limitations)}</p>
+    <p><strong>${escHtml(copy.source)}:</strong> ${escHtml(copy.sourceLead)} <a href="${escHtml(page.source)}">${escHtml(page.source)}</a>. ${escHtml(copy.verify)}</p>
+    <p><strong>${escHtml(copy.freshness)}:</strong> ${escHtml(page.freshness)}</p>
+    <p><strong>${escHtml(copy.methodology)}:</strong> ${escHtml(page.methodology)}</p>
+    <p><strong>${escHtml(copy.limitations)}:</strong> ${escHtml(page.limitations)}</p>
   </div>
 </section>`;
 }
@@ -188,16 +208,21 @@ function scriptBlock() {
     }).filter(Boolean);
   }
   function brief(panel){
+    var ha = panel.getAttribute('data-health-lang') === 'ha';
     var title = panel.getAttribute('data-health-title') || textOf(document, 'h1') || 'AfroTools health tool';
     var note = panel.getAttribute('data-health-note') || '';
     var source = panel.getAttribute('data-health-source') || location.pathname;
-    var lines = ['AfroTools - ' + title, 'Route: ' + location.pathname, 'Source workflow: ' + source, ''];
+    var lines = ha
+      ? ['AfroTools - ' + title, 'Hanya: ' + location.pathname, 'Hanyar tushe: ' + source, '']
+      : ['AfroTools - ' + title, 'Route: ' + location.pathname, 'Source workflow: ' + source, ''];
     var fields = fieldLines();
-    if(fields.length) lines.push('Inputs', fields.join('\\n'), '');
+    if(fields.length) lines.push(ha ? 'Bayanan da aka shigar' : 'Inputs', fields.join('\\n'), '');
     var results = resultLines();
-    if(results.length) lines.push('Current result', results.join('\\n\\n'), '');
-    lines.push('Assumptions and limits', note, 'This is a planning estimate or educational summary, not official medical, lab, billing, insurance, legal or emergency advice.');
-    lines.push('', 'Privacy: generated locally in this browser.');
+    if(results.length) lines.push(ha ? 'Sakamakon yanzu' : 'Current result', results.join('\\n\\n'), '');
+    lines.push(ha ? 'Zato da iyaka' : 'Assumptions and limits', note, ha
+      ? 'Wannan kiyasin shiri ko takaitaccen bayani ne, ba shawarar hukuma ta likita, dakin gwaji, biyan kudi, inshora, doka ko gaggawa ba ce.'
+      : 'This is a planning estimate or educational summary, not official medical, lab, billing, insurance, legal or emergency advice.');
+    lines.push('', ha ? 'Sirri: an gina wannan a cikin burauzarka.' : 'Privacy: generated locally in this browser.');
     return lines.join('\\n');
   }
   function downloadText(filename, text){
@@ -218,7 +243,7 @@ function scriptBlock() {
     var download = panel.querySelector('[data-health-download]');
     if(copy) copy.addEventListener('click', function(){
       var text = brief(panel);
-      function done(){ if(status) status.textContent = 'Copied locally.'; }
+      function done(){ if(status) status.textContent = panel.getAttribute('data-health-lang') === 'ha' ? 'An kwafa takaitawar.' : 'Copied locally.'; }
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(text).then(done).catch(function(){ if(status) status.textContent = text; });
       } else if(status) {
@@ -227,7 +252,7 @@ function scriptBlock() {
     });
     if(download) download.addEventListener('click', function(){
       downloadText('afrotools-' + title + '.txt', brief(panel));
-      if(status) status.textContent = 'Downloaded locally.';
+      if(status) status.textContent = panel.getAttribute('data-health-lang') === 'ha' ? 'An sauke takaitawar.' : 'Downloaded locally.';
     });
   });
 })();

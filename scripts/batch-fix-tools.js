@@ -40,20 +40,20 @@ const AI_CSS = `
 /* AI Advisor sidebar */
 .ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
 .ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
-.ai-dot{width:8px;height:8px;border-radius:50%;background:#007AFF;animation:aiPulse 2s infinite;flex-shrink:0}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#0062CC;animation:aiPulse 2s infinite;flex-shrink:0}
 @keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
 .ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
 .ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
 .ai-advisor-body{padding:14px 18px}
 .ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
 .ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#007AFF;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#0062CC;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
 .ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
 .ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
 .ai-input-row{display:flex;gap:6px}
 .ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
-.ai-input:focus{border-color:#007AFF;background:#fff}
-.ai-send{padding:9px 14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-input:focus{border-color:#0062CC;background:#fff}
+.ai-send{padding:9px 14px;background:#0062CC;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
 .ai-send:disabled{opacity:.5;cursor:not-allowed}`;
 
 // ─── AI ADVISOR JS TEMPLATE ─────────────────────────────────────────────────
@@ -129,7 +129,7 @@ function fixButtons(content, filePath) {
 
   for (const pat of patterns) {
     if (pat.test(content)) {
-      content = content.replace(pat, 'background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35)');
+      content = content.replace(pat, 'background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35)');
       changed = true;
     }
   }

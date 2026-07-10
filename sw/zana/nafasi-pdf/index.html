@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.da912503.min.js" lang="sw">
+<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="sw">
 <head>
   <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -25,8 +25,8 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=df4e2f26">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=65b677da">
 <script src="/assets/js/components/related-tools-data.min.js?v=5af5f2d6" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=5ac46dd6" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=ae996767" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
 <style>
     .ws-page h1,.ws-page h2,.ws-page h3,.ws-page h4,.ws-page h5{text-transform:none!important;letter-spacing:normal!important;font-family:'DM Sans',sans-serif!important}
     .ws-page svg{display:inline-block!important;max-width:none!important}
@@ -44,7 +44,7 @@
     .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}.ws.on{display:flex}
     .toolbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 16px;display:flex;align-items:center;height:50px;gap:2px;overflow-x:auto;flex-shrink:0}.toolbar::-webkit-scrollbar{height:0}
     .tb-logo{display:flex;align-items:center;gap:8px;margin-right:12px;text-decoration:none;flex-shrink:0}
-    .tb-logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:9px}
+    .tb-logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:9px}
     .tb-logo-name{font-weight:800;font-size:14px;color:#111}.tb-logo-name em{font-style:normal;color:var(--color-primary)}
     .tb-fname{font-size:12px;color:#4b5563;font-weight:600;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:8px;padding:4px 10px;background:#f3f4f6;border-radius:5px;flex-shrink:0}
     .tb-btn{height:36px;padding:0 14px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#4b5563;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:.15s;text-transform:none;letter-spacing:0}
@@ -53,18 +53,18 @@
     .tb-zoom{display:flex;align-items:center;gap:4px;margin:0 4px}
     .tb-zoom button{width:30px;height:30px;border:1px solid #e5e7eb;background:#fff;border-radius:6px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#374151;transition:.15s}.tb-zoom button:hover{background:#f3f4f6}
     .tb-zoom span{font-size:12px;font-weight:700;color:#374151;min-width:42px;text-align:center}
-    .tb-dl{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35)!important;color:#fff!important;padding:0 18px!important;border-radius:7px;margin-left:auto;font-weight:700}.tb-dl:hover{background:#0059B3!important}
+    .tb-dl{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35)!important;color:#fff!important;padding:0 18px!important;border-radius:7px;margin-left:auto;font-weight:700}.tb-dl:hover{background:#0059B3!important}
     .tb-close{width:36px;height:36px;border:1px solid #e5e7eb;background:#fff;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:18px;margin-left:8px;flex-shrink:0;transition:.15s}.tb-close:hover{background:#fef2f2;color:#dc2626;border-color:#fca5a5}
     .ws-body{display:flex;flex:1;overflow:hidden}
     .sidebar{width:160px;background:#f9fafb;border-right:1px solid #e5e7eb;overflow-y:auto;flex-shrink:0;padding:10px}.sidebar::-webkit-scrollbar{width:5px}.sidebar::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
     .sd-thumb{position:relative;margin-bottom:8px;cursor:pointer;border-radius:5px;overflow:hidden;border:2.5px solid transparent;transition:.2s;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-    .sd-thumb.sel{border-color:var(--color-primary);box-shadow:0 0 0 2px rgba(0,122,255,.15)}.sd-thumb:hover:not(.sel){border-color:#d1d5db}
+    .sd-thumb.sel{border-color:var(--color-primary);box-shadow:0 0 0 2px rgba(0,98,204,.15)}.sd-thumb:hover:not(.sel){border-color:#d1d5db}
     .sd-thumb canvas,.sd-thumb img{width:100%;display:block;background:#fff}
     .sd-thumb .sd-ph{width:100%;aspect-ratio:8.5/11;display:flex;align-items:center;justify-content:center;font-size:13px;color:#9ca3af;font-weight:700;background:#f3f4f6}
     .sd-num{position:absolute;bottom:3px;right:5px;font-size:10px;font-weight:800;color:#fff;background:rgba(0,0,0,.5);padding:1px 6px;border-radius:4px}
     .sd-del{position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(220,38,38,.9);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-weight:700;opacity:0;transition:opacity .15s}.sd-thumb:hover .sd-del,.sd-del:focus{opacity:1}
     @media(hover:none){.sd-del{opacity:1}}
-    .sd-rot{position:absolute;top:3px;left:3px;padding:1px 5px;background:rgba(0,122,255,.85);color:#fff;border-radius:4px;font-size:9px;font-weight:700;display:none}.sd-rot.on{display:block}
+    .sd-rot{position:absolute;top:3px;left:3px;padding:1px 5px;background:rgba(0,98,204,.85);color:#fff;border-radius:4px;font-size:9px;font-weight:700;display:none}.sd-rot.on{display:block}
     .main-view{flex:1;overflow:auto;background:#525659;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px}
     .main-view canvas{background:#fff;box-shadow:0 2px 20px rgba(0,0,0,.25);border-radius:2px;display:block;cursor:pointer}
     .main-view .mv-ph{width:700px;max-width:90%;aspect-ratio:8.5/11;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;color:#9ca3af;font-weight:700;border-radius:2px;box-shadow:0 2px 20px rgba(0,0,0,.25)}
@@ -76,7 +76,7 @@
     .m-body{flex:1;overflow-y:auto;padding:20px 24px}
     .m-foot{padding:16px 24px;border-top:1px solid #e5e7eb;display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-shrink:0}
     .wb{padding:10px 22px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-transform:none;letter-spacing:0;transition:.15s}
-    .wb-p{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff}.wb-p:hover{background:#0059B3}
+    .wb-p{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff}.wb-p:hover{background:#0059B3}
     .wb-s{background:#f3f4f6;color:#374151}.wb-s:hover{background:#e5e7eb}
     .sp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
     .sp-cell{position:relative;padding:4px}
@@ -91,7 +91,7 @@
     .sp-cut:hover .sc-icon{opacity:1;background:#fef2f2;color:#dc2626}.sp-cut.on .sc-icon{opacity:1;background:#dc2626;color:#fff}
     .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
     .pgrid-item{position:relative;border-radius:8px;overflow:hidden;border:2px solid #e5e7eb;cursor:grab;transition:.2s;background:#fff}
-    .pgrid-item:hover{border-color:var(--color-primary);box-shadow:0 4px 14px rgba(0,0,0,.1)}.pgrid-item.dragging{opacity:.3;transform:scale(.93)}.pgrid-item.drag-over{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.25)}
+    .pgrid-item:hover{border-color:var(--color-primary);box-shadow:0 4px 14px rgba(0,0,0,.1)}.pgrid-item.dragging{opacity:.3;transform:scale(.93)}.pgrid-item.drag-over{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.25)}
     .pgrid-item img,.pgrid-item .pi-ph{width:100%;aspect-ratio:8.5/11;display:block;object-fit:contain;background:#f9fafb}
     .pi-ph{display:flex;align-items:center;justify-content:center;font-size:14px;color:#9ca3af;font-weight:700}
     .pgrid-item .pi-label{text-align:center;padding:6px;font-size:12px;font-weight:700;color:#4b5563;background:#f9fafb;border-top:1px solid #e5e7eb}
@@ -108,7 +108,7 @@
     .p-spin{width:40px;height:40px;border:4px solid #e5e7eb;border-top-color:var(--color-primary);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 18px}
     @keyframes spin{to{transform:rotate(360deg)}}
     .p-card h3{font-size:16px;font-weight:700;color:#111;text-align:center;margin:0 0 4px;overflow-wrap:break-word;word-break:break-word}.p-card p{font-size:13px;color:#6b7280;text-align:center;margin:0;overflow-wrap:break-word;word-break:break-word;text-align:justify;text-align-last:center}
-    .p-bar{width:100%;height:5px;background:#e5e7eb;border-radius:100px;margin-top:20px;overflow:hidden}.p-fill{height:100%;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);border-radius:100px;width:0%;transition:width .3s}
+    .p-bar{width:100%;height:5px;background:#e5e7eb;border-radius:100px;margin-top:20px;overflow:hidden}.p-fill{height:100%;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);border-radius:100px;width:0%;transition:width .3s}
     .toast{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:.3s;z-index:2000;max-width:350px}.toast.on{transform:translateY(0);opacity:1}.toast.err{background:#dc2626}
     /* MOBILE BOTTOM BAR — zoom + page nav for touch */
     .mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;height:52px;background:#fff;border-top:1px solid #e5e7eb;z-index:610;padding:0 12px;align-items:center;justify-content:space-between;gap:8px}
@@ -116,7 +116,7 @@
     .mob-bar button svg{width:18px;height:18px}
     .mob-bar .mz-label{font-size:13px;font-weight:700;color:#374151;min-width:44px;text-align:center}
     .mob-bar .mob-pg{font-size:12px;color:#6b7280;font-weight:600}
-    .mob-bar .mob-dl{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border-color:var(--color-primary)}
+    .mob-bar .mob-dl{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border-color:var(--color-primary)}
 
     /* SIDEBAR TOGGLE for mobile */
     .sb-toggle{display:none;position:absolute;top:8px;left:8px;z-index:5;width:36px;height:36px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;cursor:pointer;font-size:14px;align-items:center;justify-content:center;color:#6b7280;box-shadow:0 2px 8px rgba(0,0,0,.1)}
@@ -151,7 +151,7 @@
 
 
 <script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
-<script src="/assets/js/bundles/core.fdd629ac.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/bundles/core.1ecbb30b.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
 
 
@@ -187,10 +187,10 @@
   <h1>Nafasi ya Kazi ya PDF</h1>
   <p>Pakia PDF, then split, merge, rearrange, rotate, compress, and download &#8212; all from one place.</p>
   <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;justify-content:center;">
-    <span style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Gawanya &amp; Unganisha</span>
-    <span style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Zungusha Kurasa</span>
-    <span style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Bana PDF</span>
-    <span style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Add Ukurasa Numbers</span>
+    <span style="background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Gawanya &amp; Unganisha</span>
+    <span style="background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Zungusha Kurasa</span>
+    <span style="background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Bana PDF</span>
+    <span style="background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;">Add Ukurasa Numbers</span>
     <span style="background:#EFF6FF;color:var(--color-primary);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1.5px solid #BFDBFE;">100% Faragha · Hakuna kupakia</span>
   </div>
   <div class="dz" id="dz"><div class="dz-emoji">&#128196;</div><h3>Dondosha PDF hapa ili kuanza</h3><p>or <span class="gr">bofya kuchagua faili</span></p><input aria-label="FileIn" type="file" id="fileIn" accept=".pdf,application/pdf"></div>
@@ -294,7 +294,7 @@
 <style>.sw-pdf-bridge-card{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid #dbeafe;border-radius:10px;padding:14px;text-decoration:none;color:#0f172a}.sw-pdf-bridge-card strong{font-size:.95rem}.sw-pdf-bridge-card span{font-size:.83rem;line-height:1.55;color:#475569}.sw-pdf-bridge-card:hover{border-color:#2563eb;box-shadow:0 10px 24px rgba(37,99,235,.10)}</style>
 <!-- sw-advanced-pdf-workspace:end -->
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.js?v=627c0369" defer></script>
+<script src="/assets/js/components/related-tools.js?v=4fdc53ae" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=4b4c6943" defer></script>
@@ -661,7 +661,7 @@ function openSig(){
     '<canvas id="sigPad" width="500" height="180" style="border:2px solid #e5e7eb;border-radius:10px;background:#fff;cursor:crosshair;max-width:100%;touch-action:none;"></canvas>'+
     '<div style="margin-top:10px;display:flex;gap:8px;justify-content:center;">'+
     '<button type="button" class="wb wb-s" onclick="clearSig()">Clear</button>'+
-    '<select id="sigColor" style="padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-family:inherit;" aria-label="Sig Color"><option value="#000">Black</option><option value="#001f3f">Navy</option><option value="#007AFF">Blue</option></select>'+
+    '<select id="sigColor" style="padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-family:inherit;" aria-label="Sig Color"><option value="#000">Black</option><option value="#001f3f">Navy</option><option value="#0062CC">Blue</option></select>'+
     '</div>'+
     '<div style="display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;justify-content:center;">'+
     '<div class="pn-field"><label>X</label><input aria-label="SigX" type="number" id="sigX" value="50" min="0" style="width:80px"></div>'+

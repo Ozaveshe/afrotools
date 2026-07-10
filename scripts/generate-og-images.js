@@ -22,7 +22,7 @@ const IMG_DIR = path.resolve(__dirname, '..', 'assets', 'img');
 
 // ── Brand tokens (blue brand — from tokens.min.css) ──
 const C = {
-  primary:   '#007AFF',
+  primary:   '#0062CC',
   dark:      '#0A1628',
   darkAlt:   '#131D2E',
   text:      '#E2E8F0',
@@ -32,8 +32,8 @@ const C = {
 // ── Image definitions ──
 const IMAGES = [
   // Homepage & default
-  { file: 'og-home',        dir: 'img',  title: 'AfroTools',                subtitle: 'Free Financial & Productivity Tools for Africa',    emoji: '🌍',  accent: '#007AFF' },
-  { file: 'og-default',     dir: 'img',  title: 'AfroTools',                subtitle: "Free tools for Africa's digital economy",           emoji: '🔧',  accent: '#007AFF' },
+  { file: 'og-home',        dir: 'img',  title: 'AfroTools',                subtitle: 'Free Financial & Productivity Tools for Africa',    emoji: '🌍',  accent: '#0062CC' },
+  { file: 'og-default',     dir: 'img',  title: 'AfroTools',                subtitle: "Free tools for Africa's digital economy",           emoji: '🔧',  accent: '#0062CC' },
 
   // Category OG images (go in og/ subfolder)
   { file: 'cat-financial',   dir: 'og', title: 'Financial Tools',           subtitle: 'Tax, salary & investment calculators',              emoji: '💰',  accent: '#10B981' },

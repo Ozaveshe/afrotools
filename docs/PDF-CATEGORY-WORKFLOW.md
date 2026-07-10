@@ -11,7 +11,7 @@ This workflow is the operating contract for AfroTools PDF and document builders.
 5. Keep the output private. The gate must not upload the generated file.
 6. Provide a clear post-result action: download, save recipe or draft, export audit report, or open the next PDF workflow step.
 
-Sensitive local-first career tools are exempt from the download gate when the primary export contains CV, resume, cover-letter, job-description, phone, email, LinkedIn, portfolio, salary, identity, legal, health, or financial content. `tools/cv-builder/` must keep PDF, ATS Plain PDF, TXT, JSON backup, copy, print, and local save/restore available without the shared PDF/email gate.
+Sensitive local-first tools are exempt from the download gate when the primary export contains CV, resume, cover-letter, job-description, meeting, receipt, business-plan, invoice, phone, email, LinkedIn, portfolio, salary, identity, legal, health, or financial content. Current category exemptions include `cv-builder`, `cover-letter-generator`, `meeting-minutes`, `receipt-generator`, `business-plan`, and `freelance-invoice`. Their primary export, copy, print, backup, and local save/restore paths must remain available without the shared PDF/email gate.
 
 ## Download Gate Contract
 
@@ -139,7 +139,7 @@ AfroTools should use the same product principle without copying their cloud-heav
 Current category-level limits:
 
 - Guests: run tools and plan locally. Downloads open the free account gate.
-- Sensitive local-first career tools: guests can export primary career-data files locally without the account gate.
+- Sensitive local-first tools: guests can export primary career, meeting, receipt, business-plan, and invoice files locally without the account gate.
 - Free account: downloads unlocked, 10 report trails visible in the category meter, 1 reusable recipe, 3 active category handoffs, 3 audit packet exports per month.
 - Pro account: unlimited report trails, recipes, category handoffs, and audit packet exports. Pro also owns batch, AI-heavy, OCR-heavy, compare, redact, team, and reusable workflow lanes when those are elevated.
 - Team or Business account: Pro rules plus team metadata, billing, access, and admin controls when the backend product layer exists.

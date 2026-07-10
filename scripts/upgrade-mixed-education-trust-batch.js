@@ -35,46 +35,51 @@ const pages = [
     file: 'ha/kayan-aiki/neman-tallafin-karatu/index.html',
     title: 'Mai nemo tallafin karatu',
     source: '/tools/scholarship-finder/',
-    prompt: 'scholarship level, field, country, documents, deadline and verification checklist',
-    official: 'Verify scholarship status, eligibility, deadlines, fees, documents and submission channels with the official funder or school.',
-    method: 'The page captures study level, field and destination, then prepares a document and verification checklist for the source workflow.',
-    limit: 'This is application preparation support, not a scholarship award, official listing, eligibility guarantee or payment request.'
+    lang: 'ha',
+    prompt: 'matakin tallafin karatu, fanni, kasa, takardu, ranar karshe da jerin tabbatarwa',
+    official: 'Ka tabbatar da matsayin tallafin, cancanta, ranar karshe, caji, takardu da hanyar mikawa daga mai bayar da tallafin ko makaranta ta hukuma.',
+    method: 'Shafin yana tattara matakin karatu, fanni da kasar da ake nema, sannan ya shirya jerin takardu da matakan tabbatarwa.',
+    limit: 'Wannan taimakon shirya neman tallafi ne, ba bayar da tallafi ba ne, ba jerin hukuma ba ne, ba tabbacin cancanta ko neman biyan kudi ba ne.'
   },
   {
     file: 'ha/jamb/kimiyya/index.html',
     title: 'JAMB Kimiyya',
     source: '/jamb/chemistry/',
-    prompt: 'chemistry topics, weak areas, past-question practice and timed revision plan',
-    official: 'Confirm the current syllabus, exam dates, subject requirements and admission rules with JAMB or the school.',
-    method: 'The page captures the learner focus and routes to the matching AfroJAMB Chemistry practice workflow.',
-    limit: 'This is revision support, not an official question bank, exam score, admission promise or malpractice tool.'
+    lang: 'ha',
+    prompt: 'batutuwan kimiyya, wuraren rauni, atisayen tsoffin tambayoyi da shirin bita mai lokaci',
+    official: 'Ka tabbatar da sabuwar manhaja, ranar jarrabawa, bukatun darasi da kaidar admission daga JAMB ko makaranta.',
+    method: 'Shafin yana tattara abin da dalibi yake son karantawa sannan ya kai shi atisayen Kimiyya na AfroJAMB da ya dace.',
+    limit: 'Wannan taimakon bita ne, ba ajiyar tambayoyin hukuma ba ne, ba makin jarrabawa ko alkawarin admission ba ne, kuma ba kayan magudi ba ne.'
   },
   {
     file: 'ha/jamb/fisiks/index.html',
     title: 'JAMB Fisiks',
     source: '/jamb/physics/',
-    prompt: 'physics topics, formulas, weak areas, diagrams and timed revision plan',
-    official: 'Confirm the current syllabus, exam dates, subject requirements and admission rules with JAMB or the school.',
-    method: 'The page captures the learner focus and routes to the matching AfroJAMB Physics practice workflow.',
-    limit: 'This is revision support, not an official question bank, exam score, admission promise or malpractice tool.'
+    lang: 'ha',
+    prompt: 'batutuwan fisiks, kaidoji, wuraren rauni, zane-zane da shirin bita mai lokaci',
+    official: 'Ka tabbatar da sabuwar manhaja, ranar jarrabawa, bukatun darasi da kaidar admission daga JAMB ko makaranta.',
+    method: 'Shafin yana tattara abin da dalibi yake son karantawa sannan ya kai shi atisayen Fisiks na AfroJAMB da ya dace.',
+    limit: 'Wannan taimakon bita ne, ba ajiyar tambayoyin hukuma ba ne, ba makin jarrabawa ko alkawarin admission ba ne, kuma ba kayan magudi ba ne.'
   },
   {
     file: 'ha/kayan-aiki/alawus-na-nysc/index.html',
     title: 'Kalkuletan alawus na NYSC',
     source: '/tools/nysc-allowance/',
-    prompt: 'NYSC allowance, state top-up, side income, expenses and monthly savings plan',
-    official: 'Verify allowance, state top-up, posting rules, PPA rules and payment notices with NYSC, the state or your PPA.',
-    method: 'The page totals federal allowance, selected state top-up and side income, then subtracts monthly expenses to show surplus or gap.',
-    limit: 'This is a budget estimate, not an official NYSC payment notice, employment rule, financial advice or guarantee of state allowance.'
+    lang: 'ha',
+    prompt: 'alawus na NYSC, karin kudin jiha, karin samun kudi, kashe kudi da shirin ajiyar wata',
+    official: 'Ka tabbatar da alawus, karin kudin jiha, dokar posting, kaidar PPA da sanarwar biyan kudi daga NYSC, jiha ko PPA dinka.',
+    method: 'Shafin yana tara alawus na tarayya, karin kudin jihar da aka zaba da sauran samun kudi, sannan ya cire kashe kudin wata domin nuna ragi ko gibi.',
+    limit: 'Wannan kiyasin kasafi ne, ba sanarwar biyan kudi ta NYSC ba ce, ba dokar aiki ko shawarar kudi ba ce, kuma ba tabbacin karin kudin jiha ba ne.'
   },
   {
     file: 'ha/kayan-aiki/kasafin-dalibi/index.html',
     title: 'Kasafin dalibi',
     source: '/tools/student-budget/',
-    prompt: 'student income, fees, rent, food, transport, books and remaining budget',
-    official: 'Verify tuition, hostel, transport, scholarship, bursary and deadline details with the school, sponsor or student affairs office.',
-    method: 'The page totals the entered student expenses, subtracts them from available income, and prepares a shareable budget brief.',
-    limit: 'This is a student planning estimate, not an official fee invoice, bursary approval, loan advice or payment instruction.'
+    lang: 'ha',
+    prompt: 'kudin shiga na dalibi, kudin makaranta, haya, abinci, sufuri, littattafai da ragowar kasafi',
+    official: 'Ka tabbatar da kudin makaranta, masauki, sufuri, tallafin karatu da ranar karshe daga makaranta, mai daukar nauyi ko ofishin kula da dalibai.',
+    method: 'Shafin yana tara kudaden dalibi da aka shigar, ya cire su daga kudin da ake da shi, sannan ya shirya takaitaccen kasafi da za a iya rabawa.',
+    limit: 'Wannan kiyasin shirin dalibi ne, ba takardar kudin hukuma ba ce, ba amincewar tallafi ba ce, ba shawarar bashi ko umarnin biya ba ne.'
   }
 ];
 
@@ -106,27 +111,55 @@ function styleBlock() {
 }
 
 function section(page) {
+  const ha = page.lang === 'ha';
+  const copy = ha ? {
+    kicker: 'Fitarwa a cikin burauza',
+    title: 'Ajiye shirin ko sakamako',
+    intro: `Rubuta ${page.prompt}. Ana gina takaitawar a burauzarka domin ka kwafa ko sauke ta.`,
+    copy: 'Kwafi takaitawa',
+    download: 'Sauke TXT',
+    trustKicker: 'Tushe, sabuntawa da hanyar aiki',
+    trustTitle: 'Tabbatarwa, sabuntawa da iyaka',
+    source: 'Tushe',
+    sourceLead: 'An tsara shi bisa hanyar AfroTools a',
+    official: 'Tabbacin hukuma',
+    method: 'Hanyar aiki',
+    limit: 'Iyaka'
+  } : {
+    kicker: 'Local-first export',
+    title: 'Ajiye shirin ko sakamako',
+    intro: `Capture ${page.prompt}. The brief is generated in this browser so you can copy or download it for study, school, sponsor or budget follow-up.`,
+    copy: 'Copy brief',
+    download: 'Download .txt',
+    trustKicker: 'Source / freshness / methodology',
+    trustTitle: 'Verification, freshness and limits',
+    source: 'Source',
+    sourceLead: 'Based on the AfroTools workflow at',
+    official: 'Official verification',
+    method: 'Methodology',
+    limit: 'Limitations'
+  };
   return `
-<section class="mixed-education-export" data-mixed-education-batch="export" data-education-title="${escHtml(page.title)}" data-education-source="${escHtml(page.source)}" data-education-prompt="${escHtml(page.prompt)}" data-education-limit="${escHtml(page.limit)}">
+<section class="mixed-education-export" data-mixed-education-batch="export" data-education-lang="${ha ? 'ha' : 'yo'}" data-education-title="${escHtml(page.title)}" data-education-source="${escHtml(page.source)}" data-education-prompt="${escHtml(page.prompt)}" data-education-limit="${escHtml(page.limit)}">
   <div>
-    <span class="mixed-education-kicker">Local-first export</span>
-    <h2>Ajiye shirin ko sakamako</h2>
-    <p>Capture ${escHtml(page.prompt)}. The brief is generated in this browser so you can copy or download it for study, school, sponsor or budget follow-up.</p>
+    <span class="mixed-education-kicker">${escHtml(copy.kicker)}</span>
+    <h2>${escHtml(copy.title)}</h2>
+    <p>${escHtml(copy.intro)}</p>
   </div>
   <div class="mixed-education-actions">
-    <button type="button" data-education-copy>Copy brief</button>
-    <button type="button" data-education-download>Download .txt</button>
+    <button type="button" data-education-copy>${escHtml(copy.copy)}</button>
+    <button type="button" data-education-download>${escHtml(copy.download)}</button>
     <span data-education-status aria-live="polite"></span>
   </div>
 </section>
 <section class="mixed-education-trust" data-tool-verification-panel data-mixed-education-batch="trust">
-  <span class="mixed-education-kicker">Source / freshness / methodology</span>
-  <h2>Verification, freshness and limits</h2>
+  <span class="mixed-education-kicker">${escHtml(copy.trustKicker)}</span>
+  <h2>${escHtml(copy.trustTitle)}</h2>
   <div class="mixed-education-trust-grid">
-    <p><strong>Source:</strong> Based on the AfroTools workflow at <a href="${escHtml(page.source)}">${escHtml(page.source)}</a>.</p>
-    <p><strong>Official verification:</strong> ${escHtml(page.official)}</p>
-    <p><strong>Methodology:</strong> ${escHtml(page.method)}</p>
-    <p><strong>Limitations:</strong> ${escHtml(page.limit)}</p>
+    <p><strong>${escHtml(copy.source)}:</strong> ${escHtml(copy.sourceLead)} <a href="${escHtml(page.source)}">${escHtml(page.source)}</a>.</p>
+    <p><strong>${escHtml(copy.official)}:</strong> ${escHtml(page.official)}</p>
+    <p><strong>${escHtml(copy.method)}:</strong> ${escHtml(page.method)}</p>
+    <p><strong>${escHtml(copy.limit)}:</strong> ${escHtml(page.limit)}</p>
   </div>
 </section>`;
 }
@@ -153,18 +186,23 @@ function scriptBlock() {
     }).filter(Boolean);
   }
   function brief(panel){
+    var ha = panel.getAttribute('data-education-lang') === 'ha';
     var title = panel.getAttribute('data-education-title') || 'Education tool';
     var source = panel.getAttribute('data-education-source') || location.pathname;
     var prompt = panel.getAttribute('data-education-prompt') || 'education planning';
     var limit = panel.getAttribute('data-education-limit') || '';
-    var lines = ['AfroTools - ' + title, 'Route: ' + location.pathname, 'Workflow: ' + source, 'Focus: ' + prompt, ''];
+    var lines = ha
+      ? ['AfroTools - ' + title, 'Hanya: ' + location.pathname, 'Tsarin aiki: ' + source, 'Abin da za a maida hankali a kai: ' + prompt, '']
+      : ['AfroTools - ' + title, 'Route: ' + location.pathname, 'Workflow: ' + source, 'Focus: ' + prompt, ''];
     var fields = fieldLines();
-    if(fields.length) lines.push('Inputs', fields.join('\\n'), '');
+    if(fields.length) lines.push(ha ? 'Bayanan da aka shigar' : 'Inputs', fields.join('\\n'), '');
     var results = resultLines();
-    if(results.length) lines.push('Current result', results.join('\\n\\n'), '');
-    lines.push('Verification', 'Confirm official dates, fees, rules, eligibility, scores or payment details with the responsible exam body, school, funder, NYSC office or official portal.');
-    if(limit) lines.push('', 'Limitations', limit);
-    lines.push('', 'Privacy: generated locally in this browser.');
+    if(results.length) lines.push(ha ? 'Sakamakon yanzu' : 'Current result', results.join('\\n\\n'), '');
+    lines.push(ha ? 'Tabbatarwa' : 'Verification', ha
+      ? 'Ka tabbatar da ranaku, caji, dokoki, cancanta, maki ko bayanin biya daga hukumar jarrabawa, makaranta, mai bayar da tallafi, ofishin NYSC ko portal na hukuma.'
+      : 'Confirm official dates, fees, rules, eligibility, scores or payment details with the responsible exam body, school, funder, NYSC office or official portal.');
+    if(limit) lines.push('', ha ? 'Iyaka' : 'Limitations', limit);
+    lines.push('', ha ? 'Sirri: an gina wannan a cikin burauzarka.' : 'Privacy: generated locally in this browser.');
     return lines.join('\\n');
   }
   function downloadText(filename, text){
@@ -185,7 +223,7 @@ function scriptBlock() {
     var download = panel.querySelector('[data-education-download]');
     if(copy) copy.addEventListener('click', function(){
       var text = brief(panel);
-      function done(){ if(status) status.textContent = 'Copied locally.'; }
+      function done(){ if(status) status.textContent = panel.getAttribute('data-education-lang') === 'ha' ? 'An kwafa takaitawar.' : 'Copied locally.'; }
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(text).then(done).catch(function(){ if(status) status.textContent = text; });
       } else if(status) {
@@ -194,7 +232,7 @@ function scriptBlock() {
     });
     if(download) download.addEventListener('click', function(){
       downloadText('afrotools-' + title + '.txt', brief(panel));
-      if(status) status.textContent = 'Downloaded locally.';
+      if(status) status.textContent = panel.getAttribute('data-education-lang') === 'ha' ? 'An sauke takaitawar.' : 'Downloaded locally.';
     });
   });
 })();

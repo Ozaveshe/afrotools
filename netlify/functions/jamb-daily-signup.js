@@ -87,7 +87,7 @@ function renderMessagePage(title, message, accent) {
           "<div style=\"font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2563eb;margin-bottom:10px;\">AfroJAMB Daily Question</div>" +
           "<h1 style=\"margin:0 0 12px;font-size:28px;line-height:1.15;letter-spacing:-.03em;color:" + tone + ";\">" + safeTitle + "</h1>" +
           "<p style=\"margin:0;font-size:16px;line-height:1.7;color:#475569;\">" + safeMessage + "</p>" +
-          "<div style=\"margin-top:22px;\"><a href=\"https://afrotools.com/jamb/\" style=\"display:inline-block;background:#007AFF;color:#ffffff;text-decoration:none;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;\">Back to AfroJAMB</a></div>" +
+          "<div style=\"margin-top:22px;\"><a href=\"https://afrotools.com/jamb/\" style=\"display:inline-block;background:#0062CC;color:#ffffff;text-decoration:none;padding:13px 20px;border-radius:999px;font-size:14px;font-weight:700;\">Back to AfroJAMB</a></div>" +
         "</div>" +
       "</div>" +
     "</body></html>";

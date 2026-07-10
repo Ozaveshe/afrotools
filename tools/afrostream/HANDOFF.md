@@ -97,5 +97,5 @@ Keep these lanes separate in copy, UI, and ranking logic. Do not treat a mega-cr
 - Plain HTML/CSS/vanilla JS (no frameworks)
 - Netlify hosting + functions
 - Supabase PostgreSQL
-- Brand color: #007AFF (Apple Blue)
+- Brand color: #0062CC (standardized Jul 2026 for WCAG AA)
 - Fonts: DM Sans throughout
