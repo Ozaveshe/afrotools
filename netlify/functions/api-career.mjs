@@ -1,10 +1,47 @@
-import apiAuth from "./_shared/api-auth.js";
+import crypto from "node:crypto";
+
 import careerEngine from "./_shared/career-engine.js";
+import rateLimit from "./_shared/rate-limit.js";
 import cors from "./utils/cors.js";
 
-const { validateApiKey } = apiAuth;
 const { compareOffers, checkJobScam } = careerEngine;
+const { checkRateLimit, getRemaining } = rateLimit;
 const { getAllowedOrigin } = cors;
+
+function safeEqual(left, right) {
+  const leftBuffer = Buffer.from(String(left || ""));
+  const rightBuffer = Buffer.from(String(right || ""));
+  return (
+    leftBuffer.length === rightBuffer.length &&
+    crypto.timingSafeEqual(leftBuffer, rightBuffer)
+  );
+}
+
+function partnerKey() {
+  return (
+    globalThis.Netlify?.env?.get("SALARYPADI_API_KEY") ||
+    process.env.SALARYPADI_API_KEY ||
+    ""
+  );
+}
+
+function authenticate(event) {
+  const supplied = event.headers["x-api-key"] || "";
+  if (supplied) {
+    const expected = partnerKey();
+    return expected && safeEqual(supplied, expected)
+      ? { tier: "partner" }
+      : { error: "Invalid API key", status: 401 };
+  }
+  const clientIp = String(event.headers["x-forwarded-for"] || "unknown")
+    .split(",")[0]
+    .trim();
+  const limitKey = "career-anon:" + clientIp;
+  if (!checkRateLimit(limitKey, 100)) {
+    return { error: "Rate limit exceeded", status: 429 };
+  }
+  return { tier: "free", remaining: getRemaining(limitKey, 100) };
+}
 
 function eventFromRequest(request, context) {
   const url = new URL(request.url);
@@ -58,7 +95,7 @@ export default async function handler(request, context) {
 
   const contentLength = Number(request.headers.get("content-length") || "0");
   if (contentLength > 120000) return json(event, 413, { error: "Request is too large", code: "PAYLOAD_TOO_LARGE" });
-  const auth = await validateApiKey(event, "career:" + operation);
+  const auth = authenticate(event);
   if (auth.error) return json(event, auth.status || 401, { error: auth.error, code: "API_ACCESS_DENIED" });
 
   let raw;

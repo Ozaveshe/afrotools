@@ -70,6 +70,37 @@ assert.ok(!negated.flags.some(flag => flag.code === 'banking_credentials'));
   assert.strictEqual(body.result.riskTier, 'caution');
   assert.strictEqual(body._meta.network_fetch_performed, false);
   assert.ok(!JSON.stringify(body).includes('127.0.0.1'));
+
+  process.env.SALARYPADI_API_KEY = 'afro_live_test_partner_key';
+  const authenticated = await api.default(
+    new Request('https://afrotools.com/api/v1/career/offer-compare', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': 'afro_live_test_partner_key',
+      },
+      body: JSON.stringify({
+        comparisonCurrency: 'NGN',
+        offerA: offer('a', 500000, 'NGN', 'monthly'),
+        offerB: offer('b', 550000, 'NGN', 'monthly'),
+      }),
+    }),
+    { ip: '127.0.0.2' },
+  );
+  assert.strictEqual(authenticated.status, 200);
+  const rejected = await api.default(
+    new Request('https://afrotools.com/api/v1/career/job-scam-check', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': 'wrong-key',
+      },
+      body: JSON.stringify({ answers: {} }),
+    }),
+    { ip: '127.0.0.3' },
+  );
+  assert.strictEqual(rejected.status, 401);
+  delete process.env.SALARYPADI_API_KEY;
   console.log('AfroTools career API tests passed.');
 })().catch(error => {
   console.error(error);
