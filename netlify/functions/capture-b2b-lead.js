@@ -195,9 +195,15 @@ function normalizeLead(body, event) {
   const name = cleanField(body.name, 150);
   const country = cleanField(body.country, 120);
   const website = cleanUrl(body.website);
-  const prospectType = normalizeChoice(body.prospect_type || body.prospectType, PROSPECT_ALIASES, PROSPECT_LABELS, 'other');
+  const prospectType = normalizeChoice(
+    body.prospect_type || body.prospectType || body.prospect || body.prospect_segment || body.prospectSegment,
+    PROSPECT_ALIASES,
+    PROSPECT_LABELS,
+    'other'
+  );
   const requestedOffer = normalizeChoice(body.requested_offer || body.requestedOffer || body.offer, OFFER_ALIASES, OFFER_LABELS, 'other');
-  const relevantTool = cleanField(body.relevant_tool || body.relevantTool || body.use_case || body.useCase, 220);
+  const ctaTool = cleanField(body.tool || body.cta_tool || body.ctaTool, 220);
+  const relevantTool = cleanField(body.relevant_tool || body.relevantTool || body.use_case || body.useCase || ctaTool, 220);
   const message = cleanLongText(body.message, 2500);
   const consent = body.consent === true || body.consent === 'true' || body.consent === 'on';
 
@@ -213,12 +219,12 @@ function normalizeLead(body, event) {
     return { error: 'Missing required fields: ' + missing.join(', ') };
   }
 
-  const sourcePath = cleanPath(body.source_path || body.sourcePath);
+  const sourcePath = cleanPath(body.source_path || body.sourcePath || body.source);
   const sourceRoute = cleanPath(body.source_route || body.sourceRoute || sourcePath);
   const ctaType = cleanField(body.cta_type || body.ctaType, 80);
   const prospectSegment = cleanField(body.prospect_segment || body.prospectSegment, 120);
   const pageUrl = cleanUrl(body.page_url || body.pageUrl);
-  const referrerUrl = cleanUrl(body.referrer_url || body.referrerUrl);
+  const referrerUrl = cleanUrl(body.referrer_url || body.referrerUrl || body.referrer);
   const userAgent = cleanField((event.headers || {})['user-agent'] || (event.headers || {})['User-Agent'], 500);
   const ipHash = hashIp(clientIp(event));
   const utm = {
@@ -233,6 +239,7 @@ function normalizeLead(body, event) {
     'Prospect type: ' + PROSPECT_LABELS[prospectType],
     website ? 'Website: ' + website : null,
     country ? 'Country: ' + country : null,
+    ctaTool ? 'CTA tool: ' + ctaTool : null,
     'Relevant tool/use case: ' + relevantTool,
     sourceRoute ? 'Source route: ' + sourceRoute : null,
     ctaType ? 'CTA type: ' + ctaType : null,
@@ -282,7 +289,8 @@ function normalizeLead(body, event) {
       prospect_label: PROSPECT_LABELS[prospectType],
       source_route: sourceRoute,
       cta_type: ctaType,
-      prospect_segment: prospectSegment
+      prospect_segment: prospectSegment,
+      tool: ctaTool || relevantTool
     }
   });
 

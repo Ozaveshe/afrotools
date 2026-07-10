@@ -662,6 +662,8 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             <p class="fk-copy">This dashboard structures the founder motion without inventing live numbers. Fields are manual/local until Stripe or Paystack, Search Console, email, WhatsApp, CRM, backlink, and B2B enquiry data are connected.</p>
             <div class="fk-actions">
               <button class="qa-btn fk-action" type="button" onclick="saveFiftyKWeek()">Save week locally</button>
+              <button class="qa-btn fk-action" type="button" onclick="exportFiftyKOutcomesCsv()">Export outcomes CSV</button>
+              <label class="qa-btn fk-action">Import outcomes CSV<input type="file" accept=".csv,text/csv" onchange="importFiftyKOutcomesCsv(this)" hidden></label>
               <button class="qa-btn fk-action" type="button" onclick="copyFiftyKSummary()">Copy weekly summary</button>
               <button class="qa-btn fk-action" type="button" onclick="resetFiftyKWeek()">Reset week</button>
             </div>
@@ -777,19 +779,17 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             <form id="fiftyk-prospect-form" class="fk-form-grid" onsubmit="saveFiftyKProspect(event)">
               <input type="hidden" id="fk-prospect-id">
               <div class="fk-field"><label for="fk-company">Company</label><input class="fk-input-sm" id="fk-company" required></div>
-              <div class="fk-field"><label for="fk-segment">Segment</label><select class="fk-input-sm" id="fk-segment" required><option>payroll</option><option>HR</option><option>fintech</option><option>accounting</option><option>education</option><option>media</option><option>trade</option><option>tax</option><option>employer services</option></select></div>
-              <div class="fk-field"><label for="fk-region">Country/region</label><input class="fk-input-sm" id="fk-region" placeholder="Nigeria, Kenya, pan-Africa"></div>
+              <div class="fk-field"><label for="fk-website">Website</label><input class="fk-input-sm" id="fk-website" type="url" placeholder="https://example.com"></div>
+              <div class="fk-field"><label for="fk-country">Country</label><input class="fk-input-sm" id="fk-country" placeholder="Nigeria, Kenya, pan-Africa"></div>
+              <div class="fk-field"><label for="fk-segment">Segment</label><select class="fk-input-sm" id="fk-segment" required><option>accounting/tax firms</option><option>HR/payroll providers</option><option>fintech/API targets</option><option>schools/edtechs</option><option>media/publishers</option><option>trade/employer-service targets</option></select></div>
+              <div class="fk-field"><label for="fk-offer">Offer</label><select class="fk-input-sm" id="fk-offer"><option>widget</option><option>Widget Pro</option><option>sponsored tool</option><option>media sponsorship</option><option>custom calculator</option><option>API pilot</option><option>business subscription</option><option>reserve</option></select></div>
+              <div class="fk-field fk-field--wide"><label for="fk-source-url">Source URL</label><input class="fk-input-sm" id="fk-source-url" type="url" placeholder="Public page used to verify fit"></div>
               <div class="fk-field"><label for="fk-contact-name">Contact name</label><input class="fk-input-sm" id="fk-contact-name"></div>
-              <div class="fk-field fk-field--wide"><label for="fk-contact">Email or LinkedIn</label><input class="fk-input-sm" id="fk-contact" type="text" placeholder="name@company.com or LinkedIn URL"></div>
-              <div class="fk-field"><label for="fk-offer-fit">Offer fit</label><select class="fk-input-sm" id="fk-offer-fit"><option>widget</option><option>sponsored tool</option><option>custom calculator</option><option>API pilot</option><option>media sponsorship</option></select></div>
-              <div class="fk-field"><label for="fk-priority">Priority</label><select class="fk-input-sm" id="fk-priority"><option>High</option><option>Medium</option><option>Low</option></select></div>
-              <div class="fk-field"><label for="fk-source">Source</label><input class="fk-input-sm" id="fk-source" placeholder="Search, referral, directory"></div>
-              <div class="fk-field"><label for="fk-first-touch">First touch</label><input class="fk-input-sm" id="fk-first-touch" type="date"></div>
-              <div class="fk-field"><label for="fk-last-touch">Last touch</label><input class="fk-input-sm" id="fk-last-touch" type="date"></div>
-              <div class="fk-field"><label for="fk-next-follow">Next follow-up</label><input class="fk-input-sm" id="fk-next-follow" type="date"></div>
+              <div class="fk-field"><label for="fk-contact-role">Contact role</label><input class="fk-input-sm" id="fk-contact-role" placeholder="Partnerships, founder, marketing"></div>
+              <div class="fk-field"><label for="fk-contact-email">Contact email</label><input class="fk-input-sm" id="fk-contact-email" type="email" placeholder="verified@company.com"></div>
+              <div class="fk-field fk-field--wide"><label for="fk-contact-linkedin">Contact LinkedIn</label><input class="fk-input-sm" id="fk-contact-linkedin" type="url" placeholder="https://www.linkedin.com/in/..."></div>
               <div class="fk-field"><label for="fk-status">Status</label><select class="fk-input-sm" id="fk-status"><option>not contacted</option><option>contacted</option><option>replied</option><option>demo booked</option><option>proposal sent</option><option>negotiating</option><option>won</option><option>lost</option><option>paused</option></select></div>
-              <div class="fk-field"><label for="fk-deal-value">Deal estimate</label><input class="fk-input-sm" id="fk-deal-value" placeholder="$500/mo or $2,000 build"></div>
-              <div class="fk-field fk-field--wide"><label for="fk-route">Related route/tool</label><input class="fk-input-sm" id="fk-route" placeholder="/widgets/ or Nigeria PAYE"></div>
+              <div class="fk-field"><label for="fk-next-follow">Next follow-up</label><input class="fk-input-sm" id="fk-next-follow" type="date"></div>
               <div class="fk-field fk-field--full"><label for="fk-notes">Notes</label><textarea class="fk-input-sm fk-textarea-sm" id="fk-notes" placeholder="Pain point, angle, reply, blocker, next ask"></textarea></div>
               <div class="fk-field fk-field--full">
                 <button class="qa-btn fk-action" type="submit">Save prospect locally</button>
@@ -808,7 +808,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             </div>
             <div class="fk-table-wrap">
               <table class="fk-table">
-                <thead><tr><th>Company</th><th>Segment</th><th>Market</th><th>Contact</th><th>Offer</th><th>Priority</th><th>Next follow-up</th><th>Status</th><th>Deal</th><th>Route/tool</th><th>Notes</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Company</th><th>Website</th><th>Country</th><th>Segment</th><th>Offer</th><th>Source URL</th><th>Contact</th><th>Role</th><th>Status</th><th>Next follow-up</th><th>Notes</th><th>Actions</th></tr></thead>
                 <tbody id="fiftyk-prospect-rows"></tbody>
               </table>
             </div>
@@ -1315,25 +1315,35 @@ function mcBadgeHtml(text, status){
 }
 
 var FIFTYK_STORAGE_PREFIX = 'afrotools-mc-50k-week-';
+var FIFTYK_OUTCOME_FIELDS = [
+  { key: 'prospectsLoaded', csv: 'prospects_loaded', label: 'Prospects loaded' },
+  { key: 'firstMessagesSent', csv: 'first_messages_sent', label: 'First messages sent' },
+  { key: 'followUpsDue', csv: 'follow_ups_due', label: 'Follow-ups due' },
+  { key: 'replies', csv: 'replies', label: 'Replies' },
+  { key: 'qualifiedLeads', csv: 'qualified_leads', label: 'Qualified leads' },
+  { key: 'demosBooked', csv: 'demos_booked', label: 'Demos booked' },
+  { key: 'proposalsSent', csv: 'proposals_sent', label: 'Proposals sent' },
+  { key: 'closedWon', csv: 'closed_won', label: 'Closed won' },
+  { key: 'closedLost', csv: 'closed_lost', label: 'Closed lost' },
+  { key: 'mrr', csv: 'monthly_recurring_revenue', label: 'Monthly recurring revenue' },
+  { key: 'oneTimeRevenue', csv: 'one_time_revenue', label: 'One-time revenue' }
+];
 var FIFTYK_METRIC_GROUPS = [
   {
-    title: 'Revenue',
+    title: 'Execution Outcomes',
     badge: 'manual/local',
     metrics: [
-      { key: 'mrr', label: 'MRR', source: 'Manual/local. Pending Stripe, Paystack, bank transfer, or invoice ledger.' },
-      { key: 'oneTimeRevenue', label: 'One-time revenue', source: 'Manual/local. Pending pilot invoice and custom build ledger.' }
-    ]
-  },
-  {
-    title: 'Sales Motion',
-    badge: 'manual/local',
-    metrics: [
-      { key: 'outreachSent', label: 'Outreach sent', source: 'Manual/local. Pending prospect tracker or outbound inbox connection.' },
-      { key: 'followUpsSent', label: 'Follow-ups sent', source: 'Manual/local. Pending prospect tracker or email sequence connection.' },
+      { key: 'prospectsLoaded', label: 'Prospects loaded', source: 'Manual/local. Count from local prospect tracker or imported outcomes CSV.' },
+      { key: 'firstMessagesSent', label: 'First messages sent', source: 'Manual/local. Count real first touches from inbox, LinkedIn, WhatsApp, or CRM export.' },
+      { key: 'followUpsDue', label: 'Follow-ups due', source: 'Manual/local. Count follow-ups due from tracker dates or CRM export.' },
       { key: 'replies', label: 'Replies', source: 'Manual/local. Pending inbox or CRM connection.' },
-      { key: 'demosBooked', label: 'Demos/calls booked', source: 'Manual/local. Pending calendar or CRM connection.' },
+      { key: 'qualifiedLeads', label: 'Qualified leads', source: 'Manual/local. Count replies with a concrete route, audience, budget, demo, or integration need.' },
+      { key: 'demosBooked', label: 'Demos booked', source: 'Manual/local. Pending calendar or CRM connection.' },
       { key: 'proposalsSent', label: 'Proposals sent', source: 'Manual/local. Pending proposal tracker connection.' },
-      { key: 'dealsWon', label: 'Deals won', source: 'Manual/local. Pending payment and CRM source of truth.' }
+      { key: 'closedWon', label: 'Closed won', source: 'Manual/local. Pending payment and CRM source of truth.' },
+      { key: 'closedLost', label: 'Closed lost', source: 'Manual/local. Pending CRM source of truth.' },
+      { key: 'mrr', label: 'Monthly recurring revenue', source: 'Manual/local. Pending Stripe, Paystack, bank transfer, or invoice ledger.' },
+      { key: 'oneTimeRevenue', label: 'One-time revenue', source: 'Manual/local. Pending pilot invoice and custom build ledger.' }
     ]
   },
   {
@@ -1398,7 +1408,7 @@ var FIFTYK_QA_ITEMS = [
 
 var FIFTYK_PROSPECT_KEY = 'afrotools-mc-50k-prospects-v1';
 var FIFTYK_PROSPECT_FIELDS = [
-  'company','segment','region','contactName','contact','offerFit','priority','source','firstTouch','lastTouch','nextFollowUp','status','dealValue','routeTool','notes'
+  'company','website','country','segment','offer','source_url','contact_name','contact_role','contact_email','contact_linkedin','status','next_follow_up','notes'
 ];
 
 var FIFTYK_TEMPLATES = [
@@ -1517,7 +1527,7 @@ function getFiftyKState(){
     var raw = localStorage.getItem(getFiftyKStorageKey());
     if(!raw) return empty;
     var parsed = JSON.parse(raw);
-    parsed.metrics = parsed.metrics || {};
+    parsed.metrics = normalizeFiftyKMetrics(parsed.metrics || {});
     parsed.checks = parsed.checks || {};
     parsed.notes = parsed.notes || '';
     return parsed;
@@ -1526,7 +1536,34 @@ function getFiftyKState(){
   }
 }
 
+function normalizeFiftyKMetrics(metrics){
+  metrics = metrics || {};
+  var aliases = {
+    outreachSent: 'firstMessagesSent',
+    followUpsSent: 'followUpsDue',
+    dealsWon: 'closedWon',
+    prospects_loaded: 'prospectsLoaded',
+    first_messages_sent: 'firstMessagesSent',
+    follow_ups_due: 'followUpsDue',
+    qualified_leads: 'qualifiedLeads',
+    demos_booked: 'demosBooked',
+    proposals_sent: 'proposalsSent',
+    closed_won: 'closedWon',
+    closed_lost: 'closedLost',
+    monthly_recurring_revenue: 'mrr',
+    one_time_revenue: 'oneTimeRevenue'
+  };
+  Object.keys(aliases).forEach(function(oldKey){
+    var newKey = aliases[oldKey];
+    if(metrics[oldKey] != null && String(metrics[oldKey]).trim() && !String(metrics[newKey] || '').trim()){
+      metrics[newKey] = metrics[oldKey];
+    }
+  });
+  return metrics;
+}
+
 function saveFiftyKState(state){
+  state.metrics = normalizeFiftyKMetrics(state.metrics || {});
   state.updatedAt = new Date().toISOString();
   localStorage.setItem(getFiftyKStorageKey(), JSON.stringify(state));
 }
@@ -1541,6 +1578,14 @@ function setFiftyKMetric(key, value){
   state.metrics[key] = value;
   saveFiftyKState(state);
   updateFiftyKSummary();
+}
+
+function getFiftyKMetricInputValue(metric, metrics){
+  if(metric.key === 'prospectsLoaded' && !String(metrics.prospectsLoaded || '').trim()){
+    var count = getFiftyKProspects().length;
+    return count ? String(count) : '';
+  }
+  return metrics[metric.key] || '';
 }
 
 function setFiftyKNotes(value){
@@ -1580,7 +1625,7 @@ function renderFiftyKMetricGroups(state){
   if(!el) return;
   el.innerHTML = FIFTYK_METRIC_GROUPS.map(function(group){
     var cards = group.metrics.map(function(metric){
-      var value = state.metrics[metric.key] || '';
+      var value = getFiftyKMetricInputValue(metric, state.metrics || {});
       var pending = metric.source.indexOf('Pending live source') === 0;
       return '<div class="fk-metric">' +
         '<div class="fk-metric-top">' +
@@ -1641,19 +1686,56 @@ function renderFiftyKQa(){
 function getFiftyKProspects(){
   try {
     var parsed = JSON.parse(localStorage.getItem(FIFTYK_PROSPECT_KEY) || '[]');
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? parsed.map(normalizeFiftyKProspect) : [];
   } catch(e) {
     return [];
   }
 }
 
 function saveFiftyKProspects(list){
-  localStorage.setItem(FIFTYK_PROSPECT_KEY, JSON.stringify(list.slice(0, 300)));
+  var normalized = list.map(normalizeFiftyKProspect).slice(0, 300);
+  localStorage.setItem(FIFTYK_PROSPECT_KEY, JSON.stringify(normalized));
+  syncFiftyKProspectsLoaded(normalized.length);
+}
+
+function syncFiftyKProspectsLoaded(count){
+  var state = getFiftyKState();
+  state.metrics.prospectsLoaded = String(count || 0);
+  saveFiftyKState(state);
 }
 
 function getProspectFormValue(id){
   var el = document.getElementById(id);
   return el ? String(el.value || '').trim() : '';
+}
+
+function splitLegacyContact(value){
+  var text = String(value || '').trim();
+  if(!text) return { email: '', linkedin: '' };
+  if(text.indexOf('@') !== -1) return { email: text, linkedin: '' };
+  return { email: '', linkedin: text };
+}
+
+function normalizeFiftyKProspect(item){
+  item = item || {};
+  var legacyContact = splitLegacyContact(item.contact || item.contact_email_or_linkedin);
+  return {
+    id: item.id || String(Date.now() + Math.random()),
+    company: item.company || '',
+    website: item.website || '',
+    country: item.country || item.region || '',
+    segment: item.segment || '',
+    offer: item.offer || item.offerFit || item.offer_fit || '',
+    source_url: item.source_url || item.sourceUrl || item.source || '',
+    contact_name: item.contact_name || item.contactName || '',
+    contact_role: item.contact_role || item.contactRole || '',
+    contact_email: item.contact_email || item.contactEmail || legacyContact.email || '',
+    contact_linkedin: item.contact_linkedin || item.contactLinkedin || item.contactLinkedIn || legacyContact.linkedin || '',
+    status: item.status || 'not contacted',
+    next_follow_up: item.next_follow_up || item.nextFollowUp || item.next_follow_up_date || '',
+    notes: item.notes || '',
+    updatedAt: item.updatedAt || item.updated_at || ''
+  };
 }
 
 function resetFiftyKProspectForm(){
@@ -1671,19 +1753,17 @@ function saveFiftyKProspect(event){
   var record = {
     id: id,
     company: getProspectFormValue('fk-company'),
+    website: getProspectFormValue('fk-website'),
+    country: getProspectFormValue('fk-country'),
     segment: getProspectFormValue('fk-segment'),
-    region: getProspectFormValue('fk-region'),
-    contactName: getProspectFormValue('fk-contact-name'),
-    contact: getProspectFormValue('fk-contact'),
-    offerFit: getProspectFormValue('fk-offer-fit'),
-    priority: getProspectFormValue('fk-priority'),
-    source: getProspectFormValue('fk-source'),
-    firstTouch: getProspectFormValue('fk-first-touch'),
-    lastTouch: getProspectFormValue('fk-last-touch'),
-    nextFollowUp: getProspectFormValue('fk-next-follow'),
+    offer: getProspectFormValue('fk-offer'),
+    source_url: getProspectFormValue('fk-source-url'),
+    contact_name: getProspectFormValue('fk-contact-name'),
+    contact_role: getProspectFormValue('fk-contact-role'),
+    contact_email: getProspectFormValue('fk-contact-email'),
+    contact_linkedin: getProspectFormValue('fk-contact-linkedin'),
     status: getProspectFormValue('fk-status'),
-    dealValue: getProspectFormValue('fk-deal-value'),
-    routeTool: getProspectFormValue('fk-route'),
+    next_follow_up: getProspectFormValue('fk-next-follow'),
     notes: getProspectFormValue('fk-notes'),
     updatedAt: new Date().toISOString()
   };
@@ -1700,6 +1780,7 @@ function saveFiftyKProspect(event){
   saveFiftyKProspects(prospects);
   resetFiftyKProspectForm();
   renderFiftyKProspects();
+  updateFiftyKSummary();
   setFiftyKStatus('Prospect saved locally at ' + new Date().toLocaleTimeString() + '.');
 }
 
@@ -1709,19 +1790,17 @@ function editFiftyKProspect(id){
   var map = {
     'fk-prospect-id': 'id',
     'fk-company': 'company',
+    'fk-website': 'website',
+    'fk-country': 'country',
     'fk-segment': 'segment',
-    'fk-region': 'region',
-    'fk-contact-name': 'contactName',
-    'fk-contact': 'contact',
-    'fk-offer-fit': 'offerFit',
-    'fk-priority': 'priority',
-    'fk-source': 'source',
-    'fk-first-touch': 'firstTouch',
-    'fk-last-touch': 'lastTouch',
-    'fk-next-follow': 'nextFollowUp',
+    'fk-offer': 'offer',
+    'fk-source-url': 'source_url',
+    'fk-contact-name': 'contact_name',
+    'fk-contact-role': 'contact_role',
+    'fk-contact-email': 'contact_email',
+    'fk-contact-linkedin': 'contact_linkedin',
     'fk-status': 'status',
-    'fk-deal-value': 'dealValue',
-    'fk-route': 'routeTool',
+    'fk-next-follow': 'next_follow_up',
     'fk-notes': 'notes'
   };
   Object.keys(map).forEach(function(idKey){
@@ -1735,6 +1814,7 @@ function deleteFiftyKProspect(id){
   if(!confirm('Delete this local prospect row?')) return;
   saveFiftyKProspects(getFiftyKProspects().filter(function(item){ return item.id !== id; }));
   renderFiftyKProspects();
+  updateFiftyKSummary();
   setFiftyKStatus('Prospect deleted locally.');
 }
 
@@ -1758,16 +1838,16 @@ function renderFiftyKProspects(){
   }
   rowsEl.innerHTML = filtered.map(function(item){
     return '<tr>' +
-      '<td><strong>' + escapeHtml(item.company || '') + '</strong><div class="muted">' + escapeHtml(item.source || '') + '</div></td>' +
+      '<td><strong>' + escapeHtml(item.company || '') + '</strong></td>' +
+      '<td>' + escapeHtml(item.website || '') + '</td>' +
+      '<td>' + escapeHtml(item.country || '') + '</td>' +
       '<td>' + escapeHtml(item.segment || '') + '</td>' +
-      '<td>' + escapeHtml(item.region || '') + '</td>' +
-      '<td>' + escapeHtml(item.contactName || '') + '<div class="muted">' + escapeHtml(item.contact || '') + '</div></td>' +
-      '<td>' + escapeHtml(item.offerFit || '') + '</td>' +
-      '<td>' + escapeHtml(item.priority || '') + '</td>' +
-      '<td>' + escapeHtml(item.nextFollowUp || '') + '</td>' +
+      '<td>' + escapeHtml(item.offer || '') + '</td>' +
+      '<td>' + escapeHtml(item.source_url || '') + '</td>' +
+      '<td>' + escapeHtml(item.contact_name || '') + '<div class="muted">' + escapeHtml(item.contact_email || item.contact_linkedin || '') + '</div></td>' +
+      '<td>' + escapeHtml(item.contact_role || '') + '</td>' +
       '<td>' + escapeHtml(item.status || '') + '</td>' +
-      '<td>' + escapeHtml(item.dealValue || '') + '</td>' +
-      '<td>' + escapeHtml(item.routeTool || '') + '</td>' +
+      '<td>' + escapeHtml(item.next_follow_up || '') + '</td>' +
       '<td>' + escapeHtml(item.notes || '') + '</td>' +
       '<td><button type="button" onclick="editFiftyKProspect(\'' + escapeHtml(item.id) + '\')">Edit</button> <button type="button" onclick="deleteFiftyKProspect(\'' + escapeHtml(item.id) + '\')">Delete</button></td>' +
     '</tr>';
@@ -1825,6 +1905,36 @@ function parseCsvRows(text){
   return rows;
 }
 
+function normalizeFiftyKCsvHeader(header){
+  var key = String(header || '').trim();
+  var compact = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+  var aliases = {
+    company_name: 'company',
+    url: 'website',
+    site: 'website',
+    country_region: 'country',
+    market: 'country',
+    region: 'country',
+    offer_fit: 'offer',
+    offerfit: 'offer',
+    source: 'source_url',
+    sourceurl: 'source_url',
+    source_link: 'source_url',
+    contactname: 'contact_name',
+    contact_person: 'contact_name',
+    contactrole: 'contact_role',
+    role: 'contact_role',
+    contact: 'contact_email_or_linkedin',
+    contact_email_or_linkedin: 'contact_email_or_linkedin',
+    email: 'contact_email',
+    linkedin: 'contact_linkedin',
+    contact_linked_in: 'contact_linkedin',
+    nextfollowup: 'next_follow_up',
+    next_follow_up_date: 'next_follow_up'
+  };
+  return aliases[compact] || compact;
+}
+
 function importFiftyKProspectsCsv(input){
   var file = input.files && input.files[0];
   if(!file) return;
@@ -1839,14 +1949,106 @@ function importFiftyKProspectsCsv(input){
     var imported = rows.map(function(row){
       var item = { id: String(Date.now() + Math.random()), updatedAt: new Date().toISOString() };
       headers.forEach(function(header, index){
-        if(FIFTYK_PROSPECT_FIELDS.indexOf(header) !== -1) item[header] = row[index] || '';
+        var field = normalizeFiftyKCsvHeader(header);
+        if(FIFTYK_PROSPECT_FIELDS.indexOf(field) !== -1 || field === 'contact_email_or_linkedin') item[field] = row[index] || '';
       });
-      return item;
+      return normalizeFiftyKProspect(item);
     }).filter(function(item){ return item.company; });
     var merged = imported.concat(getFiftyKProspects()).slice(0, 300);
     saveFiftyKProspects(merged);
     renderFiftyKProspects();
+    updateFiftyKSummary();
     setFiftyKStatus('Imported ' + imported.length + ' prospects locally. Tracker is capped at 300 rows.');
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function getFiftyKOutcomeCsvHeaders(){
+  return FIFTYK_OUTCOME_FIELDS.map(function(field){ return field.csv; });
+}
+
+function getFiftyKOutcomeValue(field, metrics){
+  if(field.key === 'prospectsLoaded' && !String(metrics.prospectsLoaded || '').trim()){
+    return String(getFiftyKProspects().length || '');
+  }
+  return metrics[field.key] || '';
+}
+
+function exportFiftyKOutcomesCsv(){
+  var state = getFiftyKState();
+  var headers = getFiftyKOutcomeCsvHeaders();
+  var lines = [headers.join(',')];
+  lines.push(FIFTYK_OUTCOME_FIELDS.map(function(field){
+    return csvEscape(getFiftyKOutcomeValue(field, state.metrics || {}));
+  }).join(','));
+  var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'afrotools-50k-outcomes-' + getFiftyKWeekKey() + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setFiftyKStatus('Outcome CSV exported locally.');
+}
+
+function normalizeFiftyKOutcomeCsvHeader(header){
+  var key = String(header || '').trim();
+  var compact = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+  var aliases = {
+    prospects: 'prospectsLoaded',
+    prospects_loaded: 'prospectsLoaded',
+    prospect_count: 'prospectsLoaded',
+    first_messages: 'firstMessagesSent',
+    first_messages_sent: 'firstMessagesSent',
+    outreach_sent: 'firstMessagesSent',
+    outreachsent: 'firstMessagesSent',
+    followups_due: 'followUpsDue',
+    follow_ups_due: 'followUpsDue',
+    follow_ups_sent: 'followUpsDue',
+    replies: 'replies',
+    qualified: 'qualifiedLeads',
+    qualified_leads: 'qualifiedLeads',
+    demos: 'demosBooked',
+    demos_booked: 'demosBooked',
+    demos_calls_booked: 'demosBooked',
+    proposals: 'proposalsSent',
+    proposals_sent: 'proposalsSent',
+    won: 'closedWon',
+    closed_won: 'closedWon',
+    deals_won: 'closedWon',
+    lost: 'closedLost',
+    closed_lost: 'closedLost',
+    mrr: 'mrr',
+    monthly_recurring_revenue: 'mrr',
+    one_time_revenue: 'oneTimeRevenue',
+    onetimerevenue: 'oneTimeRevenue'
+  };
+  return aliases[compact] || compact;
+}
+
+function importFiftyKOutcomesCsv(input){
+  var file = input.files && input.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(event){
+    var rows = parseCsvRows(String(event.target.result || ''));
+    if(rows.length < 2) {
+      setFiftyKStatus('Outcome CSV import needs a header and one data row.');
+      input.value = '';
+      return;
+    }
+    var headers = rows.shift().map(normalizeFiftyKOutcomeCsvHeader);
+    var row = rows.find(function(candidate){
+      return candidate.some(function(value){ return String(value || '').trim(); });
+    }) || [];
+    var allowed = FIFTYK_OUTCOME_FIELDS.map(function(field){ return field.key; });
+    var state = getFiftyKState();
+    headers.forEach(function(header, index){
+      if(allowed.indexOf(header) !== -1) state.metrics[header] = row[index] || '';
+    });
+    saveFiftyKState(state);
+    buildFiftyKDashboard();
+    setFiftyKStatus('Outcome CSV imported locally. No live systems were updated.');
     input.value = '';
   };
   reader.readAsText(file);
@@ -1909,16 +2111,19 @@ function updateFiftyKSummary(){
   var state = getFiftyKState();
   var metrics = state.metrics || {};
   var revenueKeys = ['mrr', 'oneTimeRevenue'];
-  var salesKeys = ['outreachSent', 'followUpsSent', 'replies', 'demosBooked', 'proposalsSent', 'dealsWon'];
+  var pipelineKeys = ['prospectsLoaded', 'firstMessagesSent', 'followUpsDue', 'replies', 'qualifiedLeads', 'demosBooked', 'proposalsSent', 'closedWon', 'closedLost'];
   var distributionKeys = ['freeWidgetPartners', 'paidWidgetCustomers', 'sponsoredToolConversations'];
   var filledAll = metricFillCount(fiftyKAllMetrics().map(function(metric){ return metric.key; }), metrics);
   var completed = FIFTYK_CHECKLIST.filter(function(item){ return !!state.checks[item.key]; }).length;
   var prospects = getFiftyKProspects().length;
+  var closedWon = String(metrics.closedWon || '').trim() || 'Manual';
+  var closedLost = String(metrics.closedLost || '').trim() || 'Manual';
   summaryEl.innerHTML = [
     { label: 'Revenue fields', value: metricFillCount(revenueKeys, metrics) + '/' + revenueKeys.length },
-    { label: 'Sales motion fields', value: metricFillCount(salesKeys, metrics) + '/' + salesKeys.length },
+    { label: 'Pipeline fields', value: metricFillCount(pipelineKeys, metrics) + '/' + pipelineKeys.length },
     { label: 'Distribution fields', value: metricFillCount(distributionKeys, metrics) + '/' + distributionKeys.length },
     { label: 'Prospect tracker', value: prospects + '/300' },
+    { label: 'Closed W/L', value: closedWon + ' / ' + closedLost },
     { label: '7-day checklist', value: completed + '/' + FIFTYK_CHECKLIST.length }
   ].map(function(card){
     return '<div class="fk-summary-card"><div class="fk-summary-label">' + escapeHtml(card.label) + '</div><div class="fk-summary-value">' + escapeHtml(card.value) + '</div></div>';

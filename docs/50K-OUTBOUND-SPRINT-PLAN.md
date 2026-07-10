@@ -59,6 +59,43 @@ This is a sourcing plan, not a list of real companies. Add real prospects only a
 
 Total: 300.
 
+## Final 300-Prospect CSV Schema
+
+Use one schema for all segment batch files and the Mission Control local tracker:
+
+```csv
+company,website,country,segment,offer,source_url,contact_name,contact_role,contact_email,contact_linkedin,status,next_follow_up,notes
+```
+
+Segment values:
+
+- `accounting/tax firms`
+- `HR/payroll providers`
+- `fintech/API targets`
+- `schools/edtechs`
+- `media/publishers`
+- `trade/employer-service targets`
+
+Offer values:
+
+- `widget`
+- `Widget Pro`
+- `sponsored tool`
+- `media sponsorship`
+- `custom calculator`
+- `API pilot`
+- `business subscription`
+- `reserve`
+
+Prospect data rules:
+
+- Do not invent contacts, companies, buyer interest, traffic, revenue, customer claims, or sponsor fit.
+- Do not add scraped personal emails unless the email is public, verified, and clearly belongs to the person or role.
+- Prefer role emails, official contact forms, company LinkedIn pages, or named public decision makers with visible relevance.
+- Do not claim a company has a calculator gap unless the `source_url` proves the page, workflow, or public resource exists.
+- Default new rows to `status=not contacted`.
+- Use `next_follow_up` only after first contact is sent, in `YYYY-MM-DD` format.
+
 ## Sourcing Workflow
 
 1. Pick one segment and one country before searching.
@@ -66,12 +103,10 @@ Total: 300.
 3. Save only public company information and public contact paths.
 4. Prefer role-based contacts when the named person is unclear, such as partnerships, marketing, content, product, developer relations, sales, or founder LinkedIn.
 5. Add one sentence in `notes` explaining why this prospect fits.
-6. Add one `related_route` that the first message will link.
-7. Set `priority` before sending:
-   - High: clear resource page plus obvious buyer route plus reachable decision maker.
-   - Medium: good segment fit but weak page or unclear owner.
-   - Low: relevant audience but no direct offer fit yet.
-8. Do not send until the row has `company`, `segment`, `country`, `contact_email_or_linkedin`, `offer_fit`, `priority`, `source`, `related_route`, and `notes`.
+6. Add the verified public `source_url` that proves the prospect fit.
+7. Put the intended route or angle in `notes` if it is not obvious from `offer`.
+8. Do not send until the row has `company`, `website`, `country`, `segment`, `offer`, `source_url`, `contact_role`, `status`, and `notes`.
+9. Do not send until at least one contact path is verified: `contact_email`, `contact_linkedin`, an official contact form described in `notes`, or another public company-owned contact path.
 
 ## Batch Plan
 
@@ -93,7 +128,7 @@ Day 1:
 - Source 30 prospects: 10 accounting, 10 HR/payroll, 5 media, 5 schools.
 - Send 20 Batch 1 first emails.
 - Log every row before sending.
-- For each sent row, set `first_touch_date`, `last_touch_date`, `status=contacted`, and `next_follow_up_date` 3 business days later.
+- For each sent row, set `status=contacted`, add a reply summary or first-touch note in `notes`, and set `next_follow_up` 3 business days later.
 - Send `/widgets/` when the prospect has a live resource page.
 
 Day 2:
@@ -139,7 +174,7 @@ Day 7:
 - Source 20 prospects: schools and education publishers.
 - Send 25 Batch 4 first messages.
 - Send follow-up 1 to Day 3 non-replies.
-- Audit tracker completeness: no blank `next_follow_up_date`, `status`, `offer_fit`, or `related_route` for contacted rows.
+- Audit tracker completeness: no blank `next_follow_up`, `status`, `offer`, `source_url`, or `notes` for contacted rows.
 
 Day 8:
 
@@ -202,23 +237,22 @@ Day 14:
 Log these fields before first contact:
 
 - `company`
-- `segment`
+- `website`
 - `country`
-- `contact_name` if known
-- `contact_email_or_linkedin`
-- `offer_fit`
-- `priority`
-- `source`
-- `related_route`
+- `segment`
+- `offer`
+- `source_url`
+- `contact_name` if publicly verified
+- `contact_role`
+- `contact_email` if publicly verified
+- `contact_linkedin` if publicly verified
+- `status`
 - `notes`
 
 Log these fields during outreach:
 
-- `first_touch_date`
-- `last_touch_date`
-- `next_follow_up_date`
+- `next_follow_up`
 - `status`
-- `deal_value_estimate`
 - latest reply summary in `notes`
 
 ## Qualified Reply Definition
@@ -333,7 +367,15 @@ Use these as estimates in the tracker. Do not present them as negotiated prices.
 
 ## Sprint Files
 
-- `data/50k/prospect-tracker-template.csv`: founder-facing CSV with the requested clean headers.
-- `data/50k/prospect-tracker-mc-import-template.csv`: current Mission Control import-compatible headers.
+- `data/50k/prospect-schema.md`: final CSV schema, allowed values, and no-fake-contact rules.
+- `data/50k/prospect-tracker-template.csv`: founder-facing CSV with the final 13-field schema.
+- `data/50k/prospect-tracker-mc-import-template.csv`: Mission Control import/export template with the same final schema.
+- `data/50k/execution-outcomes-template.csv`: local-only Mission Control outcome CSV header for weekly pipeline and revenue fields. Fill with verified manual numbers only.
+- `data/50k/prospects-accounting-tax-firms.csv`: empty accounting/tax segment batch.
+- `data/50k/prospects-hr-payroll-providers.csv`: empty HR/payroll segment batch.
+- `data/50k/prospects-fintech-api-targets.csv`: empty fintech/API segment batch.
+- `data/50k/prospects-schools-edtechs.csv`: empty schools/edtech segment batch.
+- `data/50k/prospects-media-publishers.csv`: empty media/publishers segment batch.
+- `data/50k/prospects-trade-employer-service-targets.csv`: empty trade/employer-service segment batch.
 - `data/50k/outreach-batches.md`: six 50-prospect batch briefs.
 - `data/50k/outreach-templates.md`: founder-sendable first touch, LinkedIn, WhatsApp-style, follow-up, and breakup copy.
