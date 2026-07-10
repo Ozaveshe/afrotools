@@ -42,7 +42,7 @@ Future agents should inspect first, keep diffs scoped, preserve unrelated dirty 
 
 ## Commands
 
-There is no `npm run dev`, `npm run lint`, or `npm run type-check` script in the current `package.json`. If a future PR adds those scripts, run them for touched TypeScript or build surfaces.
+There is no `npm run dev` script in the current `package.json`. Use `npm run lint` and `npm run type-check` for the focused CI lint and type/import checks they provide.
 
 Local serving:
 
@@ -56,6 +56,8 @@ Core validation:
 - `npm run audit` - tool registry/tool metadata audit.
 - `npm run tools:quality` - product-quality scorecard.
 - `npm run tools:quality:browser` - browser-backed tool quality smoke.
+- `npm run lint` - focused CI lint checks.
+- `npm run type-check` - focused CI type/import checks.
 - `git diff --check` - substitute whitespace/format check when no formatter/linter exists.
 - `node -c path/to/file.js` - syntax check changed CommonJS/server scripts.
 
