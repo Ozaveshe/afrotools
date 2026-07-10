@@ -29,6 +29,15 @@ function normalizeRegime(regime) {
   return 'NTA_2026';
 }
 
+function explicitOrCalculated(value, calculated, label) {
+  if (value === undefined || value === null || value === '') return calculated;
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount < 0) {
+    throw new Error(`${label} must be a non-negative number`);
+  }
+  return amount;
+}
+
 module.exports = {
   country: 'NG',
   countryName: 'Nigeria',
@@ -45,8 +54,13 @@ module.exports = {
       nhf: inclNhf = true,
       nhis: inclNhis = false,
       pensionableEmoluments,
+      pensionAmount,
+      nhfAmount,
+      nhisAmount,
+      minimumWageExempt = false,
       annualRent = 0,
-      lifeAssurance = 0
+      lifeAssurance = 0,
+      mortgageInterest = 0
     } = params;
 
     const normalizedRegime = normalizeRegime(regime);
@@ -56,19 +70,45 @@ module.exports = {
     if (normalizedRegime === 'NTA_2026') {
       // NTA 2026: CRA abolished. Pension on pensionable emoluments (Basic+Housing+Transport), not total gross
       const pensionBase = pensionableEmoluments || grossAnnual;
-      const pensionAmt = inclPension ? pensionBase * 0.08 : 0;
-      const nhfAmt = inclNhf ? grossAnnual * 0.025 : 0;
-      const nhisAmt = inclNhis ? grossAnnual * 0.0175 : 0;
+      const pensionAmt = explicitOrCalculated(
+        pensionAmount,
+        inclPension ? pensionBase * 0.08 : 0,
+        'pensionAmount'
+      );
+      const nhfAmt = explicitOrCalculated(
+        nhfAmount,
+        inclNhf ? grossAnnual * 0.025 : 0,
+        'nhfAmount'
+      );
+      const nhisAmt = explicitOrCalculated(
+        nhisAmount,
+        inclNhis ? grossAnnual * 0.0175 : 0,
+        'nhisAmount'
+      );
+      const mortgageRelief = explicitOrCalculated(
+        mortgageInterest,
+        0,
+        'mortgageInterest'
+      );
+      const lifeAssuranceRelief = explicitOrCalculated(
+        lifeAssurance,
+        0,
+        'lifeAssurance'
+      );
 
       // Rent relief: lower of 20% of annual rent or ₦500,000
       if (annualRent > 0) {
         rentRelief = Math.min(annualRent * 0.20, 500000);
       }
 
-      taxableIncome = Math.max(0, grossAnnual - pensionAmt - nhfAmt - nhisAmt - rentRelief);
+      taxableIncome = Math.max(
+        0,
+        grossAnnual - pensionAmt - nhfAmt - nhisAmt - rentRelief -
+          mortgageRelief - lifeAssuranceRelief
+      );
 
       const { tax: grossTax, bands: bandDetail } = calcBands(taxableIncome, bands);
-      const netTax = Math.round(grossTax);
+      const netTax = minimumWageExempt ? 0 : Math.round(grossTax);
       const totalDeductions = pensionAmt + nhfAmt + nhisAmt + netTax;
       const netAnnual = grossAnnual - totalDeductions;
       const empPension = pensionBase * 0.10;
@@ -81,6 +121,8 @@ module.exports = {
           nhf: Math.round(nhfAmt),
           nhis: Math.round(nhisAmt),
           rentRelief: Math.round(rentRelief),
+          mortgageInterest: Math.round(mortgageRelief),
+          lifeAssurance: Math.round(lifeAssuranceRelief),
           totalDeductions: Math.round(totalDeductions)
         },
         tax: { taxableIncome: Math.round(taxableIncome), bands: bandDetail, grossTax: Math.round(grossTax), reliefs: {}, netTax },
@@ -95,9 +137,21 @@ module.exports = {
       };
     } else {
       // PITA 2025: CRA = higher of ₦200,000 or 1% of gross, PLUS 20% of gross
-      const pensionAmt = inclPension ? grossAnnual * 0.08 : 0;
-      const nhfAmt = inclNhf ? grossAnnual * 0.025 : 0;
-      const nhisAmt = inclNhis ? grossAnnual * 0.0175 : 0;
+      const pensionAmt = explicitOrCalculated(
+        pensionAmount,
+        inclPension ? grossAnnual * 0.08 : 0,
+        'pensionAmount'
+      );
+      const nhfAmt = explicitOrCalculated(
+        nhfAmount,
+        inclNhf ? grossAnnual * 0.025 : 0,
+        'nhfAmount'
+      );
+      const nhisAmt = explicitOrCalculated(
+        nhisAmount,
+        inclNhis ? grossAnnual * 0.0175 : 0,
+        'nhisAmount'
+      );
 
       cra = Math.max(200000, grossAnnual * 0.01) + grossAnnual * 0.20;
       taxableIncome = Math.max(0, grossAnnual - cra - pensionAmt);

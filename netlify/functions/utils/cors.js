@@ -12,6 +12,8 @@
 const ALLOWED_ORIGINS = [
   'https://afrotools.com',
   'https://www.afrotools.com',
+  'https://salarypadi.com',
+  'https://www.salarypadi.com',
 ];
 
 // Also allow Netlify deploy previews and branch deploys
