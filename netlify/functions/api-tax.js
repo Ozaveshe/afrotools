@@ -5,6 +5,7 @@
  * Auth: x-api-key header or api_key query param
  */
 const engines = require('./_engines/index');
+const crypto = require('crypto');
 const { getStore } = require('@netlify/blobs');
 const { getAllowedOrigin } = require('./utils/cors');
 const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
@@ -31,6 +32,15 @@ function sandboxRateKey(apiKey, event) {
     'unknown'
   ).split(',')[0].trim() || 'unknown';
   return 'sandbox:' + apiKey + ':' + ip;
+}
+
+function isSalaryPadiPartnerKey(apiKey) {
+  const expected = process.env.SALARYPADI_API_KEY || '';
+  const suppliedBuffer = Buffer.from(String(apiKey || ''));
+  const expectedBuffer = Buffer.from(expected);
+  return expectedBuffer.length > 0 &&
+    suppliedBuffer.length === expectedBuffer.length &&
+    crypto.timingSafeEqual(suppliedBuffer, expectedBuffer);
 }
 
 function sandboxTaxResponse(body) {
@@ -120,6 +130,15 @@ function normalizeBodyWithPathCountry(event, body) {
 
 async function validateApiKey(apiKey, event) {
   if (!apiKey) return { valid: false };
+
+  if (isSalaryPadiPartnerKey(apiKey)) {
+    return {
+      valid: true,
+      tier: 'partner',
+      remaining: 999999,
+      limit: -1
+    };
+  }
 
   // Sandbox keys use deterministic data and their own free-tier limits.
   if (apiKey.startsWith('afro_test_')) {

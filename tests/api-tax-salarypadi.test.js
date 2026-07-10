@@ -38,4 +38,40 @@ assert.throws(
   /pensionAmount must be a non-negative number/,
 );
 
-console.log('AfroTools SalaryPadi PAYE input tests passed.');
+process.env.SALARYPADI_API_KEY = 'afro_live_test_partner_key';
+const { handler } = require('../netlify/functions/api-tax.js');
+
+(async () => {
+  const response = await handler({
+    httpMethod: 'POST',
+    path: '/api/v1/tax/paye',
+    headers: {
+      'x-api-key': 'afro_live_test_partner_key',
+      origin: 'https://salarypadi.com',
+    },
+    queryStringParameters: {},
+    body: JSON.stringify({
+      country: 'NG',
+      grossAnnual: 7200000,
+      regime: 'NTA_2026',
+      pension: false,
+      nhf: false,
+      nhis: false,
+      pensionAmount: 480000,
+      nhfAmount: 120000,
+      nhisAmount: 60000,
+      annualRent: 2400000,
+      mortgageInterest: 100000,
+      lifeAssurance: 50000,
+    }),
+  });
+  assert.strictEqual(response.statusCode, 200);
+  assert.strictEqual(response.headers['Access-Control-Allow-Origin'], 'https://salarypadi.com');
+  const body = JSON.parse(response.body);
+  assert.strictEqual(body.tax.taxableIncome, 5910000);
+  delete process.env.SALARYPADI_API_KEY;
+  console.log('AfroTools SalaryPadi PAYE input tests passed.');
+})().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});
