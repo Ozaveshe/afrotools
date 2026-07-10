@@ -585,11 +585,12 @@
   <h2 id="related-next">Related tools and next steps</h2>
   <div class="link-grid">
     <a class="cluster-link" href="/tools/lobola-negotiation-checklist/"><strong>Lobola negotiation checklist</strong><span>Prepare representatives, confirmed items, pending questions, timing, and follow-up notes.</span></a>
+    <a class="cluster-link" href="/tools/lobola-gift-list/"><strong>Lobola gift list</strong><span>Organize gifts, groceries, clothing, travel, and ceremony items before family discussions.</span></a>
     <a class="cluster-link" href="/tools/wedding-budget/"><strong>African wedding budget planner</strong><span>Plan ceremony, food, outfits, venue, and family logistics.</span></a>
     <a class="cluster-link" href="/tools/budget-planner/"><strong>Monthly budget planner</strong><span>Turn the agreed estimate into a savings plan.</span></a>
     <a class="cluster-link" href="/tools/currency-converter/"><strong>Currency converter</strong><span>Check cross-border discussion amounts before confirming numbers.</span></a>
     <a class="cluster-link" href="/tools/marriage-cert/"><strong>Marriage certificate guide</strong><span>Understand civil, customary, and statutory registration steps.</span></a>
-    <a class="cluster-link" href="/tools/brideprice-advisor/"><strong>Bridewealth guidance</strong><span>Read broader planning guidance across communities without treating it as a rulebook.</span></a>
+    <a class="cluster-link" href="/blog/bride-price-africa/"><strong>Bridewealth planning guide</strong><span>Read broader context across communities without treating any example as a rulebook.</span></a>
     <a class="cluster-link" href="/religious-cultural/"><strong>Religious and cultural tools</strong><span>Explore ceremony, naming, attire, and family planning tools.</span></a>
   </div>
 </section>
@@ -666,6 +667,11 @@ var queryCurrency = '';
 
 function fmt(n) { return (Number(n) || 0).toLocaleString('en-US',{maximumFractionDigits:0}); }
 function money(symbol, amount) { return symbol + ' ' + fmt(Math.max(0, amount)); }
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+    return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[ch];
+  });
+}
 function readNumber(id, fallback, min, max) {
   var el = document.getElementById(id);
   var value = el ? parseFloat(el.value) : fallback;
@@ -679,7 +685,7 @@ function updateCountryFields() {
   var c = document.getElementById('country').value;
   var d = COUNTRIES[c];
   var sel = document.getElementById('region');
-  sel.innerHTML = d.regions.map(function(r){return '<option value="'+r+'">'+r+'</option>';}).join('');
+  sel.innerHTML = d.regions.map(function(r){return '<option value="'+escapeHtml(r)+'">'+escapeHtml(r)+'</option>';}).join('');
   document.getElementById('cattlePrice').value = d.cattlePrice;
   document.getElementById('zwFields').classList.toggle('hidden', c !== 'zw');
   document.getElementById('priceFields').classList.toggle('hidden', c === 'zw');
@@ -794,7 +800,7 @@ function calculate() {
 
   // ── Breakdown ──
   var bList = document.getElementById('breakdownList');
-  bList.innerHTML = breakdown.map(function(b){return '<li><span>'+b[0]+'</span><span style="font-weight:700">'+b[1]+'</span></li>';}).join('');
+  bList.innerHTML = breakdown.map(function(b){return '<li><span>'+escapeHtml(b[0])+'</span><span style="font-weight:700">'+escapeHtml(b[1])+'</span></li>';}).join('');
 
   // ── Payment plan ──
   var pg = document.getElementById('paymentGrid');
@@ -806,9 +812,9 @@ function calculate() {
     var amt = Math.ceil(Math.max(0, totalValue - savedAmount) / p.months);
     return '<div class="payment-option'+(p.badge?' recommended':'')+'">'+
       (p.badge?'<div class="po-badge">Suggested</div>':'')+
-      '<div class="po-label">'+p.label+'</div>'+
-      '<div class="po-value">'+money(symbol, amt)+'</div>'+
-      '<div class="po-sub">'+(p.months===1?'remaining balance':'monthly target for '+p.months+' months')+'</div></div>';
+      '<div class="po-label">'+escapeHtml(p.label)+'</div>'+
+      '<div class="po-value">'+escapeHtml(money(symbol, amt))+'</div>'+
+      '<div class="po-sub">'+escapeHtml(p.months===1?'remaining balance':'monthly target for '+p.months+' months')+'</div></div>';
   }).join('');
 
   // ── Fun comparisons ──
@@ -842,7 +848,7 @@ function calculate() {
     {emoji:'Range',title:'Planning range',text:'Low to high scenario: '+money(symbol, lowScenario)+' - '+money(symbol, highScenario),color:'gold'}
   ];
   document.getElementById('funGrid').innerHTML = funItems.map(function(f){
-    return '<div class="fun-card '+f.color+'"><div class="fun-emoji">'+f.emoji+'</div><div class="fun-title">'+f.title+'</div><div class="fun-text">'+f.text+'</div></div>';
+    return '<div class="fun-card '+escapeHtml(f.color)+'"><div class="fun-emoji">'+escapeHtml(f.emoji)+'</div><div class="fun-title">'+escapeHtml(f.title)+'</div><div class="fun-text">'+escapeHtml(f.text)+'</div></div>';
   }).join('');
 
   document.getElementById('contextTitle').textContent = d.name + ' — Cultural Context';
@@ -887,11 +893,11 @@ function renderNegotiationPlan(data) {
   target.innerHTML =
     '<div class="negotiation-head"><div class="negotiation-title">Family negotiation preparation plan</div><button type="button" class="copy-plan" onclick="copyLobolaBrief(this)">Copy brief</button></div>' +
     '<div class="negotiation-grid">' +
-      '<div class="negotiation-card"><div class="negotiation-k">Planning budget</div><div class="negotiation-v">' + money(data.symbol, fullBudget) + '</div></div>' +
-      '<div class="negotiation-card"><div class="negotiation-k">Initial contribution</div><div class="negotiation-v">' + money(data.symbol, deposit) + '</div></div>' +
-      '<div class="negotiation-card"><div class="negotiation-k">Monthly target</div><div class="negotiation-v">' + money(data.symbol, monthly) + '</div></div>' +
-      '<div class="negotiation-card"><div class="negotiation-k">Remaining</div><div class="negotiation-v">' + money(data.symbol, remaining) + '</div></div>' +
-    '</div><ul class="brief-list">' + actions.concat(discussionNotes).map(function(action){ return '<li>' + action + '</li>'; }).join('') + '</ul>';
+      '<div class="negotiation-card"><div class="negotiation-k">Planning budget</div><div class="negotiation-v">' + escapeHtml(money(data.symbol, fullBudget)) + '</div></div>' +
+      '<div class="negotiation-card"><div class="negotiation-k">Initial contribution</div><div class="negotiation-v">' + escapeHtml(money(data.symbol, deposit)) + '</div></div>' +
+      '<div class="negotiation-card"><div class="negotiation-k">Monthly target</div><div class="negotiation-v">' + escapeHtml(money(data.symbol, monthly)) + '</div></div>' +
+      '<div class="negotiation-card"><div class="negotiation-k">Remaining</div><div class="negotiation-v">' + escapeHtml(money(data.symbol, remaining)) + '</div></div>' +
+    '</div><ul class="brief-list">' + actions.concat(discussionNotes).map(function(action){ return '<li>' + escapeHtml(action) + '</li>'; }).join('') + '</ul>';
 }
 
 function renderResultActions() {
