@@ -153,6 +153,25 @@ function validLink(overrides = {}) {
     assert.strictEqual(notModified.headers.ETag, response.headers.ETag);
     assert.strictEqual(notModified.headers['X-AfroTools-Catalog-ETag'], response.headers.ETag);
 
+    const mirroredNotModified = await catalogApi.handler(event('/api/v1/catalog/tools', {
+      query: { product: 'salarypadi', category: 'career' },
+      headers: { 'x-afrotools-if-none-match': response.headers['X-AfroTools-Catalog-ETag'] },
+    }));
+    assert.strictEqual(mirroredNotModified.statusCode, 304);
+    assert.strictEqual(mirroredNotModified.body, '');
+    assert.strictEqual(mirroredNotModified.headers['X-AfroTools-Catalog-ETag'], response.headers.ETag);
+
+    const mirroredMismatch = await catalogApi.handler(event('/api/v1/catalog/tools', {
+      query: { product: 'salarypadi', category: 'career' },
+      headers: {
+        'x-afrotools-if-none-match': '"sha256-different"',
+        'if-none-match': response.headers.ETag,
+      },
+    }));
+    assert.strictEqual(mirroredMismatch.statusCode, 200, 'Application validator must take precedence when both headers are sent');
+    assert.match(mirroredMismatch.headers['Access-Control-Allow-Headers'], /X-AfroTools-If-None-Match/);
+    assert.match(mirroredMismatch.headers.Vary, /X-AfroTools-If-None-Match/);
+
     const unsupported = await catalogApi.handler(event('/api/v1/catalog/tools', {
       query: { product: 'other', category: 'career' },
     }));

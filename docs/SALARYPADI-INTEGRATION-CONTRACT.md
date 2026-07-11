@@ -51,7 +51,7 @@ Response headers:
 - `X-RateLimit-Limit` and `X-RateLimit-Remaining`.
 - `X-RateLimit-Scope: service:salarypadi`.
 
-SalaryPadi should prefer `X-AfroTools-Catalog-ETag`, fall back to a bounded opaque standard `ETag`, store the selected validator with the last verified response, and replay its exact value as `If-None-Match`. It must retain the stored response on a `304`. A failed request must not replace the last-known-good catalog.
+SalaryPadi should prefer `X-AfroTools-Catalog-ETag`, fall back to a bounded opaque standard `ETag`, and store the selected validator with the last verified response. When the AfroTools validator is present, replay its exact value in both `X-AfroTools-If-None-Match` and standard `If-None-Match`; the application header takes precedence because HTTP intermediaries may normalize or consume the standard conditional header. SalaryPadi must retain the stored response on a `304`. A failed request must not replace the last-known-good catalog.
 
 ## Tool metadata v1
 

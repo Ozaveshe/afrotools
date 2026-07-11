@@ -12,13 +12,13 @@ function header(event, name) {
 function baseHeaders(event, extra) {
   return Object.assign({
     'Access-Control-Allow-Origin': getAllowedOrigin(event),
-    'Access-Control-Allow-Headers': 'Content-Type, x-api-key, If-None-Match',
+    'Access-Control-Allow-Headers': 'Content-Type, x-api-key, If-None-Match, X-AfroTools-If-None-Match',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Max-Age': '86400',
     'Access-Control-Expose-Headers': 'ETag, X-AfroTools-Catalog-ETag, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Scope',
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
-    'Vary': 'Origin, x-api-key, If-None-Match',
+    'Vary': 'Origin, x-api-key, If-None-Match, X-AfroTools-If-None-Match',
   }, extra || {});
 }
 
@@ -91,6 +91,7 @@ exports.handler = async function (event) {
     ETag: etag,
     'X-AfroTools-Catalog-ETag': etag,
   }, serviceRateLimitHeaders(auth));
-  if (header(event, 'if-none-match') === etag) return respond(event, 304, null, responseHeaders);
+  var requestedEtag = header(event, 'x-afrotools-if-none-match') || header(event, 'if-none-match');
+  if (requestedEtag === etag) return respond(event, 304, null, responseHeaders);
   return respond(event, 200, catalog, responseHeaders);
 };
