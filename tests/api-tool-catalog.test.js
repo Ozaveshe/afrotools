@@ -52,6 +52,7 @@ function validLink(overrides = {}) {
     key: process.env.SALARYPADI_API_KEY,
     limit: process.env.SALARYPADI_API_DAILY_LIMIT,
     scopes: process.env.SALARYPADI_API_SCOPES,
+    netlify: process.env.NETLIFY,
   };
   process.env.SALARYPADI_API_KEY = 'salarypadi-test-service-key';
   process.env.SALARYPADI_API_DAILY_LIMIT = '100';
@@ -215,6 +216,7 @@ function validLink(overrides = {}) {
 
     process.env.SALARYPADI_API_DAILY_LIMIT = '1';
     let storedQuota = null;
+    let injectedStoreConnectCalls = 0;
     const quotaStore = {
       get: async () => storedQuota,
       setJSON: async (_key, value) => { storedQuota = value; },
@@ -222,17 +224,77 @@ function validLink(overrides = {}) {
     const firstStoredQuota = await serviceAuth.authenticateSalaryPadiServiceKey(
       event('/api/v1/catalog/tools'),
       'catalog:tools',
-      { store: quotaStore },
+      { store: quotaStore, connectLambda: () => { injectedStoreConnectCalls += 1; } },
     );
     const exhaustedStoredQuota = await serviceAuth.authenticateSalaryPadiServiceKey(
       event('/api/v1/catalog/tools'),
       'catalog:tools',
-      { store: quotaStore },
+      { store: quotaStore, connectLambda: () => { injectedStoreConnectCalls += 1; } },
     );
     assert.strictEqual(firstStoredQuota.valid, true);
     assert.strictEqual(firstStoredQuota.remaining, 0);
     assert.strictEqual(exhaustedStoredQuota.status, 429);
+    assert.strictEqual(injectedStoreConnectCalls, 0, 'Injected stores must not initialize Netlify Blobs');
     process.env.SALARYPADI_API_DAILY_LIMIT = '100';
+
+    let connectedEvent = null;
+    let storeFactoryCalls = 0;
+    let factoryStoredQuota = null;
+    const factoryEvent = event('/api/v1/catalog/tools');
+    const factoryQuota = await serviceAuth.authenticateSalaryPadiServiceKey(
+      factoryEvent,
+      'catalog:tools',
+      {
+        connectLambda: receivedEvent => { connectedEvent = receivedEvent; },
+        getStore: options => {
+          storeFactoryCalls += 1;
+          assert.deepStrictEqual(options, { name: 'api-service-usage', consistency: 'strong' });
+          return {
+            get: async () => factoryStoredQuota,
+            setJSON: async (_key, value) => { factoryStoredQuota = value; },
+          };
+        },
+      },
+    );
+    assert.strictEqual(factoryQuota.valid, true);
+    assert.strictEqual(connectedEvent, factoryEvent, 'connectLambda must receive the actual request event');
+    assert.strictEqual(storeFactoryCalls, 1, 'Netlify Blobs must be initialized once before creating the store');
+    assert.strictEqual(factoryStoredQuota.count, 1);
+
+    process.env.NETLIFY = 'true';
+    let unavailableStoreCalls = 0;
+    const unavailableQuota = await serviceAuth.authenticateSalaryPadiServiceKey(
+      event('/api/v1/catalog/tools'),
+      'catalog:tools',
+      {
+        connectLambda: () => { throw new Error('Invalid Netlify Blobs context'); },
+        getStore: () => { unavailableStoreCalls += 1; return quotaStore; },
+      },
+    );
+    assert.strictEqual(unavailableQuota.valid, false);
+    assert.strictEqual(unavailableQuota.status, 503);
+    assert.strictEqual(unavailableStoreCalls, 0, 'Store creation must not continue after context initialization fails');
+
+    const unavailableResponse = await catalogApi.handler(event('/api/v1/catalog/tools', {
+      query: { product: 'salarypadi', category: 'career' },
+    }));
+    assert.strictEqual(unavailableResponse.statusCode, 503);
+    assert.strictEqual(JSON.parse(unavailableResponse.body).code, 'SERVICE_QUOTA_UNAVAILABLE');
+    assert.ok(!unavailableResponse.body.includes('"tools"'), 'Failed quota verification must not authorize catalog access');
+
+    let invalidKeyConnectCalls = 0;
+    const invalidKey = await serviceAuth.authenticateSalaryPadiServiceKey(
+      event('/api/v1/catalog/tools', { key: 'not-the-service-key' }),
+      'catalog:tools',
+      {
+        connectLambda: () => { invalidKeyConnectCalls += 1; },
+        getStore: () => quotaStore,
+      },
+    );
+    assert.strictEqual(invalidKey, null);
+    assert.strictEqual(invalidKeyConnectCalls, 0, 'Invalid credentials must not initialize quota storage');
+    if (previous.netlify === undefined) delete process.env.NETLIFY;
+    else process.env.NETLIFY = previous.netlify;
 
     process.env.SALARYPADI_API_SCOPES = 'tax:paye';
     const denied = await serviceAuth.authenticateSalaryPadiServiceKey(
@@ -263,6 +325,8 @@ function validLink(overrides = {}) {
     else process.env.SALARYPADI_API_DAILY_LIMIT = previous.limit;
     if (previous.scopes === undefined) delete process.env.SALARYPADI_API_SCOPES;
     else process.env.SALARYPADI_API_SCOPES = previous.scopes;
+    if (previous.netlify === undefined) delete process.env.NETLIFY;
+    else process.env.NETLIFY = previous.netlify;
   }
 })().catch(error => {
   console.error(error);

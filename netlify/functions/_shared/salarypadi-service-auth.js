@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-var { getStore } = require('@netlify/blobs');
+var { connectLambda, getStore } = require('@netlify/blobs');
 var rateLimit = require('./rate-limit');
 
 var DEFAULT_DAILY_LIMIT = 10000;
@@ -46,7 +46,7 @@ function allowedScopes() {
   return configured.split(',').map(function (value) { return value.trim(); }).filter(Boolean);
 }
 
-async function consumeQuota(limit, dependencies) {
+async function consumeQuota(event, limit, dependencies) {
   var day = new Date().toISOString().slice(0, 10);
   var bucket = 'service:salarypadi:' + day;
   if (dependencies && dependencies.checkRateLimit) {
@@ -57,7 +57,13 @@ async function consumeQuota(limit, dependencies) {
     };
   }
   try {
-    var store = dependencies && dependencies.store || getStore({ name: 'api-service-usage', consistency: 'strong' });
+    var store = dependencies && dependencies.store;
+    if (!store) {
+      var connect = dependencies && dependencies.connectLambda || connectLambda;
+      var createStore = dependencies && dependencies.getStore || getStore;
+      connect(event);
+      store = createStore({ name: 'api-service-usage', consistency: 'strong' });
+    }
     var key = 'salarypadi:' + day;
     var record = await store.get(key, { type: 'json' }) || { day: day, count: 0 };
     var count = record.day === day ? Number(record.count || 0) : 0;
@@ -93,7 +99,7 @@ async function authenticateSalaryPadiServiceKey(event, scope, dependencies) {
   }
 
   var limit = dailyLimit();
-  var quota = await consumeQuota(limit, dependencies);
+  var quota = await consumeQuota(event, limit, dependencies);
   if (quota.unavailable) {
     return {
       valid: false,
