@@ -102,6 +102,7 @@
       <a href="#auth">Authentication</a>
       <a href="#limits">Rate limits</a>
       <a href="#catalog">Endpoint catalog</a>
+      <a href="#salarypadi-catalog">SalaryPadi catalog</a>
       <h3>Endpoints</h3>
       <a href="#paye">PAYE</a>
       <a href="#tax-rates">Tax rates</a>
@@ -145,6 +146,10 @@ x-api-key: afro_live_xxxxxxxxxxxxx
             <h3>Live keys</h3>
             <p><code>afro_live_*</code> keys are created after sign-in and email verification in the API dashboard.</p>
           </div>
+          <div class="tile">
+            <h3>Service keys</h3>
+            <p>Named partner integrations use dedicated server-side keys, endpoint scopes, and negotiated quotas. They are not browser credentials.</p>
+          </div>
         </div>
         <div class="warn">Do not expose production keys in browser JavaScript, public mobile apps, logs, screenshots, or support tickets. Use your backend as a proxy.</div>
       </section>
@@ -175,8 +180,32 @@ x-api-key: afro_live_xxxxxxxxxxxxx
             <tr><td><span class="method">GET</span></td><td><code>/api/v1/fuel/prices</code></td><td>Read latest fuel prices by country or region.</td><td>Sandbox key or live call</td></tr>
             <tr><td><span class="method">GET</span></td><td><code>/api/v1/rates/central-bank</code></td><td>Read central-bank policy-rate and inflation reference data.</td><td>Sandbox key or live call</td></tr>
             <tr><td><span class="method">GET</span></td><td><code>/api/v1/countries</code></td><td>Read country metadata and available API products.</td><td>Sandbox key</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/catalog/tools?product=salarypadi&amp;category=career</code></td><td>Read SalaryPadi's versioned career-tool integration contract.</td><td>SalaryPadi service key</td></tr>
+            <tr><td><span class="method">GET</span></td><td><code>/api/v1/catalog/health</code></td><td>Verify the published catalog schema, count, and verification date.</td><td>SalaryPadi service key</td></tr>
           </tbody>
         </table>
+      </section>
+
+      <section id="salarypadi-catalog">
+        <h2>SalaryPadi tool catalog</h2>
+        <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/catalog/tools?product=salarypadi&amp;category=career</code></header></div>
+        <p>This server-to-server endpoint publishes schema version <code>1.0.0</code>. Every tool is explicitly classified as <code>api</code>, <code>widget</code>, or <code>link</code>. PAYE and FX are API integrations. Other career tools remain link integrations until a matching calculation or widget contract is both implemented and tested.</p>
+        <div class="warn">Keep the dedicated SalaryPadi service key on the server. Do not place it in browser JavaScript, public environment variables, client logs, analytics, or screenshots. Salary values and calculation results must not be logged.</div>
+<pre>curl "https://afrotools.com/api/v1/catalog/tools?product=salarypadi&amp;category=career" \
+  -H "x-api-key: $SALARYPADI_API_KEY"</pre>
+        <p>A representative tool record inside the response:</p>
+<pre>{
+  "id": "ng-paye",
+  "integrationMode": "api",
+  "canonicalUrl": "https://afrotools.com/nigeria/ng-salary-tax",
+  "countries": ["NG"],
+  "api": { "method": "POST", "path": "/api/v1/tax/paye" },
+  "inputSchema": "https://afrotools.com/api/schemas/v1/paye-request.schema.json",
+  "outputSchema": "https://afrotools.com/api/schemas/v1/paye-response.schema.json",
+  "rulesVersion": "NG-PAYE:PITA_2025+NTA_2026",
+  "lastVerified": "2026-07-11"
+}</pre>
+        <p>Successful responses include <code>ETag</code>, <code>Cache-Control</code>, <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, and <code>X-RateLimit-Scope</code>. Send <code>If-None-Match</code> to receive <code>304 Not Modified</code>. The full schema is published at <a href="/api/schemas/v1/tool-catalog-response.schema.json"><code>/api/schemas/v1/tool-catalog-response.schema.json</code></a>.</p>
       </section>
 
       <section id="paye">

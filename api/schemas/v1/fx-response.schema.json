@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afrotools.com/api/schemas/v1/fx-response.schema.json",
+  "title": "AfroTools FX pair response v1",
+  "type": "object",
+  "required": ["base", "target", "pair", "rate", "source", "updated_at"],
+  "properties": {
+    "base": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "target": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "pair": { "type": "string", "pattern": "^[A-Z]{3}/[A-Z]{3}$" },
+    "rate": { "type": "number", "exclusiveMinimum": 0 },
+    "source": { "type": ["string", "null"] },
+    "updated_at": { "type": ["string", "null"] }
+  }
+}

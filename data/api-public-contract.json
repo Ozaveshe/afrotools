@@ -12,6 +12,14 @@
     "requests_per_month": 3000,
     "data_policy": "deterministic sandbox data"
   },
+  "service_integrations": {
+    "salarypadi": {
+      "authentication": "x-api-key header only",
+      "default_requests_per_day": 10000,
+      "catalog_path": "/v1/catalog/tools?product=salarypadi&category=career",
+      "schema_version": "1.0.0"
+    }
+  },
   "deprecation_policy": "Breaking changes ship under a new URL version with at least 90 days of notice.",
   "changelog_url": "https://afrotools.com/docs/api/changelog",
   "endpoints": [
@@ -49,6 +57,16 @@
       "method": "GET",
       "path": "/v1/countries",
       "description": "Read country metadata and available API products."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalog/tools",
+      "description": "Read the versioned SalaryPadi career-tool integration catalog."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/catalog/health",
+      "description": "Read the SalaryPadi catalog contract health summary."
     },
     {
       "method": "POST",
