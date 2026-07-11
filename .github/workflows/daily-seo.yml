@@ -39,7 +39,9 @@ jobs:
 
       - name: Run SEO daily fix
         id: seo
-        run: AFROTOOLS_REFRESH_SITEMAP_LASTMOD=1 node scripts/seo-daily-fix.js
+        # Preserve source-backed lastmod values. Broad daily restamps make the
+        # committed sitemap index diverge from the deterministic site build.
+        run: node scripts/seo-daily-fix.js
         # Never fail the workflow — fixes are best-effort
         continue-on-error: true
 
