@@ -18,6 +18,8 @@ var CORS = {
   'Content-Type': 'application/json'
 };
 
+var PRODUCTION_DATA_POLICY = 'versioned AfroTools country tax reference data';
+
 /* ---- VAT rates for all 54 countries ---- */
 var VAT_RATES = {
   NG: { standard_rate: 0.075, authority: 'FIRS', year: '2026' },
@@ -111,7 +113,9 @@ function buildCountryData(code) {
     country: code,
     country_name: COUNTRY_NAMES[code] || code,
     currency: CURRENCIES[code] || 'USD',
-    tax_authority: (vat && vat.authority) || (engine && engine.source) || 'Unknown'
+    tax_authority: (vat && vat.authority) || (engine && engine.source) || 'Unknown',
+    sandbox: false,
+    data_policy: PRODUCTION_DATA_POLICY
   };
 
   // PAYE data from engine
@@ -212,5 +216,10 @@ exports.handler = async function(event) {
     return entry;
   });
 
-  return respond(200, { countries: countries, total: countries.length }, rlHeaders);
+  return respond(200, {
+    countries: countries,
+    total: countries.length,
+    sandbox: false,
+    data_policy: PRODUCTION_DATA_POLICY
+  }, rlHeaders);
 };

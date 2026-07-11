@@ -92,9 +92,10 @@
             <tr><td><span class="param-name">deductions</span></td><td><span class="param-type">object</span></td><td>Pension, social security, and other deductions where applicable.</td></tr>
             <tr><td><span class="param-name">tax</span></td><td><span class="param-type">object</span></td><td>Taxable income, net tax, and tax-band details.</td></tr>
             <tr><td><span class="param-name">result</span></td><td><span class="param-type">object</span></td><td>Net annual, net monthly, and effective rate output.</td></tr>
-            <tr><td><span class="param-name">_meta</span></td><td><span class="param-type">object</span></td><td>API version, response time, timestamp, and sandbox flag.</td></tr>
+            <tr><td><span class="param-name">_meta</span></td><td><span class="param-type">object</span></td><td>API version, response time, timestamp, sandbox flag, and data policy.</td></tr>
           </tbody>
         </table>
+        <p>Each <code>tax.bands[]</code> item includes canonical <code>label: string</code>, <code>rate: number</code>, and <code>amount: number</code> fields. Production engine rows also retain numeric <code>from</code>, <code>to</code>, and <code>taxInBand</code> fields for v1 backward compatibility.</p>
 
         <h2>Error Responses</h2>
         <table class="param-table">
@@ -218,7 +219,9 @@ print_r($data);</div>
   "_meta": {
     "api": "AfroTax",
     "version": "1.0",
+    "timestamp": "2026-07-11T09:00:00.000Z",
     "sandbox": false,
+    "dataPolicy": "calculated from versioned AfroTools country tax rules; salary inputs and results are not intentionally retained",
     "docs": "https://afrotools.com/docs/api/tax"
   }
 }</div>

@@ -103,7 +103,22 @@ Content-Type: application/json
 {"country":"NG","grossMonthly":500000}
 ```
 
-Use exactly one of `grossAnnual`, `grossMonthly`, `netAnnual`, or `netMonthly`. The response includes API metadata and a timestamp. SalaryPadi must display the rules version and verification date supplied by the catalog and must not silently substitute a different statutory engine.
+Use exactly one of `grossAnnual`, `grossMonthly`, `netAnnual`, or `netMonthly`. The production response contract is:
+
+- `tax.bands[]` always includes canonical `label: string`, `rate: number`, and `amount: number` fields.
+- Production engine rows also retain numeric `from`, `to`, and `taxInBand` fields for v1 backward compatibility. New consumers should use the canonical fields.
+- `_meta.sandbox` is `false` and `_meta.dataPolicy` is a non-empty description of the production calculation policy. `_meta.timestamp` is an ISO 8601 timestamp.
+
+SalaryPadi must validate the published response schema, display the rules version and verification date supplied by the catalog, and must not silently substitute a different statutory engine. AfroTools retains service usage counters only; it does not intentionally retain or log submitted salary values or calculation results.
+
+Tax reference metadata:
+
+```http
+GET /api/v1/tax/rates?country=NG&type=paye
+x-api-key: <SALARYPADI_API_KEY>
+```
+
+Production tax-rate responses include `sandbox: false` and a non-empty `data_policy`. Sandbox responses use `sandbox: true` and `data_policy: "deterministic sandbox data"`.
 
 FX:
 

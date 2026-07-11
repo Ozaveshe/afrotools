@@ -17,6 +17,13 @@ async function main() {
   assert.strictEqual(body.status, 'success');
   assert.ok(body.result && Number.isFinite(body.result.netAnnual), 'PAYE route should return computed numbers');
   assert.ok(body.tax && Number.isFinite(body.tax.netTax), 'PAYE route should return tax numbers');
+  assert.strictEqual(body._meta.sandbox, true);
+  assert.strictEqual(body._meta.dataPolicy, 'deterministic sandbox data');
+  assert.ok(body.tax.bands.every(band => (
+    typeof band.label === 'string' &&
+    Number.isFinite(band.rate) &&
+    Number.isFinite(band.amount)
+  )), 'Sandbox PAYE route follows the canonical band contract');
 
   console.log('API tax routing smoke passed.');
 }

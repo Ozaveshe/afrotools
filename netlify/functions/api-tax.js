@@ -19,6 +19,8 @@ const CORS = {
   'Content-Type': 'application/json'
 };
 
+const PRODUCTION_DATA_POLICY = 'calculated from versioned AfroTools country tax rules; salary inputs and results are not intentionally retained';
+
 function respond(status, body, extra = {}) {
   return { statusCode: status, headers: { ...CORS, ...extra }, body: JSON.stringify(body) };
 }
@@ -70,6 +72,45 @@ function sandboxTaxResponse(body) {
     }
   };
 }
+
+function formatBandBoundary(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return '';
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(numeric);
+}
+
+function normalizeTaxBandForApi(band, currency) {
+  if (!band || typeof band !== 'object') return band;
+
+  const from = Number(band.from);
+  const to = Number(band.to);
+  const rate = Number(band.rate);
+  const amount = Number(band.amount !== undefined ? band.amount : band.taxInBand);
+  const existingLabel = typeof band.label === 'string' ? band.label.trim() : '';
+  const boundaryLabel = Number.isFinite(from) && Number.isFinite(to)
+    ? `${currency ? `${currency} ` : ''}${formatBandBoundary(from)} to ${formatBandBoundary(to)}`
+    : '';
+
+  return {
+    ...band,
+    label: existingLabel || boundaryLabel,
+    rate,
+    amount
+  };
+}
+
+function normalizeTaxResultForApi(result, currency) {
+  if (!result || !result.tax || !Array.isArray(result.tax.bands)) return result;
+  return {
+    ...result,
+    tax: {
+      ...result.tax,
+      bands: result.tax.bands.map(band => normalizeTaxBandForApi(band, currency))
+    }
+  };
+}
+
+exports.normalizeTaxResultForApi = normalizeTaxResultForApi;
 
 function slugify(value) {
   return String(value || '')
@@ -284,10 +325,11 @@ exports.handler = async (event) => {
       const result = salaryInput.mode === 'gross'
         ? engine.calculate({ grossAnnual: salaryInput.annualAmount, ...options })
         : engine.reverseCalculate({ netAnnual: salaryInput.annualAmount, ...options });
+      const contractResult = normalizeTaxResultForApi(result, engine.currency);
 
       return respond(200, {
         status: 'success',
-        ...result,
+        ...contractResult,
         _meta: {
           api: 'AfroTax',
           version: '1.0',
@@ -295,6 +337,7 @@ exports.handler = async (event) => {
           timestamp: new Date().toISOString(),
           responseTime: `${Date.now() - startTime}ms`,
           sandbox: false,
+          dataPolicy: PRODUCTION_DATA_POLICY,
           docs: 'https://afrotools.com/docs/api/tax'
         }
       });
@@ -366,16 +409,18 @@ exports.handler = async (event) => {
       const result = salaryInput.mode === 'gross'
         ? engine.calculate({ grossAnnual: salaryInput.annualAmount, ...options })
         : engine.reverseCalculate({ netAnnual: salaryInput.annualAmount, ...options });
+      const contractResult = normalizeTaxResultForApi(result, engine.currency);
 
       return respond(200, {
         status: 'success',
-        ...result,
+        ...contractResult,
         _meta: {
           api: 'AfroTax',
           version: '1.0',
           timestamp: new Date().toISOString(),
           responseTime: `${Date.now() - startTime}ms`,
           sandbox: auth.sandbox || false,
+          dataPolicy: PRODUCTION_DATA_POLICY,
           docs: 'https://afrotools.com/docs/api/tax'
         }
       });
