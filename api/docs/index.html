@@ -222,6 +222,7 @@ x-api-key: afro_live_xxxxxxxxxxxxx
             <tr><td><code>netMonthly</code></td><td>number</td><td>One salary input</td><td>Monthly net salary for reverse calculation.</td></tr>
           </tbody>
         </table>
+        <p>Every successful response follows the published <a href="/api/schemas/v1/paye-response.schema.json">PAYE response schema</a>. Each <code>tax.bands[]</code> item includes canonical <code>label</code>, <code>rate</code>, and <code>amount</code> fields. Production rows retain <code>from</code>, <code>to</code>, and <code>taxInBand</code> as v1 compatibility fields. Production metadata includes <code>_meta.sandbox: false</code> and a non-empty <code>_meta.dataPolicy</code>.</p>
 <pre>curl -X POST "https://afrotools.com/api/v1/tax/paye" \
   -H "x-api-key: afro_test_demo123456789" \
   -H "Content-Type: application/json" \
@@ -231,7 +232,7 @@ x-api-key: afro_live_xxxxxxxxxxxxx
       <section id="tax-rates">
         <h2>Tax rates</h2>
         <div class="endpoint-box"><header><span class="method">GET</span><code>/api/v1/tax/rates</code></header></div>
-        <p>Read PAYE and VAT reference data. Use <code>country</code> for a single market and <code>type</code> to filter to <code>paye</code> or <code>vat</code>.</p>
+        <p>Read PAYE and VAT reference data. Use <code>country</code> for a single market and <code>type</code> to filter to <code>paye</code> or <code>vat</code>. Production responses include <code>sandbox: false</code> and a non-empty <code>data_policy</code>; deterministic sandbox responses identify themselves with <code>sandbox: true</code>.</p>
 <pre>curl "https://afrotools.com/api/v1/tax/rates?country=NG" \
   -H "x-api-key: afro_test_demo123456789"</pre>
       </section>
