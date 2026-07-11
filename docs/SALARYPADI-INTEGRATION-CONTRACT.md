@@ -44,13 +44,14 @@ Only the exact `product=salarypadi` and `category=career` query is supported in 
 
 Response headers:
 
-- `ETag`: content-derived SHA-256 validator.
+- `ETag`: standard HTTP validator. Netlify or another HTTP intermediary may normalize it.
+- `X-AfroTools-Catalog-ETag`: the exact content-derived SHA-256 application validator, mirrored on both `200` and `304` responses.
 - `Cache-Control: private, max-age=300, stale-while-revalidate=600`.
 - `Vary: Origin, x-api-key, If-None-Match`.
 - `X-RateLimit-Limit` and `X-RateLimit-Remaining`.
 - `X-RateLimit-Scope: service:salarypadi`.
 
-SalaryPadi should store the last verified response, send its `ETag` as `If-None-Match`, and retain the stored response on a `304`. A failed request must not replace the last-known-good catalog.
+SalaryPadi should prefer `X-AfroTools-Catalog-ETag`, fall back to a bounded opaque standard `ETag`, store the selected validator with the last verified response, and replay its exact value as `If-None-Match`. It must retain the stored response on a `304`. A failed request must not replace the last-known-good catalog.
 
 ## Tool metadata v1
 

@@ -138,6 +138,8 @@ function validLink(overrides = {}) {
     assert.strictEqual(response.headers['Access-Control-Allow-Origin'], 'https://salarypadi.com');
     assert.match(response.headers['Cache-Control'], /private/);
     assert.match(response.headers.ETag, /^"sha256-/);
+    assert.strictEqual(response.headers['X-AfroTools-Catalog-ETag'], response.headers.ETag);
+    assert.match(response.headers['Access-Control-Expose-Headers'], /X-AfroTools-Catalog-ETag/);
     assert.strictEqual(response.headers['X-RateLimit-Scope'], 'service:salarypadi');
     assert.strictEqual(JSON.parse(response.body).count, 15);
     assert.ok(!response.body.includes('salarypadi-test-service-key'));
@@ -148,6 +150,8 @@ function validLink(overrides = {}) {
     }));
     assert.strictEqual(notModified.statusCode, 304);
     assert.strictEqual(notModified.body, '');
+    assert.strictEqual(notModified.headers.ETag, response.headers.ETag);
+    assert.strictEqual(notModified.headers['X-AfroTools-Catalog-ETag'], response.headers.ETag);
 
     const unsupported = await catalogApi.handler(event('/api/v1/catalog/tools', {
       query: { product: 'other', category: 'career' },
