@@ -116,7 +116,7 @@ exports.handler = async function(event) {
   if (event.httpMethod !== 'GET') return respond(405, { error: 'Method not allowed' });
 
   /* ---- Auth ---- */
-  var auth = await validateApiKey(event);
+  var auth = await validateApiKey(event, 'countries');
   if (!auth.valid) return respond(auth.status || 401, { error: auth.error });
 
   var rlHeaders = rateLimitHeaders(auth);

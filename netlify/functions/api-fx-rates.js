@@ -119,7 +119,7 @@ exports.handler = async function (event) {
   var apiKey = (event.headers || {})['x-api-key'] || (event.headers || {})['X-Api-Key'] || params.api_key;
   var rlHeaders = {};
   if (apiKey) {
-    var auth = await validateApiKey(event);
+    var auth = await validateApiKey(event, 'fx:rates');
     if (!auth.valid) {
       return jsonResponse(auth.status || 401, { error: auth.error });
     }

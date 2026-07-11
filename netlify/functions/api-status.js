@@ -25,6 +25,7 @@ exports.handler = async function (event) {
     base_url: contract.canonical_base_url,
     free_tier: contract.free_tier,
     sandbox: contract.sandbox_tier,
+    service_integrations: contract.service_integrations,
     endpoints: contract.endpoints,
     deprecation_policy: contract.deprecation_policy,
     changelog_url: contract.changelog_url,

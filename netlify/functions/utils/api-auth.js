@@ -10,10 +10,14 @@
 const { getStore } = require('@netlify/blobs');
 const { checkRateLimit, getRemaining } = require('../_shared/rate-limit');
 const { API_PLAN_LIMITS, getApiPlanLimit, normalizeApiTier } = require('../_shared/api-plans');
+const {
+  authenticateSalaryPadiServiceKey,
+  serviceRateLimitHeaders,
+} = require('../_shared/salarypadi-service-auth');
 
 const LIMITS = API_PLAN_LIMITS;
 
-async function validateApiKey(event) {
+async function validateApiKey(event, endpoint) {
   var headers = event.headers || {};
   var apiKey =
     headers['x-api-key'] ||
@@ -33,6 +37,9 @@ async function validateApiKey(event) {
       error: 'Missing API key. Include x-api-key header or api_key query param. Get one at https://afrotools.com/dashboard/api/'
     };
   }
+
+  var serviceAuth = await authenticateSalaryPadiServiceKey(event, endpoint || 'catalog:tools');
+  if (serviceAuth) return serviceAuth;
 
   // Sandbox keys use deterministic data and their own free-tier limits.
   if (apiKey.startsWith('afro_test_')) {
@@ -120,6 +127,7 @@ async function validateApiKey(event) {
 }
 
 function rateLimitHeaders(auth) {
+  if (auth && auth.tier === 'service') return serviceRateLimitHeaders(auth);
   return {
     'X-RateLimit-Limit': String(auth.limit || 100),
     'X-RateLimit-Remaining': String(auth.remaining || 0)

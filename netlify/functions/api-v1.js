@@ -101,6 +101,8 @@ exports.handler = async function(event) {
           '/api/v1/property', '/api/v1/salaries', '/api/v1/stocks',
           '/api/v1/shipping', '/api/v1/rates', '/api/v1/agriculture',
           '/api/v1/crypto', '/api/v1/health',
+          '/api/v1/catalog/tools?product=salarypadi&category=career',
+          '/api/v1/catalog/health',
         ],
         docs: 'https://afrotools.com/api/docs',
         rate_limit: hasValidKey ? (auth.daily_limit === -1 ? 'custom' : auth.daily_limit + '/day') : '100/day',

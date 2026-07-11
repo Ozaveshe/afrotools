@@ -67,6 +67,8 @@ const { handler } = require('../netlify/functions/api-tax.js');
   });
   assert.strictEqual(response.statusCode, 200);
   assert.strictEqual(response.headers['Access-Control-Allow-Origin'], 'https://salarypadi.com');
+  assert.strictEqual(response.headers['X-RateLimit-Limit'], '10000');
+  assert.strictEqual(response.headers['X-RateLimit-Scope'], 'service:salarypadi');
   const body = JSON.parse(response.body);
   assert.strictEqual(body.tax.taxableIncome, 5910000);
   delete process.env.SALARYPADI_API_KEY;

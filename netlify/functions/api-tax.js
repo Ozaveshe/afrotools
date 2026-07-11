@@ -5,12 +5,12 @@
  * Auth: x-api-key header or api_key query param
  */
 const engines = require('./_engines/index');
-const crypto = require('crypto');
 const { getStore } = require('@netlify/blobs');
 const { getAllowedOrigin } = require('./utils/cors');
 const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
 const { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
 const { getApiPlanLimit, normalizeApiTier } = require('./_shared/api-plans');
+const { authenticateSalaryPadiServiceKey } = require('./_shared/salarypadi-service-auth');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -32,15 +32,6 @@ function sandboxRateKey(apiKey, event) {
     'unknown'
   ).split(',')[0].trim() || 'unknown';
   return 'sandbox:' + apiKey + ':' + ip;
-}
-
-function isSalaryPadiPartnerKey(apiKey) {
-  const expected = process.env.SALARYPADI_API_KEY || '';
-  const suppliedBuffer = Buffer.from(String(apiKey || ''));
-  const expectedBuffer = Buffer.from(expected);
-  return expectedBuffer.length > 0 &&
-    suppliedBuffer.length === expectedBuffer.length &&
-    crypto.timingSafeEqual(suppliedBuffer, expectedBuffer);
 }
 
 function sandboxTaxResponse(body) {
@@ -131,12 +122,16 @@ function normalizeBodyWithPathCountry(event, body) {
 async function validateApiKey(apiKey, event) {
   if (!apiKey) return { valid: false };
 
-  if (isSalaryPadiPartnerKey(apiKey)) {
+  const serviceAuth = await authenticateSalaryPadiServiceKey(event, 'tax:paye');
+  if (serviceAuth) {
     return {
-      valid: true,
-      tier: 'partner',
-      remaining: 999999,
-      limit: -1
+      valid: serviceAuth.valid,
+      tier: serviceAuth.tier,
+      remaining: serviceAuth.remaining,
+      limit: serviceAuth.limit,
+      resetAt: serviceAuth.retryAfter ? 'midnight UTC' : undefined,
+      status: serviceAuth.status,
+      error: serviceAuth.error
     };
   }
 
@@ -145,7 +140,7 @@ async function validateApiKey(apiKey, event) {
     const freeLimits = getApiPlanLimit('free');
     const key = sandboxRateKey(apiKey, event);
     if (!checkRateLimit(key, freeLimits.day)) {
-      return { valid: true, tier: 'sandbox', sandbox: true, remaining: 0, limit: freeLimits.day, resetAt: 'midnight UTC' };
+      return { valid: false, status: 429, error: 'Sandbox daily rate limit exceeded', tier: 'sandbox', sandbox: true, remaining: 0, limit: freeLimits.day, resetAt: 'midnight UTC' };
     }
     return { valid: true, tier: 'sandbox', sandbox: true, remaining: getRemaining(key, freeLimits.day), limit: freeLimits.day };
   }
@@ -170,11 +165,11 @@ async function validateApiKey(apiKey, event) {
 
     // Check daily limit (-1 means custom contract limit)
     if (limits.day !== -1 && dailyUsage >= limits.day) {
-      return { valid: true, tier, remaining: 0, limit: limits.day, resetAt: 'midnight UTC' };
+      return { valid: false, status: 429, error: 'Daily rate limit exceeded', tier, remaining: 0, limit: limits.day, resetAt: 'midnight UTC' };
     }
     // Check monthly limit
     if (limits.month !== -1 && monthlyUsage >= limits.month) {
-      return { valid: true, tier, remaining: 0, limit: limits.month, resetAt: 'end of month' };
+      return { valid: false, status: 429, error: 'Monthly rate limit exceeded', tier, remaining: 0, limit: limits.month, resetAt: 'end of month' };
     }
 
     // Increment counters and persist
@@ -196,6 +191,9 @@ async function validateApiKey(apiKey, event) {
 }
 
 exports.handler = async (event) => {
+  delete CORS['X-RateLimit-Limit'];
+  delete CORS['X-RateLimit-Remaining'];
+  delete CORS['X-RateLimit-Scope'];
   CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   /* ---- CORS preflight ---- */
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
@@ -209,25 +207,15 @@ exports.handler = async (event) => {
   const auth = await validateApiKey(apiKey, event);
 
   if (!auth.valid) {
-    return respond(401, {
-      error: 'Invalid or missing API key',
-      code: 'INVALID_API_KEY',
+    return respond(auth.status || 401, {
+      error: auth.error || 'Invalid or missing API key',
+      code: auth.status === 429 ? 'RATE_LIMIT_EXCEEDED' : 'INVALID_API_KEY',
       docs: 'https://afrotools.com/docs/api/authentication'
-    });
+    }, auth.status === 429 ? { 'Retry-After': '3600' } : {});
   }
-
-  if (auth.remaining <= 0) {
-    return respond(
-      429,
-      {
-        error: 'Rate limit exceeded',
-        code: 'RATE_LIMIT_EXCEEDED',
-        limit: auth.limit,
-        resetAt: auth.resetAt
-      },
-      { 'Retry-After': '3600' }
-    );
-  }
+  CORS['X-RateLimit-Limit'] = String(auth.limit);
+  CORS['X-RateLimit-Remaining'] = String(auth.remaining);
+  if (auth.tier === 'service') CORS['X-RateLimit-Scope'] = 'service:salarypadi';
 
   /* ---- GET: country info / list ---- */
   if (event.httpMethod === 'GET') {
