@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
@@ -18,10 +18,10 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=5af5f2d6" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=f09d0feb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -100,7 +100,7 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/cameroon/kikokotoo-kodi-mshahara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/cameroon/cm-paye" />
 <meta name="content-language" content="fr">
-<script src="/assets/js/i18n-detect.js?v=40bd62b3" defer></script>
+<script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
 </head>
 <script>
 window.addEventListener('load', function() {
@@ -255,7 +255,7 @@ window.addEventListener('load', function() {
         <div class="ai-head">
           <div class="ai-dot"></div>
           <span class="ai-head-title">Conseiller Fiscal IA</span>
-          <span class="ai-head-by">Propulsé par Claude</span>
+          <span class="ai-head-by">IA facultative · fournisseur requis</span>
         </div>
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculate salary to unlock AI analysis on your DGI position and CNPS deductibility.</p>
@@ -753,7 +753,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"><\/script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');<\/script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 
 </body></html>`;
 
@@ -766,7 +766,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   }
 }
 
-function shareResult(){if(!RESULT)return;const text=`Cameroon PAYE: Gross XAF ${Math.round(RESULT.gross).toLocaleString()}/yr -> Take-home XAF ${Math.round(RESULT.net).toLocaleString()}/yr after IRPP, CAC and CNPS (${pct(RESULT.effectiveRate)} effective rate). afrotools.com/cameroon/cm-paye`;if(navigator.share){navigator.share({title:'My Cameroon PAYE',text,url:'https://afrotools.com/cameroon/cm-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('cmPartagerBtn');btn.textContent='✓ Copied!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Partager le resultat`,2500);}}
+function shareResult(){if(!RESULT)return;const text=`Cameroon PAYE: Gross XAF ${Math.round(RESULT.gross).toLocaleString()}/yr -> Take-home XAF ${Math.round(RESULT.net).toLocaleString()}/yr after IRPP, CAC and CNPS (${pct(RESULT.effectiveRate)} effective rate). afrotools.com/cameroon/cm-paye`;if(navigator.share){navigator.share({title:'My Cameroon PAYE',text,url:'https://afrotools.com/cameroon/cm-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('cmPartagerBtn');btn.textContent='✓ Copied!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Partager le résultat`,2500);}}
 async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');const respEl=document.getElementById('aiResp');btn.disabled=true;btn.textContent='Analysing…';respEl.style.display='block';respEl.className='ai-response typing';respEl.textContent='';document.getElementById('aiStatus').style.display='none';const prompt=`Cameroon PAYE 2025: Gross XAF ${Math.round(R.gross).toLocaleString()}/yr, CNPS XAF ${Math.round(R.cnps).toLocaleString()}, assessable income XAF ${Math.round(R.assessableIncome).toLocaleString()}, IRPP XAF ${Math.round(R.annualIRPP).toLocaleString()}, CAC XAF ${Math.round(R.annualCAC).toLocaleString()}, take-home XAF ${Math.round(R.net).toLocaleString()}, effective rate ${pct(R.effectiveRate)}. Summarize position in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools Tax Advisor - Cameroon payroll tax. Concise, practical, no markdown.',messages:[{role:'user',content:prompt}]})});if(!res.ok)throw new Error('HTTP');const data=await res.json();const text=data.text||'Unable to generate.';respEl.className='ai-response';respEl.textContent='';let i=0;const type=()=>{if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}};type();}catch(err){respEl.textContent='AI unavailable.';btn.disabled=false;btn.textContent='Try Again';}}
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);msgs.scrollTop=msgs.scrollHeight;CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Cameroon tax advisor. Concise.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});msgs.scrollTop=msgs.scrollHeight;}catch(e){aiEl.textContent='Network error.';}}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});

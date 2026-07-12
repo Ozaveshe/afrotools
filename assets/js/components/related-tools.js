@@ -360,7 +360,7 @@ class AfroRelatedTools extends HTMLElement {
             <p class="eyebrow">${isHausa ? 'Karin kayan AfroTools' : 'More from AfroTools'}</p>
             <h2 class="title">${isHausa ? 'Wata kila za ka kuma so' : 'You might also like'}</h2>
           </div>
-          <a href="${isHausa ? '/ha/kayan-aiki/' : '/all-tools/'}" class="all-link">
+          <a href="${isHausa ? '/ha/kayan-aiki/' : '/tools/'}" class="all-link">
             ${isHausa ? 'Duba duk kayan aiki' : 'Browse all tools'}
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M2.5 6h7M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

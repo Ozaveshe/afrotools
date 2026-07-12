@@ -317,7 +317,12 @@ function loadPublicClaimIds() {
   if (!fs.existsSync(PUBLIC_CLAIM_REGISTRY_PATH)) return new Set();
   const registry = readJson(PUBLIC_CLAIM_REGISTRY_PATH);
   const claims = Array.isArray(registry) ? registry : registry.claims || [];
-  return new Set(claims.map((claim) => claim.claim_id).filter(Boolean));
+  const ids = new Set();
+  claims.forEach((claim) => {
+    if (claim.key || claim.claim_id) ids.add(claim.key || claim.claim_id);
+    normalizeList(claim.legacyKeys).forEach((legacyKey) => ids.add(legacyKey));
+  });
+  return ids;
 }
 
 function validateCommand(command, scripts, warnings, record) {

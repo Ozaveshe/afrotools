@@ -19,7 +19,10 @@
   var PRIVATE_KEY_PATTERN = /^(email|phone|address|clientName|customerName|fullName|name|passport|nin|idNumber|identityNumber|resumeText|cvText|pdfContent|documentContent|profileText|coverLetterText)$/i;
 
   function text(value, limit) {
-    var clean = String(value === undefined || value === null ? "" : value).replace(/\s+/g, " ").trim();
+    var clean = String(value === undefined || value === null ? "" : value).replace(/\s+/g, " ").trim().normalize("NFC");
+    if (root && root.AfroToolsLocalization && typeof root.AfroToolsLocalization.normalizeDisplay === "function") {
+      clean = root.AfroToolsLocalization.normalizeDisplay(clean);
+    }
     var max = limit || MAX_TEXT;
     return clean.length > max ? clean.slice(0, max - 3).trim() + "..." : clean;
   }

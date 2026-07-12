@@ -227,6 +227,7 @@ exports.handler = async function (event) {
   const nextUpdate = sourceNextUpdate || new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
   const data = {
+    schemaVersion: 1,
     timestamp: now,
     base: 'USD',
     rates: mergedRates,

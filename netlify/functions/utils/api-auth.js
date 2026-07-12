@@ -34,6 +34,7 @@ async function validateApiKey(event, endpoint) {
     return {
       valid: false,
       status: 401,
+      code: 'MISSING_API_KEY',
       error: 'Missing API key. Include x-api-key header or api_key query param. Get one at https://afrotools.com/dashboard/api/'
     };
   }
@@ -49,6 +50,7 @@ async function validateApiKey(event, endpoint) {
       return {
         valid: false,
         status: 429,
+        code: 'RATE_LIMIT_EXCEEDED',
         error: 'Sandbox daily rate limit exceeded. Test keys use deterministic sandbox data with separate sandbox limits.',
         tier: 'sandbox',
         sandbox: true,
@@ -69,7 +71,7 @@ async function validateApiKey(event, endpoint) {
     var store = getStore('apikeys');
     var data = await store.get(apiKey, { type: 'json' });
     if (!data) {
-      return { valid: false, status: 403, error: 'Invalid API key. Get one at https://afrotools.com/dashboard/api/' };
+      return { valid: false, status: 403, code: 'INVALID_API_KEY', error: 'Invalid API key. Get one at https://afrotools.com/dashboard/api/' };
     }
 
     var tier = normalizeApiTier(data.tier || 'free');
@@ -89,6 +91,7 @@ async function validateApiKey(event, endpoint) {
       return {
         valid: false,
         status: 429,
+        code: 'RATE_LIMIT_EXCEEDED',
         error: 'Daily rate limit exceeded. Resets at midnight UTC.',
         tier: tier,
         remaining: 0,
@@ -100,6 +103,7 @@ async function validateApiKey(event, endpoint) {
       return {
         valid: false,
         status: 429,
+        code: 'RATE_LIMIT_EXCEEDED',
         error: 'Monthly rate limit exceeded.',
         tier: tier,
         remaining: 0,
@@ -122,8 +126,26 @@ async function validateApiKey(event, endpoint) {
     };
   } catch (err) {
     console.error('[api-auth] Key validation error:', err.message);
-    return { valid: false, status: 500, error: 'Internal authentication error' };
+    return { valid: false, status: 500, code: 'AUTH_ERROR', error: 'Internal authentication error' };
   }
+}
+
+// Standard error body for a failed auth result, so every v1 endpoint returns
+// the same { error, code, docs } shape on authentication/rate-limit failures.
+function authErrorBody(auth) {
+  auth = auth || {};
+  var code = auth.code;
+  if (!code) {
+    if (auth.status === 429) code = 'RATE_LIMIT_EXCEEDED';
+    else if (auth.status === 403) code = 'INVALID_API_KEY';
+    else if (auth.status === 401) code = 'MISSING_API_KEY';
+    else code = 'AUTH_ERROR';
+  }
+  return {
+    error: auth.error || 'Authentication failed',
+    code: code,
+    docs: 'https://afrotools.com/docs/api/authentication'
+  };
 }
 
 function rateLimitHeaders(auth) {
@@ -134,4 +156,4 @@ function rateLimitHeaders(auth) {
   };
 }
 
-module.exports = { validateApiKey, rateLimitHeaders, LIMITS };
+module.exports = { validateApiKey, rateLimitHeaders, authErrorBody, LIMITS };

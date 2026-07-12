@@ -196,7 +196,9 @@ test("migrated data-heavy tools include source registry UI hooks", function () {
   const pages = [
     ["tools/import-duty/index.html", "import-duty-planning-rates"],
     ["tools/fuel-tracker/index.html", "afrofuel-static-snapshot"],
-    ["tools/paye-calculator/index.html", "paye-tax-engine-country-packs"]
+    ["tools/paye-calculator/index.html", "paye-tax-engine-country-packs"],
+    ["tools/currency-converter/index.html", "forex-third-party-snapshot"],
+    ["tools/afrorates/index.html", "afrorates-policy-rate-pack"]
   ];
 
   for (const [file, sourceId] of pages) {

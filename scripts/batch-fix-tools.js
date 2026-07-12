@@ -20,7 +20,7 @@ function aiAdvisorHTML(toolTitle, toolSlug) {
       <div class="ai-advisor-head">
         <span class="ai-dot"></span>
         <span class="ai-title">AI ${toolTitle} Advisor</span>
-        <span class="ai-by">Powered by Claude</span>
+        <span class="ai-by">Optional AI · provider required</span>
       </div>
       <div class="ai-advisor-body">
         <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>

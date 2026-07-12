@@ -5,6 +5,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const canonicalApi = require('./lib/canonical-registry');
 
 const ROOT = path.resolve(__dirname, '..');
 const code = fs.readFileSync(path.join(ROOT, 'assets/js/components/tool-registry.js'), 'utf8');
@@ -21,14 +22,14 @@ const liveToolInstances = typeof getTotalToolCount === 'function'
 // Count by status
 const counts = {};
 AFRO_TOOLS.forEach(t => { counts[t.status] = (counts[t.status] || 0) + 1; });
-console.log('=== STATUS COUNTS ===');
+console.log('=== RAW REGISTRY STATUS COUNTS (INCLUDES REDIRECT ALIASES) ===');
 Object.entries(counts).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => console.log(`  ${k}: ${v}`));
 console.log(`  TOTAL: ${AFRO_TOOLS.length}`);
 
 // Count by category
 const catCounts = {};
 AFRO_TOOLS.forEach(t => { catCounts[t.category] = (catCounts[t.category] || 0) + 1; });
-console.log('\n=== BY CATEGORY ===');
+console.log('\n=== RAW REGISTRY ROWS BY CATEGORY (INCLUDES REDIRECT ALIASES) ===');
 Object.entries(catCounts).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => console.log(`  ${k}: ${v}`));
 
 // Check which live tools have actual pages
@@ -81,8 +82,14 @@ withApp.forEach(id => console.log(`  ${id}`));
 
 // Summary recommendation
 console.log(`\n=== RECOMMENDATION ===`);
-console.log(`  Registry rows: ${AFRO_TOOLS.length}`);
-console.log(`  Expanded tool instances: ${totalToolInstances}`);
+const canonicalRegistry = canonicalApi.buildCanonicalRegistry();
+const canonicalValidation = canonicalApi.validateCanonicalRegistry(canonicalRegistry);
+if (!canonicalValidation.ok) throw new Error(canonicalValidation.errors.map(canonicalApi.formatIssue).join('\n'));
+console.log(`  Raw registry rows: ${AFRO_TOOLS.length}`);
+console.log(`  Explicit redirect aliases: ${canonicalRegistry.tools.filter((tool) => tool.publicationStatus === 'redirect').length}`);
+console.log(`  Canonical published tool records: ${canonicalApi.getSelector(canonicalRegistry, 'tools.canonical_published').value}`);
+console.log(`  Canonical published English records: ${canonicalApi.getSelector(canonicalRegistry, 'tools.english_canonical_published').value}`);
+console.log(`  Expanded live tool experiences: ${totalToolInstances}`);
 console.log(`  ${found} live/new registry rows have landing pages`);
 console.log(`  ${withApp.length} have full working apps (app.html)`);
-console.log(`  Homepage should claim: "${liveToolInstances.toLocaleString('en-US')}+" live tools`);
+console.log(`  Public headline selector: tools.live_experiences = ${liveToolInstances.toLocaleString('en-US')}`);

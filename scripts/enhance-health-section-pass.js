@@ -543,7 +543,7 @@ function buildGeneratedPage(tool, profile, app, registryById) {
     '<afro-footer></afro-footer>',
     '<script>window.HEALTH_TOOL_CONFIG=' + JSON.stringify(config) + ';</script>',
     '<script src="/assets/js/health-tool-runtime.js"></script>',
-    '<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-D859CGF391");</script>',
+    '<script defer src="/assets/js/lazy-analytics.js"></script>',
     '</body>',
     '</html>',
   ].join('\n');

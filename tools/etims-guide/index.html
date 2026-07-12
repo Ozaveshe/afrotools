@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KRA eTIMS Guide 2026 — Onboarding, Invoices & Compliance | AfroTools</title>
 <meta name="description" content="Plain-English guide to KRA eTIMS: who must issue electronic tax invoices in Kenya, how to onboard (eTIMS Lite, Client, VSCU/OSCU), and why expenses need eTIMS invoices to be deductible.">
-<link rel="canonical" href="https://afrotools.com/tools/etims-guide/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="KRA eTIMS Guide 2026 — Onboarding, Invoices & Compliance | AfroTools">
 <meta property="og:description" content="Who must issue electronic tax invoices in Kenya, how to onboard to eTIMS, and why expenses need eTIMS invoices to be deductible.">
@@ -32,8 +31,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
 <style>
 .agde-hero{background:var(--color-bg-dark,#0A1628);padding:40px 0 34px}
 .agde-hero .container{max-width:1000px}
@@ -64,6 +63,9 @@
 .agde-note{font-size:.78rem;color:var(--color-text-subtle,#94a3af);border-top:1px solid var(--color-border,#e2e8f0);padding-top:14px;margin-top:34px;line-height:1.6}
 .agde-main a{color:var(--color-link,#0063D1);font-weight:600}
 </style>
+<link rel="canonical" href="https://afrotools.com/tools/etims-guide/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/etims-guide/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/etims-guide/">
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -127,6 +129,75 @@
 
   <p class="agde-note"><strong>Disclaimer:</strong> AfroTools is not affiliated with the Kenya Revenue Authority. This guide is for general information only and is not tax advice. Requirements and exemptions change — always confirm on <a href="https://www.kra.go.ke/" target="_blank" rel="noopener">kra.go.ke</a> or with a qualified Kenyan tax professional.</p>
 </main>
+
+<!-- Onboarding readiness checklist (interactive) -->
+<section aria-labelledby="etims-readiness-title" style="max-width:1000px;margin:0 auto;padding:4px 24px 10px;font-family:'Inter',sans-serif">
+  <h2 id="etims-readiness-title" style="font-size:1.25rem;font-weight:800;margin:8px 0 6px;color:var(--color-text,#0f172a)">eTIMS onboarding readiness checklist</h2>
+  <p style="font-size:.9rem;line-height:1.7;color:var(--color-text-muted,#475569);margin:0 0 14px">Tick each item as you get it ready before you onboard on etims.kra.go.ke. Your progress is saved in this browser only — nothing is sent anywhere.</p>
+  <div style="background:var(--color-bg-card,#fff);border:1px solid var(--color-border,#e2e8f0);border-radius:10px;padding:18px 20px;box-shadow:var(--shadow-sm,0 1px 2px rgba(0,0,0,.05))">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+      <div style="flex:1;height:8px;background:var(--color-bg-subtle,#F1F5F9);border-radius:99px;overflow:hidden"><div id="etimsProg" style="height:100%;width:0;background:var(--color-primary,#0062CC);transition:width .25s"></div></div>
+      <strong id="etimsCount" style="font-size:.8rem;color:var(--color-text,#0f172a);white-space:nowrap">0 of 8 ready</strong>
+    </div>
+    <ul id="etimsList" style="list-style:none;padding:0;margin:0">
+      <li style="margin-bottom:11px"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:.88rem;line-height:1.5;color:var(--color-text-muted,#475569)"><input type="checkbox" style="margin-top:2px;width:16px;height:16px;flex-shrink:0"><span>Valid <strong>KRA PIN</strong> for the business</span></label></li>
+      <li style="margin-bottom:11px"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:.88rem;line-height:1.5;color:var(--color-text-muted,#475569)"><input type="checkbox" style="margin-top:2px;width:16px;height:16px;flex-shrink:0"><span>iTax-registered <strong>phone number</strong> active (to receive the onboarding OTP)</span></label></li>
+      <li style="margin-bottom:11px"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:.88rem;line-height:1.5;color:var(--color-text-muted,#475569)"><input type="checkbox" style="margin-top:2px;width:16px;height:16px;flex-shrink:0"><span>Director / owner <strong>ID</strong> ready to attach to the service request</span></label></li>
+      <li style="margin-bottom:11px"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:.88rem;line-height:1.5;color:var(--color-text-muted,#475569)"><input type="checkbox" style="margin-top:2px;width:16px;height:16px;flex-shrink:0"><span>Chosen the eTIMS solution that fits (Lite web/USSD, Client, or VSCU/OSCU)</span></label></li>
+      <li style="margin-bottom:11px"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:.88rem;line-height:1.5;color:var(--color-text-muted,#475569)"><input type="checkbox" style="margin-top:2px;width:16px;height:16px;flex-shrink:0"><span>Device ready (browser or feature phone for Lite; Windows/Android for Client; ERP/POS for integration)</span></label></li>
+      <li style="margin-bottom:11px"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:.88rem;line-height:1.5;color:var(--color-text-muted,#475569)"><input type="checkbox" style="margin-top:2px;width:16px;height:16px;flex-shrink:0"><span>You understand each sale is <strong>transmitted to KRA in real time</strong></span></label></li>
+      <li style="margin-bottom:11px"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:.88rem;line-height:1.5;color:var(--color-text-muted,#475569)"><input type="checkbox" style="margin-top:2px;width:16px;height:16px;flex-shrink:0"><span>You know expenses need a valid <strong>eTIMS invoice</strong> to be deductible</span></label></li>
+      <li><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:.88rem;line-height:1.5;color:var(--color-text-muted,#475569)"><input type="checkbox" style="margin-top:2px;width:16px;height:16px;flex-shrink:0"><span>Plan in place to reconcile eTIMS sales with VAT / income tax returns on <a href="/tools/itax-guide/" style="color:var(--color-link,#0063D1);font-weight:600">iTax</a></span></label></li>
+    </ul>
+  </div>
+</section>
+<script>
+(function(){
+  var key='afrotools-etims-readiness';
+  var list=document.getElementById('etimsList');
+  if(!list)return;
+  var boxes=list.querySelectorAll('input[type="checkbox"]');
+  var count=document.getElementById('etimsCount');
+  var prog=document.getElementById('etimsProg');
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(e){}
+  function update(){
+    var done=0;
+    for(var i=0;i<boxes.length;i++){if(boxes[i].checked)done++;}
+    count.textContent=done+' of '+boxes.length+' ready';
+    prog.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%';
+  }
+  for(var i=0;i<boxes.length;i++){
+    (function(b,idx){
+      if(saved[idx])b.checked=true;
+      b.addEventListener('change',function(){
+        saved[idx]=b.checked;
+        try{localStorage.setItem(key,JSON.stringify(saved));}catch(e){}
+        update();
+      });
+    })(boxes[i],i);
+  }
+  update();
+})();
+</script>
+
+<!-- Methodology, limitations & sources -->
+<section data-tool-verification-panel aria-labelledby="etims-guide-method-title" style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <h2 id="etims-guide-method-title" style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:6px;font-family:'Inter',sans-serif">How it works — methodology &amp; sources</h2>
+  <p style="font-size:0.84rem;color:#64748b;line-height:1.6;margin:0 0 14px;font-family:'Inter',sans-serif">Updated for 2026. Here is exactly how this guide is compiled, the assumptions behind it, and what to verify before you rely on it.</p>
+  <details open style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Methodology &amp; assumptions</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">This is an editorial reference guide to KRA's electronic Tax Invoice Management System (eTIMS), not a calculator, so there is no formula to run. We compile the solution comparison (eTIMS Lite web/USSD, eTIMS Client, and VSCU/OSCU integration), the onboarding steps and the deductibility rule by following the live workflow on etims.kra.go.ke and cross-checking KRA's published "Learn about eTIMS" guidance. The mandate quoted — that since 1 January 2024 all persons in business, including non-VAT-registered businesses, must issue electronic tax invoices, with limited exemptions — is transcribed from KRA rather than our own interpretation. We review the page against kra.go.ke each quarter and re-date it when solutions, onboarding steps or exemptions change.</div>
+  </details>
+  <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Limitations &amp; what to verify</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">This guide is informational only and is not tax advice, and AfroTools is not affiliated with the Kenya Revenue Authority. Which eTIMS solution you must use, the exemptions that apply, and the invoice-support rule for expense deductibility depend on your specific business — always confirm the current requirement on kra.go.ke, inside your eTIMS/iTax account, or with a qualified Kenyan tax professional before onboarding or relying on an invoice for a deduction.</div>
+  </details>
+  <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Sources &amp; references</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">Based on KRA's published eTIMS guidance and the onboarding portal. Primary sources: <a href="https://www.kra.go.ke/helping-tax-payers/faqs/learn-about-etims" target="_blank" rel="noopener">KRA — Learn about eTIMS &#8599;</a> and the official portal at <a href="https://etims.kra.go.ke/" target="_blank" rel="noopener">etims.kra.go.ke &#8599;</a> (<a href="https://www.kra.go.ke/" target="_blank" rel="noopener">kra.go.ke &#8599;</a>). Last verified 2026.</div>
+  </details>
+</section>
 
 <afro-footer></afro-footer>
 </body>

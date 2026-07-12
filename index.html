@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AfroTools AI - Africa's Practical AI Hub and Free Tool Directory</title>
   <meta name="description" content="Ask AfroTools AI for African calculators, documents, data and next steps. Free tax, PDF, invoice, CV, solar, fuel, car, FX and country tools for 54 countries.">
-  <link rel="canonical" href="https://afrotools.com/">
   <meta name="content-language" content="en">
   <meta name="robots" content="index, follow">
   <meta name="author" content="AfroTools">
@@ -100,11 +99,13 @@
   <!-- Full CSS loaded async — non-blocking -->
   <link rel="preload" href="/assets/css/tokens.min.css?v=c13f04eb" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="/assets/css/global.min.css?v=2777b75b" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <script src="/assets/js/components/country-selector.js?v=63cdc470" defer></script>
+  <script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
+  <script src="/assets/js/components/country-selector.js?v=c13ac60b" defer></script>
+  <script src="/assets/js/data/registry-counts.js?v=da28a659" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
-  <script src="/assets/js/bundles/core.1ecbb30b.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+  <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
   <script src="/assets/js/ai/intent-analytics.js?v=30b7ff81" defer></script>
   <!-- Twemoji: consistent flag rendering on Windows -->
   <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
@@ -777,11 +778,6 @@
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/" />
-<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/" />
 <style id="ai-home-command-variant">
   .afrotools-ai-command-hero{display:none;background:linear-gradient(180deg,#f8fbff 0%,#ffffff 100%);border-bottom:1px solid var(--color-border,#e2e8f0);padding:58px 20px 42px}
   :root[data-ai-home-variant="command"] .afrotools-ai-command-hero{display:block}
@@ -1059,6 +1055,13 @@
     }
   }
 </style>
+<link rel="canonical" href="https://afrotools.com/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/">
 </head>
 <body class="top-level-page-ui-refresh">
 
@@ -1098,7 +1101,7 @@
 <a href="/tools/vat-calculator/" style="color:#e2e8f0">VAT</a>
 <a href="/tools/cv-builder/" style="color:#e2e8f0">CV Builder</a>
 <a href="/tools/invoice-generator/" style="color:#e2e8f0">Invoice</a>
-<a href="/all-tools/" style="color:#e2e8f0">All Tools</a>
+<a href="/tools/" style="color:#e2e8f0">All Tools</a>
 <a href="/countries/" style="color:#e2e8f0">Countries</a>
 <a href="/media-kit/" style="color:#e2e8f0">For business</a>
 <a href="/about/" style="color:#e2e8f0">About</a>
@@ -1158,7 +1161,7 @@
   <div class="home-hero-grid wrap">
     <div class="hero-center">
     <div class="trusted-badge">Ask AfroTools AI</div>
-    <h1 class="hero-h1" id="hero-h1">AfroTools AI &mdash; Africa&rsquo;s Practical AI Hub</h1>
+    <p class="hero-h1" id="hero-h1">AfroTools AI &mdash; Africa&rsquo;s Practical AI Hub</p>
     <p class="hero-sub">Ask in plain words and jump straight into the right African calculator, document, or country guide &mdash; tax, CVs, imports, PDFs, currency and more.</p>
     <div class="hero-search-wrap">
       <label class="ai-command-label" for="hero-search-input">Ask AfroTools AI</label>
@@ -1186,8 +1189,8 @@
       <a href="/start/" class="btn-secondary">Choose your country</a>
     </div>
     <div class="home-trust-row" aria-label="AfroTools trust signals">
-      <div><strong id="hp-stat-tools">2,606+</strong><span>tools</span></div>
-      <div><strong>54</strong><span>countries</span></div>
+      <div><strong id="hp-stat-tools" data-registry-count="tools.live_experiences">2606</strong><span>live tool experiences</span></div>
+      <div><strong data-registry-count="countries.published">54</strong><span>countries</span></div>
       <div><strong>Private by default</strong><span>browser-first where possible</span></div>
     </div>
     </div>
@@ -1749,7 +1752,7 @@
   <div class="wrap">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
       <div class="eyebrow" style="margin-bottom:0">Tools</div>
-      <a href="/all-tools/" class="home-section-action">See All →</a>
+      <a href="/tools/" class="home-section-action">See All →</a>
     </div>
     <h2 class="sec-title">Built for Africa's everyday work.</h2>
     <p class="sec-sub">PDF workspace, CV builder, solar and fuel tools, recipes, maps, creator discovery, currency tools, and practical calculators built around African context, source labels, and usable exports.</p>
@@ -1919,7 +1922,7 @@
     </div><!-- /tools-main-grid -->
 
     <div style="text-align:center;margin-top:32px">
-      <a href="/all-tools/" class="btn-outline-dark">See all tools in the pipeline →</a>
+      <a href="/tools/" class="btn-outline-dark">See all tools in the pipeline →</a>
     </div>
 
   </div>
@@ -2030,9 +2033,9 @@
   <div class="wrap">
     <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
       <div class="eyebrow" style="margin-bottom:0">Categories</div>
-      <a href="/all-tools/" class="home-section-action">Explore All →</a>
+      <a href="/tools/" class="home-section-action">Explore All →</a>
     </div>
-    <h2 class="sec-title" id="cats-heading">2,606+ Tools. 54 Countries. <span id="cats-tool-count">English, French & Swahili</span>.</h2>
+    <h2 class="sec-title" id="cats-heading"><span data-registry-count="tools.live_experiences">2606</span> live tool experiences. <span data-registry-count="countries.published">54</span> countries. <span id="cats-tool-count"><span data-registry-count="languages.site_published">5</span> site languages</span>.</h2>
     <p class="sec-sub">AfroTools brings work, money, documents, country, career, food, energy, transport, and planning tools into one African context. Ask AI for a route, or browse by category.</p>
 
     <div class="cats-grid" id="cats-grid">
@@ -2040,49 +2043,49 @@
     <div class="cat-icon-wrap" style="background:#eff6ff"><img src="/assets/img/categories/salary-tax.png" alt="Salary & Tax" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">Salary &amp; Tax</div>
     <div class="cat-desc">PAYE calculators for all 54 African countries with named assumptions and optional guidance.</div>
-    <div class="cat-count">54 countries &middot; guided estimates</div>
+    <div class="cat-count"><span data-registry-count="countries.published">54</span> countries &middot; guided estimates</div>
   </a>
   <a href="/tools/pdf-workspace/" class="cat-card rv d1">
     <div class="cat-icon-wrap" style="background:#fef3c7"><img src="/assets/img/categories/pdf-workspace.png" alt="PDF Workspace" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">PDF Workspace</div>
     <div class="cat-desc">Merge, split, compress, watermark and protect PDFs. Browser-based where supported.</div>
-    <div class="cat-count">8 tools &middot; local-first</div>
+    <div class="cat-count">Local-first PDF workflows</div>
   </a>
   <a href="/creative/" class="cat-card rv d2">
     <div class="cat-icon-wrap" style="background:#f3e8ff"><img src="/assets/img/categories/creator-suite.png" alt="Creator Suite" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">Creator Suite</div>
-    <div class="cat-desc">Thumbnail maker, script generator, caption writer &amp; 17 more creator tools.</div>
-    <div class="cat-count">20 tools &middot; built for creators</div>
+    <div class="cat-desc">Thumbnail maker, script generator, caption writer, and practical creator workflows.</div>
+    <div class="cat-count">Built for creators</div>
   </a>
   <a href="/legal/" class="cat-card rv d3">
     <div class="cat-icon-wrap" style="background:#ede9fe"><img src="/assets/img/categories/legal-compliance.png" alt="Legal & Compliance" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">Legal &amp; Compliance</div>
-    <div class="cat-desc">CAC, TIN, NDPR, business registration &mdash; 16-country compliance checklists.</div>
-    <div class="cat-count">33 tools &middot; 16 countries</div>
+    <div class="cat-desc">CAC, TIN, NDPR, business registration, and country compliance checklists.</div>
+    <div class="cat-count">Country-aware compliance workflows</div>
   </a>
   <a href="/tools/currency-converter/" class="cat-card rv">
     <div class="cat-icon-wrap" style="background:#ecfdf5"><img src="/assets/img/categories/currency-fx.png" alt="Currency & FX" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">Currency &amp; FX</div>
       <div class="cat-desc">Latest available snapshots for African currencies, bank rates, crypto, and remittance where supported.</div>
-      <div class="cat-count">42 currencies &middot; Timestamped rates</div>
+      <div class="cat-count"><span data-registry-count="currencies.country">42</span> country currencies &middot; timestamped rates</div>
   </a>
   <a href="/engineering/afrodraft/" class="cat-card rv d1">
     <div class="cat-icon-wrap" style="background:#f0f9ff"><img src="/assets/img/categories/engineering-cad.png" alt="Engineering & CAD" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">Engineering &amp; CAD</div>
-    <div class="cat-desc">AfroDraft 2D CAD, structural calculators, QS tools. 60+ AutoCAD features.</div>
-    <div class="cat-count">25+ tools &middot; Mobile-ready</div>
+    <div class="cat-desc">AfroDraft 2D CAD, structural calculators, quantity-surveying tools, and familiar CAD features.</div>
+    <div class="cat-count">Mobile-ready engineering workflows</div>
   </a>
   <a href="/agriculture/" class="cat-card rv d2">
     <div class="cat-icon-wrap" style="background:#f0fdf4"><img src="/assets/img/categories/agriculture.png" alt="Agriculture" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">Agriculture</div>
     <div class="cat-desc">Crop yield, livestock cost, farm profit estimators &mdash; African varieties &amp; markets.</div>
-    <div class="cat-count">30+ tools &middot; 54 countries</div>
+    <div class="cat-count">Country-aware farming workflows</div>
   </a>
   <a href="/tools/" class="cat-card rv d3" style="border-color:#0062CC;background:#eff6ff">
     <div class="cat-icon-wrap" style="background:#dbeafe"><img src="/assets/img/categories/all-categories.png" alt="All Categories" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name" id="cats-all-label">All 32 Categories</div>
+    <div class="cat-name" id="cats-all-label">All <span data-registry-count="categories.published">32</span> Categories</div>
     <div class="cat-desc">Finance, Health, Transport, Education, Energy, Legal, Climate, Diaspora &amp; more.</div>
-    <div class="cat-count" style="color:#0063d1">Browse <span id="cats-browse-count">2,606+</span> tools &rarr;</div>
+    <div class="cat-count" style="color:#0063d1">Browse <span id="cats-browse-count" data-registry-count="tools.live_experiences">2606</span> live tool experiences &rarr;</div>
   </a>
 </div>
   </div>
@@ -2459,12 +2462,12 @@
         <h2 class="sec-h2">Put AfroTools on <em>your website.</em></h2>
         <p class="sec-desc">Add AfroTools widgets to your blog, app, school, association site, or intranet with script and iframe options. Start with payroll, finance, health, education, developer, and Ask AfroTools AI router widgets.</p>
         <ul class="embed-bullets">
-          <li><span class="embed-check">&#x2713;</span> 222 ready-to-embed widgets</li>
+          <li><span class="embed-check">&#x2713;</span> <span data-registry-count="widgets.published">223</span> ready-to-embed widgets</li>
           <li><span class="embed-check">&#x2713;</span> Built-in updates for payroll, tax, and finance widgets</li>
           <li><span class="embed-check">&#x2713;</span> Mobile-responsive, zero-config script and iframe options</li>
           <li><span class="embed-check">&#x2713;</span> Free widgets include a small Powered by AfroTools badge</li>
         </ul>
-        <a href="/embed/" class="btn-primary embed-cta">Browse Embeddable Tools &rarr;</a>
+        <a href="/widgets/demo/" class="btn-primary embed-cta">Browse Embeddable Tools &rarr;</a>
       </div>
       <div class="embed-visual" aria-hidden="true">
         <div class="embed-browser">
@@ -2531,7 +2534,7 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/ai/example-registry.js?v=ee83a08c"></script>
-<script src="/assets/js/ai/i18n.js?v=b1485764"></script>
+<script src="/assets/js/ai/i18n.js?v=2b001162"></script>
 <script>
 function showTab(i) {
   var tabs = document.querySelectorAll('.showcase-tab');
@@ -2678,7 +2681,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => { btn.textContent = 'Notify Me →'; btn.style.background = ''; }, 5000);
   });
 
-  // ── LOAD LIVE DATA PREVIEWS FOR HOMEPAGE CARDS ──
+  // ── LOAD SOURCE-AND-TIMESTAMPED DATA PREVIEWS FOR HOMEPAGE CARDS ──
   function formatHomepageRate(code, value) {
     if (typeof value !== 'number' || !isFinite(value)) return null;
     if (code === 'NGN') return Math.round(value).toLocaleString();
@@ -2725,7 +2728,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function applyHomepageFxPreview(data) {
-    if (!data || !data.rates) {
+    if (!data || !data.rates || !data.timestamp || !data.source || !isFinite(Date.parse(data.timestamp))) {
       setHomepageFxUnavailable();
       return;
     }
@@ -2734,7 +2737,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var kes = formatHomepageRate('KES', data.rates.KES);
     var ghs = formatHomepageRate('GHS', data.rates.GHS);
     var updateLabel = formatHomepageUpdate(data.timestamp);
-    var sourceLabel = data.source ? 'Source: ' + sanitizeHomepageText(data.source) : 'Source: AfroTools FX feed';
+    var sourceLabel = 'Source: ' + sanitizeHomepageText(data.source);
 
     var fx = document.getElementById('fx-preview');
     if (fx) {
@@ -2785,7 +2788,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var aiRouteScriptPromise = null;
     var aiRoutePendingKey = '';
     var AI_ROUTE_SCRIPTS = [
-      '/assets/js/ai/tool-manifest.js?v=43a68fa3',
+      '/assets/js/ai/tool-manifest.js?v=69a803ed',
       '/assets/js/ai/intent-router.js?v=165ae16e',
       '/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad',
       '/assets/js/ai/orchestrator.js?v=538b122c'
@@ -3488,9 +3491,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof getPublicToolStats !== 'function') return;
     var stats = getPublicToolStats('en');
     var s = window._afroStats || {};
-    var total = s.total || stats.liveTools;
-    var live  = s.live  || stats.liveTools;
-    var cats  = s.cats  || stats.categories;
+    var canonicalCounts = window.AFRO_REGISTRY_COUNTS || {};
+    var total = canonicalCounts['tools.live_experiences'] || s.total || stats.liveTools;
+    var live  = canonicalCounts['tools.live_experiences'] || s.live || stats.liveTools;
+    var cats  = canonicalCounts['categories.published'] || s.cats || stats.categories;
     var liveF = s.liveF || (typeof window.getLivePayeCountryCount === 'function' ? window.getLivePayeCountryCount() : 54);
 
     // Re-apply hero stats (in case sync script missed anything)
@@ -3500,27 +3504,16 @@ document.addEventListener('DOMContentLoaded', function() {
     var el;
     el = document.getElementById('stat-live');       if (el) el.textContent = live;
     el = document.getElementById('hp-stat-categories'); if (el) el.textContent = cats;
-    el = document.getElementById('cats-all-label'); if (el) el.textContent = 'All ' + cats + ' Categories';
     // hero-h1 kept as static HTML — "The tools Africa actually needs."
 
     // PAYE section heading (rendered lower in page, safe to update now)
     el = document.getElementById('paye-heading');
     if (el) el.textContent = 'PAYE Calculators \u2014 ' + liveF + ' Countr' + (liveF===1?'y':'ies') + ' Live';
 
-    // cats-heading fallback
-    el = document.getElementById('cats-heading');
-    if (el) el.textContent = stats.display.liveToolsPlus + ' Tools. 54 Countries. English, French & Swahili.';
   }
   function renderCategories() {
     var grid = document.getElementById('cats-grid');
     if (!grid || typeof AFRO_CATEGORIES === 'undefined' || typeof AFRO_TOOLS === 'undefined' || typeof getPublicToolStats !== 'function') return;
-
-    // Update heading
-    var h = document.getElementById('cats-heading');
-    if (h) {
-      var total = getPublicToolStats('en').display.liveToolsPlus;
-      h.innerHTML = total + ' Tools. 54 Countries. <span id="cats-tool-count">English, French &amp; Swahili</span>.';
-    }
 
     // Count live/new tools per category
     var liveCounts = {};
@@ -3534,7 +3527,10 @@ document.addEventListener('DOMContentLoaded', function() {
     var html = '';
     keys.forEach(function(key, i) {
       var cat = AFRO_CATEGORIES[key];
-      var count = liveCounts[key] || 0;
+      var selectorId = 'tools.category.' + key + '.published';
+      var count = (window.AFRO_REGISTRY_COUNTS && Number.isInteger(window.AFRO_REGISTRY_COUNTS[selectorId]))
+        ? window.AFRO_REGISTRY_COUNTS[selectorId]
+        : (liveCounts[key] || 0);
       var delay = i > 0 ? ' d' + (i % 8) : '';
       var countHtml = count > 0
         ? '<div class="cat-count live">' + count + ' Tool' + (count === 1 ? '' : 's') + ' Available</div>'
@@ -3659,7 +3655,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(document.querySelector('script[src*="tool-registry"]'))return;
     loaded = true;
     var s=document.createElement('script');
-    s.src='/assets/js/components/tool-registry.min.js?v=2327e88c';
+    s.src='/assets/js/components/tool-registry.min.js?v=0e33f88d';
     s.onload=function(){
       if (typeof window.refreshHomepageRegistryStats === 'function') window.refreshHomepageRegistryStats();
       window.dispatchEvent(new CustomEvent('afrotools:registry-ready'));
@@ -3706,33 +3702,6 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('afro-country-change', function(){ setTimeout(syncCountrySelectorLabels, 0); });
 })();
 </script>
-<script>
-(function(){
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
-  function loadAnalytics(){
-    if (document.getElementById('afro-gtag-js')) return;
-    var s = document.createElement('script');
-    s.id = 'afro-gtag-js';
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-D859CGF391';
-    s.async = true;
-    document.head.appendChild(s);
-    gtag('js', new Date());
-    gtag('config', 'G-D859CGF391');
-  }
-  ['pointerdown','keydown'].forEach(function(eventName){
-    window.addEventListener(eventName, loadAnalytics, { once:true, passive:true });
-  });
-  window.addEventListener('load', function(){
-    setTimeout(function(){
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadAnalytics, { timeout: 3000 });
-      } else {
-        loadAnalytics();
-      }
-    }, 12000);
-  }, { once:true });
-})();
-</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

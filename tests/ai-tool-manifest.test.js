@@ -15,7 +15,7 @@ const validation = manifestApi.validateToolManifest(manifest);
 
 assert.deepStrictEqual(validation.errors, [], "AI tool manifest should validate cleanly");
 assert.ok(manifest.length >= 1000, `expected at least 1000 manifest entries, found ${manifest.length}`);
-assert.ok(manifest.length < directoryEntries.length, "duplicate route aliases should be collapsed for router safety");
+assert.strictEqual(manifest.length, directoryEntries.length, "canonical directory records should already have unique router-safe routes");
 
 const routeOwners = new Map();
 for (const entry of manifest) {

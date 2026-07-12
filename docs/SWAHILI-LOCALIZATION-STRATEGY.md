@@ -1205,3 +1205,14 @@ Use this glossary for Swahili business, VAT, invoice, fintech, SME, and trade-fi
 - Retain search-useful terms where helpful: translation, translator, phrasebook, tone marks, Pidgin, Francophone Africa, Arabic-Indic numerals, transliteration, romanization, Ge'ez, Tifinagh, Unicode, script, pronunciation, and name meaning.
 - PDF translation remains under the Document/PDF workspace, medical report translation remains under health, and baby names/cultural names remain linked from culture rather than duplicated here.
 - Do not claim perfect translation quality, certified translation, legal/medical accuracy, school or immigration acceptance, or final cultural authority. Encourage users to verify with native speakers, qualified translators, family/community authorities, schools, agencies, or professionals when decisions matter.
+## Product surface contract (2026-07-11)
+
+The Swahili product surface is generated and checked through `scripts/build-swahili-product-surface.js`. Run `npm run sw:surface:build` after changing its source contracts, then `npm run test:sw-surface` and `npm run test:sw-surface:browser`.
+
+- `data/localization/sw-product-glossary.json` owns the maintained product glossary, NFC policy, coverage definitions, and East/Central African market-format profiles.
+- Counts use named canonical-registry selectors. The Swahili directory count is `tools.locale.sw.published`; it is not the platform-wide live-experience count.
+- Language and country are independent. Swahili does not imply Kenya, and its locale manifest has no default currency. The selected jurisdiction owns currency, units, formula, source, and applicability.
+- `/sw/faragha/`, `/sw/masharti/`, `/sw/msaada/`, and `/sw/bei/` are native Swahili product pages generated from the claims, plan, and locale contracts.
+- `/sw/auth/`, `/sw/dashboard/`, and `/sw/vault/` are explicit, `noindex` English-fallback bridges. They require an intentional click, preserve a return path where possible, and must not emit hreflang as native equivalents.
+- Network-backed data must distinguish a verified snapshot from fallback, empty, malformed, offline, or failed states. Fallback rates must never be labelled live or real-time.
+- Shared navigation, footer, assistant, consent, favorites, validation, errors, and account entry points must use Swahili strings. Reviewed foreign terms are limited to glossary entries, proper nouns, statutory names, brands, code, and accepted acronyms.

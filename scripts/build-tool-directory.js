@@ -1,68 +1,19 @@
 #!/usr/bin/env node
+'use strict';
+
 /**
- * Build the crawlable /tools/ fallback directory.
- *
- * The client registry still powers rich filtering, but this script makes the
- * first HTML response useful when JavaScript or registry hydration fails.
+ * Build the crawlable /tools/ fallback directory from the validated canonical
+ * registry. The client registry still powers rich filtering.
  */
 
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const registryApi = require('./lib/canonical-registry');
 
 const ROOT = path.join(__dirname, '..');
-const REGISTRY_PATH = path.join(ROOT, 'assets/js/components/tool-registry.js');
 const TOOLS_PAGE = path.join(ROOT, 'tools/index.html');
 const DIRECTORY_JSON_PATH = path.join(ROOT, 'data/tool-directory.json');
-const AUDIT_DATE = new Date().toISOString().slice(0, 10);
-
-const COUNTRY_NAMES = [
-  'Nigeria', 'Kenya', 'Ghana', 'South Africa', 'Egypt', 'Tanzania', 'Uganda', 'Rwanda',
-  'Ethiopia', 'Senegal', 'Cameroon', 'Morocco', 'Algeria', 'Tunisia', 'Zambia', 'Zimbabwe',
-  'Botswana', 'Namibia', 'Malawi', 'Mauritius', 'Seychelles', 'Benin', 'Togo', 'Mali',
-  'Niger', 'Liberia', 'Gambia', 'Somalia', 'Djibouti', 'Eritrea', 'Comoros', 'Angola',
-  'Mozambique', 'Libya', 'Sudan', 'Madagascar', 'Burundi', 'Gabon', 'Chad', 'Guinea',
-  'Lesotho', 'Sierra Leone', 'Cote dIvoire', "Cote d'Ivoire", "Côte d'Ivoire",
-  'Cape Verde', 'DR Congo', 'Republic of Congo', 'Central African Republic', 'South Sudan',
-  'Equatorial Guinea', 'Guinea-Bissau', 'Burkina Faso', 'Sao Tome', 'São Tomé'
-];
-
-function loadRegistry() {
-  const code = fs.readFileSync(REGISTRY_PATH, 'utf8');
-  function FakeEvent() {}
-  const sandbox = {
-    window: {},
-    CustomEvent: FakeEvent,
-    document: {
-      readyState: 'complete',
-      getElementById: () => null,
-      createElement: () => ({ textContent: '', style: {}, appendChild() {} }),
-      head: { appendChild() {} },
-      addEventListener() {},
-      removeEventListener() {},
-      dispatchEvent() {},
-      querySelector: () => null,
-    },
-  };
-  sandbox.window = sandbox;
-  vm.runInNewContext(code, sandbox, { filename: REGISTRY_PATH });
-  return {
-    tools: sandbox.AFRO_TOOLS || [],
-    categories: sandbox.AFRO_CATEGORIES || {},
-    getPublicToolStats: sandbox.getPublicToolStats,
-    getTotalToolCount: sandbox.getTotalToolCount,
-  };
-}
-
-function normalize(value) {
-  return String(value || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
-}
 
 function escapeHtml(value) {
   return String(value || '')
@@ -73,122 +24,68 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-function normalizeHref(href, fallback) {
-  return String(href || fallback || '')
-    .replace(/\/index\.html$/, '')
-    .replace(/\/$/, '')
-    .toLowerCase();
+function inferCountries(tool, countryById) {
+  if (tool.applicability.scope === 'pan-african') return ['All African countries'];
+  const names = tool.applicability.countryIds
+    .map((id) => countryById.get(id))
+    .filter(Boolean)
+    .map((country) => country.title);
+  return names.length ? names : ['Regional'];
 }
 
-function getCountDetails(tools, filterFn) {
-  const rows = tools.filter((tool) => {
-    const langOk = !tool.lang || tool.lang === 'en';
-    return langOk && (typeof filterFn === 'function' ? filterFn(tool) : true);
-  });
-  const hrefs = [];
-  const seen = new Set();
-  const weightedFamilies = new Map();
-  for (const tool of rows) {
-    const hrefKey = normalizeHref(tool.href, tool.id);
-    if (!seen.has(hrefKey)) {
-      seen.add(hrefKey);
-      hrefs.push(hrefKey);
-    }
-    const count = Number(tool.toolCount) || 1;
-    if (count > 1 && count > (weightedFamilies.get(hrefKey) || 0)) {
-      weightedFamilies.set(hrefKey, count);
-    }
-  }
-  let hiddenVariants = 0;
-  for (const [familyHref, declaredCount] of weightedFamilies.entries()) {
-    const explicitFamilyUrls = hrefs.filter((href) => href === familyHref || href.startsWith(familyHref + '/')).length;
-    hiddenVariants += Math.max(0, declaredCount - explicitFamilyUrls);
-  }
-  return {
-    registry_entries: rows.length,
-    unique_urls: hrefs.length,
-    country_variant_instances: hiddenVariants,
-    tool_country_instances: hrefs.length + hiddenVariants,
-  };
+function statusClass(status) {
+  return String(status || '').toLowerCase().replace(/\s+/g, '-');
 }
 
-function inferCountries(tool) {
-  const explicit = tool.countries || tool.country || tool.countryName;
-  if (Array.isArray(explicit) && explicit.length) return explicit;
-  if (typeof explicit === 'string' && explicit.trim()) return [explicit.trim()];
-  if (Number(tool.toolCount) >= 54) return ['All African countries'];
-
-  const haystack = normalize([tool.name, tool.desc, tool.href, tool.id].join(' '));
-  const matches = COUNTRY_NAMES.filter((country) => haystack.includes(normalize(country)));
-  return matches.length ? Array.from(new Set(matches)) : ['Pan-African'];
-}
-
-function statusLabel(tool) {
-  if (tool.status === 'live' || tool.status === 'new') return 'Live';
-  if (tool.status === 'beta') return 'Beta';
-  return 'Coming soon';
-}
-
-function statusClass(tool) {
-  const label = tool.status === 'Live' || tool.status === 'Beta' || tool.status === 'Coming soon'
-    ? tool.status
-    : statusLabel(tool);
-  return label.toLowerCase().replace(/\s+/g, '-');
-}
-
-function lastUpdated(tool) {
-  return tool.lastVerified || tool.last_verified || tool.updated || tool.lastUpdated || tool.last_updated || AUDIT_DATE;
-}
-
-function toolRecord(tool, categories) {
-  const category = categories[tool.category] || {};
+function toolRecord(tool, categoryById, countryById) {
+  const category = categoryById.get(tool.categoryId) || {};
   return {
     id: tool.id,
-    name: tool.name,
-    description: tool.desc || '',
-    category_key: tool.category || 'uncategorized',
-    category: category.name || tool.category || 'Uncategorized',
-    countries: inferCountries(tool),
-    status: statusLabel(tool),
-    language: tool.lang || 'en',
-    last_updated: lastUpdated(tool),
-    url: tool.href || '/tools/' + tool.id + '/',
-    priority: Number(tool.priority || 0),
+    name: tool.title,
+    description: tool.description || '',
+    category_key: tool.categoryId || 'uncategorized',
+    category: category.title || tool.categoryId || 'Uncategorized',
+    countries: inferCountries(tool, countryById),
+    status: 'Live',
+    language: tool.localeCoverage[0] || 'en',
+    last_updated: tool.dataFreshness.asOf || null,
+    url: tool.route,
+    priority: Number(tool.source.priority || 0),
+    aliases: tool.routeAliases.slice()
   };
 }
 
 function buildFallbackHtml(records) {
   const grouped = new Map();
-  for (const record of records) {
+  records.forEach((record) => {
     if (!grouped.has(record.category_key)) grouped.set(record.category_key, []);
     grouped.get(record.category_key).push(record);
-  }
-  const sections = Array.from(grouped.entries())
+  });
+
+  const sections = [...grouped.entries()]
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([key, tools]) => {
       tools.sort((a, b) => (b.priority - a.priority) || a.name.localeCompare(b.name));
       const cards = tools.map((tool) => {
-        const live = tool.status === 'Live';
-        const href = live ? ` href="${escapeHtml(tool.url)}"` : '';
-        const tag = live ? 'a' : 'div';
         const countryText = tool.countries.join(', ');
-        return `      <${tag} class="tc static-tool-card" data-tool-card data-category="${escapeHtml(tool.category_key)}" data-country="${escapeHtml(countryText)}" data-status="${escapeHtml(statusClass(tool))}" data-language="${escapeHtml(tool.language)}"${href}>
-        <div class="tc-top"><div class="tc-icon">🛠️</div><h3>${escapeHtml(tool.name)}</h3></div>
+        const freshness = tool.last_updated || 'Not dated';
+        return `      <a class="tc static-tool-card" data-tool-card data-directory-record data-category="${escapeHtml(tool.category_key)}" data-country="${escapeHtml(countryText)}" data-status="${statusClass(tool.status)}" data-language="${escapeHtml(tool.language)}" href="${escapeHtml(tool.url)}">
+        <div class="tc-top"><div class="tc-icon">AT</div><h3>${escapeHtml(tool.name)}</h3></div>
         <p>${escapeHtml(tool.description)}</p>
-        <div class="tc-meta"><span><strong>Countries:</strong> ${escapeHtml(countryText)}</span><span><strong>Category:</strong> ${escapeHtml(tool.category)}</span><span><strong>Language:</strong> ${escapeHtml(tool.language.toUpperCase())} · <strong>Updated:</strong> ${escapeHtml(tool.last_updated)}</span></div>
-        <div class="tc-foot"><span class="tc-badge ${live ? 'tc-badge-live' : 'tc-badge-soon'}">${escapeHtml(tool.status)}</span><span class="tc-cta">${live ? 'Open Tool' : 'Coming Soon'} →</span></div>
-      </${tag}>`;
+        <div class="tc-meta"><span><strong>Countries:</strong> ${escapeHtml(countryText)}</span><span><strong>Category:</strong> ${escapeHtml(tool.category)}</span><span><strong>Language:</strong> ${escapeHtml(tool.language.toUpperCase())} &middot; <strong>Data as of:</strong> ${escapeHtml(freshness)}</span></div>
+        <div class="tc-foot"><span class="tc-badge tc-badge-live">Live</span><span class="tc-cta">Open Tool &rarr;</span></div>
+      </a>`;
       }).join('\n');
 
       return `  <section class="tools-section static-tool-section" data-static-category="${escapeHtml(key)}">
-    <div class="section-header"><div class="section-icon">🛠️</div><h2 class="section-title">${escapeHtml(tools[0].category)}</h2><div class="section-count">${tools.length} registry rows</div></div>
+    <div class="section-header"><div class="section-icon">AT</div><h2 class="section-title">${escapeHtml(tools[0].category)}</h2><div class="section-count">${tools.length} canonical records</div></div>
     <div class="tg-grid">
 ${cards}
     </div>
   </section>`;
     });
 
-  return `<p class="directory-note">Static fallback generated from the AfroTools registry on ${AUDIT_DATE}. Filters and search enhance this list when JavaScript loads; without JavaScript, every registry row below remains crawlable.</p>
+  return `<p class="directory-note">Static fallback generated from the validated canonical AfroTools registry. Filters and search enhance this list when JavaScript loads; without JavaScript, every published canonical record below remains crawlable.</p>
 ${sections.join('\n')}`;
 }
 
@@ -201,18 +98,21 @@ function replaceFallback(html, fallback) {
   return html.replace(new RegExp(`${start}[\\s\\S]*?${end}`), `${start}\n${fallback}\n    ${end}`);
 }
 
-const { tools, categories, getPublicToolStats } = loadRegistry();
-const records = tools
-  .filter((tool) => !tool.lang || tool.lang === 'en')
-  .map((tool) => toolRecord(tool, categories));
-const publicStats = typeof getPublicToolStats === 'function' ? getPublicToolStats('en') : null;
+const registry = registryApi.buildCanonicalRegistry();
+const validation = registryApi.validateCanonicalRegistry(registry);
+if (!validation.ok) throw new Error(validation.errors.map(registryApi.formatIssue).join('\n'));
+
+const categoryById = new Map(registry.categories.map((category) => [category.id, category]));
+const countryById = new Map(registry.countries.map((country) => [country.id, country]));
+const records = registry.tools
+  .filter((tool) => tool.publicationStatus === 'published' && !tool.deprecated && tool.localeCoverage.includes('en'))
+  .map((tool) => toolRecord(tool, categoryById, countryById));
 
 fs.mkdirSync(path.dirname(DIRECTORY_JSON_PATH), { recursive: true });
-writeFileSyncWithRetry(DIRECTORY_JSON_PATH, JSON.stringify(records, null, 2) + '\n', 'utf8');
+writeFileSyncWithRetry(DIRECTORY_JSON_PATH, `${JSON.stringify(records, null, 2)}\n`, 'utf8');
 
 const toolsPage = fs.readFileSync(TOOLS_PAGE, 'utf8');
-const updatedToolsPage = replaceFallback(toolsPage, buildFallbackHtml(records));
-writeFileSyncWithRetry(TOOLS_PAGE, updatedToolsPage, 'utf8');
+writeFileSyncWithRetry(TOOLS_PAGE, replaceFallback(toolsPage, buildFallbackHtml(records)), 'utf8');
 
-console.log(`Built ${records.length} crawlable tool rows`);
-if (publicStats) console.log(`Public live tool count: ${publicStats.liveTools}`);
+console.log(`Built ${records.length} crawlable canonical tool rows`);
+console.log(`Live tool experiences: ${registryApi.getSelector(registry, 'tools.live_experiences').value}`);

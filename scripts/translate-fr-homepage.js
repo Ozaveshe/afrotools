@@ -224,7 +224,7 @@ const replacements = [
   ['>African Context<', '>Contexte africain<'],
   ['>Nigerian plots. South African morgen. M-Pesa till QR codes. WAEC grade scales. Generator fuel vs solar ROI. No tool is built for London and relabelled for Lagos.<', '>Parcelles nigerianes. Morgen sud-africain. Codes QR M-Pesa. Echelles de notes WAEC. Generateur carburant vs ROI solaire. Aucun outil n\'est concu pour Londres et rebaptise pour Lagos.<'],
   ['>AI That Explains<', '>IA qui explique<'],
-  ['>Select tools include an AI Advisor — not just numbers, but context. What your effective tax rate actually means. Powered by Claude Sonnet.<', '>Certains outils incluent un conseiller IA — pas seulement des chiffres, mais du contexte. Ce que votre taux d\'imposition effectif signifie reellement. Propulse par Claude Sonnet.<'],
+  ['>Select tools include optional AI when the provider is configured — not just numbers, but context.<', '>Certains outils proposent une IA facultative lorsque le fournisseur est configuré — avec du contexte, pas seulement des chiffres.<'],
   ['>Privacy by Default<', '>Confidentialite par defaut<'],
   ['>PDF tools process entirely in your browser. Files never leave your device, never uploaded to any server. No accounts needed for any tool.<', '>Les outils PDF fonctionnent entierement dans votre navigateur. Les fichiers ne quittent jamais votre appareil. Aucun compte requis.<'],
   ['>Mobile First, Bandwidth Aware<', '>Mobile d\'abord, econome en bande passante<'],

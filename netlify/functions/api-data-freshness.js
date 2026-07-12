@@ -158,6 +158,17 @@ function getStatus(age, thresholds) {
   return 'offline';
 }
 
+function claimSafeStatus(timestamp, source, reportedStatus, thresholds, now) {
+  const age = ageMinutes(timestamp, now);
+  if (!timestamp || !source || age === null) return 'offline';
+  const observedStatus = getStatus(age, thresholds);
+  const normalizedReported = ['live', 'ok', 'stale', 'offline'].includes(reportedStatus)
+    ? reportedStatus
+    : observedStatus;
+  const rank = { live: 0, ok: 1, stale: 2, offline: 3 };
+  return rank[normalizedReported] > rank[observedStatus] ? normalizedReported : observedStatus;
+}
+
 async function supabaseGet(path) {
   const key = getSupabaseKey();
   if (!key) return { skipped: true, reason: 'supabase_service_key_missing' };
@@ -179,23 +190,23 @@ async function supabaseGet(path) {
 async function buildCategoryStatus(cat, config, meta, now) {
   const catMeta = meta[config.metaKey] || meta[cat] || {};
   let updatedAt = findTimestamp(catMeta);
+  let source = catMeta.source || null;
   let blobPresent = false;
 
-  if (!updatedAt) {
+  if (!updatedAt || !source) {
     const blob = await getData(config.blobKey);
     blobPresent = !!blob;
-    updatedAt = findTimestamp(blob);
+    updatedAt = updatedAt || findTimestamp(blob);
+    source = source || (blob && blob.source) || null;
   }
 
   const age = ageMinutes(updatedAt, now);
-  const derivedStatus = catMeta.status === 'ok'
-    ? getStatus(age, config.thresholds)
-    : (catMeta.status || getStatus(age, config.thresholds));
+  const derivedStatus = claimSafeStatus(updatedAt, source, catMeta.status, config.thresholds, now);
 
   return {
     updatedAt,
     status: derivedStatus,
-    source: catMeta.source || null,
+    source,
     source_type: catMeta.source_type || null,
     age_minutes: age,
     records_count: catMeta.records_count || null,
@@ -394,4 +405,11 @@ exports.handler = async function(event) {
       checked_at: new Date().toISOString(),
     }),
   };
+};
+
+exports._test = {
+  ageMinutes,
+  claimSafeStatus,
+  findTimestamp,
+  getStatus,
 };

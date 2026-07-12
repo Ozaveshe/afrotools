@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -26,9 +26,12 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/tool-registry.min.js?v=2327e88c" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+<script src="/assets/js/lib/progressive-directory.js?v=18e0a585"></script>
+<script src="/assets/js/components/tool-registry.min.js?v=0e33f88d" defer data-directory-dependency></script>
+<script src="/assets/js/data/registry-counts.js?v=da28a659" defer></script>
+<script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-sans);background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
@@ -119,6 +122,7 @@ a{text-decoration:none;color:inherit;}
 .empty-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:18px;}
 .empty-actions button{border:1.5px solid #e5e7eb;background:#fff;border-radius:8px;padding:8px 12px;font:700 .72rem 'DM Sans',sans-serif;color:#475569;cursor:pointer;}
 .empty-actions button:hover,.empty-actions button:focus{border-color:var(--color-primary);color:var(--color-primary);outline:none;}
+.directory-pagination{text-align:center;margin:-18px 0 40px}.directory-pagination .btn{min-width:180px}
 
 /* SECTION DIVIDER */
 .sec-divider{height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:32px 0;}
@@ -231,8 +235,9 @@ a{text-decoration:none;color:inherit;}
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-zote/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/all-tools/" />
 </head>
-<body class="all-tools-ui-refresh top-level-page-ui-refresh">
+<body class="all-tools-ui-refresh top-level-page-ui-refresh" data-progressive-directory data-directory-registry="AFRO_TOOLS" data-directory-state="loading">
 <afro-navbar></afro-navbar>
+<div data-directory-status role="status" aria-live="polite" hidden><p data-directory-message></p><button type="button" data-directory-retry hidden>Retry directory load</button></div>
 
 <!-- HERO -->
 <section class="hero">
@@ -246,11 +251,11 @@ a{text-decoration:none;color:inherit;}
     <h1>Every Tool for <em>Africa</em></h1>
     <p class="hero-sub">The complete AfroTools library — financial calculators, AI advisors, PDF tools, CV builder, engineering, and more. Built for all 54 African countries. Always free.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="s-lbl">Live Tools</div><div class="s-val blue" id="statLive">2,606+</div></div>
-      <div class="hero-stat"><div class="s-lbl">In Development</div><div class="s-val" id="statPlanned">0</div></div>
-      <div class="hero-stat"><div class="s-lbl">Categories</div><div class="s-val blue" id="statCategories">32</div></div>
-      <div class="hero-stat"><div class="s-lbl">Countries Supported</div><div class="s-val blue">54</div></div>
-      <div class="hero-stat"><div class="s-lbl">Price</div><div class="s-val blue">Free Forever</div></div>
+      <div class="hero-stat"><div class="s-lbl">Live tool experiences</div><div class="s-val blue" id="statLive" data-registry-count="tools.live_experiences">2606</div></div>
+      <div class="hero-stat"><div class="s-lbl">Unpublished records</div><div class="s-val" id="statPlanned" data-registry-count="tools.unpublished">0</div></div>
+      <div class="hero-stat"><div class="s-lbl">Categories</div><div class="s-val blue" id="statCategories" data-registry-count="categories.published">32</div></div>
+      <div class="hero-stat"><div class="s-lbl">Countries Supported</div><div class="s-val blue" data-registry-count="countries.published">54</div></div>
+      <div class="hero-stat"><div class="s-lbl">Price</div><div class="s-val blue">Core use without a paid subscription</div></div>
     </div>
   </div>
 </section>
@@ -294,7 +299,7 @@ a{text-decoration:none;color:inherit;}
       <button type="button" class="filter-tab" data-filter="sports" onclick="setFilter('sports',this)">Sports</button>
       <button type="button" class="filter-tab" data-filter="career" onclick="setFilter('career',this)">Career</button>
     </div>
-    <select class="sort-sel" id="sortSel" aria-label="Sort tools" onchange="renderTools()">
+    <select class="sort-sel" id="sortSel" aria-label="Sort tools" onchange="visibleLimit=PAGE_SIZE;renderTools()">
       <option value="priority">Sort: Recommended</option>
       <option value="name">Sort: A–Z</option>
       <option value="live">Sort: Live First</option>
@@ -314,7 +319,47 @@ a{text-decoration:none;color:inherit;}
     <div class="section-title" id="sectionTitle">All Tools</div>
     <div class="results-count" id="resultsCount"></div>
   </div>
-  <div class="tools-grid" id="toolsGrid"></div>
+  <div class="tools-grid" id="toolsGrid">
+<!-- PROGRESSIVE_DIRECTORY_FALLBACK_START -->
+        <a href="/nigeria/ng-salary-tax" class="tool-card" data-directory-record data-id="ng-paye"><div class="tc-body"><div class="tc-name">Nigeria PAYE Calculator</div><div class="tc-desc">NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/kenya/ke-paye" class="tool-card" data-directory-record data-id="ke-paye"><div class="tc-body"><div class="tc-name">Kenya PAYE Calculator</div><div class="tc-desc">KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/medical-report/" class="tool-card" data-directory-record data-id="medical-report"><div class="tc-body"><div class="tc-name">Medical Report Interpreter</div><div class="tc-desc">Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes markers. Uses a 60+ biomarker reference database.</div><div class="tc-meta"><span class="cat-pill">health</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/pro/" class="tool-card" data-directory-record data-id="afrotools-pro"><div class="tc-body"><div class="tc-name">AfroTools Pro (All Tools)</div><div class="tc-desc">Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/remittance-compare/" class="tool-card" data-directory-record data-id="remittance-compare"><div class="tc-body"><div class="tc-name">Remittance Comparator</div><div class="tc-desc">Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.</div><div class="tc-meta"><span class="cat-pill">african</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/afropoints/" class="tool-card" data-directory-record data-id="afropoints"><div class="tc-body"><div class="tc-name">AfroPoints — Earn Money Contributing Data</div><div class="tc-desc">Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via mobile money.</div><div class="tc-meta"><span class="cat-pill">african</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/cv-builder/" class="tool-card" data-directory-record data-id="cv-builder"><div class="tc-body"><div class="tc-name">CV / Resume Builder</div><div class="tc-desc">Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/cars/" class="tool-card" data-directory-record data-id="car-price-intelligence"><div class="tc-body"><div class="tc-name">African Car Price Directory</div><div class="tc-desc">Search popular imported cars with source-market price ranges, landed-cost ranges, local asking ranges, and import-vs-local recommendations for Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania.</div><div class="tc-meta"><span class="cat-pill">transport</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/ghana/gh-paye" class="tool-card" data-directory-record data-id="gh-paye"><div class="tc-body"><div class="tc-name">Ghana PAYE + SSNIT</div><div class="tc-desc">GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/south-africa/za-paye" class="tool-card" data-directory-record data-id="za-paye"><div class="tc-body"><div class="tc-name">South Africa PAYE Calculator</div><div class="tc-desc">2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/pdf-editor/" class="tool-card" data-directory-record data-id="pdf-editor"><div class="tc-body"><div class="tc-name">PDF Editor</div><div class="tc-desc">Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flattened export.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/invoice-generator/" class="tool-card" data-directory-record data-id="invoice-generator"><div class="tc-body"><div class="tc-name">Invoice Generator</div><div class="tc-desc">Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/car-import-cost/" class="tool-card" data-directory-record data-id="car-import-cost"><div class="tc-body"><div class="tc-name">African Car Landed Cost Calculator</div><div class="tc-desc">Estimate true car import landed and on-road cost across Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania. Customs, port costs, registration, FX sensitivity, and source-market comparison.</div><div class="tc-meta"><span class="cat-pill">transport</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/pdf-workspace/" class="tool-card" data-directory-record data-id="pdf-workspace"><div class="tc-body"><div class="tc-name">PDF Workspace</div><div class="tc-desc">Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/pdf-merge-split/" class="tool-card" data-directory-record data-id="pdf-merge-split"><div class="tc-body"><div class="tc-name">PDF Merge &amp; Split</div><div class="tc-desc">Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only processing.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/import-duty/" class="tool-card" data-directory-record data-id="import-duty"><div class="tc-body"><div class="tc-name">Import Duty Calculator</div><div class="tc-desc">Planning import duty and landed-cost estimate with source-confidence labels for rates, levies, FX, and user-entered values. 17 African countries.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/engineering/afrodraft/" class="tool-card" data-directory-record data-id="afrodraft"><div class="tc-body"><div class="tc-name">AfroDraft 2D CAD</div><div class="tc-desc">60+ AutoCAD-style features. Draw, dimension, annotate, trim, offset, fillet. SVG/DXF/PNG export. Touch-enabled mobile CAD. Layers, blocks, templates, snap modes. Built-in help system.</div><div class="tc-meta"><span class="cat-pill">engineering</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/fuel-tracker/" class="tool-card" data-directory-record data-id="fuel-tracker"><div class="tc-body"><div class="tc-name">AfroFuel — African Fuel Price Tracker</div><div class="tc-desc">Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency and USD.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/remittance-v2/" class="tool-card" data-directory-record data-id="remittance-v2"><div class="tc-body"><div class="tc-name">Remittance Comparator Pro</div><div class="tc-desc">Compare editable remittance quotes by recipient value, FX margin, fee, speed, and payout method.</div><div class="tc-meta"><span class="cat-pill">african</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/crypto/p2p-rates/" class="tool-card" data-directory-record data-id="crypto-p2p"><div class="tc-body"><div class="tc-name">P2P Rate Comparator</div><div class="tc-desc">Compare buy/sell rates across 8+ P2P platforms. Binance, Bybit, Luno, Quidax and more.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/genotype-checker/" class="tool-card" data-directory-record data-id="genotype-checker"><div class="tc-body"><div class="tc-name">Genotype Compatibility Checker</div><div class="tc-desc">Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, blood transfusion compatibility — for African families.</div><div class="tc-meta"><span class="cat-pill">health</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/egypt/eg-paye" class="tool-card" data-directory-record data-id="eg-paye"><div class="tc-body"><div class="tc-name">Egypt Income Tax</div><div class="tc-desc">ETA progressive rates (0%–27.5%), EGP 20,000 exemption, NOSI, bracket exclusion rule. PDF export + optional AI assist.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/pdf-compress/" class="tool-card" data-directory-record data-id="pdf-compress"><div class="tc-body"><div class="tc-name">PDF Compressor</div><div class="tc-desc">Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/pdf-convert/" class="tool-card" data-directory-record data-id="pdf-convert"><div class="tc-body"><div class="tc-name">PDF Format Converter</div><div class="tc-desc">Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG/JPG ZIP in the browser.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/afrorates/" class="tool-card" data-directory-record data-id="afrorates"><div class="tc-body"><div class="tc-name">AfroRates — Central Bank Rate Tracker</div><div class="tc-desc">Policy rates, inflation, T-bill yields, and MPC calendar for supported African countries.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/afroatlas/" class="tool-card" data-directory-record data-id="afroatlas"><div class="tc-body"><div class="tc-name">AfroAtlas — Africa Resource Explorer</div><div class="tc-desc">Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side comparisons. Includes Nigeria, Kenya, South Africa, Egypt, Ethiopia, Ghana, and more.</div><div class="tc-meta"><span class="cat-pill">african</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/crypto/portfolio/" class="tool-card" data-directory-record data-id="crypto-portfolio"><div class="tc-body"><div class="tc-name">Crypto Portfolio Tracker</div><div class="tc-desc">Track holdings in Naira, Shilling, Rand. Live value, P/L, allocation charts, 50-coin limit.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/pdf-chat/" class="tool-card" data-directory-record data-id="pdf-chat"><div class="tc-body"><div class="tc-name">AI Chat with PDF</div><div class="tc-desc">Ask PDFs questions, summarize, search pages, cite sources, copy or download transcripts, with local fallback.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/cover-letter-generator/" class="tool-card" data-directory-record data-id="cover-letter"><div class="tc-body"><div class="tc-name">Cover Letter Generator</div><div class="tc-desc">Africa-first cover letters with JD matching, readiness score, optional AI Assist, local drafts and private export.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/informal-fx-watch/" class="tool-card" data-directory-record data-id="informal-fx-watch"><div class="tc-body"><div class="tc-name">Informal FX Watch</div><div class="tc-desc">Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.</div><div class="tc-meta"><span class="cat-pill">african</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/payslip-generator/" class="tool-card" data-directory-record data-id="payslip-generator"><div class="tc-body"><div class="tc-name">Payslip Generator</div><div class="tc-desc">Generate compliant payslips for NG, KE, GH, ZA with correct deductions.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/currency-converter/" class="tool-card" data-directory-record data-id="currency-converter"><div class="tc-body"><div class="tc-name">AfroFX — Live African Currency Rates</div><div class="tc-desc">Live forex rates for 42 African currencies. Historical charts, heatmap, crypto prices, cross-rate matrix, and API access.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/crypto/prices/" class="tool-card" data-directory-record data-id="crypto-prices"><div class="tc-body"><div class="tc-name">Crypto Prices</div><div class="tc-desc">Latest available prices for 50+ coins in Naira, Shilling, Rand, Cedi and 15+ African currencies.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/childbirth-cost/" class="tool-card" data-directory-record data-id="childbirth-cost"><div class="tc-body"><div class="tc-name">Childbirth Cost Calculator</div><div class="tc-desc">Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa, Ghana, Tanzania and Rwanda. Includes ANC and insurance coverage.</div><div class="tc-meta"><span class="cat-pill">health</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/business-planner/" class="tool-card" data-directory-record data-id="business-planner"><div class="tc-body"><div class="tc-name">AI Business Planner</div><div class="tc-desc">Start a business in any of Africa&#39;s 54 countries. AI-guided registration, tax setup, licensing, and banking — with step-by-step action plan and PDF export.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Live</span></div></div></a>
+        <a href="/tools/vat-calculator/" class="tool-card" data-directory-record data-id="vat-calc-pan-african"><div class="tc-body"><div class="tc-name">VAT Calculator (Pan-African)</div><div class="tc-desc">All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.</div><div class="tc-meta"><span class="cat-pill">ecommerce</span><span class="tc-badge live">Live</span></div></div></a>
+<!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->
+  </div>
+  <div class="directory-pagination"><button class="btn btn-secondary" type="button" id="loadMoreTools" hidden>Load more tools</button></div>
 
   <div class="sec-divider"></div>
 
@@ -343,13 +388,13 @@ const PAGE_COPY = IS_FR ? {
   breadcrumb: 'Tous les outils',
   eyebrow: 'Bibliotheque d outils',
   hero: 'Tous les outils pour <em>l Afrique</em>',
-  heroSub: 'La bibliotheque complete AfroTools : calculateurs financiers, assistants, outils PDF, CV, ingenierie et plus encore. Concue pour les 54 pays africains. Toujours gratuite.',
+  heroSub: 'La bibliotheque complete AfroTools : calculateurs financiers, assistants, outils PDF, CV, ingenierie et plus encore. Concue pour les 54 pays africains. accès essentiel sans abonnement payant.',
   liveTools: 'Outils actifs',
   inDevelopment: 'En preparation',
   categories: 'Categories',
   countries: 'Pays couverts',
   price: 'Prix',
-  freeForever: 'Gratuit pour toujours',
+  freeForever: 'accès essentiel sans abonnement payant',
   searchPlaceholder: 'Rechercher par outil, pays ou categorie...',
   searchAria: 'Rechercher dans tous les outils',
   clearSearch: 'Effacer la recherche',
@@ -570,6 +615,8 @@ const SEARCH_TERM_ALIASES = { 'afrotool':'afro', 'afrotools':'afro', 'biz':'busi
 const AI_TOOLS = ['ng-paye','ke-paye','gh-paye','za-paye','eg-paye','tz-paye','et-paye','rw-paye'];
 
 let activeFilter = 'all';
+const PAGE_SIZE = 60;
+let visibleLimit = PAGE_SIZE;
 
 function isAiTool(tool){
   if(!tool) return false;
@@ -605,6 +652,7 @@ function tokenizeSearch(value){
 
 function setFilter(f, btn){
   activeFilter = f;
+  visibleLimit = PAGE_SIZE;
   document.querySelectorAll('.filter-tab').forEach(b => {
     const isActive = b.dataset.filter === f;
     b.classList.toggle('active', isActive);
@@ -634,6 +682,7 @@ function handleSearchInput(){
   const input = document.getElementById('searchInput');
   if(input && input.value.trim()) resetFilterToAll();
   updateSearchClear();
+  visibleLimit = PAGE_SIZE;
   renderTools();
 }
 
@@ -644,6 +693,12 @@ function clearSearch(){
     input.focus();
   }
   updateSearchClear();
+  visibleLimit = PAGE_SIZE;
+  renderTools();
+}
+
+function loadMoreTools(){
+  visibleLimit += PAGE_SIZE;
   renderTools();
 }
 
@@ -721,7 +776,11 @@ function renderTools(){
   const sort = document.getElementById('sortSel').value;
 
   if(typeof AFRO_TOOLS === 'undefined'){
-    grid.innerHTML = '<div class="empty-state"><div class="e-icon">⏳</div><p>' + PAGE_COPY.loading + '</p></div>';
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.fail();
+    return;
+  }
+  if (Array.isArray(AFRO_TOOLS) && AFRO_TOOLS.length === 0) {
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoPublished();
     return;
   }
 
@@ -731,7 +790,7 @@ function renderTools(){
     b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
 
-  let tools = [...AFRO_TOOLS];
+  let tools = AFRO_TOOLS.filter(t => (t.lang || 'en') === PAGE_LANG);
 
   // Filter
   if(activeFilter === 'live'){
@@ -768,12 +827,13 @@ function renderTools(){
   const totalLive = publicStats ? publicStats.liveTools : AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').length;
   const totalQueued = publicStats ? publicStats.inDevelopmentTools : AFRO_TOOLS.filter(t => t.status === 'queued' || t.status === 'planned').length;
   const totalCategories = publicStats ? publicStats.categories : (typeof AFRO_CATEGORIES !== 'undefined' ? Object.keys(AFRO_CATEGORIES).length : 0);
-  document.getElementById('statLive').textContent = publicStats ? publicStats.display.liveToolsPlus : totalLive.toLocaleString() + '+';
-  document.getElementById('statPlanned').textContent = totalQueued.toLocaleString();
+  const canonicalCounts = window.AFRO_REGISTRY_COUNTS || {};
+  document.getElementById('statLive').textContent = String(canonicalCounts['tools.live_experiences'] || totalLive);
+  document.getElementById('statPlanned').textContent = String(Number.isInteger(canonicalCounts['tools.unpublished']) ? canonicalCounts['tools.unpublished'] : totalQueued);
   document.getElementById('countAll').textContent = totalAll.toLocaleString();
   document.getElementById('countLive').textContent = totalLive.toLocaleString();
   if (document.getElementById('statCategories')) {
-    document.getElementById('statCategories').textContent = totalCategories.toLocaleString();
+    document.getElementById('statCategories').textContent = String(canonicalCounts['categories.published'] || totalCategories);
   }
   document.getElementById('resultsCount').textContent = tools.length.toLocaleString(IS_FR ? 'fr-FR' : 'en-US') + ' ' + (tools.length === 1 ? PAGE_COPY.toolsSingular : PAGE_COPY.toolsPlural);
   document.getElementById('sectionTitle').textContent = rawSearch ? PAGE_COPY.searchResults : (activeFilter === 'all' ? PAGE_COPY.allTools : getCatMeta(activeFilter).name);
@@ -781,6 +841,8 @@ function renderTools(){
 
   // Render
   if(tools.length === 0){
+    const loadMore = document.getElementById('loadMoreTools');
+    if (loadMore) loadMore.hidden = true;
     grid.innerHTML = `<div class="empty-state">
       <div class="e-icon">🔍</div>
       <p>${PAGE_COPY.noToolsPrefix} "<strong>${escapeHtml(rawSearch||activeFilter)}</strong>".</p>
@@ -791,13 +853,19 @@ function renderTools(){
         <button type="button" onclick="applySearchSuggestion('business')">Business</button>
       </div>
     </div>`;
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoResults(Boolean(rawSearch || activeFilter !== 'all'));
     return;
   }
 
   const catMeta = getCatMeta;
   const isNew = t => t.status === 'new' || (t.id && (t.id.includes('solar') || t.id.includes('floor-plan') || t.id.includes('boq')));
+  const matchedCount = tools.length;
+  const renderedTools = tools.slice(0, visibleLimit);
+  const loadMore = document.getElementById('loadMoreTools');
+  if (loadMore) loadMore.hidden = renderedTools.length >= matchedCount;
+  document.getElementById('resultsCount').textContent = renderedTools.length.toLocaleString('en-US') + ' of ' + matchedCount.toLocaleString('en-US') + ' ' + PAGE_COPY.toolsPlural;
 
-  grid.innerHTML = tools.map(t => {
+  grid.innerHTML = renderedTools.map(t => {
     const live = t.status === 'live' || t.status === 'new';
     const cat = catMeta(t.category);
     const aiPowered = isAiTool(t);
@@ -810,7 +878,7 @@ function renderTools(){
     const imageSrc = getToolIconSrc(t);
     const imageFallback = getToolIconFallback(t);
 
-    return `<a href="${safeHref}" class="${cardClass}">
+    return `<a href="${safeHref}" class="${cardClass}" data-directory-record>
       <div class="tc-image" style="background:linear-gradient(135deg,${cat.color},#e2e8f0)">
         ${imageSrc ? `<img src="${imageSrc}" alt="${safeName}" width="600" height="400" loading="lazy" onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='flex');};this.src='${imageFallback}';">` : ''}
         <div class="tc-image-fallback" style="display:none;background:linear-gradient(135deg,${cat.color},#cbd5e1)">${safeIcon}</div>
@@ -828,10 +896,15 @@ function renderTools(){
       </div>
     </a>`;
   }).join('');
+  if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markReady();
 }
 
 // Init on registry ready (replaces fragile polling pattern)
 document.addEventListener('DOMContentLoaded', localizeStaticShell);
+document.addEventListener('DOMContentLoaded', function(){
+  const loadMore = document.getElementById('loadMoreTools');
+  if (loadMore) loadMore.addEventListener('click', loadMoreTools);
+});
 if (typeof onRegistryReady === 'function') {
   onRegistryReady(function() { localizeStaticShell(); renderTools(); });
 } else {
@@ -843,6 +916,6 @@ if (typeof onRegistryReady === 'function') {
   });
 }
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

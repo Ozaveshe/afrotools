@@ -149,8 +149,9 @@ function validateCanonicals(articles, failures) {
 
 function validateHub(articles, failures) {
   const html = read(BLOG_INDEX);
-  const cards = [...html.matchAll(/<article class="article-card"[\s\S]*?<h3>\s*<a href="([^"]+)"/g)]
-    .map((match) => match[1]);
+  const cards = [...html.matchAll(/<article\b[^>]*class=["'][^"']*\barticle-card\b[^"']*["'][^>]*>[\s\S]*?<\/article>/gi)]
+    .map((match) => (match[0].match(/<h3>\s*<a href="([^"]+)"/i) || [])[1])
+    .filter(Boolean);
   const stat = Number((html.match(/<strong id="statArticles">(\d+)<\/strong>/) || [])[1]);
   const duplicates = [...new Set(cards.filter((href, index) => cards.indexOf(href) !== index))];
   const articleSlugs = new Set(articles.map((article) => article.slug));

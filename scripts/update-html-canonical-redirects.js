@@ -6,6 +6,7 @@ const path = require("path");
 const { writeFileSyncWithRetry } = require("./lib/safe-write");
 
 const { ROOT, buildCanonicalAliasMap } = require("./lib/canonical-aliases");
+const routeContract = require("./lib/route-contract");
 
 const REDIRECTS_PATH = path.join(ROOT, "_redirects");
 const START_MARKER = "# BEGIN AUTO HTML CANONICAL ALIASES";
@@ -79,7 +80,11 @@ const stripGenerated = original.replace(
   ""
 );
 const existingSources = parseExistingSources(stripGenerated);
-const aliases = buildCanonicalAliasMap();
+const routeGraph = routeContract.buildRouteGraph();
+const aliases = buildCanonicalAliasMap().map((alias) => ({
+  ...alias,
+  target: routeContract.resolveFinalRoute(routeGraph, alias.target).finalRoute,
+}));
 const { block, count } = buildBlock(eol, aliases, existingSources);
 
 let next;

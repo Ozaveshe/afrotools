@@ -10,6 +10,7 @@
  */
 
 const { getStore } = require('@netlify/blobs');
+const { validateDataForKey } = require('./live-data-contracts');
 
 const STORE_NAME = 'live-data';
 
@@ -128,6 +129,12 @@ async function setData(key, data) {
   var supabaseOk = false;
   var blobOk = false;
 
+  var validation = validateDataForKey(key, data, new Date().toISOString());
+  if (!validation.valid) {
+    console.error('[data-store] Rejected incompatible data for ' + key + ': ' + validation.errors.join('; ') + '. Existing last-known-good data retained.');
+    return false;
+  }
+
   if (shouldSkipWrites()) {
     console.log('[data-store] Write skipped for key: ' + key + ' (local QA)');
     return false;
@@ -191,4 +198,4 @@ async function updateMeta(category, metaUpdate) {
   }
 }
 
-module.exports = { getData, setData, updateMeta, STORE_NAME, STATIC_PATHS };
+module.exports = { getData, setData, updateMeta, validateDataForKey, STORE_NAME, STATIC_PATHS };

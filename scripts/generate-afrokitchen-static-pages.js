@@ -1358,6 +1358,8 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="afrotools-content-id" content="afrokitchen:recipe:${escapeHtml(recipe.slug)}">
+  <meta name="afrotools-source-owner" content="engines/afrokitchen-engine.js">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
@@ -1572,12 +1574,8 @@ ${recipeSchemaScript}${schemaBlockers.length ? `  <meta name="afrokitchen-schema
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
         <h2 class="ak-section-title">What to know before you cook</h2>
-        <p class="ak-section-sub">${escapeHtml(recipe.story || recipe.description)}</p>
+        <p class="ak-section-sub">Use this overview to check the occasion, serving ideas, regional context, and cooking commitment before you begin.</p>
         <div class="ak-static-summary-grid">
-          <div class="ak-static-summary-card">
-            <strong>What the dish tastes like</strong>
-            <p>${escapeHtml(recipe.description)}</p>
-          </div>
           <div class="ak-static-summary-card">
             <strong>When to cook it</strong>
             <p>Best for ${escapeHtml(recipeOccasionText(recipe))}. Plan on a ${escapeHtml(recipe.difficulty || "medium")} cook and about ${escapeHtml(String(recipe.total_time_minutes || 0))} minutes total.</p>
@@ -2377,6 +2375,8 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="afrotools-content-id" content="afrokitchen:country:${escapeHtml(country.country_code.toLowerCase())}">
+  <meta name="afrotools-source-owner" content="engines/afrokitchen-engine.js">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
@@ -2477,10 +2477,6 @@ function buildCountryPageHtml(country, manifest, cuisineIntelligence, recipeImag
 
   <section class="ak-section">
     <div class="ak-container">
-      <div class="ak-country-intro-panel rv visible">
-        <p>${escapeHtml(introParagraph)}</p>
-      </div>
-
       ${featuredDishes}
       ${popularCategoryLinks}
       ${categoryLanes}
@@ -2540,6 +2536,8 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="afrotools-content-id" content="afrokitchen:collection:${escapeHtml(collection.slug)}">
+  <meta name="afrotools-source-owner" content="engines/afrokitchen-engine.js">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
@@ -2647,10 +2645,6 @@ function buildCollectionPageHtml(collection, manifest, cuisineIntelligence, reci
 
   <section class="ak-section">
     <div class="ak-container">
-      <div class="ak-collection-intro-panel rv visible">
-        <p>${escapeHtml(introParagraph)}</p>
-      </div>
-
       ${bestForPanel}
       ${shareIntro}
       ${collectionArchive}

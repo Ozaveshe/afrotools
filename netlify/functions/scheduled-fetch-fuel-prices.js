@@ -328,6 +328,7 @@ function transformFuelData(countries) {
   }).length;
 
   return {
+    schemaVersion: 1,
     timestamp: new Date().toISOString(),
     countries: countries,
     source: sources.length === 1 ? sources[0] : 'mixed',

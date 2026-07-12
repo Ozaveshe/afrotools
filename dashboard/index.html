@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
-<link rel="canonical" href="https://afrotools.com/dashboard/">
 <meta name="theme-color" content="#0062CC">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -18,7 +17,8 @@
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
   <link rel="stylesheet" href="/assets/css/dashboard.css?v=21111c0e">
-    <script src="/assets/js/components/country-selector.js?v=63cdc470" defer></script>
+    <script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
+    <script src="/assets/js/components/country-selector.js?v=c13ac60b" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Instrument+Serif:ital@0;1&display=swap">
@@ -2658,8 +2658,6 @@
             a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
         }
     </style>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/dashboard/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/dashboard/" />
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -2677,6 +2675,7 @@
 <meta property="article:modified_time" content="2026-04-28">
 <meta property="og:url" content="https://afrotools.com/dashboard/">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/dashboard/">
 </head>
 <body class="top-level-page-ui-refresh">
     <afro-navbar></afro-navbar>
@@ -2711,7 +2710,7 @@
                 Forgot password?
             </a>
             <p style="margin:1rem auto 0;max-width:360px;font-size:0.84rem;line-height:1.5;color:#526173;">Need Pro? Sign in first, then use the blue Pro button in the navbar or <a href="/pro/" style="color:var(--dash-accent,#0062CC);font-weight:700;text-decoration:none;">choose a Pro plan</a>.</p>
-            <p style="margin-top:1.5rem;font-size:0.82rem;color:var(--dash-text-muted,#8E9BB3);">Free forever. No credit card required.</p>
+            <p style="margin-top:1.5rem;font-size:0.82rem;color:var(--dash-text-muted,#8E9BB3);" data-claim-key="free.account-creation" data-claim-variant="summary">A basic account can be created without starting a paid subscription.</p>
             <div id="authTradePackNudge" class="auth-local-nudge" style="display:none;"></div>
         </div>
 
@@ -2724,7 +2723,7 @@
                     <img id="profileAvatar" class="avatar-img" src="" alt="User profile avatar" style="display:none;">
                 </div>
                 <div class="profile-info">
-                    <h1 class="profile-name" id="profileName">Welcome back!</h1>
+                    <h2 class="profile-name" id="profileName">Welcome back!</h2>
                     <div class="profile-subtitle" id="profileSubtitle" style="display:none;"></div>
                     <div class="profile-meta-row">
                         <div class="profile-meta-item" id="metaJob" style="display:none;">
@@ -3065,10 +3064,9 @@
 
     <afro-footer></afro-footer>
 
-    <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
-    <script src="/assets/js/components/tool-registry.min.js?v=2327e88c" defer></script>
+    <script src="/assets/js/components/tool-registry.min.js?v=0e33f88d" defer></script>
     <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-    <script src="/assets/js/components/auth-modal.js?v=63ad3b0c"></script>
+    <script src="/assets/js/components/auth-modal.js?v=ab085aae"></script>
     <script src="/assets/js/auth-cookie-upgrade.js?v=14c038dc"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
     <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
@@ -3079,8 +3077,8 @@
     <script src="/engines/afropoints-engine.js?v=2a5ea36e"></script>
     <script src="/dashboard/dashboard-app.js?v=e1e7c421"></script>
     <script src="/dashboard/afropoints-lane-account.js?v=401e149a"></script>
-    <script src="/assets/js/components/navbar.min.js?v=301b9d0a"></script>
-    <script src="/assets/js/components/footer.min.js?v=9dc86d07"></script>
+    <script src="/assets/js/components/navbar.min.js?v=01cb0562"></script>
+    <script src="/assets/js/components/footer.min.js?v=86b11637"></script>
 
     <script>
         let currentUser = null;
@@ -5485,6 +5483,20 @@
             '</div>';
         }
 
+        function dashboardMarketState(data) {
+            var timestamp = data && (data.timestamp || data.updated_at);
+            var source = data && data.source;
+            var observedAt = timestamp ? new Date(timestamp) : null;
+            if (!source || !observedAt || !Number.isFinite(observedAt.getTime())) {
+                return { state: 'unavailable', label: 'Data unavailable — verified source and observation time were not returned.' };
+            }
+            var ageMinutes = Math.max(0, Math.round((Date.now() - observedAt.getTime()) / 60000));
+            var state = ageMinutes <= 1440 ? 'live' : (ageMinutes <= 2880 ? 'cached' : 'stale');
+            var label = (state === 'live' ? 'Live' : (state === 'cached' ? 'Cached' : 'Stale')) +
+                ' · Source: ' + source + ' · Observed: ' + observedAt.toLocaleString();
+            return { state: state, label: label };
+        }
+
         function loadCountrySnapshot() {
             var container = document.getElementById('countrySnapshot');
             if (!container) return;
@@ -5499,12 +5511,13 @@
                     { code: 'EG', currency: 'EGP', name: 'Egypt' }
                 ];
                 var rates = dashboardCache.forex ? dashboardCache.forex.rates : {};
-                container.innerHTML = '<div class="snapshot-header"><h2 class="section-title">Live Market Snapshot</h2>' +
+                container.innerHTML = '<div class="snapshot-header"><h2 class="section-title">Market data snapshot</h2>' +
+                    '<div class="snapshot-hint" role="status">Data unavailable — no verified source and observation time were loaded.</div>' +
                     (!loc.code ? '<div class="snapshot-hint">Set your country in your profile for personalized data</div>' : '') +
                     '</div>' +
                     '<div class="snapshot-grid snapshot-grid-fallback">' +
                     fallbackPairs.map(function(p) {
-                        var val = rates[p.currency] ? Number(rates[p.currency]).toLocaleString(undefined, {maximumFractionDigits: 2}) : '--';
+                        var val = rates[p.currency] ? Number(rates[p.currency]).toLocaleString(undefined, {maximumFractionDigits: 2}) : 'Unavailable';
                         return '<div class="snapshot-item"><span class="snapshot-pair">USD/' + p.currency + '</span><span class="snapshot-value">' + val + '</span></div>';
                     }).join('') + '</div>';
                 return;
@@ -5525,7 +5538,9 @@
             var interests = (extendedProfile && extendedProfile.interests) || [];
             var showCrypto = interests.indexOf('crypto') !== -1;
 
-            var html = '<div class="snapshot-header"><h2 class="section-title">' + loc.name + ' at a Glance</h2></div>';
+            var marketState = dashboardMarketState(dashboardCache.forex);
+            var html = '<div class="snapshot-header"><h2 class="section-title">' + loc.name + ' at a Glance</h2>' +
+                '<div class="snapshot-hint" role="status" data-freshness-state="' + marketState.state + '">' + dashEscapeHtml(marketState.label) + '</div></div>';
             html += '<div class="snapshot-grid">';
 
             // Currency
@@ -7663,12 +7678,13 @@
 <div class="ai-panel" id="aiPanel">
   <div class="ai-panel-head">
     <div class="ai-dot"></div>
-    <span>AI Assistant</span>
-    <small style="font-size:0.65rem;color:rgba(255,255,255,0.4);margin-left:4px;">Powered by Claude</small>
+    <span>Optional AI Assistant</span>
+    <small style="font-size:0.65rem;color:rgba(255,255,255,0.6);margin-left:4px;">Provider required</small>
     <button type="button" class="close-btn" onclick="toggleAiPanel()">&times;</button>
   </div>
   <div class="ai-panel-msgs" id="aiPanelMsgs">
-    <div class="ai-msg bot">Hi! I'm your AfroTools assistant. Ask me about AfroTools, tax, finance, or finding the right tool.</div>
+    <div class="ai-msg bot">Ask about AfroTools or finding a workflow. Review the AI data notice before a prompt is sent.</div>
+    <div data-ai-consent-notice data-consent-mode="ai_optional_prompt_only" data-tool-id="dashboard" data-consent-title="Optional dashboard AI" data-consent-copy="Your prompt and limited dashboard context can be sent only after you consent. Do not include private documents, financial records, or identifiers."></div>
   </div>
   <div class="ai-panel-input">
     <input aria-label="Ask a question" id="aiPanelIn" placeholder="Ask a question..." onkeydown="if(event.key==='Enter')sendAiChat()">
@@ -7677,7 +7693,7 @@
   <div class="ai-panel-footer" id="aiPanelFooter"></div>
 </div>
 
-<script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script>
 var _aiChatHistory = [];
 var _aiPanelOpen = false;
 
@@ -7745,7 +7761,7 @@ async function sendAiChat() {
     if (typeof data.remaining === 'number') {
       var footer = document.getElementById('aiPanelFooter');
       if (data.remaining <= 0) {
-        footer.innerHTML = '<a href="/pricing/" style="color:#008751;font-weight:600">Upgrade to Pro</a> for unlimited AI questions';
+        footer.innerHTML = 'The current AI request limit has been reached. <a href="/pricing/" style="color:#008751;font-weight:600">Review current plans</a>.';
       } else if (data.remaining < 5) {
         footer.textContent = data.remaining + ' questions remaining today';
       }
@@ -7763,6 +7779,6 @@ async function sendAiChat() {
   msgs.scrollTop = msgs.scrollHeight;
 }
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

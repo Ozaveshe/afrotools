@@ -40,7 +40,23 @@
     { icon: '🎓', label: 'Education',        href: '/education' },
     { icon: '⌨️', label: 'Developer',       href: '/developer-tools' },
     { icon: '🧾', label: 'VAT & Business',   href: '/vat-business-tax' },
-    { icon: '🌍', label: 'All Tools',        href: '/all-tools' },
+    { icon: '🌍', label: 'All Tools',        href: '/tools/' },
+  ];
+
+  const QUICK_LINKS_FR = [
+    { icon: '💰', label: 'Salaire et impôts', href: '/fr/salary-tax/' },
+    { icon: '📄', label: 'Outils PDF', href: '/fr/document-pdf/' },
+    { icon: '🧾', label: 'TVA et entreprise', href: '/fr/vat-business-tax/' },
+    { icon: '⚡', label: 'Énergie', href: '/fr/energy/' },
+    { icon: '🌍', label: 'Tous les outils', href: '/fr/all-tools/' }
+  ];
+
+  const QUICK_LINKS_SW = [
+    { icon: 'PAYE', label: 'Mshahara na PAYE', href: '/sw/mshahara-na-kodi/' },
+    { icon: 'PDF', label: 'Hati na PDF', href: '/sw/hati-na-pdf/' },
+    { icon: 'VAT', label: 'VAT na biashara', href: '/sw/vat-na-kodi/' },
+    { icon: 'NCHI', label: 'Chagua nchi', href: '/sw/nchi/' },
+    { icon: 'ZOTE', label: 'Zana zote za Kiswahili', href: '/sw/zana-zote/' }
   ];
 
   const QUICK_LINKS_HA = [
@@ -60,9 +76,13 @@
   function buildToolDirectory(lang) {
     if (typeof AFRO_TOOLS === 'undefined' || !Array.isArray(AFRO_TOOLS)) return '';
     const allLiveTools = AFRO_TOOLS.filter(t => t.status === 'live');
-    const liveTools = lang === 'ha'
+    const liveTools = lang === 'sw'
+      ? allLiveTools.filter(t => t.lang === 'sw' && String(t.href || '').startsWith('/sw/'))
+      : lang === 'ha'
       ? allLiveTools.filter(t => t.lang === 'ha' && String(t.href || '').startsWith('/ha/'))
-      : allLiveTools;
+      : lang === 'fr'
+        ? allLiveTools.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/'))
+        : allLiveTools;
     const lines = liveTools.map(t => `- ${t.name} (${t.icon}): ${t.href}`);
     return '\n\nTool directory with direct links (ALWAYS use these exact hrefs when recommending tools):\n' + lines.join('\n');
   }
@@ -76,7 +96,7 @@
 - Get quick answers on financial, health, education, and productivity questions relevant to Africa
 - Learn about AfroTools features, subscription plans, and capabilities
 
-AfroTools has 300+ tools across categories: Salary & Tax, PDF & Documents, Image & Design, Health & Agriculture, Education, Developer Tools, VAT & Business, Currency & Finance, African-specific tools, Legal, Engineering, and more.
+AfroTools routes only to tools present in the current registry. Do not invent counts, availability, rates, jurisdictions, or live-data status.
 
 IMPORTANT RULES:
 1. When a user asks about a tool or asks for a link, ALWAYS provide the direct link from the tool directory below. Format links as: [Tool Name](https://afrotools.com/path)
@@ -97,6 +117,20 @@ IMPORTANT RULES:
     'Help me build my CV',
     'How do I calculate import duty?',
     'What mortgage tools do you have?',
+  ];
+
+  const SUGGESTIONS_FR = [
+    'Trouver un calculateur de salaire net',
+    'Quels outils PDF sont disponibles en français ?',
+    'Comparer les frais de mobile money',
+    'Trouver un outil pour la TVA au Maroc'
+  ];
+
+  const SUGGESTIONS_SW = [
+    'Nahitaji kikokotoo cha PAYE Kenya',
+    'Nionyeshe zana za PDF kwa Kiswahili',
+    'Nataka kukokotoa VAT kwa nchi yangu',
+    'Nisaidie kuchagua nchi na sarafu'
   ];
 
   const SUGGESTIONS_HA = [
@@ -128,6 +162,50 @@ IMPORTANT RULES:
     error: 'Wani abu ya samu matsala. Sake gwadawa.',
     darkMode: 'Canza zuwa duhu',
     lightMode: 'Canza zuwa haske'
+  };
+
+  const UI_COPY_FR = {
+    open: 'Ouvrir l’assistant de recherche AfroTools',
+    drag: 'Assistant AfroTools — faire glisser pour déplacer',
+    title: 'Assistant AfroTools',
+    subtitle: 'Recherche guidée',
+    theme: 'Changer le thème',
+    themeTitle: 'Passer du thème clair au thème sombre',
+    clear: 'Effacer la conversation',
+    clearTitle: 'Effacer toute la conversation',
+    close: 'Fermer',
+    welcome: 'Décrivez l’outil ou le parcours recherché. Si vous envoyez une demande, son texte peut être transmis au fournisseur d’IA ; utilisez la recherche classique pour une recherche locale sans envoi à l’IA.',
+    placeholder: 'Décrivez votre besoin…',
+    send: 'Envoyer',
+    cleared: 'Conversation effacée. Décrivez un nouveau besoin.',
+    copy: 'Copier',
+    copied: 'Copié !',
+    viewing: 'Page actuelle :',
+    error: 'La demande a échoué. Utilisez les liens directs ou réessayez.',
+    darkMode: 'Passer au thème sombre',
+    lightMode: 'Passer au thème clair'
+  };
+
+  const UI_COPY_SW = {
+    open: 'Fungua msaidizi wa kutafuta zana za AfroTools',
+    drag: 'Msaidizi wa AfroTools — buruta ili kuhamisha',
+    title: 'Msaidizi wa AfroTools',
+    subtitle: 'Utafutaji wenye mwongozo',
+    theme: 'Badili mandhari',
+    themeTitle: 'Badili kati ya mandhari ya mwanga na giza',
+    clear: 'Futa mazungumzo',
+    clearTitle: 'Futa mazungumzo yote',
+    close: 'Funga',
+    welcome: 'Eleza zana au kazi unayotafuta. Ukituma ombi, maandishi yake yanaweza kutumwa kwa mtoa huduma wa AI; tumia utafutaji wa kawaida kwa utafutaji wa ndani usiotuma ombi kwa AI.',
+    placeholder: 'Eleza unachotaka kufanya…',
+    send: 'Tuma',
+    cleared: 'Mazungumzo yamefutwa. Eleza hitaji jipya.',
+    copy: 'Nakili',
+    copied: 'Imenakiliwa!',
+    viewing: 'Ukurasa wa sasa:',
+    error: 'Ombi halikufaulu. Tumia viungo vya moja kwa moja au ujaribu tena.',
+    darkMode: 'Badili kwenda mandhari ya giza',
+    lightMode: 'Badili kwenda mandhari ya mwanga'
   };
 
   /* ═══════════════════════════════════════════════════
@@ -251,6 +329,8 @@ IMPORTANT RULES:
     }
 
     _ui(key, fallback) {
+      if (this._lang === 'sw' && UI_COPY_SW[key]) return UI_COPY_SW[key];
+      if (this._lang === 'fr' && UI_COPY_FR[key]) return UI_COPY_FR[key];
       if (this._lang === 'ha' && UI_COPY_HA[key]) return UI_COPY_HA[key];
       return fallback || '';
     }
@@ -292,8 +372,8 @@ IMPORTANT RULES:
     }
 
     _render() {
-      const quickLinks = this._lang === 'ha' ? QUICK_LINKS_HA : QUICK_LINKS;
-      const suggestions = this._lang === 'ha' ? SUGGESTIONS_HA : SUGGESTIONS;
+      const quickLinks = this._lang === 'sw' ? QUICK_LINKS_SW : this._lang === 'fr' ? QUICK_LINKS_FR : this._lang === 'ha' ? QUICK_LINKS_HA : QUICK_LINKS;
+      const suggestions = this._lang === 'sw' ? SUGGESTIONS_SW : this._lang === 'fr' ? SUGGESTIONS_FR : this._lang === 'ha' ? SUGGESTIONS_HA : SUGGESTIONS;
       this.shadowRoot.innerHTML = `
         <style>
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1082,7 +1162,9 @@ IMPORTANT RULES:
       const toolDir = buildToolDirectory(this._lang);
       const languageInstruction = this._lang === 'ha'
         ? '\n\nThe page language is Hausa. Reply in natural Hausa. Keep necessary Nigerian technical terms such as PAYE, VAT, PDF, JAMB, WAEC, NECO, NYSC, NIN and USSD, but use Hausa sentences and prioritize real /ha/ routes from the directory.'
-        : '';
+        : this._lang === 'fr'
+          ? '\n\nLa page est en français. Réponds en français naturel, conserve les sigles utiles comme PAYE, TVA, PDF et API, et donne la priorité aux routes réelles commençant par /fr/. Annonce clairement toute destination disponible uniquement en anglais.'
+          : '';
       const systemPrompt = BASE_SYSTEM_PROMPT + languageInstruction + toolDir + '\n\nPage context: ' + pageCtx;
 
       try {
@@ -1113,6 +1195,8 @@ IMPORTANT RULES:
 
     _offlineReply(q) {
       q = q.toLowerCase();
+      if (this._lang === 'sw') return this._offlineReplySw(q);
+      if (this._lang === 'fr') return this._offlineReplyFr(q);
       if (this._lang === 'ha') return this._offlineReplyHa(q);
       // Try to find matching tools from registry
       if (typeof AFRO_TOOLS !== 'undefined') {
@@ -1138,6 +1222,35 @@ IMPORTANT RULES:
       if (q.includes('link') || q.includes('url'))
         return 'I can give you direct links to any tool! Just tell me which tool you need. For example: "Give me the link to the Nigeria PAYE calculator" or "Where is the PDF merger?"';
       return 'I can help you find the right AfroTools workflow and give you **direct links**. Try asking:\n\n"Give me the link to Nigeria PAYE"\n"What PDF tools do you have?"\n"I need a CV builder"';
+    }
+
+    _offlineReplyFr(q) {
+      if (typeof AFRO_TOOLS !== 'undefined') {
+        const matches = AFRO_TOOLS.filter(t => t.status === 'live' && t.lang === 'fr' && String(t.href || '').startsWith('/fr/') && (
+          q.includes(String(t.name || '').toLocaleLowerCase('fr')) ||
+          String(t.name || '').toLocaleLowerCase('fr').split(/\s+/).some(w => w.length > 3 && q.includes(w))
+        )).slice(0, 3);
+        if (matches.length) return matches.map(t => `${t.name} : https://afrotools.com${t.href}`).join('\n') + '\n\nOuvrez le lien qui correspond à votre besoin.';
+      }
+      if (q.includes('paye') || q.includes('impôt') || q.includes('salaire')) return 'Choisissez d’abord le pays dans le [hub salaire et impôts](https://afrotools.com/fr/salary-tax/), puis vérifiez la période et les sources affichées par le calculateur.';
+      if (q.includes('pdf')) return 'Ouvrez l’[espace PDF en français](https://afrotools.com/fr/document-pdf/) pour fusionner, compresser, protéger ou préparer un document. La page indique lorsqu’un outil n’est pas entièrement traduit.';
+      if (q.includes('tva') || q.includes('entreprise')) return 'Explorez les [outils TVA et entreprise](https://afrotools.com/fr/vat-business-tax/) et choisissez la juridiction concernée avant le calcul.';
+      if (q.includes('énergie') || q.includes('solaire') || q.includes('compteur')) return 'Explorez les [outils énergie](https://afrotools.com/fr/energy/) pour les compteurs prépayés, la consommation, le carburant et le solaire.';
+      return 'Je peux vous orienter vers un outil AfroTools. Indiquez le besoin et le pays, ou utilisez le [répertoire français](https://afrotools.com/fr/all-tools/) pour une recherche classique.';
+    }
+
+    _offlineReplySw(q) {
+      if (typeof AFRO_TOOLS !== 'undefined') {
+        const matches = AFRO_TOOLS.filter(t => t.status === 'live' && t.lang === 'sw' && String(t.href || '').startsWith('/sw/') && (
+          q.includes(String(t.name || '').toLocaleLowerCase('sw')) ||
+          String(t.name || '').toLocaleLowerCase('sw').split(/\s+/).some(w => w.length > 3 && q.includes(w))
+        )).slice(0, 3);
+        if (matches.length) return matches.map(t => `${t.name}: https://afrotools.com${t.href}`).join('\n') + '\n\nFungua kiungo kinacholingana na hitaji lako.';
+      }
+      if (q.includes('paye') || q.includes('kodi') || q.includes('mshahara')) return 'Chagua nchi kwenye [kitovu cha mshahara na PAYE](https://afrotools.com/sw/mshahara-na-kodi/), kisha kagua kipindi, sarafu na chanzo kinachoonyeshwa.';
+      if (q.includes('pdf') || q.includes('hati')) return 'Fungua [hati na PDF kwa Kiswahili](https://afrotools.com/sw/hati-na-pdf/). Ukurasa utaonyesha wazi ikiwa hatua fulani bado ni ya Kiingereza.';
+      if (q.includes('vat') || q.includes('biashara')) return 'Fungua [zana za VAT](https://afrotools.com/sw/vat-na-kodi/) na uchague nchi ambayo kanuni zake zinatumika.';
+      return 'Ninaweza kukuelekeza kwenye zana iliyopo. Taja kazi na nchi, au tumia [orodha ya zana za Kiswahili](https://afrotools.com/sw/zana-zote/) kwa utafutaji wa kawaida.';
     }
 
     _offlineReplyHa(q) {
@@ -1172,7 +1285,7 @@ IMPORTANT RULES:
     _injectToolCards(reply) {
       if (typeof AFRO_TOOLS === 'undefined') return;
       const lower = reply.toLowerCase();
-      const mentioned = AFRO_TOOLS.filter(t => t.status === 'live' && (
+      const mentioned = AFRO_TOOLS.filter(t => t.status === 'live' && (this._lang !== 'fr' || (t.lang === 'fr' && String(t.href || '').startsWith('/fr/'))) && (
         lower.includes(t.href) || lower.includes(t.name.toLowerCase())
       )).slice(0, 3); // max 3 cards
 

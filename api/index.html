@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AfroTools API - African Tax, FX, Fuel, and Rate Data</title>
   <meta name="description" content="Build with African PAYE, VAT, FX, fuel, central-bank, and country data. Try the AfroTools API sandbox, create a dashboard key, then move integrations into a paid pilot.">
-  <link rel="canonical" href="https://afrotools.com/api/">
   <meta property="og:title" content="AfroTools API - African Data for Product Teams">
   <meta property="og:url" content="https://afrotools.com/api/">
   <meta property="og:type" content="website">
@@ -21,8 +20,8 @@
   <link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-  <script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
   <style>
     *,*::before,*::after{box-sizing:border-box}
     body{margin:0;font-family:'DM Sans',system-ui,sans-serif;color:#111827;background:#fff}
@@ -48,6 +47,19 @@
     .dots{display:flex;gap:6px}.dots span{width:9px;height:9px;border-radius:50%;background:#475569}.dots span:nth-child(1){background:#ef4444}.dots span:nth-child(2){background:#f59e0b}.dots span:nth-child(3){background:#22c55e}
     .console pre{margin:0;padding:22px;overflow:auto;color:#d8e6f8;font:13px/1.75 Consolas,'JetBrains Mono',monospace;white-space:pre}
     .console .muted{color:#8393a8}.console .green{color:#7dd3a7}.console .blue{color:#8ab4ff}
+    .console .red{color:#f88b8b}
+    .sbx-body{padding:16px 16px 18px}
+    .sbx-controls{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px}
+    .sbx-field{display:flex;flex-direction:column;gap:6px;flex:1 1 auto;min-width:0}
+    .sbx-field>span{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#8393a8}
+    #sbx-endpoint{width:100%;background:#0f1a2e;color:#d8e6f8;border:1px solid #1d2a40;border-radius:7px;padding:9px 10px;font:600 13px/1.3 'DM Sans',system-ui,sans-serif}
+    .sbx-run{flex:0 0 auto;background:#0062cc;color:#fff;border:0;border-radius:7px;padding:10px 18px;font:800 13px/1 'DM Sans',system-ui,sans-serif;cursor:pointer;min-height:38px;transition:background .15s,opacity .15s}
+    .sbx-run:hover{background:#0056b3}
+    .sbx-run[disabled]{opacity:.6;cursor:progress}
+    #sbx-input{width:100%;background:#0f1a2e;color:#d8e6f8;border:1px solid #1d2a40;border-radius:7px;padding:10px;font:13px/1.5 Consolas,'JetBrains Mono',monospace;resize:vertical}
+    .sbx-meta{margin:10px 0 8px;overflow-x:auto}
+    .sbx-meta code{color:#8393a8;font:12px/1.5 Consolas,'JetBrains Mono',monospace;white-space:nowrap}
+    #sbx-output{margin:0;max-height:260px;overflow:auto;padding:14px;background:#0b1220;border:1px solid #1d2a40;border-radius:8px;color:#d8e6f8;font:12.5px/1.6 Consolas,'JetBrains Mono',monospace;white-space:pre-wrap;word-break:break-word}
     .section{max-width:1160px;margin:0 auto;padding:68px 24px}
     .section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:28px}
     .section h2{font-size:clamp(26px,4vw,38px);line-height:1.12;margin:0;color:#111827;letter-spacing:-.01em}
@@ -173,11 +185,12 @@
     ]
   }
   </script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/api/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/api/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/api/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/api/" />
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/api/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/api/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/api/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/api/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/api/">
 </head>
 <body class="api-ui-refresh top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -199,20 +212,23 @@
           <span>Paid Growth and Pro pilots available</span>
         </div>
       </div>
-      <div class="console" aria-label="AfroTools API sandbox example">
-        <div class="console-head"><div class="dots"><span></span><span></span><span></span></div><span>Sandbox quick test</span></div>
-<pre><span class="muted"># Deterministic sandbox data</span>
-curl -X POST <span class="green">"https://afrotools.com/api/v1/tax/paye"</span> \
-  -H <span class="green">"x-api-key: afro_test_demo123456789"</span> \
-  -H <span class="green">"Content-Type: application/json"</span> \
-  -d <span class="green">'{"country":"NG","grossMonthly":500000}'</span>
-
-<span class="blue">200 OK</span>
-{
-  "status": "success",
-  "sandbox": true,
-  "result": { "netMonthly": 389350 }
-}</pre>
+      <div class="console" aria-label="AfroTools API sandbox tester" id="api-sandbox">
+        <div class="console-head"><div class="dots"><span></span><span></span><span></span></div><span>Live sandbox tester &middot; key <code style="color:#8ab4ff">afro_test_demo123456789</code></span></div>
+        <div class="sbx-body">
+          <div class="sbx-controls">
+            <label class="sbx-field">
+              <span>Endpoint</span>
+              <select id="sbx-endpoint" aria-label="Choose an endpoint"></select>
+            </label>
+            <button type="button" class="sbx-run" id="sbx-run">Run request</button>
+          </div>
+          <label class="sbx-field sbx-req">
+            <span id="sbx-input-label">Request body (JSON)</span>
+            <textarea id="sbx-input" rows="3" spellcheck="false" aria-label="Request parameters"></textarea>
+          </label>
+          <div class="sbx-meta"><code id="sbx-curl">curl ...</code></div>
+          <pre id="sbx-output"><span class="muted"># Choose an endpoint and press Run to call the live sandbox.</span></pre>
+        </div>
       </div>
     </div>
   </section>
@@ -435,7 +451,122 @@ curl -X POST <span class="green">"https://afrotools.com/api/v1/tax/paye"</span> 
   </section>
 </main>
 <afro-footer></afro-footer>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script>
+(function () {
+  var KEY = 'afro_test_demo123456789';
+  var ENDPOINTS = [
+    { id: 'tax/paye',  label: 'POST  /api/v1/tax/paye',            method: 'POST', path: '/api/v1/tax/paye',           body: { country: 'NG', grossMonthly: 500000 } },
+    { id: 'vat',       label: 'POST  /api/v1/vat/calculate',       method: 'POST', path: '/api/v1/vat/calculate',      body: { country: 'NG', amount: 10000, operation: 'add' } },
+    { id: 'taxrates',  label: 'GET   /api/v1/tax/rates',           method: 'GET',  path: '/api/v1/tax/rates',          query: { country: 'NG' } },
+    { id: 'countries', label: 'GET   /api/v1/countries',           method: 'GET',  path: '/api/v1/countries',          query: {} },
+    { id: 'fx',        label: 'GET   /api/v1/fx/rates',            method: 'GET',  path: '/api/v1/fx/rates',           query: { base: 'USD', target: 'NGN' } },
+    { id: 'fuel',      label: 'GET   /api/v1/fuel/prices',         method: 'GET',  path: '/api/v1/fuel/prices',        query: { country: 'NG' } },
+    { id: 'rates',     label: 'GET   /api/v1/rates/central-bank',  method: 'GET',  path: '/api/v1/rates/central-bank', query: { country: 'NG' } },
+    { id: 'health',    label: 'GET   /api/v1/health',              method: 'GET',  path: '/api/v1/health',             query: {} }
+  ];
+  var API_ORIGIN = /(^|\.)afrotools\.com$/.test(location.hostname) ? '' : 'https://afrotools.com';
+
+  var sel = document.getElementById('sbx-endpoint');
+  var input = document.getElementById('sbx-input');
+  var inputLabel = document.getElementById('sbx-input-label');
+  var runBtn = document.getElementById('sbx-run');
+  var out = document.getElementById('sbx-output');
+  var curlEl = document.getElementById('sbx-curl');
+  if (!sel || !input || !runBtn || !out) return;
+
+  ENDPOINTS.forEach(function (e, i) {
+    var o = document.createElement('option');
+    o.value = String(i); o.textContent = e.label;
+    sel.appendChild(o);
+  });
+
+  function toQuery(obj) {
+    return Object.keys(obj || {}).map(function (k) { return k + '=' + obj[k]; }).join('\n');
+  }
+  function parseQuery(text) {
+    var q = {};
+    String(text || '').split('\n').forEach(function (line) {
+      line = line.trim(); if (!line) return;
+      var i = line.indexOf('='); if (i < 0) return;
+      q[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+    });
+    return q;
+  }
+  function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+
+  function currentEndpoint() { return ENDPOINTS[Number(sel.value) || 0]; }
+
+  function syncForm() {
+    var e = currentEndpoint();
+    if (e.method === 'POST') {
+      inputLabel.textContent = 'Request body (JSON)';
+      input.value = JSON.stringify(e.body || {}, null, 2);
+    } else {
+      inputLabel.textContent = 'Query parameters (key=value per line)';
+      input.value = toQuery(e.query || {});
+    }
+    updateCurl();
+  }
+
+  function buildUrl(e) {
+    var url = API_ORIGIN + e.path;
+    if (e.method === 'GET') {
+      var q = parseQuery(input.value);
+      var qs = Object.keys(q).map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(q[k]); }).join('&');
+      if (qs) url += '?' + qs;
+    }
+    return url;
+  }
+
+  function updateCurl() {
+    var e = currentEndpoint();
+    var url = (API_ORIGIN || 'https://afrotools.com') + e.path;
+    var parts = ['curl'];
+    if (e.method === 'POST') parts.push('-X POST');
+    if (e.method === 'GET') {
+      var q = parseQuery(input.value);
+      var qs = Object.keys(q).map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(q[k]); }).join('&');
+      if (qs) url += '?' + qs;
+    }
+    parts.push('"' + url + '"', '-H "x-api-key: ' + KEY + '"');
+    if (e.method === 'POST') parts.push("-d '" + input.value.replace(/\s+/g, ' ').trim() + "'");
+    curlEl.textContent = parts.join(' ');
+  }
+
+  function render(status, ok, text) {
+    var cls = ok ? 'green' : 'red';
+    var pretty = text;
+    try { pretty = JSON.stringify(JSON.parse(text), null, 2); } catch (e) {}
+    out.innerHTML = '<span class="' + cls + '">' + esc(status) + '</span>\n' + esc(pretty);
+  }
+
+  async function run() {
+    var e = currentEndpoint();
+    runBtn.disabled = true;
+    out.innerHTML = '<span class="muted"># Calling ' + esc(e.path) + ' ...</span>';
+    var opts = { method: e.method, headers: { 'x-api-key': KEY, 'Accept': 'application/json' } };
+    if (e.method === 'POST') {
+      opts.headers['Content-Type'] = 'application/json';
+      try { opts.body = JSON.stringify(JSON.parse(input.value)); }
+      catch (err) { render('Invalid JSON', false, String(err.message)); runBtn.disabled = false; return; }
+    }
+    try {
+      var res = await fetch(buildUrl(e), opts);
+      var body = await res.text();
+      render(res.status + ' ' + res.statusText, res.ok, body);
+    } catch (err) {
+      render('Network error', false, err.message + '\n\nThe live tester calls afrotools.com/api/v1/* — it works on the deployed site.');
+    } finally {
+      runBtn.disabled = false;
+    }
+  }
+
+  sel.addEventListener('change', syncForm);
+  input.addEventListener('input', updateCurl);
+  runBtn.addEventListener('click', run);
+  syncForm();
+})();
+</script>
 </body>
 </html>

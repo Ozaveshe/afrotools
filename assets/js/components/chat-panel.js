@@ -547,7 +547,7 @@
             <div class="bot-icon">${AFROBOT_SVG}</div>
             <div class="header-text">
               <div class="chat-title">AI Advisor</div>
-              <div class="chat-sub">Powered by Claude</div>
+              <div class="chat-sub">Optional AI · provider required</div>
             </div>
             <span class="chat-toggle" id="toggleLabel">Open chat ▾</span>
             <div class="live-dot"></div>

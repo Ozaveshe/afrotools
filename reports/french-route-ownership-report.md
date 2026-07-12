@@ -1,11 +1,11 @@
 # French Route Ownership Report
-Generated: 2026-07-09
+Generated: 2026-07-12
 Preferred URL rule: French-owned country and money pages use /fr/<French-country-slug>/ for country hubs, /fr/<French-country-slug>/calculateur-salaire-net for PAYE/salary, /fr/<French-country-slug>/calculateur-tva for VAT, and /fr/document-pdf/ for the French PDF hub. Country-code and English-country French paths are aliases only.
 - Alias route rules currently stabilized: 74
 - Unique alias files currently stabilized: 53
 - Alias files rewritten this run: 53
-- Duplicate canonical groups before, including noindex aliases: 59
-- Duplicate canonical groups after, including noindex aliases: 60
+- Duplicate canonical groups before, including noindex aliases: 26
+- Duplicate canonical groups after, including noindex aliases: 46
 - Competing duplicate canonical groups before: 0
 - Competing duplicate canonical groups after: 0
 - Deferred alias routes: 38
@@ -178,34 +178,25 @@ Preferred URL rule: French-owned country and money pages use /fr/<French-country
 - /fr/eq-guinea/ -> /fr/guinee-equatoriale/: source file missing
 - /fr/eq-guinea -> /fr/guinee-equatoriale/: source file missing
 ## Remaining Duplicate Canonical Groups
-- /fr/education: /fr/education, /fr/education/fees, /fr/education/loans, /fr/education/scholarships, /fr/education/study-abroad
-- /fr/health: /fr/health, /fr/health/costs, /fr/health/insurance, /fr/health/medical-aid, /fr/health/nhif
-- /fr/centrafrique: /fr/centrafrique, /fr/central-africa, /fr/central-african-republic
-- /fr/guinea-bissau: /fr/guinea-bissau, /fr/guinea-bissau/gw-paye, /fr/guinea-bissau/gw-vat
 - /fr/rdc: /fr/dr-congo, /fr/drc, /fr/rdc
-- /fr/sao-tome: /fr/sao-tome, /fr/sao-tome/st-paye, /fr/sao-tome/st-vat
 - /fr/algerie: /fr/algeria, /fr/algerie
 - /fr/algerie/calculateur-salaire-net: /fr/algeria/dz-paye, /fr/algerie/calculateur-salaire-net
 - /fr/algerie/calculateur-tva: /fr/algeria/dz-vat, /fr/algerie/calculateur-tva
-- /fr/benin/calculateur-tva: /fr/benin/bj-vat, /fr/benin/calculateur-tva
 - /fr/burkina-faso/calculateur-tva: /fr/burkina-faso/bf-vat, /fr/burkina-faso/calculateur-tva
 - /fr/burundi/calculateur-salaire-net: /fr/burundi/bi-paye, /fr/burundi/calculateur-salaire-net
 - /fr/burundi/calculateur-tva: /fr/burundi/bi-vat, /fr/burundi/calculateur-tva
-- /fr/business-roi: /fr/business-roi, /fr/data-productivity
 - /fr/cabo-verde: /fr/cabo-verde, /fr/cape-verde
 - /fr/cameroun: /fr/cameroon, /fr/cameroun
-- /fr/cameroun/calculateur-tva: /fr/cameroon/cm-vat, /fr/cameroun/calculateur-tva
+- /fr/centrafrique: /fr/centrafrique, /fr/central-african-republic
 - /fr/centrafrique/calculateur-salaire-net: /fr/car/cf-paye, /fr/centrafrique/calculateur-salaire-net
 - /fr/centrafrique/calculateur-tva: /fr/car/cf-vat, /fr/centrafrique/calculateur-tva
 - /fr/comores: /fr/comores, /fr/comoros
 - /fr/comores/calculateur-salaire-net: /fr/comores/calculateur-salaire-net, /fr/comoros/km-paye
-- /fr/comores/calculateur-tva: /fr/comores/calculateur-tva, /fr/comoros/km-vat
 - /fr/congo/calculateur-salaire-net: /fr/congo/calculateur-salaire-net, /fr/congo/cg-paye
 - /fr/congo/calculateur-tva: /fr/congo/calculateur-tva, /fr/congo/cg-vat
 - /fr/cote-divoire/calculateur-salaire-net: /fr/cote-divoire/calculateur-salaire-net, /fr/cote-divoire/ci-paye
 - /fr/cote-divoire/calculateur-tva: /fr/cote-divoire/calculateur-tva, /fr/cote-divoire/ci-vat
 - /fr/djibouti/calculateur-salaire-net: /fr/djibouti/calculateur-salaire-net, /fr/djibouti/dj-paye
-- /fr/document-pdf: /fr/document-pdf, /fr/tools/document-pdf
 - /fr/gabon/calculateur-salaire-net: /fr/gabon/calculateur-salaire-net, /fr/gabon/ga-paye
 - /fr/gabon/calculateur-tva: /fr/gabon/calculateur-tva, /fr/gabon/ga-vat
 - /fr/guinee: /fr/guinea, /fr/guinee
@@ -213,30 +204,25 @@ Preferred URL rule: French-owned country and money pages use /fr/<French-country
 - /fr/guinee/calculateur-salaire-net: /fr/guinea/gn-paye, /fr/guinee/calculateur-salaire-net
 - /fr/guinee/calculateur-tva: /fr/guinea/gn-vat, /fr/guinee/calculateur-tva
 - /fr/madagascar/calculateur-salaire-net: /fr/madagascar/calculateur-salaire-net, /fr/madagascar/mg-paye
-- /fr/madagascar/calculateur-tva: /fr/madagascar/calculateur-tva, /fr/madagascar/mg-vat
 - /fr/mali/calculateur-tva: /fr/mali/calculateur-tva, /fr/mali/ml-vat
 - /fr/maroc: /fr/maroc, /fr/morocco
 - /fr/maroc/calculateur-tva: /fr/maroc/calculateur-tva, /fr/morocco/ma-vat
 - /fr/mauritanie: /fr/mauritania, /fr/mauritanie
 - /fr/mauritanie/calculateur-salaire-net: /fr/mauritania/mr-paye, /fr/mauritanie/calculateur-salaire-net
-- /fr/mauritanie/calculateur-tva: /fr/mauritania/mr-vat, /fr/mauritanie/calculateur-tva
 - /fr/niger/calculateur-salaire-net: /fr/niger/calculateur-salaire-net, /fr/niger/ne-paye
 - /fr/niger/calculateur-tva: /fr/niger/calculateur-tva, /fr/niger/ne-vat
 - /fr/rdc/calculateur-salaire-net: /fr/dr-congo/cd-paye, /fr/rdc/calculateur-salaire-net
 - /fr/rdc/calculateur-tva: /fr/dr-congo/cd-vat, /fr/rdc/calculateur-tva
-- /fr/salary-tax: /fr/finance, /fr/salary-tax
 - /fr/senegal/calculateur-tva: /fr/senegal/calculateur-tva, /fr/senegal/sn-vat
 - /fr/tchad: /fr/chad, /fr/tchad
 - /fr/tchad/calculateur-salaire-net: /fr/chad/td-paye, /fr/tchad/calculateur-salaire-net
-- /fr/tchad/calculateur-tva: /fr/chad/td-vat, /fr/tchad/calculateur-tva
+- /fr/terms-of-use: /fr/terms, /fr/terms-of-use
 - /fr/togo/calculateur-salaire-net: /fr/togo/calculateur-salaire-net, /fr/togo/tg-paye
 - /fr/togo/calculateur-tva: /fr/togo/calculateur-tva, /fr/togo/tg-vat
-- /fr/tools/ke-retenue-source: /fr/tools/ke-retenue-source, /fr/tools/ke-wht
 - /fr/tools/ng-retenue-source: /fr/tools/ng-retenue-source, /fr/tools/ng-wht
 - /fr/tools/projection-pension: /fr/tools/projection-pension, /fr/tools/projection-retraite
 - /fr/tunisie: /fr/tunisia, /fr/tunisie
 - /fr/tunisie/calculateur-tva: /fr/tunisia/tn-vat, /fr/tunisie/calculateur-tva
-- /fr/vat-business-tax: /fr/business, /fr/vat-business-tax
 - /fr/widgets: /fr/widgets, /fr/widgets/iframe/template
 ## Remaining Competing Duplicate Canonical Groups
 - None

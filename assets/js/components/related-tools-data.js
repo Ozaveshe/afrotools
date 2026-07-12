@@ -1530,7 +1530,7 @@
     "yo::document-pdf": [
       {
         "id": "invoice-generator-yo",
-        "name": "Kíriíro ìwé owó",
+        "name": "Kíriíro ìwé owó",
         "icon": "INV",
         "desc": "Ṣẹda ìwé owó ni Yorùbá pẹlu VAT, alaye alabara, ...",
         "href": "/yo/awon-ise/kiriiro-invoice/",
@@ -1559,7 +1559,7 @@
       },
       {
         "id": "receipt-generator-yo",
-        "name": "Kíriíro risiti",
+        "name": "Kíriíro risiti",
         "icon": "RCT",
         "desc": "Ṣẹda risiti ni Yorùbá pẹlu VAT, ọna isanwo, itọ́...",
         "href": "/yo/awon-ise/kiriiro-risiti/",
@@ -5244,7 +5244,7 @@
         "id": "ma-tva-fr",
         "name": "Calculateur TVA — Maroc",
         "icon": "🇲🇦",
-        "desc": "Route française canonique pour la TVA marocaine ...",
+        "desc": "Calculateur en français pour la TVA marocaine : ...",
         "href": "/fr/maroc/calculateur-tva",
         "category": "financial",
         "lang": "fr",
@@ -5377,7 +5377,7 @@
         "id": "document-pdf-fr",
         "name": "Documents et PDF",
         "icon": "📄",
-        "desc": "Hub français promu pour les outils PDF utiles dé...",
+        "desc": "Accédez aux outils PDF disponibles en français :...",
         "href": "/fr/document-pdf/",
         "category": "document-pdf",
         "lang": "fr",
@@ -19657,7 +19657,7 @@
     "yo": [
       {
         "id": "invoice-generator-yo",
-        "name": "Kíriíro ìwé owó",
+        "name": "Kíriíro ìwé owó",
         "icon": "INV",
         "desc": "Ṣẹda ìwé owó ni Yorùbá pẹlu VAT, alaye alabara, ...",
         "href": "/yo/awon-ise/kiriiro-invoice/",
@@ -19927,7 +19927,7 @@
       },
       {
         "id": "receipt-generator-yo",
-        "name": "Kíriíro risiti",
+        "name": "Kíriíro risiti",
         "icon": "RCT",
         "desc": "Ṣẹda risiti ni Yorùbá pẹlu VAT, ọna isanwo, itọ́...",
         "href": "/yo/awon-ise/kiriiro-risiti/",
@@ -20259,7 +20259,7 @@
         "id": "document-pdf-fr",
         "name": "Documents et PDF",
         "icon": "📄",
-        "desc": "Hub français promu pour les outils PDF utiles dé...",
+        "desc": "Accédez aux outils PDF disponibles en français :...",
         "href": "/fr/document-pdf/",
         "category": "document-pdf",
         "lang": "fr",

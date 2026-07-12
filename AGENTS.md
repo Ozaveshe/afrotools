@@ -12,16 +12,17 @@ Future agents should inspect first, keep diffs scoped, preserve unrelated dirty 
 
 1. `package.json`
 2. `docs/ARCHITECTURE.md`
-3. `docs/CLOSE-OUT-2026-05.md`
-4. `docs/PRO-APP-READINESS.md`
-5. `docs/PRO-FENCE.md`
-6. `docs/ADDING-A-TOOL.md`
-7. `docs/ADDING-A-COUNTRY.md`
-8. `docs/design-doctrine.md`
-9. `docs/codex-playbook.md`
-10. `docs/known-traps.md`
-11. `docs/afrotools-ai-transformation-map.md` when touching AI routing, assistant behavior, prefill handoff, source labels, or exports
-12. Relevant workflow docs such as `docs/PDF-CATEGORY-WORKFLOW.md`, `docs/CONTENT-PUBLISHING-WORKFLOW.md`, `docs/MOBILE-AUDIT-WORKFLOW.md`, or `docs/release-checklist.md`
+3. `docs/TECHNICAL-RISK-REGISTER.md`
+4. `docs/CLOSE-OUT-2026-05.md`
+5. `docs/PRO-APP-READINESS.md`
+6. `docs/PRO-FENCE.md`
+7. `docs/ADDING-A-TOOL.md`
+8. `docs/ADDING-A-COUNTRY.md`
+9. `docs/design-doctrine.md`
+10. `docs/codex-playbook.md`
+11. `docs/known-traps.md`
+12. `docs/afrotools-ai-transformation-map.md` when touching AI routing, assistant behavior, prefill handoff, source labels, or exports
+13. Relevant workflow docs such as `docs/PDF-CATEGORY-WORKFLOW.md`, `docs/CONTENT-PUBLISHING-WORKFLOW.md`, `docs/MOBILE-AUDIT-WORKFLOW.md`, or `docs/release-checklist.md`
 
 ## Repo Layout
 
@@ -40,9 +41,26 @@ Future agents should inspect first, keep diffs scoped, preserve unrelated dirty 
 - `dist/`, `sitemap*.xml`, `_redirects`, `_headers`, `assets/js/bundles/`, and `*.min.js` may be generated or post-processed. Prefer source files and scripts.
 - `audit-results/`, `reports/`, `artifacts/`, and `test-results/` are evidence/output areas, not product source unless a task explicitly says otherwise.
 
+## Sources Of Truth And Generated Files
+
+- Tool discovery and tool/category availability start in `assets/js/components/tool-registry.js`. Distinguish registry rows, expanded public tool instances, crawlable directory rows, and unique AI router entries; they are different measures.
+- Country selector metadata starts in `assets/js/components/country-selector.js`. `scripts/build-tool-directory.js` has a second country-name list for indexing, so country changes must keep both aligned.
+- Widget availability starts in the generated `widgets/WIDGET-REGISTRY.js`; change widget sources or `widgets/lite/widget-pack.js`, then run `npm run widgets:build`.
+- Public locale launch truth starts in `data/registry/locale-manifest.json`; page-state overrides start in `data/registry/locale-coverage-policy.json`. English, French, Swahili, Yoruba, and Hausa are public; Igbo is planned until its route/catalog/coverage contract is complete. `data/registry/locale-page-coverage.json` and `reports/localization-coverage.*` are generated. AI locale hints are a separate capability and do not prove public route coverage.
+- Pro app readiness starts in `assets/js/lib/pro-app-registry.js` and `assets/js/lib/pro-daily-os-registry.js`. Pro subscription prices start in `assets/js/lib/pro-plan.js`; API plan limits start in `netlify/functions/_shared/api-plans.js`.
+- Measurable public claims are governed by `data/audits/public-claim-registry.json` and `npm run audit:public-claims`; public page copy is not a truth source by itself.
+- Committed generated output includes localized routes, JSON indexes, bundles, minified assets, related-tool data, the blog feed, sitemaps, `_redirects`, and the service-worker stamp. Regenerate these through their owners and review source diffs separately from output churn.
+- `dist/` is ignored and disposable. It is the Netlify publish artifact, not editable source; rebuild it with `npm run build:deploy` and validate it with `npm run audit:dist`.
+
 ## Commands
 
 There is no `npm run dev` script in the current `package.json`. Use `npm run lint` and `npm run type-check` for the focused CI lint and type/import checks they provide.
+
+First-time setup:
+
+- Install Node.js/npm, then run `npm ci` from the repository root.
+- Run `npx playwright install chromium` only when the local Playwright browser is missing.
+- Do not copy a production `.env` into the repo. Use explicitly scoped local environment variables for Netlify Function work.
 
 Local serving:
 
@@ -81,7 +99,7 @@ SEO, routes, and generated metadata:
 Specialized validation:
 
 - PDF/document tools: `npm run pdf:verify`, `npm run document-pdf:verify`
-- i18n: `npm run build:i18n:validate`, `npm run validate:hreflang`, or `npm run build:i18n:full`
+- i18n: `npm run localization:check`, `npm run test:localization`, `npm run build:i18n:validate`, `npm run validate:hreflang`, or `npm run build:i18n:full`
 - Pro apps: `npm run pro:verify`
 - Category workflows: `npm run category-workflow:verify`
 - Widgets: `npm run widgets:build`, then `npm run seo:widgets` when iframe/widget SEO metadata changes

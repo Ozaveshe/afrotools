@@ -14,6 +14,7 @@ const ROOT = path.resolve(__dirname, '..');
 const BLOG_DIR = path.join(ROOT, 'blog');
 const BLOG_INDEX = path.join(BLOG_DIR, 'index.html');
 const FEED_PATH = path.join(BLOG_DIR, 'feed.xml');
+const CONTENT_MANIFEST = path.join(ROOT, 'data', 'content', 'blog-article-manifest.json');
 const BASE_URL = 'https://afrotools.com';
 const DEFAULT_LIMIT = 40;
 
@@ -152,6 +153,9 @@ function readBlogIndexOrder() {
 }
 
 function getBlogArticles() {
+  if (!fs.existsSync(CONTENT_MANIFEST)) throw new Error('Missing data/content/blog-article-manifest.json.');
+  const contentManifest = JSON.parse(readFile(CONTENT_MANIFEST));
+  const manifestByFile = new Map((contentManifest.articles || []).map((row) => [row.file, row]));
   const indexOrder = readBlogIndexOrder();
   const articles = [];
 
@@ -162,6 +166,10 @@ function getBlogArticles() {
     if (!fs.existsSync(articlePath)) continue;
 
     const html = readFile(articlePath);
+    const sourceFile = `blog/${entry.name}/index.html`;
+    const contentRecord = manifestByFile.get(sourceFile);
+    if (!contentRecord) throw new Error(`${sourceFile}: missing explicit blog locale metadata record.`);
+    if (contentRecord.locale !== 'en' || contentRecord.publicationStatus !== 'published') continue;
     const meta = readMeta(html);
     if (hasNoindex(meta) || isRedirectLike(html)) continue;
 
@@ -196,11 +204,7 @@ function getBlogArticles() {
       title
     );
 
-    const category = collapseText(
-      meta.get('article:section') ||
-      (html.match(/<span[^>]*class=["'][^"']*category-badge[^"']*["'][^>]*>([\s\S]*?)<\/span>/i) || [])[1] ||
-      'Tools & Guides'
-    );
+    const category = contentRecord.category;
 
     articles.push({
       slug: entry.name,
@@ -209,6 +213,7 @@ function getBlogArticles() {
       category,
       url,
       pubDate,
+      locale: contentRecord.locale,
       order: indexOrder.has(entry.name) ? indexOrder.get(entry.name) : Number.MAX_SAFE_INTEGER,
     });
   }
@@ -232,10 +237,11 @@ function renderFeed(articles) {
     <description>${escapeXml(article.description)}</description>
     <pubDate>${escapeXml(formatRfc822(article.pubDate))}</pubDate>
     <category>${escapeXml(article.category)}</category>
+    <dc:language>${escapeXml(article.locale)}</dc:language>
   </item>`).join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>AfroTools Blog</title>
     <link>${BASE_URL}/blog/</link>

@@ -106,6 +106,7 @@ const BLOCKED_RELATIVE_DIRS = new Set([
   'fr/docs',
   'matchday-os',
   'assets/img/matchday',
+  'data/registry',
   'data/matchday-os'
 ]);
 

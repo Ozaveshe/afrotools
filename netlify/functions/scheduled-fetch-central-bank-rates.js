@@ -748,6 +748,7 @@ exports.handler = async function () {
   var dataAge = data.timestamp ? now.getTime() - new Date(data.timestamp).getTime() : Infinity;
   var wasStale = dataAge > THIRTY_DAYS_MS;
 
+  data.schemaVersion = 1;
   data.timestamp = nowIso;
   data.inflation_enriched_at = worldBankSuccess ? nowIso : data.inflation_enriched_at || null;
   data._enriched = worldBankSuccess ? 'worldbank' : 'none';

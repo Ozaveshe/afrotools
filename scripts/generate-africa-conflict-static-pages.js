@@ -25,6 +25,10 @@ const CONFLICTS_PAGE_PATH = path.join(TOOL_DIR, "conflicts.html");
 const AC_FONT_HREF =
   "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap";
 
+function cleanHtml(html) {
+  return String(html).replace(/[ \t]+$/gm, "");
+}
+
 const CONFLICT_TYPE_LABELS = {
   civil_war: "Civil War",
   insurgency: "Insurgency",
@@ -278,6 +282,8 @@ function buildDossierPageHtml(conflict, manifest) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="afrotools-content-id" content="africa-conflict:dossier:${escapeHtml(conflict.slug)}">
+  <meta name="afrotools-source-owner" content="scripts/lib/africa-conflict-static.js">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
@@ -374,17 +380,10 @@ function buildDossierPageHtml(conflict, manifest) {
       <div>
         <section class="acd-static-panel">
           <div class="acd-static-section-head">
-            <p class="acd-section-kicker">Dossier summary</p>
-            <h2>Current conflict profile</h2>
+            <p class="acd-section-kicker">Persistence drivers</p>
+            <h2>Why this conflict persists</h2>
           </div>
-          <p class="acd-static-copy">${escapeHtml(conflict.summary)}</p>
-          ${conflict.why_persists ? `<div class="acd-static-section">
-            <div class="acd-static-section-head">
-              <p class="acd-section-kicker">Persistence drivers</p>
-              <h2>Why this conflict persists</h2>
-            </div>
-            <p class="acd-static-copy">${escapeHtml(conflict.why_persists)}</p>
-          </div>` : ""}
+          <p class="acd-static-copy">${escapeHtml(conflict.why_persists || "The available record does not yet include a reviewed persistence analysis.")}</p>
         </section>
 
         <section class="acd-static-section">
@@ -510,6 +509,8 @@ function buildConflictHubIndexHtml(manifest) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="afrotools-content-id" content="africa-conflict:directory">
+  <meta name="afrotools-source-owner" content="scripts/lib/africa-conflict-static.js">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
@@ -606,7 +607,7 @@ function buildConflictHubIndexHtml(manifest) {
 
 function writeHtmlPage(outputDir, html) {
   ensureDir(outputDir);
-  fs.writeFileSync(path.join(outputDir, "index.html"), html, "utf8");
+  fs.writeFileSync(path.join(outputDir, "index.html"), cleanHtml(html), "utf8");
 }
 
 function syncGeneratedDirectory(baseDir, keepSlugs) {
@@ -675,7 +676,7 @@ function upsertMarkedBlock(filePath, startMarker, endMarker, replacement) {
     ""
   );
 
-  fs.writeFileSync(filePath, html, "utf8");
+  fs.writeFileSync(filePath, cleanHtml(html), "utf8");
 }
 
 function updateDiscoverySources(manifest) {
@@ -714,7 +715,7 @@ async function main() {
 
   const keepSlugs = manifest.routes.generated_conflict_slugs;
   syncGeneratedDirectory(CONFLICTS_DIR, keepSlugs);
-  fs.writeFileSync(path.join(CONFLICTS_DIR, "index.html"), buildConflictHubIndexHtml(manifest), "utf8");
+  fs.writeFileSync(path.join(CONFLICTS_DIR, "index.html"), cleanHtml(buildConflictHubIndexHtml(manifest)), "utf8");
 
   manifest.conflicts
     .filter((conflict) => conflict.generated_in_wave)

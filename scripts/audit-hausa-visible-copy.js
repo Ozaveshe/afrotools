@@ -472,4 +472,6 @@ function main() {
   console.log(`Wrote ${rel(REPORT_JSON)} and ${rel(REPORT_MD)}`);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { buildReport, main };

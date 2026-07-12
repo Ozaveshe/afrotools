@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="sw">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kikokotoo cha Faida ya Forex | Pips, Thamani ya Pip na P&L | AfroTools</title>
 <meta name="description" content="Kokotoa faida au hasara ya forex kwa Kiswahili. Pima pips, thamani ya pip, position size na P&L kwa jozi kuu na sarafu za Afrika.">
-<link rel="canonical" href="https://afrotools.com/sw/zana/kikokotoo-faida-forex/">
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-faida-forex/">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/forex-profit/">
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/profit-forex/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/forex-profit/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Kikokotoo cha Faida ya Forex | Pips, Thamani ya Pip na P&L | AfroTools">
 <meta property="og:description" content="Kokotoa faida au hasara ya forex kwa Kiswahili. Pima pips, thamani ya pip, position size na P&L kwa jozi kuu na sarafu za Afrika.">
@@ -32,10 +27,10 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=5af5f2d6" defer></script>
-<script src="/assets/js/bundles/core.1ecbb30b.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -47,6 +42,11 @@
 </style>
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/sw/zana/kikokotoo-faida-forex/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/forex-profit/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/profit-forex/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-faida-forex/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/forex-profit/">
 </head>
 <body class="top-level-page-ui-refresh">
 <a class="skip-link" href="#main-content">Ruka hadi maudhui</a>
@@ -84,6 +84,6 @@ function setDir(d){direction=d;document.querySelectorAll('.swm-tab.buy,.swm-tab.
 function calculateForex(){const pair=document.getElementById('pair'),pipSize=parseFloat(pair.selectedOptions[0].dataset.pip),entry=parseFloat(document.getElementById('entry').value),exit=parseFloat(document.getElementById('exit').value),lotSize=parseInt(document.getElementById('lotType').value),lots=parseFloat(document.getElementById('lots').value)||1,acctCur=document.getElementById('acctCur').value;if(!entry||!exit){alert('Tafadhali ingiza bei ya kuingia na kutoka.');return;}const positionSize=lotSize*lots,priceDiff=direction==='buy'?(exit-entry):(entry-exit),pips=priceDiff/pipSize,pipValueQuote=pipSize*positionSize,profitQuote=priceDiff*positionSize,quoteCur=pair.value.split('/')[1],quoteRate=getFxRate(quoteCur),acctRate=getFxRate(acctCur),profitAcct=quoteRate&&acctRate?(profitQuote/quoteRate)*acctRate:profitQuote,pipValueAcct=quoteRate&&acctRate?(pipValueQuote/quoteRate)*acctRate:pipValueQuote,symbols={NGN:'NGN ',KES:'KSh ',ZAR:'R ',GHS:'GHS ',USD:'$',GBP:'GBP ',EUR:'EUR ',JPY:'JPY '},sym=symbols[acctCur]||acctCur+' ';var pnlEl=document.getElementById('rPnl');pnlEl.textContent=(profitAcct>=0?'+':'')+sym+profitAcct.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});pnlEl.className=profitAcct>=0?'swm-positive':'swm-negative';document.getElementById('rPips').textContent=(pips>=0?'+':'')+pips.toFixed(1)+' pips';document.getElementById('rPipVal').textContent=sym+pipValueAcct.toFixed(2)+'/pip';document.getElementById('rPosSize').textContent=positionSize.toLocaleString('en')+' units';const returnPct=entry>0?(priceDiff/entry)*100:0;document.getElementById('rReturn').textContent=(returnPct>=0?'+':'')+returnPct.toFixed(3)+'%';document.getElementById('forexResult').classList.add('on');}
 fetchForexRates().then(calculateForex);
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

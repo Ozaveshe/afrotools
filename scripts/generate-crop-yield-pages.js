@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
 const TEMPLATE_PATH = path.join(ROOT, 'agriculture/crop-yield/nigeria.html');
@@ -13,7 +14,7 @@ const OUTPUT_DIR = path.join(ROOT, 'agriculture/crop-yield');
 const DATA_DIR = path.join(ROOT, 'data/agriculture');
 
 // Country configurations
-const countries = [
+const countryProfiles = [
   // ── Batch 1 (already generated) ──
   { code: 'GH', slug: 'ghana', name: 'Ghana', dataFile: 'gh-agri-data.js', flag: '&#127468;&#127469;', topCrops: 'cocoa, cassava, maize, rice, yam', regionCount: 6, metaDesc: 'Estimate crop yields for cocoa, cassava, maize, rice, yam and more across Ghana\'s 6 agroecological zones. Free agricultural calculator with region-specific data.', dataSource: 'Ghana Statistical Service' },
   { code: 'KE', slug: 'kenya', name: 'Kenya', dataFile: 'ke-agri-data.js', flag: '&#127472;&#127466;', topCrops: 'tea, maize, wheat, coffee, avocado', regionCount: 7, metaDesc: 'Estimate crop yields for tea, maize, wheat, coffee, avocado and more across Kenya\'s 7 agroecological zones. Free agricultural calculator with region-specific data.', dataSource: 'Kenya National Bureau of Statistics' },
@@ -80,11 +81,64 @@ const countries = [
   { code: 'CV', slug: 'cabo-verde', name: 'Cabo Verde', dataFile: 'cv-agri-data.js', flag: '&#127464;&#127483;', topCrops: 'maize, beans, banana, sugar cane, tomato', regionCount: 2, metaDesc: "Estimate crop yields for maize, beans, banana, sugar cane, tomato and more in Cabo Verde. Free calculator.", dataSource: 'Instituto Nacional de Estatistica' },
 ];
 
+const canonicalCountries = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/registry/countries.json'), 'utf8'));
+const canonicalById = new Map(canonicalCountries.map((country) => [country.id, country]));
+const countries = countryProfiles.map((profile) => {
+  const canonical = canonicalById.get(profile.code);
+  if (!canonical) throw new Error(`[CROP_COUNTRY_UNKNOWN] ${profile.code} is not in data/registry/countries.json`);
+  const dataFile = `${profile.code.toLowerCase()}-agri-data.js`;
+  if (!fs.existsSync(path.join(DATA_DIR, dataFile))) throw new Error(`[CROP_DATA_MISSING] ${profile.code} requires ${dataFile}`);
+  return {
+    ...profile,
+    name: canonical.title,
+    flag: canonical.flag,
+    currency: canonical.currency,
+    sourceJurisdiction: canonical.sourceJurisdiction,
+    canonicalCountryRoute: canonical.route,
+    dataFile
+  };
+});
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+}
+
+function loadCountryData(dataFile) {
+  const sandbox = { window: {} };
+  sandbox.window.window = sandbox.window;
+  vm.createContext(sandbox);
+  vm.runInContext(fs.readFileSync(path.join(DATA_DIR, dataFile), 'utf8'), sandbox, { filename: dataFile });
+  const data = sandbox.window.AfroTools && sandbox.window.AfroTools.countryData;
+  if (!data) throw new Error(`[CROP_DATA_INVALID] ${dataFile} did not expose window.AfroTools.countryData`);
+  return data;
+}
+
+function factsSection(country, data) {
+  const stats = data.agriStats || {};
+  const food = Array.isArray(stats.mainFoodCrops) ? stats.mainFoodCrops.slice(0, 6).join(', ') : '';
+  const exports = Array.isArray(stats.mainExportCrops) ? stats.mainExportCrops.slice(0, 5).join(', ') : '';
+  const rows = [];
+  if (stats.gdpSharePercent != null) rows.push(`<tr><th scope="row">Agriculture share of GDP</th><td>~${escapeHtml(stats.gdpSharePercent)}%</td></tr>`);
+  if (stats.arableLandHectares != null) rows.push(`<tr><th scope="row">Arable land</th><td>${escapeHtml(Number(stats.arableLandHectares).toLocaleString('en-US'))} ha</td></tr>`);
+  if (stats.irrigatedPercent != null) rows.push(`<tr><th scope="row">Irrigated share</th><td>~${escapeHtml(stats.irrigatedPercent)}%</td></tr>`);
+  if (food) rows.push(`<tr><th scope="row">Main food crops</th><td>${escapeHtml(food)}</td></tr>`);
+  if (exports) rows.push(`<tr><th scope="row">Main export crops</th><td>${escapeHtml(exports)}</td></tr>`);
+  return `<section class="seo-content agri-country-facts" data-country-id="${country.code}" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
+<h2 style="font-size:1.15rem;font-weight:700;color:#1e293b;margin:1.5rem 0 0.5rem;">Farming context: ${escapeHtml(country.name)}</h2>
+<p>${escapeHtml(country.name)} crop estimates use the selected region, crop, soil, water, seed and fertilizer assumptions from the ${escapeHtml(country.code)} agriculture dataset. Check local conditions before applying national averages.</p>
+<table style="width:100%;border-collapse:collapse;font-size:.85rem;"><tbody>${rows.join('')}</tbody></table>
+<p style="font-size:.78rem;color:#64748b;">Country context from the AfroTools agriculture dataset - planning reference, not agronomic advice. Confirm with local extension services.</p>
+</section>`;
+}
+
 // Read template
 const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 
 countries.forEach(c => {
   let html = template;
+  const countryData = loadCountryData(c.dataFile);
+  if (countryData.countryCode !== c.code) throw new Error(`[CROP_DATA_COUNTRY_MISMATCH] ${c.dataFile} declares ${countryData.countryCode}; expected ${c.code}`);
+  if (countryData.currency !== c.currency) throw new Error(`[CROP_DATA_CURRENCY_MISMATCH] ${c.dataFile} declares ${countryData.currency}; expected ${c.currency}`);
 
   // Title & meta
   html = html.replace(/Crop Yield Estimator for Nigeria/g, `Crop Yield Estimator for ${c.name}`);
@@ -102,10 +156,12 @@ countries.forEach(c => {
   html = html.replace(/\/agriculture\/crop-yield\/nigeria/g, `/agriculture/crop-yield/${c.slug}`);
 
   // Breadcrumb
-  html = html.replace(/>[\s]*Nigeria[\s]*<\/nav>/g, `>${c.name}</nav>`);
+  html = html.replace(/(<span aria-current="page">)Nigeria(<\/span>)/g, `$1${c.name}$2`);
+  html = html.replace(/("position":4,"name":")Nigeria("[^{]+\/agriculture\/crop-yield\/)/g, `$1${c.name}$2`);
 
   // Hero H1 flag
   html = html.replace(/&#127475;&#127468;/g, c.flag);
+  html = html.replace(/(<h1><span class="flag"[^>]*>[^<]*<\/span>) Nigeria (<em>Crop Yield Estimator<\/em><\/h1>)/g, `$1 ${c.name} $2`);
 
   // Hero description
   html = html.replace(
@@ -120,6 +176,11 @@ countries.forEach(c => {
   // Data file reference
   html = html.replace(/ng-agri-data\.js/g, c.dataFile);
 
+  // Keep the pre-calculation revenue label aligned with the country data.
+  // The engine replaces this value after calculation, but the static label is
+  // visible on first render and must never inherit NGN from the template.
+  html = html.replace(/(<span id="rCurrency">)[^<]*(<\/span>)/, `$1${c.currency}$2`);
+
   // Data sources footer
   html = html.replace(
     /Nigeria National Bureau of Statistics/g,
@@ -128,6 +189,27 @@ countries.forEach(c => {
 
   // Country name in info section
   html = html.replace(/&#127470;&#127468; Agriculture in Nigeria/g, `${c.flag} Agriculture in ${c.name}`);
+
+  // Machine-readable country identity contract
+  html = html.replace(/(<meta name="afrotools-country-id" content=")[^"]+(">)/, `$1${c.code}$2`);
+  html = html.replace(/(<meta name="afrotools-source-jurisdiction" content=")[^"]+(">)/, `$1${c.sourceJurisdiction}$2`);
+  html = html.replace(/(<meta name="afrotools-formula-jurisdiction" content=")[^"]+(">)/, `$1${countryData.countryCode}$2`);
+  html = html.replace(/(<meta name="afrotools-currency" content=")[^"]+(">)/, `$1${c.currency}$2`);
+  html = html.replace('"applicationCategory":"UtilityApplication"', `"applicationCategory":"UtilityApplication","spatialCoverage":{"@type":"Country","name":${JSON.stringify(c.name)},"identifier":${JSON.stringify(c.code)}},"additionalProperty":[{"@type":"PropertyValue","name":"sourceJurisdiction","value":${JSON.stringify(c.sourceJurisdiction)}},{"@type":"PropertyValue","name":"formulaJurisdiction","value":${JSON.stringify(countryData.countryCode)}},{"@type":"PropertyValue","name":"currency","value":${JSON.stringify(c.currency)}}]`);
+
+  // Replace template-only Nigeria facts with the country dataset used by the engine.
+  html = html.replace(/<section class="seo-content agri-country-facts"[\s\S]*?<\/section>/, factsSection(c, countryData));
+
+  const expectedIdentity = [
+    [`<span aria-current="page">${c.name}</span>`, 'visible breadcrumb'],
+    [`"position":4,"name":"${c.name}"`, 'breadcrumb JSON-LD'],
+    [` ${c.name} <em>Crop Yield Estimator</em></h1>`, 'hero heading'],
+    [`<span id="rCurrency">${c.currency}</span>`, 'visible currency'],
+    [`/data/agriculture/${c.dataFile}`, 'country data script']
+  ];
+  expectedIdentity.forEach(([needle, label]) => {
+    if (!html.includes(needle)) throw new Error(`[CROP_OUTPUT_IDENTITY_MISMATCH] ${c.slug} is missing ${label}: ${needle}`);
+  });
 
   // Write output
   const outPath = path.join(OUTPUT_DIR, `${c.slug}.html`);

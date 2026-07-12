@@ -34,14 +34,19 @@ const {
   frenchRouteForEnglishTelecomSource,
   frenchTelecomSlugToEnglishSource,
 } = require('./lib/french-telecom-route-map');
+const localizationApi = require('./lib/localization-platform');
 
 // ── CONFIG ──────────────────────────────────────────────────────────
 
 const ROOT = path.join(__dirname, '..');
 const LANG_DIR = path.join(ROOT, 'lang');
 const SITE_URL = 'https://afrotools.com';
-const SUPPORTED_LANGS = ['fr', 'sw', 'yo', 'ha'];
-const DEFAULT_LANG = 'en';
+const LOCALE_MANIFEST = localizationApi.loadLocaleManifest();
+const LOCALE_COVERAGE_POLICY = localizationApi.loadCoveragePolicy();
+const LOCALE_POLICY = LOCALE_MANIFEST.locales;
+const DEFAULT_LOCALE = LOCALE_POLICY.find((locale) => locale.launchStatus === 'default');
+const DEFAULT_LANG = DEFAULT_LOCALE ? DEFAULT_LOCALE.id : 'en';
+const SUPPORTED_LANGS = localizationApi.getPublicLocaleIds(LOCALE_MANIFEST).filter((locale) => locale !== DEFAULT_LANG);
 const ALL_LANGS = [DEFAULT_LANG, ...SUPPORTED_LANGS];
 
 function sleep(ms) {
@@ -863,7 +868,9 @@ function generateHreflangTags(pagePath, activeLangs) {
     else if (lang === 'sw') url = getSwahiliUrl(pagePath);
     else if (lang === 'ha') url = getHausaUrl(pagePath);
     else url = buildLangUrl(pagePath, lang);
-    tags.push(`<link rel="alternate" hreflang="${lang}" href="${url}" />`);
+    const route = new URL(url, SITE_URL).pathname;
+    const coverage = localizationApi.classifyPage({ route, locale: lang, pageType: 'page', indexability: 'indexable' }, LOCALE_COVERAGE_POLICY, LOCALE_MANIFEST, translations);
+    if (coverage.indexableEligible) tags.push(`<link rel="alternate" hreflang="${lang}" href="${url}" />`);
   }
 
   // x-default always points to English
@@ -1309,8 +1316,8 @@ function processHTML(html, lang, pagePath) {
       ['Search articles... e.g. PAYE, mobile money, import duty', 'Rechercher des articles... ex. PAYE, mobile money, droits de douane'],
       ['Search blog articles', 'Rechercher dans les articles'],
       ['Search all tools', 'Rechercher dans tous les outils'],
-      ['Search tools â€” e.g. budget, ROI, meeting cost', 'Rechercher des outils â€” ex. budget, ROI, cout de reunion'],
-      ['Search tools â€” e.g. budget, ROI, meeting costâ€¦', 'Rechercher des outils â€” ex. budget, ROI, cout de reunion...'],
+      ['Search tools \u00e2\u20ac\u201d e.g. budget, ROI, meeting cost', 'Rechercher des outils \u00e2\u20ac\u201d ex. budget, ROI, cout de reunion'],
+      ['Search tools \u00e2\u20ac\u201d e.g. budget, ROI, meeting cost\u00e2\u20ac\u00a6', 'Rechercher des outils \u00e2\u20ac\u201d ex. budget, ROI, cout de reunion...'],
       ['Search tools — e.g. budget, ROI, meeting cost', 'Rechercher des outils — ex. budget, ROI, cout de reunion'],
       ['Search tools — e.g. budget, ROI, meeting cost…', 'Rechercher des outils — ex. budget, ROI, cout de reunion...'],
       ['Clear search', 'Effacer la recherche'],
@@ -1402,7 +1409,7 @@ function processHTML(html, lang, pagePath) {
       ['Calculate first to unlock', "Calculez d'abord pour débloquer"],
       ['Calculate your salary first to get personalised AI tax analysis.', "Calculez votre salaire pour obtenir une analyse fiscale IA personnalisée."],
       ['Calculate your salary first', "Calculez d'abord votre salaire"],
-      ['Powered by Claude', 'Propulsé par Claude'],
+      ['Optional AI · provider required', 'IA facultative · fournisseur requis'],
       ['Thinking...', 'Réflexion en cours...'],
 
       // ── Footer ──

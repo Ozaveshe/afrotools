@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -7,8 +7,6 @@
 <title>Exam Timetable Generator | AfroTools</title>
 <meta name="description" content="Generate a personalised exam timetable with study sessions, revision blocks and break reminders. Perfect for WAEC, KCSE, Matric and university exam prep.">
 <meta name="tool-id" content="exam-timetable">
-<link rel="canonical" href="https://afrotools.com/tools/exam-timetable/">
-
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/exam-timetable/">
 <meta property="og:title" content="Exam Timetable Generator | AfroTools">
@@ -24,8 +22,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -113,10 +111,6 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 @media(max-width:500px){.tt-grid{grid-template-columns:1fr}.tt-day{display:flex;flex-wrap:wrap;align-items:center}}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/exam-timetable.webp">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/exam-timetable/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/planning-examens/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ratiba-ya-mtihani/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/exam-timetable/" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -152,6 +146,11 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/exam-timetable/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/exam-timetable/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/planning-examens/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ratiba-ya-mtihani/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/exam-timetable/">
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar theme="dark" active="education"></afro-navbar>
@@ -248,6 +247,23 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 
 
 
+<!-- Methodology, limitations & sources -->
+<section data-tool-verification-panel aria-labelledby="exam-timetable-method-title" style="max-width:900px;margin:32px auto;padding:0 24px;">
+  <h2 id="exam-timetable-method-title" style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:6px;font-family:'DM Sans',sans-serif">How it works — methodology &amp; sources</h2>
+  <p style="font-size:0.84rem;color:#64748b;line-height:1.6;margin:0 0 14px;font-family:'DM Sans',sans-serif">Updated for 2026. Here is exactly how your timetable is generated, the assumptions behind it, and what to verify before you rely on it.</p>
+  <details open style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none">Methodology &amp; assumptions</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">The timetable is built entirely in your browser. First we work out how many study blocks fit each day with the formula slots&nbsp;=&nbsp;min(ceil(study&nbsp;hours&nbsp;&divide;&nbsp;1.5),&nbsp;8), so each block represents roughly 1.5&nbsp;hours; weekends are given about half as many blocks plus a rest/review slot, and a break is inserted mid-day. Your subjects are then assigned to those blocks in a round-robin cycle across the chosen number of weeks, after being sorted by the study style you pick — <strong>balanced</strong> keeps your order, <strong>weak-first</strong> sorts by priority (highest first), and <strong>exam-order</strong> sorts by priority ascending. When you set a start date and a target exam date, the duration is derived as ceil(days&nbsp;between&nbsp;&divide;&nbsp;7) weeks, capped between 1 and 24. The calendar (.ics) export maps each block to a fixed clock time (e.g. Morning&nbsp;1 = 08:00–09:15). The tool assumes an even distribution of subjects rather than any exam-specific weighting.</div>
+  </details>
+  <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none">Limitations &amp; what to verify</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">This is a study-planning tool and the schedule it produces is a simple even-distribution heuristic, not personalised pedagogy or an official examination timetable — it is informational only and does not replace guidance from your teacher, school, or exam board. Priorities influence only the ordering of subjects, not the exact number of hours each receives. Before you print, share, or commit to travel, verify the official paper dates, venue, entry details and any calculator or stationery rules with the relevant authority (WAEC, KNEC, ECZ, UNEB, NECTA, ZIMSEC, or the South African DBE). Saved plans live only in this browser's localStorage.</div>
+  </details>
+  <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none">Sources &amp; references</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">Exam presets link to their official examination authority as the source of dates and subjects — for example the <a href="https://waecgh.org/timetable/" target="_blank" rel="noopener">WAEC Ghana timetable &#8599;</a>, plus Kenya KNEC, Zambia ECZ, Uganda UNEB, Tanzania NECTA, Zimbabwe ZIMSEC and the South African DBE. Treat those official pages as the authoritative reference for every date. Last verified 2026.</div>
+  </details>
+</section>
 <afro-footer></afro-footer>
 <script>
 var DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];

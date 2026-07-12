@@ -195,7 +195,7 @@ html = applyPairs(html, [
   ['Download Your PAYE Summary', 'Téléchargez votre récapitulatif PAYE'],
   ['tool-name="Togo PAYE Calculator"', 'tool-name="Calculateur PAYE Togo"'],
   ['<span class="ai-head-title">AI Tax Advisor</span>', '<span class="ai-head-title">Conseiller fiscal IA</span>'],
-  ['<span class="ai-head-by">Powered by Claude</span>', '<span class="ai-head-by">Propulsé par Claude</span>'],
+  ['<span class="ai-head-by">Optional AI · provider required</span>', '<span class="ai-head-by">IA facultative · fournisseur requis</span>'],
   ['<p class="ai-status" id="aiStatus">Calculate your salary first — I\'ll analyse your OTR salary-tax position, explain CNSS and dependent relief, and give specific optimisation tips for Togo.</p>', '<p class="ai-status" id="aiStatus">Calculez d\'abord votre salaire : j\'analyserai votre situation fiscale OTR, j\'expliquerai la CNSS et l\'abattement familial, puis je vous donnerai des conseils concrets pour le Togo.</p>'],
   ['<button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>', '<button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d\'abord pour déverrouiller →</button>'],
   ['<input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key===\'Enter\')sendChat()">', '<input class="chat-in" id="chatIn" placeholder="Posez une question de suivi…" onkeydown="if(event.key===\'Enter\')sendChat()">'],

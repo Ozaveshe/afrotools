@@ -70,8 +70,8 @@ function redirectStub(targetRoute) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, follow">
-<title>Redirection vers la route francaise canonique | AfroTools</title>
-<meta name="description" content="Cette ancienne adresse redirige vers la route francaise canonique d'AfroTools.">
+<title>Cette adresse a changé | AfroTools</title>
+<meta name="description" content="Cette ancienne adresse vous redirige vers la page française actuelle d'AfroTools.">
 <link rel="canonical" href="${targetAbs}">
 <meta http-equiv="refresh" content="0; url=${displayTarget}">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -87,9 +87,9 @@ a:focus,a:hover{background:#1e40af}
 </head>
 <body>
 <main>
-<h1>Route francaise canonique</h1>
-<p>Cette ancienne adresse reste disponible comme alias et redirige vers la page francaise preferee.</p>
-<a href="${displayTarget}">Ouvrir la page canonique</a>
+<h1>Cette adresse a changé</h1>
+<p>Vous allez être redirigé vers la page française actuelle.</p>
+<a href="${displayTarget}">Continuer vers la page</a>
 </main>
 </body>
 </html>

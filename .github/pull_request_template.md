@@ -22,6 +22,22 @@ Notes:
 
 Notes:
 
+## Formula / Jurisdiction Review
+
+- [ ] No protected formula artifact changed
+- [ ] Formula version and digest updated
+- [ ] Authority or reviewed source URL recorded
+- [ ] Effective dates, jurisdiction, currency, units, and rounding reviewed
+- [ ] Golden fixtures cover affected boundaries
+- [ ] Every changed expected value is listed in `fixture-deltas.json`
+- [ ] `npm run calculation-quality:check` passes
+
+Formula ids:
+
+Review record path:
+
+Existing-result changes, fixture by fixture:
+
 ## Routes Touched
 
 - Public routes:

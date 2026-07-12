@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1.0.0",
+  "defaultStates": {
+    "en": "native",
+    "fr": "native",
+    "sw": "native",
+    "yo": "native",
+    "ha": "native",
+    "pt": "unavailable",
+    "ar": "unavailable",
+    "ig": "unavailable"
+  },
+  "rules": [
+    {
+      "id": "fr-shared-tool-shells",
+      "locale": "fr",
+      "routePattern": "^/fr/(?:tools|widgets)/",
+      "state": "localized-shell",
+      "sourceOwner": "French localized shell and shared deterministic engine",
+      "engineLocaleNeutral": true
+    },
+    {
+      "id": "fr-classified-tool-shells",
+      "locale": "fr",
+      "pageTypes": ["tool", "country-tool", "widget"],
+      "state": "localized-shell",
+      "sourceOwner": "French route owner and shared deterministic engine",
+      "engineLocaleNeutral": true
+    },
+    {
+      "id": "sw-tool-shells",
+      "locale": "sw",
+      "routePattern": "^/sw/(?:zana|[^/]+/kikokotoo-)",
+      "state": "localized-shell",
+      "sourceOwner": "Swahili localized shell and shared deterministic engine",
+      "engineLocaleNeutral": true
+    },
+    {
+      "id": "sw-classified-tool-shells",
+      "locale": "sw",
+      "pageTypes": ["tool", "country-tool", "widget"],
+      "state": "localized-shell",
+      "sourceOwner": "Swahili route owner and shared deterministic engine",
+      "engineLocaleNeutral": true
+    },
+    {
+      "id": "ha-tool-shells",
+      "locale": "ha",
+      "routePattern": "^/ha/(?:kayan-aiki/[^/]+|noma/[^/]+|najeriya/[^/]+|jamb/[^/]+)",
+      "state": "localized-shell",
+      "sourceOwner": "Hausa route-first localized shell",
+      "engineLocaleNeutral": true
+    }
+  ],
+  "overrides": [
+    { "route": "/sw/auth/", "state": "english-fallback", "fallbackRoute": "/auth/", "sourceOwner": "scripts/build-swahili-product-surface.js: explicit account bridge" },
+    { "route": "/sw/dashboard/", "state": "english-fallback", "fallbackRoute": "/dashboard/", "sourceOwner": "scripts/build-swahili-product-surface.js: explicit dashboard bridge" },
+    { "route": "/sw/vault/", "state": "english-fallback", "fallbackRoute": "/pro/vault/", "sourceOwner": "scripts/build-swahili-product-surface.js: explicit vault bridge" },
+    { "route": "/ha/kasashe/", "state": "english-fallback", "fallbackRoute": "/countries/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit country-directory bridge" },
+    { "route": "/ha/shiga/", "state": "english-fallback", "fallbackRoute": "/auth/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit account bridge" },
+    { "route": "/ha/allon-aiki/", "state": "english-fallback", "fallbackRoute": "/dashboard/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit dashboard bridge" },
+    { "route": "/ha/maajiyar-takardu/", "state": "english-fallback", "fallbackRoute": "/dashboard/vault/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit vault bridge" },
+    { "route": "/ha/farashi/", "state": "english-fallback", "fallbackRoute": "/pricing/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit pricing bridge" },
+    { "route": "/ha/sharuddan-amfani/", "state": "english-fallback", "fallbackRoute": "/terms/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit legal bridge" },
+    { "route": "/ha/sirri/", "state": "english-fallback", "fallbackRoute": "/privacy/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit privacy bridge" },
+    { "route": "/ha/tuntube-mu/", "state": "english-fallback", "fallbackRoute": "/contact/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit contact bridge" },
+    { "route": "/ha/game-da-mu/", "state": "english-fallback", "fallbackRoute": "/about/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit about bridge" },
+    { "route": "/ha/masu-habaka/", "state": "english-fallback", "fallbackRoute": "/developer-tools/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit developer bridge" },
+    { "route": "/ha/inshora/", "state": "english-fallback", "fallbackRoute": "/insurance/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit insurance bridge" },
+    { "route": "/ha/labarai/", "state": "english-fallback", "fallbackRoute": "/blog/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit blog bridge" },
+    { "route": "/ha/kayan-kasuwanci/", "state": "english-fallback", "fallbackRoute": "/media-kit/", "sourceOwner": "data/localization/ha-bridge-manifest.json: explicit business bridge" },
+    { "route": "/ha/jamb/cbt/", "state": "english-fallback", "fallbackRoute": "/jamb/cbt/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/jamb/tutor/", "state": "english-fallback", "fallbackRoute": "/jamb/tutor/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/jamb/past-questions/", "state": "english-fallback", "fallbackRoute": "/jamb/past-questions/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/jamb/turanci/", "state": "english-fallback", "fallbackRoute": "/jamb/english/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/jamb/lissafi/", "state": "english-fallback", "fallbackRoute": "/jamb/mathematics/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/jamb/fisiks/", "state": "english-fallback", "fallbackRoute": "/jamb/physics/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/jamb/kimiyya/", "state": "english-fallback", "fallbackRoute": "/jamb/chemistry/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/jamb/halittu/", "state": "english-fallback", "fallbackRoute": "/jamb/biology/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/canza-pdf/", "state": "english-fallback", "fallbackRoute": "/tools/pdf-convert/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/wurin-aikin-pdf/", "state": "english-fallback", "fallbackRoute": "/tools/pdf-workspace/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/sanya-hannu-pdf/", "state": "english-fallback", "fallbackRoute": "/tools/pdf-sign/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/gina-cv/", "state": "english-fallback", "fallbackRoute": "/tools/cv-builder/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/kwatanta-kudin-makaranta/", "state": "english-fallback", "fallbackRoute": "/tools/compare-school-fees/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/kwatanta-kunshin-intanet/", "state": "english-fallback", "fallbackRoute": "/tools/data-plan-comparison/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/mai-fassara-hausa/", "state": "english-fallback", "fallbackRoute": "/tools/hausa-translator/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/rajistar-kasuwanci/", "state": "english-fallback", "fallbackRoute": "/tools/business-registration/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/duba-cac/", "state": "english-fallback", "fallbackRoute": "/tools/cac-checker/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/canja-kudi/", "state": "english-fallback", "fallbackRoute": "/tools/currency-converter/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" },
+    { "route": "/ha/kayan-aiki/cajin-banki/", "state": "english-fallback", "fallbackRoute": "/tools/bank-charges/", "sourceOwner": "docs/HAUSA-LOCALIZATION-STRATEGY.md" }
+  ]
+}

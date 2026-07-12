@@ -552,7 +552,7 @@
       sourcePolicy: inferSource(record, stakes),
       highStakesDomain: stakes,
       monetizationSurfaces: inferMonetization(record),
-      aliases: [],
+      aliases: array(record.aliases),
       status: text(record.status, "Live"),
       priority: Number(record.priority || 0),
     };

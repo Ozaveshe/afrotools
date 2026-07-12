@@ -4,10 +4,10 @@
 
 This document is the operating strategy for the AfroTools Hausa lane.
 
-Hausa should be treated as a Nigeria-first product surface, not as a bulk
-translation layer. The first goal is to make the existing public `/ha/` route
-surface shippable, useful, and honest before expanding to wider West African
-coverage or introducing page-pack generation.
+Hausa is a product language with Nigeria-first editorial coverage, not a
+country selector and not a bulk translation layer. Selecting Hausa must not
+silently select Nigeria, NGN, Nigerian formulas, or Nigerian sources. Country
+applicability comes from the canonical country registry and the target tool.
 
 For now, Hausa remains a manual route-first lane:
 
@@ -26,28 +26,32 @@ visible-copy quality, hreflang, registry discovery, and fallback honesty.
 
 ## Current Audit Snapshot
 
-Snapshot date: 2026-05-18.
+Snapshot date: 2026-07-12.
 
 Source artifacts:
 
 - `reports/hausa-visible-copy-ledger.md`
 - `reports/hausa-route-ownership-map.md`
+- `reports/hausa-localization-coverage.md`
+- `data/localization/ha-bridge-manifest.json`
+- `data/localization/ha-product-glossary.json`
 
 Current visible-copy readiness:
 
-- Hausa routes scanned: `92`.
+- Hausa routes scanned: `105`.
 - Clean routes: `43`.
 - Routes with blockers: `0`.
 - `BLOCKER_VISIBLE_ENGLISH` findings: `0`.
-- `POSSIBLE_FALSE_POSITIVE` findings: `149`.
-- `ACCEPTED_TECH_TERM` findings: `523`.
+- `POSSIBLE_FALSE_POSITIVE` findings: `186`.
+- `ACCEPTED_TECH_TERM` findings: `618`.
 - Hausa registry rows: `87`.
 - Missing Hausa registry targets: `0`.
 - `lang: 'ha'` rows pointing outside `/ha/`: `0`.
 
-The older Batch 5 operating baseline was `67` public Hausa routes and `62`
-Hausa registry rows. The current working-tree lane has moved to `92` routes and
-`87` registry rows after the Batch 6 shells plus the core Hausa expansion wave.
+The current route graph contains `12` native routes, `61` localized shells,
+and `32` explicit English fallbacks. English fallbacks are `noindex`, excluded
+from Hausa sitemaps, and carry no Hausa hreflang claim. Hausa still has `87`
+published registry rows; bridge routes are product navigation, not tools.
 
 The visible-copy audit is the main readiness gate for Hausa route quality. A
 route can exist, validate structurally, and still be unshippable if visible
@@ -56,7 +60,7 @@ fallback messaging.
 
 ## Route Inventory Summary
 
-Current public Hausa route count: `92` HTML routes under `/ha/`.
+Current public Hausa route count: `105` HTML routes under `/ha/`.
 
 Core and category hubs:
 
@@ -155,6 +159,25 @@ Current source ownership:
 
 Current fallback shell list:
 
+Account, legal, navigation, and business bridges generated from
+`data/localization/ha-bridge-manifest.json`:
+
+- `/ha/kasashe/`
+- `/ha/shiga/`
+- `/ha/allon-aiki/`
+- `/ha/maajiyar-takardu/`
+- `/ha/farashi/`
+- `/ha/sharuddan-amfani/`
+- `/ha/sirri/`
+- `/ha/tuntube-mu/`
+- `/ha/game-da-mu/`
+- `/ha/masu-habaka/`
+- `/ha/inshora/`
+- `/ha/labarai/`
+- `/ha/kayan-kasuwanci/`
+
+Tool and learning bridges:
+
 - `/ha/jamb/cbt/`
 - `/ha/jamb/tutor/`
 - `/ha/jamb/past-questions/`
@@ -183,6 +206,9 @@ Required for most Hausa copy, hub, metadata, or strategy batches:
 
 ```bash
 node scripts/audit-hausa-visible-copy.js
+npm run ha:surface:check
+npm run ha:coverage:check
+npm run test:ha-surface
 npm run build:i18n:validate
 ```
 
@@ -198,6 +224,7 @@ Required when registry, navbar, footer, or discovery behavior changes:
 ```bash
 npm run audit
 npm run check-links
+npm run test:ha-surface:browser
 ```
 
 Required when salary, PAYE, VAT, or tax workflow pages are touched:

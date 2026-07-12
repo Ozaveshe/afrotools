@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CBK Exchange Rates Today — KES to USD, EUR, GBP | AfroTools</title>
 <meta name="description" content="Kenya shilling exchange rates today with live mid-market USD, EUR, GBP and regional rates, plus how CBK indicative rates work and where to find the official Central Bank of Kenya figures.">
-<link rel="canonical" href="https://afrotools.com/tools/cbk-rates/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="CBK Exchange Rates Today — KES to USD, EUR, GBP | AfroTools">
 <meta property="og:description" content="Kenya shilling exchange rates today with live mid-market USD, EUR, GBP and regional rates, plus how CBK indicative rates work.">
@@ -34,8 +33,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
 <style>
 .agde-hero{background:var(--color-bg-dark,#0A1628);padding:40px 0 34px}
 .agde-hero .container{max-width:1000px}
@@ -68,6 +67,9 @@
 .agde-note{font-size:.78rem;color:var(--color-text-subtle,#94a3af);border-top:1px solid var(--color-border,#e2e8f0);padding-top:14px;margin-top:34px;line-height:1.6}
 .agde-main a{color:var(--color-link,#0063D1);font-weight:600}
 </style>
+<link rel="canonical" href="https://afrotools.com/tools/cbk-rates/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cbk-rates/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cbk-rates/">
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -131,6 +133,91 @@
 
   <p class="agde-note"><strong>Disclaimer:</strong> AfroTools is not affiliated with the Central Bank of Kenya. Rates shown are informational mid-market references, not offers to trade and not official CBK figures. Confirm official rates at <a href="https://www.centralbank.go.ke/" target="_blank" rel="noopener">centralbank.go.ke</a> before relying on them for contracts or filings.</p>
 </main>
+
+<!-- Quick currency converter (interactive) -->
+<section aria-labelledby="cbk-convert-title" style="max-width:1000px;margin:0 auto;padding:4px 24px 10px;font-family:'Inter',sans-serif">
+  <h2 id="cbk-convert-title" style="font-size:1.25rem;font-weight:800;margin:8px 0 6px;color:var(--color-text,#0f172a)">Quick currency converter</h2>
+  <p style="font-size:.9rem;line-height:1.7;color:var(--color-text-muted,#475569);margin:0 0 14px">Converts to Kenya shillings using the live mid-market rates shown in the table above. These are reference rates, not a retail quote.</p>
+  <div style="background:var(--color-bg-card,#fff);border:1px solid var(--color-border,#e2e8f0);border-radius:10px;padding:18px 20px;box-shadow:var(--shadow-sm,0 1px 2px rgba(0,0,0,.05))">
+    <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end">
+      <div style="flex:1;min-width:130px">
+        <label for="cbkAmount" style="display:block;font-size:.78rem;font-weight:700;color:var(--color-text,#0f172a);margin-bottom:5px">Amount</label>
+        <input id="cbkAmount" type="number" min="0" step="any" value="100" inputmode="decimal" style="width:100%;box-sizing:border-box;padding:10px 12px;font-size:.95rem;border:1px solid var(--color-border,#e2e8f0);border-radius:8px;background:var(--color-bg,#fff);color:var(--color-text,#0f172a)">
+      </div>
+      <div style="flex:1;min-width:130px">
+        <label for="cbkCurrency" style="display:block;font-size:.78rem;font-weight:700;color:var(--color-text,#0f172a);margin-bottom:5px">From currency</label>
+        <select id="cbkCurrency" style="width:100%;box-sizing:border-box;padding:10px 12px;font-size:.95rem;border:1px solid var(--color-border,#e2e8f0);border-radius:8px;background:var(--color-bg,#fff);color:var(--color-text,#0f172a)">
+          <option value="USD">US Dollar (USD)</option>
+          <option value="EUR">Euro (EUR)</option>
+          <option value="GBP">British Pound (GBP)</option>
+          <option value="AED">UAE Dirham (AED)</option>
+          <option value="INR">Indian Rupee (INR)</option>
+          <option value="CNY">Chinese Yuan (CNY)</option>
+          <option value="ZAR">South African Rand (ZAR)</option>
+          <option value="UGX">Ugandan Shilling (UGX)</option>
+          <option value="TZS">Tanzanian Shilling (TZS)</option>
+        </select>
+      </div>
+    </div>
+    <p id="cbkResult" style="margin:16px 0 0;font-size:1.1rem;font-weight:800;color:var(--color-text,#0f172a);font-variant-numeric:tabular-nums">Waiting for live rates&hellip;</p>
+  </div>
+</section>
+<script>
+(function(){
+  var amount=document.getElementById('cbkAmount');
+  var currency=document.getElementById('cbkCurrency');
+  var result=document.getElementById('cbkResult');
+  if(!amount||!currency||!result)return;
+  function rateFor(code){
+    var cell=document.querySelector('.agde-num[data-cur="'+code+'"]');
+    if(!cell)return null;
+    var per=parseFloat(cell.getAttribute('data-per')||'1');
+    if(!per||!isFinite(per))per=1;
+    var digits=(cell.textContent||'').replace(/[^0-9.]/g,'');
+    var v=parseFloat(digits);
+    if(!v||!isFinite(v))return null;
+    return v/per;
+  }
+  function fmt(n){
+    return n.toLocaleString('en-KE',{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+  function convert(){
+    var code=currency.value;
+    var rate=rateFor(code);
+    var amt=parseFloat(amount.value);
+    if(rate===null){result.textContent='Waiting for live rates…';return;}
+    if(isNaN(amt)||amt<0){result.textContent='Enter an amount to convert.';return;}
+    result.textContent=fmt(amt)+' '+code+' = KES '+fmt(amt*rate);
+  }
+  amount.addEventListener('input',convert);
+  currency.addEventListener('change',convert);
+  // Rates load asynchronously; retry briefly until a value appears.
+  var tries=0;
+  var poll=setInterval(function(){
+    tries++;
+    if(rateFor(currency.value)!==null||tries>40){clearInterval(poll);convert();}
+  },500);
+  convert();
+})();
+</script>
+
+<!-- Methodology, limitations & sources -->
+<section data-tool-verification-panel aria-labelledby="cbk-rates-method-title" style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <h2 id="cbk-rates-method-title" style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:6px;font-family:'Inter',sans-serif">How it works — methodology &amp; sources</h2>
+  <p style="font-size:0.84rem;color:#64748b;line-height:1.6;margin:0 0 14px;font-family:'Inter',sans-serif">Updated for 2026. Here is exactly how the rate table is produced, the assumptions behind it, and what to verify before you rely on it.</p>
+  <details open style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Methodology &amp; assumptions</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">The table is populated live from the AfroTools foreign-exchange feed via <code>/api/forex?base=USD</code>, falling back to <code>/data/forex/latest.json</code> if the feed is unavailable. From that USD-based data we calculate each KES pair with a simple cross-rate formula: for USD we show the raw KES-per-USD rate, and for every other currency we compute KES &divide; (that currency's USD rate) to get the mid-market cross rate (UGX and TZS are shown per 100 units). The assumption is that these mid-market rates — the midpoint of global buy and sell prices — are a close benchmark for, but not identical to, the Central Bank of Kenya's official <em>indicative</em> rates, which are interbank buy/sell averages published each business day. The feed refreshes several times per hour and the timestamp under the table shows when the displayed rates were captured.</div>
+  </details>
+  <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Limitations &amp; what to verify</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">These are informational mid-market reference rates, not offers to trade, not official CBK figures, and not financial advice; AfroTools is not affiliated with the Central Bank of Kenya. The rate a bank, forex bureau or transfer service actually gives you includes their own spread and will be worse than the mid-market rate. Verify the official indicative rate at centralbank.go.ke before relying on any figure for contracts, customs valuations or filings.</div>
+  </details>
+  <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Sources &amp; references</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">Displayed rates come from the AfroTools live FX feed. The official reference source is the <a href="https://www.centralbank.go.ke/rates/forex-exchange-rates/" target="_blank" rel="noopener">Central Bank of Kenya forex exchange rates page &#8599;</a> (<a href="https://www.centralbank.go.ke/" target="_blank" rel="noopener">centralbank.go.ke &#8599;</a>). Last verified 2026.</div>
+  </details>
+</section>
 
 <afro-footer></afro-footer>
 

@@ -5,9 +5,14 @@
  *
  * Auth: x-api-key header or api_key query param
  */
-var { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
+var { validateApiKey, rateLimitHeaders, authErrorBody } = require('./utils/api-auth');
 var engines = require('./_engines/index');
 var { getAllowedOrigin } = require('./utils/cors');
+var CANONICAL_COUNTRIES = require('../../data/registry/countries.json');
+var COUNTRY_CORE_BY_CODE = CANONICAL_COUNTRIES.reduce(function(index, country) {
+  index[country.id] = country;
+  return index;
+}, {});
 
 var CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -117,7 +122,7 @@ exports.handler = async function(event) {
 
   /* ---- Auth ---- */
   var auth = await validateApiKey(event, 'countries');
-  if (!auth.valid) return respond(auth.status || 401, { error: auth.error });
+  if (!auth.valid) return respond(auth.status || 401, authErrorBody(auth));
 
   var rlHeaders = rateLimitHeaders(auth);
   var params = event.queryStringParameters || {};
@@ -129,16 +134,17 @@ exports.handler = async function(event) {
 
   /* ---- Single country ---- */
   if (code) {
+    var core = COUNTRY_CORE_BY_CODE[code];
     var c = COUNTRIES[code];
-    if (!c) {
-      return respond(404, { error: 'Country not found', code: 'INVALID_COUNTRY', supported: Object.keys(COUNTRIES).sort() }, rlHeaders);
+    if (!core || !c) {
+      return respond(404, { error: 'Country not found', code: 'INVALID_COUNTRY', supported: CANONICAL_COUNTRIES.map(function(country) { return country.id; }).sort() }, rlHeaders);
     }
 
     return respond(200, {
       code: code,
-      name: c.name,
-      currency: c.currency,
-      currency_symbol: c.currencySymbol,
+      name: core.title,
+      currency: core.currency,
+      currency_symbol: core.currencySymbol,
       region: c.region,
       population: c.population,
       tools_available: getToolsAvailable(code)
@@ -146,13 +152,14 @@ exports.handler = async function(event) {
   }
 
   /* ---- All countries ---- */
-  var list = Object.keys(COUNTRIES).sort().map(function(k) {
+  var list = CANONICAL_COUNTRIES.slice().sort(function(a, b) { return a.id.localeCompare(b.id); }).map(function(core) {
+    var k = core.id;
     var c = COUNTRIES[k];
     return {
       code: k,
-      name: c.name,
-      currency: c.currency,
-      currency_symbol: c.currencySymbol,
+      name: core.title,
+      currency: core.currency,
+      currency_symbol: core.currencySymbol,
       region: c.region,
       population: c.population,
       tools_available: getToolsAvailable(k)

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AfroTools Widget Library | Embed Calculator Widgets</title>
-<meta name="description" content="Search, preview, and copy 200+ embeddable AfroTools widgets for publishers, firms, fintechs, schools, and business websites.">
+<meta name="description" content="Search, preview, and copy embeddable AfroTools widgets for publishers, firms, fintechs, schools, and business websites.">
 <meta property="og:title" content="AfroTools Widget Library">
 <meta property="og:description" content="Search, preview, and copy embeddable AfroTools calculator widgets for African business, finance, education, agriculture, property, telecom, and trade workflows.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -14,15 +14,17 @@
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/widgets/demo/">
-<link rel="canonical" href="https://afrotools.com/widgets/demo/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
-<script src="/widgets/WIDGET-REGISTRY.js?v=f8dee3c9"></script>
+<script src="/assets/js/lib/progressive-directory.js?v=18e0a585"></script>
+<script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/widgets/WIDGET-REGISTRY.js?v=34db8bcb" defer data-directory-dependency></script>
+<script src="/assets/js/data/registry-counts.js?v=da28a659"></script>
 <script src="/widgets/embed.js?v=db2ee101" defer></script>
 <script type="application/ld+json">
 {
@@ -93,15 +95,17 @@
   @media (max-width:900px){.widget-stat-grid,.widget-builder__grid{grid-template-columns:1fr 1fr}.widget-controls{grid-template-columns:1fr}.widget-builder__grid{grid-template-columns:1fr}}
   @media (max-width:640px){.widget-stat-grid{grid-template-columns:1fr 1fr}.widget-card__actions{align-items:stretch;flex-direction:column}.widget-card__actions .btn{justify-content:center;width:100%}}
 </style>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/widgets/demo/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/widgets/demo/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/widgets/demo/" />
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/widgets/demo/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/widgets/demo/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/widgets/demo/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/widgets/demo/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-progressive-directory data-directory-registry="AFRO_WIDGET_REGISTRY" data-directory-state="loading">
 <afro-navbar></afro-navbar>
 
 <main class="widget-library">
+  <div data-directory-status role="status" aria-live="polite" hidden><p data-directory-message></p><button type="button" data-directory-retry hidden>Retry directory load</button></div>
   <section class="widget-hero">
     <div class="container widget-hero__inner">
       <div>
@@ -110,9 +114,9 @@
         <p class="widget-copy">Use the catalog to add calculators to articles, resource hubs, client portals, school pages, fintech education flows, and business websites. Each widget has a script embed and an iframe fallback.</p>
       </div>
       <div class="widget-stat-grid" aria-label="Widget library summary">
-        <div class="widget-stat"><strong id="stat-widgets">0</strong><span>Widgets</span></div>
-        <div class="widget-stat"><strong id="stat-categories">0</strong><span>Categories</span></div>
-        <div class="widget-stat"><strong id="stat-countries">0</strong><span>Country PAYE</span></div>
+        <div class="widget-stat"><strong id="stat-widgets" data-registry-count="widgets.published">223</strong><span>Widgets</span></div>
+        <div class="widget-stat"><strong id="stat-categories" data-registry-count="widgets.categories">23</strong><span>Categories</span></div>
+        <div class="widget-stat"><strong id="stat-countries" data-registry-count="widgets.country_paye">54</strong><span>Country PAYE</span></div>
         <div class="widget-stat"><strong>1</strong><span>Embed script</span></div>
       </div>
     </div>
@@ -130,7 +134,130 @@
       </div>
       <div class="widget-tabs" id="widget-tabs" aria-label="Popular widget categories"></div>
       <p class="widget-count" id="widget-count"></p>
-      <div class="widget-grid" id="widget-grid"></div>
+      <div class="widget-grid" id="widget-grid">
+<!-- PROGRESSIVE_DIRECTORY_FALLBACK_START -->
+        <article class="widget-card" data-initial-record="afcfta-duty-saving">
+          <div class="widget-card__meta"><span class="widget-card__cat">trade</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/trade/" data-directory-record>AfCFTA Duty Saving</a></h2>
+          <p>Estimate savings from a lower preferential duty rate.</p>
+        </article>
+        <article class="widget-card" data-initial-record="age-calculator">
+          <div class="widget-card__meta"><span class="widget-card__cat">data-productivity</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/tools/age-calculator/" data-directory-record>Age Calculator</a></h2>
+          <p>Exact age from birthdate</p>
+        </article>
+        <article class="widget-card" data-initial-record="airport-transfer-cost">
+          <div class="widget-card__meta"><span class="widget-card__cat">travel</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/african/" data-directory-record>Airport Transfer Cost</a></h2>
+          <p>Estimate airport transfer cost from distance and per-km rate.</p>
+        </article>
+        <article class="widget-card" data-initial-record="airtime-value-widget">
+          <div class="widget-card__meta"><span class="widget-card__cat">telecom</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/telecom/airtime-value/" data-directory-record>Airtime Value Calculator</a></h2>
+          <p>Estimate effective value after bonus airtime or discounts.</p>
+        </article>
+        <article class="widget-card" data-initial-record="algeria-paye">
+          <div class="widget-card__meta"><span class="widget-card__cat">financial</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/algeria/dz-paye" data-directory-record>Algeria PAYE Calculator</a></h2>
+          <p>Algeria PAYE Calculator</p>
+        </article>
+        <article class="widget-card" data-initial-record="angola-paye">
+          <div class="widget-card__meta"><span class="widget-card__cat">financial</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/angola/ao-paye" data-directory-record>Angola PAYE Calculator</a></h2>
+          <p>Angola PAYE Calculator</p>
+        </article>
+        <article class="widget-card" data-initial-record="appliance-cost-widget">
+          <div class="widget-card__meta"><span class="widget-card__cat">energy</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/energy/" data-directory-record>Appliance Power Cost</a></h2>
+          <p>Estimate appliance electricity cost.</p>
+        </article>
+        <article class="widget-card" data-initial-record="appliance-power">
+          <div class="widget-card__meta"><span class="widget-card__cat">energy</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/tools/appliance-power/" data-directory-record>Appliance Power Cost Calculator</a></h2>
+          <p>Appliance Power Cost Calculator</p>
+        </article>
+        <article class="widget-card" data-initial-record="ask-ai-router">
+          <div class="widget-card__meta"><span class="widget-card__cat">ai</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/ai/" data-directory-record>Ask AfroTools AI Mini Router</a></h2>
+          <p>Prompt-to-tool router for partner pages</p>
+        </article>
+        <article class="widget-card" data-initial-record="base64">
+          <div class="widget-card__meta"><span class="widget-card__cat">developer</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/tools/base64/" data-directory-record>Base64 Encoder/Decoder</a></h2>
+          <p>Base64 encode/decode</p>
+        </article>
+        <article class="widget-card" data-initial-record="battery-backup-time">
+          <div class="widget-card__meta"><span class="widget-card__cat">energy</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/energy/" data-directory-record>Battery Backup Time</a></h2>
+          <p>Estimate backup hours from battery size and load.</p>
+        </article>
+        <article class="widget-card" data-initial-record="benin-paye">
+          <div class="widget-card__meta"><span class="widget-card__cat">financial</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/benin/bj-paye" data-directory-record>Benin PAYE Calculator</a></h2>
+          <p>Benin PAYE Calculator</p>
+        </article>
+        <article class="widget-card" data-initial-record="blood-pressure">
+          <div class="widget-card__meta"><span class="widget-card__cat">health</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/tools/blood-pressure/" data-directory-record>Blood Pressure Tracker</a></h2>
+          <p>Blood Pressure Tracker</p>
+        </article>
+        <article class="widget-card" data-initial-record="bmi-calculator">
+          <div class="widget-card__meta"><span class="widget-card__cat">health</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/tools/bmi-calculator/" data-directory-record>BMI Calculator</a></h2>
+          <p>BMI with category</p>
+        </article>
+        <article class="widget-card" data-initial-record="bnpl-calc">
+          <div class="widget-card__meta"><span class="widget-card__cat">fintech</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/tools/bnpl-calc/" data-directory-record>BNPL Cost Calculator</a></h2>
+          <p>BNPL Cost Calculator</p>
+        </article>
+        <article class="widget-card" data-initial-record="boarding-school-cost">
+          <div class="widget-card__meta"><span class="widget-card__cat">education</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/education/fees/" data-directory-record>Boarding School Cost</a></h2>
+          <p>Estimate term cost for boarding students.</p>
+        </article>
+        <article class="widget-card" data-initial-record="botswana-paye">
+          <div class="widget-card__meta"><span class="widget-card__cat">financial</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/botswana/bw-paye" data-directory-record>Botswana PAYE Calculator</a></h2>
+          <p>Botswana PAYE Calculator</p>
+        </article>
+        <article class="widget-card" data-initial-record="break-even">
+          <div class="widget-card__meta"><span class="widget-card__cat">financial</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/tools/break-even/" data-directory-record>Break-Even Calculator</a></h2>
+          <p>Break-even analysis</p>
+        </article>
+        <article class="widget-card" data-initial-record="break-even-lite">
+          <div class="widget-card__meta"><span class="widget-card__cat">business</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/business/break-even/" data-directory-record>Break-Even Lite</a></h2>
+          <p>Estimate units needed to cover fixed costs.</p>
+        </article>
+        <article class="widget-card" data-initial-record="bulk-sms-cost">
+          <div class="widget-card__meta"><span class="widget-card__cat">telecom</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/telecom/bulk-sms-pricing/" data-directory-record>Bulk SMS Cost Calculator</a></h2>
+          <p>Estimate campaign spend from message volume and SMS price.</p>
+        </article>
+        <article class="widget-card" data-initial-record="burkina-faso-paye">
+          <div class="widget-card__meta"><span class="widget-card__cat">financial</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/burkina-faso/bf-paye" data-directory-record>Burkina Faso PAYE Calculator</a></h2>
+          <p>Burkina Faso PAYE Calculator</p>
+        </article>
+        <article class="widget-card" data-initial-record="burundi-paye">
+          <div class="widget-card__meta"><span class="widget-card__cat">financial</span><span class="widget-card__source">Core</span></div>
+          <h2><a href="/burundi/bi-paye" data-directory-record>Burundi PAYE Calculator</a></h2>
+          <p>Burundi PAYE Calculator</p>
+        </article>
+        <article class="widget-card" data-initial-record="business-internet-cost">
+          <div class="widget-card__meta"><span class="widget-card__cat">telecom</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/telecom/business-internet/" data-directory-record>Business Internet Cost</a></h2>
+          <p>Estimate annual connectivity cost for an office.</p>
+        </article>
+        <article class="widget-card" data-initial-record="business-license-budget">
+          <div class="widget-card__meta"><span class="widget-card__cat">business</span><span class="widget-card__source">Lite</span></div>
+          <h2><a href="/business/setup/" data-directory-record>Business License Budget</a></h2>
+          <p>Add registration, permits, tax, and professional fees.</p>
+        </article>
+<!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->
+      </div>
     </div>
   </section>
 
@@ -297,9 +424,10 @@
   function renderStats() {
     var categories = {};
     widgets.forEach(function (widget) { categories[widget.category] = true; });
-    $('stat-widgets').textContent = widgets.length;
-    $('stat-categories').textContent = Object.keys(categories).length;
-    $('stat-countries').textContent = widgets.filter(function (widget) { return /-paye$/.test(widget.id); }).length;
+    var counts = window.AFRO_REGISTRY_COUNTS || {};
+    $('stat-widgets').textContent = counts['widgets.published'] || widgets.length;
+    $('stat-categories').textContent = counts['widgets.categories'] || Object.keys(categories).length;
+    $('stat-countries').textContent = counts['widgets.country_paye'] || widgets.filter(function (widget) { return /-paye$/.test(widget.id); }).length;
   }
 
   function renderCategoryControls() {
@@ -324,12 +452,13 @@
     $('widget-count').textContent = result.length + ' widgets shown';
     if (!result.length) {
       grid.innerHTML = '<div class="widget-empty">No widgets match this search.</div>';
+      if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoResults(Boolean(state.query || state.category !== 'all'));
       return;
     }
     grid.innerHTML = result.map(function (widget) {
       return '<article class="widget-card">' +
         '<div class="widget-card__meta"><span class="widget-card__cat">' + labelFor(widget.category) + '</span><span class="widget-card__source">' + (widget.source === 'lite-pack' ? 'Lite' : 'Core') + '</span></div>' +
-        '<h2>' + widget.name + '</h2>' +
+        '<h2><a href="' + (widget.fullToolLink || '/widgets/') + '" data-directory-record>' + widget.name + '</a></h2>' +
         '<p>' + widget.description + '</p>' +
         '<div class="widget-card__actions">' +
         '<button class="btn btn-primary" type="button" data-preview="' + widget.id + '">Preview</button>' +
@@ -430,11 +559,16 @@
 
   function init() {
     widgets = (window.AFRO_WIDGET_REGISTRY || []).slice();
+    if (!widgets.length) {
+      if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoPublished();
+      return;
+    }
     renderStats();
     renderCategoryControls();
     renderGrid();
     renderBuilder();
     bindEvents();
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markReady();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

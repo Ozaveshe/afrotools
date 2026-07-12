@@ -53,6 +53,7 @@ const SKIP_DIRS = new Set([
   'audit-results',
   'artifacts',
   'reports',
+  'tests',
   'test-results',
 ]);
 

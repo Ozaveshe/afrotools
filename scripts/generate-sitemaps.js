@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { fileToPublicRoute } = require('./lib/canonical-aliases');
-const { englishSourceForFrenchCarsParts } = require('./lib/french-cars-route-map');
+const routeContract = require('./lib/route-contract');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -26,6 +26,12 @@ const EXPLICIT_SITEMAP_HTML = [
 ];
 const REFRESH_LASTMOD = process.env.AFROTOOLS_REFRESH_SITEMAP_LASTMOD === '1';
 const REDIRECTS_PATH = path.join(ROOT, '_redirects');
+const ROUTE_GRAPH = routeContract.buildRouteGraph();
+const ROUTE_BY_FILE = new Map(
+  ROUTE_GRAPH.routes
+    .filter((record) => record.source && record.source.file)
+    .map((record) => [record.source.file, record])
+);
 
 // Directories to exclude entirely (non-content)
 const EXCLUDE_DIRS = new Set([
@@ -385,8 +391,11 @@ function normalizePathForCompare(value) {
 
 function inspectHtmlFile(filePath) {
   const html = fs.readFileSync(filePath, 'utf8');
-  const url = fileToUrl(filePath);
-  const currentPath = normalizePathForCompare(new URL(url).pathname);
+  const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
+  const routeRecord = ROUTE_BY_FILE.get(rel) || routeContract.getRouteRecord(ROUTE_GRAPH, fileToPublicRoute(filePath));
+  const publicRoute = routeRecord && routeRecord.state === 'page' ? routeRecord.route : fileToPublicRoute(filePath);
+  const url = `${BASE_URL}${publicRoute}`;
+  const currentPath = normalizePathForCompare(publicRoute);
   const canonicalHref = extractCanonicalHref(html);
   let canonicalPath = null;
 
@@ -423,7 +432,9 @@ function inspectHtmlFile(filePath) {
       ? manifestMetadata.lastmod
       : stableSitemapLastmod(url, fs.statSync(filePath).mtime),
     images,
-    exclude: redirectLike || canonicalMismatch || noindex || isExplicitRedirectRoute(url),
+    sitemapId: routeRecord && routeRecord.sitemap ? routeRecord.sitemap.sitemapId : null,
+    routeRecord,
+    exclude: !routeRecord || routeRecord.state !== 'page' || routeRecord.indexability !== 'indexable' || !routeRecord.sitemap.included || redirectLike || canonicalMismatch || noindex || isExplicitRedirectRoute(url),
   };
 }
 
@@ -530,9 +541,21 @@ const groups = {
 
 for (const filePath of filtered) {
   const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
-  const cat = categorize(rel);
   const page = inspectHtmlFile(filePath);
   if (page.exclude) continue;
+  const sitemapToCategory = {
+    'sitemap-agriculture.xml': 'agriculture',
+    'sitemap-countries.xml': 'countries',
+    'sitemap-tools.xml': 'tools',
+    'sitemap-blog.xml': 'blog',
+    'sitemap-fr.xml': 'fr',
+    'sitemap-sw.xml': 'sw',
+    'sitemap-ha.xml': 'ha',
+    'sitemap-yo.xml': 'yo',
+    'sitemap-misc.xml': 'misc'
+  };
+  const cat = sitemapToCategory[page.sitemapId] || categorize(rel);
+  if (!groups[cat]) continue;
   groups[cat].push(page);
 }
 
@@ -600,55 +623,20 @@ for (const [cat, fileName] of Object.entries(categoryToFile)) {
 }
 
 // ── Generate sitemap-i18n.xml with hreflang cross-references ──
-// Match EN pages to their FR/SW equivalents by path pattern
-const enUrls = [...groups.agriculture, ...groups.countries, ...groups.tools,
-                ...groups.blog, ...groups.misc];
-const frUrlMap = new Map(groups.fr.map(entry => {
-  try { return [new URL(entry.url).pathname, entry.lastmod]; } catch { return [entry.url, entry.lastmod]; }
-}));
-const swUrlMap = new Map(groups.sw.map(entry => {
-  try { return [new URL(entry.url).pathname, entry.lastmod]; } catch { return [entry.url, entry.lastmod]; }
-}));
-
-const i18nEntries = [];
-for (const enUrl of enUrls) {
-  let enPath;
-  try { enPath = new URL(enUrl.url).pathname; } catch { enPath = enUrl.url; }
-
-  const frPath = '/fr' + enPath;
-  const swPath = '/sw' + enPath;
-  const hasFr = frUrlMap.has(frPath);
-  const hasSw = swUrlMap.has(swPath);
-
-  if (hasFr || hasSw) {
-    const langs = { en: enPath };
-    if (hasFr) langs.fr = frPath;
-    if (hasSw) langs.sw = swPath;
-    const lastmod = [enUrl.lastmod, frUrlMap.get(frPath), swUrlMap.get(swPath)]
+// Consume only reciprocal, validated equivalence groups from the route contract.
+const primaryEntries = Object.values(groups).flat();
+const lastmodByRoute = new Map(primaryEntries.map((entry) => [new URL(entry.url).pathname, entry.lastmod]));
+const i18nEntries = ROUTE_GRAPH.equivalenceGroups
+  .filter((group) => Object.keys(group.routes || {}).length > 1)
+  .map((group) => ({
+    langs: group.routes,
+    xDefault: group.xDefault,
+    lastmod: Object.values(group.routes)
+      .map((route) => lastmodByRoute.get(route))
       .filter(Boolean)
       .sort()
-      .slice(-1)[0] || TODAY;
-    i18nEntries.push({ langs, lastmod });
-  }
-}
-
-for (const frEntry of groups.fr) {
-  let frPath;
-  try { frPath = new URL(frEntry.url).pathname; } catch { frPath = frEntry.url; }
-  if (!frPath.startsWith('/fr/cars')) continue;
-
-  const parts = frPath.replace(/^\/fr\/cars\/?/, '').replace(/\/$/, '').split('/').filter(Boolean);
-  const enSource = englishSourceForFrenchCarsParts(parts);
-  const enPath = `/${enSource}/`;
-  const enFile = path.join(ROOT, enSource, 'index.html');
-  if (!fs.existsSync(enFile)) continue;
-
-  const lastmod = [frEntry.lastmod, stableSitemapLastmod(`${BASE_URL}${enPath}`, fs.statSync(enFile).mtime)]
-    .filter(Boolean)
-    .sort()
-    .slice(-1)[0] || TODAY;
-  i18nEntries.push({ langs: { en: enPath, fr: frPath }, lastmod });
-}
+      .slice(-1)[0] || TODAY
+  }));
 
 if (i18nEntries.length > 0) {
   let i18nXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -664,7 +652,7 @@ if (i18nEntries.length > 0) {
       for (const [hl, hp] of Object.entries(langs)) {
         i18nXml += `    <xhtml:link rel="alternate" hreflang="${hl}" href="${BASE_URL}${hp}" />\n`;
       }
-      i18nXml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}${langs.en}" />\n`;
+      i18nXml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}${entry.xDefault}" />\n`;
       i18nXml += '  </url>\n';
     }
   }

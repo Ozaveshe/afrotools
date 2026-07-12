@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Investment Return Calculator — CAGR, ROI & Total Returns</title>
 <meta name="description" content="Calculate investment returns, CAGR, ROI, and total profit. Compare scenarios, view growth charts, download PDF reports. Supports 14 African currencies.">
-<link rel="canonical" href="https://afrotools.com/tools/investment-return/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Investment Return Calculator | AfroTools">
 <meta property="og:description" content="Calculate CAGR, ROI, total returns with charts. Compare scenarios. African currencies. Free.">
@@ -19,8 +18,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
 <script src="/assets/js/lib/chart-config.js?v=b81750bb" defer></script>
 <style>
@@ -102,7 +101,7 @@ body{overflow-x:hidden;max-width:100%}
 {"@type":"Question","name":"What is the Rule of 72?","acceptedAnswer":{"@type":"Answer","text":"Divide 72 by your annual return rate to estimate doubling time. At 12%, money doubles in ~6 years. At 18%, ~4 years. At 24%, ~3 years. A quick mental math shortcut for compound growth."}},
 {"@type":"Question","name":"How do I compare two investment scenarios?","acceptedAnswer":{"@type":"Answer","text":"Use the Compare mode in this calculator to run two scenarios side by side. Change the rate, period, or contribution amount to see which strategy produces better returns over time."}}
 ]}</script>
-<script src="/assets/js/bundles/core.1ecbb30b.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
@@ -141,16 +140,17 @@ body{overflow-x:hidden;max-width:100%}
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/investment-return/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/investment-return/" />
 <link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/tools/investment-return/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/investment-return/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/investment-return/">
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
 
 <div class="tool-hero"><div class="tool-hero-inner">
-  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools/">Tools</a> / <span>Investment Return</span></div>
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/">Tools</a> / <span>Investment Return</span></div>
   <h1>Investment Return <em>Calculator</em></h1>
   <p class="hero-sub">Calculate how your money grows over time. See total returns, CAGR, ROI, year-by-year breakdown, and interactive growth charts. Compare strategies side by side.</p>
   <div class="hero-badges">
@@ -160,7 +160,7 @@ body{overflow-x:hidden;max-width:100%}
     <span class="badge b-grey">PDF Report</span>
     <span class="badge b-white">14 Currencies</span>
   </div>
-  <div class="hero-meta">Free forever. No sign-up required.</div>
+  <div class="hero-meta">Core use without a paid subscription. No sign-up required.</div>
 </div></div>
 
 <div class="tool-main"><div class="tool-main-inner">
@@ -297,7 +297,7 @@ body{overflow-x:hidden;max-width:100%}
   <div class="sidebar">
     <!-- AI ADVISOR -->
     <div class="ai-card">
-      <div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Investment Advisor</span><span class="ai-head-by">Powered by Claude</span></div>
+      <div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Investment Advisor</span><span class="ai-head-by">Optional AI · provider required</span></div>
       <div class="ai-body">
         <p class="ai-status" id="aiStatus">Calculate your investment first — I'll analyse your returns, suggest optimisations, and compare against African benchmarks.</p>
         <div class="ai-response" id="aiResp"></div>
@@ -689,7 +689,7 @@ function saveInvestmentToVault() {
     if (window.AfroAuthModal && AfroAuthModal.open) {
       AfroAuthModal.open('Sign up to save results to your vault');
     } else if (window.AfroTools && AfroTools.toast) {
-      AfroTools.toast.info('Sign up to save results. <a href="/signup/" style="color:inherit;text-decoration:underline;">Create free account</a>');
+      AfroTools.toast.info('Sign up to save results. <a href="/auth/" style="color:inherit;text-decoration:underline;">Create free account</a>');
     }
     return;
   }
@@ -775,8 +775,8 @@ document.getElementById('initial').addEventListener('keydown', function(e) { if 
 <script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
-<script src="/assets/js/favorites-widget.js?v=4b4c6943" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script src="/assets/js/afro-auth.js?v=4250956b" defer></script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

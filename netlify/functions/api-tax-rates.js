@@ -7,7 +7,7 @@
  *
  * Auth: x-api-key header or api_key query param
  */
-var { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
+var { validateApiKey, rateLimitHeaders, authErrorBody } = require('./utils/api-auth');
 var engines = require('./_engines/index');
 var { getAllowedOrigin } = require('./utils/cors');
 
@@ -176,7 +176,7 @@ exports.handler = async function(event) {
 
   /* ---- Auth ---- */
   var auth = await validateApiKey(event, 'tax:rates');
-  if (!auth.valid) return respond(auth.status || 401, { error: auth.error });
+  if (!auth.valid) return respond(auth.status || 401, authErrorBody(auth));
 
   var rlHeaders = rateLimitHeaders(auth);
   var params = event.queryStringParameters || {};

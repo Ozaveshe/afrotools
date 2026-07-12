@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -9,11 +9,6 @@
 <meta name="theme-color" content="#2563eb">
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="canonical" href="https://afrotools.com/fr/tools/generateur-qr/">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/qr-generator/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-qr/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kitengeneza-qr/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/qr-generator/" />
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -31,8 +26,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <style>
   :root { --qr-blue:#2563eb; --qr-ink:#111827; --qr-soft:#f5f7fb; --qr-line:#dbe4f0; }
@@ -93,6 +88,11 @@
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Générateur de code QR AfroTools","description":"Créez un code QR pour lien, texte, WiFi ou contact avec aperçu, copie et export PNG.","url":"https://afrotools.com/fr/tools/generateur-qr/","inLanguage":"fr","applicationCategory":"DesignApplication","operatingSystem":"Web","browserRequirements":"JavaScript requis","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/qr-generator.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Les données du QR code quittent-elles mon navigateur ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le texte saisi est transforme dans le navigateur pour l'aperçu et le téléchargement. AfroTools ne demande pas de compte pour cette action."}},{"@type":"Question","name":"Puis-je utiliser ce code QR pour une affiche ou un menu ?","acceptedAnswer":{"@type":"Answer","text":"Oui, mais testez toujours le code avec plusieurs téléphones avant impression, surtout si vous changez les couleurs ou ajoutez un logo."}},{"@type":"Question","name":"Que dois-je vérifier avant d'imprimer ?","acceptedAnswer":{"@type":"Answer","text":"Vérifiez le lien, le contraste, la taille d'impression, la marge blanche autour du code et la lisibilite sur un téléphone ancien."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/generateur-qr/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/qr-generator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-qr/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kitengeneza-qr/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/qr-generator/">
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
@@ -331,7 +331,7 @@
   function generate() {
     currentPayload = getPayload();
     if (!currentPayload) {
-      status.textContent = 'Ajoutez un lien, un texte, un reseau WiFi ou un contact avant de generer.';
+      status.textContent = 'Ajoutez un lien, un texte, un réseau WiFi ou un contact avant de generer.';
       return;
     }
     host.innerHTML = '';
@@ -349,7 +349,7 @@
       correctLevel: window.QRCode.CorrectLevel.H
     });
     window.setTimeout(overlayLogo, 80);
-    status.textContent = `Resultat: QR code ${currentMode} cree localement. Testez le scan avant impression.`;
+    status.textContent = `Résultat: QR code ${currentMode} cree localement. Testez le scan avant impression.`;
   }
 
   tabs.forEach((tab) => tab.addEventListener('click', () => setMode(tab.dataset.mode)));
@@ -369,7 +369,7 @@
       await navigator.clipboard.writeText(currentPayload);
       status.textContent = 'Contenu du QR code copie.';
     } catch (error) {
-      status.textContent = 'Copie automatique indisponible. Selectionnez le texte dans votre navigateur.';
+      status.textContent = 'Copie automatique indisponible. Sélectionnez le texte dans votre navigateur.';
     }
   });
 
@@ -401,7 +401,6 @@
   generate();
 })();
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

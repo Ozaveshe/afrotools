@@ -48,6 +48,26 @@ function createEngine(config) {
     regimes,
     lastUpdated: '2026-03-01',
     source,
+    formulaParameters: {
+      bandType,
+      isMonthly,
+      bands,
+      socialSecurity,
+      employerSS,
+      personalRelief,
+      regimes
+    },
+    roundingPolicy: {
+      method: 'nearest-integer',
+      stages: [
+        'individual statutory deductions',
+        'tax per band in the result breakdown',
+        'annual net tax after relief',
+        'annual and monthly net result',
+        'employer contribution totals'
+      ],
+      calculationNote: 'Unrounded intermediate amounts feed later stages unless the implementation explicitly applies Math.round.'
+    },
 
     calculate(params) {
       const { grossAnnual, ...opts } = params;

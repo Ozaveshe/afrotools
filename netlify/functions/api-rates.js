@@ -15,7 +15,7 @@
 const { getData } = require('./_shared/data-store');
 const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 const { getAllowedOrigin } = require('./utils/cors');
-const { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
+const { validateApiKey, rateLimitHeaders, authErrorBody } = require('./utils/api-auth');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -95,7 +95,7 @@ exports.handler = async function (event) {
   var rlHeaders = {};
   if (apiKey) {
     var auth = await validateApiKey(event);
-    if (!auth.valid) return jsonResponse(auth.status || 401, { error: auth.error });
+    if (!auth.valid) return jsonResponse(auth.status || 401, authErrorBody(auth));
     rlHeaders = rateLimitHeaders(auth);
     if (auth.sandbox) return jsonResponse(200, sandboxRatesResponse(params), rlHeaders);
   } else {

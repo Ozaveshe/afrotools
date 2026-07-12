@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="sw">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="sw">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ada za Pesa za Simu Afrika | M-Pesa, MTN MoMo, Airtel Money | AfroTools</title>
 <meta name="description" content="Linganisha ada za mobile money kwa Kiswahili. Pima M-Pesa, MTN MoMo, Airtel Money, Orange Money, Wave na OPay kabla ya kutuma, kutoa au kupokea pesa.">
-<link rel="canonical" href="https://afrotools.com/sw/zana/ada-pesa-simu/">
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-pesa-simu/">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mobile-money-fees/">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mobile-money-fees/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Ada za Pesa za Simu Afrika | M-Pesa, MTN MoMo, Airtel Money | AfroTools">
 <meta property="og:description" content="Linganisha ada za mobile money kwa Kiswahili. Pima M-Pesa, MTN MoMo, Airtel Money, Orange Money, Wave na OPay kabla ya kutuma, kutoa au kupokea pesa.">
@@ -31,9 +27,9 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=5af5f2d6" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 
 <style>
@@ -41,6 +37,12 @@
 </style>
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/sw/zana/ada-pesa-simu/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mobile-money-fees/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/frais-mobile-money/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ada-pesa-simu/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kudin-tura-kudi-ta-waya/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mobile-money-fees/">
 </head>
 <body class="top-level-page-ui-refresh">
 <a class="skip-link" href="#main-content">Ruka hadi maudhui</a>
@@ -94,6 +96,6 @@ function fmtMobile(n,s){return s+' '+Math.round(n).toLocaleString('en');}
 function compareMobile(){var code=document.getElementById('mmCountry').value,d=FEE[code],amt=parseFloat(document.getElementById('mmAmount').value)||0,type=document.getElementById('mmType').value;if(!amt){alert('Tafadhali ingiza kiasi sahihi.');return;}var rows=[];selectedMobile.forEach(function(k){var bands=(d[k][type]||d[k].send),fee=feeFor(bands,amt);rows.push({k:k,name:MP[k].name,fee:fee});});rows.sort(function(a,b){return a.fee-b.fee;});var cheapest=rows[0],worst=rows[rows.length-1];document.getElementById('mmCheapest').textContent=cheapest.name+' - '+fmtMobile(cheapest.fee,d.sym);document.getElementById('mmSaving').textContent=fmtMobile(worst.fee-cheapest.fee,d.sym);document.getElementById('mmInfo').textContent=d.name;document.getElementById('mmRows').innerHTML=rows.map(function(r,i){return '<tr class="'+(i===0?'best':'')+'"><td><strong>'+r.name+'</strong></td><td>'+fmtMobile(r.fee,d.sym)+'</td><td>'+((r.fee/amt)*100).toFixed(2)+'%</td><td>'+fmtMobile(Math.max(amt-r.fee,0),d.sym)+'</td></tr>';}).join('');document.getElementById('mmResult').classList.add('on');}
 initMobile();compareMobile();
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

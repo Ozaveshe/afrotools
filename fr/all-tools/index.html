@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tous les outils pour l'Afrique | AfroTools</title>
 <meta name="description" content="Parcourez la bibliotheque AfroTools en français : salaire, PAYE, TVA, PDF, éducation, devises, business, ingenierie et productivité pour l'Afrique.">
-<link rel="canonical" href="https://afrotools.com/fr/all-tools/">
 <meta name="content-language" content="en">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
@@ -25,9 +24,12 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<script src="/assets/js/components/tool-registry.min.js?v=2327e88c" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+<script src="/assets/js/lib/progressive-directory.js?v=18e0a585"></script>
+<script src="/assets/js/components/tool-registry.min.js?v=0e33f88d" defer data-directory-dependency></script>
+<script src="/assets/js/data/registry-counts.js?v=da28a659" defer></script>
+<script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-sans);background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
@@ -119,6 +121,7 @@ a{text-decoration:none;color:inherit;}
 .empty-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:18px;}
 .empty-actions button{border:1.5px solid #e5e7eb;background:#fff;border-radius:8px;padding:8px 12px;font:700 .72rem 'DM Sans',sans-serif;color:#475569;cursor:pointer;}
 .empty-actions button:hover,.empty-actions button:focus{border-color:var(--color-primary);color:var(--color-primary);outline:none;}
+.directory-pagination{text-align:center;margin:-18px 0 40px}.directory-pagination .btn{min-width:180px}
 
 /* SECTION DIVIDER */
 .sec-divider{height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:32px 0;}
@@ -226,14 +229,16 @@ a{text-decoration:none;color:inherit;}
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/all-tools/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/all-tools/" />
-<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-zote/" />
-<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/all-tools/" />
 <meta name="content-language" content="fr">
-<script src="/assets/js/i18n-detect.js?v=40bd62b3" defer></script>
+<script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<link rel="canonical" href="https://afrotools.com/fr/all-tools/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/all-tools/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-zote/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/">
 </head>
 <script>
 window.addEventListener('load', function() {
@@ -266,8 +271,9 @@ window.addEventListener('load', function() {
   };
 });
 </script>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-progressive-directory data-directory-registry="AFRO_TOOLS" data-directory-state="loading">
 <afro-navbar></afro-navbar>
+<div data-directory-status role="status" aria-live="polite" hidden><p data-directory-message></p><button type="button" data-directory-retry hidden>Réessayer le chargement</button></div>
 
 <!-- HERO -->
 <section class="hero">
@@ -277,15 +283,15 @@ window.addEventListener('load', function() {
       <span class="hero-breadcrumb-sep">›</span>
       <span>Tous les outils</span>
     </nav>
-    <div class="hero-eyebrow">🛠️ Tool Library</div>
-    <h1>Tous les outils</h1>
-    <p class="hero-sub">La bibliotheque complete AfroTools : calculateurs financiers, assistants, outils PDF, CV, ingenierie et plus encore. Conçue pour les 54 pays africains. Toujours gratuite.</p>
+    <div class="hero-eyebrow">Bibliothèque d’outils</div>
+    <h1>Tous les outils disponibles en français</h1>
+    <p class="hero-sub">Recherchez uniquement les fiches publiées avec une interface ou un parcours français. La juridiction et la langue restent deux dimensions distinctes.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="s-lbl">Outils actifs</div><div class="s-val blue" id="statLive">2 606+</div></div>
-      <div class="hero-stat"><div class="s-lbl">En préparation</div><div class="s-val" id="statPlanned">5</div></div>
-      <div class="hero-stat"><div class="s-lbl">Catégories</div><div class="s-val blue" id="statCategories">32</div></div>
-      <div class="hero-stat"><div class="s-lbl">Pays couverts</div><div class="s-val blue">54</div></div>
-      <div class="hero-stat"><div class="s-lbl">Price</div><div class="s-val blue">Gratuit pour toujours</div></div>
+      <div class="hero-stat"><div class="s-lbl">Outils publiés en français</div><div class="s-val blue" id="statLive" data-registry-count="tools.locale.fr.published">1152</div></div>
+      <div class="hero-stat"><div class="s-lbl">Fiches non publiées</div><div class="s-val" id="statPlanned" data-registry-count="tools.unpublished">0</div></div>
+      <div class="hero-stat"><div class="s-lbl">Catégories</div><div class="s-val blue" id="statCategories" data-registry-count="categories.published">32</div></div>
+      <div class="hero-stat"><div class="s-lbl">Pays couverts</div><div class="s-val blue" data-registry-count="countries.published">54</div></div>
+      <div class="hero-stat"><div class="s-lbl">Accès essentiel</div><div class="s-val blue">sans abonnement payant</div></div>
     </div>
   </div>
 </section>
@@ -299,48 +305,48 @@ window.addEventListener('load', function() {
       <span class="search-icon">🔍</span>
     </div>
     <div class="filter-tabs" id="filterTabs">
-      <button type="button" class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">All <span class="filter-count" id="countAll">2,595</span></button>
-      <button type="button" class="filter-tab" data-filter="live" onclick="setFilter('live',this)">Live <span class="filter-count" id="countLive">2,595</span></button>
-      <button type="button" class="filter-tab" data-filter="ai" onclick="setFilter('ai',this)">✦ AI</button>
+      <button type="button" class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">Tous <span class="filter-count" id="countAll">1152</span></button>
+      <button type="button" class="filter-tab" data-filter="live" onclick="setFilter('live',this)">Publiés <span class="filter-count" id="countLive">1152</span></button>
+      <button type="button" class="filter-tab" data-filter="ai" onclick="setFilter('ai',this)">✦ IA</button>
       <button type="button" class="filter-tab" data-filter="salary-tax" onclick="setFilter('salary-tax',this)">💰 PAYE</button>
       <button type="button" class="filter-tab" data-filter="financial" onclick="setFilter('financial',this)">🏦 Finance</button>
-      <button type="button" class="filter-tab" data-filter="health" onclick="setFilter('health',this)">🏥 Health</button>
+      <button type="button" class="filter-tab" data-filter="health" onclick="setFilter('health',this)">🏥 Santé</button>
       <button type="button" class="filter-tab" data-filter="ecommerce" onclick="setFilter('ecommerce',this)">🧾 Entreprise</button>
       <button type="button" class="filter-tab" data-filter="document-pdf" onclick="setFilter('document-pdf',this)">📄 PDF</button>
       <button type="button" class="filter-tab" data-filter="image-design" onclick="setFilter('image-design',this)">🖼️ Image</button>
       <button type="button" class="filter-tab" data-filter="education" onclick="setFilter('education',this)">🎓 Éducation</button>
       <button type="button" class="filter-tab" data-filter="agriculture" onclick="setFilter('agriculture',this)">🌾 Agriculture</button>
-      <button type="button" class="filter-tab" data-filter="engineering" onclick="setFilter('engineering',this)">🏗️ Engineering</button>
+      <button type="button" class="filter-tab" data-filter="engineering" onclick="setFilter('engineering',this)">🏗️ Ingénierie</button>
       <button type="button" class="filter-tab" data-filter="developer" onclick="setFilter('developer',this)">⌨️ Dev</button>
-      <button type="button" class="filter-tab" data-filter="trade" onclick="setFilter('trade',this)">🚢 Trade</button>
-      <button type="button" class="filter-tab" data-filter="african" onclick="setFilter('african',this)">🌍 African</button>
-      <button type="button" class="filter-tab" data-filter="legal" onclick="setFilter('legal',this)">⚖️ Legal</button>
-      <button type="button" class="filter-tab" data-filter="language" onclick="setFilter('language',this)">🗣️ Language</button>
-      <button type="button" class="filter-tab" data-filter="data-productivity" onclick="setFilter('data-productivity',this)">📊 Data</button>
-      <button type="button" class="filter-tab" data-filter="government" onclick="setFilter('government',this)">🏛️ Gov</button>
-      <button type="button" class="filter-tab" data-filter="small-business" onclick="setFilter('small-business',this)">🏪 SME</button>
-      <button type="button" class="filter-tab" data-filter="insurance" onclick="setFilter('insurance',this)">🛡️ Insurance</button>
+      <button type="button" class="filter-tab" data-filter="trade" onclick="setFilter('trade',this)">🚢 Commerce</button>
+      <button type="button" class="filter-tab" data-filter="african" onclick="setFilter('african',this)">🌍 Afrique</button>
+      <button type="button" class="filter-tab" data-filter="legal" onclick="setFilter('legal',this)">⚖️ Juridique</button>
+      <button type="button" class="filter-tab" data-filter="language" onclick="setFilter('language',this)">🗣️ Langues</button>
+      <button type="button" class="filter-tab" data-filter="data-productivity" onclick="setFilter('data-productivity',this)">📊 Données</button>
+      <button type="button" class="filter-tab" data-filter="government" onclick="setFilter('government',this)">🏛️ Services publics</button>
+      <button type="button" class="filter-tab" data-filter="small-business" onclick="setFilter('small-business',this)">🏪 PME</button>
+      <button type="button" class="filter-tab" data-filter="insurance" onclick="setFilter('insurance',this)">🛡️ Assurance</button>
       <button type="button" class="filter-tab" data-filter="fintech" onclick="setFilter('fintech',this)">💳 Fintech</button>
-      <button type="button" class="filter-tab" data-filter="energy" onclick="setFilter('energy',this)">⚡ Energy</button>
+      <button type="button" class="filter-tab" data-filter="energy" onclick="setFilter('energy',this)">⚡ Énergie</button>
       <button type="button" class="filter-tab" data-filter="transport" onclick="setFilter('transport',this)">🚚 Transport</button>
-      <button type="button" class="filter-tab" data-filter="travel-tourism" onclick="setFilter('travel-tourism',this)">✈️ Travel</button>
-      <button type="button" class="filter-tab" data-filter="creative" onclick="setFilter('creative',this)">🎨 Creative</button>
+      <button type="button" class="filter-tab" data-filter="travel-tourism" onclick="setFilter('travel-tourism',this)">✈️ Voyage</button>
+      <button type="button" class="filter-tab" data-filter="creative" onclick="setFilter('creative',this)">🎨 Création</button>
       <button type="button" class="filter-tab" data-filter="religious-cultural" onclick="setFilter('religious-cultural',this)">🕌 Culture</button>
-      <button type="button" class="filter-tab" data-filter="sports" onclick="setFilter('sports',this)">⚽ Sports</button>
-      <button type="button" class="filter-tab" data-filter="career" onclick="setFilter('career',this)">📈 Career</button>
+      <button type="button" class="filter-tab" data-filter="sports" onclick="setFilter('sports',this)">⚽ Sport</button>
+      <button type="button" class="filter-tab" data-filter="career" onclick="setFilter('career',this)">📈 Carrière</button>
     </div>
-    <select class="sort-sel" id="sortSel" aria-label="Trier les outils" onchange="renderTools()">
-      <option value="priority">Sort: Recommended</option>
-      <option value="name">Sort: A–Z</option>
-      <option value="live">Sort: Live First</option>
+    <select class="sort-sel" id="sortSel" aria-label="Trier les outils" onchange="visibleLimit=PAGE_SIZE;renderTools()">
+      <option value="priority">Tri : recommandés</option>
+      <option value="name">Tri : A–Z</option>
+      <option value="live">Tri : publiés d’abord</option>
     </select>
   </div>
 </div>
 
 <!-- INTRO -->
 <section style="max-width:900px;margin:0 auto;padding:24px 20px 32px;">
-  <p style="font-size:0.92rem;color:#475569;line-height:1.7;margin-bottom:16px;">AfroTools rassemble une grande collection gratuite de calculateurs et d'outils de productivité pour l'Afrique. Les outils couvrent le salaire net et le PAYE pour les 54 pays africains, la TVA, les documents PDF, l'éducation, les devises et bien plus.</p>
-  <p style="font-size:0.92rem;color:#475569;line-height:1.7;">Parcourez les catégories ci-dessous ou utilisez la recherche pour trouver l'outil exact dont vous avez besoin. Les outils sont gratuits, sans inscription obligatoire, et fonctionnent sur mobile comme sur ordinateur.</p>
+  <p style="font-size:0.92rem;color:#475569;line-height:1.7;margin-bottom:16px;">Ce répertoire affiche les outils publiés avec une route française. Un pays couvert par un calcul n’implique pas automatiquement que toutes ses pages sont traduites.</p>
+  <p style="font-size:0.92rem;color:#475569;line-height:1.7;">Utilisez la recherche ou les catégories. Les fonctions essentielles sont accessibles sans abonnement payant ; les capacités Pro sont signalées séparément.</p>
 </section>
 
 <!-- MAIN -->
@@ -349,7 +355,47 @@ window.addEventListener('load', function() {
     <div class="section-title" id="sectionTitle">Tous les outils</div>
     <div class="results-count" id="resultsCount"></div>
   </div>
-  <div class="tools-grid" id="toolsGrid"></div>
+  <div class="tools-grid" id="toolsGrid">
+<!-- PROGRESSIVE_DIRECTORY_FALLBACK_START -->
+        <a href="/fr/tools/fusionner-diviser-pdf/" class="tool-card" data-directory-record data-id="pdf-merge-split-fr"><div class="tc-body"><div class="tc-name">Fusionner et diviser des PDF</div><div class="tc-desc">Fusionnez, divisez, extrayez ou réorganisez des pages PDF depuis le navigateur.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/compresser-pdf/" class="tool-card" data-directory-record data-id="pdf-compress-fr"><div class="tc-body"><div class="tc-name">Compresser un PDF</div><div class="tc-desc">Réduisez la taille de vos PDF avec plusieurs modes de compression locaux.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/convertir-pdf/" class="tool-card" data-directory-record data-id="pdf-convert-fr"><div class="tc-body"><div class="tc-name">Convertir un PDF</div><div class="tc-desc">Convertissez PDF, documents et tableaux vers des formats utiles dans le navigateur.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/chat-pdf/" class="tool-card" data-directory-record data-id="pdf-chat-fr"><div class="tc-body"><div class="tc-name">Chat avec PDF</div><div class="tc-desc">Posez des questions à un PDF, résumez et retrouvez des passages avec citations.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/document-pdf/" class="tool-card" data-directory-record data-id="document-pdf-fr"><div class="tc-body"><div class="tc-name">Documents et PDF</div><div class="tc-desc">Accédez aux outils PDF disponibles en français : fusion, compression, protection, conversion et préparation de documents.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/signer-pdf/" class="tool-card" data-directory-record data-id="pdf-sign-fr"><div class="tc-body"><div class="tc-name">Signer un PDF</div><div class="tc-desc">Ajoutez une signature dessinée, tapée ou importée à un PDF localement.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/traduire-pdf/" class="tool-card" data-directory-record data-id="pdf-translate-fr"><div class="tc-body"><div class="tc-name">Traduire un PDF</div><div class="tc-desc">Traduisez un PDF et préparez des exports bilingues depuis la page française.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/pdf-en-image/" class="tool-card" data-directory-record data-id="pdf-image-convert-fr"><div class="tc-body"><div class="tc-name">PDF en image</div><div class="tc-desc">Exportez des pages PDF en images ou assemblez des images en PDF.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/filigrane-pdf/" class="tool-card" data-directory-record data-id="pdf-watermark-fr"><div class="tc-body"><div class="tc-name">Filigrane PDF</div><div class="tc-desc">Ajoutez un filigrane texte ou image avec position, opacité et rotation.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/comparer-pdf/" class="tool-card" data-directory-record data-id="pdf-compare-fr"><div class="tc-body"><div class="tc-name">Comparer deux PDF</div><div class="tc-desc">Comparez deux PDF avec diff texte, rendu visuel et pages modifiées.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/reorganiser-pdf/" class="tool-card" data-directory-record data-id="pdf-reorder-fr"><div class="tc-body"><div class="tc-name">Réorganiser les pages PDF</div><div class="tc-desc">Réordonnez, supprimez, dupliquez et extrayez des pages PDF localement.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/remplir-formulaire-pdf/" class="tool-card" data-directory-record data-id="pdf-form-filler-fr"><div class="tc-body"><div class="tc-name">Remplir un formulaire PDF</div><div class="tc-desc">Détectez et remplissez les champs de formulaires PDF dans le navigateur.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/ocr-pdf/" class="tool-card" data-directory-record data-id="pdf-ocr-fr"><div class="tc-body"><div class="tc-name">OCR PDF</div><div class="tc-desc">Extrayez du texte depuis des PDF scannés avec OCR côté navigateur.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/nigeria/ng-salary-tax" class="tool-card" data-directory-record data-id="ng-paye-route-fr"><div class="tc-body"><div class="tc-name">Calculateur PAYE Nigeria</div><div class="tc-desc">Page française du calculateur PAYE Nigeria avec salaire net, pension, NHF et contexte FIRS.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/html-en-pdf/" class="tool-card" data-directory-record data-id="html-to-pdf-fr"><div class="tc-body"><div class="tc-name">HTML en PDF</div><div class="tc-desc">Transformez du HTML ou du contenu enrichi en document PDF.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/pdf-en-audio/" class="tool-card" data-directory-record data-id="pdf-to-audio-fr"><div class="tc-body"><div class="tc-name">PDF en audio</div><div class="tc-desc">Écoutez le contenu d&#39;un PDF avec lecture vocale et repères de document.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/maroc/calculateur-salaire-net" class="tool-card" data-directory-record data-id="ma-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur Salaire Net — Maroc</div><div class="tc-desc">Route normalisée calculateur-salaire-net déjà en ligne pour le Maroc. IR, CNSS, AMO et coût employeur.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/caviarder-pdf/" class="tool-card" data-directory-record data-id="pdf-redact-fr"><div class="tc-body"><div class="tc-name">Caviarder un PDF</div><div class="tc-desc">Marquez, prévisualisez et aplatissez des caviardages PDF localement.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/proteger-pdf/" class="tool-card" data-directory-record data-id="pdf-protect-fr"><div class="tc-body"><div class="tc-name">Protéger un PDF</div><div class="tc-desc">Ajoutez une protection par mot de passe à vos PDF depuis le navigateur.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/kenya/ke-paye" class="tool-card" data-directory-record data-id="ke-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur PAYE Kenya</div><div class="tc-desc">Page française du calculateur PAYE Kenya avec KRA, NSSF, SHIF, AHL et coût employeur.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/numerotation-pdf/" class="tool-card" data-directory-record data-id="pdf-page-numbers-fr"><div class="tc-body"><div class="tc-name">Numérotation PDF</div><div class="tc-desc">Ajoutez des numéros de page avec style, position et marges personnalisés.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/reparer-pdf/" class="tool-card" data-directory-record data-id="pdf-repair-fr"><div class="tc-body"><div class="tc-name">Réparer un PDF</div><div class="tc-desc">Tentez de récupérer un PDF endommagé et téléchargez une copie réparée.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/ghana/gh-paye" class="tool-card" data-directory-record data-id="gh-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur PAYE Ghana</div><div class="tc-desc">Page française du calculateur PAYE Ghana avec tranches GRA, SSNIT et salaire net.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/south-africa/za-paye" class="tool-card" data-directory-record data-id="za-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur PAYE Afrique du Sud</div><div class="tc-desc">Page française du calculateur PAYE Afrique du Sud avec SARS, UIF, SDL et crédits médicaux.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/entete-pied-pdf/" class="tool-card" data-directory-record data-id="pdf-header-footer-fr"><div class="tc-body"><div class="tc-name">En-tête et pied de page PDF</div><div class="tc-desc">Ajoutez en-têtes, pieds de page, dates et mentions à vos PDF.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/algerie/calculateur-salaire-net" class="tool-card" data-directory-record data-id="dz-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur Salaire Net — Algérie</div><div class="tc-desc">Route normalisée calculateur-salaire-net déjà en ligne pour l&#39;Algérie. IRG, CNAS et coût employeur.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/rdc/calculateur-salaire-net" class="tool-card" data-directory-record data-id="cd-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur Salaire Net — RDC</div><div class="tc-desc">Page française canonique. IPR et cotisations sociales.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/cote-divoire/calculateur-salaire-net" class="tool-card" data-directory-record data-id="ci-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur Salaire Net — Côte d&#39;Ivoire</div><div class="tc-desc">Page française canonique. IRPP, CNPS et retenues salariales.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/nigeria/ng-vat" class="tool-card" data-directory-record data-id="ng-tva-fr"><div class="tc-body"><div class="tc-name">Calculateur TVA Nigeria</div><div class="tc-desc">Page française du calculateur TVA Nigeria pour HT, TTC, facture et obligations TVA.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/numerotation-bates-pdf/" class="tool-card" data-directory-record data-id="pdf-bates-fr"><div class="tc-body"><div class="tc-name">Numérotation Bates PDF</div><div class="tc-desc">Ajoutez une séquence Bates configurable pour classer des documents PDF.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tunisie/calculateur-salaire-net" class="tool-card" data-directory-record data-id="tn-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur Salaire Net — Tunisie</div><div class="tc-desc">Route normalisée calculateur-salaire-net déjà en ligne pour la Tunisie. IRPP, CNSS et coût employeur.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/rechercher-remplacer-pdf/" class="tool-card" data-directory-record data-id="pdf-find-replace-fr"><div class="tc-body"><div class="tc-name">Rechercher et remplacer dans un PDF</div><div class="tc-desc">Trouvez du texte dans un PDF et préparez un remplacement visuel.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/cameroun/calculateur-salaire-net" class="tool-card" data-directory-record data-id="cm-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur Salaire Net — Cameroun</div><div class="tc-desc">Route normalisée calculateur-salaire-net déjà en ligne pour le Cameroun. IRPP, CAC, CNPS et coût employeur.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/tools/generateur-factures/" class="tool-card" data-directory-record data-id="generateur-factures-fr"><div class="tc-body"><div class="tc-name">Générateur de factures</div><div class="tc-desc">Créez des factures en français avec TVA, clients, lignes, PDF et partage.</div><div class="tc-meta"><span class="cat-pill">document-pdf</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/cars/" class="tool-card" data-directory-record data-id="car-price-intelligence-fr"><div class="tc-body"><div class="tc-name">Voitures, prix et import</div><div class="tc-desc">Surface française pour les prix de voitures, l’import et l’achat local dans les marchés français lancés, avec devises locales et estimations prudentes.</div><div class="tc-meta"><span class="cat-pill">transport</span><span class="tc-badge live">Publié</span></div></div></a>
+        <a href="/fr/senegal/calculateur-salaire-net" class="tool-card" data-directory-record data-id="sn-paye-fr"><div class="tc-body"><div class="tc-name">Calculateur Salaire Net — Sénégal</div><div class="tc-desc">Route normalisée calculateur-salaire-net déjà en ligne pour le Sénégal. IRPP, IPRES, CSS et coût employeur.</div><div class="tc-meta"><span class="cat-pill">financial</span><span class="tc-badge live">Publié</span></div></div></a>
+<!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->
+  </div>
+  <div class="directory-pagination"><button class="btn btn-secondary" type="button" id="loadMoreTools" hidden>Afficher plus d’outils</button></div>
 
   <div class="sec-divider"></div>
 
@@ -376,16 +422,16 @@ const PAGE_LANG = (document.documentElement.lang || 'en').toLowerCase();
 const IS_FR = PAGE_LANG === 'fr';
 const PAGE_COPY = IS_FR ? {
   breadcrumb: 'Tous les outils',
-  eyebrow: 'Bibliotheque d outils',
-  hero: 'Tous les outils pour <em>l Afrique</em>',
-  heroSub: 'La bibliotheque complete AfroTools : calculateurs financiers, assistants, outils PDF, CV, ingenierie et plus encore. Concue pour les 54 pays africains. Toujours gratuite.',
-  liveTools: 'Outils actifs',
+  eyebrow: 'Bibliothèque d’outils',
+  hero: 'Tous les outils disponibles <em>en français</em>',
+  heroSub: 'Recherchez uniquement les fiches publiées avec une interface ou un parcours français. La juridiction et la langue restent deux dimensions distinctes.',
+  liveTools: 'Outils publiés en français',
   inDevelopment: 'En preparation',
-  categories: 'Categories',
+  categories: 'Catégories',
   countries: 'Pays couverts',
   price: 'Prix',
-  freeForever: 'Gratuit pour toujours',
-  searchPlaceholder: 'Rechercher par outil, pays ou categorie...',
+  freeForever: 'accès essentiel sans abonnement payant',
+  searchPlaceholder: 'Rechercher par outil, pays ou catégorie…',
   searchAria: 'Rechercher dans tous les outils',
   clearSearch: 'Effacer la recherche',
   filters: {
@@ -394,41 +440,41 @@ const PAGE_COPY = IS_FR ? {
     ai: 'IA',
     'salary-tax': 'PAYE',
     financial: 'Finance',
-    health: 'Sante',
+    health: 'Santé',
     ecommerce: 'Entreprise',
     'document-pdf': 'PDF',
     'image-design': 'Image',
-    education: 'Education',
+    education: 'Éducation',
     agriculture: 'Agriculture',
-    engineering: 'Ingenierie',
+    engineering: 'Ingénierie',
     developer: 'Dev',
     trade: 'Commerce',
     african: 'Afrique',
     legal: 'Juridique',
     language: 'Langues',
     'data-productivity': 'Donnees',
-    government: 'Etat',
+    government: 'Services publics',
     'small-business': 'PME',
     insurance: 'Assurance',
     fintech: 'Fintech',
-    energy: 'Energie',
+    energy: 'Énergie',
     transport: 'Transport',
     'travel-tourism': 'Voyage',
-    creative: 'Creation',
+    creative: 'Création',
     'religious-cultural': 'Culture',
     sports: 'Sport',
-    career: 'Carriere'
+    career: 'Carrière'
   },
   sortAria: 'Trier les outils',
-  sortRecommended: 'Tri : recommandes',
+  sortRecommended: 'Tri : recommandés',
   sortName: 'Tri : A-Z',
   sortLive: 'Tri : actifs d abord',
-  intro1: 'AfroTools rassemble une grande collection gratuite de calculateurs et d outils de productivite pour l Afrique. Les outils couvrent le salaire net et le PAYE pour les 54 pays africains, la TVA, les documents PDF, l education, les devises et bien plus.',
-  intro2: 'Parcourez les categories ci-dessous ou utilisez la recherche pour trouver l outil exact dont vous avez besoin. Les outils sont gratuits, sans inscription obligatoire, et fonctionnent sur mobile comme sur ordinateur.',
+  intro1: 'Ce répertoire affiche les outils publiés avec une route française. Un pays couvert par un calcul n’implique pas automatiquement que toutes ses pages sont traduites.',
+  intro2: 'Utilisez la recherche ou les catégories. Les fonctions essentielles sont accessibles sans abonnement payant ; les capacités Pro sont signalées séparément.',
   allTools: 'Tous les outils',
   searchResults: 'Resultats de recherche',
   loading: 'Chargement des outils...',
-  noToolsPrefix: 'Aucun outil ne correspond a',
+  noToolsPrefix: 'Aucun outil ne correspond à',
   toolsSingular: 'outil',
   toolsPlural: 'outils',
   live: 'Actif',
@@ -605,6 +651,8 @@ const SEARCH_TERM_ALIASES = { 'afrotool':'afro', 'afrotools':'afro', 'biz':'busi
 const AI_TOOLS = ['ng-paye','ke-paye','gh-paye','za-paye','eg-paye','tz-paye','et-paye','rw-paye'];
 
 let activeFilter = 'all';
+const PAGE_SIZE = 60;
+let visibleLimit = PAGE_SIZE;
 
 function isAiTool(tool){
   if(!tool) return false;
@@ -640,6 +688,7 @@ function tokenizeSearch(value){
 
 function setFilter(f, btn){
   activeFilter = f;
+  visibleLimit = PAGE_SIZE;
   document.querySelectorAll('.filter-tab').forEach(b => {
     const isActive = b.dataset.filter === f;
     b.classList.toggle('active', isActive);
@@ -669,6 +718,7 @@ function handleSearchInput(){
   const input = document.getElementById('searchInput');
   if(input && input.value.trim()) resetFilterToAll();
   updateSearchClear();
+  visibleLimit = PAGE_SIZE;
   renderTools();
 }
 
@@ -679,6 +729,12 @@ function clearSearch(){
     input.focus();
   }
   updateSearchClear();
+  visibleLimit = PAGE_SIZE;
+  renderTools();
+}
+
+function loadMoreTools(){
+  visibleLimit += PAGE_SIZE;
   renderTools();
 }
 
@@ -743,7 +799,11 @@ function renderTools(){
   const sort = document.getElementById('sortSel').value;
 
   if(typeof AFRO_TOOLS === 'undefined'){
-    grid.innerHTML = '<div class="empty-state"><div class="e-icon">⏳</div><p>' + PAGE_COPY.loading + '</p></div>';
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.fail();
+    return;
+  }
+  if (Array.isArray(AFRO_TOOLS) && AFRO_TOOLS.length === 0) {
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoPublished();
     return;
   }
 
@@ -753,7 +813,10 @@ function renderTools(){
     b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
 
-  let tools = [...AFRO_TOOLS];
+  const directoryTools = IS_FR
+    ? AFRO_TOOLS.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/') && (t.status === 'live' || t.status === 'new'))
+    : AFRO_TOOLS.slice();
+  let tools = directoryTools.slice();
 
   // Filter
   if(activeFilter === 'live'){
@@ -786,16 +849,17 @@ function renderTools(){
 
   // Update counts using the same registry rows this page actually renders.
   const publicStats = typeof getPublicToolStats === 'function' ? getPublicToolStats(PAGE_LANG) : null;
-  const totalAll = publicStats ? publicStats.totalTools : AFRO_TOOLS.length;
-  const totalLive = publicStats ? publicStats.liveTools : AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').length;
+  const totalAll = IS_FR ? directoryTools.length : (publicStats ? publicStats.totalTools : AFRO_TOOLS.length);
+  const totalLive = IS_FR ? directoryTools.length : (publicStats ? publicStats.liveTools : AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').length);
   const totalQueued = publicStats ? publicStats.inDevelopmentTools : AFRO_TOOLS.filter(t => t.status === 'queued' || t.status === 'planned').length;
   const totalCategories = publicStats ? publicStats.categories : (typeof AFRO_CATEGORIES !== 'undefined' ? Object.keys(AFRO_CATEGORIES).length : 0);
-  document.getElementById('statLive').textContent = publicStats ? publicStats.display.liveToolsPlus : totalLive.toLocaleString() + '+';
-  document.getElementById('statPlanned').textContent = totalQueued.toLocaleString();
+  const canonicalCounts = window.AFRO_REGISTRY_COUNTS || {};
+  document.getElementById('statLive').textContent = String(IS_FR ? (canonicalCounts['tools.locale.fr.published'] || totalLive) : (canonicalCounts['tools.live_experiences'] || totalLive));
+  document.getElementById('statPlanned').textContent = String(Number.isInteger(canonicalCounts['tools.unpublished']) ? canonicalCounts['tools.unpublished'] : totalQueued);
   document.getElementById('countAll').textContent = totalAll.toLocaleString();
   document.getElementById('countLive').textContent = totalLive.toLocaleString();
   if (document.getElementById('statCategories')) {
-    document.getElementById('statCategories').textContent = totalCategories.toLocaleString();
+    document.getElementById('statCategories').textContent = String(canonicalCounts['categories.published'] || totalCategories);
   }
   document.getElementById('resultsCount').textContent = tools.length.toLocaleString(IS_FR ? 'fr-FR' : 'en-US') + ' ' + (tools.length === 1 ? PAGE_COPY.toolsSingular : PAGE_COPY.toolsPlural);
   document.getElementById('sectionTitle').textContent = rawSearch ? PAGE_COPY.searchResults : (activeFilter === 'all' ? PAGE_COPY.allTools : getCatMeta(activeFilter).name);
@@ -803,6 +867,8 @@ function renderTools(){
 
   // Render
   if(tools.length === 0){
+    const loadMore = document.getElementById('loadMoreTools');
+    if (loadMore) loadMore.hidden = true;
     grid.innerHTML = `<div class="empty-state">
       <div class="e-icon">🔍</div>
       <p>${PAGE_COPY.noToolsPrefix} "<strong>${escapeHtml(rawSearch||activeFilter)}</strong>".</p>
@@ -810,16 +876,22 @@ function renderTools(){
         <button type="button" onclick="applySearchSuggestion('paye')">PAYE</button>
         <button type="button" onclick="applySearchSuggestion('pdf')">PDF</button>
         <button type="button" onclick="applySearchSuggestion('afro')">Afro</button>
-        <button type="button" onclick="applySearchSuggestion('business')">Business</button>
+        <button type="button" onclick="applySearchSuggestion('entreprise')">Entreprise</button>
       </div>
     </div>`;
+    if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markNoResults(Boolean(rawSearch || activeFilter !== 'all'));
     return;
   }
 
   const catMeta = getCatMeta;
   const isNew = t => t.status === 'new' || (t.id && (t.id.includes('solar') || t.id.includes('floor-plan') || t.id.includes('boq')));
+  const matchedCount = tools.length;
+  const renderedTools = tools.slice(0, visibleLimit);
+  const loadMore = document.getElementById('loadMoreTools');
+  if (loadMore) loadMore.hidden = renderedTools.length >= matchedCount;
+  document.getElementById('resultsCount').textContent = renderedTools.length.toLocaleString('fr-FR') + ' sur ' + matchedCount.toLocaleString('fr-FR') + ' ' + PAGE_COPY.toolsPlural;
 
-  grid.innerHTML = tools.map(t => {
+  grid.innerHTML = renderedTools.map(t => {
     const live = t.status === 'live' || t.status === 'new';
     const cat = catMeta(t.category);
     const aiPowered = isAiTool(t);
@@ -833,7 +905,7 @@ function renderTools(){
     const imageSrc = getToolIconSrc(t);
     const imageFallback = getToolIconFallback(t);
 
-    return `<a href="${safeHref}" class="${cardClass}">
+    return `<a href="${safeHref}" class="${cardClass}" data-directory-record>
       <div class="tc-image" style="background:linear-gradient(135deg,${cat.color},#e2e8f0)">
         ${imageSrc ? `<img src="${imageSrc}" alt="${safeName}" width="600" height="400" loading="lazy" onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='flex');};this.src='${imageFallback}';">` : ''}
         <div class="tc-image-fallback" style="display:none;background:linear-gradient(135deg,${cat.color},#cbd5e1)">${safeIcon}</div>
@@ -851,10 +923,15 @@ function renderTools(){
       </div>
     </a>`;
   }).join('');
+  if (window.AfroProgressiveDirectory) window.AfroProgressiveDirectory.markReady();
 }
 
 // Init on registry ready (replaces fragile polling pattern)
 document.addEventListener('DOMContentLoaded', localizeStaticShell);
+document.addEventListener('DOMContentLoaded', function(){
+  const loadMore = document.getElementById('loadMoreTools');
+  if (loadMore) loadMore.addEventListener('click', loadMoreTools);
+});
 if (typeof onRegistryReady === 'function') {
   onRegistryReady(function() { localizeStaticShell(); renderTools(); });
 } else {
@@ -866,6 +943,6 @@ if (typeof onRegistryReady === 'function') {
   });
 }
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

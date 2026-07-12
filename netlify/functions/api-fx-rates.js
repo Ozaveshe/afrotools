@@ -7,7 +7,7 @@
  * GET /api/v1/fx/rates?base=USD&target=NGN&days=30  -> 30-day history when stored
  */
 
-var { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
+var { validateApiKey, rateLimitHeaders, authErrorBody } = require('./utils/api-auth');
 var { getAllowedOrigin } = require('./utils/cors');
 var { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
 var { getData } = require('./_shared/data-store');
@@ -121,7 +121,7 @@ exports.handler = async function (event) {
   if (apiKey) {
     var auth = await validateApiKey(event, 'fx:rates');
     if (!auth.valid) {
-      return jsonResponse(auth.status || 401, { error: auth.error });
+      return jsonResponse(auth.status || 401, authErrorBody(auth));
     }
     rlHeaders = rateLimitHeaders(auth);
     if (auth.sandbox) return jsonResponse(200, sandboxFxResponse(params), rlHeaders);

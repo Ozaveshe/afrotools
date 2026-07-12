@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.5cd39a76.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Simulateur de codes USSD | AfroTools</title>
 <meta name="description" content="Construisez, testez et exportez un parcours USSD local avec menu, saisies, validation, transcript, sources techniques et avertissement de simulation.">
-<link rel="canonical" href="https://afrotools.com/fr/tools/simulateur-ussd/">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Simulateur de codes USSD | AfroTools">
@@ -16,14 +15,11 @@
 <meta name="twitter:title" content="Simulateur de codes USSD | AfroTools">
 <meta name="twitter:description" content="Construisez, testez et exportez un parcours USSD local avec menu, saisies, validation, transcript, sources techniques et avertissement de simulation.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ussd-simulator.webp">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ussd-simulator/">
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/simulateur-ussd/">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ussd-simulator/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/navbar.min.js?v=301b9d0a" defer></script>
-<script src="/assets/js/components/footer.min.js?v=9dc86d07" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=01cb0562" defer></script>
+<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <style>
 .ussd-page{--ink:#111827;--muted:#5b677a;--line:#d9e2ef;--blue:#155eef;--green:#0f766e;--warn:#a15c07;background:#f7f9fc;color:var(--ink)}
@@ -60,6 +56,12 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce simulateur appelle-t-il un vrai code USSD ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il simule le parcours dans le navigateur. Il ne contacte pas un opérateur, une banque, un agregateur ou une passerelle USSD."}},{"@type":"Question","name":"Puis-je exporter un test plan ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Le transcript, les contrôles et les données de simulation peuvent être copies, telecharges en TXT ou sauvegardes localement."}},{"@type":"Question","name":"Pourquoi tester les menus courts ?","acceptedAnswer":{"@type":"Answer","text":"Les expériences USSD sont textuelles, sessionnelles et souvent utilisees sur des téléphones basiques. Des écrans courts, des erreurs claires et des chemins retour reduisent les abandons."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/simulateur-ussd/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ussd-simulator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/simulateur-ussd/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kiigaji-ussd/">
+<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/gwajin-ussd/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ussd-simulator/">
 </head>
 <body class="ussd-page top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
@@ -68,7 +70,7 @@
 
 <section class="ussd-wrap ussd-grid" aria-label="Simulateur de parcours USSD">
 <article class="ussd-card"><h2>Construire le menu</h2><form class="ussd-form" id="ussdForm"><div class="ussd-fields"><div class="ussd-field"><label for="serviceName">Nom du service</label><input id="serviceName" value="AfroPay demo"></div><div class="ussd-field"><label for="shortCode">Code court</label><input id="shortCode" value="*123#" inputmode="tel"></div><div class="ussd-field"><label for="country">Contexte pays</label><select id="country"><option>Nigeria</option><option>Kenya</option><option>Ghana</option><option>Sénégal</option><option>Côte d'Ivoire</option><option>Pan-African</option></select></div><div class="ussd-field"><label for="timeout">Timeout session, secondes</label><input id="timeout" type="number" min="15" max="180" step="5" value="45"></div><div class="ussd-field full"><label for="menuTitle">Écran d'accueil</label><textarea id="menuTitle">Bienvenue sur AfroPay
-Choisissez une option:</textarea><p class="ussd-help">Gardez chaque écran court et actionnable. Le simulateur signale les prompts au-dessus de 182 caractères.</p></div><div class="ussd-field full"><label for="menuOptions">Options du menu</label><textarea id="menuOptions">1 | Envoyer argent | beneficiaire,montant,pin | Transfert envoye pour verification
+Choisissez une option:</textarea><p class="ussd-help">Gardez chaque écran court et actionnable. Le simulateur signale les prompts au-dessus de 182 caractères.</p></div><div class="ussd-field full"><label for="menuOptions">Options du menu</label><textarea id="menuOptions">1 | Envoyer argent | bénéficiaire,montant,pin | Transfert envoye pour verification
 2 | Acheter credit | telephone,montant | Credit prepare
 3 | Solde | pin | Solde simule: NGN 24,500
 0 | Aide |  | Contactez le support ou revenez au menu</textarea><p class="ussd-help">Format: numéro | libelle | champs separes par virgule | message de fin.</p></div><div class="ussd-field full"><label for="sequence">Sequence utilisateur à tester</label><textarea id="sequence">1
@@ -85,7 +87,7 @@ Choisissez une option:</textarea><p class="ussd-help">Gardez chaque écran court
 
 <section class="ussd-wrap ussd-info" data-tool-verification-panel aria-label="Sources et vérification"><article class="ussd-card"><h2>Sources techniques</h2><p>Sources reviewed June 2026. Cette page s appuie sur les spécifications publiques et des références sectorielles; elle ne valide pas un code court reel.</p><ul class="ussd-source-list"><li><a href="https://www.3gpp.org/DynaReport/22090.htm" target="_blank" rel="noopener">3GPP TS 22.090 - USSD Stage 1</a></li><li><a href="https://www.3gpp.org/DynaReport/23090.htm" target="_blank" rel="noopener">3GPP TS 23.090 - USSD Stage 2</a></li><li><a href="https://www.itu.int/rec/t-rec-e.164/en" target="_blank" rel="noopener">ITU-T E.164 numbering plan</a></li><li><a href="https://consumer.ncc.gov.ng/articles/77-harmonized-short-codes-for-all-service-providers-13-new-universal-short-codes" target="_blank" rel="noopener">NCC harmonized short codes</a></li><li><a href="https://www.gsma.com/solutions-and-impact/connectivity-for-good/mobile-for-development/guide/" target="_blank" rel="noopener">GSMA Mobile Money Regulatory Guide</a></li></ul></article><article class="ussd-card"><h2>Méthodologie</h2><p>Le simulateur lit le code court, l'écran d'accueil, les options et la sequence de test. Il genere un transcript CON/END, signale les formats suspects, les options dupliquees, les prompts longs et les sequences incompletes.</p><p class="ussd-note"><strong>Limites et avertissement:</strong> simulation non officielle. Vérifier avec votre agregateur, opérateur, banque ou regulateur avant lancement public.</p></article><article class="ussd-card"><h2>Related tools</h2><div class="ussd-related"><a href="/tools/ussd-simulator/">English USSD simulator</a><a href="/tools/api-tester/">API tester</a><a href="/telecom/ussd-directory/">USSD directory</a><a href="/tools/whatsapp-link/">WhatsApp link</a><a href="/developers/">Developers</a><a href="/api/">API pilots</a></div></article></section>
 
-<section class="ussd-wrap ussd-card ussd-faq" aria-label="Questions fréquentes"><h2>Questions fréquentes</h2><details><summary>Quelle différence entre CON et END ?</summary><p>Dans beaucoup d'intégrations, CON indique que la session attend une autre saisie, tandis que END indique que le parcours peut se terminer. Votre passerelle peut utiliser ses propres conventions.</p></details><details><summary>Le simulateur stocke-t-il mes données ?</summary><p>Non par défaut. Le bouton de sauvegarde enregistre seulement le dernier transcript dans localStorage de ce navigateur.</p></details><details><summary>Ce test remplace-t-il la certification telco ?</summary><p>Non. Il aide à préparer le parcours, mais les tests finaux doivent être faits avec l'opérateur, l'agregateur et les regles du pays cible.</p></details></section>
+<section class="ussd-wrap ussd-card ussd-faq" aria-label="Questions fréquentes"><h2>Questions fréquentes</h2><details><summary>Quelle différence entre CON et END ?</summary><p>Dans beaucoup d'intégrations, CON indique que la session attend une autre saisie, tandis que END indique que le parcours peut se terminer. Votre passerelle peut utiliser ses propres conventions.</p></details><details><summary>Le simulateur stocke-t-il mes données ?</summary><p>Non par défaut. Le bouton de sauvegarde enregistre seulement le dernier transcript dans localStorage de ce navigateur.</p></details><details><summary>Ce test remplace-t-il la certification telco ?</summary><p>Non. Il aide à préparer le parcours, mais les tests finaux doivent être faits avec l'opérateur, l'agregateur et les règles du pays cible.</p></details></section>
 <afro-business-cta tool-name="Simulateur de codes USSD" prospect-segment="fintech-developer" save-note="Exportez le transcript QA, puis demandez un widget ou un prototype USSD/API adapte a votre service."></afro-business-cta>
 </main>
 <afro-footer></afro-footer>

@@ -1,36 +1,16 @@
 #!/usr/bin/env node
-/**
- * Build the lightweight client search index used by /search/.
- *
- * The full tool registry is still the source of truth, but search only needs
- * compact display and matching fields. Keeping this as JSON avoids making
- * mobile users download and execute the whole registry bundle before results.
- */
+'use strict';
+
+/** Build the lightweight /search/ index from canonical published tools. */
 
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const registryApi = require('./lib/canonical-registry');
+const localizationApi = require('./lib/localization-platform');
 
 const ROOT = path.join(__dirname, '..');
-const REGISTRY_PATH = path.join(ROOT, 'assets/js/components/tool-registry.js');
 const SEARCH_INDEX_PATH = path.join(ROOT, 'data/search-index.json');
-
-const COUNTRY_NAMES = {
-  DZ: ['Algeria'], AO: ['Angola'], BJ: ['Benin'], BW: ['Botswana'], BF: ['Burkina Faso'],
-  BI: ['Burundi'], CV: ['Cabo Verde', 'Cape Verde'], CM: ['Cameroon'], CF: ['Central African Republic', 'CAR'],
-  TD: ['Chad'], KM: ['Comoros'], CG: ['Congo', 'Republic of Congo', 'Congo Brazzaville'],
-  CD: ['DR Congo', 'Democratic Republic of Congo', 'DRC', 'Congo Kinshasa'], CI: ["Cote d'Ivoire", 'Côte d’Ivoire', 'Ivory Coast'],
-  DJ: ['Djibouti'], EG: ['Egypt'], GQ: ['Equatorial Guinea'], ER: ['Eritrea'], SZ: ['Eswatini', 'Swaziland'],
-  ET: ['Ethiopia'], GA: ['Gabon'], GM: ['Gambia', 'The Gambia'], GH: ['Ghana'], GN: ['Guinea'],
-  GW: ['Guinea-Bissau'], KE: ['Kenya'], LS: ['Lesotho'], LR: ['Liberia'], LY: ['Libya'],
-  MG: ['Madagascar'], MW: ['Malawi'], ML: ['Mali'], MR: ['Mauritania'], MU: ['Mauritius'],
-  MA: ['Morocco'], MZ: ['Mozambique'], NA: ['Namibia'], NE: ['Niger'], NG: ['Nigeria'],
-  RW: ['Rwanda'], ST: ['Sao Tome and Principe', 'São Tomé and Príncipe'], SN: ['Senegal'], SC: ['Seychelles'],
-  SL: ['Sierra Leone'], SO: ['Somalia'], ZA: ['South Africa'], SS: ['South Sudan'], SD: ['Sudan'],
-  TZ: ['Tanzania'], TG: ['Togo'], TN: ['Tunisia'], UG: ['Uganda'], ZM: ['Zambia'], ZW: ['Zimbabwe'],
-  ALL: ['All African countries', 'Africa', 'Pan-African'],
-};
 
 const CATEGORY_ALIASES = {
   financial: ['finance', 'money', 'salary', 'tax', 'paye', 'fx', 'forex', 'rates', 'market data', 'prices', 'fuel prices'],
@@ -64,40 +44,8 @@ const CATEGORY_ALIASES = {
   creative: ['creator', 'media', 'streaming', 'content', 'music', 'film'],
   security: ['safety', 'cybersecurity', 'password', 'phishing'],
   'travel-tourism': ['travel', 'tourism', 'visa', 'hotel', 'safari'],
-  career: ['jobs', 'cv', 'resume', 'cover letter', 'certification'],
+  career: ['jobs', 'cv', 'resume', 'cover letter', 'certification']
 };
-
-function loadRegistry() {
-  const code = fs.readFileSync(REGISTRY_PATH, 'utf8');
-  function FakeEvent() {}
-  const sandbox = {
-    window: {},
-    CustomEvent: FakeEvent,
-    document: {
-      readyState: 'complete',
-      getElementById: () => null,
-      createElement: () => ({ textContent: '', style: {}, appendChild() {} }),
-      head: { appendChild() {} },
-      addEventListener() {},
-      removeEventListener() {},
-      dispatchEvent() {},
-      querySelector: () => null,
-    },
-  };
-  sandbox.window = sandbox;
-  vm.runInNewContext(code, sandbox, { filename: REGISTRY_PATH });
-  return {
-    tools: Array.isArray(sandbox.AFRO_TOOLS) ? sandbox.AFRO_TOOLS : [],
-    categories: sandbox.AFRO_CATEGORIES || {},
-  };
-}
-
-function normalizeCountries(tool) {
-  if (Array.isArray(tool.countries)) return tool.countries.filter(Boolean);
-  if (typeof tool.countries === 'string' && tool.countries.trim()) return [tool.countries.trim()];
-  if (typeof tool.country === 'string' && tool.country.trim()) return [tool.country.trim()];
-  return [];
-}
 
 function splitSlug(value) {
   return String(value || '')
@@ -107,64 +55,65 @@ function splitSlug(value) {
     .replace(/[-_]+/g, ' ');
 }
 
-function buildSearchText(tool, categories) {
-  const category = categories[tool.category] || {};
-  const countries = normalizeCountries(tool);
-  const countryTerms = countries.flatMap((code) => COUNTRY_NAMES[code] || [code]);
-  const tags = Array.isArray(tool.tags) ? tool.tags : (tool.tags ? [tool.tags] : []);
-  const aliases = Array.isArray(tool.aliases) ? tool.aliases : [];
-  const categoryAliases = CATEGORY_ALIASES[tool.category] || [];
-  const baseText = [tool.id, tool.name, tool.desc, tool.href, tool.category, category.name, ...tags].join(' ').toLowerCase();
+function countryIdsFor(tool) {
+  return tool.applicability.scope === 'pan-african' ? ['ALL'] : tool.applicability.countryIds.slice();
+}
+
+function buildSearchText(tool, categoryById, countryById) {
+  const category = categoryById.get(tool.categoryId) || {};
+  const countryIds = countryIdsFor(tool);
+  const countryTerms = countryIds.includes('ALL')
+    ? ['All African countries', 'Africa', 'Pan-African']
+    : countryIds.map((id) => countryById.get(id)).filter(Boolean).map((country) => country.title);
+  const tags = Array.isArray(tool.source.tags) ? tool.source.tags : [];
+  const aliases = Array.isArray(tool.source.aliases) ? tool.source.aliases : [];
+  const baseText = [tool.id, tool.title, tool.description, tool.route, tool.categoryId, category.title, ...tags].join(' ').toLowerCase();
   const generatedAliases = [];
-  if (/\bfuel\b|petrol|diesel|gasoline|carburant/.test(baseText)) {
-    generatedAliases.push('fuel tracker', 'fuel prices', 'petrol', 'diesel', 'gasoline', 'carburant');
-  }
-  if (/\btax\b|paye|vat|wht|cit|cgt|duty/.test(baseText)) {
-    generatedAliases.push('tax', 'income tax', 'business tax', 'salary tax', 'impot', 'fiscal');
-  }
-  if (/stream|creator|content|media|music|video/.test(baseText)) {
-    generatedAliases.push('creator economy', 'creative economy', 'streaming', 'content creator', 'media');
-  }
-  return Array.from(new Set([
-    tool.category,
-    category.name,
+  if (/\bfuel\b|petrol|diesel|gasoline|carburant/.test(baseText)) generatedAliases.push('fuel tracker', 'fuel prices', 'petrol', 'diesel', 'gasoline', 'carburant');
+  if (/\btax\b|paye|vat|wht|cit|cgt|duty/.test(baseText)) generatedAliases.push('tax', 'income tax', 'business tax', 'salary tax', 'impot', 'fiscal');
+  if (/stream|creator|content|media|music|video/.test(baseText)) generatedAliases.push('creator economy', 'creative economy', 'streaming', 'content creator', 'media');
+  return localizationApi.normalizeDisplayString([...new Set([
+    tool.categoryId,
+    category.title,
     splitSlug(tool.id),
-    splitSlug(tool.href),
-    tool.status,
-    tool.phase,
-    tool.tier,
-    tool.revenue,
-    ...countries,
+    splitSlug(tool.route),
+    tool.publicationStatus,
+    tool.source.phase,
+    tool.source.tier,
+    tool.source.revenue,
+    ...countryIds,
     ...countryTerms,
     ...tags,
     ...aliases,
-    ...categoryAliases,
-    ...generatedAliases,
-  ].filter(Boolean).map(String))).join(' ');
+    ...(CATEGORY_ALIASES[tool.categoryId] || []),
+    ...generatedAliases
+  ].filter(Boolean).map(String))].join(' '));
 }
 
-function searchRecord(tool, categories) {
+function searchRecord(tool, categoryById, countryById) {
   return [
     tool.id,
-    tool.name || tool.id,
-    tool.desc || '',
-    tool.category || 'uncategorized',
-    normalizeCountries(tool),
-    tool.status || 'planned',
-    tool.href || `/tools/${tool.id}/`,
-    tool.icon || '',
-    Number(tool.priority || 0),
-    buildSearchText(tool, categories),
+    localizationApi.normalizeDisplayString(tool.title),
+    localizationApi.normalizeDisplayString(tool.description),
+    tool.categoryId,
+    countryIdsFor(tool),
+    'live',
+    tool.route,
+    localizationApi.normalizeDisplayString(tool.source.icon || ''),
+    Number(tool.source.priority || 0),
+    buildSearchText(tool, categoryById, countryById)
   ];
 }
 
-const registry = loadRegistry();
+const registry = registryApi.buildCanonicalRegistry();
+const validation = registryApi.validateCanonicalRegistry(registry);
+if (!validation.ok) throw new Error(validation.errors.map(registryApi.formatIssue).join('\n'));
+const categoryById = new Map(registry.categories.map((category) => [category.id, category]));
+const countryById = new Map(registry.countries.map((country) => [country.id, country]));
 const records = registry.tools
-  .filter((tool) => tool && tool.id && (tool.href || tool.name))
-  .map((tool) => searchRecord(tool, registry.categories));
+  .filter((tool) => tool.publicationStatus === 'published' && !tool.deprecated)
+  .map((tool) => searchRecord(tool, categoryById, countryById));
 
 fs.mkdirSync(path.dirname(SEARCH_INDEX_PATH), { recursive: true });
-writeFileSyncWithRetry(SEARCH_INDEX_PATH, JSON.stringify(records) + '\n', 'utf8');
-
-const bytes = fs.statSync(SEARCH_INDEX_PATH).size;
-console.log(`Built ${records.length} search index rows (${Math.round(bytes / 1024)} KB)`);
+writeFileSyncWithRetry(SEARCH_INDEX_PATH, `${JSON.stringify(records)}\n`, 'utf8');
+console.log(`Built ${records.length} canonical search index rows (${Math.round(fs.statSync(SEARCH_INDEX_PATH).size / 1024)} KB)`);

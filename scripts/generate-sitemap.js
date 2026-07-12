@@ -35,7 +35,7 @@ console.log(`Loaded ${AFRO_TOOLS.length} tools from registry`);
 
 const staticPages = [
   { url: '/',                  priority: '1.0', changefreq: 'daily' },
-  { url: '/all-tools/',        priority: '0.9', changefreq: 'weekly' },
+  { url: '/tools/',            priority: '0.9', changefreq: 'weekly' },
   { url: '/pricing/',          priority: '0.7', changefreq: 'monthly' },
   { url: '/developers/',       priority: '0.6', changefreq: 'monthly' },
   { url: '/search/',           priority: '0.5', changefreq: 'weekly' },

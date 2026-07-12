@@ -103,7 +103,7 @@ const TOOL_NAMES = {
   'poultry-roi': 'Poultry ROI Calculator'
 };
 
-const GA4_SNIPPET = '<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag(\'js\',new Date());gtag(\'config\',\'G-D859CGF391\');</script>';
+const GA4_SNIPPET = '<script defer src="/assets/js/lazy-analytics.js"></script>';
 const CROSS_TOOL_SCRIPT = '<script src="/assets/js/lib/cross-tool-nav.js" defer></script>';
 
 let stats = { hubsFixed: 0, crossToolAdded: 0, breadcrumbAdded: 0, ga4Added: 0 };
@@ -171,7 +171,7 @@ function fixHubPage(toolSlug) {
   }
 
   // Also add GA4 to hub pages if missing
-  if (!html.includes('G-D859CGF391')) {
+  if (!html.includes('/assets/js/lazy-analytics.js')) {
     html = html.replace('</head>', GA4_SNIPPET + '\n</head>');
     stats.ga4Added++;
   }
@@ -230,7 +230,7 @@ function fixCountryPage(toolSlug, countrySlug) {
   }
 
   // Priority 6: Add GA4 if missing
-  if (!html.includes('G-D859CGF391')) {
+  if (!html.includes('/assets/js/lazy-analytics.js')) {
     html = html.replace('</head>', GA4_SNIPPET + '\n</head>');
     stats.ga4Added++;
     changed = true;

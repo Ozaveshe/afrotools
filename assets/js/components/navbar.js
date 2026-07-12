@@ -357,8 +357,8 @@
         { label: 'Hàdà àti pín PDF', href: '/yo/awon-ise/hada-ati-pin-pdf/', emoji: 'PDF', badge: 'YO' },
         { label: 'Dín ìwọ̀n PDF', href: '/yo/awon-ise/din-iwon-pdf/', emoji: 'PDF', badge: 'YO' },
         { label: 'Túntò ojú-iwe PDF', href: '/yo/awon-ise/tunto-pdf/', emoji: 'PDF', badge: 'YO' },
-        { label: 'Kíriíro ìwé owó', href: '/yo/awon-ise/kiriiro-invoice/', emoji: 'INV', badge: 'YO' },
-        { label: 'Kíriíro risiti', href: '/yo/awon-ise/kiriiro-risiti/', emoji: 'RCT', badge: 'YO' },
+        { label: 'Kíriíro ìwé owó', href: '/yo/awon-ise/kiriiro-invoice/', emoji: 'INV', badge: 'YO' },
+        { label: 'Kíriíro risiti', href: '/yo/awon-ise/kiriiro-risiti/', emoji: 'RCT', badge: 'YO' },
         { label: 'Naira sí ọ̀rọ̀', href: '/yo/awon-ise/naira-si-oro/', emoji: 'NGN', badge: 'YO' },
         { label: 'Yí PDF padà - ojú ìwé Gẹẹsi', href: '/tools/pdf-convert/', emoji: 'PDF', badge: 'EN' },
         { label: 'Gbogbo iṣẹ́ PDF ->', href: '/yo/iwe-ati-pdf/', emoji: 'ALL' }
@@ -675,8 +675,8 @@
         { label: 'Kalkuletan CIT', href: '/yo/awon-ise/cit-naijiria/', emoji: 'CIT', badge: 'YO' },
         { label: 'Kalkuletan WHT', href: '/yo/awon-ise/wht-naijiria/', emoji: 'WHT', badge: 'YO' },
         { label: 'Ìforúkọsílẹ̀ iṣẹ́', href: '/yo/awon-ise/forukosile-owo-ise/', emoji: 'CAC', badge: 'YO' },
-        { label: 'Kíriíro ìwé owó', href: '/yo/awon-ise/kiriiro-invoice/', emoji: 'INV', badge: 'YO' },
-        { label: 'Kíriíro risiti', href: '/yo/awon-ise/kiriiro-risiti/', emoji: 'RCT', badge: 'YO' },
+        { label: 'Kíriíro ìwé owó', href: '/yo/awon-ise/kiriiro-invoice/', emoji: 'INV', badge: 'YO' },
+        { label: 'Kíriíro risiti', href: '/yo/awon-ise/kiriiro-risiti/', emoji: 'RCT', badge: 'YO' },
         { label: 'Break-even - ojú ìwé Gẹẹsi', href: '/tools/break-even/', emoji: 'BE', badge: 'EN' },
         { label: 'Gbogbo VAT àti owó-orí ->', href: '/yo/owo-ori-owo-ise/', emoji: 'ALL' }
       ],
@@ -1531,6 +1531,17 @@
     { label: 'Senegal - shafi na Turanci', href: '/senegal/', slug: 'senegal' },
   ];
 
+  const COUNTRY_LINKS_SW = [
+    { label: 'Nigeria', href: '/sw/nigeria/', slug: 'nigeria' },
+    { label: 'Kenya', href: '/sw/kenya/', slug: 'kenya' },
+    { label: 'Ghana', href: '/sw/ghana/', slug: 'ghana' },
+    { label: 'Afrika Kusini', href: '/sw/south-africa/', slug: 'south-africa' },
+    { label: 'Misri', href: '/sw/egypt/', slug: 'egypt' },
+    { label: 'Tanzania', href: '/sw/tanzania/', slug: 'tanzania' },
+    { label: 'Rwanda', href: '/sw/rwanda/', slug: 'rwanda' },
+    { label: 'Senegal', href: '/sw/senegal/', slug: 'senegal' }
+  ];
+
   const COUNTRY_LINKS_YO = [
     { label: 'Naijiria', href: '/yo/naijiria/', slug: 'nigeria' },
     { label: 'Kenya - ojú ìwé Gẹẹsi', href: '/kenya/', slug: 'kenya' },
@@ -1543,6 +1554,7 @@
   ];
 
   function localizedCountryLinks(lang) {
+    if (lang === 'sw') return COUNTRY_LINKS_SW;
     if (lang === 'ha') return COUNTRY_LINKS_HA;
     if (lang === 'yo') return COUNTRY_LINKS_YO;
     return COUNTRY_LINKS;
@@ -1891,6 +1903,22 @@
     }
     .lang-opt:hover { background: #EEF4FF; }
     .lang-opt.active { font-weight: 700; color: #0062CC; background: #f0f7ff; }
+    .lang-opt.fallback { align-items: flex-start; }
+    .lang-opt-label { display: flex; flex-direction: column; min-width: 0; }
+    .lang-opt-fallback {
+      display: block; margin-top: 2px; font-size: 0.68rem; line-height: 1.25;
+      font-weight: 500; color: #6b7280;
+    }
+    .lang-opt-partial { color: #7C3AED; font-size: 0.68rem; font-weight: 700; }
+    .lang-fallback-dialog { border: 0; border-radius: 14px; max-width: min(420px, calc(100vw - 32px)); padding: 0; box-shadow: 0 24px 70px rgba(15,23,42,.28); color: #0F172A; }
+    .lang-fallback-dialog::backdrop { background: rgba(15,23,42,.56); }
+    .lang-fallback-card { padding: 22px; }
+    .lang-fallback-card h2 { margin: 0 0 8px; font-size: 1.12rem; }
+    .lang-fallback-card p { margin: 0; color: #475569; line-height: 1.55; }
+    .lang-fallback-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+    .lang-fallback-actions button { min-height: 44px; border-radius: 9px; padding: 9px 14px; font: inherit; font-weight: 700; cursor: pointer; }
+    .lang-fallback-cancel { background: #fff; border: 1px solid #CBD5E1; color: #334155; }
+    .lang-fallback-confirm { background: #0062CC; border: 1px solid #0062CC; color: #fff; }
 
     /* HAMBURGER */
     .burger {
@@ -2293,6 +2321,8 @@
     }
     .mob-lang-opt:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
     .mob-lang-opt.active { border-color: #0062CC; color: #0062CC; background: #EEF4FF; font-weight: 700; }
+    .mob-lang-opt.fallback { align-items: flex-start; }
+    .mob-lang-opt .lang-opt-label { text-align: left; }
 
     .mob-theme-section { padding: 8px 16px 2px; }
     .mob-theme-toggle {
@@ -2448,6 +2478,8 @@
         document.head.appendChild(link);
       }
       this._render(); this._bind();
+      this._ensureLocalizationAssets();
+      this._ensureLocaleRouteResolver();
     }
 
     disconnectedCallback() {
@@ -2467,474 +2499,136 @@
       return document.documentElement.lang || 'en';
     }
 
+    _ensureLocaleRouteResolver() {
+      if (window.AfroLocaleRouteResolver || document.querySelector('script[data-afro-locale-route-resolver]')) return;
+      var script = document.createElement('script');
+      script.src = '/assets/js/lib/locale-route-resolver.js';
+      script.dataset.afroLocaleRouteResolver = 'true';
+      script.addEventListener('load', () => {
+        this._render();
+        this._bind();
+      });
+      document.head.appendChild(script);
+    }
+
+    _ensureLocalizationAssets() {
+      if (this._localizationLoading || (window.AfroTools && window.AfroTools.i18n && window.AfroToolsLocaleManifest)) return;
+      this._localizationLoading = true;
+      var sources = ['/assets/js/data/locale-manifest.js', '/assets/js/data/ui-translations.js', '/assets/js/lib/localization.js', '/assets/js/lib/localize-shared-ui.js'];
+      var load = function(src) {
+        return new Promise(function(resolve) {
+          var existing = document.querySelector('script[src="' + src + '"], script[src$="' + src + '"]');
+          if (existing) {
+            if (existing.dataset.loaded === 'true') return resolve();
+            existing.addEventListener('load', resolve, { once: true });
+            existing.addEventListener('error', resolve, { once: true });
+            return;
+          }
+          var script = document.createElement('script');
+          script.src = src;
+          script.addEventListener('load', function() { script.dataset.loaded = 'true'; resolve(); }, { once: true });
+          script.addEventListener('error', resolve, { once: true });
+          document.head.appendChild(script);
+        });
+      };
+      sources.reduce(function(chain, src) { return chain.then(function() { return load(src); }); }, Promise.resolve()).then(() => {
+        if (window.AfroToolsLocalization && window.AfroToolsLocaleManifest && window.AfroToolsTranslations) {
+          window.AfroToolsLocalization.install({ root: window, manifest: window.AfroToolsLocaleManifest, catalogs: window.AfroToolsTranslations, locale: this._getLang() });
+          this._render();
+          this._bind();
+        }
+        this._localizationLoading = false;
+      });
+    }
+
+    _translation(key, fallback) {
+      var runtime = window.AfroTools && window.AfroTools.i18n;
+      if (!runtime || typeof runtime.t !== 'function') return fallback;
+      var resolved = runtime.t(key);
+      return resolved && resolved.state !== 'missing' ? resolved.value : fallback;
+    }
+
+    _availableLocales() {
+      var configured = window.AfroToolsLocaleManifest && window.AfroToolsLocaleManifest.locales;
+      if (Array.isArray(configured) && configured.length) {
+        return configured.filter(function(locale) { return ['default', 'launched', 'partial'].indexOf(locale.launchStatus) !== -1; });
+      }
+      return [
+        { id: 'en', nativeName: 'English', launchStatus: 'default' },
+        { id: 'fr', nativeName: 'Français', launchStatus: 'launched' },
+        { id: 'sw', nativeName: 'Kiswahili', launchStatus: 'launched' },
+        { id: 'yo', nativeName: 'Yorùbá', launchStatus: 'partial' },
+        { id: 'ha', nativeName: 'Hausa', launchStatus: 'partial' }
+      ];
+    }
+
+    _languageDestinationFor(targetLang, currentLang) {
+      var alternates = {};
+      Array.prototype.forEach.call(document.querySelectorAll('link[rel="alternate"][hreflang]'), function(link) {
+        var lang = link.getAttribute('hreflang');
+        var href = link.getAttribute('href');
+        if (lang && href && !alternates[lang]) alternates[lang] = href;
+      });
+      var canonicalLink = document.querySelector('link[rel="canonical"]');
+      var canonicalRoute = canonicalLink && canonicalLink.getAttribute('href') || window.location.pathname || '/';
+      var coverageMeta = document.querySelector('meta[name="afrotools-locale-coverage"]');
+      var fallbackMeta = document.querySelector('meta[name="afrotools-locale-fallback"]');
+      var coverageState = coverageMeta && coverageMeta.getAttribute('content');
+      var explicitFallback = fallbackMeta && fallbackMeta.getAttribute('content');
+      if (coverageState === 'english-fallback' && explicitFallback) {
+        alternates.en = explicitFallback;
+        alternates['x-default'] = explicitFallback;
+        if (targetLang !== currentLang) {
+          var fallbackLabels = window.AfroLocaleRouteResolver && window.AfroLocaleRouteResolver.fallbackLabels || {};
+          return {
+            requestedLocale: targetLang,
+            route: explicitFallback,
+            relationship: 'english-fallback',
+            label: fallbackLabels[targetLang] || fallbackLabels.en || 'English fallback',
+            advertisedAsEquivalent: false
+          };
+        }
+      }
+      var resolver = window.AfroLocaleRouteResolver;
+      if (resolver && typeof resolver.resolve === 'function') {
+        return resolver.resolve({
+          currentLocale: currentLang,
+          targetLocale: targetLang,
+          currentRoute: window.location.pathname || '/',
+          canonicalRoute: canonicalRoute,
+          alternates: alternates
+        });
+      }
+      var nativeHref = alternates[targetLang];
+      var labels = { en: 'English', fr: 'Fran?ais', sw: 'Kiswahili', yo: 'Yor?b?', ha: 'Hausa' };
+      if (nativeHref) {
+        return { requestedLocale: targetLang, route: nativeHref, relationship: 'equivalent', label: labels[targetLang] || targetLang, advertisedAsEquivalent: true };
+      }
+      var englishHref = alternates.en || alternates['x-default'] || canonicalRoute || '/';
+      return { requestedLocale: targetLang, route: englishHref, relationship: 'english-fallback', label: (labels[targetLang] || targetLang) + ' unavailable ? English fallback', advertisedAsEquivalent: false };
+    }
+
     _languageHrefFor(targetLang, currentLang) {
-      var path = window.location.pathname || '/';
-      var key = path.replace(/\/index\.html$/, '/');
-      if (key.length > 1 && key.charAt(key.length - 1) !== '/') key += '/';
-      var routeMap = {
-        '/': {
-          en: '/',
-          fr: '/fr/',
-          sw: '/sw/',
-          yo: '/yo/',
-          ha: '/ha/'
-        },
-        '/fr/': {
-          en: '/',
-          fr: '/fr/',
-          sw: '/sw/',
-          yo: '/yo/',
-          ha: '/ha/'
-        },
-        '/sw/': {
-          en: '/',
-          fr: '/fr/',
-          sw: '/sw/',
-          yo: '/yo/',
-          ha: '/ha/'
-        },
-        '/ha/': {
-          en: '/',
-          fr: '/fr/',
-          sw: '/sw/',
-          yo: '/yo/',
-          ha: '/ha/'
-        },
-        '/yo/': {
-          en: '/',
-          fr: '/fr/',
-          sw: '/sw/',
-          yo: '/yo/',
-          ha: '/ha/'
-        },
-        '/all-tools/': {
-          en: '/all-tools/',
-          fr: '/fr/all-tools/',
-          sw: '/sw/zana-zote/',
-          yo: '/yo/awon-ise/',
-          ha: '/ha/kayan-aiki/'
-        },
-        '/fr/all-tools/': {
-          en: '/all-tools/',
-          fr: '/fr/all-tools/',
-          sw: '/sw/zana-zote/',
-          yo: '/yo/awon-ise/',
-          ha: '/ha/kayan-aiki/'
-        },
-        '/sw/zana-zote/': {
-          en: '/all-tools/',
-          fr: '/fr/all-tools/',
-          sw: '/sw/zana-zote/',
-          yo: '/yo/awon-ise/',
-          ha: '/ha/kayan-aiki/'
-        },
-        '/ha/kayan-aiki/': {
-          en: '/all-tools/',
-          fr: '/fr/all-tools/',
-          sw: '/sw/zana-zote/',
-          yo: '/yo/awon-ise/',
-          ha: '/ha/kayan-aiki/'
-        },
-        '/yo/awon-ise/': {
-          en: '/all-tools/',
-          fr: '/fr/all-tools/',
-          sw: '/sw/zana-zote/',
-          yo: '/yo/awon-ise/',
-          ha: '/ha/kayan-aiki/'
-        },
-        '/nigeria/': {
-          en: '/nigeria/',
-          fr: '/fr/nigeria/',
-          sw: '/sw/nigeria/',
-          yo: '/yo/naijiria/',
-          ha: '/ha/najeriya/'
-        },
-        '/fr/nigeria/': {
-          en: '/nigeria/',
-          fr: '/fr/nigeria/',
-          sw: '/sw/nigeria/',
-          yo: '/yo/naijiria/',
-          ha: '/ha/najeriya/'
-        },
-        '/sw/nigeria/': {
-          en: '/nigeria/',
-          fr: '/fr/nigeria/',
-          sw: '/sw/nigeria/',
-          yo: '/yo/naijiria/',
-          ha: '/ha/najeriya/'
-        },
-        '/ha/najeriya/': {
-          en: '/nigeria/',
-          fr: '/fr/nigeria/',
-          sw: '/sw/nigeria/',
-          yo: '/yo/naijiria/',
-          ha: '/ha/najeriya/'
-        },
-        '/yo/naijiria/': {
-          en: '/nigeria/',
-          fr: '/fr/nigeria/',
-          sw: '/sw/nigeria/',
-          yo: '/yo/naijiria/',
-          ha: '/ha/najeriya/'
-        },
-        '/agriculture/': {
-          en: '/agriculture/',
-          fr: '/fr/agriculture/',
-          sw: '/sw/kilimo/',
-          yo: '/yo/ogbin/',
-          ha: '/ha/noma/'
-        },
-        '/fr/agriculture/': {
-          en: '/agriculture/',
-          fr: '/fr/agriculture/',
-          sw: '/sw/kilimo/',
-          yo: '/yo/ogbin/',
-          ha: '/ha/noma/'
-        },
-        '/sw/kilimo/': {
-          en: '/agriculture/',
-          fr: '/fr/agriculture/',
-          sw: '/sw/kilimo/',
-          yo: '/yo/ogbin/',
-          ha: '/ha/noma/'
-        },
-        '/ha/noma/': {
-          en: '/agriculture/',
-          fr: '/fr/agriculture/',
-          sw: '/sw/kilimo/',
-          yo: '/yo/ogbin/',
-          ha: '/ha/noma/'
-        },
-        '/yo/ogbin/': {
-          en: '/agriculture/',
-          fr: '/fr/agriculture/',
-          sw: '/sw/kilimo/',
-          yo: '/yo/ogbin/',
-          ha: '/ha/noma/'
-        },
-        '/salary-tax/': {
-          en: '/salary-tax/',
-          fr: '/fr/salary-tax/',
-          sw: '/sw/mshahara-na-kodi/',
-          yo: '/yo/owo-osu-ati-owo-ori/',
-          ha: '/ha/albashi-da-haraji/'
-        },
-        '/fr/salary-tax/': {
-          en: '/salary-tax/',
-          fr: '/fr/salary-tax/',
-          sw: '/sw/mshahara-na-kodi/',
-          yo: '/yo/owo-osu-ati-owo-ori/',
-          ha: '/ha/albashi-da-haraji/'
-        },
-        '/sw/mshahara-na-kodi/': {
-          en: '/salary-tax/',
-          fr: '/fr/salary-tax/',
-          sw: '/sw/mshahara-na-kodi/',
-          yo: '/yo/owo-osu-ati-owo-ori/',
-          ha: '/ha/albashi-da-haraji/'
-        },
-        '/ha/albashi-da-haraji/': {
-          en: '/salary-tax/',
-          fr: '/fr/salary-tax/',
-          sw: '/sw/mshahara-na-kodi/',
-          yo: '/yo/owo-osu-ati-owo-ori/',
-          ha: '/ha/albashi-da-haraji/'
-        },
-        '/yo/owo-osu-ati-owo-ori/': {
-          en: '/salary-tax/',
-          fr: '/fr/salary-tax/',
-          sw: '/sw/mshahara-na-kodi/',
-          yo: '/yo/owo-osu-ati-owo-ori/',
-          ha: '/ha/albashi-da-haraji/'
-        },
-        '/vat-business-tax/': {
-          en: '/vat-business-tax/',
-          fr: '/fr/vat-business-tax/',
-          sw: '/sw/biashara-na-uzingatiaji/',
-          yo: '/yo/owo-ori-owo-ise/',
-          ha: '/ha/kasuwanci-da-haraji/'
-        },
-        '/fr/vat-business-tax/': {
-          en: '/vat-business-tax/',
-          fr: '/fr/vat-business-tax/',
-          sw: '/sw/biashara-na-uzingatiaji/',
-          yo: '/yo/owo-ori-owo-ise/',
-          ha: '/ha/kasuwanci-da-haraji/'
-        },
-        '/sw/biashara-na-uzingatiaji/': {
-          en: '/vat-business-tax/',
-          fr: '/fr/vat-business-tax/',
-          sw: '/sw/biashara-na-uzingatiaji/',
-          yo: '/yo/owo-ori-owo-ise/',
-          ha: '/ha/kasuwanci-da-haraji/'
-        },
-        '/ha/kasuwanci-da-haraji/': {
-          en: '/vat-business-tax/',
-          fr: '/fr/vat-business-tax/',
-          sw: '/sw/biashara-na-uzingatiaji/',
-          yo: '/yo/owo-ori-owo-ise/',
-          ha: '/ha/kasuwanci-da-haraji/'
-        },
-        '/yo/owo-ori-owo-ise/': {
-          en: '/vat-business-tax/',
-          fr: '/fr/vat-business-tax/',
-          sw: '/sw/biashara-na-uzingatiaji/',
-          yo: '/yo/owo-ori-owo-ise/',
-          ha: '/ha/kasuwanci-da-haraji/'
-        },
-        '/document-pdf/': {
-          en: '/document-pdf/',
-          fr: '/fr/document-pdf/',
-          sw: '/sw/hati-na-pdf/',
-          yo: '/yo/iwe-ati-pdf/',
-          ha: '/ha/takardu-da-pdf/'
-        },
-        '/fr/document-pdf/': {
-          en: '/document-pdf/',
-          fr: '/fr/document-pdf/',
-          sw: '/sw/hati-na-pdf/',
-          yo: '/yo/iwe-ati-pdf/',
-          ha: '/ha/takardu-da-pdf/'
-        },
-        '/sw/hati-na-pdf/': {
-          en: '/document-pdf/',
-          fr: '/fr/document-pdf/',
-          sw: '/sw/hati-na-pdf/',
-          yo: '/yo/iwe-ati-pdf/',
-          ha: '/ha/takardu-da-pdf/'
-        },
-        '/ha/takardu-da-pdf/': {
-          en: '/document-pdf/',
-          fr: '/fr/document-pdf/',
-          sw: '/sw/hati-na-pdf/',
-          yo: '/yo/iwe-ati-pdf/',
-          ha: '/ha/takardu-da-pdf/'
-        },
-        '/yo/iwe-ati-pdf/': {
-          en: '/document-pdf/',
-          fr: '/fr/document-pdf/',
-          sw: '/sw/hati-na-pdf/',
-          yo: '/yo/iwe-ati-pdf/',
-          ha: '/ha/takardu-da-pdf/'
-        },
-        '/language/': {
-          en: '/language/',
-          fr: '/fr/language/',
-          sw: '/sw/lugha-na-tafsiri/',
-          yo: '/yo/ede-ati-itumo/',
-          ha: '/ha/harshe-da-fassara/'
-        },
-        '/fr/language/': {
-          en: '/language/',
-          fr: '/fr/language/',
-          sw: '/sw/lugha-na-tafsiri/',
-          yo: '/yo/ede-ati-itumo/',
-          ha: '/ha/harshe-da-fassara/'
-        },
-        '/sw/lugha-na-tafsiri/': {
-          en: '/language/',
-          fr: '/fr/language/',
-          sw: '/sw/lugha-na-tafsiri/',
-          yo: '/yo/ede-ati-itumo/',
-          ha: '/ha/harshe-da-fassara/'
-        },
-        '/ha/harshe-da-fassara/': {
-          en: '/language/',
-          fr: '/fr/language/',
-          sw: '/sw/lugha-na-tafsiri/',
-          yo: '/yo/ede-ati-itumo/',
-          ha: '/ha/harshe-da-fassara/'
-        },
-        '/yo/ede-ati-itumo/': {
-          en: '/language/',
-          fr: '/fr/language/',
-          sw: '/sw/lugha-na-tafsiri/',
-          yo: '/yo/ede-ati-itumo/',
-          ha: '/ha/harshe-da-fassara/'
-        },
-        '/education/': {
-          en: '/education/',
-          fr: '/fr/education/',
-          sw: '/sw/elimu/',
-          yo: '/yo/eko/',
-          ha: '/ha/ilimi/'
-        },
-        '/fr/education/': {
-          en: '/education/',
-          fr: '/fr/education/',
-          sw: '/sw/elimu/',
-          yo: '/yo/eko/',
-          ha: '/ha/ilimi/'
-        },
-        '/sw/elimu/': {
-          en: '/education/',
-          fr: '/fr/education/',
-          sw: '/sw/elimu/',
-          yo: '/yo/eko/',
-          ha: '/ha/ilimi/'
-        },
-        '/ha/ilimi/': {
-          en: '/education/',
-          fr: '/fr/education/',
-          sw: '/sw/elimu/',
-          yo: '/yo/eko/',
-          ha: '/ha/ilimi/'
-        },
-        '/yo/eko/': {
-          en: '/education/',
-          fr: '/fr/education/',
-          sw: '/sw/elimu/',
-          yo: '/yo/eko/',
-          ha: '/ha/ilimi/'
-        },
-        '/telecom/': {
-          en: '/telecom/',
-          fr: '/fr/telecom/',
-          sw: '/sw/mawasiliano-na-mtandao/',
-          yo: '/yo/ibaraenisoro/',
-          ha: '/ha/sadarwa/'
-        },
-        '/fr/telecom/': {
-          en: '/telecom/',
-          fr: '/fr/telecom/',
-          sw: '/sw/mawasiliano-na-mtandao/',
-          yo: '/yo/ibaraenisoro/',
-          ha: '/ha/sadarwa/'
-        },
-        '/sw/mawasiliano-na-mtandao/': {
-          en: '/telecom/',
-          fr: '/fr/telecom/',
-          sw: '/sw/mawasiliano-na-mtandao/',
-          yo: '/yo/ibaraenisoro/',
-          ha: '/ha/sadarwa/'
-        },
-        '/ha/sadarwa/': {
-          en: '/telecom/',
-          fr: '/fr/telecom/',
-          sw: '/sw/mawasiliano-na-mtandao/',
-          yo: '/yo/ibaraenisoro/',
-          ha: '/ha/sadarwa/'
-        },
-        '/yo/ibaraenisoro/': {
-          en: '/telecom/',
-          fr: '/fr/telecom/',
-          sw: '/sw/mawasiliano-na-mtandao/',
-          yo: '/yo/ibaraenisoro/',
-          ha: '/ha/sadarwa/'
-        },
-        '/health/': {
-          en: '/health/',
-          fr: '/fr/health/',
-          sw: '/sw/afya/',
-          yo: '/yo/ilera/',
-          ha: '/ha/lafiya/'
-        },
-        '/fr/health/': {
-          en: '/health/',
-          fr: '/fr/health/',
-          sw: '/sw/afya/',
-          yo: '/yo/ilera/',
-          ha: '/ha/lafiya/'
-        },
-        '/sw/afya/': {
-          en: '/health/',
-          fr: '/fr/health/',
-          sw: '/sw/afya/',
-          yo: '/yo/ilera/',
-          ha: '/ha/lafiya/'
-        },
-        '/ha/lafiya/': {
-          en: '/health/',
-          fr: '/fr/health/',
-          sw: '/sw/afya/',
-          yo: '/yo/ilera/',
-          ha: '/ha/lafiya/'
-        },
-        '/yo/ilera/': {
-          en: '/health/',
-          fr: '/fr/health/',
-          sw: '/sw/afya/',
-          yo: '/yo/ilera/',
-          ha: '/ha/lafiya/'
-        }
-      };
-      if (routeMap[key] && routeMap[key][targetLang]) return routeMap[key][targetLang];
-      var yoEnglishRouteMap = {
-        '/yo/naijiria/owo-ori-owo-osu/': '/nigeria/ng-salary-tax.html',
-        '/yo/awon-ise/kalkuletan-vat/': '/tools/vat-calculator/',
-        '/yo/awon-ise/kiriiro-invoice/': '/tools/invoice-generator/',
-        '/yo/awon-ise/kiriiro-risiti/': '/tools/receipt-generator/',
-        '/yo/awon-ise/naira-si-oro/': '/tools/naira-to-words/',
-        '/yo/awon-ise/whatsapp-link/': '/tools/whatsapp-link/',
-        '/yo/awon-ise/kalkuletan-jamb/': '/tools/jamb-aggregate/',
-        '/yo/awon-ise/kalkuletan-waec-neco/': '/tools/waec-calculator/',
-        '/yo/awon-ise/alawus-na-nysc/': '/tools/nysc-allowance/',
-        '/yo/awon-ise/lambobin-ussd/': '/telecom/ussd-directory/',
-        '/yo/awon-ise/rajista-sim-nin/': '/telecom/sim-registration/',
-        '/yo/awon-ise/amulo-data/': '/telecom/data-usage-calc/',
-        '/yo/awon-ise/duba-genotype/': '/tools/genotype-checker/',
-        '/yo/awon-ise/sickle-cell/': '/tools/sickle-cell/',
-        '/yo/awon-ise/kalkuletan-bmi/': '/tools/bmi-calculator/',
-        '/yo/awon-ise/owo-ile-iwosan/': '/tools/hospital-cost/',
-        '/yo/awon-ise/ere-ogbin/': '/agriculture/farm-profit/nigeria.html',
-        '/yo/awon-ise/eso-irugbin/': '/agriculture/crop-yield/nigeria.html',
-        '/yo/awon-ise/sise-rogo/': '/agriculture/cassava-processing/nigeria.html',
-        '/yo/awon-ise/iwon-ajile/': '/agriculture/fertilizer/nigeria.html',
-        '/yo/awon-ise/isuna-ogbin/': '/agriculture/farm-budget/',
-        '/yo/awon-ise/agbon-oja/': '/tools/staple-basket/',
-        '/yo/awon-ise/owo-oja-ogbin/': '/agriculture/commodity-prices/',
-        '/yo/awon-ise/ounje-eranko/': '/agriculture/livestock-feed/nigeria.html',
-        '/yo/awon-ise/ere-oko-eja/': '/agriculture/fish-farming/nigeria.html',
-        '/yo/awon-ise/olufassara-yoruba/': '/tools/yoruba-translator/',
-        '/yo/awon-ise/wurin-pdf/': '/tools/pdf-workspace/',
-        '/yo/awon-ise/hada-ati-pin-pdf/': '/tools/pdf-merge-split/',
-        '/yo/awon-ise/din-iwon-pdf/': '/tools/pdf-compress/',
-        '/yo/awon-ise/tunto-pdf/': '/tools/pdf-reorder/',
-        '/yo/awon-ise/tin-naijiria/': '/tools/tin-guide/',
-        '/yo/awon-ise/cit-naijiria/': '/tools/ng-cit/',
-        '/yo/awon-ise/wht-naijiria/': '/tools/ng-wht/',
-        '/yo/awon-ise/forukosile-owo-ise/': '/tools/business-registration/'
-      };
-      if (currentLang === 'yo' && key.indexOf('/yo/') === 0) {
-        if (targetLang === 'yo') return key;
-        if (targetLang === 'en' && yoEnglishRouteMap[key]) return yoEnglishRouteMap[key];
-      }
-      if (targetLang === 'yo') {
-        for (var yoPath in yoEnglishRouteMap) {
-          if (Object.prototype.hasOwnProperty.call(yoEnglishRouteMap, yoPath) && yoEnglishRouteMap[yoPath] === key) return yoPath;
-        }
-      }
-      // Only link language versions that actually exist: resolve from the page's
-      // own hreflang alternates instead of inventing URLs by prefix-swapping
-      // (prefix-swapped URLs 301/404 and pollute search-engine crawls).
-      var altLink = document.querySelector('link[rel="alternate"][hreflang="' + targetLang + '"]');
-      if (altLink && altLink.getAttribute('href')) return altLink.getAttribute('href');
-      if (targetLang === 'en') {
-        var xDefault = document.querySelector('link[rel="alternate"][hreflang="x-default"]');
-        if (xDefault && xDefault.getAttribute('href')) return xDefault.getAttribute('href');
-      }
-      var langHome = { en: '/', fr: '/fr/', sw: '/sw/', yo: '/yo/', ha: '/ha/' };
-      return langHome[targetLang] || '/';
+      return this._languageDestinationFor(targetLang, currentLang).route;
     }
 
     _langSwitcherHTML() {
       var cur = this._getLang();
-      var LANGS = [
-        { code: 'en', label: 'English' },
-        { code: 'fr', label: 'Français' },
-        { code: 'sw', label: 'Kiswahili' },
-        { code: 'yo', label: 'Yorùbá' },
-        { code: 'ha', label: 'Hausa' },
-      ];
+      var LANGS = this._availableLocales().map(function(locale) { return { code: locale.id, label: locale.nativeName || locale.displayName || locale.id, launchStatus: locale.launchStatus }; });
       var curObj = LANGS.find(function(l){ return l.code === cur; }) || LANGS[0];
       var opts = LANGS.map(function(l) {
         var active = l.code === cur ? ' active' : '';
         var check = l.code === cur ? '✓' : '';
-        var href = this._languageHrefFor(l.code, cur);
-        return '<a href="' + href + '" class="lang-opt' + active + '"><span class="lang-opt-check">' + check + '</span>' + l.label + '</a>';
+        var destination = this._languageDestinationFor(l.code, cur);
+        var fallback = !destination.advertisedAsEquivalent && l.code !== cur;
+        var fallbackClass = fallback ? ' fallback' : '';
+        var fallbackLabel = fallback ? '<small class="lang-opt-fallback">' + this._escapeHtml(destination.label) + '</small>' : '';
+        var partialLabel = l.launchStatus === 'partial' ? '<small class="lang-opt-partial">' + this._escapeHtml(this._translation('navigation.partialCoverage', 'Partial coverage')) + '</small>' : '';
+        var ariaLabel = fallback ? ' aria-label="' + this._escapeHtml(l.label + ': ' + destination.label) + '"' : '';
+        return '<a href="' + this._escapeHtml(destination.route) + '" data-locale-target="' + this._escapeHtml(l.code) + '" data-locale-relationship="' + this._escapeHtml(destination.relationship) + '" class="lang-opt' + active + fallbackClass + '"' + ariaLabel + '><span class="lang-opt-check">' + check + '</span><span class="lang-opt-label">' + l.label + partialLabel + fallbackLabel + '</span></a>';
       }, this).join('');
-      var switchLabel = cur === 'fr' ? 'Changer de langue' : cur === 'sw' ? 'Badili lugha' : cur === 'yo' ? 'Yí èdè padà' : cur === 'ha' ? 'Canja harshe' : 'Change language';
-      return '<div class="lang-switch"><button class="lang-btn" id="langBtn" type="button" aria-label="' + switchLabel + '">🌐 <span class="lang-btn-label">' + curObj.label + '</span></button><div class="lang-drop" id="langDrop">' + opts + '</div></div>';
+      var switchLabel = this._translation('navigation.changeLanguage', 'Change language');
+      return '<div class="lang-switch"><button class="lang-btn" id="langBtn" type="button" aria-label="' + this._escapeHtml(switchLabel) + '"><span aria-hidden="true">🌐</span> <span class="lang-btn-label">' + curObj.label + '</span></button><div class="lang-drop" id="langDrop" role="menu" aria-label="' + this._escapeHtml(this._translation('accessibility.languageMenu', 'Language menu')) + '">' + opts + '</div></div>';
     }
 
     _navItems() {
@@ -3074,7 +2768,7 @@
       var allHref = isFr ? '/fr/categories/' : '/categories/';
       allLabel = isSw ? 'Zana zote za Kiswahili ->' : isFr ? 'Tous les outils ->' : isYo ? 'Gbogbo irinṣẹ - ojú ìwé Gẹẹsi ->' : isHa ? 'Duk kayan aikin Hausa ->' : 'All Tools ->';
       allDesc = isSw ? 'PAYE, PDF, VAT, nchi na makundi yote' : isFr ? 'Rechercher et filtrer tous les outils' : isYo ? 'PAYE, PDF, VAT, JAMB, WAEC àti orílẹ̀-èdè' : isHa ? 'PAYE, PDF, VAT, JAMB, WAEC da kasashe' : 'Search and filter every tool';
-      allHref = isSw ? '/sw/zana-zote/' : isFr ? '/fr/all-tools/' : isHa ? '/ha/kayan-aiki/' : '/all-tools/';
+      allHref = isSw ? '/sw/zana-zote/' : isFr ? '/fr/all-tools/' : isHa ? '/ha/kayan-aiki/' : '/tools/';
       html += `
         <a href="${allHref}" class="mob-cat" style="border-top:2px solid #e5e7eb;margin-top:4px">
           <div class="mob-cat-icon" style="background:#EEF4FF">🧭</div>
@@ -3164,19 +2858,18 @@
 
     _mobileLangHTML() {
       var cur = this._getLang();
-      var LANGS = [
-        { code: 'en', label: 'English', flag: '🇬🇧' },
-        { code: 'fr', label: 'Français', flag: '🇫🇷' },
-        { code: 'sw', label: 'Kiswahili', flag: '🇰🇪' },
-        { code: 'yo', label: 'Yorùbá', flag: '🇳🇬' },
-        { code: 'ha', label: 'Hausa', flag: '🇳🇬' },
-      ];
+      var LANGS = this._availableLocales().map(function(locale) { return { code: locale.id, label: locale.nativeName || locale.displayName || locale.id, launchStatus: locale.launchStatus }; });
       var opts = LANGS.map(function(l) {
         var active = l.code === cur ? ' active' : '';
-        var href = this._languageHrefFor(l.code, cur);
-        return '<a href="' + href + '" class="mob-lang-opt' + active + '">' + l.flag + ' ' + l.label + '</a>';
+        var destination = this._languageDestinationFor(l.code, cur);
+        var fallback = !destination.advertisedAsEquivalent && l.code !== cur;
+        var fallbackClass = fallback ? ' fallback' : '';
+        var fallbackLabel = fallback ? '<small class="lang-opt-fallback">' + this._escapeHtml(destination.label) + '</small>' : '';
+        var partialLabel = l.launchStatus === 'partial' ? '<small class="lang-opt-partial">' + this._escapeHtml(this._translation('navigation.partialCoverage', 'Partial coverage')) + '</small>' : '';
+        var ariaLabel = fallback ? ' aria-label="' + this._escapeHtml(l.label + ': ' + destination.label) + '"' : '';
+        return '<a href="' + this._escapeHtml(destination.route) + '" data-locale-target="' + this._escapeHtml(l.code) + '" data-locale-relationship="' + this._escapeHtml(destination.relationship) + '" class="mob-lang-opt' + active + fallbackClass + '"' + ariaLabel + '><span aria-hidden="true">' + l.code.toUpperCase() + '</span><span class="lang-opt-label">' + l.label + partialLabel + fallbackLabel + '</span></a>';
       }, this).join('');
-      var langLabel = cur === 'fr' ? 'Langue' : cur === 'sw' ? 'Lugha' : cur === 'yo' ? 'Èdè' : cur === 'ha' ? 'Harshe' : 'Language';
+      var langLabel = this._translation('navigation.language', 'Language');
       return '<div class="mob-lang-section"><div class="mob-section-label">' + langLabel + '</div><div class="mob-lang-row">' + opts + '</div></div>';
     }
 
@@ -3209,7 +2902,7 @@
         tools:        isSw ? 'Zana'                         : isFr ? 'Outils'                                           : 'Tools',
         countries:    isSw ? 'Nchi'                         : isFr ? 'Pays'                                             : 'Countries',
         countriesHref:isSw ? '/sw/nchi/'                    : isFr ? '/fr/countries/'                                  : '/countries/',
-        business:     isSw ? 'Kwa Biashara'                     : isFr ? 'Business'                                         : 'For business',
+        business:     isSw ? 'Kwa Biashara'                     : isFr ? 'Entreprise'                                       : 'For business',
         businessNote: isSw ? 'API, zana maalum, VAT, ushirikiano na mawasiliano ya biashara' : isFr ? 'Widgets, API, sponsoring, calculateurs sur mesure' : 'Widgets, API, sponsorships, custom calculators, and media inventory',
         businessBrowse:isSw ? 'Wasiliana na timu ->'         : isFr ? 'Ouvrir le media kit ->'                           : 'Open media kit ->',
         businessBrowseHref:isSw ? '/sw/wasiliana/' : '/media-kit/',
@@ -3235,19 +2928,19 @@
         ariaNav:      isSw ? 'Urambazaji mkuu'              : isFr ? 'Navigation principale'                            : 'Main navigation',
         ariaMenu:     isSw ? 'Menyu ya urambazaji'          : isFr ? 'Menu de navigation'                               : 'Navigation menu',
         ariaSearch:   isSw ? 'Tafuta zana'                  : isFr ? 'Rechercher des outils'                            : 'Search tools',
-        megaNote:     isSw ? 'Nchi 54 za Afrika · bure · bila usajili'       : isFr ? '54 pays africains · gratuit · sans inscription': '54 African countries · free forever · no sign-up required',
+        megaNote:     isSw ? 'Nchi 54 za Afrika · bure · bila usajili'       : isFr ? '54 pays africains · gratuit · sans inscription': '54 African countries · Core use without a paid subscription · no sign-up required',
         browseAll:    isSw ? 'Tazama zana zote →'           : isFr ? 'Voir tous les outils →'                           : 'Browse all tools →',
-        browseHref:   isSw ? '/sw/zana-zote/'               : isFr ? '/fr/all-tools/'                                   : '/all-tools/',
+        browseHref:   isSw ? '/sw/zana-zote/'               : isFr ? '/fr/all-tools/'                                   : '/tools/',
         allCats:      isSw ? 'Makundi yote'                 : isFr ? 'Toutes les catégories'                            : 'All Categories',
         searchPh:     isSw ? 'Tafuta PAYE, PDF, VAT, WAEC...'               : isFr ? 'Rechercher des outils...'                         : 'Search tools...',
         mobSignIn:    isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign In',
-        proHref:      isFr ? '/fr/pro/'                     : '/pro/',
+        proHref:      isSw ? '/sw/bei/'                     : isFr ? '/fr/pro/' : '/pro/',
         proLabel:     isSw ? 'Pro'                          : isFr ? 'Pro'                                              : 'Pro',
         proUpgrade:   isSw ? 'Pata Pro'                     : isFr ? 'Passer Pro'                                       : 'Upgrade Pro',
         proWorkspace: isSw ? 'Eneo la Pro'                  : isFr ? 'Espace Pro'                                       : 'Pro Workspace',
-        dashboardHref:isFr ? '/fr/dashboard/'               : '/dashboard/',
-        authHref:     (isFr ? '/fr/auth/' : '/auth/') + '?mode=login&next=' + encodeURIComponent(isFr ? '/fr/dashboard/' : '/dashboard/'),
-        vaultHref:    isFr ? '/fr/dashboard/vault/'         : '/dashboard/vault/',
+        dashboardHref:isSw ? '/sw/dashboard/'               : isFr ? '/fr/dashboard/' : '/dashboard/',
+        authHref:     (isSw ? '/sw/auth/' : isFr ? '/fr/auth/' : '/auth/') + '?mode=login&next=' + encodeURIComponent(isSw ? '/sw/dashboard/' : isFr ? '/fr/dashboard/' : '/dashboard/'),
+        vaultHref:    isSw ? '/sw/vault/'                   : isFr ? '/fr/dashboard/vault/' : '/dashboard/vault/',
         mobNote:      isSw ? 'Nchi 54 · bure · bila usajili'                 : isFr ? '54 pays · gratuit · sans inscription'          : '54 countries · always free · no sign-up required',
         srchEmpty:    isSw ? 'Tafuta zana za Kiswahili na Afrika'          : isFr ? '2 594+ outils africains'                            : 'Search 2,594+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
@@ -3330,28 +3023,28 @@
           allTools: 'Dukkan kayan aiki',
           tools: 'Kayan aiki',
           countries: 'Kasashe',
-          countriesHref: '/countries/',
+          countriesHref: '/ha/kasashe/',
           business: 'Na kasuwanci',
-          businessNote: 'Kayan sakawa, API, tallafi, kalkuleta na musamman da kunshin yada labarai',
-          businessBrowse: 'Bude media kit ->',
-          businessBrowseHref: '/media-kit/',
-          resources: 'Albarkatu',
-          resourcesHref: '/blog/',
+          businessNote: 'Kayan sakawa, API, tallafi, kalkuleta na musamman da kunshin yaɗa labarai; cikakken shafin yana Turanci',
+          businessBrowse: 'Bude gadar media kit ->',
+          businessBrowseHref: '/ha/kayan-kasuwanci/',
+          resources: 'Labarai - gadar Turanci',
+          resourcesHref: '/ha/labarai/',
           search: 'Bincike',
-          startByCountry: 'Fara da kasa',
-          countrySearchPh: 'Nemi kasa...',
+          startByCountry: 'Fara da ƙasa',
+          countrySearchPh: 'Nemi ƙasa...',
           salaryTax: 'Albashi da PAYE',
           salaryHref: '/ha/albashi-da-haraji/',
           pdfTools: 'PDF da Takardu',
           pdfHref: '/ha/takardu-da-pdf/',
-          devTools: 'Developer',
-          devHref: '/developer-tools/',
+          devTools: 'Masu haɓakawa - gadar Turanci',
+          devHref: '/ha/masu-habaka/',
           african: 'Kasashe da kayan Afirka',
-          africanHref: '/countries/',
+          africanHref: '/ha/kasashe/',
           education: 'Ilimi',
           educationHref: '/ha/ilimi/',
-          insurance: 'Insurance',
-          insuranceHref: '/insurance/',
+          insurance: 'Inshora - gadar Turanci',
+          insuranceHref: '/ha/inshora/',
           signIn: 'Shiga',
           ariaNav: 'Babban kewayawa',
           ariaMenu: 'Menu na kewayawa',
@@ -3362,6 +3055,10 @@
           allCats: 'Dukkan Rukuni',
           searchPh: 'Bincika PAYE, PDF, VAT, JAMB, WAEC...',
           mobSignIn: 'Shiga',
+          authHref: '/ha/shiga/?next=%2Fha%2Fallon-aiki%2F',
+          dashboardHref: '/ha/allon-aiki/',
+          vaultHref: '/ha/maajiyar-takardu/',
+          proHref: '/ha/farashi/',
           proLabel: 'Pro',
           proUpgrade: 'Samu Pro',
           proWorkspace: 'Wurin Pro',
@@ -3374,7 +3071,7 @@
           registryWait: 'Jerin kayan aiki bai gama lodi ba',
           recentlyUsed: 'An yi amfani da su kwanan nan',
           clearRecent: 'Goge',
-          vaultLabel: 'Vault dina',
+          vaultLabel: "Ma'ajiyata",
           allToolsLabel: 'Kayan aikin Hausa',
           typeToSearch: 'Rubuta PAYE, PDF, VAT, JAMB, WAEC ko Nigeria',
           noToolsFound: 'Ba a sami kayan aiki ba',
@@ -3432,7 +3129,7 @@
 
             <div class="right">
               <div class="country-control-shell">
-                <afro-country-selector variant="nav" redirect="country" label="${isSw ? 'Badili nchi' : isFr ? 'Changer de pays' : lang === 'ha' ? 'Canja kasa' : 'Change country'}" ${isSw ? 'search-placeholder="Tafuta nchi 54 za Afrika" search-label="Tafuta nchi" currency-label="sarafu" diaspora-prefix="Ninaishi nje ya nchi lakini nasimamia fedha nchini " empty-message="Hakuna nchi iliyopatikana. Jaribu Nigeria, Kenya, Ghana au Afrika Kusini."' : ''}></afro-country-selector>
+                ${isSw ? '<a class="sw-country-link" href="/sw/nchi/" aria-label="Chagua nchi bila kubadili lugha">Chagua nchi</a>' : `<afro-country-selector variant="nav" redirect="country" label="${isFr ? 'Changer de pays' : lang === 'ha' ? 'Canja ƙasa' : 'Change country'}" ${lang === 'ha' ? 'search-placeholder="Nemi ƙasa..." search-label="Bincika ƙasashe" currency-label="kuɗin ƙasa" empty-message="Ba a sami ƙasar da ta dace ba" diaspora-prefix="Ina zaune a waje amma ina kula da kuɗi a "' : ''}></afro-country-selector>`}
               </div>
               ${this._langSwitcherHTML()}
               <button class="theme-toggle" id="themeToggle" type="button" aria-label="${T.themeToDark}" title="${T.themeToDark}" aria-pressed="false" data-to-dark="${T.themeToDark}" data-to-light="${T.themeToLight}" data-state-dark="${T.themeDark}" data-state-light="${T.themeLight}">
@@ -3529,7 +3226,7 @@
           </div>
           ${this._mobileLangHTML()}
           <div class="mob-country-context">
-            <afro-country-selector variant="mobile" redirect="country" diaspora label="${T.startByCountry}" ${isSw ? 'search-placeholder="Tafuta nchi 54 za Afrika" search-label="Tafuta nchi" currency-label="sarafu" diaspora-prefix="Ninaishi nje ya nchi lakini nasimamia fedha nchini " empty-message="Hakuna nchi iliyopatikana. Jaribu Nigeria, Kenya, Ghana au Afrika Kusini."' : ''}></afro-country-selector>
+            ${isSw ? '<a class="mob-country-link" href="/sw/nchi/">Chagua nchi — lugha itaendelea kuwa Kiswahili</a>' : `<afro-country-selector variant="mobile" redirect="country" diaspora label="${T.startByCountry}"></afro-country-selector>`}
           </div>
           <div class="mob-footer">
             <a href="${T.proHref}" class="mob-pro-link" data-pro-nav="mobile">${T.proLabel}</a>
@@ -3539,6 +3236,17 @@
             <p class="mob-note">${T.mobNote}</p>
           </div>
         </div>
+
+        <dialog class="lang-fallback-dialog" id="languageFallbackDialog" aria-labelledby="languageFallbackTitle" aria-describedby="languageFallbackBody">
+          <div class="lang-fallback-card">
+            <h2 id="languageFallbackTitle">${this._translation('navigation.fallbackWarningTitle', 'This page is not available in the selected language')}</h2>
+            <p id="languageFallbackBody">${this._translation('navigation.fallbackWarningBody', 'The next page is in English. Your current work will not be translated.')}</p>
+            <div class="lang-fallback-actions">
+              <button class="lang-fallback-cancel" id="languageFallbackCancel" type="button">${this._translation('navigation.cancelFallback', 'Stay on this page')}</button>
+              <button class="lang-fallback-confirm" id="languageFallbackConfirm" type="button">${this._translation('navigation.continueToEnglish', 'Continue to English')}</button>
+            </div>
+          </div>
+        </dialog>
 
 `;
     }
@@ -3716,6 +3424,27 @@
       if (this._langCloseFn) document.removeEventListener('click', this._langCloseFn);
       this._langCloseFn = () => langDrop?.classList.remove('open');
       document.addEventListener('click', this._langCloseFn);
+
+      const fallbackDialog = sr.querySelector('#languageFallbackDialog');
+      const fallbackCancel = sr.querySelector('#languageFallbackCancel');
+      const fallbackConfirm = sr.querySelector('#languageFallbackConfirm');
+      let fallbackHref = '';
+      sr.querySelectorAll('a[data-locale-relationship="english-fallback"]').forEach(link => {
+        link.addEventListener('click', event => {
+          event.preventDefault();
+          fallbackHref = link.getAttribute('href') || '/';
+          langDrop?.classList.remove('open');
+          if (fallbackDialog && typeof fallbackDialog.showModal === 'function') fallbackDialog.showModal();
+          else if (window.confirm(this._translation('navigation.fallbackWarningBody', 'The next page is in English. Your current work will not be translated.'))) window.location.assign(fallbackHref);
+        });
+      });
+      fallbackCancel?.addEventListener('click', () => fallbackDialog?.close('cancel'));
+      fallbackConfirm?.addEventListener('click', () => {
+        if (fallbackHref) window.location.assign(fallbackHref);
+      });
+      fallbackDialog?.addEventListener('close', () => {
+        if (fallbackDialog.returnValue !== 'confirm') langBtn?.focus();
+      });
 
       // Escape
       if (this._keydownFn) document.removeEventListener('keydown', this._keydownFn);
@@ -4616,8 +4345,8 @@
       const setProNav = (user, status) => {
         user = mergeCachedProUser(user, status);
         var _lang = this._getLang();
-        var _proHref = _lang === 'fr' ? '/fr/pro/' : '/pro/';
-        var _workspaceHref = _lang === 'fr' ? '/fr/pro/' : '/pro/workspace/';
+        var _proHref = _lang === 'sw' ? '/sw/bei/' : _lang === 'fr' ? '/fr/pro/' : _lang === 'ha' ? '/ha/farashi/' : '/pro/';
+        var _workspaceHref = _lang === 'sw' ? '/sw/dashboard/' : _lang === 'fr' ? '/fr/pro/' : _lang === 'ha' ? '/ha/farashi/?destination=%2Fpro%2Fworkspace%2F&return_to=%2Fha%2F' : '/pro/workspace/';
         var _isPro = isProUser(user);
         var _hasUser = !!(user && user.id);
         var _label = _isPro
@@ -4628,7 +4357,7 @@
         var _href = _isPro ? _workspaceHref : _proHref;
         var _proAria = _isPro
           ? (_lang === 'sw' ? 'Fungua eneo la AfroTools Pro' : _lang === 'fr' ? 'Ouvrir l’espace Pro AfroTools' : _lang === 'ha' ? 'Bude wurin AfroTools Pro' : 'Open AfroTools Pro Workspace')
-          : (_lang === 'fr' ? 'Ouvrir les offres AfroTools Pro' : _lang === 'ha' ? 'Bude tsarin AfroTools Pro' : 'Open AfroTools Pro plans');
+          : (_lang === 'sw' ? 'Fungua bei na hali ya AfroTools Pro kwa Kiswahili' : _lang === 'fr' ? 'Ouvrir les offres AfroTools Pro' : _lang === 'ha' ? 'Bude tsarin AfroTools Pro' : 'Open AfroTools Pro plans');
         if (proBtn) {
           proBtn.textContent = _label;
           proBtn.href = _href;
@@ -4678,9 +4407,9 @@
       };
       const updateAuthUI = () => {
         var _lang = this._getLang();
-        var _dashboardHref = _lang === 'fr' ? '/fr/dashboard/' : '/dashboard/';
-        var _authHref = (_lang === 'fr' ? '/fr/auth/' : '/auth/') + '?mode=login&next=' + encodeURIComponent(_dashboardHref);
-        var _dashboardLabel = _lang === 'fr' ? 'Tableau de bord' : _lang === 'ha' ? 'Allon aiki' : 'Dashboard';
+        var _dashboardHref = _lang === 'sw' ? '/sw/dashboard/' : _lang === 'fr' ? '/fr/dashboard/' : _lang === 'ha' ? '/ha/allon-aiki/' : '/dashboard/';
+        var _authHref = _lang === 'ha' ? '/ha/shiga/?next=%2Fha%2Fallon-aiki%2F' : (_lang === 'sw' ? '/sw/auth/' : _lang === 'fr' ? '/fr/auth/' : '/auth/') + '?mode=login&next=' + encodeURIComponent(_dashboardHref);
+        var _dashboardLabel = _lang === 'sw' ? 'Dashibodi' : _lang === 'fr' ? 'Tableau de bord' : _lang === 'ha' ? 'Allon aiki' : 'Dashboard';
         setProNav(null);
         if (typeof AfroAuth === 'undefined' || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
           resetSignedOutAuthUI();
@@ -4692,12 +4421,12 @@
             loginBtn.href = _authHref;
             loginBtn.removeAttribute('aria-label');
             loginBtn.removeAttribute('title');
-            loginBtn.onclick = function(e) { if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) { e.preventDefault(); AfroAuth.openModal(); } };
+            loginBtn.onclick = _lang === 'ha' ? null : function(e) { if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) { e.preventDefault(); AfroAuth.openModal(); } };
           }
           if (mobLoginBtn) {
             mobLoginBtn.textContent = _signLabel;
             mobLoginBtn.href = _authHref;
-            mobLoginBtn.onclick = function(e) { if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) { e.preventDefault(); AfroAuth.openModal(); } };
+            mobLoginBtn.onclick = _lang === 'ha' ? null : function(e) { if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) { e.preventDefault(); AfroAuth.openModal(); } };
           }
           return;
         }
@@ -4879,11 +4608,28 @@
   (function _countrySelectorLoader() {
     if (customElements.get('afro-country-selector')) return;
     if (document.querySelector('script[src*="country-selector.js"]')) return;
-    var s = document.createElement('script');
-    s.id = 'afro-country-selector-js';
-    s.src = '/assets/js/components/country-selector.js?v=2';
-    s.defer = true;
-    document.head.appendChild(s);
+    function loadSelector() {
+      if (customElements.get('afro-country-selector') || document.querySelector('script[src*="country-selector.js"]')) return;
+      var selectorScript = document.createElement('script');
+      selectorScript.id = 'afro-country-selector-js';
+      selectorScript.src = '/assets/js/components/country-selector.js?v=3';
+      selectorScript.defer = true;
+      document.head.appendChild(selectorScript);
+    }
+    if (Array.isArray(window.AFRICAN_COUNTRIES) && window.AFRICAN_COUNTRIES.length) {
+      loadSelector();
+      return;
+    }
+    var existing = document.querySelector('script[src*="african-countries.js"]');
+    if (existing) {
+      existing.addEventListener('load', loadSelector, { once: true });
+      return;
+    }
+    var registryScript = document.createElement('script');
+    registryScript.id = 'afro-country-registry-js';
+    registryScript.src = '/assets/js/data/african-countries.js';
+    registryScript.onload = loadSelector;
+    document.head.appendChild(registryScript);
   })();
 
   /* ── LAZY-LOAD AUTH SYSTEM (every page gets login/signup capability) ── */

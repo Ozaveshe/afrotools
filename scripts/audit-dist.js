@@ -36,6 +36,7 @@ const FORBIDDEN_PATHS = [
   'afrotools-sentinel',
   'artifacts',
   'docs',
+  'data/registry',
   'fr/docs',
   'fr/widgets/iframe/template.html',
   'lang',

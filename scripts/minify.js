@@ -180,6 +180,18 @@ async function run() {
   // We minify them in-place so they're served minified without needing .min.js pairs.
   const pairedSrcs = new Set(JS_PAIRS.map(p => path.resolve(ROOT, p[0])));
   const pairedMins = new Set(JS_PAIRS.map(p => path.resolve(ROOT, p[1])));
+  const generatedCanonicalProjections = new Set([
+    path.resolve(ROOT, 'assets/js/data/registry-counts.js'),
+    path.resolve(ROOT, 'assets/js/data/african-countries.js'),
+    path.resolve(ROOT, 'assets/js/data/locale-manifest.js'),
+    path.resolve(ROOT, 'assets/js/data/ui-translations.js'),
+    path.resolve(ROOT, 'assets/js/lib/localization.js'),
+    path.resolve(ROOT, 'assets/js/lib/localize-shared-ui.js'),
+    path.resolve(ROOT, 'assets/js/lib/formatters.js'),
+    path.resolve(ROOT, 'assets/js/lib/export-tools.js'),
+    path.resolve(ROOT, 'assets/js/lib/locale-route-resolver.js'),
+    path.resolve(ROOT, 'assets/js/i18n-detect.js'),
+  ]);
 
   function walkDir(dir) {
     const results = [];
@@ -234,7 +246,7 @@ async function run() {
     return results;
   }
   const allJsFiles = walkAll(ROOT)
-    .filter(f => !pairedSrcs.has(f) && !pairedMins.has(f));
+    .filter(f => !pairedSrcs.has(f) && !pairedMins.has(f) && !generatedCanonicalProjections.has(path.resolve(f)));
 
   let inplaceTotal = { before: 0, after: 0, count: 0 };
   for (const filePath of allJsFiles) {

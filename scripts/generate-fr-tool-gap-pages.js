@@ -7635,7 +7635,7 @@ function htmlFor(page) {
   );
   const toolEmbed = page.iframeEmbed
     ? `<iframe id="tool-mount" src="/tools/${page.enSlug}/" title="${escapeHtml(page.name)}" loading="lazy" style="width:100%;min-height:760px;border:1px solid #dbe4ef;border-radius:8px;background:#fff"></iframe>`
-    : `<div id="tool-mount" class="source-launch"><h2>Continuer dans l'outil complet</h2><p>Le brief ci-dessus reste local. Ouvrez la version source pour utiliser les controles complets, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir l'outil source</a></div>`;
+    : `<div id="tool-mount" class="source-launch"><h2>Continuer dans le calculateur complet</h2><p>Le brief ci-dessus reste local. Ouvrez le calculateur principal pour utiliser tous les controles, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a></div>`;
   const sourceImportScript = "";
 
   return `<!DOCTYPE html>
@@ -7644,6 +7644,8 @@ function htmlFor(page) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="afrotools-content-id" content="fr-tool-gap:${escapeHtml(page.frSlug)}">
+  <meta name="afrotools-source-owner" content="scripts/generate-fr-tool-gap-pages.js">
   <title>${escapeHtml(page.title)}</title>
   <meta name="description" content="${escapeHtml(page.description)}">
   <link rel="canonical" href="${frUrl}">
@@ -7688,13 +7690,13 @@ function htmlFor(page) {
     <h1>${escapeHtml(page.name)}</h1>
     <p class="lead">${escapeHtml(page.lead)}</p>
     <div class="route-note">
-      <span>Route francaise canonique</span>
-      <span>Outil source conserve</span>
+      <span>Interface en francais</span>
+      <span>Calculateur complet disponible</span>
       <span>Estimation a verifier localement</span>
     </div>
     <div class="action-row">
       <a class="primary-action" href="#tool-mount">Utiliser l'outil ici</a>
-      <a class="secondary-action" href="/tools/${page.enSlug}/">Ouvrir la version source</a>
+      <a class="secondary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a>
     </div>
     <section class="prep-panel" aria-label="Preparation rapide">
       <h2>Preparez votre saisie</h2>
@@ -7718,10 +7720,10 @@ function htmlFor(page) {
     ${toolEmbed}
     <div class="support-grid" data-tool-verification-panel>
       <section><h2>Usage recommande</h2><p>${escapeHtml(page.useCase)}</p></section>
-      <section><h2>Methodologie</h2><p>${escapeHtml(page.methodology || "Nous preparons les entrees cles, chargeons l'outil source conserve et affichons les resultats avec les hypotheses utiles pour une verification locale.")}</p></section>
+      <section><h2>Methodologie</h2><p>${escapeHtml(page.methodology || "Nous preparons les entrees cles, ouvrons le calculateur complet et affichons les resultats avec les hypotheses utiles pour une verification locale.")}</p></section>
       <section><h2>Avertissement</h2><p>${escapeHtml(page.safety)} Cette page fournit une estimation generale: elle ne remplace pas un avis juridique, fiscal, medical, financier ou professionnel adapte a votre pays.</p></section>
       <section><h2>Liens utiles</h2><p>${escapeHtml(page.related)}</p></section>
-      <section><h2>Sources et fraicheur</h2><p>${escapeHtml(page.sourceNote || "Controle 2026: comparez le resultat avec le fichier source, les consignes du client, les exigences de depot et les sources officielles ou professionnelles avant envoi.")}</p></section>
+      <section><h2>Sources et fraicheur</h2><p>${escapeHtml(page.sourceNote || "Controle 2026: comparez le resultat avec le document de reference, les consignes du client, les exigences de depot et les sources officielles ou professionnelles avant envoi.")}</p></section>
     </div>
 ${page.businessCtaNote ? `    <afro-business-cta tool-name="${escapeHtml(page.name)}" prospect-segment="business" save-note="${escapeHtml(page.businessCtaNote)}"></afro-business-cta>` : ""}
   </main>

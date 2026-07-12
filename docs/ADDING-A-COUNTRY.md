@@ -153,6 +153,7 @@ Add the country's tax authority to `/docs/tax-sources.md`.
 
 ## Checklist
 
+- [ ] Canonical country record includes ISO ID, localized names, flag, currency, region, source jurisdiction, route slug, tool types, and locale coverage
 - [ ] PAYE engine created with calculate/validate/reverseCalc
 - [ ] Tax bands documented with legislation reference
 - [ ] Country hub page created
@@ -162,3 +163,5 @@ Add the country's tax authority to `/docs/tax-sources.md`.
 - [ ] Tests written and all passing
 - [ ] Sitemap regenerated
 - [ ] Tax sources documented
+- [ ] `npm run registry:build`, `npm run country:build`, and `npm run test:country-identity` pass
+- [ ] `reports/country-identity-report.md` shows no route, heading, formula, source, currency, or structured-data mismatch

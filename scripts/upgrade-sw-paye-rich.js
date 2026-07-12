@@ -549,7 +549,7 @@ function applyCommonTranslations(html) {
     ['Sign in to Save', 'Ingia ili Uhifadhi'],
     ['Sign in to save this calculator', 'Ingia ili kuhifadhi kikokotoo hiki'],
     ['Create a free account to bookmark tools, track calculations, and access your dashboard.', 'Fungua akaunti ya bure ili kuhifadhi zana, kufuatilia mahesabu, na kufikia dashibodi yako.'],
-    ['Powered by Claude', 'Imeendeshwa na Claude'],
+    ['Optional AI · provider required', 'AI ya hiari · mtoa huduma anahitajika'],
     ['AI Tax Advisor', 'Mshauri wa Kodi wa AI'],
     ['All Countries', 'Nchi Zote'],
     ['Tax &amp; Finance', 'Kodi na Fedha'],
