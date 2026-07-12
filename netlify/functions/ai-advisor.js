@@ -4,7 +4,7 @@
 // Rate limiting: 3 calls/day (free), unlimited (Pro users)
 
 const AUTH_SECRET = process.env.AUTH_SECRET;
-const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_DATA_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const SUPABASE_AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_AUTH_KEY = process.env.SUPABASE_AUTH_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY;
@@ -157,7 +157,7 @@ async function fetchUserContext(userId, userContextFromClient) {
     );
   }
 
-  // Fetch recent calculations from DATA Supabase
+  // Fetch recent calculations from the canonical AfroTools Supabase project
   if (SUPABASE_DATA_KEY) {
     fetches.push(
       fetch(`${SUPABASE_DATA_URL}/rest/v1/calculation_history?user_id=eq.${encodeURIComponent(userId)}&select=tool_slug,tool_name,inputs,outputs,created_at&order=created_at.desc&limit=5`, {

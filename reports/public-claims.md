@@ -1,4 +1,4 @@
-﻿# Public claims report
+# Public claims report
 
 Generated: 2026-07-12
 
@@ -22,7 +22,7 @@ Generated: 2026-07-12
 | privacy.browser-local | A named local flow processes its working payload in browser memory or browser storage and does not upload that payload unless the user invokes a separately disclosed network feature. | Privacy and local-processing owner | 2026-07-11 | 2026-08-10 | 2 |
 | ai.optional-provider | Deterministic routing works without model consent; optional model requests go through AfroTools functions to the configured supported provider after consent and can be unavailable. | AI platform and privacy owner | 2026-07-11 | 2026-08-10 | 0 |
 | freshness.live-data | Live/current wording is shown only for a successful observation with a named source, timestamp, and feature-specific live-age threshold; other states downgrade visibly. | Live-data freshness owner | 2026-07-11 | 2026-08-10 | 2 |
-| authority.evidence-scope | Official/verified/accurate/compliant wording applies only to the named source, record, jurisdiction, period, or validated workflowâ€”not the whole platform or an outcome. | Source-confidence owner | 2026-07-11 | 2026-08-10 | 256 |
+| authority.evidence-scope | Official/verified/accurate/compliant wording applies only to the named source, record, jurisdiction, period, or validated workflow—not the whole platform or an outcome. | Source-confidence owner | 2026-07-11 | 2026-08-10 | 256 |
 | performance.measured-support | Offline, 2G, page-size, load-speed, and device support claims require a reproducible measurement or compatibility fixture for the named surface. | Web performance and QA owner | 2026-07-11 | 2026-09-09 | 1 |
 | statutory.jurisdiction-period | Tax/statutory claims identify the applicable jurisdiction, tax year/effective period, source, and review state and remain planning guidance unless filing is implemented. | Tax and statutory source owner | 2026-07-11 | 2026-08-10 | 6 |
 | account.optional-sync | Work can exist on one device; signed-in users can sync supported selected items when the authenticated workspace service succeeds. | Account workspace owner | 2026-07-11 | 2026-08-10 | 1 |

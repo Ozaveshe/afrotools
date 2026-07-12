@@ -1,4 +1,4 @@
-﻿# Route Contract Report
+# Route Contract Report
 
 Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `data/registry/route-policy.json`.
 

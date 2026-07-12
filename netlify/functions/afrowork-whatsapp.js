@@ -8,7 +8,7 @@
  *   WHATSAPP_TOKEN          — Meta Cloud API access token
  *   WHATSAPP_PHONE_ID       — WhatsApp Business phone number ID (not the number itself)
  *   WHATSAPP_VERIFY_TOKEN   — Webhook verification token you chose in Meta dashboard
- *   SUPABASE_DATA_URL       — https://jbmhfpkzbgyeodsqhprx.supabase.co
+ *   SUPABASE_DATA_URL       — https://zpclagtgczsygrgztlts.supabase.co
  *   SUPABASE_DATA_SERVICE_ROLE_KEY — service role key for data project
  *
  * ── Meta API Setup (pre-requisites) ─────────────────────────────────────────
@@ -55,7 +55,7 @@ const BotEngine    = require('../../engines/whatsapp-bot-engine');
 const WA_TOKEN        = process.env.WHATSAPP_TOKEN;
 const WA_PHONE_ID     = process.env.WHATSAPP_PHONE_ID;
 const VERIFY_TOKEN    = process.env.WHATSAPP_VERIFY_TOKEN || 'afrotools-wa-verify';
-const SUPABASE_URL    = process.env.SUPABASE_DATA_URL    || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_URL    = process.env.SUPABASE_DATA_URL    || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY    = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 const SITE_URL        = 'https://afrotools.com';
 const WA_API_BASE     = 'https://graph.facebook.com/v19.0';

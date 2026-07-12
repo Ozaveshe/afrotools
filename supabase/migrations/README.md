@@ -2,7 +2,10 @@
 
 Run these migrations manually in the Supabase SQL Editor, or apply them through
 the configured Supabase MCP when a live schema change is explicitly approved.
-Each file targets a specific instance.
+Historical files target the instance recorded below. Migration 053 completes
+the consolidation onto the canonical AUTH project. The legacy DATA hostname is
+retired and must not be used by deployable code or production environment
+variables.
 
 ## Instance Mapping
 
@@ -24,6 +27,8 @@ Each file targets a specific instance.
 | 045-email-behavior-automation-state.sql | activation, first-activity, and PDF lead follow-up send state | **AUTH** - zpclagtgczsygrgztlts.supabase.co |
 | 046-b2b-commercial-enquiry-fields.sql | B2B commercial lead enrichment on `data_buyer_leads` | **AUTH/marketing** - verify with Supabase MCP before applying |
 | 052-function-search-path-hardening.sql | Pins security-advised public function search paths | **AUTH** - zpclagtgczsygrgztlts.supabase.co |
+| 053-single-project-consolidation.sql | Missing education, CreatorMind, JAMB, search telemetry, and WhatsApp metadata tables | **AUTH** - zpclagtgczsygrgztlts.supabase.co |
+| 054-consolidated-service-table-policies.sql | Explicit deny policies for service-only consolidation tables | **AUTH** - zpclagtgczsygrgztlts.supabase.co |
 
 ## Run Order
 
@@ -42,5 +47,7 @@ Run in numerical order. Migration 007 depends on 001 because it needs the
 - **045 Email behavior automation state**: Adds send-state columns for activation nudges, first-activity milestones, and delayed PDF/report lead follow-ups.
 - **046 B2B commercial enquiry fields**: Enriches the existing buyer-lead table for widget demos, sponsorships, custom calculators, API pilots, and media kit requests. Apply after live schema inspection and run Supabase advisors because it tightens anonymous insert policy.
 - **052 Function search path hardening**: Pins `normalize_scholarship_source_defaults()` and `parse_afrostream_money_value(text)` to `public` search path to clear mutable-search-path security advisor findings after live schema inspection.
+- **053 Single-project consolidation**: Creates the last missing tables on AUTH with RLS enabled. Deployable code and Netlify variables must use the AUTH URL and keys after this migration. The old DATA project is retained only as historical documentation; its hostname is no longer an application dependency.
+- **054 Consolidated service-table policies**: Adds explicit deny policies for anon/authenticated access while preserving service-role-only Netlify Function access.
 - All migrations use `IF NOT EXISTS` where possible to be safely re-runnable.
 - Free tier save limit: 5/month (configurable in application code).

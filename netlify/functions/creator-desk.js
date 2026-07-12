@@ -1,8 +1,8 @@
 // netlify/functions/creator-desk.js
 // API for CreatorDesk — project & client persistence
-// Uses Supabase Data instance
+// Uses the canonical AfroTools Supabase project
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 
 const headers = {

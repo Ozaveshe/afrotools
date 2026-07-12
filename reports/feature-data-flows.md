@@ -1,4 +1,4 @@
-﻿# Public feature data-flow inventory
+# Public feature data-flow inventory
 
 Last verified: 2026-07-11
 

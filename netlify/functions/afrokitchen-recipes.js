@@ -3,7 +3,7 @@
 // Handles recipe fetching, filtering, and view count incrementing
 
 // AfroKitchen uses the Auth/Kitchen Supabase instance (zpclagtgczsygrgztlts),
-// NOT the generic SUPABASE_URL env var which points to the Data instance (jbmhfpkzbgyeodsqhprx)
+// Prefer the explicit auth URL; all production Supabase variables now target the canonical project.
 function cleanEnvValue(value) {
   return String(value || '').trim().replace(/^['"]|['"]$/g, '');
 }

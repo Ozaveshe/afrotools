@@ -12,7 +12,7 @@ var { getAllowedOrigin } = require('./utils/cors');
 const SUPABASE_DATA_URL =
   process.env.SUPABASE_DATA_URL ||
   process.env.SUPABASE_URL ||
-  'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+  'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_DATA_KEY =
   process.env.SUPABASE_DATA_ANON_KEY ||
   process.env.SUPABASE_ANON_KEY_DATA ||

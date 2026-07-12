@@ -4,11 +4,11 @@
  * into the salary_benchmarks table.
  *
  * Trigger: manually or via cron (e.g. daily)
- * Reads from: calculation_history (DATA Supabase)
- * Writes to:  salary_benchmarks   (DATA Supabase)
+ * Reads from: calculation_history (canonical AfroTools Supabase)
+ * Writes to:  salary_benchmarks   (canonical AfroTools Supabase)
  */
 
-const SUPABASE_DATA_URL = 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_DATA_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 
 // Country → currency mapping for PAYE tools
 const COUNTRY_CURRENCY = {

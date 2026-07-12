@@ -112,7 +112,7 @@ exports.handler = async function(event) {
 
   // Also track in email_leads if the capture-lead function exists
   try {
-    var SUPABASE_URL = cleanEnvValue(process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL) || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+    var SUPABASE_URL = cleanEnvValue(process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL) || 'https://zpclagtgczsygrgztlts.supabase.co';
     var SUPABASE_KEY = cleanEnvValue(
       process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
       process.env.SUPABASE_SERVICE_ROLE_KEY ||

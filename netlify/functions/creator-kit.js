@@ -1,8 +1,8 @@
 // netlify/functions/creator-kit.js
 // API for CreatorKit — media kit persistence, share tokens, view tracking
-// Uses Supabase Data instance for storage
+// Uses the canonical AfroTools Supabase project for storage
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 
 const headers = {

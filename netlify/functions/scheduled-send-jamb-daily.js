@@ -5,7 +5,7 @@ const { getStore } = require('@netlify/blobs');
 const { withScheduledProof } = require('./_shared/scheduled-proof');
 
 const PRACTICE_POOL = ((require('../../data/jamb/pools/practice-pool.json') || {}).questions || []).filter(isLaunchSafeQuestion);
-const SUPABASE_URL = process.env.SUPABASE_URL_DATA || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_URL_DATA || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_SERVICE_KEY =
   process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||

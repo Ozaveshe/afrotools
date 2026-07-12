@@ -4,7 +4,7 @@
 
 const { createClient } = require("@supabase/supabase-js");
 
-const SUPABASE_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || "https://jbmhfpkzbgyeodsqhprx.supabase.co";
+const SUPABASE_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || "https://zpclagtgczsygrgztlts.supabase.co";
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_DATA || process.env.SUPABASE_ANON_KEY;
 if (!SUPABASE_ANON_KEY) console.warn('[afroprices-submit] Missing SUPABASE_ANON_KEY_DATA env var');
 

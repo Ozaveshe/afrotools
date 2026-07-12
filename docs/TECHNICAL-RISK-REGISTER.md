@@ -60,32 +60,33 @@ Smallest safe mitigation: make the cookie-backed session endpoint the written
 canonical contract, inventory each compatibility reader, add a cross-surface
 auth-state matrix, then retire browser token fallbacks one at a time.
 
-## R2: Dual Supabase Project and Migration Ownership
+## R2: Retired Dual Supabase Project References
 
 Evidence:
 
-- `supabase/migrations/README.md` maps early data migrations to legacy DATA
-  project `jbmhfpkzbgyeodsqhprx` and profile/newer identity-bound schemas to AUTH
-  project `zpclagtgczsygrgztlts`.
+- `supabase/migrations/README.md` preserves the historical DATA/AUTH mapping,
+  while migration 053 and the deploy-channel checks make AUTH
+  `zpclagtgczsygrgztlts` the only active application target.
 - The same README states migration 007 cannot update an AUTH `profiles` table
   from a DATA `calculation_history` trigger.
 - Migrations are applied manually or through the configured Supabase MCP;
   repository presence does not prove live application.
 
-User risk: applying SQL to the wrong project can corrupt data ownership, break
-RLS expectations, or leave application code and live schema out of sync.
+User risk: reintroducing the retired hostname or a key from another project can
+break every affected API call or send a live schema action to the wrong product.
 
 Reproduce/inspect:
 
 ```bash
 Get-Content supabase/migrations/README.md
-node tests/supabase-function-search-path-migration.test.js
+node tests/supabase-consolidation.test.js
 rg -n "AUTH|DATA|jbmhfpkzbgyeodsqhprx|zpclagtgczsygrgztlts" supabase netlify/functions
 ```
 
-Smallest safe mitigation: keep a machine-readable migration target manifest,
-validate each migration header against it, and require live MCP project-ref
-proof before applying SQL.
+Mitigation: `npm run deploy:channel:verify` rejects deployable legacy refs and a
+wrong repo-local MCP target. Run `npm run supabase:consolidation:verify:live`
+before production deploys to validate the linked Netlify variables without
+printing secrets.
 
 ## R3: Hard-Coded High-Stakes AI Context
 

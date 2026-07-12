@@ -297,15 +297,18 @@ and shared modules. `netlify.toml` owns public rewrites and 35 parsed scheduled
 function declarations. `data/automation/automation-registry.json` and its audit script
 track Netlify, GitHub, Codex, mixed, and manual automation ownership.
 
-Repository migrations describe two Supabase projects:
+Repository migration history describes two Supabase projects:
 
 - AUTH/account project: `zpclagtgczsygrgztlts`, used for profiles and newer
   identity/RLS-coupled Pro schemas.
-- Legacy DATA project: `jbmhfpkzbgyeodsqhprx`, used by early calculation,
-  benchmark, FX, workflow, and vault migrations.
+- Retired legacy DATA project: `jbmhfpkzbgyeodsqhprx`, formerly used by early
+  calculation, benchmark, FX, workflow, and vault migrations.
 
-`supabase/migrations/README.md` is the migration-to-project ledger and records
-a cross-instance caveat for migration 007. Newer domains include car pricing,
+`supabase/migrations/053-single-project-consolidation.sql` completes the move to
+the AUTH project. Deployable code, Netlify variables, and the repo-local
+`supabase` MCP target must now use `zpclagtgczsygrgztlts`. The migration ledger
+keeps the old instance mapping and migration 007 caveat as historical context.
+Newer domains include car pricing,
 scholarships, market data, AfroStream, AfroPayroll, AfroSeller, Matchday, email
 automation, and draft next-generation Books/HR schemas. Repository files do
 not prove that a migration is applied live. Inspect the correct project with

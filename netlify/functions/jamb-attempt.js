@@ -20,7 +20,7 @@
 
 const { createClient } = require("@supabase/supabase-js");
 
-const SUPABASE_URL = process.env.SUPABASE_URL_DATA || "https://jbmhfpkzbgyeodsqhprx.supabase.co";
+const SUPABASE_URL = process.env.SUPABASE_URL_DATA || "https://zpclagtgczsygrgztlts.supabase.co";
 const SUPABASE_ANON = process.env.SUPABASE_ANON_KEY_DATA || process.env.SUPABASE_ANON_KEY || "";
 
 exports.handler = async (event) => {

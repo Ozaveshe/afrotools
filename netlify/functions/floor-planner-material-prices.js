@@ -1,7 +1,7 @@
 const { createClient } = require("@supabase/supabase-js");
 const Pricing = require("../../assets/js/lib/fp-material-pricing.js");
 
-const SUPABASE_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || "https://jbmhfpkzbgyeodsqhprx.supabase.co";
+const SUPABASE_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || "https://zpclagtgczsygrgztlts.supabase.co";
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY_DATA || process.env.SUPABASE_ANON_KEY;
 
 let supabase;
