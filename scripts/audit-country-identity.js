@@ -176,7 +176,13 @@ function scanHtml(html, context) {
   return {
     file: path.relative(ROOT, file).replace(/\\/g, '/'), route, family: path.relative(ROOT, path.dirname(file)).replace(/\\/g, '/'),
     countryId: country.id, country: country.title, title, h1, description,
-    identity: { countryId: countryId || null, sourceJurisdiction: sourceJurisdiction || null, formulaJurisdiction: formulaJurisdiction || null, currency: currency || null, dataScript: dataScript[1] || null },
+    identity: {
+      countryId: countryId || null,
+      sourceJurisdiction: sourceJurisdiction || null,
+      formulaJurisdiction: formulaJurisdiction || null,
+      currency: currency || null,
+      dataScript: dataScript[1] ? dataScript[1].split(/[?#]/)[0] : null
+    },
     errors
   };
 }
@@ -195,7 +201,11 @@ function collectCountryPages(countries) {
     });
   }
   walk(ROOT);
-  return pages;
+  return pages.sort((left, right) => {
+    const leftPath = path.relative(ROOT, left.file).replace(/\\/g, '/');
+    const rightPath = path.relative(ROOT, right.file).replace(/\\/g, '/');
+    return leftPath.localeCompare(rightPath, 'en');
+  });
 }
 
 function markdown(report) {
@@ -213,20 +223,36 @@ function markdown(report) {
     record.errors.forEach((error) => lines.push(`- **${error.code}** \`${error.field}\`: expected \`${error.expected}\`; found \`${error.actual == null ? '(missing)' : error.actual}\``));
     lines.push('');
   });
-  return `${lines.join('\n')}\n`;
+  return lines.join('\n');
+}
+
+function preserveGeneratedAt(report) {
+  if (!fs.existsSync(REPORT_JSON_PATH)) return report;
+  try {
+    const previous = JSON.parse(fs.readFileSync(REPORT_JSON_PATH, 'utf8'));
+    const before = { ...previous, generatedAt: null };
+    const after = { ...report, generatedAt: null };
+    if (JSON.stringify(before) === JSON.stringify(after)) {
+      return { ...report, generatedAt: previous.generatedAt };
+    }
+  } catch (_error) {
+    // Invalid prior reports are replaced below.
+  }
+  return report;
 }
 
 function run(options = {}) {
   const countries = JSON.parse(fs.readFileSync(COUNTRIES_PATH, 'utf8'));
   const records = collectCountryPages(countries).map(({ file, country }) => scanHtml(fs.readFileSync(file, 'utf8'), { file, route: routeForFile(file), country }));
   const mismatches = records.filter((record) => record.errors.length);
-  const report = {
+  let report = {
     schemaVersion: 1,
     generatedAt: new Date().toISOString(),
     summary: { scanned: records.length, matched: records.length - mismatches.length, mismatched: mismatches.length, errors: mismatches.reduce((sum, record) => sum + record.errors.length, 0) },
     mismatches,
     records
   };
+  report = preserveGeneratedAt(report);
   if (options.write) {
     fs.mkdirSync(path.dirname(REPORT_JSON_PATH), { recursive: true });
     fs.writeFileSync(REPORT_JSON_PATH, `${JSON.stringify(report, null, 2)}\n`, 'utf8');

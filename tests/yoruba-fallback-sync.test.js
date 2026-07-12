@@ -28,4 +28,15 @@ assert.match(
   "The fallback stylesheet must remain before route-contract metadata"
 );
 
+const cacheBusted = first.replace(
+  "/assets/css/yoruba-fallback.css",
+  "/assets/css/yoruba-fallback.css?v=72ea27b7"
+);
+const normalizedCacheBusted = syncContent(cacheBusted, record);
+assert.strictEqual(
+  (normalizedCacheBusted.match(/data-yoruba-fallback-style/g) || []).length,
+  1,
+  "Cache-busted fallback stylesheets must be normalized instead of duplicated"
+);
+
 console.log("Yoruba fallback sync tests passed.");

@@ -73,7 +73,10 @@ function repairNativePensionPage() {
       <p id="frPensionError" class="fr-pension-error" role="alert" hidden></p>
       <section id="frPensionResult" class="fr-pension-result" aria-live="polite" hidden><h3>Résultat estimatif</h3><dl><div><dt>Rémunération pensionnable</dt><dd id="frPenEmoluments"></dd></div><div><dt>Cotisation mensuelle du salarié</dt><dd id="frPenEmployeeResult"></dd></div><div><dt>Cotisation mensuelle de l’employeur</dt><dd id="frPenEmployerResult"></dd></div><div><dt>Total mensuel</dt><dd id="frPenTotal"></dd></div><div><dt>Solde projeté au départ</dt><dd id="frPenProjected"></dd></div><div><dt>Capital de 25 % indicatif</dt><dd id="frPenLump"></dd></div></dl><p>Estimation de planification fondée sur les valeurs saisies. Vérifiez les éléments pensionnables, les taux et les règles de retrait auprès de PenCom et de votre PFA.</p></section>
     </div></section>`;
-  html = html.replace(/<section class="fr-card fr-tool-frame"[\s\S]*?<\/section>/, nativeTool);
+  html = html.replace(
+    /<section class="fr-card fr-tool-frame"[\s\S]*?\s*(<aside class="fr-side">)/,
+    nativeTool + '\n\n    $1'
+  );
   if (!/fr-pension-form/.test(html.slice(0, html.indexOf('</head>')))) {
     html = html.replace('</head>', `<style>.fr-pension-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}.fr-pension-form label{display:grid;gap:6px;font-weight:700;color:#334155}.fr-pension-form input{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;font:inherit}.fr-pension-form button{grid-column:1/-1;padding:13px 16px;border:0;border-radius:10px;background:#0062cc;color:#fff;font-weight:800;cursor:pointer}.fr-pension-error{color:#b42318;background:#fff1f0;padding:12px;border-radius:10px}.fr-pension-result{margin-top:20px;padding:18px;border:1px solid #b8d5f2;border-radius:14px;background:#f4f9ff}.fr-pension-result dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.fr-pension-result dl div{padding:10px;background:#fff;border-radius:10px}.fr-pension-result dt{color:#64748b}.fr-pension-result dd{margin:5px 0 0;font-weight:900}@media(max-width:680px){.fr-pension-form,.fr-pension-result dl{grid-template-columns:1fr}}</style></head>`);
   }

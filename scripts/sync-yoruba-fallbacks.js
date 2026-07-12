@@ -50,7 +50,7 @@ function removeAlternates(html) {
 
 function syncContent(html, record) {
   let output = removeBanner(html);
-  output = output.replace(/^[ \t]*<link rel="stylesheet" href="\/assets\/css\/yoruba-fallback\.css" data-yoruba-fallback-style>\s*\r?\n?/gim, "");
+  output = output.replace(/^[ \t]*<link rel="stylesheet" href="\/assets\/css\/yoruba-fallback\.css(?:\?[^"\s>]*)?" data-yoruba-fallback-style>\s*\r?\n?/gim, "");
   if (!["english-fallback", "unavailable"].includes(record.state)) return output;
   output = setRobots(output, "noindex, follow");
   output = removeAlternates(output);

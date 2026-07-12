@@ -341,7 +341,7 @@ function publicClaimsMarkdown(report, claims) {
     lines.push(`| ${claim.key} | ${claim.approvedMeaning.replace(/\|/g, '\\|')} | ${claim.evidenceOwner} | ${claim.lastVerifiedAt} | ${claim.reviewAfter} | ${report.approvedHitsByClaim[claim.key] || 0} |`);
   }
   lines.push('');
-  return `${lines.join('\n')}\n`;
+  return lines.join('\n');
 }
 
 function dataFlowsMarkdown(flows) {
@@ -349,7 +349,7 @@ function dataFlowsMarkdown(flows) {
   for (const flow of flows.flows) {
     lines.push(`## ${flow.key}`, '', `Feature class: ${flow.featureClass}`, '', `Browser processing: ${flow.browserProcessing}`, '', `Network destinations: ${flow.networkDestinations.length ? flow.networkDestinations.join('; ') : 'None for this flow.'}`, '', `Storage: ${flow.storageLocations.join('; ')}`, '', `Retention: ${flow.retention}`, '', `Account association: ${flow.accountAssociation}`, '', `Third-party processors: ${flow.thirdPartyProcessors.length ? flow.thirdPartyProcessors.join('; ') : 'None for this flow.'}`, '', `Consent/disclosure: ${flow.consentOrDisclosure}`, '', `Deletion: ${flow.deletionBehavior}`, '', `Export: ${flow.exportBehavior}`, '');
   }
-  return `${lines.join('\n')}\n`;
+  return lines.join('\n');
 }
 
 function writeText(root, relativePath, content) {

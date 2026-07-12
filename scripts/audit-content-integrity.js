@@ -31,8 +31,23 @@ function markdown(report) {
   return `${lines.join('\n')}\n`;
 }
 
+function preserveGeneratedAt(report) {
+  if (!fs.existsSync(JSON_PATH)) return report;
+  try {
+    const previous = JSON.parse(fs.readFileSync(JSON_PATH, 'utf8'));
+    const before = { ...previous, generatedAt: null };
+    const after = { ...report, generatedAt: null };
+    if (JSON.stringify(before) === JSON.stringify(after)) {
+      return { ...report, generatedAt: previous.generatedAt };
+    }
+  } catch (_error) {
+    // Invalid prior reports are replaced below.
+  }
+  return report;
+}
+
 function main() {
-  const report = api.runRepositoryAudit();
+  const report = preserveGeneratedAt(api.runRepositoryAudit());
   if (WRITE) {
     fs.mkdirSync(path.dirname(JSON_PATH), { recursive: true });
     fs.writeFileSync(JSON_PATH, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
