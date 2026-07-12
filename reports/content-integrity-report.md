@@ -1,6 +1,6 @@
-﻿# Content Integrity Report
+# Content Integrity Report
 
-Generated: 2026-07-12T19:07:22.404Z
+Generated: 2026-07-12T21:12:14.967Z
 
 - HTML pages scanned: 10400
 - Generated pages with provenance: 872
