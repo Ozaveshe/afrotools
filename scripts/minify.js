@@ -8,8 +8,11 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { minify } = require('terser');
+const { buildNavbarData } = require('./build-navbar-data');
 
 const ROOT = path.resolve(__dirname, '..');
+const onlyArg = process.argv.find(arg => arg.startsWith('--only='));
+const ONLY = onlyArg ? onlyArg.slice('--only='.length) : null;
 
 // JS files: source -> min (only where a .js source exists)
 const JS_PAIRS = [
@@ -100,11 +103,13 @@ async function minifyToFixedPoint(code, options, maxPasses = 3) {
 }
 
 async function run() {
+  buildNavbarData();
   let jsTotal = { before: 0, after: 0, count: 0 };
   let cssTotal = { before: 0, after: 0, count: 0 };
 
   // Minify JS
   for (const [srcRel, minRel] of JS_PAIRS) {
+    if (ONLY && !srcRel.includes(ONLY)) continue;
     const srcPath = path.join(ROOT, srcRel);
     const minPath = path.join(ROOT, minRel);
 
@@ -155,6 +160,7 @@ async function run() {
 
   // Minify CSS
   for (const [srcRel, minRel] of CSS_PAIRS) {
+    if (ONLY && !srcRel.includes(ONLY)) continue;
     const srcPath = path.join(ROOT, srcRel);
     const minPath = path.join(ROOT, minRel);
 
@@ -178,6 +184,11 @@ async function run() {
   // ── PASS 2: Minify ALL remaining JS files in-place ──────────────
   // These are per-page scripts (engines, libs, etc.) that are loaded directly.
   // We minify them in-place so they're served minified without needing .min.js pairs.
+  if (ONLY) {
+    console.log(`  ONLY  ${ONLY}: ${jsTotal.count} JS pair(s), ${cssTotal.count} CSS pair(s)`);
+    return;
+  }
+
   const pairedSrcs = new Set(JS_PAIRS.map(p => path.resolve(ROOT, p[0])));
   const pairedMins = new Set(JS_PAIRS.map(p => path.resolve(ROOT, p[1])));
   const generatedCanonicalProjections = new Set([

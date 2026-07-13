@@ -6,74 +6,7 @@
   'use strict';
 
   const THEME_KEY = 'aft_theme';
-  const THEME_STYLE_ID = 'afro-theme-standard';
-  const THEME_LINK_ID = 'afro-theme-dark-css';
-  const THEME_LINK_HREF = '/assets/css/theme-dark.min.css?v=95760302';
-  const COUNTRY_SELECTOR_THEME_STYLE_ID = 'afro-country-theme';
-  const THEME_COLOR_LIGHT = '#F8FAFD';
-  const THEME_COLOR_DARK = '#09111F';
-  const COUNTRY_SELECTOR_THEME_CSS = `
-    :host([data-theme-dark]){color:#EEF5FF}
-    :host([data-theme-dark]) .cs-label{color:#B8C7DC}
-    :host([data-theme-dark]) .cs-trigger,
-    :host([data-theme-dark]) .cs-panel,
-    :host([data-theme-dark]) .cs-search{
-      background:#121F33;color:#EEF5FF;border-color:#26364E;box-shadow:0 16px 38px rgba(0,0,0,.28)
-    }
-    :host([data-theme-dark]) .cs-trigger:hover{border-color:#3A4C68}
-    :host([data-theme-dark]) .cs-name,
-    :host([data-theme-dark]) .cs-option-name,
-    :host([data-theme-dark]) .cs-search-input{color:#EEF5FF}
-    :host([data-theme-dark]) .cs-meta,
-    :host([data-theme-dark]) .cs-chevron,
-    :host([data-theme-dark]) .cs-option-meta,
-    :host([data-theme-dark]) .cs-empty{color:#9FB0C8}
-    :host([data-theme-dark]) .cs-dot{background:rgba(96,165,250,.16);color:#BFDBFE}
-    :host([data-theme-dark]) .cs-option{color:#EEF5FF}
-    :host([data-theme-dark]) .cs-option:hover,
-    :host([data-theme-dark]) .cs-option[aria-selected="true"]{background:rgba(96,165,250,.14);color:#BFDBFE}
-    :host([data-theme-dark]) .cs-diaspora{color:#B8C7DC}
-  `;
-  const THEME_STANDARD_CSS = `
-    :root[data-theme="light"]{
-      color-scheme:light;
-      --color-primary:#0062CC;--color-primary-dark:#0063D1;--color-primary-light:#4DA3FF;--color-primary-pale:rgba(0,98,204,.08);--color-primary-hover:#0063D1;--color-primary-soft:rgba(0,98,204,.08);--color-primary-rgb:0,98,204;--color-secondary:#0063D1;--color-secondary-rgb:0,99,209;--color-accent:#0063D1;--color-accent-light:#E8F2FF;--color-accent-hover:#004BA0;--color-accent-rgb:0,99,209;--color-bg:#F8FAFD;--color-bg-subtle:#F1F5F9;--color-bg-card:#fff;--color-surface:#fff;--color-surface-muted:#F1F5F9;--color-surface-raised:#fff;--color-surface-inset:#EEF4FA;--color-bg-dark:#0A1628;--color-bg-dark-alt:#111D30;--color-bg-hero:linear-gradient(135deg,#F0F7FF 0%,#E8F4FD 50%,#F5F0FF 100%);--color-text:#0f172a;--color-text-muted:#64748B;--color-text-subtle:#94A3B8;--color-text-inverse:#fff;--color-text-link:#0062CC;--color-link:#0062CC;--color-border:#E2E8F0;--color-border-strong:#CBD5E1;--color-border-subtle:#F1F5F9;--color-gold:#F5A623;--color-gold-pale:#fff3cd;--color-warning:#F59E0B;--color-warning-pale:rgba(245,158,11,.08);--color-success:#22c55e;--color-success-pale:rgba(34,197,94,.08);--color-info:#3B82F6;--color-info-pale:rgba(59,130,246,.08);--color-error:#EF4444;--color-error-pale:rgba(239,68,68,.08);--color-danger:#EF4444;--color-danger-pale:rgba(239,68,68,.08);--color-brand:#0062CC;--color-brand-dark:#0063D1;--color-brand-light:#4DA3FF;--color-brand-pale:#E8F2FF;--color-brand-subtle:rgba(0,98,204,.15);
-    }
-    :root[data-theme="dark"]{
-      color-scheme:dark;
-      --color-primary:#60A5FA;--color-primary-dark:#93C5FD;--color-primary-light:#BFDBFE;--color-primary-pale:rgba(96,165,250,.14);--color-primary-hover:#93C5FD;--color-primary-soft:rgba(96,165,250,.16);--color-primary-rgb:96,165,250;--color-secondary:#60A5FA;--color-secondary-rgb:96,165,250;--color-accent:#60A5FA;--color-accent-light:rgba(96,165,250,.16);--color-accent-hover:#93C5FD;--color-accent-rgb:96,165,250;--color-bg:#09111F;--color-bg-subtle:#101B2E;--color-bg-card:#121F33;--color-surface:#121F33;--color-surface-muted:#101B2E;--color-surface-raised:#17263D;--color-surface-inset:#0B1524;--color-bg-dark:#050B14;--color-bg-dark-alt:#0A1423;--color-bg-hero:linear-gradient(135deg,#08111F 0%,#101B2E 52%,#17263D 100%);--color-text:#EEF5FF;--color-text-muted:#B8C7DC;--color-text-subtle:#7E8FA8;--color-text-inverse:#07101D;--color-text-link:#93C5FD;--color-link:#93C5FD;--color-border:#26364E;--color-border-strong:#3A4C68;--color-border-subtle:#1A2A40;--color-gold:#FBBF24;--color-gold-pale:rgba(251,191,36,.16);--color-warning:#FBBF24;--color-warning-pale:rgba(251,191,36,.14);--color-success:#34D399;--color-success-pale:rgba(52,211,153,.14);--color-info:#60A5FA;--color-info-pale:rgba(96,165,250,.14);--color-error:#F87171;--color-error-pale:rgba(248,113,113,.14);--color-danger:#F87171;--color-danger-pale:rgba(248,113,113,.14);--color-brand:#60A5FA;--color-brand-dark:#93C5FD;--color-brand-light:#BFDBFE;--color-brand-pale:rgba(96,165,250,.14);--color-brand-subtle:rgba(96,165,250,.18);
-    }
-    @media (prefers-color-scheme:dark){
-      :root:not([data-theme]){
-        color-scheme:dark;
-        --color-primary:#60A5FA;--color-primary-dark:#93C5FD;--color-primary-light:#BFDBFE;--color-primary-pale:rgba(96,165,250,.14);--color-primary-hover:#93C5FD;--color-primary-soft:rgba(96,165,250,.16);--color-primary-rgb:96,165,250;--color-secondary:#60A5FA;--color-secondary-rgb:96,165,250;--color-accent:#60A5FA;--color-accent-light:rgba(96,165,250,.16);--color-accent-hover:#93C5FD;--color-accent-rgb:96,165,250;--color-bg:#09111F;--color-bg-subtle:#101B2E;--color-bg-card:#121F33;--color-surface:#121F33;--color-surface-muted:#101B2E;--color-surface-raised:#17263D;--color-surface-inset:#0B1524;--color-bg-dark:#050B14;--color-bg-dark-alt:#0A1423;--color-bg-hero:linear-gradient(135deg,#08111F 0%,#101B2E 52%,#17263D 100%);--color-text:#EEF5FF;--color-text-muted:#B8C7DC;--color-text-subtle:#7E8FA8;--color-text-inverse:#07101D;--color-text-link:#93C5FD;--color-link:#93C5FD;--color-border:#26364E;--color-border-strong:#3A4C68;--color-border-subtle:#1A2A40;--color-gold:#FBBF24;--color-gold-pale:rgba(251,191,36,.16);--color-warning:#FBBF24;--color-warning-pale:rgba(251,191,36,.14);--color-success:#34D399;--color-success-pale:rgba(52,211,153,.14);--color-info:#60A5FA;--color-info-pale:rgba(96,165,250,.14);--color-error:#F87171;--color-error-pale:rgba(248,113,113,.14);--color-danger:#F87171;--color-danger-pale:rgba(248,113,113,.14);--color-brand:#60A5FA;--color-brand-dark:#93C5FD;--color-brand-light:#BFDBFE;--color-brand-pale:rgba(96,165,250,.14);--color-brand-subtle:rgba(96,165,250,.18);
-      }
-    }
-    :root[data-theme="dark"] body{background:var(--color-bg)!important;color:var(--color-text)}
-    :root[data-theme="dark"] h1,:root[data-theme="dark"] h2,:root[data-theme="dark"] h3,:root[data-theme="dark"] h4,:root[data-theme="dark"] h5,:root[data-theme="dark"] h6,:root[data-theme="dark"] .hero-h1,:root[data-theme="dark"] .card-title,:root[data-theme="dark"] .section-title{color:var(--color-text)!important}
-    :root[data-theme="dark"] p,:root[data-theme="dark"] .hero-sub,:root[data-theme="dark"] .card-description,:root[data-theme="dark"] .card-sub,:root[data-theme="dark"] .section-description,:root[data-theme="dark"] .muted{color:var(--color-text-muted)!important}
-    :root[data-theme="dark"] .card,:root[data-theme="dark"] .tc,:root[data-theme="dark"] .ut,:root[data-theme="dark"] .cat-card,:root[data-theme="dark"] .why-card,:root[data-theme="dark"] .tool-card,:root[data-theme="dark"] .hero-stats,:root[data-theme="dark"] .trusted-badge,:root[data-theme="dark"] .btn-secondary,:root[data-theme="dark"] .panel,:root[data-theme="dark"] .box,:root[data-theme="dark"] .nl-box,:root[data-theme="dark"] .newsletter-card,:root[data-theme="dark"] .newsletter-box,:root[data-theme="dark"] .signup-card,:root[data-theme="dark"] .signup-box,:root[data-theme="dark"] .promo-card,:root[data-theme="dark"] .promo-box{background:var(--color-surface)!important;color:var(--color-text)!important;border-color:var(--color-border)!important;box-shadow:0 10px 30px rgba(0,0,0,.22)}
-    :root[data-theme="dark"] input,:root[data-theme="dark"] select,:root[data-theme="dark"] textarea{background:var(--color-surface-inset)!important;color:var(--color-text)!important;border-color:var(--color-border)!important}
-    :root[data-theme="dark"] input::placeholder,:root[data-theme="dark"] textarea::placeholder{color:var(--color-text-subtle)!important}
-    :root[data-theme="dark"] .hero:not(.tool-hero){background:var(--color-bg-hero)!important;border-color:var(--color-border)!important}
-    :root[data-theme="dark"] a{color:inherit}
-    :root[data-theme="dark"] .btn-primary,:root[data-theme="dark"] .btn-blue{background:#2563EB!important;color:#fff!important}
-    :root[data-theme="dark"] .signup-bar,:root[data-theme="dark"] .hero-stats,:root[data-theme="dark"] .marquee-strip,:root[data-theme="dark"] .sec--light,:root[data-theme="dark"] .sec--white,:root[data-theme="dark"] .sec--showcase,:root[data-theme="dark"] .home-entry-section,:root[data-theme="dark"] .home-trust-section,:root[data-theme="dark"] .home-about-section,:root[data-theme="dark"] .testimonials-sec{background:var(--color-bg)!important;border-color:var(--color-border)!important;color:var(--color-text)!important}
-    :root[data-theme="dark"] .sec--grey,:root[data-theme="dark"] .home-entry-section--tools{background:var(--color-bg-subtle)!important;border-color:var(--color-border)!important}
-    :root[data-theme="dark"] .signup-bar-btn,:root[data-theme="dark"] .signup-bar-close,:root[data-theme="dark"] .trusted-badge,:root[data-theme="dark"] .btn-secondary,:root[data-theme="dark"] .hero-search,:root[data-theme="dark"] .search-dropdown,:root[data-theme="dark"] .home-preview-card,:root[data-theme="dark"] .preview-search-line,:root[data-theme="dark"] .preview-tool-row,:root[data-theme="dark"] .home-trust-row div,:root[data-theme="dark"] .country-picker-card,:root[data-theme="dark"] .country-picker-form select,:root[data-theme="dark"] .country-popular-list a,:root[data-theme="dark"] .home-tool-card,:root[data-theme="dark"] .preview-result-card,:root[data-theme="dark"] .showcase-tabs,:root[data-theme="dark"] .tcard,:root[data-theme="dark"] .nl-box{background:var(--color-surface)!important;border-color:var(--color-border)!important;color:var(--color-text)!important;box-shadow:0 16px 40px rgba(0,0,0,.22)!important}
-    :root[data-theme="dark"] .hero-search{background:var(--color-surface-inset)!important;border-color:var(--color-border-strong)!important}
-    :root[data-theme="dark"] .hero-search:focus-within{border-color:var(--color-primary)!important;box-shadow:var(--shadow-focus)!important}
-    :root[data-theme="dark"] .signup-bar-close:hover,:root[data-theme="dark"] .btn-secondary:hover,:root[data-theme="dark"] .sd-item:hover,:root[data-theme="dark"] .sd-item.sd-focused,:root[data-theme="dark"] .sd-footer:hover,:root[data-theme="dark"] .showcase-tab:hover,:root[data-theme="dark"] .home-tool-card:hover,:root[data-theme="dark"] .country-popular-list a:hover{background:rgba(96,165,250,.14)!important;border-color:rgba(96,165,250,.42)!important;color:var(--color-primary-light)!important}
-    :root[data-theme="dark"] .hero-h1,:root[data-theme="dark"] .hero-sub strong,:root[data-theme="dark"] .sec-h2,:root[data-theme="dark"] .sec-title,:root[data-theme="dark"] .home-entry-copy h2,:root[data-theme="dark"] .home-section-heading h2,:root[data-theme="dark"] .home-about-card h2,:root[data-theme="dark"] .home-trust-row strong,:root[data-theme="dark"] .home-tool-card strong,:root[data-theme="dark"] .home-trust-grid strong,:root[data-theme="dark"] .preview-tool-row strong,:root[data-theme="dark"] .sd-name,:root[data-theme="dark"] .tcard-name,:root[data-theme="dark"] .nl-title{color:var(--color-text)!important}
-    :root[data-theme="dark"] .hero-sub,:root[data-theme="dark"] .sec-desc,:root[data-theme="dark"] .sec-sub,:root[data-theme="dark"] .home-section-heading p,:root[data-theme="dark"] .home-about-card p,:root[data-theme="dark"] .home-trust-row span,:root[data-theme="dark"] .home-tool-card p,:root[data-theme="dark"] .home-trust-grid p,:root[data-theme="dark"] .preview-kicker,:root[data-theme="dark"] .preview-tool-row small,:root[data-theme="dark"] .sd-meta,:root[data-theme="dark"] .sd-footer,:root[data-theme="dark"] .tcard-quote,:root[data-theme="dark"] .tcard-role,:root[data-theme="dark"] .nl-sub,:root[data-theme="dark"] .nl-note{color:var(--color-text-muted)!important}
-    :root[data-theme="dark"] .preview-tool-icon,:root[data-theme="dark"] .home-tool-card span,:root[data-theme="dark"] .tcard-avatar,:root[data-theme="dark"] .tcard-country,:root[data-theme="dark"] .sd-badge-live{background:rgba(96,165,250,.16)!important;color:var(--color-primary-light)!important}
-    :root[data-theme="dark"] .hero-search svg,:root[data-theme="dark"] .hero-search input::placeholder,:root[data-theme="dark"] .nl-inp::placeholder{color:var(--color-text-subtle)!important}
-    :root[data-theme="dark"] .hero-search input,:root[data-theme="dark"] .nl-inp{color:var(--color-text)!important}
-    :root[data-theme="dark"] .hero-search-btn,:root[data-theme="dark"] .country-picker-form button,:root[data-theme="dark"] .showcase-tab.active{background:#2563EB!important;color:#fff!important;border-color:#2563EB!important}
-    :root[data-theme="dark"] #afro-cookie-consent{background:#07101D!important;border-top-color:rgba(255,255,255,.12)!important;box-shadow:0 -18px 44px rgba(0,0,0,.38)!important}
-    :root[data-theme="dark"] #afro-cookie-consent p{color:var(--color-text-muted)!important}
-    @media (max-width:720px){:root[data-theme="dark"] .hero-search{border-radius:12px!important;padding:6px!important}:root[data-theme="dark"] .hero-search input,:root[data-theme="dark"] .hero-search-btn{min-height:48px!important}:root[data-theme="dark"] .hero-search-btn{width:100%!important;margin:0!important}}
-  `;
+  let darkModeRuntimePromise = null;
 
   function readThemePreference() {
     try { return localStorage.getItem(THEME_KEY); } catch (_) { return null; }
@@ -86,1413 +19,592 @@
     } catch (_) {}
   }
 
-  function systemWantsDark() {
-    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  }
-
   function effectiveTheme(theme) {
     var selected = theme || readThemePreference();
     if (selected === 'dark' || selected === 'light') return selected;
-    return systemWantsDark() ? 'dark' : 'light';
-  }
-
-  function ensureThemeLink() {
-    var existing = document.getElementById(THEME_LINK_ID);
-    if (existing) {
-      if (existing.getAttribute('href') !== THEME_LINK_HREF) existing.setAttribute('href', THEME_LINK_HREF);
-      return;
-    }
-    var link = document.createElement('link');
-    link.id = THEME_LINK_ID;
-    link.rel = 'stylesheet';
-    link.href = THEME_LINK_HREF;
-    document.head.appendChild(link);
-  }
-
-  function ensureThemeStyle() {
-    ensureThemeLink();
-    var existing = document.getElementById(THEME_STYLE_ID);
-    if (existing) {
-      if (existing.dataset.afroThemeStandard !== 'nav') {
-        existing.textContent = THEME_STANDARD_CSS;
-        existing.dataset.afroThemeStandard = 'nav';
-      }
-      return;
-    }
-    var style = document.createElement('style');
-    style.id = THEME_STYLE_ID;
-    style.dataset.afroThemeStandard = 'nav';
-    style.textContent = THEME_STANDARD_CSS;
-    document.head.appendChild(style);
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
   function syncThemeMeta(theme) {
-    var effective = effectiveTheme(theme);
-    document.documentElement.style.colorScheme = effective;
+    var active = effectiveTheme(theme);
+    document.documentElement.style.colorScheme = active;
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.name = 'theme-color';
-      document.head.appendChild(meta);
-    }
-    meta.content = effective === 'dark' ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
+    if (!meta) { meta = document.createElement('meta'); meta.name = 'theme-color'; document.head.appendChild(meta); }
+    meta.content = active === 'dark' ? '#09111F' : '#F8FAFD';
   }
 
   function syncCountrySelectorThemes(theme) {
     var isDark = effectiveTheme(theme) === 'dark';
     var roots = [document];
-    document.querySelectorAll('afro-navbar').forEach(function (nav) {
-      if (nav.shadowRoot) roots.push(nav.shadowRoot);
-    });
+    document.querySelectorAll('afro-navbar').forEach(function (nav) { if (nav.shadowRoot) roots.push(nav.shadowRoot); });
     roots.forEach(function (root) {
       root.querySelectorAll('afro-country-selector').forEach(function (selector) {
-        if (selector.shadowRoot && !selector.shadowRoot.getElementById(COUNTRY_SELECTOR_THEME_STYLE_ID)) {
-          var style = document.createElement('style');
-          style.id = COUNTRY_SELECTOR_THEME_STYLE_ID;
-          style.textContent = COUNTRY_SELECTOR_THEME_CSS;
-          selector.shadowRoot.appendChild(style);
-        }
         if (isDark) selector.setAttribute('data-theme-dark', '');
         else selector.removeAttribute('data-theme-dark');
       });
     });
   }
 
+  function ensureDarkModeRuntime() {
+    if (window.AfroTools && window.AfroTools.darkMode) return Promise.resolve(window.AfroTools.darkMode);
+    if (darkModeRuntimePromise) return darkModeRuntimePromise;
+    darkModeRuntimePromise = new Promise(function (resolve) {
+      var settled = false;
+      var finish = function () { if (!settled) { settled = true; resolve(window.AfroTools && window.AfroTools.darkMode || null); } };
+      var loadDirect = function () {
+        var existing = document.querySelector('script[src*="/assets/js/lib/dark-mode.js"]');
+        if (existing) { existing.addEventListener('load', finish, { once: true }); existing.addEventListener('error', finish, { once: true }); return; }
+        var script = document.createElement('script');
+        script.src = '/assets/js/lib/dark-mode.js';
+        script.onload = finish; script.onerror = finish; document.head.appendChild(script);
+      };
+      var core = document.querySelector('script[src*="/assets/js/bundles/core."]');
+      if (core) {
+        core.addEventListener('load', finish, { once: true });
+        core.addEventListener('error', loadDirect, { once: true });
+        setTimeout(function () { if (!settled && !(window.AfroTools && window.AfroTools.darkMode)) loadDirect(); else finish(); }, 1500);
+      } else loadDirect();
+    });
+    return darkModeRuntimePromise;
+  }
+
   function applyThemePreference(theme, options) {
-    ensureThemeStyle();
     var selected = theme === 'dark' || theme === 'light' ? theme : 'auto';
+    writeThemePreference(selected);
     var active = effectiveTheme(selected);
-    if (theme === 'dark' || theme === 'light') {
-      document.documentElement.setAttribute('data-theme', theme);
-      document.documentElement.setAttribute('data-theme-choice', theme);
-    } else {
-      document.documentElement.setAttribute('data-theme', active);
-      document.documentElement.setAttribute('data-theme-choice', 'auto');
-      theme = selected;
-    }
+    document.documentElement.setAttribute('data-theme', active);
+    document.documentElement.setAttribute('data-theme-choice', selected);
     syncThemeMeta(active);
     syncCountrySelectorThemes(active);
-    if (!options || !options.silent) {
-      document.dispatchEvent(new CustomEvent('afrotools:theme-change', {
-        detail: { theme: theme, activeTheme: active, isDark: active === 'dark' }
-      }));
+    var runtime = window.AfroTools && window.AfroTools.darkMode;
+    if (runtime && typeof runtime.set === 'function') runtime.set(selected);
+    else {
+      ensureDarkModeRuntime();
+      if (!options || !options.silent) document.dispatchEvent(new CustomEvent('afrotools:theme-change', { detail: { theme: selected, activeTheme: active, isDark: active === 'dark' } }));
     }
   }
 
-  try {
-    const theme = readThemePreference();
-    if (theme === 'dark' || theme === 'light') {
-      document.documentElement.setAttribute('data-theme', theme);
-    }
-  } catch (_) {}
-
-  ensureThemeStyle();
   applyThemePreference(readThemePreference() || 'auto', { silent: true });
 
-  if (window.matchMedia) {
-    var themeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    var handleSystemThemeChange = function () {
-      if (!readThemePreference()) applyThemePreference('auto');
-    };
-    if (themeQuery.addEventListener) themeQuery.addEventListener('change', handleSystemThemeChange);
-    else if (themeQuery.addListener) themeQuery.addListener(handleSystemThemeChange);
-  }
+  // NAVBAR_CSS_HREF_START
+  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=b7a1deaf';
+  // NAVBAR_CSS_HREF_END
 
-  window.AfroTools = window.AfroTools || {};
-  window.AfroTools.darkMode = window.AfroTools.darkMode || {
-    toggle: function () {
-      var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
-      writeThemePreference(next);
-      applyThemePreference(next);
-      return next;
-    },
-    set: function (theme) {
-      writeThemePreference(theme);
-      applyThemePreference(theme);
-      return effectiveTheme(theme);
-    },
-    get: function () {
-      return readThemePreference() || 'auto';
-    },
-    isDark: function () {
-      return effectiveTheme() === 'dark';
-    }
-  };
-
-  const NAV_ITEMS = [
+  // NAVBAR_TOP_LEVEL_DATA_START
+  let NAV_ITEMS = [
     {
-      id: 'financial', label: 'Salary & Tax', labelFr: 'Salaire & Impôts', labelSw: 'Mshahara & Kodi', icon: '💰',
-      desc: 'PAYE, income tax, FX, crypto', descFr: 'PAYE, impôt, change, crypto', descSw: 'PAYE, kodi, sarafu, crypto',
-      href: '/salary-tax/', hrefFr: '/fr/salary-tax/', hrefSw: '/sw/mshahara-na-kodi/', color: '#e8f0fd', accent: '#0062CC',
-      tools: [
-        { label: 'Nigeria PAYE Calculator', href: '/nigeria/ng-salary-tax', emoji: '🇳🇬', badge: 'LIVE' },
-        { label: 'Kenya PAYE Calculator', href: '/kenya/ke-paye', emoji: '🇰🇪', badge: 'LIVE' },
-        { label: 'South Africa SARS Tax', href: '/south-africa/za-paye', emoji: '🇿🇦', badge: 'LIVE' },
-        { label: 'Ghana PAYE + SSNIT', href: '/ghana/gh-paye', emoji: '🇬🇭', badge: 'LIVE' },
-        { label: 'Egypt Income Tax', href: '/egypt/eg-paye', emoji: '🇪🇬', badge: 'LIVE' },
-        { label: 'AI Business Planner', href: '/tools/business-planner/', emoji: '📋', badge: 'LIVE' },
-        { label: 'Mortgage Calculator', href: '/tools/mortgage-calculator/', emoji: '🏠', badge: 'LIVE' },
-        { label: 'Bank Charges Comparator', href: '/tools/bank-charges/', emoji: '🏦', badge: 'LIVE' },
-        { label: 'FIRE Calculator for Africa', href: '/tools/retirement-planner/', emoji: '🏖️', badge: 'LIVE' },
-        { label: 'Minimum Wage Checker', href: '/tools/minimum-wage/', emoji: '💰', badge: 'NEW' },
-        { label: 'Overtime Calculator', href: '/tools/overtime-calc/', emoji: '⏰', badge: 'NEW' },
-        { label: 'Leave & PTO Calculator', href: '/tools/leave-calculator/', emoji: '🏖️', badge: 'NEW' },
-        { label: 'Social Security Calculator', href: '/tools/social-security/', emoji: '🛡️', badge: 'NEW' },
-        { label: 'Pension Projection', href: '/tools/pension-projection/', emoji: '📈', badge: 'NEW' },
-        { label: 'All 54 PAYE Calculators →', href: '/salary-tax/', emoji: '💰' },
-      ],
-      toolsSw: [
-        { label: 'PAYE Kenya', href: '/sw/kenya/kikokotoo-kodi-mshahara/', emoji: 'KE', badge: 'LIVE' },
-        { label: 'PAYE Tanzania', href: '/sw/tanzania/kikokotoo-kodi-mshahara/', emoji: 'TZ', badge: 'LIVE' },
-        { label: 'PAYE Uganda', href: '/sw/uganda/kikokotoo-kodi-mshahara/', emoji: 'UG', badge: 'LIVE' },
-        { label: 'PAYE Rwanda', href: '/sw/rwanda/kikokotoo-kodi-mshahara/', emoji: 'RW', badge: 'LIVE' },
-        { label: 'Kima cha chini cha mshahara', href: '/sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/', emoji: 'MW', badge: 'LIVE' },
-        { label: 'Muda wa ziada', href: '/sw/zana/kikokotoo-muda-wa-ziada/', emoji: 'OT', badge: 'LIVE' },
-        { label: 'Likizo na PTO', href: '/sw/zana/kikokotoo-likizo/', emoji: 'PTO', badge: 'LIVE' },
-        { label: 'NSSF, SHIF na hifadhi ya jamii', href: '/sw/zana/kikokotoo-michango-ya-hifadhi-ya-jamii/', emoji: 'NSSF', badge: 'LIVE' },
-        { label: 'Linganisha mishahara', href: '/sw/zana/kilinganisha-mishahara/', emoji: 'SAL', badge: 'LIVE' },
-        { label: 'Sarafu na FX', href: '/sw/sarafu/', emoji: 'FX', badge: 'LIVE' },
-        { label: 'Kibadilishaji sarafu', href: '/sw/zana/kibadilishaji-sarafu/', emoji: 'FX', badge: 'LIVE' },
-        { label: 'Zana zote za mishahara ->', href: '/sw/mshahara-na-kodi/', emoji: 'ALL' }
-      ],
-      toolsHa: [
-        { label: 'Albashi da haraji', href: '/ha/albashi-da-haraji/', emoji: 'PAYE', badge: 'HA' },
-        { label: 'PAYE na Najeriya', href: '/ha/najeriya/harajin-albashi/', emoji: 'NG', badge: 'HA' },
-        { label: 'Kalkuletan VAT', href: '/ha/kayan-aiki/kalkuletan-vat/', emoji: 'VAT', badge: 'HA' },
-        { label: 'CIT na Najeriya', href: '/ha/kayan-aiki/cit-najeriya/', emoji: 'CIT', badge: 'HA' },
-        { label: 'WHT na Najeriya', href: '/ha/kayan-aiki/wht-najeriya/', emoji: 'WHT', badge: 'HA' },
-        { label: 'Fansho Najeriya', href: '/ha/kayan-aiki/fansho-najeriya/', emoji: 'PEN', badge: 'HA' },
-        { label: 'NHF Najeriya', href: '/ha/kayan-aiki/nhf-najeriya/', emoji: 'NHF', badge: 'HA' },
-        { label: 'Mafi karancin albashi - shafi na Turanci', href: '/tools/minimum-wage/', emoji: 'MW', badge: 'EN' },
-        { label: 'Duk kayan albashi ->', href: '/ha/albashi-da-haraji/', emoji: 'ALL' }
-      ],
+      "id": "financial",
+      "label": "Salary & Tax",
+      "labelFr": "Salaire & Impôts",
+      "labelSw": "Mshahara & Kodi",
+      "icon": "💰",
+      "desc": "PAYE, income tax, FX, crypto",
+      "descFr": "PAYE, impôt, change, crypto",
+      "descSw": "PAYE, kodi, sarafu, crypto",
+      "href": "/salary-tax/",
+      "hrefFr": "/fr/salary-tax/",
+      "hrefSw": "/sw/mshahara-na-kodi/",
+      "color": "#e8f0fd",
+      "accent": "#0062CC"
     },
     {
-      id: 'hr-payroll', label: 'HR & Payroll', labelFr: 'RH & Paie', labelSw: 'Rasilimali Watu', icon: '💼',
-      desc: 'Employee cost, leave, severance', descFr: 'Coût employé, congés, licenciement', descSw: 'Gharama, likizo, fidia',
-      href: '/hr-payroll/', hrefHa: '/ha/albashi-da-haraji/', color: '#f0fdfa', accent: '#0d9488',
-      tools: [
-        { label: 'Employee Cost Calculator', href: '/tools/employee-cost/', emoji: '💸', badge: 'NEW' },
-        { label: 'Contractor vs Employee', href: '/tools/contractor-vs-employee/', emoji: '⚖️', badge: 'NEW' },
-        { label: 'Maternity/Paternity Leave', href: '/tools/maternity-leave/', emoji: '🤰', badge: 'NEW' },
-        { label: 'Gratuity & Severance', href: '/tools/gratuity-calculator/', emoji: '💵', badge: 'NEW' },
-        { label: 'Retrenchment Package', href: '/tools/retrenchment-calculator/', emoji: '📦', badge: 'NEW' },
-        { label: 'Work Permit Cost Guide', href: '/tools/work-permit-cost/', emoji: '🛂', badge: 'NEW' },
-        { label: 'Freelancer Rate Card', href: '/tools/freelancer-rate/', emoji: '📋', badge: 'NEW' },
-        { label: 'Domestic Worker Guide', href: '/tools/domestic-worker/', emoji: '🏠', badge: 'NEW' },
-        { label: 'All HR & Payroll Tools →', href: '/hr-payroll/', emoji: '💼' },
-      ],
-      toolsHa: [
-        { label: 'Kudin maikaci', href: '/ha/kayan-aiki/kudin-maikaci/', emoji: 'COST', badge: 'HA' },
-        { label: 'Takardar albashi', href: '/ha/kayan-aiki/takardar-albashi/', emoji: 'PAY', badge: 'HA' },
-        { label: 'PAYE na Najeriya', href: '/ha/najeriya/harajin-albashi/', emoji: 'PAYE', badge: 'HA' },
-        { label: 'Fansho Najeriya', href: '/ha/kayan-aiki/fansho-najeriya/', emoji: 'PEN', badge: 'HA' },
-        { label: 'Duk kayan albashi', href: '/ha/albashi-da-haraji/', emoji: 'ALL', badge: 'HA' }
-      ]
+      "id": "hr-payroll",
+      "label": "HR & Payroll",
+      "labelFr": "RH & Paie",
+      "labelSw": "Rasilimali Watu",
+      "icon": "💼",
+      "desc": "Employee cost, leave, severance",
+      "descFr": "Coût employé, congés, licenciement",
+      "descSw": "Gharama, likizo, fidia",
+      "href": "/hr-payroll/",
+      "hrefHa": "/ha/albashi-da-haraji/",
+      "color": "#f0fdfa",
+      "accent": "#0d9488"
     },
     {
-      id: 'document-pdf', label: 'Document & PDF', labelFr: 'Documents & PDF', labelSw: 'Nyaraka na PDF', icon: '📄',
-      desc: 'Merge, split, compress, convert', descFr: 'Fusionner, diviser, compresser, convertir', descSw: 'Unganisha, gawanya, bana, badilisha',
-      href: '/document-pdf/', hrefFr: '/fr/document-pdf/', hrefSw: '/sw/hati-na-pdf/', hrefHa: '/ha/takardu-da-pdf/', hrefYo: '/yo/iwe-ati-pdf/', color: '#eff6ff', accent: '#3b82f6',
-      tools: [
-        { label: 'CV / Resume Builder', href: '/tools/cv-builder/', emoji: '📝', badge: 'LIVE' },
-        { label: 'PDF Editor', href: '/tools/pdf-editor/', emoji: '✏️', badge: 'LIVE' },
-        { label: 'PDF Workspace', href: '/tools/pdf-workspace/', emoji: '📄', badge: 'LIVE' },
-        { label: 'Invoice Generator', href: '/tools/invoice-generator/', emoji: '🧾', badge: 'LIVE' },
-        { label: 'PDF Merge & Split', href: '/tools/pdf-merge-split/', emoji: '📑', badge: 'LIVE' },
-        { label: 'PDF Compressor', href: '/tools/pdf-compress/', emoji: '🗜️', badge: 'LIVE' },
-        { label: 'PDF Format Converter', href: '/tools/pdf-convert/', emoji: '🔄', badge: 'LIVE' },
-        { label: 'AI Chat with PDF', href: '/tools/pdf-chat/', emoji: '💬', badge: 'NEW' },
-        { label: 'PDF eSignature', href: '/tools/pdf-sign/', emoji: '✍️', badge: 'LIVE' },
-        { label: 'Cover Letter Generator', href: '/tools/cover-letter-generator/', emoji: '✉️', badge: 'LIVE' },
-        { label: 'All PDF Tools →', href: '/document-pdf/', emoji: '📄' },
-      ],
-      toolsFr: [
-        { label: 'Fusionner et diviser PDF', href: '/fr/tools/fusionner-diviser-pdf/', emoji: '📑', badge: 'LIVE' },
-        { label: 'Compresser PDF', href: '/fr/tools/compresser-pdf/', emoji: '🗜️', badge: 'LIVE' },
-        { label: 'Convertir PDF', href: '/fr/tools/convertir-pdf/', emoji: '🔄', badge: 'LIVE' },
-        { label: 'PDF en image', href: '/fr/tools/pdf-en-image/', emoji: '🖼️', badge: 'LIVE' },
-        { label: 'Filigrane PDF', href: '/fr/tools/filigrane-pdf/', emoji: '💧', badge: 'LIVE' },
-        { label: 'Numérotation PDF', href: '/fr/tools/numerotation-pdf/', emoji: '#', badge: 'LIVE' },
-        { label: 'Comparer PDF', href: '/fr/tools/comparer-pdf/', emoji: '🔍', badge: 'LIVE' },
-        { label: 'Réorganiser PDF', href: '/fr/tools/reorganiser-pdf/', emoji: '↕️', badge: 'LIVE' },
-        { label: 'En-tête et pied de page PDF', href: '/fr/tools/entete-pied-pdf/', emoji: '📄', badge: 'LIVE' },
-        { label: 'Numérotation Bates PDF', href: '/fr/tools/numerotation-bates-pdf/', emoji: '🏷️', badge: 'LIVE' },
-        { label: 'Rechercher et remplacer PDF', href: '/fr/tools/rechercher-remplacer-pdf/', emoji: '✏️', badge: 'LIVE' },
-        { label: 'Réparer PDF', href: '/fr/tools/reparer-pdf/', emoji: '🛠️', badge: 'LIVE' },
-        { label: 'HTML en PDF', href: '/fr/tools/html-en-pdf/', emoji: '🌐', badge: 'LIVE' },
-        { label: 'Remplir un formulaire PDF', href: '/fr/tools/remplir-formulaire-pdf/', emoji: '📝', badge: 'LIVE' },
-      ],
-      toolsSw: [
-        { label: 'Kituo cha PDF', href: '/sw/zana/kituo-cha-pdf/', emoji: 'PDF', badge: 'LIVE' },
-        { label: 'Hariri PDF', href: '/sw/zana/hariri-pdf/', emoji: 'PDF', badge: 'LIVE' },
-        { label: 'Unganisha na gawanya PDF', href: '/sw/zana/unganisha-na-gawanya-pdf/', emoji: 'PDF', badge: 'LIVE' },
-        { label: 'Bana PDF', href: '/sw/zana/kubana-pdf/', emoji: 'PDF', badge: 'LIVE' },
-        { label: 'Badilisha format ya PDF', href: '/sw/zana/kubadilisha-format-pdf/', emoji: 'PDF', badge: 'LIVE' },
-        { label: 'Saini PDF', href: '/sw/zana/kusaini-pdf/', emoji: 'PDF', badge: 'LIVE' },
-        { label: 'Mjenzi wa CV', href: '/sw/zana/mjenzi-cv/', emoji: 'CV', badge: 'LIVE' },
-        { label: 'Barua ya ombi', href: '/sw/zana/barua-ombi/', emoji: 'DOC', badge: 'LIVE' },
-        { label: 'Kizalishaji ankara', href: '/sw/zana/kizalishaji-ankara/', emoji: 'INV', badge: 'LIVE' },
-        { label: 'Zana zote za PDF ->', href: '/sw/hati-na-pdf/', emoji: 'ALL' }
-      ],
-      toolsHa: [
-        { label: 'Takardu da PDF', href: '/ha/takardu-da-pdf/', emoji: 'PDF', badge: 'HA' },
-        { label: 'Hada da raba PDF', href: '/ha/kayan-aiki/hada-da-raba-pdf/', emoji: 'PDF', badge: 'HA' },
-        { label: 'Matsa PDF', href: '/ha/kayan-aiki/matsa-pdf/', emoji: 'PDF', badge: 'HA' },
-        { label: 'Kirkiro takardar kudi', href: '/ha/kayan-aiki/kirkiro-invoice/', emoji: 'INV', badge: 'HA' },
-        { label: 'Kirkiro Resit', href: '/ha/kayan-aiki/kirkiro-resit/', emoji: 'RCT', badge: 'HA' },
-        { label: 'Naira zuwa kalmomi', href: '/ha/kayan-aiki/naira-zuwa-kalmomi/', emoji: 'NGN', badge: 'HA' },
-        { label: 'Mai gina CV', href: '/ha/kayan-aiki/gina-cv/', emoji: 'CV', badge: 'HA' },
-        { label: 'Wasikar neman aiki', href: '/ha/kayan-aiki/rubuta-wasikar-aiki/', emoji: 'LTR', badge: 'HA' },
-        { label: 'Wurin aikin PDF', href: '/ha/kayan-aiki/wurin-aikin-pdf/', emoji: 'PDF', badge: 'HA' },
-        { label: 'Canja PDF', href: '/ha/kayan-aiki/canza-pdf/', emoji: 'PDF', badge: 'HA' },
-        { label: 'Sa hannu a PDF', href: '/ha/kayan-aiki/sanya-hannu-pdf/', emoji: 'PDF', badge: 'HA' },
-        { label: 'Gyara PDF', href: '/ha/kayan-aiki/gyara-pdf/', emoji: 'PDF', badge: 'HA' },
-        { label: 'Lambar shafi a PDF', href: '/ha/kayan-aiki/lambar-shafi-pdf/', emoji: 'PDF', badge: 'HA' },
-        { label: 'Duk kayan PDF ->', href: '/ha/takardu-da-pdf/', emoji: 'ALL' }
-      ],
-      toolsYo: [
-        { label: 'Ìwé àti PDF', href: '/yo/iwe-ati-pdf/', emoji: 'PDF', badge: 'YO' },
-        { label: 'Ibi iṣẹ́ PDF', href: '/yo/awon-ise/wurin-pdf/', emoji: 'PDF', badge: 'YO' },
-        { label: 'Hàdà àti pín PDF', href: '/yo/awon-ise/hada-ati-pin-pdf/', emoji: 'PDF', badge: 'YO' },
-        { label: 'Dín ìwọ̀n PDF', href: '/yo/awon-ise/din-iwon-pdf/', emoji: 'PDF', badge: 'YO' },
-        { label: 'Túntò ojú-iwe PDF', href: '/yo/awon-ise/tunto-pdf/', emoji: 'PDF', badge: 'YO' },
-        { label: 'Kíriíro ìwé owó', href: '/yo/awon-ise/kiriiro-invoice/', emoji: 'INV', badge: 'YO' },
-        { label: 'Kíriíro risiti', href: '/yo/awon-ise/kiriiro-risiti/', emoji: 'RCT', badge: 'YO' },
-        { label: 'Naira sí ọ̀rọ̀', href: '/yo/awon-ise/naira-si-oro/', emoji: 'NGN', badge: 'YO' },
-        { label: 'Yí PDF padà - ojú ìwé Gẹẹsi', href: '/tools/pdf-convert/', emoji: 'PDF', badge: 'EN' },
-        { label: 'Gbogbo iṣẹ́ PDF ->', href: '/yo/iwe-ati-pdf/', emoji: 'ALL' }
-      ],
+      "id": "document-pdf",
+      "label": "Document & PDF",
+      "labelFr": "Documents & PDF",
+      "labelSw": "Nyaraka na PDF",
+      "icon": "📄",
+      "desc": "Merge, split, compress, convert",
+      "descFr": "Fusionner, diviser, compresser, convertir",
+      "descSw": "Unganisha, gawanya, bana, badilisha",
+      "href": "/document-pdf/",
+      "hrefFr": "/fr/document-pdf/",
+      "hrefSw": "/sw/hati-na-pdf/",
+      "hrefHa": "/ha/takardu-da-pdf/",
+      "hrefYo": "/yo/iwe-ati-pdf/",
+      "color": "#eff6ff",
+      "accent": "#3b82f6"
     },
     {
-      id: 'image-design', label: 'Image & Design', labelFr: 'Image & Design', labelSw: 'Picha na Ubunifu', icon: '🖼️',
-      desc: 'Compress, resize, QR codes', descFr: 'Compresser, redimensionner, codes QR', descSw: 'Bana, badilisha ukubwa, misimbo QR',
-      href: '/image-design/', hrefFr: '/fr/image-design/', color: '#fdf2f8', accent: '#ec4899',
-      tools: [
-        { label: 'Image Compressor', href: '/tools/image-compress/', emoji: '📷', badge: 'LIVE' },
-        { label: 'Background Remover', href: '/tools/background-remover/', emoji: '✂️', badge: 'LIVE' },
-        { label: 'Image Resizer & Converter', href: '/tools/image-resize/', emoji: '↔️', badge: 'LIVE' },
-        { label: 'QR Code Generator', href: '/tools/qr-generator/', emoji: '📲', badge: 'LIVE' },
-        { label: 'Passport Photo Tool', href: '/tools/passport-photo/', emoji: '📸', badge: 'LIVE' },
-        { label: 'Meme Generator', href: '/tools/meme-generator/', emoji: '😂', badge: 'LIVE' },
-        { label: 'Flyer & Poster Maker', href: '/tools/flyer-maker/', emoji: '📰', badge: 'LIVE' },
-        { label: 'Logo Maker', href: '/tools/logo-maker/', emoji: '🏷️', badge: 'LIVE' },
-        { label: 'Image to Text (OCR)', href: '/tools/image-to-text/', emoji: '🔤', badge: 'LIVE' },
-        { label: 'All Image Tools →', href: '/image-design/', emoji: '🖼️' },
-      ]
+      "id": "image-design",
+      "label": "Image & Design",
+      "labelFr": "Image & Design",
+      "labelSw": "Picha na Ubunifu",
+      "icon": "🖼️",
+      "desc": "Compress, resize, QR codes",
+      "descFr": "Compresser, redimensionner, codes QR",
+      "descSw": "Bana, badilisha ukubwa, misimbo QR",
+      "href": "/image-design/",
+      "hrefFr": "/fr/image-design/",
+      "color": "#fdf2f8",
+      "accent": "#ec4899"
     },
     {
-      id: 'developer', label: 'Developer Tools', labelFr: 'Outils Dev', labelSw: 'Zana za Wasanidi', icon: '⌨️',
-      desc: 'JSON, Base64, hash, regex', descFr: 'JSON, Base64, hachage, regex', descSw: 'JSON, Base64, hash, regex',
-      href: '/developer-tools/', hrefFr: '/fr/developer-tools/', color: '#ede9fe', accent: '#8b5cf6',
-      tools: [
-        { label: 'JSON Formatter & Validator', href: '/tools/json-formatter/', emoji: '{ }', badge: 'LIVE' },
-        { label: 'API Tester (Postman Lite)', href: '/tools/api-tester/', emoji: '🧪', badge: 'LIVE' },
-        { label: 'Regex Tester', href: '/tools/regex-tester/', emoji: '🔍', badge: 'LIVE' },
-        { label: 'Base64 Encoder/Decoder', href: '/tools/base64/', emoji: '🔐', badge: 'LIVE' },
-        { label: 'JWT Decoder', href: '/tools/jwt-decoder/', emoji: '🪙', badge: 'LIVE' },
-        { label: 'Text/Code Diff Checker', href: '/tools/diff-checker/', emoji: '🔀', badge: 'LIVE' },
-        { label: 'Markdown Editor', href: '/tools/markdown-editor/', emoji: '📝', badge: 'LIVE' },
-        { label: 'USSD Code Simulator', href: '/tools/ussd-simulator/', emoji: '📞', badge: 'LIVE' },
-        { label: 'African API Directory', href: '/tools/african-api-directory/', emoji: '🌍', badge: 'NEW' },
-        { label: 'USSD Flow Builder', href: '/tools/ussd-flow-builder/', emoji: '📞', badge: 'NEW' },
-        { label: 'African Domain Checker', href: '/tools/african-domains/', emoji: '🌐', badge: 'NEW' },
-        { label: 'PWA Manifest Generator', href: '/tools/pwa-manifest/', emoji: '📱', badge: 'NEW' },
-        { label: 'African Color Palette', href: '/tools/african-palette/', emoji: '🎨', badge: 'NEW' },
-        { label: 'Hosting Cost Comparator', href: '/tools/hosting-compare/', emoji: '☁️', badge: 'NEW' },
-        { label: 'Docker Compose Generator', href: '/tools/docker-compose-gen/', emoji: '🐳', badge: 'NEW' },
-        { label: 'Commit Message Generator', href: '/tools/commit-message-gen/', emoji: '📝', badge: 'NEW' },
-        { label: 'All Developer Tools →', href: '/developer-tools/', emoji: '⌨️' },
-      ],
-      toolsSw: [
-        { label: 'Zana za Developer kwa Kiswahili', href: '/sw/zana-za-developer/', emoji: 'DEV', badge: 'LIVE' },
-        { label: 'API ya AfroTools', href: '/sw/api/', emoji: 'API', badge: 'LIVE' },
-        { label: 'Kituo cha Developer', href: '/sw/zana/kituo-cha-developer/', emoji: 'DEV', badge: 'LIVE' },
-        { label: 'Kirekebisha JSON', href: '/sw/zana/kirekebisha-json/', emoji: 'JSON', badge: 'LIVE' },
-        { label: 'Kijaribu API', href: '/sw/zana/kijaribu-api/', emoji: 'API', badge: 'LIVE' },
-        { label: 'Kiigaji USSD', href: '/sw/zana/kiigaji-ussd/', emoji: 'USSD', badge: 'LIVE' },
-        { label: 'Saraka ya API Afrika', href: '/sw/zana/saraka-ya-api-afrika/', emoji: 'API', badge: 'LIVE' }
-      ]
+      "id": "developer",
+      "label": "Developer Tools",
+      "labelFr": "Outils Dev",
+      "labelSw": "Zana za Wasanidi",
+      "icon": "⌨️",
+      "desc": "JSON, Base64, hash, regex",
+      "descFr": "JSON, Base64, hachage, regex",
+      "descSw": "JSON, Base64, hash, regex",
+      "href": "/developer-tools/",
+      "hrefFr": "/fr/developer-tools/",
+      "color": "#ede9fe",
+      "accent": "#8b5cf6"
     },
     {
-      id: 'education', label: 'Education', labelFr: 'Éducation', labelSw: 'Elimu', icon: '🎓',
-      desc: 'GPA, WAEC, loans, fees', descFr: 'GPA, WAEC, prêts, frais scolaires', descSw: 'GPA, NECTA, mikopo, ada',
-      href: '/education/', hrefFr: '/fr/education/', hrefSw: '/sw/elimu/', color: '#EEF4FF', accent: '#3B82F6',
-      tools: [
-        { label: 'AfroJAMB Hub — CBT + AI Tutor', href: '/jamb/', emoji: '🎯', badge: 'NEW' },
-        { label: 'JAMB CBT Mock Exam', href: '/jamb/cbt/', emoji: '⚡', badge: 'NEW' },
-        { label: 'JAMB AI Tutor', href: '/jamb/tutor/', emoji: '🤖', badge: 'NEW' },
-        { label: 'JAMB Past Questions Bank', href: '/jamb/past-questions/', emoji: '📚', badge: 'NEW' },
-        { label: 'WAEC/NECO Grade Calculator', href: '/tools/waec-calculator/', emoji: '📋', badge: 'LIVE' },
-        { label: 'JAMB Aggregate Calculator', href: '/tools/jamb-aggregate/', emoji: '🎓', badge: 'LIVE' },
-        { label: 'GPA/CGPA Calculator', href: '/tools/gpa-calculator/', emoji: '🎓', badge: 'LIVE' },
-        { label: 'Matric APS Score (SA)', href: '/tools/matric-points/', emoji: '🎓', badge: 'LIVE' },
-        { label: 'School Fees Comparison Tool', href: '/tools/school-fees/', emoji: '🏫', badge: 'NEW' },
-        { label: 'Study Abroad Cost Calculator', href: '/tools/study-abroad-cost/', emoji: '✈️', badge: 'NEW' },
-        { label: 'Teacher Salary Scale Lookup', href: '/tools/teacher-salary/', emoji: '👨‍🏫', badge: 'NEW' },
-        { label: 'Student Loan Repayment Calc', href: '/tools/student-loan-repay/', emoji: '💰', badge: 'NEW' },
-        { label: 'NYSC Allowance Calculator', href: '/tools/nysc-allowance/', emoji: '🇳🇬', badge: 'NEW' },
-        { label: 'Kenya HELB Calculator', href: '/tools/ke-helb/', emoji: '🇰🇪', badge: 'NEW' },
-        { label: 'KCSE Grade Calculator', href: '/tools/kcse-calculator/', emoji: '🇰🇪', badge: 'NEW' },
-        { label: 'Ghana NSS Allowance', href: '/tools/national-service-gh/', emoji: '🇬🇭', badge: 'NEW' },
-        { label: 'University Admission Points', href: '/tools/university-admission/', emoji: '🎓', badge: 'NEW' },
-        { label: 'Scholarship Finder', href: '/tools/scholarship-finder/', emoji: '🏆', badge: 'LIVE' },
-        { label: 'Student Budget Planner', href: '/tools/student-budget/', emoji: '💸', badge: 'NEW' },
-        { label: 'Coding Bootcamp Comparator', href: '/tools/coding-bootcamp/', emoji: '💻', badge: 'NEW' },
-        { label: 'Exam Countdown Timer', href: '/tools/exam-countdown/', emoji: '⏳', badge: 'LIVE' },
-        { label: 'Citation Generator', href: '/tools/citation-generator/', emoji: '📖', badge: 'LIVE' },
-        { label: 'All Education Tools →', href: '/education/', emoji: '🎓' },
-      ],
-      toolsSw: [
-        { label: 'Kituo cha elimu', href: '/sw/zana/kituo-elimu/', emoji: 'EDU', badge: 'LIVE' },
-        { label: 'Kikokotoo cha WAEC na NECO', href: '/sw/zana/kikokotoo-waec-neco/', emoji: 'WAEC', badge: 'LIVE' },
-        { label: 'Kikokotoo cha KCSE', href: '/sw/zana/kikokotoo-kcse/', emoji: 'KCSE', badge: 'LIVE' },
-        { label: 'Kikokotoo cha JAMB', href: '/sw/zana/kikokotoo-jamb/', emoji: 'JAMB', badge: 'LIVE' },
-        { label: 'GPA na CGPA', href: '/sw/zana/kikokotoo-gpa/', emoji: 'GPA', badge: 'LIVE' },
-        { label: 'HELB Kenya', href: '/sw/zana/kikokotoo-helb-kenya/', emoji: 'HELB', badge: 'LIVE' },
-        { label: 'Udhamini', href: '/sw/zana/udhamini/', emoji: 'SCH', badge: 'LIVE' },
-        { label: 'Siku za mtihani', href: '/sw/zana/siku-za-mtihani/', emoji: 'EXAM', badge: 'LIVE' },
-        { label: 'Zana zote za elimu ->', href: '/sw/elimu/', emoji: 'ALL' }
-      ],
-      toolsHa: [
-        { label: 'Ilimi a Hausa', href: '/ha/ilimi/', emoji: 'EDU', badge: 'HA' },
-        { label: 'JAMB Turanci', href: '/ha/jamb/turanci/', emoji: 'JAMB', badge: 'HA' },
-        { label: 'JAMB Lissafi', href: '/ha/jamb/lissafi/', emoji: 'JAMB', badge: 'HA' },
-        { label: 'JAMB Fisiks', href: '/ha/jamb/fisiks/', emoji: 'JAMB', badge: 'HA' },
-        { label: 'JAMB Kimiyya', href: '/ha/jamb/kimiyya/', emoji: 'JAMB', badge: 'HA' },
-        { label: 'JAMB Nazarin halittu', href: '/ha/jamb/halittu/', emoji: 'JAMB', badge: 'HA' },
-        { label: 'Kalkuletan WAEC/NECO', href: '/ha/kayan-aiki/kalkuletan-waec-neco/', emoji: 'WAEC', badge: 'HA' },
-        { label: 'Kalkuletan jimillar JAMB', href: '/ha/kayan-aiki/kalkuletan-jamb/', emoji: 'JAMB', badge: 'HA' },
-        { label: 'Alawus na NYSC', href: '/ha/kayan-aiki/alawus-na-nysc/', emoji: 'NYSC', badge: 'HA' },
-        { label: 'Kudin makaranta', href: '/ha/kayan-aiki/kwatanta-kudin-makaranta/', emoji: 'FEES', badge: 'HA' },
-        { label: 'Kalkuletan GPA/CGPA', href: '/ha/kayan-aiki/kalkuletan-gpa-cgpa/', emoji: 'GPA', badge: 'HA' },
-        { label: 'Neman tallafin karatu', href: '/ha/kayan-aiki/neman-tallafin-karatu/', emoji: 'AID', badge: 'HA' },
-        { label: 'Kasafin dalibi', href: '/ha/kayan-aiki/kasafin-dalibi/', emoji: 'BDG', badge: 'HA' },
-        { label: 'Duk kayan ilimi ->', href: '/ha/ilimi/', emoji: 'ALL' }
-      ]
+      "id": "education",
+      "label": "Education",
+      "labelFr": "Éducation",
+      "labelSw": "Elimu",
+      "icon": "🎓",
+      "desc": "GPA, WAEC, loans, fees",
+      "descFr": "GPA, WAEC, prêts, frais scolaires",
+      "descSw": "GPA, NECTA, mikopo, ada",
+      "href": "/education/",
+      "hrefFr": "/fr/education/",
+      "hrefSw": "/sw/elimu/",
+      "color": "#EEF4FF",
+      "accent": "#3B82F6"
     },
     {
-      id: 'health', label: 'Health & Wellness', labelFr: 'Santé & Bien-être', labelSw: 'Afya na Ustawi', icon: '🏥',
-      desc: 'Disease tools, hospital costs, nutrition — 27 tools, always free', descFr: 'Maladies, frais d\'hôpital, nutrition — 27 outils', descSw: 'Magonjwa, gharama za hospitali, lishe — zana 27',
-      href: '/health/', hrefFr: '/fr/health/', hrefSw: '/sw/afya/', hrefYo: '/yo/ilera/', color: '#fce8e8', accent: '#dc2626',
-      tools: [
-        { label: 'Medical Report Interpreter', href: '/tools/medical-report/', emoji: '🩺', badge: 'LIVE' },
-        { label: 'Genotype Compatibility Checker', href: '/tools/genotype-checker/', emoji: '🧬', badge: 'NEW' },
-        { label: 'Blood Group Compatibility', href: '/tools/blood-group/', emoji: '🩸', badge: 'NEW' },
-        { label: 'Sickle Cell Genotype Advisor', href: '/tools/sickle-cell/', emoji: '🔬', badge: 'LIVE' },
-        { label: 'Childbirth Cost Calculator', href: '/tools/childbirth-cost/', emoji: '🤱', badge: 'NEW' },
-        { label: 'Drug/Medicine Price Comparator', href: '/tools/drug-price-compare/', emoji: '💊', badge: 'NEW' },
-        { label: 'Dental Procedure Cost Estimator', href: '/tools/dental-cost/', emoji: '🦷', badge: 'NEW' },
-        { label: 'Hospital Cost Estimator', href: '/tools/hospital-cost/', emoji: '🏥', badge: 'LIVE' },
-        { label: 'African Meal Plan Generator', href: '/tools/african-meal-plan/', emoji: '🍽️', badge: 'NEW' },
-        { label: 'Child Growth Chart (WHO)', href: '/tools/child-growth/', emoji: '📊', badge: 'NEW' },
-        { label: 'Calorie Counter (African Foods)', href: '/health/calorie-counter/', emoji: '🍲', badge: 'LIVE' },
-        { label: 'Maternal Mortality Risk Tool', href: '/tools/maternal-mortality/', emoji: '🤰', badge: 'NEW' },
-        { label: 'All Health Tools →', href: '/health/', emoji: '🏥' },
-      ],
-      toolsSw: [
-        { label: 'Afya na Ustawi', href: '/sw/afya/', emoji: 'HEALTH', badge: 'LIVE' },
-        { label: 'Kikokotoo BMI', href: '/sw/zana/kikokotoo-bmi/', emoji: 'BMI', badge: 'LIVE' },
-        { label: 'Shinikizo la damu', href: '/sw/zana/shinikizo-la-damu/', emoji: 'BP', badge: 'LIVE' },
-        { label: 'Hatari ya kisukari', href: '/sw/zana/hatari-ya-kisukari/', emoji: 'DIAB', badge: 'LIVE' },
-        { label: 'Gharama za hospitali', href: '/sw/zana/gharama-za-hospitali/', emoji: 'HSP', badge: 'LIVE' }
-      ],
-      toolsHa: [
-        { label: 'Fassarar rahoton lafiya - shafi na Turanci', href: '/tools/medical-report/', emoji: 'LAB', badge: 'EN' },
-        { label: 'Genotype da rukunin jini', href: '/ha/kayan-aiki/duba-genotype/', emoji: 'DNA', badge: 'HA' },
-        { label: 'Jagorar sikila', href: '/ha/kayan-aiki/sickle-cell/', emoji: 'SC', badge: 'HA' },
-        { label: 'Kudin asibiti', href: '/ha/kayan-aiki/kudin-asibiti/', emoji: 'HSP', badge: 'HA' },
-        { label: 'Kwatanta farashin magani', href: '/ha/kayan-aiki/kwatanta-farashin-magani/', emoji: 'MED', badge: 'HA' },
-        { label: 'Dacewar rukunin jini - shafi na Turanci', href: '/tools/blood-group/', emoji: 'BG', badge: 'EN' },
-        { label: 'Kudin haihuwa', href: '/ha/kayan-aiki/kudin-haihuwa/', emoji: 'MAT', badge: 'HA' },
-        { label: 'Tsarin abincin Afirka', href: '/ha/kayan-aiki/abincin-afirka/', emoji: 'MEAL', badge: 'HA' },
-        { label: 'Duk kayan lafiya ->', href: '/ha/lafiya/', emoji: 'ALL' }
-      ],
-      toolsYo: [
-        { label: 'Ìlera ni Yorùbá', href: '/yo/ilera/', emoji: 'HSP', badge: 'YO' },
-        { label: 'Duba genotype', href: '/yo/awon-ise/duba-genotype/', emoji: 'DNA', badge: 'YO' },
-        { label: 'Sickle cell ati genotype', href: '/yo/awon-ise/sickle-cell/', emoji: 'SC', badge: 'YO' },
-        { label: 'Kalkuletan BMI', href: '/yo/awon-ise/kalkuletan-bmi/', emoji: 'BMI', badge: 'YO' },
-        { label: 'Owó ilé ìwòsàn', href: '/yo/awon-ise/owo-ile-iwosan/', emoji: 'HSP', badge: 'YO' },
-        { label: 'Ìtumọ̀ ìwé yàrá - ojú ìwé Gẹẹsi', href: '/tools/medical-report/', emoji: 'LAB', badge: 'EN' },
-        { label: 'Blood group jinlẹ̀ - ojú ìwé Gẹẹsi', href: '/tools/blood-group/', emoji: 'BG', badge: 'EN' },
-        { label: 'Gbogbo irinṣẹ ìlera ->', href: '/yo/ilera/', emoji: 'ALL' }
-      ]
+      "id": "health",
+      "label": "Health & Wellness",
+      "labelFr": "Santé & Bien-être",
+      "labelSw": "Afya na Ustawi",
+      "icon": "🏥",
+      "desc": "Disease tools, hospital costs, nutrition — 27 tools, always free",
+      "descFr": "Maladies, frais d'hôpital, nutrition — 27 outils",
+      "descSw": "Magonjwa, gharama za hospitali, lishe — zana 27",
+      "href": "/health/",
+      "hrefFr": "/fr/health/",
+      "hrefSw": "/sw/afya/",
+      "hrefYo": "/yo/ilera/",
+      "color": "#fce8e8",
+      "accent": "#dc2626"
     },
     {
-      id: 'insurance', label: 'Insurance', labelFr: 'Assurance', labelSw: 'Bima', icon: '🛡️',
-      desc: 'Car, health, life, funeral, business, travel — 300+ calculators, 54 countries',
-      descFr: 'Auto, santé, vie, obsèques, entreprise, voyage — 300+ calculateurs, 54 pays',
-      descSw: 'Gari, afya, maisha, mazishi, biashara, safari — vikokotoo 300+, nchi 54',
-      href: '/insurance/', hrefFr: '/fr/health-insurance/', color: '#f0f4f8', accent: '#1e3a5f',
-      tools: [
-        { label: 'Car Insurance Estimator', href: '/tools/car-insurance/', emoji: '🚗', badge: 'LIVE' },
-        { label: 'Health Insurance Comparator', href: '/tools/health-insurance-compare/', emoji: '🏥', badge: 'LIVE' },
-        { label: 'Life Insurance Calculator', href: '/tools/life-insurance-calc/', emoji: '💚', badge: 'LIVE' },
-        { label: 'Funeral Insurance Calculator', href: '/tools/funeral-insurance/', emoji: '🕯️', badge: 'LIVE' },
-        { label: 'Motor Third-Party Premium', href: '/tools/motor-third-party/', emoji: '🛣️', badge: 'LIVE' },
-        { label: 'Business Insurance Estimator', href: '/tools/business-insurance/', emoji: '🏢', badge: 'LIVE' },
-        { label: 'Travel Insurance Estimator', href: '/tools/travel-insurance/', emoji: '✈️', badge: 'LIVE' },
-        { label: 'Workers Compensation', href: '/tools/workers-comp/', emoji: '👷', badge: 'LIVE' },
-        { label: 'Health Contribution (NHIF/SHIF)', href: '/tools/health-contribution/', emoji: '🩺', badge: 'LIVE' },
-        { label: 'All Insurance Tools →', href: '/insurance/', emoji: '🛡️' },
-      ],
-      toolsSw: [
-        { label: 'Bima', href: '/sw/bima/', emoji: 'BIMA', badge: 'LIVE' },
-        { label: 'Afya na Bima', href: '/sw/afya-na-bima/', emoji: 'HEALTH', badge: 'LIVE' },
-        { label: 'Kilinganisha bima ya afya', href: '/sw/zana/kilinganisha-bima-ya-afya/', emoji: 'BIMA', badge: 'LIVE' },
-        { label: 'Kikokotoo bima ya gari', href: '/sw/zana/kikokotoo-bima-ya-gari/', emoji: 'CAR', badge: 'LIVE' },
-        { label: 'Kikokotoo bima ya biashara', href: '/sw/zana/kikokotoo-bima-ya-biashara/', emoji: 'BIZ', badge: 'LIVE' }
-      ]
+      "id": "insurance",
+      "label": "Insurance",
+      "labelFr": "Assurance",
+      "labelSw": "Bima",
+      "icon": "🛡️",
+      "desc": "Car, health, life, funeral, business, travel — 300+ calculators, 54 countries",
+      "descFr": "Auto, santé, vie, obsèques, entreprise, voyage — 300+ calculateurs, 54 pays",
+      "descSw": "Gari, afya, maisha, mazishi, biashara, safari — vikokotoo 300+, nchi 54",
+      "href": "/insurance/",
+      "hrefFr": "/fr/health-insurance/",
+      "color": "#f0f4f8",
+      "accent": "#1e3a5f"
     },
     {
-      id: 'fintech', label: 'Fintech & Banking', labelFr: 'Fintech & Banque', labelSw: 'Fintech na Benki', icon: '💳',
-      desc: 'Savings, loans, mobile money, remittance — 54 countries',
-      descFr: 'Épargne, prêts, mobile money, transferts — 54 pays',
-      descSw: 'Akiba, mikopo, pesa za simu, uhamisho — nchi 54',
-      href: '/fintech/', color: '#f5f3ff', accent: '#8b5cf6',
-      tools: [
-        { label: 'Remittance Fee Comparator', href: '/tools/remittance-compare/', emoji: '💸', badge: 'LIVE' },
-        { label: 'Mobile Money vs Bank Transfer', href: '/tools/mobile-vs-bank/', emoji: '📱', badge: 'LIVE' },
-        { label: 'Fixed Deposit Rate Comparator', href: '/tools/fixed-deposit/', emoji: '🏦', badge: 'LIVE' },
-        { label: 'Treasury Bill Yield Calculator', href: '/tools/tbill-calc/', emoji: '📊', badge: 'LIVE' },
-        { label: 'Real Return After Inflation', href: '/tools/real-return/', emoji: '📈', badge: 'LIVE' },
-        { label: 'Loan Shark vs Bank Rate', href: '/tools/loan-shark-compare/', emoji: '⚠️', badge: 'LIVE' },
-        { label: 'Microfinance Loan Calculator', href: '/tools/microfinance-loan/', emoji: '🤝', badge: 'LIVE' },
-        { label: 'Digital Lending App Rates', href: '/tools/digital-lending/', emoji: '📲', badge: 'LIVE' },
-        { label: 'SACCO/Credit Union Calculator', href: '/tools/sacco-calc/', emoji: '🏘️', badge: 'LIVE' },
-        { label: 'Payment Gateway Fee Compare', href: '/tools/payment-gateway/', emoji: '💳', badge: 'LIVE' },
-        { label: 'BNPL Cost Calculator', href: '/tools/bnpl-calc/', emoji: '🛒', badge: 'LIVE' },
-        { label: 'Emergency Fund Calculator', href: '/tools/emergency-fund/', emoji: '🛡️', badge: 'LIVE' },
-        { label: 'All Fintech Tools →', href: '/fintech/', emoji: '💳' },
-      ],
-      toolsSw: [
-        { label: 'Fintech na Benki', href: '/sw/fintech/', emoji: 'FIN', badge: 'LIVE' },
-        { label: 'Mali, Nyumba na Mikopo', href: '/sw/mali-na-mikopo/', emoji: 'LOAN', badge: 'LIVE' },
-        { label: 'Kikokotoo cha mkopo wa nyumba', href: '/sw/zana/kikokotoo-mkopo-wa-nyumba/', emoji: 'LOAN', badge: 'LIVE' },
-        { label: 'Mkopo wa gari', href: '/sw/zana/mkopo-wa-gari/', emoji: 'CAR', badge: 'LIVE' }
-      ]
+      "id": "fintech",
+      "label": "Fintech & Banking",
+      "labelFr": "Fintech & Banque",
+      "labelSw": "Fintech na Benki",
+      "icon": "💳",
+      "desc": "Savings, loans, mobile money, remittance — 54 countries",
+      "descFr": "Épargne, prêts, mobile money, transferts — 54 pays",
+      "descSw": "Akiba, mikopo, pesa za simu, uhamisho — nchi 54",
+      "href": "/fintech/",
+      "color": "#f5f3ff",
+      "accent": "#8b5cf6"
     },
     {
-      id: 'agriculture', label: 'Agriculture', labelFr: 'Agriculture', labelSw: 'Kilimo', labelHa: 'Noma', icon: '🌾',
-      desc: 'Crop yield, seed rate, fertilizer, irrigation, farm profit — 54 countries',
-      descFr: 'Rendement, semences, engrais, irrigation, profit agricole — 54 pays',
-      descSw: 'Mavuno, mbegu, mbolea, umwagiliaji, faida ya shamba — nchi 54',
-      descHa: 'Amfanin gona, taki, riba, rogo da kasuwa ga Najeriya',
-      href: '/agriculture/', hrefFr: '/fr/agriculture/', hrefSw: '/sw/kilimo/', hrefHa: '/ha/noma/', hrefYo: '/yo/ogbin/', color: '#E8F2FF', accent: '#0062CC',
-      tools: [
-        { label: 'Crop Yield Estimators', href: '/agriculture/crop-yield/', emoji: '🌱', badge: 'LIVE' },
-        { label: 'Seed Rate Calculators', href: '/agriculture/seed-rate/', emoji: '🌿', badge: 'LIVE' },
-        { label: 'Fertilizer Calculators', href: '/agriculture/fertilizer/', emoji: '🧪', badge: 'LIVE' },
-        { label: 'Irrigation Calculators', href: '/agriculture/irrigation/', emoji: '💧', badge: 'LIVE' },
-        { label: 'Farm Profit/Loss Calculator', href: '/agriculture/farm-profit/', emoji: '📊', badge: 'LIVE' },
-      ],
-      toolsSw: [
-        { label: 'Kitovu cha kilimo', href: '/sw/kilimo/', emoji: 'AG', badge: 'LIVE' },
-        { label: 'Makisio ya mavuno', href: '/sw/zana/makisio-ya-mavuno/', emoji: 'YLD', badge: 'LIVE' },
-        { label: 'Kikokotoo cha mbolea', href: '/sw/zana/kikokotoo-mbolea/', emoji: 'NPK', badge: 'LIVE' },
-        { label: 'Kikokotoo cha umwagiliaji', href: '/sw/zana/kikokotoo-umwagiliaji/', emoji: 'H2O', badge: 'LIVE' },
-        { label: 'Mavuno Kenya', href: '/sw/kilimo/mavuno/kenya/', emoji: 'KE', badge: 'LIVE' },
-        { label: 'Mbolea Tanzania', href: '/sw/kilimo/mbolea/tanzania/', emoji: 'TZ', badge: 'LIVE' },
-        { label: 'Umwagiliaji Uganda', href: '/sw/kilimo/umwagiliaji/uganda/', emoji: 'UG', badge: 'LIVE' }
-      ],
-      toolsHa: [
-        { label: 'Noma a Hausa', href: '/ha/noma/', emoji: 'AGR', badge: 'HA' },
-        { label: 'Amfanin gona Najeriya', href: '/ha/noma/amfanin-gona-najeriya/', emoji: 'YLD', badge: 'HA' },
-        { label: 'Taki Najeriya', href: '/ha/noma/taki-najeriya/', emoji: 'NPK', badge: 'HA' },
-        { label: 'Ribar gona', href: '/ha/kayan-aiki/ribar-gona/', emoji: 'ROI', badge: 'HA' },
-        { label: 'Sarrafa rogo', href: '/ha/kayan-aiki/sarrafa-rogo/', emoji: 'ROGO', badge: 'HA' },
-        { label: 'Kwandon kasuwa', href: '/ha/kayan-aiki/kwandon-kasuwa/', emoji: 'BASK', badge: 'HA' },
-        { label: 'Farashin kayayyakin gona', href: '/ha/kayan-aiki/farashin-kayayyakin-gona/', emoji: 'MKT', badge: 'HA' },
-        { label: 'Abincin dabbobi', href: '/ha/kayan-aiki/abincin-dabbobi/', emoji: 'FEED', badge: 'HA' },
-        { label: 'Ribar kiwon kifi', href: '/ha/kayan-aiki/ribar-kiwon-kifi/', emoji: 'FISH', badge: 'HA' },
-        { label: 'Ban ruwa Najeriya', href: '/ha/noma/ban-ruwa-najeriya/', emoji: 'H2O', badge: 'HA' },
-        { label: 'Yawan iri Najeriya', href: '/ha/noma/yawan-iri-najeriya/', emoji: 'IRI', badge: 'HA' },
-        { label: 'Kalandar shuka', href: '/ha/noma/kalandar-shuka/', emoji: 'CAL', badge: 'HA' },
-        { label: 'Hadarin fari', href: '/ha/noma/hadarin-fari/', emoji: 'DRY', badge: 'HA' },
-        { label: 'Duk kayan noma ->', href: '/ha/noma/', emoji: 'ALL' }
-      ],
-      toolsYo: [
-        { label: 'Ọ̀gbìn ni Yorùbá', href: '/yo/ogbin/', emoji: 'AGR', badge: 'YO' },
-        { label: 'Èrè oko', href: '/yo/awon-ise/ere-ogbin/', emoji: 'ROI', badge: 'YO' },
-        { label: 'Èso irúgbìn', href: '/yo/awon-ise/eso-irugbin/', emoji: 'YLD', badge: 'YO' },
-        { label: 'Iwọn ajílẹ̀', href: '/yo/awon-ise/iwon-ajile/', emoji: 'NPK', badge: 'YO' },
-        { label: 'Ṣíṣe rogo', href: '/yo/awon-ise/sise-rogo/', emoji: 'ROGO', badge: 'YO' },
-        { label: 'Ìsúná ọ̀gbìn', href: '/yo/awon-ise/isuna-ogbin/', emoji: 'BUD', badge: 'YO' },
-        { label: 'Àgbọn ọjà', href: '/yo/awon-ise/agbon-oja/', emoji: 'BASK', badge: 'YO' },
-        { label: 'Iye ọjà ọ̀gbìn', href: '/yo/awon-ise/owo-oja-ogbin/', emoji: 'MKT', badge: 'YO' },
-        { label: 'Oúnjẹ ẹranko', href: '/yo/awon-ise/ounje-eranko/', emoji: 'FEED', badge: 'YO' },
-        { label: 'Èrè oko ẹja', href: '/yo/awon-ise/ere-oko-eja/', emoji: 'FISH', badge: 'YO' },
-        { label: 'Omi oko - ojú ìwé Gẹẹsi', href: '/agriculture/irrigation/nigeria', emoji: 'H2O', badge: 'EN' },
-        { label: 'Gbogbo iṣẹ́ ọ̀gbìn ->', href: '/yo/ogbin/', emoji: 'ALL' }
-      ],
+      "id": "agriculture",
+      "label": "Agriculture",
+      "labelFr": "Agriculture",
+      "labelSw": "Kilimo",
+      "labelHa": "Noma",
+      "icon": "🌾",
+      "desc": "Crop yield, seed rate, fertilizer, irrigation, farm profit — 54 countries",
+      "descFr": "Rendement, semences, engrais, irrigation, profit agricole — 54 pays",
+      "descSw": "Mavuno, mbegu, mbolea, umwagiliaji, faida ya shamba — nchi 54",
+      "descHa": "Amfanin gona, taki, riba, rogo da kasuwa ga Najeriya",
+      "href": "/agriculture/",
+      "hrefFr": "/fr/agriculture/",
+      "hrefSw": "/sw/kilimo/",
+      "hrefHa": "/ha/noma/",
+      "hrefYo": "/yo/ogbin/",
+      "color": "#E8F2FF",
+      "accent": "#0062CC"
     },
     {
-      id: 'ecommerce', label: 'VAT & Business Tax', labelFr: 'TVA & Fiscalité', labelSw: 'VAT na Kodi', icon: '🧾',
-      desc: 'VAT, margins, break-even', descFr: 'TVA, marges, seuil de rentabilité', descSw: 'VAT, faida, hatua ya usawa',
-      href: '/vat-business-tax/', hrefFr: '/fr/vat-business-tax/', hrefSw: '/sw/vat-na-kodi/', hrefHa: '/ha/kasuwanci-da-haraji/', hrefYo: '/yo/owo-ori-owo-ise/', color: '#fff7ed', accent: '#f59e0b',
-      tools: [
-        { label: 'Pan-African VAT Calculator', href: '/tools/vat-calculator/', emoji: '💱', badge: 'LIVE' },
-        { label: 'Nigeria VAT (7.5%)', href: '/nigeria/ng-vat', emoji: '🇳🇬', badge: 'LIVE' },
-        { label: 'South Africa VAT (15%)', href: '/south-africa/za-vat', emoji: '🇿🇦', badge: 'LIVE' },
-        { label: 'Kenya VAT (16%)', href: '/kenya/ke-vat', emoji: '🇰🇪', badge: 'LIVE' },
-        { label: 'Ghana VAT + NHIL', href: '/ghana/gh-vat', emoji: '🇬🇭', badge: 'LIVE' },
-        { label: 'Egypt VAT (14%)', href: '/egypt/eg-vat', emoji: '🇪🇬', badge: 'LIVE' },
-        { label: 'All 50+ VAT Calculators →', href: '/vat-business-tax/', emoji: '🧾' },
-      ],
-      toolsSw: [
-        { label: 'VAT nchi 54', href: '/sw/zana/kikokotoo-vat/', emoji: 'VAT', badge: 'LIVE' },
-        { label: 'Mwongozo wa TIN', href: '/sw/zana/mwongozo-tin/', emoji: 'TIN', badge: 'LIVE' },
-        { label: 'TIN Kenya', href: '/sw/zana/mwongozo-tin/kenya/', emoji: 'TIN', badge: 'LIVE' },
-        { label: 'TIN Nigeria', href: '/sw/zana/mwongozo-tin/nigeria/', emoji: 'TIN', badge: 'LIVE' },
-        { label: 'TIN Ghana', href: '/sw/zana/mwongozo-tin/ghana/', emoji: 'TIN', badge: 'LIVE' },
-        { label: 'TIN Tanzania', href: '/sw/zana/mwongozo-tin/tanzania/', emoji: 'TIN', badge: 'LIVE' },
-        { label: 'TIN Uganda', href: '/sw/zana/mwongozo-tin/uganda/', emoji: 'TIN', badge: 'LIVE' },
-        { label: 'TIN Rwanda', href: '/sw/zana/mwongozo-tin/rwanda/', emoji: 'TIN', badge: 'LIVE' },
-        { label: 'TIN South Africa', href: '/sw/zana/mwongozo-tin/south-africa/', emoji: 'TIN', badge: 'LIVE' },
-        { label: 'Usajili wa biashara', href: '/sw/zana/usajili-biashara/', emoji: 'REG', badge: 'LIVE' },
-        { label: 'Kizalishaji ankara', href: '/sw/zana/kizalishaji-ankara/', emoji: 'INV', badge: 'LIVE' },
-        { label: 'Break-even', href: '/sw/zana/kikokotoo-break-even/', emoji: 'BE', badge: 'LIVE' },
-        { label: 'Biashara na uzingatiaji', href: '/sw/biashara-na-uzingatiaji/', emoji: 'BIZ', badge: 'LIVE' },
-        { label: 'Zana zote za VAT na biashara ->', href: '/sw/vat-na-kodi/', emoji: 'ALL' }
-      ],
-      toolsHa: [
-        { label: 'Kalkuletan VAT', href: '/ha/kayan-aiki/kalkuletan-vat/', emoji: 'VAT', badge: 'HA' },
-        { label: 'VAT da harajin kasuwanci', href: '/ha/kasuwanci-da-haraji/', emoji: 'TAX', badge: 'HA' },
-        { label: 'PAYE na Najeriya', href: '/ha/najeriya/harajin-albashi/', emoji: 'PAYE', badge: 'HA' },
-        { label: 'Kirkiro takardar kudi', href: '/ha/kayan-aiki/kirkiro-invoice/', emoji: 'INV', badge: 'HA' },
-        { label: 'CIT na Najeriya', href: '/ha/kayan-aiki/cit-najeriya/', emoji: 'CIT', badge: 'HA' },
-        { label: 'WHT na Najeriya', href: '/ha/kayan-aiki/wht-najeriya/', emoji: 'WHT', badge: 'HA' },
-        { label: 'Jagorar TIN', href: '/ha/kayan-aiki/jagorar-tin-najeriya/', emoji: 'TIN', badge: 'HA' },
-        { label: 'Rajistar kasuwanci', href: '/ha/kayan-aiki/rajistar-kasuwanci/', emoji: 'REG', badge: 'HA' },
-        { label: 'Dawo da jari', href: '/ha/kayan-aiki/dawo-da-jari/', emoji: 'BE', badge: 'HA' },
-        { label: 'Duk kayan VAT ->', href: '/ha/kasuwanci-da-haraji/', emoji: 'ALL' }
-      ],
-      toolsYo: [
-        { label: 'VAT àti owó-orí iṣẹ́', href: '/yo/owo-ori-owo-ise/', emoji: 'VAT', badge: 'YO' },
-        { label: 'Kalkuletan VAT', href: '/yo/awon-ise/kalkuletan-vat/', emoji: 'VAT', badge: 'YO' },
-        { label: 'Ìtọnisọna TIN', href: '/yo/awon-ise/tin-naijiria/', emoji: 'TIN', badge: 'YO' },
-        { label: 'Kalkuletan CIT', href: '/yo/awon-ise/cit-naijiria/', emoji: 'CIT', badge: 'YO' },
-        { label: 'Kalkuletan WHT', href: '/yo/awon-ise/wht-naijiria/', emoji: 'WHT', badge: 'YO' },
-        { label: 'Ìforúkọsílẹ̀ iṣẹ́', href: '/yo/awon-ise/forukosile-owo-ise/', emoji: 'CAC', badge: 'YO' },
-        { label: 'Kíriíro ìwé owó', href: '/yo/awon-ise/kiriiro-invoice/', emoji: 'INV', badge: 'YO' },
-        { label: 'Kíriíro risiti', href: '/yo/awon-ise/kiriiro-risiti/', emoji: 'RCT', badge: 'YO' },
-        { label: 'Break-even - ojú ìwé Gẹẹsi', href: '/tools/break-even/', emoji: 'BE', badge: 'EN' },
-        { label: 'Gbogbo VAT àti owó-orí ->', href: '/yo/owo-ori-owo-ise/', emoji: 'ALL' }
-      ],
+      "id": "ecommerce",
+      "label": "VAT & Business Tax",
+      "labelFr": "TVA & Fiscalité",
+      "labelSw": "VAT na Kodi",
+      "icon": "🧾",
+      "desc": "VAT, margins, break-even",
+      "descFr": "TVA, marges, seuil de rentabilité",
+      "descSw": "VAT, faida, hatua ya usawa",
+      "href": "/vat-business-tax/",
+      "hrefFr": "/fr/vat-business-tax/",
+      "hrefSw": "/sw/vat-na-kodi/",
+      "hrefHa": "/ha/kasuwanci-da-haraji/",
+      "hrefYo": "/yo/owo-ori-owo-ise/",
+      "color": "#fff7ed",
+      "accent": "#f59e0b"
     },
     {
-      id: 'legal', label: 'Legal & Compliance', labelFr: 'Juridique & Conformité', labelSw: 'Kisheria & Uzingatiaji', icon: '⚖️',
-      desc: 'Business registration, contracts, data privacy, personal legal — 54 countries',
-      descFr: 'Enregistrement, contrats, confidentialité, juridique personnel — 54 pays',
-      descSw: 'Usajili wa biashara, mikataba, faragha ya data, kisheria — nchi 54',
-      href: '/legal/', hrefFr: '/fr/legal/', color: '#f5f3ff', accent: '#7c3aed',
-      tools: [
-        { label: 'Business Registration Checklist', href: '/tools/business-registration/', emoji: '📋', badge: 'LIVE' },
-        { label: 'Company Type Selector', href: '/tools/company-type-selector/', emoji: '🏢', badge: 'LIVE' },
-        { label: 'NDA Generator', href: '/tools/nda-generator/', emoji: '📄', badge: 'LIVE' },
-        { label: 'Privacy Policy Generator', href: '/tools/privacy-policy-gen/', emoji: '🔒', badge: 'LIVE' },
-        { label: 'Will / Testament Generator', href: '/tools/will-generator/', emoji: '📜', badge: 'LIVE' },
-        { label: 'NDPA Compliance Checker', href: '/tools/ndpa-checker/', emoji: '🇳🇬', badge: 'LIVE' },
-        { label: 'POPIA Compliance Checker', href: '/tools/popia-checker/', emoji: '🇿🇦', badge: 'LIVE' },
-        { label: 'Child Support Calculator', href: '/tools/child-support/', emoji: '👶', badge: 'LIVE' },
-        { label: 'Court Fee Calculator', href: '/tools/court-fees/', emoji: '⚖️', badge: 'LIVE' },
-        { label: 'All Legal Tools →', href: '/legal/', emoji: '⚖️' },
-      ],
-      toolsSw: [
-        { label: 'Kizalishaji NDA', href: '/sw/zana/kizalishaji-nda/', emoji: 'NDA', badge: 'LIVE' },
-        { label: 'Azimio la bodi', href: '/sw/zana/azimio-la-bodi/', emoji: 'BODI', badge: 'LIVE' },
-        { label: 'Tamko la kisheria', href: '/sw/zana/tamko-la-kisheria/', emoji: 'LAW', badge: 'LIVE' },
-        { label: 'Nguvu ya wakili', href: '/sw/zana/nguvu-ya-wakili/', emoji: 'POA', badge: 'LIVE' }
-      ]
+      "id": "legal",
+      "label": "Legal & Compliance",
+      "labelFr": "Juridique & Conformité",
+      "labelSw": "Kisheria & Uzingatiaji",
+      "icon": "⚖️",
+      "desc": "Business registration, contracts, data privacy, personal legal — 54 countries",
+      "descFr": "Enregistrement, contrats, confidentialité, juridique personnel — 54 pays",
+      "descSw": "Usajili wa biashara, mikataba, faragha ya data, kisheria — nchi 54",
+      "href": "/legal/",
+      "hrefFr": "/fr/legal/",
+      "color": "#f5f3ff",
+      "accent": "#7c3aed"
     },
     {
-      id: 'data-productivity', label: 'Business & ROI', labelFr: 'Business & ROI', labelSw: 'Biashara na Faida', icon: '📊',
-      desc: 'Productivity, data, investment', descFr: 'Productivité, données, investissement', descSw: 'Tija, data, uwekezaji',
-      href: '/data-productivity/', hrefFr: '/fr/data-productivity/', hrefSw: '/sw/data-na-tija/', color: '#eef2ff', accent: '#6366f1',
-      tools: [
-        { label: 'Monthly Budget Planner', href: '/tools/budget-planner/', emoji: '📋', badge: 'LIVE' },
-        { label: 'Unit Converter (African)', href: '/tools/unit-converter/', emoji: '📏', badge: 'LIVE' },
-        { label: 'Public Holiday Calendar', href: '/tools/public-holidays/', emoji: '📅', badge: 'LIVE' },
-        { label: 'Working Days Calculator', href: '/tools/working-days/', emoji: '📆', badge: 'LIVE' },
-        { label: 'Time Zone Converter', href: '/tools/time-zone/', emoji: '🕐', badge: 'LIVE' },
-        { label: 'Age Calculator', href: '/tools/age-calculator/', emoji: '🎂', badge: 'LIVE' },
-        { label: 'Pomodoro Timer', href: '/tools/pomodoro/', emoji: '🍅', badge: 'LIVE' },
-        { label: 'All Business & ROI Tools →', href: '/data-productivity/', emoji: '📊' },
-      ],
-      toolsSw: [
-        { label: 'Biashara na Faida', href: '/sw/biashara-na-faida/', emoji: 'ROI', badge: 'LIVE' },
-        { label: 'Data na Tija', href: '/sw/data-na-tija/', emoji: 'DATA', badge: 'LIVE' },
-        { label: 'Kikokotoo break-even', href: '/sw/zana/kikokotoo-break-even/', emoji: 'BE', badge: 'LIVE' },
-        { label: 'Mpango bajeti', href: '/sw/zana/mpango-bajeti/', emoji: 'BUD', badge: 'LIVE' },
-        { label: 'Unit economics', href: '/sw/zana/unit-economics/', emoji: 'UNIT', badge: 'LIVE' }
-      ]
+      "id": "data-productivity",
+      "label": "Business & ROI",
+      "labelFr": "Business & ROI",
+      "labelSw": "Biashara na Faida",
+      "icon": "📊",
+      "desc": "Productivity, data, investment",
+      "descFr": "Productivité, données, investissement",
+      "descSw": "Tija, data, uwekezaji",
+      "href": "/data-productivity/",
+      "hrefFr": "/fr/data-productivity/",
+      "hrefSw": "/sw/data-na-tija/",
+      "color": "#eef2ff",
+      "accent": "#6366f1"
     },
     {
-      id: 'language', label: 'Language & Translation', labelFr: 'Langues & Traduction', labelSw: 'Lugha na Tafsiri', icon: '🗣️',
-      desc: 'Yoruba, Swahili, Hausa, Amharic', descFr: 'Yoruba, Swahili, Haoussa, Amharique', descSw: 'Kiyoruba, Kiswahili, Kihausa, Kiamhari',
-      href: '/language/', hrefFr: '/fr/language/', hrefSw: '/sw/lugha-na-tafsiri/', hrefHa: '/ha/harshe-da-fassara/', hrefYo: '/yo/ede-ati-itumo/', color: '#faf5ff', accent: '#a855f7',
-      tools: [
-        { label: 'Nigerian Pidgin Translator', href: '/tools/pidgin-translator/', emoji: '🗣️', badge: 'LIVE' },
-        { label: 'Swahili Translator', href: '/tools/swahili-translator/', emoji: '🌍', badge: 'LIVE' },
-        { label: 'Yoruba Translator', href: '/tools/yoruba-translator/', emoji: '🇳🇬', badge: 'LIVE' },
-        { label: 'Hausa Translator', href: '/tools/hausa-translator/', emoji: '🇳🇬', badge: 'LIVE' },
-        { label: 'Amharic Translator', href: '/tools/amharic-translator/', emoji: '🇪🇹', badge: 'LIVE' },
-        { label: 'African Name Meaning', href: '/tools/african-name-meaning/', emoji: '✨', badge: 'LIVE' },
-        { label: 'Francophone Africa Translator', href: '/tools/french-african/', emoji: '🇨🇮', badge: 'LIVE' },
-        { label: 'All Language Tools →', href: '/language/', emoji: '🗣️' },
-      ],
-      toolsSw: [
-        { label: 'Lugha na Tafsiri', href: '/sw/lugha-na-tafsiri/', emoji: 'LANG', badge: 'LIVE' },
-        { label: 'Mtafsiri wa Kiswahili', href: '/sw/zana/mtafsiri-wa-kiswahili/', emoji: 'SW', badge: 'LIVE' },
-        { label: 'Mtafsiri wa Kifaransa Afrika', href: '/sw/zana/mtafsiri-wa-kifaransa-afrika/', emoji: 'FR', badge: 'LIVE' },
-        { label: 'Kutafsiri PDF', href: '/sw/zana/kutafsiri-pdf/', emoji: 'PDF', badge: 'LIVE' },
-        { label: 'Transliteration ya maandishi', href: '/sw/zana/transliteration-ya-maandishi/', emoji: 'TXT', badge: 'LIVE' }
-      ],
-      toolsHa: [
-        { label: 'Mai fassara Hausa', href: '/ha/kayan-aiki/mai-fassara-hausa/', emoji: 'HA', badge: 'HA' },
-        { label: 'Kalmomin kasuwa', href: '/ha/kayan-aiki/mai-fassara-hausa/', emoji: 'PHR', badge: 'HA' },
-        { label: 'Sunayen Afirka', href: '/tools/african-name-meaning/', emoji: 'NAME', badge: 'EN' },
-        { label: 'Karin magana', href: '/tools/african-proverbs/', emoji: 'PROV', badge: 'EN' },
-        { label: 'Fassarar PDF - shafi na Turanci', href: '/tools/pdf-translate/', emoji: 'PDF', badge: 'EN' },
-        { label: 'Mai fassara Yoruba - shafi na Turanci', href: '/tools/yoruba-translator/', emoji: 'YO', badge: 'EN' },
-        { label: 'Mai fassara Swahili - shafi na Turanci', href: '/tools/swahili-translator/', emoji: 'SW', badge: 'EN' },
-        { label: 'Duk kayan harshe ->', href: '/ha/harshe-da-fassara/', emoji: 'ALL' }
-      ],
-      toolsYo: [
-        { label: 'Èdè àti Ìtumọ̀', href: '/yo/ede-ati-itumo/', emoji: 'LANG', badge: 'YO' },
-        { label: 'Olùfàssara Yorùbá', href: '/yo/awon-ise/olufassara-yoruba/', emoji: 'YO', badge: 'YO' },
-        { label: 'Yorùbá phrasebook tó gbooro - ojú ìwé Gẹẹsi', href: '/tools/yoruba-translator/', emoji: 'YO', badge: 'EN' },
-        { label: 'Hausa translator - ojú ìwé Gẹẹsi', href: '/tools/hausa-translator/', emoji: 'HA', badge: 'EN' },
-        { label: 'Igbo translator - ojú ìwé Gẹẹsi', href: '/tools/igbo-translator/', emoji: 'IG', badge: 'EN' },
-        { label: 'Swahili translator - ojú ìwé Gẹẹsi', href: '/tools/swahili-translator/', emoji: 'SW', badge: 'EN' },
-        { label: 'Pidgin translator - ojú ìwé Gẹẹsi', href: '/tools/pidgin-translator/', emoji: 'PG', badge: 'EN' },
-        { label: 'Ìtumọ̀ PDF - ojú ìwé Gẹẹsi', href: '/tools/pdf-translate/', emoji: 'PDF', badge: 'EN' },
-        { label: 'Gbogbo iṣẹ́ èdè ->', href: '/yo/ede-ati-itumo/', emoji: 'ALL' }
-      ]
+      "id": "language",
+      "label": "Language & Translation",
+      "labelFr": "Langues & Traduction",
+      "labelSw": "Lugha na Tafsiri",
+      "icon": "🗣️",
+      "desc": "Yoruba, Swahili, Hausa, Amharic",
+      "descFr": "Yoruba, Swahili, Haoussa, Amharique",
+      "descSw": "Kiyoruba, Kiswahili, Kihausa, Kiamhari",
+      "href": "/language/",
+      "hrefFr": "/fr/language/",
+      "hrefSw": "/sw/lugha-na-tafsiri/",
+      "hrefHa": "/ha/harshe-da-fassara/",
+      "hrefYo": "/yo/ede-ati-itumo/",
+      "color": "#faf5ff",
+      "accent": "#a855f7"
     },
     {
-      id: 'african', label: 'Uniquely African', labelFr: 'Spécialités Africaines', labelSw: 'Vya Kiafrika', icon: '🌍',
-      desc: 'Japa, generator, ajo, mobile money', descFr: 'Épargne collective, mobile money, recettes', descSw: 'Japa, jenereta, chama, pesa za simu',
-      href: '/african/', hrefFr: '/fr/african/', color: '#fef2f2', accent: '#dc2626',
-      tools: [
-        { label: 'Lobola Calculator', href: '/tools/lobola-calculator/', emoji: '🐄', badge: 'LIVE' },
-        { label: 'AfroPoints — Earn Money', href: '/tools/afropoints/', emoji: '🎯', badge: 'NEW' },
-        { label: 'AfroAtlas Explorer', href: '/tools/afroatlas/', emoji: '🌍', badge: 'NEW' },
-        { label: 'AfroKitchen Recipes', href: '/tools/afrokitchen/', emoji: '🍲', badge: 'LIVE' },
-        { label: 'AfroConflict', href: '/tools/africa-conflict/', emoji: '⚔️', badge: 'LIVE' },
-      ],
-      toolsSw: [
-        { label: 'Nchi za Afrika', href: '/sw/nchi/', emoji: 'AFR', badge: 'LIVE' },
-        { label: 'Blogu ya Kiswahili', href: '/sw/blogu/', emoji: 'BLOG', badge: 'LIVE' },
-        { label: 'Ada za pesa simu', href: '/sw/zana/ada-pesa-simu/', emoji: 'MOMO', badge: 'LIVE' },
-        { label: 'Jikoni la AfroTools', href: '/sw/zana/jikoni/', emoji: 'FOOD', badge: 'LIVE' },
-        { label: 'Zana zote za Kiswahili ->', href: '/sw/zana-zote/', emoji: 'ALL' }
-      ]
+      "id": "african",
+      "label": "Uniquely African",
+      "labelFr": "Spécialités Africaines",
+      "labelSw": "Vya Kiafrika",
+      "icon": "🌍",
+      "desc": "Japa, generator, ajo, mobile money",
+      "descFr": "Épargne collective, mobile money, recettes",
+      "descSw": "Japa, jenereta, chama, pesa za simu",
+      "href": "/african/",
+      "hrefFr": "/fr/african/",
+      "color": "#fef2f2",
+      "accent": "#dc2626"
     },
     {
-      id: 'francophone', label: 'Outils en Français', icon: '🇫🇷',
-      desc: 'Salaire net, TVA — 14 pays',
-      href: '/fr/', color: '#eef6ff', accent: '#0055A4',
-      tools: [
-        { label: "Côte d'Ivoire — Salaire", href: '/fr/cote-divoire/calculateur-salaire-net', emoji: '🇨🇮', badge: 'LIVE' },
-        { label: 'Sénégal — Salaire', href: '/fr/senegal/calculateur-salaire-net', emoji: '🇸🇳', badge: 'LIVE' },
-        { label: 'Cameroun — Salaire', href: '/fr/cameroun/calculateur-salaire-net', emoji: '🇨🇲', badge: 'LIVE' },
-        { label: 'RD Congo — Salaire', href: '/fr/rdc/calculateur-salaire-net', emoji: '🇨🇩', badge: 'LIVE' },
-        { label: 'Maroc — Salaire', href: '/fr/maroc/calculateur-salaire-net', emoji: '🇲🇦', badge: 'LIVE' },
-        { label: 'Algérie — Salaire', href: '/fr/algerie/calculateur-salaire-net', emoji: '🇩🇿', badge: 'LIVE' },
-        { label: 'Tunisie — Salaire', href: '/fr/tunisie/calculateur-salaire-net', emoji: '🇹🇳', badge: 'LIVE' },
-        { label: 'Mali — Salaire', href: '/fr/mali/calculateur-salaire-net', emoji: '🇲🇱', badge: 'LIVE' },
-        { label: 'Burkina Faso — Salaire', href: '/fr/burkina-faso/calculateur-salaire-net', emoji: '🇧🇫', badge: 'LIVE' },
-        { label: 'Niger — Salaire', href: '/fr/niger/calculateur-salaire-net', emoji: '🇳🇪', badge: 'LIVE' },
-        { label: 'Guinée — Salaire', href: '/fr/guinee/calculateur-salaire-net', emoji: '🇬🇳', badge: 'LIVE' },
-        { label: 'Congo — Salaire', href: '/fr/congo/calculateur-salaire-net', emoji: '🇨🇬', badge: 'LIVE' },
-        { label: 'Gabon — Salaire', href: '/fr/gabon/calculateur-salaire-net', emoji: '🇬🇦', badge: 'LIVE' },
-        { label: 'Togo — Salaire', href: '/fr/togo/calculateur-salaire-net', emoji: '🇹🇬', badge: 'LIVE' },
-        { label: 'Tous les calculateurs TVA →', href: '/fr/', emoji: '🧾' },
-      ]
+      "id": "francophone",
+      "label": "Outils en Français",
+      "icon": "🇫🇷",
+      "desc": "Salaire net, TVA — 14 pays",
+      "href": "/fr/",
+      "color": "#eef6ff",
+      "accent": "#0055A4"
     },
     {
-      id: 'trade', label: 'Trade & Import', labelFr: 'Commerce & Import', labelSw: 'Biashara na Uagizaji', icon: '🚢',
-      desc: 'LC, duties, incoterms, ECOWAS, SADC, AfCFTA', descFr: 'LC, droits de douane, incotermes', descSw: 'LC, ushuru, incoterms, ECOWAS, SADC, AfCFTA',
-      href: '/trade/', hrefFr: '/fr/trade/', color: '#E8F2FF', accent: '#0062CC',
-      tools: [
-        { label: 'AfCFTA Tariff Tracker', href: '/tools/afcfta-tracker/', emoji: '🌍', badge: 'LIVE' },
-        { label: 'Landed Cost Calculator', href: '/tools/landed-cost/', emoji: '📦', badge: 'LIVE' },
-        { label: 'Shipping Cost Estimator', href: '/tools/shipping-estimator/', emoji: '🚢', badge: 'LIVE' },
-        { label: 'FX Import Cost Impact', href: '/tools/fx-import-impact/', emoji: '💱', badge: 'LIVE' },
-        { label: 'LC Fee Calculator', href: '/tools/lc-calculator/', emoji: '🏦', badge: 'LIVE' },
-        { label: 'Export Docs Checklist', href: '/tools/export-docs/', emoji: '📋', badge: 'LIVE' },
-        { label: 'Certificate of Origin', href: '/tools/coo-generator/', emoji: '📜', badge: 'LIVE' },
-        { label: 'Port Demurrage Calculator', href: '/tools/demurrage-calculator/', emoji: '⚓', badge: 'LIVE' },
-        { label: 'Incoterms 2020 Calculator', href: '/tools/incoterms-calculator/', emoji: '⚖️', badge: 'LIVE' },
-        { label: 'Trade Finance Comparator', href: '/tools/trade-finance-comparator/', emoji: '💼', badge: 'NEW' },
-        { label: 'Commodity Trade Tracker', href: '/tools/commodity-tracker/', emoji: '📈', badge: 'NEW' },
-        { label: 'B2B Payment Comparator', href: '/tools/payment-comparator/', emoji: '💸', badge: 'NEW' },
-        { label: 'ECOWAS Levy Calculator', href: '/tools/ecowas-levy/', emoji: '🌍', badge: 'NEW' },
-        { label: 'SADC Rules of Origin', href: '/tools/sadc-roo/', emoji: '🌐', badge: 'NEW' },
-        { label: 'EAC Common External Tariff', href: '/tools/eac-cet/', emoji: '🏷️', badge: 'NEW' },
-        { label: 'Proforma Invoice Generator', href: '/tools/proforma-invoice/', emoji: '📄', badge: 'NEW' },
-        { label: 'Packing List Generator', href: '/tools/packing-list/', emoji: '📦', badge: 'NEW' },
-        { label: 'Bill of Lading Template', href: '/tools/bol-generator/', emoji: '🚢', badge: 'NEW' },
-      ],
-      toolsSw: [
-        { label: 'Biashara ya nje', href: '/sw/biashara-ya-nje/', emoji: 'TRADE', badge: 'LIVE' },
-        { label: 'Ushuru wa forodha', href: '/sw/zana/ushuru-forodha/', emoji: 'DUTY', badge: 'LIVE' },
-        { label: 'Gharama iliyofika', href: '/sw/zana/kikokotoo-gharama-iliyofika/', emoji: 'COST', badge: 'LIVE' },
-        { label: 'Ada za LC', href: '/sw/zana/ada-lc/', emoji: 'LC', badge: 'LIVE' },
-        { label: 'Incoterms', href: '/sw/zana/kikokotoo-incoterms/', emoji: 'INC', badge: 'LIVE' },
-        { label: 'Nyaraka za usafirishaji', href: '/sw/zana/orodha-nyaraka-usafirishaji/', emoji: 'DOC', badge: 'LIVE' }
-      ]
+      "id": "trade",
+      "label": "Trade & Import",
+      "labelFr": "Commerce & Import",
+      "labelSw": "Biashara na Uagizaji",
+      "icon": "🚢",
+      "desc": "LC, duties, incoterms, ECOWAS, SADC, AfCFTA",
+      "descFr": "LC, droits de douane, incotermes",
+      "descSw": "LC, ushuru, incoterms, ECOWAS, SADC, AfCFTA",
+      "href": "/trade/",
+      "hrefFr": "/fr/trade/",
+      "color": "#E8F2FF",
+      "accent": "#0062CC"
     },
     {
-      id: 'telecom', label: 'Telecom & Mobile', labelFr: 'Télécom & Mobile', labelSw: 'Mawasiliano', icon: '📱',
-      desc: 'Data plans, USSD codes, roaming, ISPs', descFr: 'Forfaits data, codes USSD, itinérance', descSw: 'Mipango ya data, misimbo ya USSD',
-      href: '/telecom/', hrefSw: '/sw/mawasiliano-na-mtandao/', hrefHa: '/ha/sadarwa/', hrefYo: '/yo/ibaraenisoro/', color: '#ECFEFF', accent: '#06B6D4',
-      tools: [
-        { label: 'Data Plan Comparator', href: '/telecom/data-plan-compare/', emoji: '📊', badge: 'LIVE' },
-        { label: 'USSD Code Directory', href: '/telecom/ussd-directory/', emoji: '📱', badge: 'LIVE' },
-        { label: 'Roaming Cost Calculator', href: '/telecom/roaming-cost/', emoji: '✈️', badge: 'LIVE' },
-        { label: 'Mobile Money Fees', href: '/tools/mobile-money-fees/', emoji: '💸', badge: 'LIVE' },
-        { label: 'Starlink vs Local ISP', href: '/telecom/starlink-compare/', emoji: '🛰️', badge: 'NEW' },
-        { label: 'DStv/GOtv Comparator', href: '/telecom/tv-compare/', emoji: '📺', badge: 'NEW' },
-        { label: 'Data Usage Calculator', href: '/telecom/data-usage-calc/', emoji: '📈', badge: 'LIVE' },
-        { label: 'Airtime to Cash Value', href: '/telecom/airtime-value/', emoji: '💰', badge: 'NEW' },
-        { label: 'Number Portability Guide', href: '/telecom/number-portability/', emoji: '🔄', badge: 'NEW' },
-        { label: 'SIM Registration Checker', href: '/telecom/sim-registration/', emoji: '🪪', badge: 'NEW' },
-        { label: 'Internet Speed vs Cost', href: '/telecom/internet-compare/', emoji: '🌐', badge: 'NEW' },
-        { label: 'All Telecom Tools →', href: '/telecom/', emoji: '📱' },
-      ],
-      toolsSw: [
-        { label: 'Mawasiliano na Mtandao', href: '/sw/mawasiliano-na-mtandao/', emoji: 'NET', badge: 'LIVE' },
-        { label: 'Internet na intaneti', href: '/sw/zana/kilinganisha-intaneti/', emoji: 'NET', badge: 'LIVE' },
-        { label: 'Starlink dhidi ya ISP za ndani', href: '/sw/zana/starlink-dhidi-ya-isp-za-ndani/', emoji: 'ISP', badge: 'LIVE' },
-        { label: 'Fiber dhidi ya LTE na 5G', href: '/sw/zana/fiber-dhidi-ya-lte-na-5g/', emoji: '5G', badge: 'LIVE' },
-        { label: 'Kiigaji USSD', href: '/sw/zana/kiigaji-ussd/', emoji: 'USSD', badge: 'LIVE' },
-        { label: 'Ada za pesa simu', href: '/sw/zana/ada-pesa-simu/', emoji: 'MOMO', badge: 'LIVE' }
-      ],
-      toolsHa: [
-        { label: 'Lambobin USSD', href: '/ha/kayan-aiki/lambobin-ussd/', emoji: 'USSD', badge: 'HA' },
-        { label: 'Link din WhatsApp', href: '/ha/kayan-aiki/whatsapp-link/', emoji: 'WA', badge: 'HA' },
-        { label: 'Kudin tura kudi ta waya', href: '/ha/kayan-aiki/kudin-tura-kudi-ta-waya/', emoji: 'FEE', badge: 'HA' },
-        { label: 'Kiyasin amfani da intanet', href: '/ha/kayan-aiki/amfanin-bayanan-intanet/', emoji: 'GB', badge: 'HA' },
-        { label: 'Rajistar layin waya da NIN', href: '/ha/kayan-aiki/rajistar-layin-waya-nin/', emoji: 'NIN', badge: 'HA' },
-        { label: 'Kwatanta kunshin intanet', href: '/ha/kayan-aiki/kwatanta-kunshin-intanet/', emoji: 'GB', badge: 'HA' },
-        { label: 'Darajar katin waya', href: '/ha/kayan-aiki/darajar-katin-waya/', emoji: 'KTN', badge: 'HA' },
-        { label: 'Gwajin USSD', href: '/ha/kayan-aiki/gwajin-ussd/', emoji: 'DEV', badge: 'HA' },
-        { label: 'Duk kayan sadarwa ->', href: '/ha/sadarwa/', emoji: 'ALL' }
-      ],
-      toolsYo: [
-        { label: 'Àwọn lambar USSD', href: '/yo/awon-ise/lambobin-ussd/', emoji: 'USSD', badge: 'YO' },
-        { label: 'Ìjápọ̀ WhatsApp', href: '/yo/awon-ise/whatsapp-link/', emoji: 'WA', badge: 'YO' },
-        { label: 'Ìṣirò GB oṣooṣù', href: '/yo/awon-ise/amulo-data/', emoji: 'GB', badge: 'YO' },
-        { label: 'SIM, NIN ati BVN', href: '/yo/awon-ise/rajista-sim-nin/', emoji: 'NIN', badge: 'YO' },
-        { label: 'Ìfiwéra pákẹ́ẹ̀jì GB - ojú ìwé Gẹẹsi', href: '/telecom/data-plan-compare/', emoji: 'GB', badge: 'EN' },
-        { label: 'Ìdánwò USSD - ojú ìwé Gẹẹsi', href: '/tools/ussd-simulator/', emoji: 'USSD', badge: 'EN' },
-        { label: 'Gbogbo ohun ìbáraẹnisọrọ ->', href: '/yo/ibaraenisoro/', emoji: 'ALL' }
-      ]
+      "id": "telecom",
+      "label": "Telecom & Mobile",
+      "labelFr": "Télécom & Mobile",
+      "labelSw": "Mawasiliano",
+      "icon": "📱",
+      "desc": "Data plans, USSD codes, roaming, ISPs",
+      "descFr": "Forfaits data, codes USSD, itinérance",
+      "descSw": "Mipango ya data, misimbo ya USSD",
+      "href": "/telecom/",
+      "hrefSw": "/sw/mawasiliano-na-mtandao/",
+      "hrefHa": "/ha/sadarwa/",
+      "hrefYo": "/yo/ibaraenisoro/",
+      "color": "#ECFEFF",
+      "accent": "#06B6D4"
     },
     {
-      id: 'energy', label: 'Energy & Utilities', labelFr: 'Énergie & Utilitaires', labelSw: 'Nishati na Huduma', icon: '⚡',
-      desc: 'Electricity tariff, solar ROI, generator fuel, water bills', descFr: 'Tarifs électricité, ROI solaire, coût générateur', descSw: 'Umeme, jua, mafuta ya jenereta, bili ya maji',
-      href: '/energy/', hrefFr: '/fr/energy/', color: '#FFFBEB', accent: '#F59E0B',
-      tools: [
-        { label: 'Electricity Tariff Calculator', href: '/tools/electricity-tariff/', emoji: '⚡', badge: 'LIVE' },
-        { label: 'Solar Panel ROI Calculator', href: '/tools/solar-roi/', emoji: '☀️', badge: 'LIVE' },
-        { label: 'Prepaid Meter Calculator', href: '/tools/prepaid-meter/', emoji: '🔢', badge: 'LIVE' },
-        { label: 'Generator Fuel Cost', href: '/tools/generator-fuel/', emoji: '⛽', badge: 'LIVE' },
-        { label: 'Solar vs Generator', href: '/tools/solar-vs-generator/', emoji: '⚖️', badge: 'LIVE' },
-        { label: 'Electricity Bill Verifier', href: '/tools/electricity-bill-verify/', emoji: '🔍', badge: 'LIVE' },
-        { label: 'Water Bill Calculator', href: '/tools/water-bill/', emoji: '💧', badge: 'LIVE' },
-        { label: 'Gas / LPG Cost', href: '/tools/gas-lpg-cost/', emoji: '🔥', badge: 'LIVE' },
-        { label: 'PayGo Solar Calculator', href: '/tools/paygo-solar/', emoji: '🌤️', badge: 'LIVE' },
-        { label: 'Outage Cost (Business)', href: '/tools/outage-cost/', emoji: '🔌', badge: 'LIVE' },
-        { label: 'Solar Sizing Calculator', href: '/tools/solar-sizing/', emoji: '🛠️', badge: 'LIVE' },
-        { label: 'Battery & Inverter Sizing', href: '/tools/battery-sizing/', emoji: '🔋', badge: 'LIVE' },
-        { label: 'Home Energy Audit', href: '/tools/energy-audit/', emoji: '🏠', badge: 'LIVE' },
-        { label: 'Appliance Power Calculator', href: '/tools/appliance-power/', emoji: '🔌', badge: 'LIVE' },
-        { label: 'Backup Duration Calculator', href: '/tools/backup-duration/', emoji: '🔦', badge: 'LIVE' },
-        { label: 'Diesel vs Solar Farm', href: '/tools/diesel-vs-solar-farm/', emoji: '🌾', badge: 'LIVE' },
-        { label: 'Mini-Grid Feasibility', href: '/tools/mini-grid-feasibility/', emoji: '🏘️', badge: 'LIVE' },
-        { label: 'Carbon Footprint (Energy)', href: '/tools/carbon-footprint-energy/', emoji: '🌍', badge: 'LIVE' },
-        { label: 'EV Charging Cost', href: '/tools/ev-charging/', emoji: '🚗', badge: 'LIVE' },
-        { label: 'Biogas Digester ROI', href: '/tools/biogas-roi/', emoji: '🐄', badge: 'LIVE' },
-        { label: 'All Energy Tools →', href: '/energy/', emoji: '⚡' },
-      ],
-      toolsFr: [
-        { label: 'Hub énergie', href: '/fr/energy/', emoji: '⚡', badge: 'FR' },
-        { label: 'Calculateur solaire', href: '/fr/tools/calculateur-solaire/', emoji: '☀️', badge: 'LIVE' },
-        { label: 'Estimateur électricité', href: '/fr/tools/estimateur-electricite/', emoji: '⚡', badge: 'LIVE' },
-        { label: 'Charge électrique', href: '/fr/tools/charge-electrique/', emoji: '🔌', badge: 'LIVE' },
-        { label: 'Dimensionnement générateur', href: '/fr/tools/dimensionnement-generateur/', emoji: 'GEN', badge: 'LIVE' },
-        { label: 'Carburant générateur', href: '/fr/tools/carburant-generateur/', emoji: '⛽', badge: 'LIVE' },
-        { label: 'Coût carburant', href: '/fr/tools/cout-carburant/', emoji: '⛽', badge: 'LIVE' },
-        { label: 'Coût forage', href: '/fr/tools/cout-forage/', emoji: '💧', badge: 'LIVE' },
-        { label: 'Tous les outils énergie →', href: '/fr/energy/', emoji: '⚡' },
-      ]
+      "id": "energy",
+      "label": "Energy & Utilities",
+      "labelFr": "Énergie & Utilitaires",
+      "labelSw": "Nishati na Huduma",
+      "icon": "⚡",
+      "desc": "Electricity tariff, solar ROI, generator fuel, water bills",
+      "descFr": "Tarifs électricité, ROI solaire, coût générateur",
+      "descSw": "Umeme, jua, mafuta ya jenereta, bili ya maji",
+      "href": "/energy/",
+      "hrefFr": "/fr/energy/",
+      "color": "#FFFBEB",
+      "accent": "#F59E0B"
     },
     {
-      id: 'engineering', label: 'Engineering', labelFr: 'Ingénierie', labelSw: 'Uhandisi', icon: '🔧',
-      desc: 'BOQ, concrete, electrical, rebar, roofing, construction budgets', descFr: 'Métré, béton, électrique, ferraillage', descSw: 'BOQ, zege, umeme, nondo, paa',
-      href: '/engineering/', hrefSw: '/sw/ujenzi-na-uhandisi/', color: '#f5f5f4', accent: '#78716c',
-      tools: [
-        { label: 'BOQ Builder', href: '/tools/boq-builder/', emoji: '📋', badge: 'LIVE' },
-        { label: 'Concrete Mix', href: '/tools/concrete-mix/', emoji: '🏗️', badge: 'LIVE' },
-        { label: 'Electrical Load', href: '/tools/electrical-load/', emoji: '⚡', badge: 'LIVE' },
-        { label: 'Rebar Calculator', href: '/tools/rebar-calculator/', emoji: '🔩', badge: 'NEW' },
-        { label: 'Roof Material Calculator', href: '/tools/roof-calculator/', emoji: '🏗️', badge: 'LIVE' },
-        { label: 'Tiles Calculator', href: '/tools/tiles-calc/', emoji: '🔲', badge: 'LIVE' },
-        { label: 'Paint Coverage Calculator', href: '/tools/paint-calculator/', emoji: '🎨', badge: 'LIVE' },
-        { label: 'Water Tank Size Calculator', href: '/tools/water-tank/', emoji: '💧', badge: 'LIVE' },
-        { label: 'Borehole Cost Estimator', href: '/tools/borehole-cost/', emoji: '🌊', badge: 'LIVE' },
-        { label: 'Home Renovation Budget', href: '/tools/home-renovation-cost/', emoji: '🏠', badge: 'LIVE' },
-        { label: 'Structural Load Calculator', href: '/tools/structural-calc/', emoji: '📐', badge: 'LIVE' },
-        { label: 'Septic Tank Size Calculator', href: '/tools/septic-tank/', emoji: '🚿', badge: 'NEW' },
-        { label: 'Fence Cost Calculator', href: '/tools/fence-cost/', emoji: '🧱', badge: 'NEW' },
-        { label: 'Swimming Pool Cost Estimator', href: '/tools/swimming-pool-cost/', emoji: '🏊', badge: 'NEW' },
-        { label: 'Architectural Drawing Fee Calc', href: '/tools/architectural-fee/', emoji: '📏', badge: 'NEW' },
-        { label: 'All Engineering Tools →', href: '/engineering/', emoji: '🔧' },
-      ],
-      toolsSw: [
-        { label: 'Ujenzi na Uhandisi', href: '/sw/ujenzi-na-uhandisi/', emoji: 'ENG', badge: 'LIVE' },
-        { label: 'Kikokotoo gharama za ujenzi', href: '/sw/zana/kikokotoo-gharama-za-ujenzi/', emoji: 'ENG', badge: 'LIVE' },
-        { label: 'Mjenzi BOQ', href: '/sw/zana/mjenzi-boq/', emoji: 'BOQ', badge: 'LIVE' },
-        { label: 'Kikokotoo nondo', href: '/sw/zana/kikokotoo-nondo/', emoji: 'REBAR', badge: 'LIVE' },
-        { label: 'Mchanganyiko wa zege', href: '/sw/zana/mchanganyiko-wa-zege/', emoji: 'CONC', badge: 'LIVE' },
-        { label: 'Vifaa vya paa', href: '/sw/zana/vifaa-vya-paa/', emoji: 'ROOF', badge: 'LIVE' },
-        { label: 'Ukubwa wa tangi la maji', href: '/sw/zana/ukubwa-wa-tangi-la-maji/', emoji: 'H2O', badge: 'LIVE' }
-      ]
+      "id": "engineering",
+      "label": "Engineering",
+      "labelFr": "Ingénierie",
+      "labelSw": "Uhandisi",
+      "icon": "🔧",
+      "desc": "BOQ, concrete, electrical, rebar, roofing, construction budgets",
+      "descFr": "Métré, béton, électrique, ferraillage",
+      "descSw": "BOQ, zege, umeme, nondo, paa",
+      "href": "/engineering/",
+      "hrefSw": "/sw/ujenzi-na-uhandisi/",
+      "color": "#f5f5f4",
+      "accent": "#78716c"
     },
     {
-      id: 'government', label: 'Government & Civic', labelFr: 'Gouvernement & Civique', labelSw: 'Serikali na Uraia', icon: '🏛️',
-      desc: 'Passports, ID, voter registration, pensions, land fees — 20 tools',
-      descFr: 'Passeports, identité, vote, retraites, foncier — 20 outils',
-      descSw: 'Pasipoti, vitambulisho, upigaji kura, pensheni — zana 20',
-      href: '/government/', color: '#eff6ff', accent: '#1d4ed8',
-      tools: [
-        { label: 'Passport Application Checklist', href: '/tools/passport-checklist/', emoji: '🛂', badge: 'NEW' },
-        { label: 'Visa Requirement Checker (Africa)', href: '/tools/visa-checker/', emoji: '✈️', badge: 'NEW' },
-        { label: 'National ID Registration Guide', href: '/tools/national-id-guide/', emoji: '🪪', badge: 'NEW' },
-        { label: 'Voter Registration Guide', href: '/tools/voter-registration/', emoji: '🗳️', badge: 'NEW' },
-        { label: 'National Pension Estimator', href: '/tools/national-pension/', emoji: '📈', badge: 'NEW' },
-        { label: 'Land Registry Fee Calculator', href: '/tools/land-registry-fees/', emoji: '🏠', badge: 'NEW' },
-        { label: 'Birth/Death Certificate Guide', href: '/tools/birth-death-cert/', emoji: '📜', badge: 'NEW' },
-        { label: 'Marriage Certificate Guide', href: '/tools/marriage-cert/', emoji: '💍', badge: 'NEW' },
-        { label: 'FOI Request Template', href: '/tools/foi-template/', emoji: '📋', badge: 'NEW' },
-        { label: 'Government Scholarship Finder', href: '/tools/gov-scholarship/', emoji: '🎓', badge: 'NEW' },
-        { label: 'Social Welfare Eligibility Checker', href: '/tools/social-welfare/', emoji: '🤝', badge: 'NEW' },
-        { label: 'Public Holiday Calendar', href: '/tools/public-holidays/', emoji: '📅', badge: 'LIVE' },
-        { label: 'Budget Allocation Comparator', href: '/tools/budget-comparator/', emoji: '📊', badge: 'NEW' },
-        { label: 'All Government Tools →', href: '/government/', emoji: '🏛️' },
-      ],
-      toolsSw: [
-        { label: 'Serikali na Nyaraka', href: '/sw/serikali-na-nyaraka/', emoji: 'GOV', badge: 'LIVE' },
-        { label: 'Usajili wa biashara', href: '/sw/zana/usajili-biashara/', emoji: 'REG', badge: 'LIVE' },
-        { label: 'Ada usajili wa ardhi', href: '/sw/zana/ada-usajili-wa-ardhi/', emoji: 'LAND', badge: 'LIVE' },
-        { label: 'Vyeti vya kuzaliwa na kifo', href: '/sw/zana/vyeti-vya-kuzaliwa-na-kifo/', emoji: 'CERT', badge: 'LIVE' }
-      ]
+      "id": "government",
+      "label": "Government & Civic",
+      "labelFr": "Gouvernement & Civique",
+      "labelSw": "Serikali na Uraia",
+      "icon": "🏛️",
+      "desc": "Passports, ID, voter registration, pensions, land fees — 20 tools",
+      "descFr": "Passeports, identité, vote, retraites, foncier — 20 outils",
+      "descSw": "Pasipoti, vitambulisho, upigaji kura, pensheni — zana 20",
+      "href": "/government/",
+      "color": "#eff6ff",
+      "accent": "#1d4ed8"
     },
     {
-      id: 'small-business', label: 'Small Business', labelFr: 'Petites Entreprises', labelSw: 'Biashara Ndogo', icon: '🏪',
-      desc: 'POS agents, mini-importation, market stalls, e-commerce — 45 tools',
-      descFr: 'Agents POS, mini-import, marchés, e-commerce — 45 outils',
-      descSw: 'Wakala wa POS, uagizaji, masoko, e-commerce — zana 45',
-      href: '/small-business/', color: '#fff7ed', accent: '#ea580c',
-      tools: [
-        { label: 'Startup Runway Calculator', href: '/tools/startup-runway/', emoji: '🚀', badge: 'NEW' },
-        { label: 'Market Size (TAM/SAM/SOM)', href: '/tools/tam-sam-som/', emoji: '📊', badge: 'NEW' },
-        { label: 'Unit Economics Calculator', href: '/tools/unit-economics/', emoji: '💡', badge: 'NEW' },
-        { label: 'Burn Rate Calculator', href: '/tools/burn-rate/', emoji: '🔥', badge: 'NEW' },
-        { label: 'Cash Flow Forecast Tool', href: '/tools/cash-flow-forecast/', emoji: '💰', badge: 'NEW' },
-        { label: 'POS Agent Business Calculator', href: '/tools/pos-agent/', emoji: '📱', badge: 'NEW' },
-        { label: 'Mini-Importation Profit Calc', href: '/tools/mini-importation/', emoji: '📦', badge: 'NEW' },
-        { label: 'Mama Put / Food Vendor Calc', href: '/tools/mama-put/', emoji: '🍲', badge: 'NEW' },
-        { label: 'Marketplace Fee Comparator', href: '/tools/marketplace-fees/', emoji: '🛍️', badge: 'NEW' },
-        { label: 'Market Stall Profit Calculator', href: '/tools/market-stall-profit/', emoji: '🏪', badge: 'LIVE' },
-        { label: 'AI Business Planner', href: '/tools/business-planner/', emoji: '📋', badge: 'LIVE' },
-        { label: 'Break-Even Calculator', href: '/tools/break-even/', emoji: '📉', badge: 'LIVE' },
-        { label: 'Churn Rate Calculator', href: '/tools/churn-rate/', emoji: '🔄', badge: 'NEW' },
-        { label: 'All SME Tools →', href: '/small-business/', emoji: '🏪' },
-      ],
-      toolsSw: [
-        { label: 'Biashara Ndogo', href: '/sw/biashara-ndogo/', emoji: 'SME', badge: 'LIVE' },
-        { label: 'Biashara na Faida', href: '/sw/biashara-na-faida/', emoji: 'ROI', badge: 'LIVE' },
-        { label: 'Startup runway', href: '/sw/zana/startup-runway/', emoji: 'RUN', badge: 'LIVE' },
-        { label: 'Mpango bajeti', href: '/sw/zana/mpango-bajeti/', emoji: 'BUD', badge: 'LIVE' },
-        { label: 'Orodha ya side hustle', href: '/sw/zana/orodha-ya-side-hustle/', emoji: 'SIDE', badge: 'LIVE' }
-      ]
+      "id": "small-business",
+      "label": "Small Business",
+      "labelFr": "Petites Entreprises",
+      "labelSw": "Biashara Ndogo",
+      "icon": "🏪",
+      "desc": "POS agents, mini-importation, market stalls, e-commerce — 45 tools",
+      "descFr": "Agents POS, mini-import, marchés, e-commerce — 45 outils",
+      "descSw": "Wakala wa POS, uagizaji, masoko, e-commerce — zana 45",
+      "href": "/small-business/",
+      "color": "#fff7ed",
+      "accent": "#ea580c"
     },
     {
-      id: 'transport', label: 'Transport & Logistics', labelFr: 'Transport & Logistique', labelSw: 'Usafiri na Usafirishaji', icon: '🚛',
-      desc: 'Fuel, vehicle import, ride fares, boda-boda — 54 countries',
-      descFr: 'Carburant, importation véhicule, tarifs taxi, logistique — 54 pays',
-      descSw: 'Mafuta, gari, nauli, boda-boda — nchi 54',
-      href: '/transport/', hrefFr: '/fr/transport/', color: '#fef3c7', accent: '#d97706',
-      tools: [
-        { label: 'Fuel Cost per Trip Calculator', href: '/tools/fuel-cost/', emoji: '⛽', badge: 'LIVE' },
-        { label: 'Import Duty & Landed Cost Calculator', href: '/tools/import-duty/', emoji: 'BOX', badge: 'LIVE' },
-        { label: 'Ride-Hailing Fare Estimator', href: '/tools/ride-fare/', emoji: '🛺', badge: 'LIVE' },
-        { label: 'Boda-Boda/Okada Income Calc', href: '/tools/boda-income/', emoji: '🏍️', badge: 'LIVE' },
-        { label: 'Matatu/Danfo Route Fare Calc', href: '/tools/matatu-fare/', emoji: '🚌', badge: 'LIVE' },
-        { label: 'Delivery Cost Estimator', href: '/tools/delivery-cost/', emoji: '📦', badge: 'LIVE' },
-        { label: 'Car Loan vs Cash Purchase', href: '/tools/car-loan-vs-cash/', emoji: '💰', badge: 'LIVE' },
-        { label: 'Vehicle Import Checklist', href: '/tools/vehicle-registration/', emoji: '🪪', badge: 'LIVE' },
-        { label: 'Road Worthiness Checklist', href: '/tools/roadworthiness/', emoji: '✅', badge: 'LIVE' },
-        { label: 'Vehicle Depreciation Calc', href: '/tools/vehicle-depreciation/', emoji: '📉', badge: 'NEW' },
-        { label: 'All Transport Tools →', href: '/transport/', emoji: '🚛' },
-      ],
-      toolsFr: [
-        { label: 'Hub transport', href: '/fr/transport/', emoji: '🚛', badge: 'FR' },
-        { label: 'Voitures, prix et import', href: '/fr/cars/', emoji: '🚗', badge: 'LIVE' },
-        { label: 'Commerce et import', href: '/fr/trade/', emoji: 'BOX', badge: 'LIVE' },
-        { label: 'Coût carburant', href: '/fr/tools/cout-carburant/', emoji: '⛽', badge: 'LIVE' },
-        { label: 'Carburant générateur', href: '/fr/tools/carburant-generateur/', emoji: 'GEN', badge: 'LIVE' },
-        { label: 'Calculateur d’expédition', href: '/fr/tools/calculateur-expedition/', emoji: '📦', badge: 'LIVE' },
-        { label: 'Estimateur de fret', href: '/fr/tools/estimateur-fret/', emoji: '🚢', badge: 'LIVE' },
-        { label: 'Droits de douane', href: '/fr/tools/droits-douane/', emoji: '🧾', badge: 'LIVE' },
-        { label: 'Tous les outils transport →', href: '/fr/transport/', emoji: '🚛' },
-      ]
+      "id": "transport",
+      "label": "Transport & Logistics",
+      "labelFr": "Transport & Logistique",
+      "labelSw": "Usafiri na Usafirishaji",
+      "icon": "🚛",
+      "desc": "Fuel, vehicle import, ride fares, boda-boda — 54 countries",
+      "descFr": "Carburant, importation véhicule, tarifs taxi, logistique — 54 pays",
+      "descSw": "Mafuta, gari, nauli, boda-boda — nchi 54",
+      "href": "/transport/",
+      "hrefFr": "/fr/transport/",
+      "color": "#fef3c7",
+      "accent": "#d97706"
     },
     {
-      id: 'personal-finance', label: 'Personal Finance', labelFr: 'Finance Personnelle', labelSw: 'Fedha Binafsi', icon: '💼',
-      desc: 'Budgeting, life events, tax extensions — 25 tools for African realities',
-      descFr: 'Budget, événements de vie, impôts — 25 outils pour réalités africaines',
-      descSw: 'Bajeti, matukio ya maisha, kodi — zana 25 kwa hali ya Afrika',
-      href: '/personal-finance/', color: '#f0fdf4', accent: '#16a34a',
-      tools: [
-        { label: '50/30/20 Budget Calculator', href: '/tools/50-30-20-budget/', emoji: '💰', badge: 'NEW' },
-        { label: 'All Personal Finance Tools →', href: '/personal-finance/', emoji: '💼' },
-      ]
+      "id": "personal-finance",
+      "label": "Personal Finance",
+      "labelFr": "Finance Personnelle",
+      "labelSw": "Fedha Binafsi",
+      "icon": "💼",
+      "desc": "Budgeting, life events, tax extensions — 25 tools for African realities",
+      "descFr": "Budget, événements de vie, impôts — 25 outils pour réalités africaines",
+      "descSw": "Bajeti, matukio ya maisha, kodi — zana 25 kwa hali ya Afrika",
+      "href": "/personal-finance/",
+      "color": "#f0fdf4",
+      "accent": "#16a34a"
     },
     {
-      id: 'diaspora', label: 'Diaspora', labelFr: 'Diaspora', labelSw: 'Diaspora', icon: '✈️',
-      desc: 'Visa tracking, immigration, remittances — 17 tools for Africans abroad',
-      descFr: 'Visa, immigration, transferts — 17 outils pour Africains à l\'étranger',
-      descSw: 'Visa, uhamiaji, uhamisho — zana 17 kwa Waafrika nje',
-      href: '/diaspora/', color: '#eff6ff', accent: '#2563eb',
-      tools: [
-        { label: 'Japa Calculator', href: '/tools/japa-calculator/', emoji: '🌍', badge: 'NEW' },
-        { label: 'Visa Tracker', href: '/tools/visa-tracker/', emoji: '📝', badge: 'NEW' },
-        { label: 'Immigration Points Calculator', href: '/tools/immigration-points/', emoji: '📊', badge: 'NEW' },
-        { label: 'All Diaspora Tools →', href: '/diaspora/', emoji: '✈️' },
-      ]
+      "id": "diaspora",
+      "label": "Diaspora",
+      "labelFr": "Diaspora",
+      "labelSw": "Diaspora",
+      "icon": "✈️",
+      "desc": "Visa tracking, immigration, remittances — 17 tools for Africans abroad",
+      "descFr": "Visa, immigration, transferts — 17 outils pour Africains à l'étranger",
+      "descSw": "Visa, uhamiaji, uhamisho — zana 17 kwa Waafrika nje",
+      "href": "/diaspora/",
+      "color": "#eff6ff",
+      "accent": "#2563eb"
     },
     {
-      id: 'religious-cultural', label: 'Religious & Cultural', labelFr: 'Religieux & Culturel', labelSw: 'Dini na Utamaduni', icon: '🕌',
-      desc: 'Zakat, prayer times, Ramadan, halal, proverbs — Islamic, Christian & Traditional',
-      descFr: 'Zakat, heures de prière, Ramadan, halal, proverbes — Islam, Christianisme & Tradition',
-      descSw: 'Zaka, nyakati za sala, Ramadhan, halali, methali — Kiislamu, Kikristo & Jadi',
-      href: '/religious-cultural/', color: '#fffbeb', accent: '#d97706',
-      tools: [
-        { label: 'Zakat Calculator', href: '/tools/zakat-calculator/', emoji: '🌙', badge: 'NEW' },
-        { label: 'Prayer Times Calculator', href: '/tools/prayer-times/', emoji: '🕌', badge: 'NEW' },
-        { label: 'Ramadan Timetable', href: '/tools/ramadan-timetable/', emoji: '📅', badge: 'NEW' },
-        { label: 'Halal Compliance Checker', href: '/tools/halal-compliance/', emoji: '✅', badge: 'NEW' },
-        { label: 'Hajj Budget Planner', href: '/tools/hajj-budget/', emoji: '🕋', badge: 'NEW' },
-        { label: 'Islamic Calendar', href: '/tools/islamic-calendar/', emoji: '🗓️', badge: 'NEW' },
-        { label: 'Tithe Calculator', href: '/tools/tithe-calculator/', emoji: '⛪', badge: 'NEW' },
-        { label: 'Wedding Budget Planner', href: '/tools/wedding-budget/', emoji: '💒', badge: 'NEW' },
-        { label: 'African Proverbs Library', href: '/tools/african-proverbs/', emoji: '📖', badge: 'NEW' },
-        { label: 'Naming Ceremony Cost Calc', href: '/tools/naming-ceremony/', emoji: '🎉', badge: 'NEW' },
-        { label: 'All Religious & Cultural Tools →', href: '/religious-cultural/', emoji: '🕌' },
-      ],
-      toolsSw: [
-        { label: 'Dini na Utamaduni', href: '/sw/dini-na-utamaduni/', emoji: 'CULT', badge: 'LIVE' },
-        { label: 'Kikokotoo cha zakat', href: '/sw/zana/kikokotoo-zakat/', emoji: 'ZK', badge: 'LIVE' },
-        { label: 'Bajeti ya Hajj na Umrah', href: '/sw/zana/bajeti-ya-hajj-na-umrah/', emoji: 'HU', badge: 'LIVE' },
-        { label: 'Bajeti ya harusi', href: '/sw/zana/bajeti-ya-harusi/', emoji: 'WED', badge: 'LIVE' },
-        { label: 'Nyakati za swala na Qibla', href: '/sw/zana/nyakati-za-swala-na-qibla/', emoji: 'QIB', badge: 'LIVE' },
-        { label: 'Ratiba ya Ramadhani', href: '/sw/zana/ratiba-ya-ramadhani/', emoji: 'RAM', badge: 'LIVE' }
-      ]
+      "id": "religious-cultural",
+      "label": "Religious & Cultural",
+      "labelFr": "Religieux & Culturel",
+      "labelSw": "Dini na Utamaduni",
+      "icon": "🕌",
+      "desc": "Zakat, prayer times, Ramadan, halal, proverbs — Islamic, Christian & Traditional",
+      "descFr": "Zakat, heures de prière, Ramadan, halal, proverbes — Islam, Christianisme & Tradition",
+      "descSw": "Zaka, nyakati za sala, Ramadhan, halali, methali — Kiislamu, Kikristo & Jadi",
+      "href": "/religious-cultural/",
+      "color": "#fffbeb",
+      "accent": "#d97706"
     },
     {
-      id: 'climate', label: 'Climate & Environment', labelFr: 'Climat & Environnement', labelSw: 'Hali ya Hewa na Mazingira', icon: '🌿',
-      desc: 'Carbon credits, drought risk, flood risk, air quality, e-waste — 54 countries',
-      descFr: 'Crédits carbone, risque sécheresse, qualité air, déchets — 54 pays',
-      descSw: 'Mikopo ya kaboni, ukame, mafuriko, hali ya hewa — nchi 54',
-      href: '/climate/', color: '#f0fdf4', accent: '#059669',
-      tools: [
-        { label: 'Carbon Credit Calculator', href: '/tools/carbon-credit/', emoji: '🌱', badge: 'NEW' },
-        { label: 'Drought Risk Assessor', href: '/tools/drought-risk/', emoji: '☀️', badge: 'NEW' },
-        { label: 'Flood Risk Calculator', href: '/tools/flood-risk/', emoji: '🌊', badge: 'NEW' },
-        { label: 'Air Quality Index Tool', href: '/tools/air-quality/', emoji: '🌬️', badge: 'NEW' },
-        { label: 'Tree Planting ROI', href: '/tools/tree-planting-roi/', emoji: '🌳', badge: 'NEW' },
-        { label: 'E-Waste Value Calculator', href: '/tools/ewaste-value/', emoji: '♻️', badge: 'NEW' },
-        { label: 'Water Scarcity Estimator', href: '/tools/water-scarcity/', emoji: '💧', badge: 'NEW' },
-        { label: 'Recycling Revenue Calculator', href: '/tools/recycling-revenue/', emoji: '🗃️', badge: 'NEW' },
-        { label: 'Sustainability Scorecard', href: '/tools/sustainability-scorecard/', emoji: '📊', badge: 'NEW' },
-        { label: 'Charcoal vs Clean Energy', href: '/tools/charcoal-vs-clean/', emoji: '⚡', badge: 'NEW' },
-        { label: 'All Climate Tools →', href: '/climate/', emoji: '🌿' },
-      ]
+      "id": "climate",
+      "label": "Climate & Environment",
+      "labelFr": "Climat & Environnement",
+      "labelSw": "Hali ya Hewa na Mazingira",
+      "icon": "🌿",
+      "desc": "Carbon credits, drought risk, flood risk, air quality, e-waste — 54 countries",
+      "descFr": "Crédits carbone, risque sécheresse, qualité air, déchets — 54 pays",
+      "descSw": "Mikopo ya kaboni, ukame, mafuriko, hali ya hewa — nchi 54",
+      "href": "/climate/",
+      "color": "#f0fdf4",
+      "accent": "#059669"
     },
     {
-      id: 'sports', label: 'Sports & Entertainment', labelFr: 'Sports & Divertissement', labelSw: 'Michezo na Burudani', icon: '⚽',
-      desc: 'Betting odds, AFCON predictor, music royalties, Nollywood — 54 countries',
-      descFr: 'Cotes paris, prédicteur AFCON, redevances musicales, Nollywood — 54 pays',
-      descSw: 'Uwezekano wa kubeti, AFCON, mrabaha wa muziki — nchi 54',
-      href: '/sports/', color: '#fdf4ff', accent: '#9333ea',
-      tools: [
-        { label: 'Betting Odds Calculator', href: '/tools/betting-odds/', emoji: '🎲', badge: 'NEW' },
-        { label: 'AFCON Match Predictor', href: '/tools/afcon-predictor/', emoji: '🏆', badge: 'NEW' },
-        { label: 'Fantasy Football Value Calc', href: '/tools/fantasy-football/', emoji: '⚽', badge: 'NEW' },
-        { label: 'Betting Tax Calculator', href: '/tools/betting-tax/', emoji: '🧾', badge: 'NEW' },
-        { label: 'Streaming Royalties Estimator', href: '/tools/streaming-royalties/', emoji: '🎵', badge: 'NEW' },
-        { label: 'DJ Booking Rate Calculator', href: '/tools/dj-booking-rate/', emoji: '🎧', badge: 'NEW' },
-        { label: 'Concert Budget Planner', href: '/tools/concert-budget/', emoji: '🎤', badge: 'NEW' },
-        { label: 'Event Ticket Revenue Calc', href: '/tools/event-ticket-revenue/', emoji: '🎟️', badge: 'NEW' },
-        { label: 'Nollywood Box Office Tracker', href: '/tools/nollywood-box-office/', emoji: '🎬', badge: 'NEW' },
-        { label: 'Sports Scholarship Estimator', href: '/tools/sports-scholarship/', emoji: '🎓', badge: 'NEW' },
-        { label: 'All Sports & Entertainment Tools →', href: '/sports/', emoji: '⚽' },
-      ]
+      "id": "sports",
+      "label": "Sports & Entertainment",
+      "labelFr": "Sports & Divertissement",
+      "labelSw": "Michezo na Burudani",
+      "icon": "⚽",
+      "desc": "Betting odds, AFCON predictor, music royalties, Nollywood — 54 countries",
+      "descFr": "Cotes paris, prédicteur AFCON, redevances musicales, Nollywood — 54 pays",
+      "descSw": "Uwezekano wa kubeti, AFCON, mrabaha wa muziki — nchi 54",
+      "href": "/sports/",
+      "color": "#fdf4ff",
+      "accent": "#9333ea"
     },
     {
-      id: 'mining', label: 'Mining & Extractives', labelFr: 'Mines & Extractives', labelSw: 'Madini na Uchimbaji', icon: '⛏️',
-      desc: 'Gold, diamonds, oil, mining royalties — Africa holds 30% of world minerals',
-      descFr: 'Or, diamants, pétrole, redevances minières — l\'Afrique détient 30% des minéraux',
-      descSw: 'Dhahabu, almasi, mafuta, mrabaha wa madini — Afrika ina 30% ya madini',
-      href: '/mining/', color: '#fef9c3', accent: '#ca8a04',
-      tools: [
-        { label: 'Gold Price Tracker', href: '/tools/commodity-tracker/', emoji: '🥇', badge: 'NEW' },
-        { label: 'All Mining Tools →', href: '/mining/', emoji: '⛏️' },
-      ]
+      "id": "mining",
+      "label": "Mining & Extractives",
+      "labelFr": "Mines & Extractives",
+      "labelSw": "Madini na Uchimbaji",
+      "icon": "⛏️",
+      "desc": "Gold, diamonds, oil, mining royalties — Africa holds 30% of world minerals",
+      "descFr": "Or, diamants, pétrole, redevances minières — l'Afrique détient 30% des minéraux",
+      "descSw": "Dhahabu, almasi, mafuta, mrabaha wa madini — Afrika ina 30% ya madini",
+      "href": "/mining/",
+      "color": "#fef9c3",
+      "accent": "#ca8a04"
     },
     {
-      id: 'creative', label: 'Creative Economy', labelFr: 'Économie Créative', labelSw: 'Uchumi wa Ubunifu', icon: '🎨',
-      desc: 'Music royalties, Nollywood, African fashion, content creator tools',
-      descFr: 'Droits musicaux, Nollywood, mode africaine, créateurs de contenu',
-      descSw: 'Mrabaha wa muziki, Nollywood, mitindo ya Afrika, waundaji wa maudhui',
-      href: '/creative/', color: '#FDF4FF', accent: '#DB2777',
-      tools: [
-        { label: 'ThumbnailForge — Thumbnail Maker', href: '/tools/creator-thumb/', emoji: '📸', badge: 'NEW' },
-        { label: 'CarouselStudio — Carousel Maker', href: '/tools/creator-carousel/', emoji: '🎞️', badge: 'NEW' },
-        { label: 'CreatorCalendar — Content Planner', href: '/tools/creator-calendar/', emoji: '📅', badge: 'NEW' },
-        { label: 'CreatorPage — Link Page & Store', href: '/tools/creator-page/', emoji: '🔗', badge: 'NEW' },
-        { label: 'CreatorPricing — Know Your Worth', href: '/tools/creator-pricing/', emoji: '💰', badge: 'LIVE' },
-        { label: 'CreatorMoney — Finance Tracker', href: '/tools/creator-money/', emoji: '📊', badge: 'LIVE' },
-        { label: 'CreatorSplit — Collab Splitter', href: '/tools/creator-split/', emoji: '🤝', badge: 'LIVE' },
-        { label: 'CreatorInvoice — Invoice Builder', href: '/tools/creator-invoice/', emoji: '🧾', badge: 'LIVE' },
-        { label: 'CreatorCanvas — Design Studio', href: '/tools/creator-canvas/', emoji: '🎨', badge: 'LIVE' },
-        { label: 'CreatorKit — Media Kit Builder', href: '/tools/creator-kit/', emoji: '✨', badge: 'LIVE' },
-        { label: 'CreatorDesk — Client & Project CRM', href: '/tools/creator-desk/', emoji: '📋', badge: 'LIVE' },
-        { label: 'CreatorMind — AI Script & Brief Writer', href: '/tools/creator-mind/', emoji: '🔮', badge: 'LIVE' },
-        { label: 'TitleSmith — Title & Headline Generator', href: '/tools/creator-titles/', emoji: '⚡', badge: 'NEW' },
-        { label: 'BioForge — Platform Bio Generator', href: '/tools/creator-bios/', emoji: '🌿', badge: 'NEW' },
-        { label: 'HookFactory — Video Hook Generator', href: '/tools/creator-hooks/', emoji: '🎣', badge: 'NEW' },
-        { label: 'TagWave — Hashtag Generator', href: '/tools/creator-hashtags/', emoji: '#️⃣', badge: 'NEW' },
-        { label: 'CaptionCraft — AI Caption Writer', href: '/tools/creator-captions/', emoji: '✍️', badge: 'NEW' },
-        { label: 'ScriptPad — Video Script Generator', href: '/tools/creator-scripts/', emoji: '📝', badge: 'NEW' },
-        { label: 'Repurpose — Content Repurposer', href: '/tools/creator-repurpose/', emoji: '♻️', badge: 'NEW' },
-        { label: 'ResizeKit — Social Image Resizer', href: '/tools/creator-resize/', emoji: '✂️', badge: 'NEW' },
-        { label: 'Music Royalty Splitter', href: '/tools/music-royalty-splitter/', emoji: '🎵', badge: 'NEW' },
-        { label: 'Album/EP Release Budget', href: '/tools/album-budget/', emoji: '💿', badge: 'NEW' },
-        { label: 'Fashion Brand Startup Cost', href: '/tools/fashion-brand-startup/', emoji: '👗', badge: 'NEW' },
-        { label: 'YouTube Revenue Estimator', href: '/tools/youtube-revenue/', emoji: '▶️', badge: 'NEW' },
-        { label: 'Influencer Rate Card Generator', href: '/tools/influencer-rate/', emoji: '📱', badge: 'NEW' },
-        { label: 'TikTok/IG Engagement Rate Calc', href: '/tools/engagement-rate/', emoji: '📊', badge: 'NEW' },
-        { label: 'Graphic Design Pricing', href: '/tools/graphic-design-pricing/', emoji: '🖼️', badge: 'NEW' },
-        { label: 'Event Decoration Cost Calc', href: '/tools/event-decoration-cost/', emoji: '🎪', badge: 'NEW' },
-        { label: 'Art Commission Price Calc', href: '/tools/art-commission/', emoji: '🎨', badge: 'NEW' },
-        { label: 'CreatorStock — Stock Media Browser', href: '/tools/creator-stock/', emoji: '🖼️', badge: 'NEW' },
-        { label: 'CreatorAnalytics — Performance Tracker', href: '/tools/creator-analytics/', emoji: '📈', badge: 'NEW' },
-        { label: 'CreatorRecord — Screen Recorder', href: '/tools/creator-record/', emoji: '🎬', badge: 'NEW' },
-        { label: 'CreatorPolish — AI Writing Tool', href: '/tools/creator-polish/', emoji: '✏️', badge: 'NEW' },
-        { label: 'CreatorClip — Video Clipper', href: '/tools/creator-clip/', emoji: '🎞️', badge: 'NEW' },
-        { label: 'CreatorVoice — Audio Recorder', href: '/tools/creator-voice/', emoji: '🎙️', badge: 'NEW' },
-        { label: 'CreatorMail — Newsletter Builder', href: '/tools/creator-mail/', emoji: '📧', badge: 'NEW' },
-        { label: 'CreatorClub — Membership Platform', href: '/tools/creator-club/', emoji: '🏆', badge: 'NEW' },
-        { label: 'CreatorCourse — Course Builder', href: '/tools/creator-course/', emoji: '🎓', badge: 'NEW' },
-        { label: 'CreatorResearch — AI Research', href: '/tools/creator-research/', emoji: '🔍', badge: 'NEW' },
-        { label: 'CreatorTeam — Collaboration', href: '/tools/creator-team/', emoji: '👥', badge: 'NEW' },
-        { label: 'CreatorBrand — Brand Kit Manager', href: '/tools/creator-brand/', emoji: '💎', badge: 'NEW' },
-        { label: 'CreatorSchedule — Social Scheduler', href: '/tools/creator-schedule/', emoji: '📅', badge: 'NEW' },
-        { label: 'All Creative Economy Tools →', href: '/creative/', emoji: '🎨' },
-      ]
+      "id": "creative",
+      "label": "Creative Economy",
+      "labelFr": "Économie Créative",
+      "labelSw": "Uchumi wa Ubunifu",
+      "icon": "🎨",
+      "desc": "Music royalties, Nollywood, African fashion, content creator tools",
+      "descFr": "Droits musicaux, Nollywood, mode africaine, créateurs de contenu",
+      "descSw": "Mrabaha wa muziki, Nollywood, mitindo ya Afrika, waundaji wa maudhui",
+      "href": "/creative/",
+      "color": "#FDF4FF",
+      "accent": "#DB2777"
     },
     {
-      id: 'afrostream', label: 'AfroStream', labelFr: 'AfroStream', labelSw: 'AfroStream', icon: '🎬',
-      desc: 'African creator streaming hub — live streams, rankings, net worth, news',
-      descFr: 'Hub de streaming pour créateurs africains — lives, classements, actualités',
-      descSw: 'Kituo cha utiririshaji wa waundaji wa Afrika — moja kwa moja, viwango',
-      href: '/tools/afrostream/', color: '#FAF5FF', accent: '#A855F7',
-      tools: [
-        { label: 'AfroStream — Live Now', href: '/tools/afrostream/', emoji: '🔴', badge: 'NEW' },
-        { label: 'Creator Rankings', href: '/tools/afrostream/rankings', emoji: '🏆', badge: 'NEW' },
-        { label: 'Creator News', href: '/tools/afrostream/news', emoji: '📰', badge: 'NEW' },
-        { label: 'Stream Calendar', href: '/tools/afrostream/calendar', emoji: '📅', badge: 'NEW' },
-        { label: 'Community Hub', href: '/tools/afrostream/community', emoji: '🤝', badge: 'NEW' },
-      ]
+      "id": "afrostream",
+      "label": "AfroStream",
+      "labelFr": "AfroStream",
+      "labelSw": "AfroStream",
+      "icon": "🎬",
+      "desc": "African creator streaming hub — live streams, rankings, net worth, news",
+      "descFr": "Hub de streaming pour créateurs africains — lives, classements, actualités",
+      "descSw": "Kituo cha utiririshaji wa waundaji wa Afrika — moja kwa moja, viwango",
+      "href": "/tools/afrostream/",
+      "color": "#FAF5FF",
+      "accent": "#A855F7"
     },
     {
-      id: 'security', label: 'Security & Safety', labelFr: 'Sécurité & Sûreté', labelSw: 'Usalama na Ulinzi', icon: '🔒',
-      desc: 'Home security, cybersecurity, business continuity, risk',
-      descFr: 'Sécurité domicile, cybersécurité, continuité d\'activité',
-      descSw: 'Usalama wa nyumba, mtandao, uendelevu wa biashara',
-      href: '/security/', color: '#F8FAFC', accent: '#475569',
-      tools: [
-        { label: 'Home Security Cost Estimator', href: '/tools/home-security-cost/', emoji: '🏠', badge: 'NEW' },
-        { label: 'CCTV System Cost Calculator', href: '/tools/cctv-cost/', emoji: '📷', badge: 'NEW' },
-        { label: 'Cybersecurity Risk Assessment', href: '/tools/cybersecurity-assessment/', emoji: '💻', badge: 'NEW' },
-        { label: 'Password Strength Checker', href: '/tools/password-strength/', emoji: '🔐', badge: 'NEW' },
-        { label: 'Phishing Detection Quiz', href: '/tools/phishing-quiz/', emoji: '🎣', badge: 'NEW' },
-        { label: 'Data Breach Cost Estimator', href: '/tools/data-breach-cost/', emoji: '⚠️', badge: 'NEW' },
-        { label: 'Vehicle Tracker ROI Calculator', href: '/tools/vehicle-tracker-roi/', emoji: '🚗', badge: 'NEW' },
-        { label: 'Fire Safety Compliance Checklist', href: '/tools/fire-safety-checklist/', emoji: '🔥', badge: 'NEW' },
-        { label: 'All Security Tools →', href: '/security/', emoji: '🔒' },
-      ]
+      "id": "security",
+      "label": "Security & Safety",
+      "labelFr": "Sécurité & Sûreté",
+      "labelSw": "Usalama na Ulinzi",
+      "icon": "🔒",
+      "desc": "Home security, cybersecurity, business continuity, risk",
+      "descFr": "Sécurité domicile, cybersécurité, continuité d'activité",
+      "descSw": "Usalama wa nyumba, mtandao, uendelevu wa biashara",
+      "href": "/security/",
+      "color": "#F8FAFC",
+      "accent": "#475569"
     },
     {
-      id: 'travel', label: 'Travel & Tourism', labelFr: 'Voyage & Tourisme', labelSw: 'Usafiri na Utalii', icon: '🌍',
-      desc: 'Safari cost, beach holidays, airport transfers, packing lists',
-      descFr: 'Coût safari, vacances plage, transferts aéroport, listes d\'emballage',
-      descSw: 'Gharama ya safari, likizo pwani, usafiri wa uwanja',
-      href: '/travel/', color: '#F0F9FF', accent: '#0EA5E9',
-      tools: [
-        { label: 'African Safari Cost Calculator', href: '/tools/safari-cost/', emoji: '🦁', badge: 'NEW' },
-        { label: 'Beach Holiday Budget (Africa)', href: '/tools/beach-holiday-budget/', emoji: '🏖️', badge: 'NEW' },
-        { label: 'Travel Vaccination Schedule', href: '/tools/travel-vaccination-cost/', emoji: '💉', badge: 'NEW' },
-        { label: 'Airport Transfer Comparator', href: '/tools/airport-transfer/', emoji: '🚗', badge: 'NEW' },
-        { label: 'Airbnb vs Hotel (Africa)', href: '/tools/airbnb-vs-hotel/', emoji: '🏨', badge: 'NEW' },
-        { label: 'Festival Travel Budget', href: '/tools/festival-travel-budget/', emoji: '🎪', badge: 'NEW' },
-        { label: 'Travel Packing List Generator', href: '/tools/travel-packing-list/', emoji: '🧳', badge: 'NEW' },
-        { label: 'All Travel Tools →', href: '/travel/', emoji: '🌍' },
-      ]
+      "id": "travel",
+      "label": "Travel & Tourism",
+      "labelFr": "Voyage & Tourisme",
+      "labelSw": "Usafiri na Utalii",
+      "icon": "🌍",
+      "desc": "Safari cost, beach holidays, airport transfers, packing lists",
+      "descFr": "Coût safari, vacances plage, transferts aéroport, listes d'emballage",
+      "descSw": "Gharama ya safari, likizo pwani, usafiri wa uwanja",
+      "href": "/travel/",
+      "color": "#F0F9FF",
+      "accent": "#0EA5E9"
     },
     {
-      id: 'career', label: 'Career & Development', labelFr: 'Carrière & Développement', labelSw: 'Kazi na Maendeleo', icon: '📈',
-      desc: 'Salary negotiation, freelance, personal brand, retirement',
-      descFr: 'Négociation salaire, freelance, marque personnelle, retraite',
-      descSw: 'Mazungumzo ya mshahara, uhuru, chapa ya kibinafsi, kustaafu',
-      href: '/career/', color: '#EEF2FF', accent: '#6366F1',
-      tools: [
-        { label: 'Salary Negotiation Calculator', href: '/tools/salary-negotiation/', emoji: '💼', badge: 'NEW' },
-        { label: 'Career Switch Financial Impact', href: '/tools/career-switch/', emoji: '🔄', badge: 'NEW' },
-        { label: 'Side Hustle Profitability Ranker', href: '/tools/side-hustle-ranker/', emoji: '💡', badge: 'NEW' },
-        { label: 'Personal Brand Audit Tool', href: '/tools/personal-brand-audit/', emoji: '⭐', badge: 'NEW' },
-        { label: 'LinkedIn Profile Optimizer', href: '/tools/linkedin-optimizer/', emoji: '🔗', badge: 'NEW' },
-        { label: 'Interview Preparation Checklist', href: '/tools/interview-prep/', emoji: '✅', badge: 'NEW' },
-        { label: 'Retirement Readiness Score', href: '/tools/retirement-readiness/', emoji: '🏖️', badge: 'NEW' },
-        { label: 'Career Growth Trajectory Calc', href: '/tools/career-growth/', emoji: '📈', badge: 'NEW' },
-        { label: 'All Career Tools →', href: '/career/', emoji: '📈' },
-      ],
-      toolsSw: [
-        { label: 'Kazi na Ajira', href: '/sw/kazi-na-ajira/', emoji: 'JOB', badge: 'LIVE' },
-        { label: 'Kazi na Nyaraka', href: '/sw/kazi-na-nyaraka/', emoji: 'DOC', badge: 'LIVE' },
-        { label: 'Maandalizi ya mahojiano', href: '/sw/zana/maandalizi-ya-mahojiano/', emoji: 'INT', badge: 'LIVE' },
-        { label: 'Majadiliano ya mshahara', href: '/sw/zana/majadiliano-ya-mshahara/', emoji: 'SAL', badge: 'LIVE' },
-        { label: 'Tathmini ya ofa ya kazi', href: '/sw/zana/tathmini-ya-ofa-ya-kazi/', emoji: 'OFA', badge: 'LIVE' }
-      ]
+      "id": "career",
+      "label": "Career & Development",
+      "labelFr": "Carrière & Développement",
+      "labelSw": "Kazi na Maendeleo",
+      "icon": "📈",
+      "desc": "Salary negotiation, freelance, personal brand, retirement",
+      "descFr": "Négociation salaire, freelance, marque personnelle, retraite",
+      "descSw": "Mazungumzo ya mshahara, uhuru, chapa ya kibinafsi, kustaafu",
+      "href": "/career/",
+      "color": "#EEF2FF",
+      "accent": "#6366F1"
     },
     {
-      id: 'afrowork', label: 'AfroWork Suite', labelFr: 'Suite AfroWork', labelSw: 'Mfumo wa AfroWork', icon: '⚙️',
-      desc: 'Payroll OS, compliance calendar, salary database, AI labour law advisor, document generator',
-      descFr: 'OS de paie, calendrier conformité, base salaires, conseiller juridique IA, générateur docs',
-      descSw: 'Mfumo wa mishahara, kalenda ya uzingatifu, hifadhidata ya mishahara, mshauri wa kisheria AI',
-      href: '/afrowork/', color: '#FFFBEB', accent: '#D97706',
-      tools: [
-        { label: 'AfroPayroll OS — Hire-to-Retire Workflow', href: '/tools/afropayroll-os/', emoji: '🔄', badge: 'LIVE' },
-        { label: 'Compliance Calendar — Statutory Deadlines', href: '/tools/compliance-calendar/', emoji: '📅', badge: 'SOON' },
-        { label: 'Regulatory Change Alerts', href: '/tools/regulatory-alerts/', emoji: '🔔', badge: 'NEW' },
-        { label: 'AI Labour Law Advisor', href: '/tools/labour-law-advisor/', emoji: '⚖️', badge: 'SOON' },
-        { label: 'Document Generator Suite', href: '/tools/doc-generator/', emoji: '📄', badge: 'LIVE' },
-        { label: 'Payroll API — B2B', href: '/afrowork/api/', emoji: '🔌', badge: 'SOON' },
-        { label: 'WhatsApp Payroll Bot', href: '/afrowork/whatsapp/', emoji: '💬', badge: 'SOON' },
-        { label: 'All AfroWork Features →', href: '/afrowork/', emoji: '⚙️' },
-      ],
-      toolsSw: [
-        { label: 'Mfumo wa AfroWork', href: '/afrowork/', emoji: 'WORK', badge: 'EN' },
-        { label: 'Payroll OS', href: '/tools/afropayroll-os/', emoji: 'PAY', badge: 'EN' }
-      ]
-    },
-  ];
-
-  const SW_CATEGORY_HREFS = {
-    financial: '/sw/mshahara-na-kodi/',
-    'hr-payroll': '/sw/kazi-na-ajira/',
-    'document-pdf': '/sw/hati-na-pdf/',
-    'image-design': '/sw/picha-na-design/',
-    developer: '/sw/zana-za-developer/',
-    education: '/sw/elimu/',
-    health: '/sw/afya/',
-    insurance: '/sw/bima/',
-    fintech: '/sw/fintech/',
-    agriculture: '/sw/kilimo/',
-    ecommerce: '/sw/vat-na-kodi/',
-    legal: '/sw/biashara-na-uzingatiaji/',
-    'data-productivity': '/sw/data-na-tija/',
-    telecom: '/sw/mawasiliano-na-mtandao/',
-    african: '/sw/nchi/',
-    trade: '/sw/biashara-ya-nje/',
-    government: '/sw/serikali-na-nyaraka/',
-    'small-business': '/sw/biashara-ndogo/',
-    transport: '/sw/usafiri-na-magari/',
-    'personal-finance': '/sw/mali-na-mikopo/',
-    diaspora: '/sw/serikali-na-nyaraka/',
-    'religious-cultural': '/sw/dini-na-utamaduni/',
-    climate: '/sw/hali-ya-hewa-na-mazingira/',
-    energy: '/sw/nishati-na-huduma/',
-    engineering: '/sw/ujenzi-na-uhandisi/',
-        creative: '/sw/ubunifu-na-watayarishi/',
-    career: '/sw/kazi-na-ajira/',
-    afrowork: '/sw/kazi-na-ajira/'
-  };
-
-  const HA_CATEGORY_HREFS = {
-    financial: '/ha/albashi-da-haraji/',
-    'hr-payroll': '/ha/albashi-da-haraji/',
-    'document-pdf': '/ha/takardu-da-pdf/',
-    education: '/ha/ilimi/',
-    health: '/ha/lafiya/',
-    agriculture: '/ha/noma/',
-    ecommerce: '/ha/kasuwanci-da-haraji/',
-    language: '/ha/harshe-da-fassara/',
-    telecom: '/ha/sadarwa/',
-    fintech: '/ha/kayan-aiki/',
-    legal: '/ha/kasuwanci-da-haraji/',
-    government: '/ha/najeriya/',
-    'personal-finance': '/ha/kayan-aiki/',
-    african: '/countries/'
-  };
-
-  const YO_CATEGORY_HREFS = {
-    financial: '/yo/owo-osu-ati-owo-ori/',
-    'document-pdf': '/yo/iwe-ati-pdf/',
-    education: '/yo/eko/',
-    health: '/yo/ilera/',
-    agriculture: '/yo/ogbin/',
-    ecommerce: '/yo/owo-ori-owo-ise/',
-    language: '/yo/ede-ati-itumo/',
-    telecom: '/yo/ibaraenisoro/',
-    african: '/yo/naijiria/'
-  };
-
-  // 16 categories for the Tools dropdown. Keep top-level navbar categories out of this grid.
-  const TOOL_MENU_IDS = [
-    'image-design', 'developer', 'education', 'health',
-    'insurance', 'fintech', 'agriculture', 'legal',
-    'language', 'trade', 'telecom', 'energy',
-    'engineering', 'government', 'transport', 'personal-finance'
-  ];
-
-  const TOOL_MENU_COPY = {
-    sw: {
-      'image-design': { label: 'Picha na Design', desc: 'Bana picha, resize, QR na OCR' },
-      developer: { label: 'Zana za Wasanidi', desc: 'JSON, API, Regex, SQL na USSD' },
-      education: { label: 'Elimu na Mitihani', desc: 'GPA, ada, masomo na udhamini' },
-      health: { label: 'Afya na Lishe', desc: 'Gharama za afya, lishe na vipimo' },
-      insurance: { label: 'Bima', desc: 'Gari, afya, biashara na safari' },
-      fintech: { label: 'Fintech na Benki', desc: 'Mikopo, akiba, mobile money, FX' },
-      agriculture: { label: 'Kilimo', desc: 'Mavuno, mbolea, umwagiliaji, faida' },
-      legal: { label: 'Biashara na Uzingatiaji', desc: 'TIN, leseni, mikataba na data' },
-      language: { label: 'Lugha na Tafsiri', desc: 'Tafsiri, majina na lugha za Afrika' },
-      trade: { label: 'Biashara ya Nje', desc: 'Forodha, HS code, AfCFTA na LC' },
-      telecom: { label: 'Mawasiliano na Mtandao', desc: 'Data, USSD, roaming na ISP' },
-      energy: { label: 'Nishati na Huduma', desc: 'Umeme, solar, generator na maji' },
-      engineering: { label: 'Ujenzi na Uhandisi', desc: 'BOQ, zege, umeme na gharama' },
-      government: { label: 'Serikali na Nyaraka', desc: 'Pasipoti, ID, KYC na vibali' },
-      transport: { label: 'Usafiri na Magari', desc: 'Mafuta, magari, nauli na logistics' },
-      'personal-finance': { label: 'Fedha Binafsi', desc: 'Bajeti, mikopo, akiba na kodi' }
-    },
-    yo: {
-      'document-pdf': { label: 'Ìwé àti PDF', desc: 'PDF, invoice, risiti, Naira sí ọ̀rọ̀, hàdà PDF, pín PDF ati dín ìwọ̀n PDF ni Yorùbá' },
-      'image-design': { label: 'Àwòrán àti Dísáìn', desc: 'Ojú ìwé Gẹẹsi: fífi àwòrán pọ, QR àti OCR' },
-      developer: { label: 'Irinṣẹ́ Olùdàgbàsókè', desc: 'Ojú ìwé Gẹẹsi: JSON, API, Regex, SQL àti USSD' },
-      education: { label: 'Ẹ̀kọ́ àti Ìdánwò', desc: 'JAMB, WAEC, NECO àti NYSC ni Yorùbá; GPA ṣi wà ní ojú Gẹẹsi' },
-      health: { label: 'Ìlera àti Ìdílé', desc: 'Genotype, sickle cell, BMI ati owó ilé ìwòsàn ni Yorùbá' },
-      insurance: { label: 'Ìdánilójú', desc: 'Ojú ìwé Gẹẹsi: ọkọ, ìlera, ìgbésí ayé àti ìrìnàjò' },
-      fintech: { label: 'Fintech àti Bánkì', desc: 'Ojú ìwé Gẹẹsi: awin, ìfipamọ́, Naira àti FX' },
-      agriculture: { label: 'Ọ̀gbìn', desc: 'Èrè oko, èso irúgbìn, rogo àti ajílẹ̀ ni Yorùbá' },
-      legal: { label: 'Òfin àti Ìbámu', desc: 'Ojú ìwé Gẹẹsi: ìforúkọsílẹ̀, TIN, adehun àti aṣírí data' },
-      language: { label: 'Èdè àti Ìtumọ̀', desc: 'Yorùbá phrasebook ati ìrànwọ́ ìkọ̀wé; Hausa, Igbo, Swahili ati PDF ṣi wà ní ojú Gẹẹsi' },
-      trade: { label: 'Ìṣòwò àti Gbigbewọlé', desc: 'Ojú ìwé Gẹẹsi: kọ́ọ̀sítọ́ọ̀mù, HS code, AfCFTA àti LC' },
-      telecom: { label: 'Ìbáraẹnisọrọ', desc: 'USSD, SIM, NIN, BVN, GB àti WhatsApp ni Yorùbá' },
-      energy: { label: 'Agbára àti Ìpèsè', desc: 'Ojú ìwé Gẹẹsi: iná, solar, generator àti omi' },
-      engineering: { label: 'Ìmọ̀ Ẹ̀rọ', desc: 'Ojú ìwé Gẹẹsi: BOQ, concrete, iná àti ikọ́lé' },
-      government: { label: 'Ìjọba àti Ìwé', desc: 'Ojú ìwé Gẹẹsi: passport, ID, KYC, BVN àti NIN' },
-      transport: { label: 'Ìrìnàjò àti Ọkọ', desc: 'Ojú ìwé Gẹẹsi: epo, ọkọ, delivery àti logistics' },
-      'personal-finance': { label: 'Ìṣúná Ara Ẹni', desc: 'Ojú ìwé Gẹẹsi: budget, awin, ìfipamọ́, PAYE àti VAT' }
-    },
-    ha: {
-      financial: { label: 'Albashi da PAYE', desc: 'PAYE, VAT, FX da harajin Najeriya' },
-      'document-pdf': { label: 'Takardu da PDF', desc: 'Takardar kudi, CV, PDF da Naira cikin kalmomi' },
-      ecommerce: { label: 'VAT da Haraji', desc: 'VAT, TIN, takardar kudi da harajin kasuwanci a Hausa' },
-      'image-design': { label: 'Hoto da Zane - Turanci', desc: 'Shafi na Turanci: matsa hoto, resize, QR da OCR' },
-      developer: { label: 'Kayan Masu gini - Turanci', desc: 'Shafi na Turanci: JSON, API, USSD da kayan gwaji' },
-      education: { label: 'Ilimi da Jarrabawa', desc: 'JAMB, WAEC, NECO, GPA da tallafin karatu' },
-      health: { label: 'Lafiya da Asibiti', desc: 'Kudin asibiti, magani, genotype da abinci a Hausa' },
-      insurance: { label: 'Inshora - Turanci', desc: 'Shafi na Turanci: mota, lafiya, rayuwa, kasuwanci da tafiya' },
-      fintech: { label: 'Fasahar kudi da banki', desc: 'Lamuni, ajiya, kudin wayar hannu da canjin kudi' },
-      agriculture: { label: 'Noma', desc: 'Amfanin gona, taki, ban ruwa da ribar gona' },
-      legal: { label: "Doka da Bin Ka'ida", desc: 'Rajista, TIN, kwangila da sirrin bayanai' },
-      language: { label: 'Harshe da Fassara', desc: 'Hausa, Yoruba, Swahili, Pidgin da Amharic; shafukan Turanci suna a fili' },
-      trade: { label: 'Shigo da Kaya - Turanci', desc: 'Shafi na Turanci: Kwastam, HS code, AfCFTA da LC' },
-      telecom: { label: 'Sadarwa da Wayar Hannu', desc: 'Intanet, USSD, yawo da ISP' },
-      energy: { label: 'Wuta da Makamashi - Turanci', desc: 'Shafi na Turanci: wutar lantarki, solar, generator da ruwa' },
-      engineering: { label: 'Gini da Injiniya - Turanci', desc: 'Shafi na Turanci: BOQ, kankare, lantarki da kudin gini' },
-      government: { label: "Gwamnati da Takardu", desc: 'Passport, ID, NIN, BVN, KYC da permit' },
-      african: { label: 'Kasashe da kayan Afirka', desc: 'Najeriya, kasashe, Naira, japa da kudin wayar hannu' },
-      transport: { label: 'Sufuri da Motoci - Turanci', desc: 'Shafi na Turanci: mai, mota, farashin tafiya da sufuri' },
-      'personal-finance': { label: 'Kudin Kai', desc: 'Kasafi, rance, ajiya, PAYE da VAT' }
-    }
-  };
-
-  const BUSINESS_LINKS = [
-    {
-      label: 'Widgets',
-      href: '/widgets/',
-      icon: 'W',
-      desc: 'Free embeds, Widget Pro, white-label setup, analytics, and lead capture.'
-    },
-    {
-      label: 'API',
-      href: '/api/',
-      icon: 'API',
-      desc: 'Sandbox keys, API Growth pilots, Pro access, and enterprise data subscriptions.'
-    },
-    {
-      label: 'Sponsored Tools',
-      href: '/sponsored-tools/',
-      icon: 'SP',
-      desc: 'Tool, category, and country sponsorship placements with pilot pricing.'
-    },
-    {
-      label: 'Custom Calculators',
-      href: '/custom-calculators/',
-      icon: 'CC',
-      desc: 'Branded calculators for HR, payroll, fintech, accounting, schools, and media.'
-    },
-    {
-      label: 'Media Kit',
-      href: '/media-kit/',
-      icon: 'MK',
-      desc: 'Audience, inventory, offer ladder, pricing ranges, placements, and FAQ.'
+      "id": "afrowork",
+      "label": "AfroWork Suite",
+      "labelFr": "Suite AfroWork",
+      "labelSw": "Mfumo wa AfroWork",
+      "icon": "⚙️",
+      "desc": "Payroll OS, compliance calendar, salary database, AI labour law advisor, document generator",
+      "descFr": "OS de paie, calendrier conformité, base salaires, conseiller juridique IA, générateur docs",
+      "descSw": "Mfumo wa mishahara, kalenda ya uzingatifu, hifadhidata ya mishahara, mshauri wa kisheria AI",
+      "href": "/afrowork/",
+      "color": "#FFFBEB",
+      "accent": "#D97706"
     }
   ];
-
-  const SW_BUSINESS_LINKS = [
-    { label: 'API ya AfroTools', href: '/sw/api/', icon: 'API', desc: 'Funguo za API, majaribio ya sandbox na huduma za data kwa bidhaa za Afrika.' },
-    { label: 'Pendekeza zana', href: '/sw/pendekeza-zana/', icon: 'IDEA', desc: 'Tuambie zana, nchi au workflow ya biashara ambayo timu yako inahitaji.' },
-    { label: 'Zana maalum', href: '/sw/wasiliana/', icon: 'B2B', desc: 'Ongea nasi kuhusu vikokotoo vya HR, payroll, fintech, shule au vyombo vya habari.' },
-    { label: 'Biashara na VAT', href: '/sw/vat-na-kodi/', icon: 'VAT', desc: 'VAT, TIN, ankara, usajili na uzingatiaji wa biashara kwa Kiswahili.' },
-    { label: 'Wasiliana nasi', href: '/sw/wasiliana/', icon: 'MAIL', desc: 'Sponsorship, ushirikiano, media na maswali ya biashara kwa timu ya AfroTools.' }
-  ];
-
-  const HA_BUSINESS_LINKS = [
-    { label: 'Kayan sakawa - shafi na Turanci', href: '/widgets/', icon: 'W', desc: 'Shafi na Turanci don saka kayan aiki a shafin yanar gizo, Widget Pro, tsarin tambarin abokin ciniki, kididdiga da neman abokan hulda.' },
-    { label: 'API na bayanai - shafi na Turanci', href: '/api/', icon: 'API', desc: 'Shafi na Turanci don mabudin gwaji, gwajin API, damar Pro da biyan kudin bayanan Afirka.' },
-    { label: 'VAT da harajin kasuwanci', href: '/ha/kasuwanci-da-haraji/', icon: 'VAT', desc: 'Kalkuletan VAT, TIN, takardar kudi da hanyoyin harajin kasuwanci a Hausa.' },
-    { label: 'Tallafin kayan aiki - shafi na Turanci', href: '/sponsored-tools/', icon: 'SP', desc: 'Shafi na Turanci don tallafa wa kayan aiki, rukuni ko shafin kasa tare da farashin gwaji.' },
-    { label: 'Kalkuleta na musamman - shafi na Turanci', href: '/custom-calculators/', icon: 'CC', desc: "Shafi na Turanci don kalkuleta na ma'aikata, biyan albashi, fasahar kudi, lissafin kudi, makarantu da yada labarai." },
-    { label: 'Kunshin yada labarai - shafi na Turanci', href: '/media-kit/', icon: 'MK', desc: 'Shafi na Turanci don bayanan masu karatu, wuraren talla, matakan tayin, farashi, wuraren sakawa da tambayoyi.' }
-  ];
-
-  const YO_BUSINESS_LINKS = [
-    { label: 'Kayan ìfibọ̀ - ojú ìwé Gẹẹsi', href: '/widgets/', icon: 'W', desc: 'Ojú ìwé Gẹẹsi fún embed, Widget Pro, white-label, analytics àti lead capture.' },
-    { label: 'API data - ojú ìwé Gẹẹsi', href: '/api/', icon: 'API', desc: 'Ojú ìwé Gẹẹsi fún sandbox keys, API pilots, Pro access àti ìforúkọsílẹ̀ data Afirika.' },
-    { label: 'VAT àti owó-orí iṣẹ́', href: '/yo/owo-ori-owo-ise/', icon: 'VAT', desc: 'Ojú Yorùbá fún VAT, TIN, invoice, PAYE, CIT, WHT, CAC àti ìjápọ̀ Gẹẹsi tí a samisi.' },
-    { label: 'Ìpolongo irinṣẹ - ojú ìwé Gẹẹsi', href: '/sponsored-tools/', icon: 'SP', desc: 'Ojú ìwé Gẹẹsi fún sponsorship irinṣẹ, ẹ̀ka tàbí ojú ìwé orílẹ̀-èdè.' },
-    { label: 'Ìṣirò àkànṣe - ojú ìwé Gẹẹsi', href: '/custom-calculators/', icon: 'CC', desc: 'Ojú ìwé Gẹẹsi fún calculators HR, payroll, fintech, accounting, ilé-ẹ̀kọ́ àti media.' },
-    { label: 'Media kit - ojú ìwé Gẹẹsi', href: '/media-kit/', icon: 'MK', desc: 'Ojú ìwé Gẹẹsi fún audience, inventory, pricing, placements àti FAQ.' }
-  ];
+  // NAVBAR_TOP_LEVEL_DATA_END
+  const NAV_DATA_URL = '/assets/js/components/navbar-data.json';
+  let SW_CATEGORY_HREFS = {};
+  let HA_CATEGORY_HREFS = {};
+  let YO_CATEGORY_HREFS = {};
+  let TOOL_MENU_IDS = ['image-design','developer','education','health','insurance','fintech','agriculture','legal','language','trade','telecom','energy','engineering','government','transport','personal-finance'];
+  let TOOL_MENU_COPY = {};
+  let BUSINESS_LINKS = [];
+  let SW_BUSINESS_LINKS = [];
+  let HA_BUSINESS_LINKS = [];
+  let YO_BUSINESS_LINKS = [];
+  let COUNTRY_LINKS = [];
+  let COUNTRY_LINKS_HA = [];
+  let COUNTRY_LINKS_SW = [];
+  let COUNTRY_LINKS_YO = [];
+  let SW_DISCOVERY_OVERRIDES = {};
+  let HA_DISCOVERY_OVERRIDES = {};
+  let SW_SEARCH_INTENT_TARGETS = {};
+  let SW_SEARCH_DIRECT_RESULTS = {};
+  let navbarDataPromise = null;
+  let navbarDataLoaded = false;
 
   function localizedItemText(item, field, lang) {
     var overrides = TOOL_MENU_COPY[lang] && TOOL_MENU_COPY[lang][item.id];
@@ -1509,50 +621,6 @@
     return BUSINESS_LINKS;
   }
 
-  const COUNTRY_LINKS = [
-    { label: 'Nigeria', href: '/nigeria/' },
-    { label: 'Kenya', href: '/kenya/' },
-    { label: 'Ghana', href: '/ghana/' },
-    { label: 'South Africa', href: '/south-africa/' },
-    { label: 'Egypt', href: '/egypt/' },
-    { label: 'Tanzania', href: '/tanzania/' },
-    { label: 'Rwanda', href: '/rwanda/' },
-    { label: 'Senegal', href: '/senegal/' },
-  ];
-
-  const COUNTRY_LINKS_HA = [
-    { label: 'Najeriya', href: '/ha/najeriya/', slug: 'nigeria' },
-    { label: 'Kenya - shafi na Turanci', href: '/kenya/', slug: 'kenya' },
-    { label: 'Ghana - shafi na Turanci', href: '/ghana/', slug: 'ghana' },
-    { label: 'Afirka ta Kudu - shafi na Turanci', href: '/south-africa/', slug: 'south-africa' },
-    { label: 'Masar - shafi na Turanci', href: '/egypt/', slug: 'egypt' },
-    { label: 'Tanzania - shafi na Turanci', href: '/tanzania/', slug: 'tanzania' },
-    { label: 'Rwanda - shafi na Turanci', href: '/rwanda/', slug: 'rwanda' },
-    { label: 'Senegal - shafi na Turanci', href: '/senegal/', slug: 'senegal' },
-  ];
-
-  const COUNTRY_LINKS_SW = [
-    { label: 'Nigeria', href: '/sw/nigeria/', slug: 'nigeria' },
-    { label: 'Kenya', href: '/sw/kenya/', slug: 'kenya' },
-    { label: 'Ghana', href: '/sw/ghana/', slug: 'ghana' },
-    { label: 'Afrika Kusini', href: '/sw/south-africa/', slug: 'south-africa' },
-    { label: 'Misri', href: '/sw/egypt/', slug: 'egypt' },
-    { label: 'Tanzania', href: '/sw/tanzania/', slug: 'tanzania' },
-    { label: 'Rwanda', href: '/sw/rwanda/', slug: 'rwanda' },
-    { label: 'Senegal', href: '/sw/senegal/', slug: 'senegal' }
-  ];
-
-  const COUNTRY_LINKS_YO = [
-    { label: 'Naijiria', href: '/yo/naijiria/', slug: 'nigeria' },
-    { label: 'Kenya - ojú ìwé Gẹẹsi', href: '/kenya/', slug: 'kenya' },
-    { label: 'Ghana - ojú ìwé Gẹẹsi', href: '/ghana/', slug: 'ghana' },
-    { label: 'South Africa - ojú ìwé Gẹẹsi', href: '/south-africa/', slug: 'south-africa' },
-    { label: 'Egypt - ojú ìwé Gẹẹsi', href: '/egypt/', slug: 'egypt' },
-    { label: 'Tanzania - ojú ìwé Gẹẹsi', href: '/tanzania/', slug: 'tanzania' },
-    { label: 'Rwanda - ojú ìwé Gẹẹsi', href: '/rwanda/', slug: 'rwanda' },
-    { label: 'Senegal - ojú ìwé Gẹẹsi', href: '/senegal/', slug: 'senegal' },
-  ];
-
   function localizedCountryLinks(lang) {
     if (lang === 'sw') return COUNTRY_LINKS_SW;
     if (lang === 'ha') return COUNTRY_LINKS_HA;
@@ -1560,6 +628,33 @@
     return COUNTRY_LINKS;
   }
 
+  function applyNavbarData(data) {
+    if (!data || data.schemaVersion !== 1 || !Array.isArray(data.navItems)) throw new Error('Invalid navbar data');
+    NAV_ITEMS = data.navItems;
+    SW_CATEGORY_HREFS = data.swCategoryHrefs || {}; HA_CATEGORY_HREFS = data.haCategoryHrefs || {}; YO_CATEGORY_HREFS = data.yoCategoryHrefs || {};
+    TOOL_MENU_IDS = data.toolMenuIds || TOOL_MENU_IDS; TOOL_MENU_COPY = data.toolMenuCopy || {};
+    BUSINESS_LINKS = data.businessLinks || []; SW_BUSINESS_LINKS = data.swBusinessLinks || []; HA_BUSINESS_LINKS = data.haBusinessLinks || []; YO_BUSINESS_LINKS = data.yoBusinessLinks || [];
+    COUNTRY_LINKS = data.countryLinks || []; COUNTRY_LINKS_HA = data.countryLinksHa || []; COUNTRY_LINKS_SW = data.countryLinksSw || []; COUNTRY_LINKS_YO = data.countryLinksYo || [];
+    SW_DISCOVERY_OVERRIDES = data.swDiscoveryOverrides || {}; HA_DISCOVERY_OVERRIDES = data.haDiscoveryOverrides || {};
+    SW_SEARCH_INTENT_TARGETS = data.swSearchIntentTargets || {}; SW_SEARCH_DIRECT_RESULTS = data.swSearchDirectResults || {};
+    navbarDataLoaded = true;
+    if (typeof _localizedGlobalNavItems === 'function') window.__AFRO_NAV_ITEMS = _localizedGlobalNavItems();
+    window.__AFRO_BUSINESS_NAV_ITEMS = localizedBusinessLinks(_globalNavLang()).slice();
+    document.dispatchEvent(new CustomEvent('afrotools:navbar-data-ready'));
+    return data;
+  }
+
+  function ensureNavbarData() {
+    if (navbarDataLoaded) return Promise.resolve(true);
+    if (!navbarDataPromise) navbarDataPromise = fetch(NAV_DATA_URL, { credentials: 'same-origin', cache: 'force-cache' })
+      .then(function (response) { if (!response.ok) throw new Error('Navbar data HTTP ' + response.status); return response.json(); })
+      .then(applyNavbarData)
+      .catch(function () { navbarDataPromise = null; return null; });
+    return navbarDataPromise;
+  }
+
+  window.AfroTools = window.AfroTools || {};
+  window.AfroTools.loadNavbarData = ensureNavbarData;
   const MARK = `<svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:30px;width:30px;flex-shrink:0">
     <polygon points="34,20 48,34 34,48 20,34" fill="#0062CC"/>
     <polygon points="34,2  44,14 34,20 24,14" fill="#F5A623"/>
@@ -1567,896 +662,6 @@
     <polygon points="2,24  14,34 2,44  -10,34" fill="#0062CC" opacity="0.7"/>
     <polygon points="52,24 64,34 52,44 40,34"  fill="#0062CC" opacity="0.55"/>
   </svg>`;
-
-  const CSS = `
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-    :host {
-      display: block;
-      position: sticky;
-      top: 0;
-      z-index: 500;
-      --nav-shell-height: 64px;
-      --nav-inline-pad: 20px;
-      --nav-safe-top: env(safe-area-inset-top, 0px);
-      --nav-safe-right: env(safe-area-inset-right, 0px);
-      --nav-safe-bottom: env(safe-area-inset-bottom, 0px);
-      --nav-safe-left: env(safe-area-inset-left, 0px);
-    }
-
-    nav {
-      position: relative;
-      height: var(--nav-shell-height);
-      background: #fff;
-      border-bottom: 1px solid #e5eaf2;
-      display: flex; align-items: center;
-      padding: 0 max(var(--nav-inline-pad), var(--nav-safe-right)) 0 max(var(--nav-inline-pad), var(--nav-safe-left));
-      transition: box-shadow 0.2s;
-    }
-    nav.scrolled { box-shadow: 0 1px 0 rgba(15,23,42,0.08); }
-
-    .inner {
-      max-width: min(1760px, calc(100vw - 32px)); margin: 0 auto; width: 100%;
-      display: flex; align-items: center; gap: 10px;
-    }
-
-    /* LOGO */
-    .logo {
-      display: flex; align-items: center; gap: 9px;
-      text-decoration: none; flex-shrink: 0; margin-right: 8px;
-    }
-    .logo-name { font-size: 1rem; font-weight: 800; letter-spacing: 0.02em; color: #111827; }
-    .logo-name b { color: #0062CC; }
-    .logo-tag { font-size: 0.44rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #475569; display: block; margin-top: 2px; }
-
-    /* NAV LINKS */
-    .nav-links { display: flex; align-items: center; justify-content: flex-start; list-style: none; flex: 1 1 auto; gap: 4px; overflow: hidden; min-width: 0; }
-    li { position: relative; }
-
-    .lnk {
-      display: flex; align-items: center; gap: 4px;
-      padding: 7px 12px; border-radius: 8px;
-      font-size: 0.81rem; font-weight: 600; color: #374151;
-      text-decoration: none; border: none; background: transparent;
-      cursor: pointer; white-space: nowrap;
-      transition: color 0.13s, background 0.13s;
-      min-height: 40px;
-    }
-    .lnk:hover, .lnk.open { color: #0057B8; background: #F3F7FC; }
-    .lnk.active { color: #0062CC; position: relative; }
-    .lnk.active::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 16px; height: 2px; background: #0062CC; border-radius: 2px; }
-    .chev { width: 7px; height: 4px; flex-shrink: 0; opacity: 0.4; transition: transform 0.18s, opacity 0.13s; }
-    .lnk.open .chev { transform: rotate(180deg); opacity: 1; color: #0062CC; }
-
-    /* MEGA MENU */
-    .mega {
-      position: fixed;
-      top: var(--nav-shell-height); left: 0; right: 0;
-      background: #fff;
-      border-bottom: 1px solid #dbe3ef;
-      box-shadow: 0 18px 34px rgba(15,23,42,0.10);
-      opacity: 0; visibility: hidden;
-      transform: translateY(-6px);
-      transition: opacity 0.16s ease, visibility 0.16s ease, transform 0.16s ease;
-      z-index: 499;
-      pointer-events: none;
-    }
-    .mega.open {
-      opacity: 1; visibility: visible;
-      transform: translateY(0);
-      pointer-events: all;
-    }
-
-    .mega-inner {
-      max-width: 1200px; margin: 0 auto;
-      padding: 18px 20px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    .tools-mega-grid {
-      max-width: 1240px;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-    .business-mega-grid {
-      max-width: 980px;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .mega-col {
-      border-radius: 8px; padding: 13px;
-      border: 1px solid #e5eaf2;
-      background: #fff;
-      transition: border-color 0.13s, background 0.13s, transform 0.13s;
-      display: flex; align-items: center; gap: 9px;
-      text-decoration: none; cursor: pointer;
-    }
-    .mega-col:hover { border-color: #b8c8dc; background: #f8fafc; transform: translateY(-1px); }
-    .business-col {
-      align-items: flex-start;
-      flex-direction: column;
-      min-height: 128px;
-      gap: 10px;
-    }
-    .business-col .mega-col-icon {
-      color: #0f172a;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0;
-    }
-
-    .mega-col-icon {
-      width: 34px; height: 34px; border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.82rem; flex-shrink: 0;
-      font-weight: 800;
-      background: #f1f5f9 !important;
-      color: #0f172a;
-      line-height: 1;
-    }
-    .mega-col-name { font-size: 0.83rem; font-weight: 600; color: #334155; line-height: 1.2; }
-    .mega-col-desc { font-size: 0.65rem; font-weight: 400; color: #64748b; margin-top: 1px; }
-
-    .mega-footer {
-      max-width: 1200px; margin: 0 auto;
-      padding: 10px 20px 14px;
-      border-top: 1px solid #e5eaf2;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .mega-footer-note { font-size: 0.68rem; color: #64748b; font-weight: 600; }
-    .mega-footer-lnk { font-size: 0.72rem; font-weight: 700; color: #0062CC; text-decoration: none; }
-    .mega-footer-lnk:hover { text-decoration: underline; }
-
-    .country-search-panel {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: minmax(240px, 360px) 1fr;
-      gap: 12px;
-      align-items: start;
-      padding: 2px 0 8px;
-    }
-    .country-search-label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #64748b;
-    }
-    .country-search-box {
-      display: flex;
-      align-items: center;
-      min-height: 44px;
-      border: 1px solid #dbe3ef;
-      border-radius: 8px;
-      background: #fff;
-      padding: 0 12px;
-    }
-    .country-search-box:focus-within {
-      border-color: #0062CC;
-      box-shadow: 0 0 0 3px rgba(0,98,204,0.12);
-    }
-    .country-search-input {
-      width: 100%;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: #111827;
-      font: inherit;
-      font-size: 0.88rem;
-      font-weight: 600;
-    }
-    .country-search-input::placeholder { color: #94a3b8; font-weight: 500; }
-    .country-search-results {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      min-height: 0;
-    }
-    .country-search-results:empty { display: none; }
-    .country-search-result {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      min-height: 44px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #edf1f7;
-      color: #1f2937;
-      text-decoration: none;
-      background: #fff;
-      font-size: 0.84rem;
-      font-weight: 800;
-    }
-    .country-search-result:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
-    .country-search-meta { color: #64748b; font-size: 0.68rem; font-weight: 700; }
-
-    /* RIGHT */
-    .right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
-    .country-control-shell { width: 156px; flex: 0 0 156px; }
-    afro-country-selector[variant="nav"] { width: 100% !important; max-width: 100%; }
-    .pill-54 { font-size: 0.66rem; font-weight: 600; color: #6b7280; padding: 4px 10px; border-radius: 20px; border: 1px solid #e5e7eb; background: #f9fafb; white-space: nowrap; }
-
-    .btn-login {
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 0.79rem; font-weight: 600; color: #374151;
-      padding: 7px 14px; border-radius: 8px;
-      border: 1px solid #dbe3ef; background: #fff;
-      text-decoration: none; white-space: nowrap;
-      transition: all 0.13s; cursor: pointer;
-      min-height: 40px;
-    }
-    .btn-login:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
-    .btn-login.is-user {
-      width: 42px;
-      min-width: 42px;
-      padding: 0;
-      gap: 0;
-      border-color: rgba(0,0,0,0.12);
-      background: #f8fafc;
-    }
-    .btn-login.is-user:hover {
-      background: #EEF4FF;
-      border-color: #0062CC;
-    }
-    .nav-user-avatar {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #0062CC;
-      color: #fff;
-      font-size: 0.68rem;
-      font-weight: 800;
-      line-height: 1;
-    }
-    .nav-user-name {
-      display: none;
-    }
-    .ap-nav-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      min-height: 32px;
-      background: rgba(245,158,11,0.12);
-      color: #B45309;
-      font-size: 0.68rem;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 100px;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .btn-pro {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-width: 56px; padding: 7px 14px; border-radius: 8px;
-      border: 1px solid #b8c8dc;
-      background: #fff;
-      color: #0B63CE; text-decoration: none; white-space: nowrap;
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 0;
-      transition: transform 0.13s, box-shadow 0.13s, background 0.13s, border-color 0.13s;
-      box-shadow: none;
-      min-height: 40px;
-    }
-    .btn-pro:hover {
-      background: #EFF6FF;
-      border-color: #0062CC;
-      box-shadow: none;
-      transform: translateY(-1px);
-    }
-    .btn-pro.is-free {
-      background: #F8FAFC;
-      border-color: #CBD5E1;
-      color: #0F172A;
-    }
-    .btn-pro.is-pro {
-      background: #ECFDF5;
-      border-color: #A7F3D0;
-      color: #047857;
-      box-shadow: 0 3px 10px rgba(4,120,87,0.08);
-    }
-
-    .cta {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 8px 16px; border-radius: 8px;
-      font-size: 0.79rem; font-weight: 700;
-      text-decoration: none; background: #0062CC; color: #fff;
-      border: none; cursor: pointer; white-space: nowrap;
-      transition: background 0.13s, transform 0.1s;
-      box-shadow: none;
-      min-height: 40px;
-    }
-    .cta:hover  { background: #005BBF; transform: translateY(-1px); }
-    .cta:active { transform: translateY(0); }
-
-    /* LANGUAGE SWITCHER */
-    .lang-switch { position: relative; display: flex; align-items: center; }
-    .lang-btn {
-      display: flex; align-items: center; gap: 4px;
-      padding: 4px 8px; border-radius: 8px;
-      font-size: 0.73rem; font-weight: 700; color: #374151;
-      border: 1px solid #dbe3ef; background: #fff;
-      cursor: pointer; white-space: nowrap; transition: all 0.13s;
-      font-family: 'DM Sans', system-ui, sans-serif;
-      min-height: 40px;
-    }
-    .lang-btn-label { transition: width 0.15s, opacity 0.15s; }
-    .lang-btn:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
-    .lang-drop {
-      display: none; position: absolute; top: calc(100% + 6px); right: 0;
-      background: #fff; border-radius: 10px; border: 1px solid #e5e7eb;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12); min-width: 150px; z-index: 600;
-      overflow: hidden;
-    }
-    .lang-drop.open { display: block; }
-    .lang-opt {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 14px; font-size: 0.82rem; font-weight: 500; color: #374151;
-      text-decoration: none; transition: background 0.1s; cursor: pointer;
-    }
-    .lang-opt:hover { background: #EEF4FF; }
-    .lang-opt.active { font-weight: 700; color: #0062CC; background: #f0f7ff; }
-    .lang-opt.fallback { align-items: flex-start; }
-    .lang-opt-label { display: flex; flex-direction: column; min-width: 0; }
-    .lang-opt-fallback {
-      display: block; margin-top: 2px; font-size: 0.68rem; line-height: 1.25;
-      font-weight: 500; color: #6b7280;
-    }
-    .lang-opt-partial { color: #7C3AED; font-size: 0.68rem; font-weight: 700; }
-    .lang-fallback-dialog { border: 0; border-radius: 14px; max-width: min(420px, calc(100vw - 32px)); padding: 0; box-shadow: 0 24px 70px rgba(15,23,42,.28); color: #0F172A; }
-    .lang-fallback-dialog::backdrop { background: rgba(15,23,42,.56); }
-    .lang-fallback-card { padding: 22px; }
-    .lang-fallback-card h2 { margin: 0 0 8px; font-size: 1.12rem; }
-    .lang-fallback-card p { margin: 0; color: #475569; line-height: 1.55; }
-    .lang-fallback-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
-    .lang-fallback-actions button { min-height: 44px; border-radius: 9px; padding: 9px 14px; font: inherit; font-weight: 700; cursor: pointer; }
-    .lang-fallback-cancel { background: #fff; border: 1px solid #CBD5E1; color: #334155; }
-    .lang-fallback-confirm { background: #0062CC; border: 1px solid #0062CC; color: #fff; }
-
-    /* HAMBURGER */
-    .burger {
-      display: none; flex-direction: column; justify-content: center; gap: 5px;
-      width: 44px; height: 44px; background: #fff; border: 1px solid #dbe3ef;
-      cursor: pointer; padding: 10px; border-radius: 8px; flex-shrink: 0;
-    }
-    .burger:hover { background: #f8fafc; border-color: #b8c8dc; }
-    .burger span { display: block; width: 100%; height: 2px; background: #374151; border-radius: 2px; transition: all 0.22s; }
-    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* MOBILE DRAWER */
-    .mob {
-      display: none; position: fixed;
-      top: var(--nav-shell-height); left: 0; right: 0; bottom: 0;
-      background: #fff; z-index: 498;
-      overflow-y: auto; flex-direction: column;
-      opacity: 1; visibility: hidden; pointer-events: none;
-      transform: translateY(-6px);
-      transition: transform 0.18s ease, visibility 0.18s ease;
-      min-height: calc(100dvh - var(--nav-shell-height));
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-      padding-right: var(--nav-safe-right);
-      padding-bottom: calc(20px + var(--nav-safe-bottom));
-      padding-left: var(--nav-safe-left);
-    }
-    .mob.open { opacity: 1; visibility: visible; pointer-events: all; transform: translateY(0); }
-    .mob-country-context { padding: 16px 18px 0; }
-
-    .mob-section-label {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-      color: #9ca3af; padding: 14px 20px 6px;
-    }
-    .mob-country-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      padding: 0 16px 8px;
-    }
-    .mob-country-link {
-      min-height: 44px;
-      display: flex; align-items: center; justify-content: center;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-      color: #1f2937;
-      background: #fff;
-      font-size: 0.86rem;
-      font-weight: 700;
-      text-decoration: none;
-    }
-    .mob-country-link:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
-    .mob-country-search {
-      display: flex;
-      align-items: center;
-      min-height: 48px;
-      margin: 0 16px 10px;
-      padding: 0 12px;
-      border-radius: 8px;
-      border: 1px solid #dbe3ef;
-      background: #fff;
-    }
-    .mob-country-search:focus-within {
-      border-color: #0062CC;
-      box-shadow: 0 0 0 3px rgba(0,98,204,0.12);
-    }
-    .mob-country-search-input {
-      width: 100%;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: #111827;
-      font: inherit;
-      font-size: 16px;
-      font-weight: 600;
-    }
-    .mob-country-results {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-      padding: 0 16px 8px;
-    }
-    .mob-country-results:empty { display: none; }
-    .mob-country-results .country-search-result { width: 100%; }
-    .mob-cat {
-      display: flex; align-items: center; gap: 12px;
-      padding: 13px 20px; border-bottom: 1px solid #eef2f7;
-      text-decoration: none; transition: background 0.1s; min-height: 58px;
-    }
-    .mob-cat:hover { background: #f8fafc; }
-    .mob-cat-icon {
-      width: 38px; height: 38px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.82rem; flex-shrink: 0;
-      font-weight: 800;
-      background: #f1f5f9 !important;
-      color: #0f172a;
-    }
-    .mob-cat-label { font-size: 0.92rem; font-weight: 600; color: #334155; }
-    .mob-cat-desc  { font-size: 0.7rem; font-weight: 400; color: #6b7280; margin-top: 1px; }
-    .mob-arr { margin-left: auto; font-size: 0.7rem; color: #9ca3af; }
-
-    .mob-footer {
-      padding: 20px; border-top: 1px solid #f3f4f6; margin-top: 8px;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-    .mob-footer a { min-height: 48px; }
-    .mob-cta {
-      display: flex; align-items: center; justify-content: center;
-      padding: 15px; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
-      text-decoration: none; background: #0062CC; color: white; min-height: 52px;
-    }
-    .mob-login {
-      display: flex; align-items: center; justify-content: center;
-      padding: 13px; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
-      text-decoration: none; border: 1px solid #dbe3ef; color: #374151;
-    }
-    .mob-pro-link {
-      display: flex; align-items: center; justify-content: center;
-      padding: 13px; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
-      text-decoration: none; border: 1px solid #b8c8dc; color: #0B63CE; background: #fff;
-      box-shadow: none;
-    }
-    .mob-pro-link.is-free {
-      border-color: #CBD5E1;
-      color: #0F172A;
-      background: #F8FAFC;
-    }
-    .mob-pro-link.is-pro {
-      border-color: #A7F3D0;
-      color: #047857;
-      background: #ECFDF5;
-    }
-    .mob-note { text-align: center; font-size: 0.7rem; font-weight: 500; color: #9ca3af; }
-
-    /* RESPONSIVE — progressive collapse */
-    .pill-54 { display: none; }
-    @media (max-width: 1400px) {
-      .inner { gap: 8px; }
-      .logo { margin-right: 4px; }
-      .lnk { padding-left: 10px; padding-right: 10px; }
-      .right { gap: 6px; }
-      .country-control-shell { width: 148px; flex-basis: 148px; }
-      .search-btn .search-kbd { display: none; }
-      .btn-pro { padding-left: 12px; padding-right: 12px; }
-    }
-    @media (max-width: 1120px) {
-      .business-mega-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-    @media (max-width: 1180px) {
-      .nav-links li:nth-child(6) { display: none; }
-    }
-    @media (max-width: 1120px) {
-      .nav-links li:nth-child(5) { display: none; }
-    }
-    @media (max-width: 1100px) {
-      .country-control-shell { display: none; }
-      .cta { display: none; }
-      .lang-btn-label { display: none; }
-      .lang-btn { padding: 5px 7px; font-size: 0.9rem; }
-      .btn-pro { min-width: 0; padding: 7px 12px; }
-    }
-    @media (max-width: 940px) {
-      .nav-links, .pill-54, .cta, .btn-pro { display: none; }
-      .lang-switch { display: none; }
-      .btn-login { display: none; }
-      .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; width: 0 !important; height: 0 !important; overflow: hidden !important; font-size: 0 !important; }
-      .btn-login span:first-child { margin-right: 0 !important; }
-      .burger { display: flex; }
-      .mob    { display: flex; }
-      nav     {
-        padding-left: max(16px, var(--nav-safe-left));
-        padding-right: max(16px, var(--nav-safe-right));
-        max-width: 100vw !important;
-        overflow-x: hidden !important;
-      }
-    }
-    @media (max-width: 480px) {
-      :host {
-        --nav-shell-height: 56px;
-        --nav-inline-pad: 16px;
-      }
-      .logo-tag { display: none; }
-    }
-
-    /* SEARCH BUTTON */
-    .search-btn {
-      display: flex; align-items: center; justify-content: center;
-      width: 40px; height: 40px; border-radius: 8px;
-      border: 1px solid #dbe3ef; background: #fff;
-      cursor: pointer; color: #374151;
-      transition: all 0.13s; flex-shrink: 0;
-    }
-    .search-btn:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; }
-    .theme-toggle {
-      display: flex; align-items: center; justify-content: center;
-      width: 40px; height: 40px; border-radius: 8px;
-      border: 1px solid #dbe3ef; background: #fff;
-      color: #475569; cursor: pointer; flex-shrink: 0;
-      transition: color 0.13s, background 0.13s, border-color 0.13s, transform 0.13s;
-    }
-    .theme-toggle:hover { border-color: #b8c8dc; color: #0057B8; background: #f8fafc; transform: translateY(-1px); }
-    .theme-toggle svg { width: 17px; height: 17px; }
-    .theme-icon-sun { display: none; }
-    :host(.theme-dark) .theme-icon-moon { display: none; }
-    :host(.theme-dark) .theme-icon-sun { display: block; }
-    .search-btn:focus-visible, .theme-toggle:focus-visible, .lnk:focus-visible, .btn-login:focus-visible, .btn-pro:focus-visible, .mob-pro-link:focus-visible, .burger:focus-visible, .lang-btn:focus-visible, .mob-theme-toggle:focus-visible {
-      outline: 3px solid rgba(0,98,204,0.22);
-      outline-offset: 2px;
-    }
-    .search-btn svg { width: 16px; height: 16px; }
-    .search-btn-label { display: none; font-size: 0.79rem; font-weight: 700; }
-    .search-kbd {
-      font-size: 0.65rem; font-weight: 600; color: #9ca3af;
-      margin-left: 4px; background: #f3f4f6; border-radius: 4px;
-      padding: 1px 5px; border: 1px solid #e5e7eb;
-      display: none;
-    }
-    @media (min-width: 941px) {
-      .search-btn { width: auto; padding: 0 10px; gap: 6px; }
-      .search-btn-label { display: inline; }
-      .search-kbd { display: inline; }
-    }
-    @media (max-width: 1320px) {
-      .search-btn { width: 36px; padding: 0; gap: 0; }
-      .search-btn-label, .search-kbd { display: none; }
-    }
-
-    /* SEARCH OVERLAY */
-    .search-overlay {
-      position: fixed; inset: 0; z-index: 9999;
-      background: rgba(15,23,42,0.36);
-      display: flex; align-items: flex-start; justify-content: center;
-      padding-top: 12vh;
-      opacity: 0; visibility: hidden;
-      transition: opacity 0.16s, visibility 0.16s;
-    }
-    .search-overlay.open { opacity: 1; visibility: visible; }
-
-    .search-modal {
-      width: 100%; max-width: 560px;
-      background: #fff; border-radius: 10px;
-      box-shadow: 0 22px 48px rgba(15,23,42,0.22);
-      overflow: hidden;
-      transform: translateY(-12px) scale(0.97);
-      transition: transform 0.18s ease;
-      margin: 0 16px;
-    }
-    .search-overlay.open .search-modal {
-      transform: translateY(0) scale(1);
-    }
-
-    .search-input-wrap {
-      display: flex; align-items: center; gap: 10px;
-      padding: 14px 18px;
-      border-bottom: 1px solid #f3f4f6;
-    }
-    .search-input-wrap svg { width: 18px; height: 18px; color: #9ca3af; flex-shrink: 0; }
-    .search-input {
-      flex: 1; border: none; outline: none;
-      font-size: 1rem; font-weight: 500; color: #111827;
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: transparent;
-    }
-    .search-input::placeholder { color: #c4c8cc; }
-    .search-esc {
-      font-size: 0.68rem; font-weight: 600; color: #9ca3af;
-      background: #f3f4f6; border-radius: 4px;
-      padding: 2px 7px; border: 1px solid #e5e7eb;
-      cursor: pointer; flex-shrink: 0;
-    }
-
-    .search-results {
-      max-height: 400px; overflow-y: auto;
-      padding: 6px;
-    }
-    .search-results::-webkit-scrollbar { width: 6px; }
-    .search-results::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
-
-    .search-result {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 12px; border-radius: 8px;
-      text-decoration: none; color: inherit;
-      transition: background 0.1s;
-      cursor: pointer;
-    }
-    .search-result:hover, .search-result.active {
-      background: #EEF4FF;
-    }
-    .search-result-icon {
-      width: 38px; height: 38px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.82rem; flex-shrink: 0;
-      font-weight: 800;
-      background: #f3f4f6;
-    }
-    .search-result-name {
-      font-size: 0.85rem; font-weight: 700; color: #111827;
-      line-height: 1.2;
-    }
-    .search-result-name mark {
-      background: #DBEAFE; color: #1D4ED8;
-      border-radius: 2px; padding: 0 1px;
-    }
-    .search-result-desc {
-      font-size: 0.7rem; font-weight: 400; color: #6b7280;
-      margin-top: 2px;
-      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .search-result-cat {
-      font-size: 0.65rem; font-weight: 600; color: #9ca3af;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      margin-top: 2px;
-    }
-
-    .search-empty {
-      padding: 32px 16px; text-align: center;
-    }
-    .search-empty-icon { display: none; }
-    .search-empty-text { font-size: 0.85rem; font-weight: 600; color: #6b7280; }
-    .search-empty-hint { font-size: 0.72rem; color: #9ca3af; margin-top: 4px; }
-
-    .search-footer {
-      padding: 10px 18px;
-      border-top: 1px solid #f3f4f6;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .search-footer-hint {
-      font-size: 0.68rem; color: #9ca3af; font-weight: 500;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .search-footer-hint kbd {
-      background: #f3f4f6; border: 1px solid #e5e7eb;
-      border-radius: 3px; padding: 1px 5px;
-      font-size: 0.65rem; font-weight: 600; font-family: inherit;
-    }
-
-    /* RECENT TOOLS in search */
-    .search-section-label {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: #9ca3af;
-      padding: 10px 12px 4px;
-    }
-    .recent-clear {
-      font-size: 0.68rem; font-weight: 600; color: #0062CC;
-      cursor: pointer; float: right; background: none; border: none;
-      font-family: inherit; padding: 0;
-    }
-    .recent-clear:hover { text-decoration: underline; }
-
-    /* MOBILE SEARCH in drawer */
-    .mob-search-bar {
-      display: flex; align-items: center; gap: 10px;
-      margin: 12px 16px 4px; padding: 11px 14px;
-      border-radius: 8px; border: 1px solid #dbe3ef;
-      background: #fff;
-      transition: border-color 0.13s;
-      min-height: 52px;
-    }
-    .mob-search-bar:focus-within { border-color: #0062CC; background: #fff; }
-    .mob-search-bar svg { width: 16px; height: 16px; color: #9ca3af; flex-shrink: 0; }
-    .mob-search-input {
-      flex: 1; border: none; outline: none;
-      font-size: 16px; font-weight: 500; color: #111827;
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: transparent;
-    }
-    .mob-search-input::placeholder { color: #c4c8cc; }
-    .mob-search-results {
-      padding: 0 8px 8px;
-    }
-    .mob-search-results .search-result {
-      padding: 12px 12px;
-      min-height: 56px;
-    }
-    .mob-search-results .search-result-icon {
-      width: 40px; height: 40px;
-    }
-    .mob-search-empty {
-      padding: 20px 16px; text-align: center;
-      font-size: 0.8rem; color: #9ca3af; font-weight: 500;
-    }
-
-    /* MOBILE LANGUAGE PICKER */
-    .mob-lang-section { padding: 6px 16px 2px; }
-    .mob-lang-row {
-      display: flex; flex-wrap: wrap; gap: 8px;
-    }
-    .mob-lang-opt {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 8px 14px; border-radius: 8px;
-      font-size: 0.82rem; font-weight: 600; color: #374151;
-      text-decoration: none; border: 1px solid #dbe3ef;
-      background: #fff; transition: all 0.13s;
-    }
-    .mob-lang-opt:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
-    .mob-lang-opt.active { border-color: #0062CC; color: #0062CC; background: #EEF4FF; font-weight: 700; }
-    .mob-lang-opt.fallback { align-items: flex-start; }
-    .mob-lang-opt .lang-opt-label { text-align: left; }
-
-    .mob-theme-section { padding: 8px 16px 2px; }
-    .mob-theme-toggle {
-      width: 100%; min-height: 48px;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 12px 14px; border-radius: 8px;
-      border: 1px solid #dbe3ef; background: #fff;
-      color: #334155; font: inherit; font-size: 0.9rem; font-weight: 700;
-      cursor: pointer;
-    }
-    .mob-theme-copy { display: flex; align-items: center; gap: 10px; }
-    .mob-theme-copy svg { width: 17px; height: 17px; }
-    .mob-theme-state { color: #64748b; font-size: 0.76rem; font-weight: 800; }
-
-    :host(.theme-dark) nav {
-      background: #08111F;
-      border-bottom-color: rgba(255,255,255,0.08);
-      color: #EEF5FF;
-    }
-    :host(.theme-dark) nav.scrolled { box-shadow: 0 1px 0 rgba(255,255,255,0.08); }
-    :host(.theme-dark) .logo-name,
-    :host(.theme-dark) .lnk,
-    :host(.theme-dark) .btn-login,
-    :host(.theme-dark) .lang-btn,
-    :host(.theme-dark) .mob-cat-label,
-    :host(.theme-dark) .mega-col-name,
-    :host(.theme-dark) .country-search-input,
-    :host(.theme-dark) .mob-search-input,
-    :host(.theme-dark) .mob-country-search-input,
-    :host(.theme-dark) .search-input,
-    :host(.theme-dark) .search-result-name {
-      color: #EEF5FF;
-    }
-    :host(.theme-dark) .logo-tag,
-    :host(.theme-dark) .mega-col-desc,
-    :host(.theme-dark) .mega-footer-note,
-    :host(.theme-dark) .country-search-label,
-    :host(.theme-dark) .country-search-meta,
-    :host(.theme-dark) .mob-section-label,
-    :host(.theme-dark) .mob-cat-desc,
-    :host(.theme-dark) .mob-note,
-    :host(.theme-dark) .search-result-desc,
-    :host(.theme-dark) .search-result-cat,
-    :host(.theme-dark) .search-empty-text,
-    :host(.theme-dark) .search-empty-hint {
-      color: #9FB0C8;
-    }
-    :host(.theme-dark) .lnk:hover,
-    :host(.theme-dark) .lnk.open,
-    :host(.theme-dark) .search-btn:hover,
-    :host(.theme-dark) .theme-toggle:hover,
-    :host(.theme-dark) .lang-btn:hover,
-    :host(.theme-dark) .lang-opt:hover,
-    :host(.theme-dark) .lang-opt.active,
-    :host(.theme-dark) .mob-lang-opt:hover,
-    :host(.theme-dark) .mob-lang-opt.active,
-    :host(.theme-dark) .mob-country-link:hover,
-    :host(.theme-dark) .country-search-result:hover,
-    :host(.theme-dark) .search-result:hover,
-    :host(.theme-dark) .search-result.active {
-      background: rgba(96,165,250,0.14);
-      border-color: rgba(96,165,250,0.42);
-      color: #BFDBFE;
-    }
-    :host(.theme-dark) .mega,
-    :host(.theme-dark) .mob,
-    :host(.theme-dark) .search-modal,
-    :host(.theme-dark) .lang-drop {
-      background: #0B1524;
-      border-color: rgba(255,255,255,0.08);
-      box-shadow: 0 18px 42px rgba(0,0,0,0.34);
-    }
-    :host(.theme-dark) .mob {
-      background: #08111F;
-      box-shadow: none;
-    }
-    :host(.theme-dark) .mega-footer,
-    :host(.theme-dark) .search-input-wrap,
-    :host(.theme-dark) .search-footer,
-    :host(.theme-dark) .mob-footer,
-    :host(.theme-dark) .mob-cat {
-      border-color: rgba(255,255,255,0.08);
-    }
-    :host(.theme-dark) .mega-col,
-    :host(.theme-dark) .country-search-box,
-    :host(.theme-dark) .country-search-result,
-    :host(.theme-dark) .mob-country-link,
-    :host(.theme-dark) .mob-country-search,
-    :host(.theme-dark) .mob-search-bar,
-    :host(.theme-dark) .mob-lang-opt,
-    :host(.theme-dark) .mob-theme-toggle,
-    :host(.theme-dark) .search-result-icon,
-    :host(.theme-dark) .search-kbd,
-    :host(.theme-dark) .search-esc,
-    :host(.theme-dark) .search-footer-hint kbd,
-    :host(.theme-dark) .theme-toggle,
-    :host(.theme-dark) .search-btn {
-      background: rgba(18,31,51,0.94);
-      border-color: rgba(255,255,255,0.10);
-      color: #D9E6F7;
-    }
-    :host(.theme-dark) .btn-pro,
-    :host(.theme-dark) .btn-login.is-user,
-    :host(.theme-dark) .mob-pro-link {
-      background: rgba(18,31,51,0.94);
-      border-color: rgba(96,165,250,0.38);
-      color: #BFDBFE;
-      box-shadow: none;
-    }
-    :host(.theme-dark) .btn-pro.is-free,
-    :host(.theme-dark) .mob-pro-link.is-free {
-      background: rgba(18,31,51,0.94);
-      color: #EEF5FF;
-      border-color: rgba(255,255,255,0.12);
-    }
-    :host(.theme-dark) .btn-pro.is-pro,
-    :host(.theme-dark) .mob-pro-link.is-pro {
-      background: rgba(20,83,45,0.32);
-      color: #86EFAC;
-      border-color: rgba(74,222,128,0.34);
-    }
-    :host(.theme-dark) .burger:hover,
-    :host(.theme-dark) .mob-cat:hover {
-      background: rgba(255,255,255,0.06);
-    }
-    :host(.theme-dark) .burger span { background: #D9E6F7; }
-    :host(.theme-dark) .search-results::-webkit-scrollbar-thumb { background: #3A4C68; }
-    :host(.theme-dark) .mob-theme-state { color: #93C5FD; }
-    :host(.theme-dark) .mob-cat-icon {
-      background: rgba(96,165,250,0.16) !important;
-      color: #BFDBFE !important;
-    }
-    :host(.theme-dark) .mob-arr { color: #7E8FA8; }
-  `;
 
   class AfroNavbar extends HTMLElement {
     constructor() {
@@ -2469,6 +674,7 @@
     }
 
     connectedCallback() {
+      this.classList.toggle('theme-dark', effectiveTheme() === 'dark');
       // P4-03: Inject favicon if not already present
       if (!document.querySelector('link[rel="icon"]')) {
         var link = document.createElement('link');
@@ -2636,6 +842,37 @@
       return (lang === 'fr' || lang === 'sw' || lang === 'yo' || lang === 'ha') ? NAV_ITEMS.filter(c => c.id !== 'francophone') : NAV_ITEMS;
     }
 
+    _prepareNavData() {
+      return ensureNavbarData().then((data) => {
+        if (!data || !this.shadowRoot) return data;
+        var sr = this.shadowRoot;
+        var toolsGrid = sr.querySelector('.tools-mega-grid');
+        var businessGrid = sr.querySelector('.business-mega-grid');
+        var countryQuickLinks = sr.querySelector('.country-quick-links');
+        var mobileCountries = sr.querySelector('.mob-country-grid');
+        var mobileBusiness = sr.querySelector('.mob-business-block');
+        var mobileCategories = sr.querySelector('#mobCategoriesWrap');
+        if (toolsGrid) toolsGrid.innerHTML = this._megaContent();
+        if (businessGrid) businessGrid.innerHTML = this._businessContent();
+        if (countryQuickLinks) {
+          var parser = document.createElement('div');
+          parser.innerHTML = this._countriesContent();
+          var hydratedLinks = parser.querySelector('.country-quick-links');
+          if (hydratedLinks) countryQuickLinks.innerHTML = hydratedLinks.innerHTML;
+        }
+        if (mobileCountries) mobileCountries.innerHTML = this._mobileCountriesContent();
+        if (mobileBusiness) {
+          var businessLabel = mobileBusiness.querySelector('.mob-section-label');
+          mobileBusiness.innerHTML = (businessLabel ? businessLabel.outerHTML : '') + this._mobileBusinessContent();
+        }
+        if (mobileCategories) {
+          var categoryLabel = mobileCategories.querySelector('.mob-section-label');
+          mobileCategories.innerHTML = (categoryLabel ? categoryLabel.outerHTML : '') + this._mobileContent();
+        }
+        return data;
+      });
+    }
+
     _localizedHref(item, lang) {
       if (!item) return '#';
       var cur = lang || this._getLang();
@@ -2696,6 +933,7 @@
           </div>
           <div class="country-search-results" id="countrySearchResults" role="listbox" aria-label="${searchLabel}"></div>
         </div>`;
+      html += '<div class="country-quick-links">';
       html += countryLinks.map(country => `
         <a href="${country.href || this._countryHref(country.label)}" class="mega-col" style="--col-accent:#0062CC">
           <div class="mega-col-icon" style="background:#EEF4FF">${country.label.charAt(0)}</div>
@@ -2714,6 +952,7 @@
             <div class="mega-col-desc">${allDesc}</div>
           </div>
         </a>`;
+      html += '</div>';
       return html;
     }
 
@@ -3086,7 +1325,7 @@
       if (T_BY_LANG[lang]) Object.assign(T, T_BY_LANG[lang]);
 
       this.shadowRoot.innerHTML = `
-        <style>${CSS}</style>
+        <link rel="stylesheet" href="${NAVBAR_CSS_HREF}">
         <nav role="navigation" aria-label="${T.ariaNav}">
           <div class="inner">
             <a href="${T.homeHref}" class="logo" aria-label="AfroTools home">
@@ -3299,7 +1538,15 @@
       window.addEventListener('scroll', this._scrollFn, { passive: true });
       this._scrollFn();
 
-      const openMega  = () => {
+      const prepareForOpen = (action) => {
+        if (navbarDataLoaded) { action(); return; }
+        [allBtn, countriesBtn, businessBtn, burger, searchBtn].forEach(btn => btn?.setAttribute('aria-busy', 'true'));
+        this._prepareNavData().finally(() => {
+          [allBtn, countriesBtn, businessBtn, burger, searchBtn].forEach(btn => btn?.removeAttribute('aria-busy'));
+          action();
+        });
+      };
+      const showMega = () => {
         this._megaOpen = true;
         closeCountries();
         closeBusiness();
@@ -3307,13 +1554,14 @@
         mega?.classList.add('open');
         allBtn?.setAttribute('aria-expanded','true');
       };
+      const openMega = () => prepareForOpen(showMega);
       const closeMega = () => {
         this._megaOpen = false;
         allBtn?.classList.remove('open');
         mega?.classList.remove('open');
         allBtn?.setAttribute('aria-expanded','false');
       };
-      const openCountries = () => {
+      const showCountries = () => {
         this._countriesOpen = true;
         closeMega();
         closeBusiness();
@@ -3321,13 +1569,14 @@
         countriesMega?.classList.add('open');
         countriesBtn?.setAttribute('aria-expanded','true');
       };
+      const openCountries = () => prepareForOpen(showCountries);
       const closeCountries = () => {
         this._countriesOpen = false;
         countriesBtn?.classList.remove('open');
         countriesMega?.classList.remove('open');
         countriesBtn?.setAttribute('aria-expanded','false');
       };
-      const openBusiness = () => {
+      const showBusiness = () => {
         this._businessOpen = true;
         closeMega();
         closeCountries();
@@ -3335,6 +1584,7 @@
         businessMega?.classList.add('open');
         businessBtn?.setAttribute('aria-expanded','true');
       };
+      const openBusiness = () => prepareForOpen(showBusiness);
       const closeBusiness = () => {
         this._businessOpen = false;
         businessBtn?.classList.remove('open');
@@ -3378,11 +1628,13 @@
       businessBtn?.addEventListener('click', e => { e.stopPropagation(); this._businessOpen ? closeBusiness() : openBusiness(); });
       searchBtn?.addEventListener('click', e => {
         e.preventDefault();
-        if (typeof window.__openCommandPalette === 'function') {
-          window.__openCommandPalette();
-          return;
-        }
-        window.location.href = this._getLang() === 'sw' ? '/sw/zana-zote/' : '/search/';
+        prepareForOpen(() => {
+          if (typeof window.__openCommandPalette === 'function') {
+            window.__openCommandPalette();
+            return;
+          }
+          window.location.href = this._getLang() === 'sw' ? '/sw/zana-zote/' : '/search/';
+        });
       });
 
       // Hover — keep open while moving between button and mega
@@ -3459,7 +1711,7 @@
 
       // Mobile hamburger
       burger?.addEventListener('click', () => {
-        setMenuOpen(!this._menuOpen);
+        prepareForOpen(() => setMenuOpen(!this._menuOpen));
       });
 
       mob?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
@@ -3527,321 +1779,7 @@
 
       // Swahili discovery fallback: current pages may load an older minified registry,
       // so map English source rows to verified /sw/ pages until the registry bundle is refreshed.
-      const SW_DISCOVERY_OVERRIDES = {
-        "afcfta-tracker": { name: "Ufuatiliaji wa Ushuru wa AfCFTA", desc: "Pima akiba ya ushuru inayoweza kutokea chini ya AfCFTA kwa corridor ya biashara, bila kudai eligibility rasmi.", href: "/sw/zana/ufuatiliaji-ushuru-afcfta/", category: "ecommerce", lang: 'sw' },
-        "ajo-chama-calc": { name: "Kikokotoo cha Ajo, Chama na Tontine", desc: "Panga mzunguko wa Ajo, Chama, Tontine au Stokvel: wanachama, mchango, pool, malipo na adhabu.", href: "/sw/zana/kikokotoo-ajo-chama-tontine/", category: "ecommerce", lang: 'sw' },
-        "annual-returns": { name: "Marejesho ya mwaka ya kampuni", desc: "Orodha ya marejesho ya mwaka ya kampuni za Afrika: nyaraka, msajili, hatari za kuchelewa kuwasilisha na maandalizi ya kukabidhi kwa katibu wa kampuni au mhasibu.", href: "/sw/zana/marejesho-ya-mwaka-ya-kampuni/", category: "ecommerce", lang: 'sw' },
-        "ao-paye": { name: "Kikokotoo cha Kodi ya Mshahara Angola 2026", desc: "Kikokotoo cha PAYE kwa Angola 2026. Viwango vya AGT 0%–25%, INSS 3%. Hesabu mshahara wako halisi kwa Kwanza ya Angola (AOA). Bila malipo.", href: "/sw/angola/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ao-vat": { name: "Kikokotoo cha VAT Angola 14%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Angola: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa AOA.", href: "/sw/angola/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "bf-paye": { name: "Kikokotoo cha Kodi ya Mshahara Burkina Faso 2026 — DGI IUTS", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGI IUTS Burkina Faso, CNSS 5.5%. Mabanda ya kodi 0%–31%. Bure, haraka.", href: "/sw/burkina-faso/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "bf-vat": { name: "Kikokotoo cha VAT Burkina Faso 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Burkina Faso: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/burkina-faso/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "bi-vat": { name: "Kikokotoo cha VAT Burundi 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Burundi: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa BIF.", href: "/sw/burundi/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "biogas-roi": { name: "Faida ya Biogas", desc: "Kadiria ROI ya biogas kwa waste, gesi, mbolea na gharama za mfumo.", href: "/sw/zana/faida-ya-biogas/", category: "ecommerce", lang: 'sw' },
-        "bj-paye": { name: "Kikokotoo cha Kodi ya Mshahara Benin 2026 — DGI PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGI Benin, CNPS 2.5%. Mabanda ya kodi 0%–25%. Bure, haraka.", href: "/sw/benin/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "bj-vat": { name: "Kikokotoo cha VAT Benin 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Benin: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/benin/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "break-even": { name: "Kikokotoo cha Break-even | Kiwango cha Kufikia Faida", desc: "Kokotoa break-even, vitengo vinavyohitajika, mapato, contribution margin na margin ya usalama kwa biashara yako.", href: "/sw/zana/kikokotoo-break-even/", category: "ecommerce", lang: 'sw' },
-        "business-insurance": { name: "Bima ya Biashara Afrika | Makadirio ya SME", desc: "Panga bima ya biashara kwa SME: moto, wizi, public liability, professional indemnity na goods in transit kwa nchi 15 zinazoungwa mkono.", href: "/sw/zana/kikokotoo-bima-ya-biashara/", category: "ecommerce", lang: 'sw' },
-        "business-license": { name: "Leseni ya Biashara Afrika | Vibali na Mamlaka kwa Sekta", desc: "Kagua leseni na vibali vya biashara kwa sekta kama retail, food, construction, healthcare, finance, education, transport na agriculture.", href: "/sw/zana/leseni-ya-biashara/", category: "ecommerce", lang: 'sw' },
-        "business-plan": { name: "Mjenzi wa Mpango wa Biashara", desc: "Andaa muhtasari wa mpango wa biashara kwa Kiswahili: wateja, mapato, gharama, operesheni, hatari na hatua zinazofuata.", href: "/sw/zana/mjenzi-mpango-wa-biashara/", category: "ecommerce", lang: 'sw' },
-        "business-planner": { name: "Mpangaji wa Biashara AI", desc: "Panga hatua za biashara, mawazo ya mapato na orodha ya utekelezaji kwa mtindo wa AI kwa Kiswahili.", href: "/sw/zana/mpangaji-wa-biashara-ai/", category: "ecommerce", lang: 'sw' },
-        "business-registration": { name: "Usajili wa Biashara Afrika | Mwongozo wa Kiswahili", desc: "Angalia mamlaka ya usajili, aina za kampuni, gharama, muda na hatua baada ya usajili wa biashara katika nchi za Afrika.", href: "/sw/zana/usajili-biashara/", category: "ecommerce", lang: 'sw' },
-        "bw-paye": { name: "Kikokotoo cha Kodi ya Mshahara Botswana 2025/26", desc: "Kikokotoo cha PAYE kwa Botswana 2025/26. Viwango vya BURS 0%–25%. Hakuna pensheni ya lazima. Hesabu mshahara wako halisi kwa Pula (BWP). Bila malipo.", href: "/sw/botswana/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "bw-vat": { name: "Kikokotoo cha VAT Botswana 14%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Botswana: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa BWP.", href: "/sw/botswana/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "cassava-processing-calculator": { name: "Faida ya Usindikaji Mihogo | Cassava Processing", desc: "Kadiria faida ya kusindika cassava kuwa garri, unga, chips, starch au bidhaa nyingine.", href: "/sw/zana/faida-ya-usindikaji-mihogo/", category: "ecommerce", lang: 'sw' },
-        "cd-paye": { name: "Kikokotoo cha Kodi ya Mshahara Jamhuri ya Kidemokrasia ya Kongo 2026 — PAYE CDF", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na INSS Jamhuri ya Kidemokrasia ya Kongo. CDF. Bure, haraka.", href: "/sw/dr-congo/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "cd-vat": { name: "Kikokotoo cha VAT DR Congo 16%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa DR Congo: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa CDF.", href: "/sw/dr-congo/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "cf-paye": { name: "Kikokotoo cha Kodi ya Mshahara CAR 2026 — PAYE XAF", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na OCSS Jamhuri ya Afrika ya Kati. XAF. Bure, haraka.", href: "/sw/central-african-republic/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "cf-vat": { name: "Kikokotoo cha VAT Jamhuri ya Afrika ya Kati 19%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Jamhuri ya Afrika ya Kati: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XAF.", href: "/sw/central-african-republic/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "cg-paye": { name: "Kikokotoo cha Kodi ya Mshahara Jamhuri ya Kongo 2026 — PAYE XAF", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na CNSS Jamhuri ya Kongo. XAF. Bure, haraka.", href: "/sw/congo/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "cg-vat": { name: "Kikokotoo cha VAT Kongo 18.9%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Kongo: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XAF.", href: "/sw/congo/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "ci-paye": { name: "Kikokotoo cha Kodi ya Mshahara Pwani ya Pembe 2026 — DGI PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGI Côte d'Ivoire, CNPS 6.3%. Mabanda ya kodi 0%–25%. Bure, haraka, bila kujisajili.", href: "/sw/cote-divoire/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ci-vat": { name: "Kikokotoo cha VAT Pwani ya Pembe 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Pwani ya Pembe: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/cote-divoire/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "cm-paye": { name: "Kikokotoo cha Kodi ya Mshahara Kameruni 2026 — DGI PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGI Kameruni, CNPS 4.2%. Mabanda ya kodi 10%–35%. Bure, haraka, bila kujisajili.", href: "/sw/cameroon/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "cm-vat": { name: "Kikokotoo cha VAT Kameruni 19.25%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Kameruni: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XAF.", href: "/sw/cameroon/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "company-type-selector": { name: "Kichagua aina ya kampuni Afrika", desc: "Jibu maswali 6 kuchagua sole proprietor, private company, public company, partnership, NGO, branch au subsidiary kwa biashara ya Afrika.", href: "/sw/zana/kichagua-aina-ya-kampuni/", category: "ecommerce", lang: 'sw' },
-        "cover-letter": { name: "Kizalishaji cha Barua ya Ombi la Kazi — Kiswahili & Kiingereza", desc: "Tengeneza barua ya ombi la kazi kwa Kiswahili au Kiingereza. Violezo vya kitaalamu kwa sekta za teknolojia, fedha, afya, elimu, na zaidi. Pakua PDF bure bila usajili.", href: "/sw/zana/barua-ombi/", category: "document-pdf", lang: 'sw' },
-        "creator-invoice": { name: "Ankara ya Mtayarishi", desc: "Andaa makadirio ya ankara ya mtayarishi kwa line items, VAT ya hiari, discount, total na ujumbe wa malipo.", href: "/sw/zana/ankara-ya-mtayarishi/", category: "document-pdf", lang: 'sw' },
-        "crop-insurance-calc": { name: "Kikokotoo cha Bima ya Mazao Afrika", desc: "Chagua nchi na pima makadirio ya bima ya mazao kwa shamba, aina ya zao, eneo na hatari za msimu kwa nchi 15.", href: "/sw/zana/kikokotoo-bima-ya-mazao/", category: "agriculture", lang: 'sw' },
-        "crop-yield-burundi": { name: "Kikokotoo cha Mavuno ya Mazao Burundi - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Burundi. Mahindi, muhogo, maharage, kahawa, viazi na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/burundi/", category: "agriculture", lang: 'sw' },
-        "crop-yield-estimator": { name: "Makisio ya Mavuno ya Mazao Afrika", desc: "Kadiria mavuno ya mazao kwa eneo, yield kwa hekta, hasara baada ya mavuno na bei ya kuuza.", href: "/sw/zana/makisio-ya-mavuno/", category: "agriculture", lang: 'sw' },
-        "crop-yield-kenya": { name: "Kikokotoo cha Mavuno ya Mazao Kenya - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Kenya. Mahindi, mpunga, ngano, maharage na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/kenya/", category: "agriculture", lang: 'sw' },
-        "crop-yield-rwanda": { name: "Kikokotoo cha Mavuno ya Mazao Rwanda - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Rwanda. Mahindi, viazi, maharage, kahawa, chai na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/rwanda/", category: "agriculture", lang: 'sw' },
-        "crop-yield-tanzania": { name: "Kikokotoo cha Mavuno ya Mazao Tanzania - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Tanzania. Mahindi, mpunga, ngano, maharage na mazao mengine katika kanda 6 za kilimo.", href: "/sw/kilimo/mavuno/tanzania/", category: "agriculture", lang: 'sw' },
-        "crop-yield-uganda": { name: "Kikokotoo cha Mavuno ya Mazao Uganda - AfroTools", desc: "Kadiria mavuno ya mazao yako kwa Uganda. Mahindi, ndizi, kahawa, mpunga, maharage na mazao mengine katika kanda zote za kilimo.", href: "/sw/kilimo/mavuno/uganda/", category: "agriculture", lang: 'sw' },
-        "cv-builder": { name: "Mjenzi wa CV | Violezo vya Kitaalamu kwa Afrika", desc: "Tengeneza CV yako ya kitaalamu kwa dakika chache. Violezo 16+ kwa nchi za Afrika: Nigeria, Kenya, Ghana, Afrika Kusini. Pakua PDF bure, bila usajili.", href: "/sw/zana/mjenzi-cv/", category: "document-pdf", lang: 'sw' },
-        "cv-paye": { name: "Kikokotoo cha Kodi ya Mshahara Cabo Verde 2026 — INPS IUR", desc: "Kokotoa mshahara wako halisi baada ya kodi ya IUR, INPS Cabo Verde. Banda la kodi 0%–27.5%. Bure, haraka, bila kujisajili.", href: "/sw/cape-verde/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "cv-vat": { name: "Kikokotoo cha VAT Cabo Verde 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Cabo Verde: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa CVE.", href: "/sw/cape-verde/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "diesel-vs-solar-farm": { name: "Dizeli dhidi ya Solar Shambani", desc: "Linganishia pampu au shughuli za shamba zinazotumia diesel dhidi ya solar kwa gharama na payback.", href: "/sw/zana/dizeli-dhidi-ya-solar-shambani/", category: "agriculture", lang: 'sw' },
-        "dj-paye": { name: "Kikokotoo cha Kodi ya Mshahara Jibuti 2026 — PAYE DJF", desc: "Kokotoa kodi ya mshahara (IRPP) na Bima ya Jamii kwa Jibuti 2026. Mabanda ya kodi 6, sarafu DJF. Zana ya bure ya kuhesabu mshahara halisi.", href: "/sw/djibouti/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "dj-vat": { name: "Kikokotoo cha VAT Djibouti 10%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Djibouti: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa DJF.", href: "/sw/djibouti/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "document-pdf": { name: "Hati na PDF - Zana za nyaraka kwa Kiswahili", desc: "Hati na PDF kwa Kiswahili: unganisha, gawanya, bana, saini, linda na panga PDF, kisha unganisha na ankara, CV, barua na mikataba.", href: "/sw/hati-na-pdf/", category: "document-pdf", lang: 'sw' },
-        "domestic-worker": { name: "Mshahara wa Mfanyakazi wa Nyumbani", desc: "Panga mshahara, masaa, leave na benefits kwa mfanyakazi wa nyumbani kwa makadirio ya HR, si uamuzi wa kisheria.", href: "/sw/zana/mshahara-wa-mfanyakazi-wa-nyumbani/", category: "financial", lang: 'sw' },
-        "dz-paye": { name: "Kikokotoo cha Kodi ya Mshahara Aljeria 2026 — DGI PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGI na CNAS Aljeria. Mabanda 0%–35%. Bure, haraka, bila kujisajili.", href: "/sw/algeria/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "dz-vat": { name: "Kikokotoo cha VAT Algeria 19%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Algeria: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa DZD.", href: "/sw/algeria/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "eg-paye": { name: "Kikokotoo cha Kodi ya Mshahara Misri 2025 — ETA NOSI", desc: "Kikokotoo cha kodi ya mshahara Misri 2025. Viwango vya ETA (0%–27.5%), NOSI 11%, msamaha wa kibinafsi EGP 20,000. Pata mshahara halisi wako kwa EGP.", href: "/sw/egypt/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "eg-vat": { name: "Kikokotoo cha VAT Misri 14%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Misri: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa EGP.", href: "/sw/egypt/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "er-paye": { name: "Kikokotoo cha Kodi ya Mshahara Eritrea 2026 — PAYE ERN", desc: "Kokotoa kodi ya mshahara na Bima ya Jamii kwa Eritrea 2026. Mabanda ya kodi 7, sarafu ERN. Zana ya bure ya kuhesabu mshahara halisi.", href: "/sw/eritrea/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "et-paye": { name: "Kikokotoo cha Kodi ya Mshahara Ethiopia 2026 — ERCA", desc: "Kikokotoo cha kodi ya mshahara Ethiopia 2025/26. Viwango vya ERCA (0%–35%), Mfuko wa Pensheni 7%, mwajiri 11%. Pata mshahara halisi wako kwa ETB.", href: "/sw/ethiopia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "et-vat": { name: "Kikokotoo cha VAT Ethiopia 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Ethiopia: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa ETB.", href: "/sw/ethiopia/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "export-docs": { name: "Nyaraka za Usafirishaji Mazao Afrika", desc: "Orodha ya ukaguzi ya nyaraka za export, AfCFTA, HS code, vyeti, ankara na gharama za maandalizi ya kusafirisha mazao.", href: "/sw/zana/nyaraka-za-usafirishaji-mazao/", category: "agriculture", lang: 'sw' },
-        "farm-loans-hub": { name: "Ustahiki wa Mkopo wa Shamba | Agro Loan", desc: "Kagua maandalizi ya mkopo wa shamba kwa mapato, gharama, deni, collateral na uwezo wa kulipa.", href: "/sw/zana/ustahiki-wa-mkopo-wa-shamba/", category: "agriculture", lang: 'sw' },
-        "farm-payroll-calculator": { name: "Mishahara ya Wafanyakazi wa Shamba", desc: "Kadiria payroll ya wafanyakazi wa shamba, casual labour, deductions na michango ya mwajiri.", href: "/sw/zana/mishahara-ya-wafanyakazi-wa-shamba/", category: "agriculture", lang: 'sw' },
-        "farm-profit-calculator": { name: "Faida na Hasara ya Shamba Afrika", desc: "Kokotoa mapato, gharama, break-even yield na ROI ya msimu wa shamba.", href: "/sw/zana/faida-na-hasara-ya-shamba/", category: "agriculture", lang: 'sw' },
-        "fertilizer-burundi": { name: "Kikokotoo cha Mbolea Burundi - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Burundi. Mapendekezo ya bidhaa za mbolea, bei za soko BIF, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/burundi/", category: "agriculture", lang: 'sw' },
-        "fertilizer-calculator": { name: "Kikokotoo cha Mbolea na NPK Afrika", desc: "Kadiria mifuko ya mbolea, gharama na subsidy kwa kutumia mahitaji ya NPK au kg kwa hekta.", href: "/sw/zana/kikokotoo-mbolea/", category: "agriculture", lang: 'sw' },
-        "fertilizer-kenya": { name: "Kikokotoo cha Mbolea Kenya - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Kenya. Mapendekezo ya bidhaa za mbolea, bei za soko, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/kenya/", category: "agriculture", lang: 'sw' },
-        "fertilizer-rwanda": { name: "Kikokotoo cha Mbolea Rwanda - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Rwanda. Mapendekezo ya bidhaa za mbolea, bei za soko RWF, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/rwanda/", category: "agriculture", lang: 'sw' },
-        "fertilizer-tanzania": { name: "Kikokotoo cha Mbolea Tanzania - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Tanzania. Mapendekezo ya bidhaa za mbolea, bei za soko, na ratiba ya matumizi kwa mazao yako.", href: "/sw/kilimo/mbolea/tanzania/", category: "agriculture", lang: 'sw' },
-        "fertilizer-uganda": { name: "Kikokotoo cha Mbolea Uganda - AfroTools", desc: "Hesabu mahitaji ya mbolea NPK kwa Uganda. Mapendekezo ya bidhaa za mbolea, bei za soko UGX, na ratiba ya matumizi.", href: "/sw/kilimo/mbolea/uganda/", category: "agriculture", lang: 'sw' },
-        "fish-farming-roi": { name: "Faida ya Ufugaji Samaki Afrika", desc: "Kadiria mapato, feed cost, fingerlings, mortality na ROI ya catfish, tilapia au trout.", href: "/sw/zana/faida-ya-ufugaji-samaki/", category: "ecommerce", lang: 'sw' },
-        "foreign-company-reg": { name: "Usajili wa kampuni ya kigeni Afrika", desc: "Mwongozo wa kupanga usajili wa kampuni ya kigeni: tawi, kampuni tanzu, ofisi ya uwakilishi, JV, mshirika wa ndani, sekta, vibali na ukaguzi wa msajili kwa nchi 16.", href: "/sw/zana/usajili-wa-kampuni-ya-kigeni/", category: "ecommerce", lang: 'sw' },
-        "forex-profit": { name: "Kikokotoo cha Faida ya Forex | Pips, Thamani ya Pip na P&L", desc: "Kokotoa faida au hasara ya forex kwa Kiswahili. Pima pips, thamani ya pip, position size na P&L kwa jozi kuu na sarafu za Afrika.", href: "/sw/zana/kikokotoo-faida-forex/", category: "ecommerce", lang: 'sw' },
-        "freelance-invoice": { name: "Ankara ya Freelancer", desc: "Tengeneza makadirio ya ankara ya freelancer kwa subtotal, VAT/kodi, discount, due date na payment note.", href: "/sw/zana/ankara-ya-freelancer/", category: "document-pdf", lang: 'sw' },
-        "ga-paye": { name: "Kikokotoo cha Kodi ya Mshahara Gabon 2026 — PAYE XAF", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na CNSS Gabon. XAF. Bure, haraka, sahihi.", href: "/sw/gabon/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ga-vat": { name: "Kikokotoo cha VAT Gabon 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Gabon: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XAF.", href: "/sw/gabon/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "gh-paye": { name: "Kikokotoo cha Kodi ya Mshahara Ghana 2026 — GRA SSNIT", desc: "Kikokotoo cha kodi ya mshahara Ghana 2026. Viwango vya GRA mabanda 7 (0%–35%), SSNIT Tier I/II/III, unafuu wa kibinafsi. Pata mshahara halisi wako kwa GHS.", href: "/sw/ghana/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "gh-vat": { name: "Kikokotoo cha VAT Ghana 20%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Ghana: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa GHS.", href: "/sw/ghana/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "gm-paye": { name: "Kikokotoo cha Kodi ya Mshahara Gambia 2026 — GRA PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya GRA, SSHFC Gambia. Banda la kodi 0%–35%. Bure, haraka, bila kujisajili.", href: "/sw/gambia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "gm-vat": { name: "Kikokotoo cha VAT Gambia 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Gambia: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa GMD.", href: "/sw/gambia/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "gn-paye": { name: "Kikokotoo cha Kodi ya Mshahara Guinea 2026 — DNI PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DNI Guinea, CNSS 5%. Mabanda ya kodi 0%–35%. Bure, haraka.", href: "/sw/guinea/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "gn-vat": { name: "Kikokotoo cha VAT Guinea 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Guinea: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa GNF.", href: "/sw/guinea/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "gq-paye": { name: "Kikokotoo cha Kodi ya Mshahara Guinea ya Ikweta 2026 — PAYE XAF", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na INSESO Guinea ya Ikweta. XAF. Bure, haraka.", href: "/sw/equatorial-guinea/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "gq-vat": { name: "Kikokotoo cha VAT Guinea ya Ikweta 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Guinea ya Ikweta: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XAF.", href: "/sw/equatorial-guinea/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "gw-paye": { name: "Kikokotoo cha Kodi ya Mshahara Guinea-Bissau 2026 — DGCI PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGCI, INSS Guinea-Bissau. Banda la kodi 0%–30%. Bure, haraka, bila kujisajili.", href: "/sw/guinea-bissau/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "gw-vat": { name: "Kikokotoo cha VAT Guinea-Bissau 17%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Guinea-Bissau: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/guinea-bissau/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "harvest-date-estimator": { name: "Makisio ya Tarehe ya Mavuno Afrika", desc: "Kadiria tarehe ya kuvuna kulingana na tarehe ya kupanda, muda wa kukomaa na ucheleweshaji wa msimu.", href: "/sw/zana/makisio-tarehe-ya-mavuno/", category: "agriculture", lang: 'sw' },
-        "hosting-compare": { name: "Kulinganisha Hosting - gharama na fit kwa developers Afrika", desc: "Linganisha hosting options kwa source dates, payment fit, ops effort, pricing risk na deployment recommendations.", href: "/sw/zana/kulinganisha-hosting/", category: "ecommerce", lang: 'sw' },
-        "html-to-pdf": { name: "HTML kwenda PDF - geuza HTML au rich text kuwa PDF", desc: "Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.", href: "/sw/zana/html-kwenda-pdf/", category: "document-pdf", lang: 'sw' },
-        "import-duty": { name: "Kikokotoo cha Ushuru wa Forodha Afrika", desc: "Kadiria ushuru wa forodha, VAT, levies na gharama ya kuingiza bidhaa. Tumia viwango vya makadirio kutoka ukurasa wa Kiingereza na thibitisha na mamlaka ya forodha.", href: "/sw/zana/ushuru-forodha/", category: "ecommerce", lang: 'sw' },
-        "invoice-factoring": { name: "Kikokotoo cha Factoring ya Ankara", desc: "Pima advance, ada, reserve na gharama ya APR unapouza ankara ili kupata pesa mapema.", href: "/sw/zana/factoring-ankara/", category: "document-pdf", lang: 'sw' },
-        "invoice-generator": { name: "Kizalishaji cha Ankara | Ankara ya PDF kwa Kiswahili", desc: "Tengeneza ankara ya biashara kwa Kiswahili, ongeza bidhaa, VAT, maelezo ya mteja, kisha chapisha au pakua PDF.", href: "/sw/zana/kizalishaji-ankara/", category: "document-pdf", lang: 'sw' },
-        "irrigation-burundi": { name: "Kikokotoo cha Umwagiliaji Burundi", desc: "Hesabu mahitaji ya maji ya umwagiliaji kwa mazao Burundi. Bajeti ya maji kwa mahindi, kahawa, chai, viazi katika kanda mbalimbali za kilimo.", href: "/sw/kilimo/umwagiliaji/burundi/", category: "agriculture", lang: 'sw' },
-        "irrigation-calculator": { name: "Kikokotoo cha Umwagiliaji Afrika", desc: "Kadiria mahitaji ya maji, gharama ya pumping na ratiba ya umwagiliaji kwa shamba.", href: "/sw/zana/kikokotoo-umwagiliaji/", category: "agriculture", lang: 'sw' },
-        "irrigation-kenya": { name: "Kikokotoo cha Umwagiliaji Kenya", desc: "Hesabu mahitaji ya maji ya umwagiliaji kwa mazao Kenya. Bajeti ya maji ya kila mwezi kwa chai, mahindi, ngano, kahawa, avokado katika kanda 7 za kilimo.", href: "/sw/kilimo/umwagiliaji/kenya/", category: "agriculture", lang: 'sw' },
-        "irrigation-rwanda": { name: "Kikokotoo cha Umwagiliaji Rwanda", desc: "Hesabu mahitaji ya maji ya umwagiliaji kwa mazao Rwanda. Bajeti ya maji kwa mahindi, viazi, kahawa, chai katika kanda mbalimbali za kilimo.", href: "/sw/kilimo/umwagiliaji/rwanda/", category: "agriculture", lang: 'sw' },
-        "irrigation-tanzania": { name: "Kikokotoo cha Umwagiliaji Tanzania", desc: "Hesabu mahitaji ya maji ya umwagiliaji kwa mazao Tanzania. Bajeti ya maji ya kila mwezi kwa mahindi, mpunga, ngano, kahawa, chai katika kanda 7 za kilimo.", href: "/sw/kilimo/umwagiliaji/tanzania/", category: "agriculture", lang: 'sw' },
-        "irrigation-uganda": { name: "Kikokotoo cha Umwagiliaji Uganda", desc: "Hesabu mahitaji ya maji ya umwagiliaji kwa mazao Uganda. Bajeti ya maji kwa mahindi, mpunga, kahawa, ndizi, chai katika kanda mbalimbali za kilimo.", href: "/sw/kilimo/umwagiliaji/uganda/", category: "agriculture", lang: 'sw' },
-        "ke-vat": { name: "Kikokotoo cha VAT Kenya 16%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Kenya: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa KES.", href: "/sw/kenya/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "km-paye": { name: "Kikokotoo cha Kodi ya Mshahara Komoro 2026 — PAYE KMF", desc: "Kokotoa kodi ya mshahara (IRPP) na CNPS kwa Komoro 2026. Mabanda ya kodi 7, sarafu KMF. Zana ya bure ya kuhesabu mshahara halisi.", href: "/sw/comoros/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "km-vat": { name: "Kikokotoo cha VAT Comoro 10%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Comoro: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa KMF.", href: "/sw/comoros/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "land-registry-fees": { name: "Ada za Usajili wa Ardhi Afrika", desc: "Kadiria ada za usajili wa ardhi, stamp duty, survey, wakili na gharama za uhamisho.", href: "/sw/zana/ada-usajili-wa-ardhi/", category: "ecommerce", lang: 'sw' },
-        "leave-calculator": { name: "Kikokotoo cha Likizo Afrika 2026 - Likizo ya Mwaka, Malipo na Mpango wa Wazazi", desc: "Angalia haki za likizo kwa nchi 54 za Afrika, kokotoa siku ulizopata, hesabu malipo ya likizo ambayo haijatumika, panga likizo ya uzazi au baba, na tafuta wikendi ndefu kwa Kiswahili.", href: "/sw/zana/kikokotoo-likizo/", category: "financial", lang: 'sw' },
-        "lr-paye": { name: "Kikokotoo cha Kodi ya Mshahara Liberia 2026 — LRA PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya LRA na NASSCORP Liberia. Mabanda ya kodi 0%–25%, NASSCORP 4% mfanyakazi + 6% mwajiri. Bure, haraka, bila kujisajili.", href: "/sw/liberia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "lr-vat": { name: "Kikokotoo cha VAT Liberia 10%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Liberia: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa LRD.", href: "/sw/liberia/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "ls-paye": { name: "Kikokotoo cha Kodi ya Mshahara Lesotho 2025/26", desc: "Kikokotoo cha PAYE kwa Lesotho 2025/26. Viwango vya LRA 20%–30%, punguzo la M10,560/mwaka. Hesabu mshahara wako halisi kwa Loti (LSL). Bila malipo.", href: "/sw/lesotho/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ls-vat": { name: "Kikokotoo cha VAT Lesotho 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Lesotho: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa LSL.", href: "/sw/lesotho/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "ly-paye": { name: "Kikokotoo cha Kodi ya Mshahara Libya 2026 — PAYE LYD", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na michango ya hifadhi ya jamii Libya. LYD. Bure, haraka.", href: "/sw/libya/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ma-paye": { name: "Kikokotoo cha Kodi ya Mshahara Moroko 2025 — DGI CNSS", desc: "Kikokotoo cha kodi ya mshahara Moroko 2025. Viwango vya DGI (0%–38%), CNSS 4.48%, AMO 2.26%. Hesabu za mwaka. Pata mshahara halisi wako kwa MAD.", href: "/sw/morocco/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ma-vat": { name: "Kikokotoo cha VAT Moroko 20%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Moroko: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa MAD.", href: "/sw/morocco/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "mama-put": { name: "Kikokotoo cha Faida ya Mama Put na Chakula cha Mtaani", desc: "Kadiria mapato, gharama za viungo, kodi, wafanyakazi na faida ya biashara ya chakula kama Mama Put, kibanda au mlo wa haraka.", href: "/sw/zana/faida-ya-mama-put/", category: "ecommerce", lang: 'sw' },
-        "market-stall-profit": { name: "Kikokotoo cha Faida ya Kibanda Sokoni", desc: "Pima faida ya kibanda sokoni kwa bidhaa, gharama za kila siku, siku za soko na margin.", href: "/sw/zana/faida-ya-kibanda-sokoni/", category: "ecommerce", lang: 'sw' },
-        "merchant-fees": { name: "Ada ya Kupokea Malipo kwa Mfanyabiashara | MDR na Mchanganyiko wa Malipo", desc: "Kokotoa ada ya kupokea malipo kwa biashara kwa Kiswahili. Pima kadi, POS, pesa za simu, bank transfer na cash ili kuona kiwango cha ada kilichochanganywa.", href: "/sw/zana/ada-mfanyabiashara/", category: "ecommerce", lang: 'sw' },
-        "mg-paye": { name: "Kikokotoo cha Kodi ya Mshahara Madagaska 2025/26", desc: "Kikokotoo cha PAYE kwa Madagaska (Madagascar) 2025/26. Kodi 0%–20%, CNAPS 1%. Hesabu mshahara kwa Ariary ya Madagaska (MGA). Bila malipo.", href: "/sw/madagascar/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "mg-vat": { name: "Kikokotoo cha VAT Madagascar 20%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Madagascar: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa MGA.", href: "/sw/madagascar/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "mini-importation": { name: "Faida ya Mini-Importation", desc: "Pima faida ya mini-importation kwa gharama ya bidhaa, usafirishaji, ushuru, gharama za kutoa mzigo, FX, idadi na bei ya kuuza.", href: "/sw/zana/faida-ya-mini-importation/", category: "ecommerce", lang: 'sw' },
-        "minimum-wage": { name: "Kikokotoo cha Kima cha Chini cha Mshahara Afrika 2026", desc: "Angalia kima cha chini cha mshahara kwa nchi zote 54 za Afrika. Uhakiki wa ulinganifu, pengo la gharama ya maisha, mabadiliko ya kihistoria, sekta maalumu na tahadhari za nchi.", href: "/sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/", category: "financial", lang: 'sw' },
-        "minimum-wage-legal": { name: "Kikokotoo cha Kima cha Chini cha Mshahara Afrika 2026", desc: "Angalia kima cha chini cha mshahara kwa nchi zote 54 za Afrika. Uhakiki wa ulinganifu, pengo la gharama ya maisha, mabadiliko ya kihistoria, sekta maalumu na tahadhari za nchi.", href: "/sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/", category: "financial", lang: 'sw' },
-        "ml-paye": { name: "Kikokotoo cha Kodi ya Mshahara Mali 2026 — DGI ITS PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGI ITS Mali, INPS 3.6%. Mabanda ya kodi 0%–36%. Bure, haraka, bila kujisajili.", href: "/sw/mali/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ml-vat": { name: "Kikokotoo cha VAT Mali 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Mali: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/mali/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "mr-paye": { name: "Kikokotoo cha Kodi ya Mshahara Mauritania 2026 — ITS PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya ITS, CNSS Mauritania. Banda la kodi 0%–40%. Bure, haraka, bila kujisajili.", href: "/sw/mauritania/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "mr-vat": { name: "Kikokotoo cha VAT Mauritania 16%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Mauritania: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa MRU.", href: "/sw/mauritania/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "mu-paye": { name: "Kikokotoo cha Kodi ya Mshahara Morisi 2025/26", desc: "Kikokotoo cha PAYE kwa Morisi (Mauritius) 2025/26. Viwango vya MRA 0%–20%, CSG 3%, NSF 2.5%. Hesabu mshahara kwa Rupia ya Morisi (MUR). Bila malipo.", href: "/sw/mauritius/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "mu-vat": { name: "Kikokotoo cha VAT Morisi 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Morisi: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa MUR.", href: "/sw/mauritius/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "mw-paye": { name: "Kikokotoo cha Kodi ya Mshahara Malawi 2025/26", desc: "Kikokotoo cha PAYE kwa Malawi 2025/26. Viwango vya MRA 0%–35%. Hesabu mshahara wako halisi kwa Kwacha ya Malawi (MWK). Bila malipo.", href: "/sw/malawi/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "mw-vat": { name: "Kikokotoo cha VAT Malawi 16.5%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Malawi: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa MWK.", href: "/sw/malawi/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "mz-paye": { name: "Kikokotoo cha Kodi ya Mshahara Msumbiji 2025/26", desc: "Kikokotoo cha PAYE kwa Msumbiji (Mozambique) 2025/26. Viwango vya AT 0%–32%, INSS 3%. Hesabu mshahara wako halisi kwa Metical (MZN). Bila malipo.", href: "/sw/mozambique/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "mz-vat": { name: "Kikokotoo cha VAT Msumbiji 17%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Msumbiji: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa MZN.", href: "/sw/mozambique/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "na-paye": { name: "Kikokotoo cha Kodi ya Mshahara Namibia 2025/26", desc: "Kikokotoo cha PAYE kwa Namibia 2025/26. Viwango vya NamRA 0%–37%, SSC N$81/mwezi. Hesabu mshahara wako halisi kwa Dola ya Namibia (NAD). Bila malipo.", href: "/sw/namibia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "na-vat": { name: "Kikokotoo cha VAT Namibia 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Namibia: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa NAD.", href: "/sw/namibia/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "nafdac-registration": { name: "Usajili wa Bidhaa Afrika | NAFDAC, KEBS, SABS na FDA Ghana", desc: "Makadirio ya Kiswahili ya usajili wa bidhaa: NAFDAC, KEBS, SABS, FDA Ghana, aina ya bidhaa, origin, SKU na nyaraka za kuandaa.", href: "/sw/zana/usajili-wa-bidhaa/", category: "ecommerce", lang: 'sw' },
-        "ne-paye": { name: "Kikokotoo cha Kodi ya Mshahara Nijeri 2026 — DGI IRPP", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGI Nijeri, CNSS 5.25%. Mabanda ya kodi 0%–35%. Bure, haraka.", href: "/sw/niger/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ne-vat": { name: "Kikokotoo cha VAT Niger 19%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Niger: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/niger/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "ng-paye": { name: "Kikokotoo cha Kodi ya Mshahara Nigeria 2026 — FIRS NTA & PITA", desc: "Kikokotoo cha kodi ya mshahara Nigeria 2026. Viwango vya FIRS NTA 2026 na PITA 2025 — mabanda sita ya kodi, pensheni 8%, NHF 2.5%. Pata mshahara halisi wako kwa NGN.", href: "/sw/nigeria/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "ng-vat": { name: "Kikokotoo cha VAT Nigeria 7.5%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Nigeria: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa NGN.", href: "/sw/nigeria/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "overtime-calc": { name: "Kikokotoo cha Muda wa Ziada Afrika 2026 - Nchi 54", desc: "Kokotoa malipo ya muda wa ziada kwa kutumia sheria za kazi za nchi yako barani Afrika. Viwango vya siku ya kazi, wikendi, sikukuu za umma na zamu ya usiku kwa nchi zote 54.", href: "/sw/zana/kikokotoo-muda-wa-ziada/", category: "financial", lang: 'sw' },
-        "pdf-bates": { name: "Namba Bates za PDF - Bates numbering na audit CSV", desc: "Weka namba Bates kwenye PDF moja au kundi la PDF kwa mpangilio endelevu, prefix, suffix, ZIP export na audit CSV ndani ya kivinjari.", href: "/sw/zana/namba-bates-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-chat": { name: "Chat na PDF - uliza maswali kuhusu hati", desc: "Pakia PDF yenye maandishi, uliza maswali, pata muhtasari, tafuta kurasa na nukuu za ukurasa kwa tahadhari ya AI na local fallback.", href: "/sw/zana/chat-na-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-compare": { name: "Kulinganisha PDF - text diff na visual review", desc: "Linganisha PDF mbili kwa text diff, visual diff, ukurasa uliobadilika, zinafananaity na ripoti ya review kwenye kivinjari.", href: "/sw/zana/kulinganisha-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-compress": { name: "Kubana PDF - Punguza ukubwa wa faili kwa faragha", desc: "Bana PDF kwa Kiswahili kwa kutumia mipangilio ya ubora, ripoti ya ukubwa na usindikaji wa ndani ya kivinjari.", href: "/sw/zana/kubana-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-convert": { name: "Kubadilisha Format ya PDF - Panga aina za faili", desc: "Badilisha format ya PDF kwa matumizi ya ofisi, kushiriki na kuhifadhi. Matokeo hutegemea aina na ubora wa faili chanzo.", href: "/sw/zana/kubadilisha-format-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-editor": { name: "Hariri PDF - Ongeza maandishi, maumbo na maelezo", desc: "Hariri PDF kwa kuongeza maandishi, maumbo, alama na maelezo ya kuona. Tumia kama zana ya maandalizi, si uhakiki wa kisheria.", href: "/sw/zana/hariri-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-find-replace": { name: "Tafuta na Badilisha PDF - visual text replacement", desc: "Tafuta maandishi kwenye PDF, kagua match, badilisha kwa visual overlay, export PDF na CSV audit kwenye kivinjari.", href: "/sw/zana/tafuta-na-badilisha-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-form-filler": { name: "Kujaza Fomu za PDF - Andika kwenye fomu na pakua", desc: "Jaza fomu za PDF kwa Kiswahili kwa kuongeza maandishi na sehemu za taarifa kabla ya kupakua nakala yako.", href: "/sw/zana/kujaza-fomu-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-header-footer": { name: "Kichwa na Kijachini cha PDF - Kichwa na footer", desc: "Ongeza header na footer kwenye PDF kwa jina la kampuni, tarehe, namba za kurasa au alama za mradi.", href: "/sw/zana/kichwa-na-kijachini-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-image-convert": { name: "Kubadilisha PDF na Picha - PDF kwenda picha na picha kwenda PDF", desc: "Badilisha PDF kuwa picha au picha kuwa PDF kwa Kiswahili. Tumia JPG, PNG na mipangilio ya ubora kwenye kivinjari chako.", href: "/sw/zana/kubadilisha-pdf-na-picha/", category: "document-pdf", lang: 'sw' },
-        "pdf-merge-split": { name: "Unganisha na Gawanya PDF - Chagua kurasa na masafa", desc: "Unganisha PDF, pangilia faili, chagua masafa ya kurasa, toa kurasa maalum au gawanya PDF kwa Kiswahili kwenye kivinjari chako.", href: "/sw/zana/unganisha-na-gawanya-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-ocr": { name: "OCR ya PDF - Toa maandishi kwenye PDF au picha", desc: "Tumia OCR kutoa maandishi kutoka PDF au picha. Kagua matokeo kabla ya kutumia kwa nyaraka rasmi.", href: "/sw/zana/ocr-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-page-numbers": { name: "Namba za Kurasa za PDF - Weka kurasa na muundo", desc: "Ongeza namba za kurasa kwenye PDF kwa Kiswahili. Chagua mahali, ukurasa wa kuanza, muundo na mtindo wa maandishi.", href: "/sw/zana/namba-za-kurasa-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-password": { name: "Linda PDF kwa Nenosiri - AES-256 kwenye kivinjari", desc: "Linda PDF kwa nenosiri kwa Kiswahili. Tumia AES-256 inapopatikana na kagua tahadhari kabla ya kutuma nyaraka nyeti.", href: "/sw/zana/kulinda-pdf-kwa-nenosiri/", category: "document-pdf", lang: 'sw' },
-        "pdf-redact": { name: "Kuficha Taarifa kwenye PDF - Ficha taarifaion kwa faragha", desc: "Fanya redaction ya PDF kwa kuficha taarifa nyeti kabla ya kushiriki nyaraka. Hakiki faili kabla ya kuituma rasmi.", href: "/sw/zana/kuficha-taarifa-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-reorder": { name: "Kupanga Kurasa za PDF - Panga upya, rotate na delete", desc: "Panga upya kurasa za PDF, zungusha au ondoa kurasa usizohitaji kabla ya kupakua faili jipya.", href: "/sw/zana/kupanga-kurasa-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-repair": { name: "Kurekebisha PDF - jaribu kufungua faili zilizoharibika", desc: "Jaribu kurekebisha PDF zilizoharibika kwa qpdf, normalize na salvage ya kurasa kwenye kivinjari, ukiwa na ripoti ya JSON au CSV.", href: "/sw/zana/kurekebisha-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-sign": { name: "Kusaini PDF - Chora, andika au pakia saini", desc: "Ongeza saini kwenye PDF kwa kuchora, kuandika au kupakia picha ya saini. Zana ya kupanga saini kwenye kurasa za PDF.", href: "/sw/zana/kusaini-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-to-audio": { name: "PDF kwenda Sauti - sikiliza hati zako", desc: "Badilisha PDF yenye maandishi kuwa kusikiliza kwa browser voices au AI voice mode, pamoja na speed, pitch, cleanup, bookmarks na export.", href: "/sw/zana/pdf-kwenda-sauti/", category: "document-pdf", lang: 'sw' },
-        "pdf-translate": { name: "Kutafsiri PDF - tafsiri hati kwa tahadhari", desc: "Tafsiri maandishi ya PDF kwa API, AI context au local glossary draft, pamoja na bilingual review na export ya handoff pack.", href: "/sw/zana/kutafsiri-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-watermark": { name: "Watermark PDF - Weka alama ya siri, draft au chapa", desc: "Ongeza watermark kwenye PDF kwa maandishi, nembo au alama ya siri. Tumia ukurasa wote au kurasa maalum kwenye kivinjari.", href: "/sw/zana/watermark-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-workflow": { name: "Workflow ya PDF - jenga mtiririko wa kazi za PDF", desc: "Jenga workflow ya PDF kwa repair, optimize, compress, watermark, page numbers, rotate, merge, encrypt na report export kwenye kivinjari.", href: "/sw/zana/workflow-ya-pdf/", category: "document-pdf", lang: 'sw' },
-        "pdf-workspace": { name: "Nafasi ya Kazi ya PDF - Unganisha, gawanya na panga PDF", desc: "Tumia nafasi ya kazi ya PDF kwa Kiswahili: unganisha, gawanya, panga, zungusha, bana na pakua PDF kwenye kivinjari chako bila kupakia faili kwenye seva.", href: "/sw/zana/nafasi-pdf/", category: "document-pdf", lang: 'sw' },
-        "planting-calendar": { name: "Kalenda ya Kupanda Mazao Afrika", desc: "Panga mwezi wa kupanda na makadirio ya kuvuna kwa zao, eneo la hali ya hewa na muda wa kukomaa.", href: "/sw/zana/kalenda-ya-kupanda-mazao/", category: "agriculture", lang: 'sw' },
-        "pos-agent": { name: "Kikokotoo cha Faida ya Wakala POS", desc: "Kadiria mapato, commission, float, gharama na ROI ya wakala POS au mobile money.", href: "/sw/zana/faida-ya-wakala-pos/", category: "ecommerce", lang: 'sw' },
-        "poultry-roi-calculator": { name: "Faida ya Ufugaji Kuku Afrika", desc: "Kadiria ROI ya broilers au layers kwa vifaranga, chakula, mortality, bei ya kuuza na gharama za banda.", href: "/sw/zana/faida-ya-ufugaji-kuku/", category: "ecommerce", lang: 'sw' },
-        "profit-margin": { name: "Kikokotoo cha Margin ya Faida | Markup na Bei Lengwa", desc: "Kokotoa margin ya faida, markup, ROI, bei lengwa, break-even na gharama ya bidhaa kwa biashara za Afrika.", href: "/sw/zana/kikokotoo-margin-ya-faida/", category: "ecommerce", lang: 'sw' },
-        "proforma-invoice": { name: "Kizalishaji cha Ankara Proforma", desc: "Tengeneza rasimu ya ankara proforma kwa bei ya nukuu, Incoterms, VAT, gharama za usafirishaji na taarifa za mnunuzi na muuzaji.", href: "/sw/zana/ankara-proforma/", category: "document-pdf", lang: 'sw' },
-        "property-cgt": { name: "Kikokotoo cha CGT ya Mali Afrika", desc: "Kadiria CGT, yaani kodi ya faida ya mtaji, unapouza mali baada ya gharama za kununua, kuboresha na kuuza.", href: "/sw/zana/kodi-ya-faida-ya-mali/", category: "ecommerce", lang: 'sw' },
-        "property-roi": { name: "Faida ya Uwekezaji wa Nyumba | ROI ya Mali", desc: "Kokotoa ROI ya mali isiyohamishika kwa pango, ukuaji wa thamani, gharama na muda wa uwekezaji.", href: "/sw/zana/faida-ya-uwekezaji-wa-nyumba/", category: "ecommerce", lang: 'sw' },
-        "public-holidays": { name: "Kalenda Likizo za Umma Afrika", desc: "Angalia likizo za umma kwa nchi kadhaa za Afrika, filter upcoming holidays na export .ics kwa calendar.", href: "/sw/zana/kalenda-likizo-za-umma/", category: "financial", lang: 'sw' },
-        "real-return": { name: "Faida Halisi Baada ya Mfumuko wa Bei", desc: "Pima kama riba yako inashinda mfumuko wa bei na kuona thamani halisi ya akiba au uwekezaji.", href: "/sw/zana/faida-halisi-baada-ya-mfumuko/", category: "ecommerce", lang: 'sw' },
-        "rental-yield": { name: "Kikokotoo cha Mavuno ya Upangishaji", desc: "Kokotoa gross yield, net yield na mapato ya upangishaji baada ya matengenezo, vacancy na ada.", href: "/sw/zana/mavuno-ya-upangishaji/", category: "agriculture", lang: 'sw' },
-        "rw-vat": { name: "Kikokotoo cha VAT Rwanda 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Rwanda: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa RWF.", href: "/sw/rwanda/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "salary-negotiation": { name: "Majadiliano ya Mshahara", desc: "Panga counter-offer kwa kutumia mshahara wa sasa, ofa uliyopewa, market midpoint na confidence ya negotiation.", href: "/sw/zana/majadiliano-ya-mshahara/", category: "financial", lang: 'sw' },
-        "sc-paye": { name: "Kikokotoo cha Kodi ya Mshahara Shelisheli 2025/26", desc: "Kikokotoo cha PAYE kwa Shelisheli (Seychelles) 2025/26. Viwango vya SRC 0%–30%, pensheni 3%. Hesabu mshahara kwa Rupia ya Shelisheli (SCR). Bila malipo.", href: "/sw/seychelles/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "sc-vat": { name: "Kikokotoo cha VAT Shelisheli 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Shelisheli: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa SCR.", href: "/sw/seychelles/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "sd-paye": { name: "Kikokotoo cha Kodi ya Mshahara Sudani 2026 — PAYE SDG", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na hifadhi ya jamii Sudani. SDG. Bure, haraka.", href: "/sw/sudan/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "sd-vat": { name: "Kikokotoo cha VAT Sudan 17%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Sudan: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa SDG.", href: "/sw/sudan/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "shipping-estimator": { name: "Makisio ya Gharama za Usafirishaji wa Biashara", desc: "Kadiria gharama za usafirishaji wa biashara kwa bahari, ndege, LCL au kontena kutoka masoko ya nje hadi bandari za Afrika.", href: "/sw/zana/makisio-ya-usafirishaji-wa-biashara/", category: "ecommerce", lang: 'sw' },
-        "sl-paye": { name: "Kikokotoo cha Kodi ya Mshahara Sierra Leone 2026 — NRA PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya NRA, NASSIT Sierra Leone. Banda la kodi 0%–30%. Bure, haraka, bila kujisajili.", href: "/sw/sierra-leone/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "sl-vat": { name: "Kikokotoo cha VAT Sierra Leone 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Sierra Leone: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa SLL.", href: "/sw/sierra-leone/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "sn-paye": { name: "Kikokotoo cha Kodi ya Mshahara Senegali 2026 — DGID PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya DGID Senegali, CSS 5.6%. Mabanda ya kodi 0%–40%. Bure, haraka, bila kujisajili.", href: "/sw/senegal/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "sn-vat": { name: "Kikokotoo cha VAT Senegali 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Senegali: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/senegal/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "so-paye": { name: "Kikokotoo cha Kodi ya Mshahara Somalia 2026 — PAYE SOS", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato Somalia. SOS/USD. Bure, haraka, bila kujisajili.", href: "/sw/somalia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "social-security": { name: "Kikokotoo cha Michango ya Hifadhi ya Jamii Afrika 2026 - NSSF, SSNIT, UIF, CNPS", desc: "Kokotoa michango ya mfanyakazi na mwajiri kwa hifadhi ya jamii katika nchi 54 za Afrika. NSSF, SSNIT, UIF, CNPS na PenCom pamoja na vikomo, ngazi na mgawanyo wa kina kwa sarafu ya ndani.", href: "/sw/zana/kikokotoo-michango-ya-hifadhi-ya-jamii/", category: "financial", lang: 'sw' },
-        "solar-roi": { name: "Faida ya Solar na payback", desc: "Kadiria payback, ROI na akiba ya mfumo wa solar kwa kutumia gharama, bili ya umeme na matumizi ya kWh.", href: "/sw/zana/faida-ya-solar/", category: "ecommerce", lang: 'sw' },
-        "ss-paye": { name: "Kikokotoo cha Kodi ya Mshahara Sudani Kusini 2025/26 — PAYE SSP", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na hifadhi ya jamii Sudani Kusini. PAYE ya NRA 0%–20% na NSIF 8%/17%. SSP. Bure, haraka.", href: "/sw/south-sudan/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "st-paye": { name: "Kikokotoo cha Kodi ya Mshahara São Tomé 2026 — PAYE STN", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na INSS São Tomé na Príncipe. STN. Bure, haraka, sahihi.", href: "/sw/sao-tome/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "st-vat": { name: "Kikokotoo cha VAT Sao Tome na Principe 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Sao Tome na Principe: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa STN.", href: "/sw/sao-tome/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "sustainability-scorecard": { name: "Kadi ya Uendelevu wa Biashara", desc: "Pima biashara yako kwenye nishati, maji, taka, manunuzi, usalama wa wafanyakazi na utayari wa kutoa taarifa.", href: "/sw/zana/kadi-ya-uendelevu-wa-biashara/", category: "ecommerce", lang: 'sw' },
-        "sz-paye": { name: "Kikokotoo cha Kodi ya Mshahara Eswatini 2025/26", desc: "Kikokotoo cha PAYE kwa Eswatini 2025/26. Viwango vya SRA 20%–33%, SNPF 5%, punguzo la E8,200/mwaka. Hesabu mshahara kwa Lilangeni (SZL). Bila malipo.", href: "/sw/eswatini/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "sz-vat": { name: "Kikokotoo cha VAT Eswatini 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Eswatini: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa SZL.", href: "/sw/eswatini/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "td-paye": { name: "Kikokotoo cha Kodi ya Mshahara Chad 2026 — PAYE XAF", desc: "Kokotoa mshahara wako halisi baada ya kodi ya mapato na CNPS Chadi. XAF. Bure, haraka, sahihi.", href: "/sw/chad/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "td-vat": { name: "Kikokotoo cha VAT Chadi 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Chadi: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XAF.", href: "/sw/chad/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "teacher-salary": { name: "Mshahara wa Mwalimu | Teacher Scale", desc: "Kadiria nafasi yako kwenye teacher scale kwa level ya shule, aina ya mwajiri na miaka ya uzoefu bila kudai scale rasmi.", href: "/sw/zana/mshahara-wa-mwalimu/", category: "financial", lang: 'sw' },
-        "telecom-business-internet": { name: "Kikokotoo Intaneti ya Biashara", desc: "Kadiria intaneti ya biashara kwa wafanyakazi, Mbps, matumizi, backup na gharama za mtoa huduma. Matokeo ni ya kupanga, si bei rasmi.", href: "/sw/zana/kikokotoo-intaneti-ya-biashara/", category: "ecommerce", lang: 'sw' },
-        "telecom-sim-reg": { name: "Ukaguzi Usajili wa SIM", desc: "Kagua mahitaji ya usajili wa SIM, KYC, NIN, Ghana Card, passport au ID ya nchi. Tumia kama orodha ya ukaguzi, si uamuzi rasmi wa mamlaka.", href: "/sw/zana/ukaguzi-usajili-wa-sim/", category: "ecommerce", lang: 'sw' },
-        "telecom-whatsapp-vs-sms": { name: "WhatsApp Business dhidi ya SMS", desc: "Linganishia WhatsApp Business API na SMS nyingi kwa gharama, reach, aina ya ujumbe na breakeven ya biashara.", href: "/sw/zana/whatsapp-business-dhidi-ya-sms/", category: "ecommerce", lang: 'sw' },
-        "tg-paye": { name: "Kikokotoo cha Kodi ya Mshahara Togo 2026 — OTR PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya OTR Togo, CNPS 2.5%. Mabanda ya kodi 0%–25%. Bure, haraka.", href: "/sw/togo/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "tg-vat": { name: "Kikokotoo cha VAT Togo 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Togo: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa XOF.", href: "/sw/togo/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "tin-guide": { name: "Mwongozo wa TIN Afrika | Nchi 54 kwa Kiswahili", desc: "Mwongozo wa Kiswahili wa TIN, PIN, TRN na namba za kodi kwa nchi zote 54 za Afrika.", href: "/sw/zana/mwongozo-tin/", category: "ecommerce", lang: 'sw' },
-        "tn-paye": { name: "Kikokotoo cha Kodi ya Mshahara Tunisia 2026 — IRPP PAYE", desc: "Kokotoa mshahara wako halisi baada ya kodi ya IRPP na CNSS Tunisia. Mabanda 0%–35%. Bure, haraka, bila kujisajili.", href: "/sw/tunisia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "tn-vat": { name: "Kikokotoo cha VAT Tunisia 19%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Tunisia: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa TND.", href: "/sw/tunisia/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "trade-credit": { name: "Masharti ya Mkopo wa Biashara", desc: "Linganisha kuchukua punguzo la malipo ya mapema dhidi ya kutumia trade credit hadi tarehe ya mwisho.", href: "/sw/zana/masharti-ya-mkopo-wa-biashara/", category: "ecommerce", lang: 'sw' },
-        "trade-finance-comparator": { name: "Kilinganisha Fedha za Biashara | LC, T/T, CAD na SBLC", desc: "Linganisha gharama na hatari za LC, T/T, CAD, SBLC na njia nyingine za malipo ya kimataifa.", href: "/sw/zana/kilinganisha-fedha-za-biashara/", category: "ecommerce", lang: 'sw' },
-        "trademark-registration": { name: "Usajili wa Alama ya Biashara Afrika | ARIPO, OAPI na Nice", desc: "Mwongozo wa Kiswahili wa usajili wa trademark, search, Nice Classification, ARIPO, OAPI, Madrid na njia za kuwasilisha kitaifa.", href: "/sw/zana/usajili-wa-alama-ya-biashara/", category: "ecommerce", lang: 'sw' },
-        "tree-planting-roi": { name: "Faida ya Kupanda Miti", desc: "Kadiria survival, gharama, carbon, matunda, timber au ecosystem value ya kupanda miti.", href: "/sw/zana/faida-ya-kupanda-miti/", category: "ecommerce", lang: 'sw' },
-        "tz-vat": { name: "Kikokotoo cha VAT Tanzania 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Tanzania: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa TZS.", href: "/sw/tanzania/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "ug-vat": { name: "Kikokotoo cha VAT Uganda 18%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Uganda: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa UGX.", href: "/sw/uganda/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "vat-calc-pan-african": { name: "Kikokotoo cha VAT Afrika | Nchi 54", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa nchi zote 54 za Afrika na uunganishe matokeo na ankara, TIN na usajili wa biashara.", href: "/sw/zana/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "hajj-budget": { name: "Bajeti ya Hajj na Umrah", desc: "Panga akiba ya Hajj au Umrah kwa kifurushi, nauli ya ndege, visa, chakula, usafiri na akiba ya dharura.", href: "/sw/zana/bajeti-ya-hajj-na-umrah/", category: "religious-cultural", lang: 'sw' },
-        "zakat-calculator": { name: "Kikokotoo cha Zakat (Zaka)", desc: "Kokotoa zakat ya fedha, dhahabu, biashara na madeni kwa kupanga nisab. Tumia kama makadirio, si fatwa au uamuzi rasmi.", href: "/sw/zana/kikokotoo-zakat/", category: "religious-cultural", lang: 'sw' },
-        "vat-calculator": { name: "Kikokotoo cha VAT Afrika | Nchi 54", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa nchi zote 54 za Afrika na uunganishe matokeo na ankara, TIN na usajili wa biashara.", href: "/sw/zana/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "sw-ushuru-kuagiza-gari": { name: "Ushuru wa Kuagiza Gari Afrika", desc: "Kadiria duty, VAT, excise na levies za kuagiza gari. Thibitisha viwango na mamlaka ya forodha kabla ya kununua.", href: "/sw/zana/ushuru-kuagiza-gari/", category: "ecommerce", lang: 'sw' },
-        "vehicle-registration": { name: "Usajili na Nyaraka za Gari", desc: "Kagua renewal, road tax, inspection, plates, insurance proof na nyaraka za gari. Thibitisha na mamlaka ya usajili.", href: "/sw/zana/usajili-na-nyaraka-za-gari/", category: "ecommerce", lang: 'sw' },
-        "vehicle-tracker-roi": { name: "Faida ya Tracker ya Gari", desc: "Kadiria ROI ya GPS tracker kwa fuel savings, insurance discount, theft recovery risk, subscription na installation cost.", href: "/sw/zana/faida-ya-tracker-ya-gari/", category: "ecommerce", lang: 'sw' },
-        "voter-registration": { name: "Usajili wa Mpiga Kura Afrika | INEC, IEBC, IEC na Status", desc: "Mwongozo wa Kiswahili wa usajili wa mpiga kura, eligibility, ID, commission, portal na status kwa nchi kadhaa za Afrika.", href: "/sw/zana/usajili-wa-mpiga-kura/", category: "ecommerce", lang: 'sw' },
-        "watermark-bulk": { name: "Watermark Nyingi - weka alama kwenye faili nyingi", desc: "Weka watermark kwenye picha nyingi kwa proofs, listings, media ya jumuiya na drafts ndani ya browser, kisha pakua batch.", href: "/sw/zana/watermark-nyingi/", category: "document-pdf", lang: 'sw' },
-        "winding-up": { name: "Orodha ya Kufunga Kampuni | Winding-up", desc: "Panga winding-up au kufunga kampuni: njia ya hiari, wadai, uthibitisho wa kodi, kuuza mali, kufuta usajili na hatari kwa wakurugenzi katika nchi 16.", href: "/sw/zana/kufunga-kampuni/", category: "ecommerce", lang: 'sw' },
-        "za-paye": { name: "Kikokotoo cha Kodi ya Mshahara Afrika Kusini 2025/26 — SARS", desc: "Kikokotoo cha kodi ya mshahara Afrika Kusini 2025/26. SARS mabanda 7 (18%–45%), UIF 1%, punguzo la pensheni 27.5%, mikopo ya kodi ya matibabu. Mshahara halisi kwa ZAR.", href: "/sw/south-africa/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "za-vat": { name: "Kikokotoo cha VAT Afrika Kusini 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Afrika Kusini: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa ZAR.", href: "/sw/south-africa/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "zm-paye": { name: "Kikokotoo cha Kodi ya Mshahara Zambia 2025/26", desc: "Kikokotoo cha kodi ya mshahara (PAYE) kwa Zambia 2025/26. Viwango vya ZRA 0%–37.5%, NAPSA 5%. Hesabu sahihi kwa Kwacha ya Zambia (ZMW). Bila malipo.", href: "/sw/zambia/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "zm-vat": { name: "Kikokotoo cha VAT Zambia 16%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Zambia: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa ZMW.", href: "/sw/zambia/kikokotoo-vat/", category: "ecommerce", lang: 'sw' },
-        "zw-paye": { name: "Kikokotoo cha Kodi ya Mshahara Zimbabwe 2025/26", desc: "Kikokotoo cha PAYE kwa Zimbabwe 2025/26. Viwango vya ZIMRA 0%–40%, NSSA 3.5%. Inasaidia USD na ZWG. Hesabu sahihi bila malipo.", href: "/sw/zimbabwe/kikokotoo-kodi-mshahara/", category: "financial", lang: 'sw' },
-        "zw-vat": { name: "Kikokotoo cha VAT Zimbabwe 15%", desc: "Kokotoa VAT, kodi ya ongezeko la thamani, kwa Zimbabwe: ongeza VAT, toa VAT kutoka bei iliyojumuisha kodi, na panga ankara kwa ZWL.", href: "/sw/zimbabwe/kikokotoo-vat/", category: "ecommerce", lang: 'sw' }
-      };
 
-      const normalizeDiscoveryHref = href => String(href || '').replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '');
-
-      const HA_DISCOVERY_OVERRIDES = {
-        "ng-paye": { name: "Kalkuleta PAYE Najeriya", desc: "Kokoto albashi, PAYE, fansho da NHF na Najeriya. An fi dacewa da ma'aikata da masu albashi a Arewa.", href: "/ha/najeriya/harajin-albashi/", category: "financial", lang: 'ha' },
-        "ng-paye-ha": { name: "Kalkuleta PAYE Najeriya", desc: "Kokoto albashi, PAYE, fansho da NHF na Najeriya. An fi dacewa da ma'aikata da masu albashi a Arewa.", href: "/ha/najeriya/harajin-albashi/", category: "financial", lang: 'ha' },
-        "vat-calc-pan-african": { name: "Kalkuletan VAT na Afirka", desc: "Kara ko cire VAT, gina takardar kudi, lissafa rike VAT kuma kwatanta adadin VAT na kasashe 54 a Hausa.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "vat-calculator": { name: "Kalkuletan VAT na Afirka", desc: "Kara ko cire VAT, gina takardar kudi, lissafa rike VAT kuma kwatanta adadin VAT na kasashe 54 a Hausa.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "vat-calculator-ha": { name: "Kalkuletan VAT na Afirka", desc: "Kara ko cire VAT, gina takardar kudi, lissafa rike VAT kuma kwatanta adadin VAT na kasashe 54 a Hausa.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "vat-business-tax-ha": { name: "VAT da Harajin Kasuwanci", desc: "Hub din Hausa don VAT, TIN, takardar kudi, PAYE, CIT da WHT; tabbatar da FIRS ko kwararren haraji kafin yanke hukunci.", href: "/ha/kasuwanci-da-haraji/", category: "ecommerce", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-vat": { name: "VAT na Najeriya", desc: "Hanyar Hausa don VAT; tabbatar da VAT daga FIRS ko kwararre kafin amfani.", href: "/ha/kayan-aiki/kalkuletan-vat/", category: "ecommerce", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-cit": { name: "Kalkuletan CIT Najeriya", desc: "Lissafa harajin kudin shiga na kamfani, ragin kudin kadarori da rarar ci gaba a Hausa.", href: "/ha/kayan-aiki/cit-najeriya/", category: "financial", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-cit-ha": { name: "Kalkuletan CIT Najeriya", desc: "Lissafa harajin kudin shiga na kamfani, ragin kudin kadarori da rarar ci gaba a Hausa.", href: "/ha/kayan-aiki/cit-najeriya/", category: "financial", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-wht": { name: "Kalkuletan WHT Najeriya", desc: "Kiyasta kudin WHT da za a rike daga biyan kudi, haya, kaya, kwangila da ayyuka a Hausa.", href: "/ha/kayan-aiki/wht-najeriya/", category: "financial", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-wht-ha": { name: "Kalkuletan WHT Najeriya", desc: "Kiyasta kudin WHT da za a rike daga biyan kudi, haya, kaya, kwangila da ayyuka a Hausa.", href: "/ha/kayan-aiki/wht-najeriya/", category: "financial", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "tin-guide": { name: "Jagorar TIN Najeriya", desc: "Jagorar Hausa don TIN a Najeriya: takardu, kudi, lokaci da hanyar tabbatarwa.", href: "/ha/kayan-aiki/jagorar-tin-najeriya/", category: "ecommerce", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "tin-guide-nigeria-ha": { name: "Jagorar TIN Najeriya", desc: "Jagorar Hausa don TIN a Najeriya: takardu, kudi, lokaci da hanyar tabbatarwa.", href: "/ha/kayan-aiki/jagorar-tin-najeriya/", category: "ecommerce", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-pension": { name: "Kalkuletan Fansho Najeriya", desc: "Kiyasta gudummawar CPS, kudin RSA da kudin ritaya a Hausa.", href: "/ha/kayan-aiki/fansho-najeriya/", category: "financial", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-pension-ha": { name: "Kalkuletan Fansho Najeriya", desc: "Kiyasta gudummawar CPS, kudin RSA da kudin ritaya a Hausa.", href: "/ha/kayan-aiki/fansho-najeriya/", category: "financial", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-nhf": { name: "Kalkuletan NHF Najeriya", desc: "Lissafa gudummawar NHF, biyan lamunin gida da iyakar iya biya a Hausa.", href: "/ha/kayan-aiki/nhf-najeriya/", category: "financial", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ng-nhf-ha": { name: "Kalkuletan NHF Najeriya", desc: "Lissafa gudummawar NHF, biyan lamunin gida da iyakar iya biya a Hausa.", href: "/ha/kayan-aiki/nhf-najeriya/", category: "financial", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "document-pdf": { name: "Takardu da PDF", desc: "Hub din Hausa don hada PDF, raba PDF, matsa PDF, CV, takardar kudi da kayan takardu.", href: "/ha/takardu-da-pdf/", category: "document-pdf", lang: 'ha' },
-        "document-pdf-ha": { name: "Takardu da PDF", desc: "Hub din Hausa don hada PDF, raba PDF, matsa PDF, CV, takardar kudi da kayan takardu.", href: "/ha/takardu-da-pdf/", category: "document-pdf", lang: 'ha' },
-        "invoice-generator": { name: "Kirkiro takardar kudi", desc: "Kirkiri takardar kudi da VAT, bayanan biyan kudi, fitar da PDF, ajiyar JSON da hanyar rabawa a Hausa.", href: "/ha/kayan-aiki/kirkiro-invoice/", category: "document-pdf", lang: 'ha' },
-        "invoice-generator-ha": { name: "Kirkiro takardar kudi", desc: "Kirkiri takardar kudi da VAT, bayanan biyan kudi, fitar da PDF, ajiyar JSON da hanyar rabawa a Hausa.", href: "/ha/kayan-aiki/kirkiro-invoice/", category: "document-pdf", lang: 'ha' },
-        "receipt-generator": { name: "Kirkiro Resit", desc: "Kirkiro resit mai VAT, QR, daftarin da aka ajiye, PDF, TXT, CSV, JSON da zabin bugawa a Hausa.", href: "/ha/kayan-aiki/kirkiro-resit/", category: "document-pdf", lang: 'ha' },
-        "receipt-generator-ha": { name: "Kirkiro Resit", desc: "Kirkiro resit mai VAT, QR, daftarin da aka ajiye, PDF, TXT, CSV, JSON da zabin bugawa a Hausa.", href: "/ha/kayan-aiki/kirkiro-resit/", category: "document-pdf", lang: 'ha' },
-        "naira-to-words": { name: "Naira zuwa kalmomi", desc: "Mayar da adadin Naira zuwa rubutun kalmomi domin cheque, resit, takardar kudi ko takardu.", href: "/ha/kayan-aiki/naira-zuwa-kalmomi/", category: "document-pdf", lang: 'ha' },
-        "naira-to-words-ha": { name: "Naira zuwa kalmomi", desc: "Mayar da adadin Naira zuwa rubutun kalmomi domin cheque, resit, takardar kudi ko takardu.", href: "/ha/kayan-aiki/naira-zuwa-kalmomi/", category: "document-pdf", lang: 'ha' },
-        "education-ha": { name: "Ilimi a Hausa", desc: "Hub din Hausa don JAMB, WAEC, NECO, NYSC, GPA, tallafin karatu da kudin makaranta.", href: "/ha/ilimi/", category: "education", lang: 'ha' },
-        "school-fees": { name: "Kwatanta kudin makaranta", desc: "Shafin Hausa don kudin koyarwa, karin kudade da iya biya; shafin kwatancen Turanci yana nan idan an bukata.", href: "/ha/kayan-aiki/kwatanta-kudin-makaranta/", category: "education", lang: 'ha' },
-        "jamb-aggregate": { name: "Kalkuletan jimillar JAMB", desc: "Lissafa jimillar maki na JAMB da iyakar maki ta sashen jami'o'in Najeriya a Hausa.", href: "/ha/kayan-aiki/kalkuletan-jamb/", category: "education", lang: 'ha' },
-        "waec-calculator": { name: "Kalkuletan WAEC/NECO", desc: "Kokoto WAEC, NECO, O'Level da cancantar JAMB cikin sauki a Hausa.", href: "/ha/kayan-aiki/kalkuletan-waec-neco/", category: "education", lang: 'ha' },
-        "nysc-allowance": { name: "Kalkuletan alawus na NYSC", desc: "Kokoto alawus na NYSC, karin kudin jiha, kudin gefe da kasafin wata a Hausa.", href: "/ha/kayan-aiki/alawus-na-nysc/", category: "education", lang: 'ha' },
-        "jamb-english-ha": { name: "JAMB Turanci a Hausa", desc: "Jagorar Hausa don fahimtar karatu, kalmomi, jimla da atisaye.", href: "/ha/jamb/turanci/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "jamb-mathematics-ha": { name: "JAMB Lissafi a Hausa", desc: "Jagorar Hausa don algebra, geometry, kididdiga da dabarun JAMB.", href: "/ha/jamb/lissafi/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "jamb-physics-ha": { name: "JAMB Fisiks a Hausa", desc: "Jagorar Hausa don motsi, zafi, haske da wutar lantarki.", href: "/ha/jamb/fisiks/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "jamb-chemistry-ha": { name: "JAMB Kimiyya a Hausa", desc: "Jagorar Hausa don atom, sinadarai da lissafin Kimiyya.", href: "/ha/jamb/kimiyya/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "jamb-biology-ha": { name: "JAMB Nazarin Halittu a Hausa", desc: "Jagorar Hausa don kwayar halitta, gado, muhalli da jikin mutum.", href: "/ha/jamb/halittu/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "gpa-calculator": { name: "Kalkuletan GPA/CGPA", desc: "Lissafa GPA na zango da CGPA daga maki da raka a Hausa.", href: "/ha/kayan-aiki/kalkuletan-gpa-cgpa/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "gpa-calculator-ha": { name: "Kalkuletan GPA/CGPA", desc: "Lissafa GPA na zango da CGPA daga maki da raka a Hausa.", href: "/ha/kayan-aiki/kalkuletan-gpa-cgpa/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "scholarship-finder": { name: "Mai nemo tallafin karatu", desc: "Shirya neman tallafi, takardu, matakin karatu da hanyar tabbatar da asalin dama a Hausa.", href: "/ha/kayan-aiki/neman-tallafin-karatu/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "scholarship-finder-ha": { name: "Mai nemo tallafin karatu", desc: "Shirya neman tallafi, takardu, matakin karatu da hanyar tabbatar da asalin dama a Hausa.", href: "/ha/kayan-aiki/neman-tallafin-karatu/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "student-budget": { name: "Kasafin dalibi", desc: "Kiyasta kudin makaranta, haya, abinci, sufuri da ragowar kudi a Hausa.", href: "/ha/kayan-aiki/kasafin-dalibi/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "student-budget-ha": { name: "Kasafin dalibi", desc: "Kiyasta kudin makaranta, haya, abinci, sufuri da ragowar kudi a Hausa.", href: "/ha/kayan-aiki/kasafin-dalibi/", category: "education", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "hausa-translator": { name: "Mai fassara Hausa", desc: "Kundin jimlolin Hausa, kasuwa, tafiya da rubutun farko a Hausa.", href: "/ha/kayan-aiki/mai-fassara-hausa/", category: "language", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "hausa-translator-ha": { name: "Mai fassara Hausa", desc: "Kundin jimlolin Hausa, kasuwa, tafiya da rubutun farko a Hausa.", href: "/ha/kayan-aiki/mai-fassara-hausa/", category: "language", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "language-ha": { name: "Harshe da Fassara a Hausa", desc: "Hub din Hausa yana nuna mai fassara, kundin jimloli, fassarar PDF da shafukan Turanci a fili.", href: "/ha/harshe-da-fassara/", category: "language", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "telecom-ussd": { name: "Lambobin USSD", desc: "Lambobin USSD na sadarwa, banki, bayanan intanet, katin waya, ragowar kudi da kudin wayar hannu.", href: "/ha/kayan-aiki/lambobin-ussd/", category: "telecom", lang: 'ha' },
-        "whatsapp-link": { name: "Mai gina link din WhatsApp", desc: "Gina hanyar wa.me, sako, QR da tarin hanyoyi ga kasuwanci.", href: "/ha/kayan-aiki/whatsapp-link/", category: "telecom", lang: 'ha' },
-        "telecom-data-usage": { name: "Kiyasin amfani da intanet", desc: "Kiyasta GB da ake bukata a wata daga lilo, bidiyo, kira, karatu da aiki a Hausa.", href: "/ha/kayan-aiki/amfanin-bayanan-intanet/", category: "telecom", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "telecom-data-usage-ha": { name: "Kiyasin amfani da intanet", desc: "Kiyasta GB da ake bukata a wata daga lilo, bidiyo, kira, karatu da aiki a Hausa.", href: "/ha/kayan-aiki/amfanin-bayanan-intanet/", category: "telecom", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "telecom-data-plan-ha": { name: "Kwatanta kunshin intanet", desc: "Kwatanta kamfanin sadarwa, GB, farashi da tsawon aiki; tabbatar da farashi daga manhaja ko USSD.", href: "/ha/kayan-aiki/kwatanta-kunshin-intanet/", category: "telecom", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "telecom-airtime-ha": { name: "Darajar katin waya", desc: "Kiyasta darajar katin waya idan ana maida shi kudi, tare da gargadin tabbatar da biyan kudi.", href: "/ha/kayan-aiki/darajar-katin-waya/", category: "telecom", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "mobile-money-fees": { name: "Kudin tura kudi ta waya", desc: "Kiyasta caji da jimillar tura kudi ta waya a Hausa; tabbatar da manhajar biya ko wakili.", href: "/ha/kayan-aiki/kudin-tura-kudi-ta-waya/", category: "telecom", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "mobile-money-fees-ha": { name: "Kudin tura kudi ta waya", desc: "Kiyasta caji da jimillar tura kudi ta waya a Hausa; tabbatar da manhajar biya ko wakili.", href: "/ha/kayan-aiki/kudin-tura-kudi-ta-waya/", category: "telecom", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "sim-registration": { name: "Rajistar layin waya da NIN", desc: "Jagorar Hausa don shirya rajistar layin waya, NIN, shaida da abin da za a duba.", href: "/ha/kayan-aiki/rajistar-layin-waya-nin/", category: "telecom", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "sim-registration-ha": { name: "Rajistar layin waya da NIN", desc: "Jagorar Hausa don shirya rajistar layin waya, NIN, shaida da abin da za a duba.", href: "/ha/kayan-aiki/rajistar-layin-waya-nin/", category: "telecom", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "ussd-simulator": { name: "Mai gwada USSD - shafi na Turanci", desc: "Gwada tsarin USSD ko menu na fasahar kudi da taimakon kwastoma kafin kaddamarwa.", href: "/tools/ussd-simulator/", category: "developer", lang: 'en' },
-        "farm-profit-calculator": { name: "Ribar gona", desc: "Kokoto kudin iri, taki, aiki, sufuri, asara bayan girbi da ROI a Najeriya.", href: "/ha/kayan-aiki/ribar-gona/", category: "agriculture", lang: 'ha' },
-        "farm-profit-nigeria": { name: "Ribar gona Najeriya", desc: "Kokoto ribar noma a Najeriya: rogo, masara, shinkafa, doya da dawa.", href: "/ha/kayan-aiki/ribar-gona/", category: "agriculture", lang: 'ha' },
-        "crop-yield-estimator": { name: "Amfanin gona Najeriya", desc: "Kiyasta amfanin gona, asara bayan girbi, farashin sayarwa da yawan amfanin gona.", href: "/ha/noma/amfanin-gona-najeriya/", category: "agriculture", lang: 'ha' },
-        "crop-yield-nigeria": { name: "Amfanin gona Najeriya", desc: "Kiyasta tan a hekta, jimillar amfanin gona da zangon kudin shiga ga amfanin gona a Najeriya.", href: "/ha/noma/amfanin-gona-najeriya/", category: "agriculture", lang: 'ha' },
-        "fertilizer-calculator": { name: "Kalkuletan Taki / NPK", desc: "Kiyasta buhunan taki, NPK, tallafi da kudin taki a gona.", href: "/ha/noma/taki-najeriya/", category: "agriculture", lang: 'ha' },
-        "fertilizer-nigeria": { name: "Taki Najeriya", desc: "Kiyasta NPK, Urea, buhunan taki, tallafi da jadawalin amfani ga amfanin gona a Najeriya.", href: "/ha/noma/taki-najeriya/", category: "agriculture", lang: 'ha' },
-        "irrigation-nigeria": { name: "Ban ruwa Najeriya", desc: "Kiyasta bukatar ruwa, jadawalin ban ruwa, asarar ruwa da kudin aiki a Hausa.", href: "/ha/noma/ban-ruwa-najeriya/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "irrigation-nigeria-ha": { name: "Ban ruwa Najeriya", desc: "Kiyasta bukatar ruwa, jadawalin ban ruwa, asarar ruwa da kudin aiki a Hausa.", href: "/ha/noma/ban-ruwa-najeriya/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "seed-rate-nigeria-ha": { name: "Yawan iri Najeriya", desc: "Kiyasta yawan iri, kayan dasa, tazarar shuka, yawan tsiro da kudin iri a Hausa.", href: "/ha/noma/yawan-iri-najeriya/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "cassava-processing-calculator": { name: "Sarrafa rogo Najeriya", desc: "Kwatanta garri, garin fufu, HQCF, gutsuren rogo da sitaci ta riba da lokacin dawo da jari.", href: "/ha/kayan-aiki/sarrafa-rogo/", category: "agriculture", lang: 'ha' },
-        "staple-basket": { name: "Kwandon kasuwa", desc: "Duba farashin kwandon abinci, kiyasin gida da rahoton farashi da aka duba a Hausa.", href: "/ha/kayan-aiki/kwandon-kasuwa/", category: "agriculture", lang: 'ha' },
-        "commodity-prices": { name: "Farashin kayayyakin gona", desc: "Kiyasta kudin shiga daga farashin kayayyakin gona, sufuri da ragin lalacewa a Hausa.", href: "/ha/kayan-aiki/farashin-kayayyakin-gona/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "commodity-prices-ha": { name: "Farashin kayayyakin gona", desc: "Kiyasta kudin shiga daga farashin kayayyakin gona, sufuri da ragin lalacewa a Hausa.", href: "/ha/kayan-aiki/farashin-kayayyakin-gona/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "livestock-feed-nigeria": { name: "Kalkuletan abincin dabbobi", desc: "Kiyasta yawan abincin shanu, awaki ko tumaki da kudin ciyarwa a Najeriya a Hausa.", href: "/ha/kayan-aiki/abincin-dabbobi/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "livestock-feed-nigeria-ha": { name: "Kalkuletan abincin dabbobi", desc: "Kiyasta yawan abincin shanu, awaki ko tumaki da kudin ciyarwa a Najeriya a Hausa.", href: "/ha/kayan-aiki/abincin-dabbobi/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "fish-farming-nigeria": { name: "Kalkuletan ribar kiwon kifi", desc: "Kiyasta kudin shiga, kudin abinci da ribar kiwon kifi a Najeriya a Hausa.", href: "/ha/kayan-aiki/ribar-kiwon-kifi/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "fish-farming-nigeria-ha": { name: "Kalkuletan ribar kiwon kifi", desc: "Kiyasta kudin shiga, kudin abinci da ribar kiwon kifi a Najeriya a Hausa.", href: "/ha/kayan-aiki/ribar-kiwon-kifi/", category: "agriculture", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "medical-report": { name: "Fassarar rahoton lafiya - shafi na Turanci", desc: "Fuskar amfani tana Turanci tukuna; yi amfani da ita a matsayin shafi na Turanci domin bayanin sakamakon gwaji.", href: "/tools/medical-report/", category: "health", lang: 'en' },
-        "genotype-checker": { name: "Genotype da rukunin jini", desc: "Duba AA, AS, SS, AC, SC, CC da rukunin jini a Hausa; tabbatar da genotype da dakin gwaji ko kwararren lafiya.", href: "/ha/kayan-aiki/duba-genotype/", category: "health", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "sickle-cell": { name: "Jagorar Genotype da Sikila", desc: "Fahimci yiwuwar gado da jadawalin Punnett a Hausa; bayani ne kawai, ba ganewar cuta ba.", href: "/ha/kayan-aiki/sickle-cell/", category: "health", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "hospital-cost": { name: "Kudin asibiti", desc: "Kiyasta kudin asibiti, haihuwa, hotunan gwaji da hidimomin magani a Hausa; tabbatar da asibiti.", href: "/ha/kayan-aiki/kudin-asibiti/", category: "health", lang: 'ha' },
-        "drug-price-compare": { name: "Kwatanta farashin magani", desc: "Kwatanta maganin kamfani da na gama gari a Hausa; tabbatar da likitan magunguna ko likita.", href: "/ha/kayan-aiki/kwatanta-farashin-magani/", category: "health", lang: 'ha' },
-        "childbirth-cost": { name: "Kudin haihuwa", desc: "Kiyasta ANC, haihuwa, kulawar bayan haihuwa da karin kudin magani a Hausa; ba shawarar likita ba.", href: "/ha/kayan-aiki/kudin-haihuwa/", category: "health", lang: 'ha' },
-        "african-meal-plan": { name: "Tsarin abincin Afirka", desc: "Gina tsarin abinci na kwanaki 7 da calories, BMR/TDEE da jerin siyayya a Hausa.", href: "/ha/kayan-aiki/abincin-afirka/", category: "health", lang: 'ha' },
-        "cv-builder": { name: "Mai gina CV", desc: "Fara tsara CV da suna, buri, kwarewa, ilimi da aiki a Hausa.", href: "/ha/kayan-aiki/gina-cv/", category: "document-pdf", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "cv-builder-ha": { name: "Mai gina CV", desc: "Fara tsara CV da suna, buri, kwarewa, ilimi da aiki a Hausa.", href: "/ha/kayan-aiki/gina-cv/", category: "document-pdf", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "cover-letter": { name: "Rubuta wasikar neman aiki", desc: "Gina daftarin wasikar neman aiki daga mukami, kamfani da kwarewar da ta dace.", href: "/ha/kayan-aiki/rubuta-wasikar-aiki/", category: "document-pdf", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "cover-letter-ha": { name: "Rubuta wasikar neman aiki", desc: "Gina daftarin wasikar neman aiki daga mukami, kamfani da kwarewar da ta dace.", href: "/ha/kayan-aiki/rubuta-wasikar-aiki/", category: "document-pdf", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "pdf-workspace": { name: "Wurin aikin PDF", desc: "Zabi hada PDF, raba PDF, matsa PDF ko bude cikakken wurin aikin Turanci a fili.", href: "/ha/kayan-aiki/wurin-aikin-pdf/", category: "document-pdf", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "pdf-workspace-ha": { name: "Wurin aikin PDF", desc: "Zabi hada PDF, raba PDF, matsa PDF ko bude cikakken wurin aikin Turanci a fili.", href: "/ha/kayan-aiki/wurin-aikin-pdf/", category: "document-pdf", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "pdf-convert-ha": { name: "Canja PDF", desc: "Shafin Hausa don shirya canja PDF, Word, Excel, CSV, rubutu ko hoto kafin bude cikakken kayan aikin Turanci.", href: "/ha/kayan-aiki/canza-pdf/", category: "document-pdf", lang: 'ha', status: 'live', phase: 'LIVE' },
-        "pdf-editor": { name: "Gyara PDF - shafi na Turanci", desc: "Gyara PDF cikin burauza, kara rubutu, saini ko alama. Fuskar amfani tana Turanci tukuna.", href: "/tools/pdf-editor/", category: "document-pdf", lang: 'en' },
-        "pdf-merge-split": { name: "Hada da raba PDF", desc: "Hada PDFs ko raba shafuka cikin sauki.", href: "/ha/kayan-aiki/hada-da-raba-pdf/", category: "document-pdf", lang: 'ha' },
-        "pdf-merge-split-ha": { name: "Hada da raba PDF", desc: "Hada PDFs ko raba shafuka cikin sauki.", href: "/ha/kayan-aiki/hada-da-raba-pdf/", category: "document-pdf", lang: 'ha' },
-        "pdf-compress": { name: "Matsa PDF", desc: "Rage girman PDF domin loda fayil, imel ko WhatsApp.", href: "/ha/kayan-aiki/matsa-pdf/", category: "document-pdf", lang: 'ha' },
-        "pdf-compress-ha": { name: "Matsa PDF", desc: "Rage girman PDF domin loda fayil, imel ko WhatsApp.", href: "/ha/kayan-aiki/matsa-pdf/", category: "document-pdf", lang: 'ha' }
-      };
 
       const localizeSwDiscoveryTool = (tool) => {
         const override = SW_DISCOVERY_OVERRIDES[tool.id];
@@ -3960,62 +1898,7 @@
         .replace(/[^a-z0-9]+/g, ' ')
         .trim();
 
-      const SW_SEARCH_INTENT_TARGETS = {
-        paye: ['/sw/mshahara-na-kodi/paye', '/sw/mshahara-na-kodi', '/sw/kenya/kikokotoo-kodi-mshahara', '/sw/tanzania/kikokotoo-kodi-mshahara', '/sw/uganda/kikokotoo-kodi-mshahara'],
-        mshahara: ['/sw/mshahara-na-kodi', '/sw/mshahara-na-kodi/paye', '/sw/zana/kikokotoo-kima-cha-chini-cha-mshahara', '/sw/kenya/kikokotoo-kodi-mshahara', '/sw/tanzania/kikokotoo-kodi-mshahara'],
-        vat: ['/sw/zana/kikokotoo-vat', '/sw/vat-na-kodi', '/sw/biashara-na-uzingatiaji', '/sw/kenya/kikokotoo-vat', '/sw/tanzania/kikokotoo-vat', '/sw/uganda/kikokotoo-vat'],
-        fedha: ['/sw/fintech', '/sw/mali-na-mikopo', '/sw/sarafu', '/sw/zana/kibadilishaji-sarafu', '/sw/zana/ulinganisho-uhamishaji-pesa'],
-        sheria: ['/sw/serikali-na-nyaraka', '/sw/kazi-na-nyaraka', '/sw/zana/tamko-la-kisheria', '/sw/zana/ustahiki-wa-msaada-wa-kisheria', '/sw/zana/gdpr-dhidi-ya-sheria-za-afrika'],
-        kazi: ['/sw/kazi-na-ajira', '/sw/kazi-na-nyaraka', '/sw/mshahara-na-kodi', '/sw/zana/mjenzi-cv', '/sw/zana/barua-ombi'],
-        hajj: ['/sw/zana/bajeti-ya-hajj-na-umrah', '/sw/dini-na-utamaduni'],
-        zakat: ['/sw/zana/kikokotoo-zakat', '/sw/dini-na-utamaduni'],
-        ujenzi: ['/sw/ujenzi-na-uhandisi', '/sw/zana/kikokotoo-gharama-za-ujenzi', '/sw/zana/mjenzi-boq', '/sw/zana/kikokotoo-nondo', '/sw/zana/mchanganyiko-wa-zege'],
-        internet: ['/sw/zana/kilinganisha-intaneti', '/sw/mawasiliano-na-mtandao', '/sw/zana/kikokotoo-intaneti-ya-biashara'],
-        tafsiri: ['/sw/lugha-na-tafsiri', '/sw/zana/mtafsiri-wa-kiswahili', '/sw/zana/kutafsiri-pdf', '/sw/zana/mtafsiri-wa-kifaransa-afrika'],
-        mkopo: ['/sw/mali-na-mikopo', '/sw/zana/kikokotoo-mkopo-wa-nyumba', '/sw/zana/mkopo-wa-gari', '/sw/zana/ustahiki-wa-mkopo-wa-shamba'],
-        sarafu: ['/sw/sarafu', '/sw/mshahara-na-kodi/fx', '/sw/zana/kibadilishaji-sarafu', '/sw/fintech'],
-        cv: ['/sw/zana/mjenzi-cv', '/sw/kazi-na-nyaraka', '/sw/kazi-na-ajira', '/sw/hati-na-pdf'],
-        tin: ['/sw/zana/mwongozo-tin', '/sw/biashara-na-uzingatiaji', '/sw/vat-na-kodi'],
-        bima: ['/sw/bima', '/sw/afya-na-bima', '/sw/zana/kilinganisha-bima-ya-afya', '/sw/zana/kikokotoo-bima-ya-gari', '/sw/zana/kikokotoo-bima-ya-biashara'],
-        pdf: ['/sw/hati-na-pdf', '/sw/zana-za-pdf', '/sw/zana/kituo-cha-pdf', '/sw/zana/hariri-pdf', '/sw/zana/chat-na-pdf']
-      };
 
-      const SW_SEARCH_DIRECT_RESULTS = {
-        blogu: [
-          { name: 'Blogu ya AfroTools kwa Kiswahili', desc: 'Daraja la Kiswahili kwa makala za PAYE, VAT, fedha, mobile money na kilimo. Baadhi ya makala hufunguka kwa Kiingereza.', href: '/sw/blogu/', icon: 'B', status: 'live', priority: 120 }
-        ],
-        mshahara: [
-          { name: 'Mshahara na Kodi', desc: 'Kitovu cha PAYE, mshahara, kima cha chini, muda wa ziada, likizo na hifadhi ya jamii kwa Afrika.', href: '/sw/mshahara-na-kodi/', icon: 'PAYE', status: 'live', priority: 120 },
-          { name: 'Vikokotoo vya PAYE', desc: 'Tafuta kikokotoo cha kodi ya mshahara kwa nchi husika na ufungue njia ya PAYE inayofaa.', href: '/sw/mshahara-na-kodi/paye/', icon: 'PAYE', status: 'live', priority: 110 }
-        ],
-        kazi: [
-          { name: 'Kazi na Ajira', desc: 'Kitovu cha CV, mahojiano, ofa, majadiliano ya mshahara, mikataba na nyaraka za kazi.', href: '/sw/kazi-na-ajira/', icon: 'JOB', status: 'live', priority: 120 },
-          { name: 'Kazi na Nyaraka', desc: 'Zana za barua ya ombi, CV, mkataba wa ajira, payslip na nyaraka za HR.', href: '/sw/kazi-na-nyaraka/', icon: 'DOC', status: 'live', priority: 110 }
-        ],
-        api: [
-          { name: 'API ya AfroTools kwa Kiswahili', desc: 'Daraja la Kiswahili kuelekea API, endpoints, JSON, token na bei ambazo bado zina nyaraka za Kiingereza.', href: '/sw/api/', icon: 'API', status: 'live', priority: 120 },
-          { name: 'Saraka ya API za Afrika', desc: 'Mwongozo wa Kiswahili wa kuchagua API za fedha, kodi, sarafu na data za Afrika.', href: '/sw/zana/saraka-ya-api-afrika/', icon: 'API', status: 'live', priority: 110 },
-          { name: 'Kituo cha Developer', desc: 'Zana za developer zinazobaki ndani ya kivinjari, pamoja na madaraja kwenda nyaraka za API.', href: '/sw/zana/kituo-cha-developer/', icon: 'DEV', status: 'live', priority: 100 },
-          { name: 'Zana za Developer kwa Kiswahili', desc: 'Kitovu cha JSON, SQL, API testing, USSD, Docker, PWA na zana za kivinjari kwa wasanidi.', href: '/sw/zana-za-developer/', icon: 'DEV', status: 'live', priority: 95 }
-        ],
-        internet: [
-          { name: 'Mawasiliano na Mtandao', desc: 'Kitovu cha Kiswahili kwa data, intaneti, ISP, LTE, 5G, roaming, USSD, SMS na WhatsApp Business.', href: '/sw/mawasiliano-na-mtandao/', icon: 'NET', status: 'live', priority: 120 },
-          { name: 'Kilinganisha Intaneti', desc: 'Linganisha gharama, kasi, fiber, LTE, 5G na ISP kwa matumizi ya nyumbani au biashara.', href: '/sw/zana/kilinganisha-intaneti/', icon: 'NET', status: 'live', priority: 110 }
-        ],
-        tafsiri: [
-          { name: 'Lugha na Tafsiri', desc: 'Kitovu cha watafsiri, lugha za Afrika, transliteration na tafsiri za hati kwa tahadhari.', href: '/sw/lugha-na-tafsiri/', icon: 'LANG', status: 'live', priority: 120 },
-          { name: 'Mtafsiri wa Kiswahili', desc: 'Msaada wa Kiswahili na kamusi ya misemo kwa biashara, kazi na mawasiliano ya kila siku.', href: '/sw/zana/mtafsiri-wa-kiswahili/', icon: 'LANG', status: 'live', priority: 110 },
-          { name: 'Kutafsiri PDF', desc: 'Tafsiri hati kwa tahadhari; hakiki tafsiri za kisheria, matibabu au rasmi na mtaalamu.', href: '/sw/zana/kutafsiri-pdf/', icon: 'PDF', status: 'live', priority: 100 }
-        ],
-        ujenzi: [
-          { name: 'Ujenzi na Uhandisi', desc: 'Kitovu cha CAD, BOQ, zege, nondo, paa, gharama na upangaji wa miradi ya ujenzi.', href: '/sw/ujenzi-na-uhandisi/', icon: 'ENG', status: 'live', priority: 120 },
-          { name: 'Kikokotoo Gharama za Ujenzi', desc: 'Kadiria gharama za kazi, vifaa, contingency na hatua za mradi kabla ya kuomba bei rasmi.', href: '/sw/zana/kikokotoo-gharama-za-ujenzi/', icon: 'ENG', status: 'live', priority: 110 }
-        ],
-        mkopo: [
-          { name: 'Mali, Nyumba na Mikopo', desc: 'Kitovu cha mikopo, nyumba, uwezo wa kulipa na zana za kupanga kabla ya kusaini.', href: '/sw/mali-na-mikopo/', icon: 'LOAN', status: 'live', priority: 120 },
-          { name: 'Kikokotoo cha Mkopo wa Nyumba', desc: 'Kadiria malipo, riba, muda na uwezo wa kulipa mkopo wa nyumba kwa muktadha wa Afrika.', href: '/sw/zana/kikokotoo-mkopo-wa-nyumba/', icon: 'LOAN', status: 'live', priority: 110 }
-        ]
-      };
 
       const getCategoryLabel = (catId) => {
         const cat = NAV_ITEMS.find(c => c.id === catId);
