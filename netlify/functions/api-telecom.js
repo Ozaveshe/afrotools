@@ -96,3 +96,5 @@ exports.handler = async function(event) {
     }),
   };
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-telecom' });

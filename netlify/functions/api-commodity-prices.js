@@ -17,9 +17,10 @@
 
 const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 const { getAllowedOrigin } = require('./utils/cors');
+const { getEnv } = require('./_shared/env');
 
-var SUPABASE_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-var SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+var SUPABASE_URL = getEnv('SUPABASE_URL', { defaultValue: 'https://zpclagtgczsygrgztlts.supabase.co' });
+var SUPABASE_KEY = getEnv('SUPABASE_SERVICE_KEY');
 
 var CACHE_OPTS = { browserTTL: 1800, cdnTTL: 3600, staleTTL: 7200 };
 
@@ -154,3 +155,5 @@ async function fetchFromSupabase(commodity) {
 
   return { prices: prices, benchmarks: benchmarks };
 }
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-commodity-prices' });

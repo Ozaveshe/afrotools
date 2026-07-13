@@ -223,3 +223,5 @@ exports.handler = async function(event) {
     data_policy: PRODUCTION_DATA_POLICY
   }, rlHeaders);
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-tax-rates' });

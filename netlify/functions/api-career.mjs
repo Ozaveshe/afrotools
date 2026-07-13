@@ -2,11 +2,13 @@ import careerEngine from "./_shared/career-engine.js";
 import rateLimit from "./_shared/rate-limit.js";
 import serviceAuth from "./_shared/salarypadi-service-auth.js";
 import cors from "./utils/cors.js";
+import withApiModule from "./_shared/with-api.js";
 
 const { compareOffers, checkJobScam } = careerEngine;
 const { checkRateLimit, getRemaining } = rateLimit;
 const { authenticateSalaryPadiServiceKey } = serviceAuth;
 const { getAllowedOrigin } = cors;
+const { withApi } = withApiModule;
 
 async function authenticate(event, operation) {
   const supplied = event.headers["x-api-key"] || "";
@@ -65,7 +67,7 @@ function operationFromUrl(request) {
   return null;
 }
 
-export default async function handler(request, context) {
+async function handler(request, context) {
   const event = eventFromRequest(request, context);
   if (request.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: headersFor(event) });
@@ -117,3 +119,5 @@ export default async function handler(request, context) {
 export const config = {
   method: ["POST", "OPTIONS"],
 };
+
+export default withApi(handler, { name: "api-career" });

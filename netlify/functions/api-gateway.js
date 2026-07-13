@@ -291,3 +291,5 @@ exports.handler = async function (event) {
     hint: 'Use one of the available tools listed above.'
   });
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-gateway' });

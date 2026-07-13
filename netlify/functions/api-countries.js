@@ -168,3 +168,5 @@ exports.handler = async function(event) {
 
   return respond(200, { countries: list, total: list.length }, rlHeaders);
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-countries' });

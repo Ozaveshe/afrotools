@@ -95,3 +95,5 @@ exports.handler = async function (event) {
   if (requestedEtag === etag) return respond(event, 304, null, responseHeaders);
   return respond(event, 200, catalog, responseHeaders);
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-tool-catalog' });

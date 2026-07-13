@@ -32,3 +32,5 @@ exports.handler = async function (event) {
     checked_at: new Date().toISOString()
   });
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-status' });

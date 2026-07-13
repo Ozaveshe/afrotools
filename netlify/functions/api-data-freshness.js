@@ -10,6 +10,7 @@ const { getData } = require('./_shared/data-store');
 const { loadScholarshipFeed, SCHOLARSHIP_PUBLIC_MIN_COUNT } = require('./_shared/scholarship-platform');
 const { getCollector } = require('./_shared/market-data-refresh');
 const { getAllowedOrigin } = require('./utils/cors');
+const { getEnv } = require('./_shared/env');
 
 const DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 
@@ -95,26 +96,26 @@ function getHeader(event, headerName) {
 }
 
 function isAdmin(event) {
-  const secret = cleanEnv(process.env.ADMIN_KEY || process.env.ADMIN_SECRET);
+  const secret = cleanEnv(getEnv('ADMIN_KEY') || getEnv('ADMIN_SECRET'));
   const header = getHeader(event, 'x-admin-key');
   return !!secret && !!header && header === secret;
 }
 
 function getSupabaseUrl() {
   const candidate = cleanEnv(
-    process.env.SUPABASE_AUTH_URL ||
-    process.env.SUPABASE_DATA_URL ||
-    process.env.SUPABASE_URL
+    getEnv('SUPABASE_AUTH_URL') ||
+    getEnv('SUPABASE_DATA_URL') ||
+    getEnv('SUPABASE_URL')
   );
   return /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(candidate) ? candidate : DEFAULT_SUPABASE_URL;
 }
 
 function getSupabaseKey() {
   return cleanEnv(
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_SERVICE_KEY ||
-    process.env.SUPABASE_AUTH_SERVICE_KEY
+    getEnv('SUPABASE_SERVICE_ROLE_KEY') ||
+    getEnv('SUPABASE_DATA_SERVICE_ROLE_KEY') ||
+    getEnv('SUPABASE_SERVICE_KEY') ||
+    getEnv('SUPABASE_AUTH_SERVICE_KEY')
   );
 }
 
@@ -413,3 +414,5 @@ exports._test = {
   findTimestamp,
   getStatus,
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-data-freshness' });

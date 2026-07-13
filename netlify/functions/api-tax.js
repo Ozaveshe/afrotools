@@ -438,3 +438,5 @@ exports.handler = async (event) => {
     code: 'METHOD_NOT_ALLOWED'
   });
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-tax' });

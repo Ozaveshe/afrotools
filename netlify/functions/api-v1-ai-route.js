@@ -1,12 +1,13 @@
 const { corsHeaders, corsResponse } = require('./utils/cors');
 const { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
 const { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
+const { getEnv } = require('./_shared/env');
 const intentRouter = require('../../assets/js/ai/intent-router.js');
 const toolManifestApi = require('../../assets/js/ai/tool-manifest.js');
 
-const MAX_BODY_BYTES = Number(process.env.AFROTOOLS_API_AI_ROUTE_MAX_BODY_BYTES || 8192);
-const MAX_QUERY_CHARS = Number(process.env.AFROTOOLS_API_AI_ROUTE_MAX_CHARS || 1200);
-const ROUTE_LIMIT_PER_DAY = Number(process.env.AFROTOOLS_API_AI_ROUTE_LIMIT || 0);
+const MAX_BODY_BYTES = Number(getEnv('AFROTOOLS_API_AI_ROUTE_MAX_BODY_BYTES', { defaultValue: 8192 }));
+const MAX_QUERY_CHARS = Number(getEnv('AFROTOOLS_API_AI_ROUTE_MAX_CHARS', { defaultValue: 1200 }));
+const ROUTE_LIMIT_PER_DAY = Number(getEnv('AFROTOOLS_API_AI_ROUTE_LIMIT', { defaultValue: 0 }));
 const SUPPORTED_LOCALES = new Set(['en', 'fr', 'pt', 'ar', 'sw', 'ki', 'ha', 'yo']);
 const SENSITIVE_CONTEXT_KEY = /(password|secret|token|api.?key|email|phone|cv|resume|document|passport|national.?id|nin|ssn|salary|bank|card)/i;
 
@@ -415,3 +416,5 @@ exports.__test = {
   buildToolCandidates,
   safeRoute,
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-v1-ai-route' });

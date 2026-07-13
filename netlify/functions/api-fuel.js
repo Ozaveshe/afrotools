@@ -204,3 +204,5 @@ exports.handler = async function (event) {
     countries,
   }, rlHeaders);
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-fuel' });

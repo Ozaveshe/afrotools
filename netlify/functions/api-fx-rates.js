@@ -220,3 +220,5 @@ exports.handler = async function (event) {
     return jsonResponse(500, { error: 'FX data temporarily unavailable. Please try again later.' }, rlHeaders);
   }
 };
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-fx-rates' });

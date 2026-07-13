@@ -212,3 +212,5 @@ async function handleHistorical(pairStr, period) {
 
   return jsonResponse(200, data, { 'Cache-Control': 'public, max-age=3600, s-maxage=7200' });
 }
+
+exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-forex' });
