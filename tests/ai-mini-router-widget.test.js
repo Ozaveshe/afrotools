@@ -62,7 +62,7 @@ assert.ok(iframe.includes("/assets/js/ai/tool-manifest.js"));
 assert.ok(iframe.includes("/assets/js/ai/intent-analytics.js"));
 assert.ok(iframe.includes("noindex, follow"));
 assert.ok(iframe.includes("aw-ai-link--secondary"));
-assert.ok(iframe.includes('target="_blank" rel="noopener"'), "iframe chrome links should escape partner embeds safely");
+assert.match(iframe, /target="_blank" rel="noopener(?: noreferrer)?"/, "iframe chrome links should escape partner embeds safely");
 
 const miniRouter = fs.readFileSync(path.join(root, "widgets", "ai", "mini-router.js"), "utf8");
 assert.ok(miniRouter.includes("function externalLink"), "widget links should use a single external-link helper");

@@ -6,6 +6,10 @@ const adminConfidence = require("../assets/js/lib/admin-data-confidence.js");
 
 const registry = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "source-registry.json"), "utf8"));
 const meta = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "_meta.json"), "utf8"));
+const latestReviewDate = Math.max.apply(null, registry.sources.map(function (source) {
+  return Date.parse(source.lastCheckedAt || source.lastReviewedAt || source.effectiveFrom || "1970-01-01");
+}));
+const REVIEW_AS_OF = new Date(latestReviewDate + (366 * 3 * 24 * 60 * 60 * 1000)).toISOString().slice(0, 10);
 
 function test(name, fn) {
   try {
@@ -18,7 +22,7 @@ function test(name, fn) {
 }
 
 function products(adminStatus) {
-  return adminConfidence.buildDataProducts(registry, meta, adminStatus || null, "2026-06-16");
+  return adminConfidence.buildDataProducts(registry, meta, adminStatus || null, REVIEW_AS_OF);
 }
 
 test("admin data confidence helper tracks all required data lanes", function () {

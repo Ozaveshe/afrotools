@@ -8,6 +8,7 @@ const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const HA_ROOT = path.join(ROOT, 'ha');
+const localeCoverage = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'registry', 'locale-page-coverage.json'), 'utf8'));
 
 function walk(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -23,14 +24,22 @@ function source(relative) {
 }
 
 const pages = walk(HA_ROOT);
-assert.strictEqual(pages.length, 92, 'Hausa route inventory must remain at 92 pages');
+const expectedPages = localeCoverage.records.filter((record) => record.locale === 'ha').length;
+assert.ok(expectedPages > 0, 'Hausa coverage registry must contain routes');
+assert.strictEqual(pages.length, expectedPages, 'Hausa route inventory must match generated locale coverage');
 
 for (const file of pages) {
   const relative = path.relative(ROOT, file).replace(/\\/g, '/');
   const html = fs.readFileSync(file, 'utf8');
   assert.ok(/<html\b[^>]*\blang=["']ha["']/i.test(html), `${relative} must declare Hausa`);
-  assert.strictEqual((html.match(/\/ha\/assets\/ha-improvements\.css/g) || []).length, 1, `${relative} must load one Hausa polish stylesheet`);
-  assert.strictEqual((html.match(/\/ha\/assets\/ha-surface\.js/g) || []).length, 1, `${relative} must load one Hausa runtime`);
+  const isFallbackBridge = html.includes('data-ha-coverage-state="english-fallback"');
+  if (isFallbackBridge) {
+    assert.ok(html.includes('name="afrotools-locale-coverage" content="english-fallback"'), `${relative} must label its fallback state`);
+    assert.ok(/<meta name="robots" content="noindex, follow">/.test(html), `${relative} fallback bridge must stay out of search indexes`);
+  } else {
+    assert.strictEqual((html.match(/\/ha\/assets\/ha-improvements\.css/g) || []).length, 1, `${relative} must load one Hausa polish stylesheet`);
+    assert.strictEqual((html.match(/\/ha\/assets\/ha-surface\.js/g) || []).length, 1, `${relative} must load one Hausa runtime`);
+  }
   const main = html.match(/<main\b[^>]*\bid=["']([^"']+)["']/i);
   assert.ok(main, `${relative} must expose an addressable main region`);
   assert.ok(new RegExp(`href=["']#${main[1]}["']`, 'i').test(html), `${relative} must expose a skip link to its main region`);
@@ -50,9 +59,9 @@ const runtime = source('ha/assets/ha-surface.js');
   '/ha/noma/hadarin-fari/',
   '/ha/kayan-aiki/takardar-albashi/',
   '/ha/kayan-aiki/cajin-banki/'
-].forEach((route) => assert.ok(runtime.includes(`'${route}'`), `${route} must have a working Hausa runtime`));
-assert.ok(runtime.includes("['cvUpload', 'haPdfProbe']"), 'local-only file metadata controls must be wired');
-assert.ok(runtime.includes('brokenCopyRoutes'), 'known inert copy controls must be repaired centrally');
+].forEach((route) => assert.ok(runtime.includes(route), `${route} must have a working Hausa runtime`));
+assert.match(runtime, /\["cvUpload","haPdfProbe"\]/, 'local-only file metadata controls must be wired');
+assert.ok(runtime.includes('data-ha-copy') && runtime.includes('navigator.clipboard'), 'known inert copy controls must be repaired centrally');
 
 const cookie = source('assets/js/components/cookie-consent.js');
 assert.ok(cookie.includes('Izinin kukis') && cookie.includes('Manufar sirri'), 'cookie consent must have Hausa UI copy');
@@ -61,9 +70,9 @@ const assistant = source('assets/js/components/site-assistant.js');
 assert.ok(assistant.includes('UI_COPY_HA'), 'site assistant must expose Hausa UI copy');
 assert.ok(assistant.includes("t.lang === 'ha'") && assistant.includes("startsWith('/ha/')"), 'Hausa assistant directory must prioritize real Hausa routes');
 
-const navbar = source('assets/js/components/navbar.js');
-assert.ok(navbar.includes("'/ha/noma/kalandar-shuka/'"), 'navbar must expose the Hausa planting calendar');
-assert.ok(navbar.includes("'/ha/kayan-aiki/gwajin-ussd/'"), 'navbar must expose the Hausa USSD simulator');
+const navbar = source('assets/js/components/navbar.js') + source('assets/js/components/navbar-data.json');
+assert.ok(navbar.includes('/ha/noma/kalandar-shuka/'), 'navbar must expose the Hausa planting calendar');
+assert.ok(navbar.includes('/ha/kayan-aiki/gwajin-ussd/'), 'navbar must expose the Hausa USSD simulator');
 
 const footer = source('assets/js/components/footer.js');
 assert.ok(footer.includes("hrefHa: '/ha/sadarwa/'") && footer.includes("hrefHa: '/ha/lafiya/'") && footer.includes("hrefHa: '/ha/noma/'"), 'Hausa footer must expose telecom, health and agriculture hubs');

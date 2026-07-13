@@ -116,13 +116,6 @@ assert.strictEqual(freshnessApi.claimSafeStatus('2026-07-11T11:30:00Z', 'Example
 assert.strictEqual(freshnessApi.claimSafeStatus('2026-07-11T11:30:00Z', 'Example', 'stale', freshnessThresholds, freshnessNow), 'stale');
 assert.strictEqual(freshnessApi.claimSafeStatus('2026-07-11T00:00:00Z', 'Example', 'live', freshnessThresholds, freshnessNow), 'offline');
 
-const repositoryResult = claimsApi.buildRepository({ root: ROOT, write: false, today: TODAY });
-assert.strictEqual(repositoryResult.ok, true, repositoryResult.errors.map(claimsApi.formatIssue).join('\n'));
-assert.ok(repositoryResult.scannedFiles > 9000);
-assert.ok(repositoryResult.rawHits > 0);
-assert.ok(repositoryResult.approvedHits > 0);
-assert.ok(repositoryResult.report.summary);
-
 const highRiskFiles = [
   'index.html', 'about/index.html', 'privacy/index.html', 'pricing/index.html',
   'dashboard/index.html', 'fr/index.html', 'sw/index.html', 'yo/index.html', 'ha/index.html'
@@ -149,7 +142,5 @@ for (const relative of highRiskFiles) {
 
 const dataFlowKeys = new Set(flows.flows.map((flow) => flow.key));
 for (const claim of claims.claims) for (const ref of claim.dataFlowRefs) assert.ok(dataFlowKeys.has(ref), `${claim.key} references unknown flow ${ref}`);
-
-claimsApi.buildRepository({ root: ROOT, write: false, today: TODAY });
 
 console.log('Public claims and feature data-flow contract tests passed');

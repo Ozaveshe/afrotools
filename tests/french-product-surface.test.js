@@ -51,7 +51,7 @@ assert(/Le pays change la juridiction/.test(home) && /La langue change l’inter
 const directory = read('fr/all-tools/index.html');
 assert(/data-registry-count="tools.locale.fr.published"/.test(directory), 'French directory headline count must use the named French registry selector');
 assert(/t\.lang === 'fr'/.test(directory) && /startsWith\('\/fr\/'\)/.test(directory), 'French directory must render only records with genuine French routes');
-assert(/<div class="tools-grid" id="toolsGrid">\s*<a href="\/fr\/salary-tax\//.test(directory), 'French directory must provide useful no-JavaScript navigation before hydration');
+assert(/<div class="tools-grid" id="toolsGrid">[\s\S]*?PROGRESSIVE_DIRECTORY_FALLBACK_START[\s\S]*?<a href="\/fr\/[^"]+"[^>]*data-directory-record/.test(directory), 'French directory must provide useful no-JavaScript navigation before hydration');
 assert(!/>All <|>Live <|>Sort:|>Health<|>Engineering<|>Trade<|>Legal<|>Language<|>Energy<|>Career</i.test(directory), 'French directory controls and category labels must not expose English UI');
 
 const prepaid = read('fr/tools/compteur-prepaye/central-african-republic/index.html');

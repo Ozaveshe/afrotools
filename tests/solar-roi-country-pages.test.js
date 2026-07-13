@@ -145,7 +145,7 @@ const countries = Object.values(dataset.countries);
 assert.strictEqual(countries.length, 54, "Solar ROI dataset should contain 54 countries");
 
 const rootTitle = "Solar Panel ROI Calculator for Africa — Payback, Battery & Generator Savings";
-const rootDesc = "Compare solar payback in all 54 African countries, including generator fuel savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.";
+const rootDesc = "Choose a country solar ROI page, compare generator savings, battery backup, monthly bill impact, system cost, and cash or financing assumptions.";
 const rootPage = readRootPage();
 assert.strictEqual(getTitle(rootPage.html), rootTitle, `Unexpected root title in ${rootPage.file}`);
 assert.strictEqual(getMetaContent(rootPage.html, "description"), rootDesc, `Unexpected root description in ${rootPage.file}`);
@@ -186,7 +186,8 @@ assertIncludes(rootPage.html, 'id="solarRootCountryOpen"', "root open country CT
 assertIncludes(rootPage.html, '<optgroup label="Popular countries">', "root popular countries group", rootPage.file);
 assertIncludes(rootPage.html, '<optgroup label="All countries">', "root all countries group", rootPage.file);
 assertIncludes(rootPage.html, 'id="solarCountryGrid"', "root searchable country grid", rootPage.file);
-assertIncludes(rootPage.html, `Showing all ${countries.length} countries.`, "root search status copy", rootPage.file);
+assertIncludes(rootPage.html, "Showing available country pages.", "root search status copy", rootPage.file);
+assertIncludes(rootPage.html, '"Showing all "+cards.length+" countries."', "root dynamic country count", rootPage.file);
 assertIncludes(rootPage.html, 'data-country="nigeria ngn ng"', "root country search data", rootPage.file);
 assertIncludes(rootPage.html, "solarCountrySearchStatus", "root country search live status", rootPage.file);
 assertIncludes(rootPage.html, "No country matches that search", "root country search empty state", rootPage.file);
