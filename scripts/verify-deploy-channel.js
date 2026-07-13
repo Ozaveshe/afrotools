@@ -11,6 +11,9 @@ const ROOT = path.resolve(__dirname, '..');
 const MANIFEST_PATH = path.join(ROOT, 'ops', 'deploy-channel.json');
 const NETLIFY_STATE_PATH = path.join(ROOT, '.netlify', 'state.json');
 const allowDirty = process.argv.includes('--allow-dirty');
+const deployContext = String(process.env.CONTEXT || '').trim();
+const isHostedNetlifyBuild = process.env.NETLIFY === 'true' || Boolean(process.env.SITE_ID && deployContext);
+const isDeployPreview = deployContext === 'deploy-preview';
 
 const EXPECTED = Object.freeze({
   product: 'afrotools',
@@ -49,11 +52,21 @@ function git(args) {
 }
 
 function normalizeRepository(value) {
-  return String(value || '')
+  const normalized = String(value || '')
     .trim()
     .replace(/^git@github\.com:/i, 'https://github.com/')
+    .replace(/^(https?:\/\/)[^/@]+@/i, '$1')
     .replace(/\.git$/i, '')
     .replace(/\/$/, '');
+
+  try {
+    const url = new URL(normalized);
+    url.username = '';
+    url.password = '';
+    return `${url.protocol}//${url.host}${url.pathname}`.replace(/\/$/, '');
+  } catch {
+    return normalized;
+  }
 }
 
 function requireEqual(actual, expected, label) {
@@ -84,13 +97,17 @@ requireEqual(
   'Git repository'
 );
 
-const netlifyState = readJson(
-  NETLIFY_STATE_PATH,
-  `Netlify link (run: npx netlify link --id ${EXPECTED.siteId})`
-);
-requireEqual(netlifyState.siteId, EXPECTED.siteId, 'linked Netlify site ID');
+if (isHostedNetlifyBuild) {
+  requireEqual(process.env.SITE_ID || process.env.NETLIFY_SITE_ID, EXPECTED.siteId, 'hosted Netlify SITE_ID');
+} else {
+  const netlifyState = readJson(
+    NETLIFY_STATE_PATH,
+    `Netlify link (run: npx netlify link --id ${EXPECTED.siteId})`
+  );
+  requireEqual(netlifyState.siteId, EXPECTED.siteId, 'linked Netlify site ID');
+}
 
-if (process.env.NETLIFY_SITE_ID) {
+if (process.env.NETLIFY_SITE_ID && !isHostedNetlifyBuild) {
   requireEqual(process.env.NETLIFY_SITE_ID, EXPECTED.siteId, 'NETLIFY_SITE_ID');
 }
 
@@ -107,10 +124,15 @@ for (const name of ['SUPABASE_URL', 'SUPABASE_AUTH_URL']) {
 const repository = normalizeRepository(git(['remote', 'get-url', 'origin']));
 requireEqual(repository, EXPECTED.repository, 'origin remote');
 
-const branch = git(['branch', '--show-current']);
-if (!branch) fail('release checkout is detached; use an explicit release branch');
+const hostedBranch = String(process.env.HEAD || process.env.BRANCH || '').trim();
+const branch = isHostedNetlifyBuild ? hostedBranch : git(['branch', '--show-current']);
+if (!branch) fail('release checkout is detached and no Netlify HEAD/BRANCH was provided');
 const releaseBranches = manifest.git && manifest.git.releaseBranches;
-if (!Array.isArray(releaseBranches) || !releaseBranches.includes(branch)) {
+if (!Array.isArray(releaseBranches)) fail('git.releaseBranches must be an array');
+if (isDeployPreview) {
+  const hasPreviewProof = process.env.PULL_REQUEST === 'true' && Boolean(process.env.REVIEW_ID);
+  if (!hasPreviewProof) fail('deploy-preview requires PULL_REQUEST=true and REVIEW_ID');
+} else if (!releaseBranches.includes(branch)) {
   fail(`branch ${branch} is not listed in git.releaseBranches`);
 }
 
@@ -120,11 +142,11 @@ if (dirty && !allowDirty) {
   fail(`working tree is not clean (${paths})`);
 }
 
-const commit = git(['rev-parse', 'HEAD']);
+const commit = String(process.env.COMMIT_REF || '').trim() || git(['rev-parse', 'HEAD']);
 console.log('AfroTools deploy channel verified.');
 console.log(`Product: ${manifest.displayName}`);
 console.log(`Netlify: ${EXPECTED.siteName} (${EXPECTED.siteId})`);
 console.log(`Primary URL: ${EXPECTED.primaryUrl}`);
 console.log(`Supabase ref: ${EXPECTED.supabaseProjectRef}`);
-console.log(`Git: ${branch}@${commit}`);
+console.log(`Git: ${branch}@${commit}${deployContext ? ` (${deployContext})` : ''}`);
 if (dirty && allowDirty) console.log('Working tree: dirty (--allow-dirty was supplied)');

@@ -2,7 +2,7 @@
   publish = "dist"
   functions = "netlify/functions"
   edge_functions = "netlify/edge-functions"
-  command = "npm run build:deploy && (node scripts/indexnow.js --git || true)"
+  command = "node scripts/verify-deploy-channel.js && npm run build:deploy && (node scripts/indexnow.js --git || true)"
 
 [[edge_functions]]
   function = "og-image"
@@ -20,20 +20,20 @@
 # Deploy previews: every PR gets a unique preview URL
 
 [context.deploy-preview]
-  command = "npm run build:deploy"
+  command = "node scripts/verify-deploy-channel.js && npm run build:deploy"
 
 [context.deploy-preview.environment]
   CONTEXT = "deploy-preview"
 
 [context.branch-deploy]
-  command = "npm run build:deploy"
+  command = "node scripts/verify-deploy-channel.js && npm run build:deploy"
 
 [context.branch-deploy.environment]
   CONTEXT = "branch-deploy"
 
 # Staging branch gets same build as production
 [context.staging]
-  command = "npm run build:deploy"
+  command = "node scripts/verify-deploy-channel.js && npm run build:deploy"
 
 [context.staging.environment]
   CONTEXT = "staging"

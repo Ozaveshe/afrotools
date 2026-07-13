@@ -16,8 +16,9 @@ concurrency:
 
 jobs:
   verify:
-    name: Install, test, and build
+    name: Verify
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -31,6 +32,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install Chromium for browser-backed tests
+        run: npx playwright install chromium --with-deps
 
       - name: Lint
         run: npm run lint
@@ -47,9 +51,6 @@ jobs:
       - name: Unit and integration tests
         run: npm test
 
-      - name: Security scan source
-        run: npm run security:scan
-
       - name: Verify Pro architecture
         run: npm run pro:verify
 
@@ -59,11 +60,32 @@ jobs:
       - name: Validate hreflang graph
         run: npm run validate:hreflang
 
+  build:
+    name: Build and audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build deploy artifact
         run: npm run build:deploy
 
       - name: Audit deploy artifact
         run: npm run audit:dist
+
+      - name: Security scan publish surfaces
+        run: npm run security:scan
 
       - name: Verify generated outputs are committed
         run: |
@@ -73,3 +95,27 @@ jobs:
             git diff --name-only
             exit 1
           fi
+
+  e2e:
+    name: Playwright smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Run smoke specs
+        run: npx playwright test tests/e2e/automation-smoke.spec.js tests/e2e/tool-discovery.spec.js --project=chromium --workers=1
