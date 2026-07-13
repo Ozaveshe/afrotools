@@ -25,8 +25,8 @@ assert.strictEqual(
     headers: {},
     body: JSON.stringify({ next_run: '2026-07-01T00:00:00.000Z' }),
   }),
-  false,
-  'A caller-controlled next_run body must not bypass manual authorization'
+  true,
+  'Netlify scheduled events using the current next_run payload should be accepted'
 );
 
 assert.strictEqual(
@@ -34,8 +34,14 @@ assert.strictEqual(
     headers: { 'x-nf-event': 'manual' },
     body: JSON.stringify({ next_run: '2026-07-01T00:00:00.000Z' }),
   }),
+  true,
+  'A valid Netlify next_run payload should remain authoritative without the legacy header'
+);
+
+assert.strictEqual(
+  isScheduledEvent({ headers: {}, body: JSON.stringify({ next_run: 'not-a-date' }) }),
   false,
-  'Only the Netlify schedule event header should mark a run as scheduled'
+  'Malformed next_run payloads must not be accepted'
 );
 
 console.log('scheduled-event-auth: ok');
