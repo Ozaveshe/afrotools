@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { renameSyncWithRetry, writeFileSyncWithRetry } = require('./safe-write');
 
 const DEFAULT_ROOT = path.resolve(__dirname, '..', '..');
 const CLAIMS_PATH = path.join('data', 'audits', 'public-claim-registry.json');
@@ -355,7 +356,18 @@ function dataFlowsMarkdown(flows) {
 function writeText(root, relativePath, content) {
   const destination = path.join(root, relativePath);
   fs.mkdirSync(path.dirname(destination), { recursive: true });
-  fs.writeFileSync(destination, content, 'utf8');
+  const temporary = `${destination}.tmp-${process.pid}-${Date.now()}`;
+  try {
+    writeFileSyncWithRetry(temporary, content, 'utf8');
+    renameSyncWithRetry(temporary, destination);
+  } catch (error) {
+    try {
+      if (fs.existsSync(temporary)) fs.unlinkSync(temporary);
+    } catch (_cleanupError) {
+      // Preserve the original write failure; build-dist excludes temporary files.
+    }
+    throw error;
+  }
 }
 
 function buildRepository({ root = DEFAULT_ROOT, write = false, today = new Date().toISOString().slice(0, 10) } = {}) {
