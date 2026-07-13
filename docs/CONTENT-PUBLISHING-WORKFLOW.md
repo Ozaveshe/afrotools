@@ -183,6 +183,16 @@ A safe operating pattern is two batches per day:
 2. Midday localized batch: 2 language-surface items, rotating French + Swahili, French + Hausa, then Swahili + Hausa
 3. Evening batch: 1 main blog post + 1 AfroStream news post
 
+### Static automation release contract
+
+- The 09:00 AM and 17:00 PM static-blog slots are new-post-only. Refreshing an existing slug does not satisfy either daily slot.
+- Existing-article refreshes run in the separate weekly refresh lane and must preserve the slug, canonical, hub-card uniqueness, and RSS uniqueness.
+- Every successful static content run must commit on a named `automation/<automation-id>-YYYY-MM-DD` branch and push that branch. A detached-only commit is not a ready batch.
+- Each content automation writes a machine-readable `handoff.json` under its `$CODEX_HOME/automations/<automation-id>/` folder. The handoff records the branch, commit, slug, files, feed state, validations, and one of `ready`, `blocked`, or `consumed`.
+- Rate-limit exhaustion, interruption, missing terminal output, validation failure, push failure, or a missing handoff is a failed run. It must not be reported as a successful no-op.
+- The production release gate runs at 18:30, after the PM batch. It consumes every ready handoff oldest first and refuses a verified no-op while a batch is unconsumed or an expected AM/PM run lacks truthful terminal evidence.
+- The release gate reapplies source/content changes to current `main`, regenerates RSS and build-owned outputs, runs the release checks, pushes `main`, and marks a handoff consumed only after CI, Netlify, and live-route proof pass.
+
 ### Localized rotation follow-up
 
 The `Localized Content Rotation Batch` automation keeps French, Swahili, and Hausa surfaces moving without forcing every language into the same route shape. French can use `fr/blog/`; Swahili should use `sw/blogu/` or established `sw/` category/tool routes; Hausa should use established `ha/` category/tool routes unless a full Hausa blog surface exists. Yoruba can be used only as a fallback when the route and docs show the surface is ready.

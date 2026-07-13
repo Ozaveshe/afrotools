@@ -528,10 +528,10 @@
     },
     {
       "id": "codex:daily-5pm-publish-deploy-gate",
-      "display_name": "Daily 5PM Publish Deploy Gate",
+      "display_name": "Daily 6:30PM Publish Deploy Gate",
       "runner": "codex",
       "production_required": false,
-      "expected_schedule": "FREQ=DAILY;BYHOUR=17;BYMINUTE=0;BYSECOND=0",
+      "expected_schedule": "FREQ=DAILY;BYHOUR=18;BYMINUTE=30;BYSECOND=0",
       "netlify_function": null,
       "github_workflow": null,
       "codex_automation_id": "daily-5pm-publish-deploy-gate",
@@ -1714,6 +1714,28 @@
       ]
     },
     {
+      "id": "codex:weekly-blog-refresh",
+      "display_name": "Weekly Blog Refresh",
+      "runner": "codex",
+      "production_required": false,
+      "expected_schedule": "FREQ=WEEKLY;BYDAY=SU;BYHOUR=14;BYMINUTE=0",
+      "netlify_function": null,
+      "github_workflow": null,
+      "codex_automation_id": "weekly-blog-refresh",
+      "sla_hours": 168,
+      "product_surface": "content_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [],
+      "health_endpoint": null,
+      "owner_category": "Content publishing operations",
+      "severity_if_stale": "p3",
+      "validation_commands": [
+        "npm run blog:feed:check",
+        "npm run blog:verify",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
       "id": "github:ci",
       "display_name": "CI — Link Check & Audit",
       "runner": "github_actions",
@@ -2802,5 +2824,5 @@
       ]
     }
   ],
-  "updated_at": "2026-06-22T00:00:00.000Z"
+  "updated_at": "2026-07-13T00:00:00.000Z"
 }

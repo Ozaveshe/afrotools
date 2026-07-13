@@ -1,19 +1,19 @@
 # AfroTools Blog Strategy 2026
 
-Updated: 2026-07-10
+Updated: 2026-07-13
 
 This strategy covers the static, repo-backed main blog under `/blog/`. AfroStream creator news is a separate live Supabase-backed publishing surface and should not be mixed into this plan.
 
 ## Current Snapshot
 
-Latest local checks on 2026-07-10:
+Latest local checks on 2026-07-13:
 
-- `npm run blog:editorial:audit`: 213 blog routes, 211 articles, 2 redirects, 0 errors, and 0 warnings.
-- `npm run blog:feed:check`: RSS current, 40 items, latest `nigeria-employer-payroll-compliance-2026`.
-- `npm run blog:verify`: 211 publishable articles, 211 hub cards, and 40 RSS items.
-- `node scripts/audit-blog-content.js`: 211 publishable posts, 0 default article images, and 0 fact-heavy posts without outbound sources. Redirect shells are excluded from article-quality scoring.
+- `npm run blog:editorial:audit`: 217 blog routes, 215 articles, 2 redirects, 0 errors, and 3 carried long-title warnings.
+- `npm run blog:feed:check`: RSS current, 40 items, latest `public-tender-document-checklist-africa`.
+- `npm run blog:verify`: 215 publishable articles, 205 English hub cards, and 40 RSS items.
+- `node scripts/audit-blog-content.js`: 215 publishable posts, 205 English hub cards, 0 default article images, and 0 fact-heavy posts without outbound sources. Redirect shells are excluded from article-quality scoring.
 
-Since the previous snapshot, the dedicated-image backlog fell from 80 posts to 0 and the eight remaining title/description warnings were cleared. The main unresolved queue is freshness review: 211 time-sensitive articles, including 101 that likely need official-source review before factual edits.
+The dedicated-image backlog remains at 0. The three remaining title warnings are carried review items outside this recovery batch. The main unresolved queue is freshness review: 215 time-sensitive articles, including 105 that likely need official-source review before factual edits.
 
 The blog is structurally healthy. The strategy gap is no longer "publish enough." It is:
 

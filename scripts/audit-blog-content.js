@@ -192,7 +192,7 @@ function extractReadTime(raw) {
 
 function extractCards(raw) {
   const cards = [];
-  const regex = /<article class="article-card"[\s\S]*?<\/article>/gi;
+  const regex = /<article\b[^>]*\bclass="[^"]*\barticle-card\b[^"]*"[^>]*>[\s\S]*?<\/article>/gi;
   let match;
   while ((match = regex.exec(raw)) !== null) {
     const block = match[0];

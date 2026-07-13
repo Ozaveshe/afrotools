@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 10276 |
-| Indexable pages | 9294 |
+| Public pages | 10280 |
+| Indexable pages | 9298 |
 | Permanent and temporary redirects | 2777 |
 | Rewrites | 100 |
 | Conditional redirects | 4 |
 | Gone routes | 18 |
 | Dynamic route patterns | 161 |
-| Genuine equivalence groups | 5180 |
-| Documented fallbacks | 13336 |
-| Routes eligible for primary sitemaps | 9294 |
+| Genuine equivalence groups | 5184 |
+| Documented fallbacks | 13340 |
+| Routes eligible for primary sitemaps | 9298 |
 
 ## Locale Coverage
 
-- en: 5845 page records
+- en: 5849 page records
 - fr: 3421 page records
 - ha: 105 page records
 - sw: 860 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 370
+- article: 374
 - auth: 3
 - category: 694
 - country-tool: 497
@@ -3994,6 +3994,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:38cd0e877a9d: fr=`/fr/tools/conformite-dpa-kenya/`, sw=`/sw/zana/ukaguzi-wa-dpa-kenya/`, en=`/tools/kenya-dpa/`; x-default=`/tools/kenya-dpa/`
 - equivalence:38cfc77b5466: fr=`/fr/sao-tome/`, en=`/sao-tome/`, sw=`/sw/sao-tome/`; x-default=`/sao-tome/`
 - equivalence:38d0ebfc718c: en=`/blog/south-africa-provisional-tax-2026-27/`; x-default=`/blog/south-africa-provisional-tax-2026-27/`
+- equivalence:38d94e3f8f51: en=`/blog/kenya-solar-roi-guide-2026/`; x-default=`/blog/kenya-solar-roi-guide-2026/`
 - equivalence:38f89ecdd507: en=`/cars/senegal/mercedes-benz/g-wagon/2022/`, fr=`/fr/cars/senegal/mercedes-benz/g-wagon/2022/`; x-default=`/cars/senegal/mercedes-benz/g-wagon/2022/`
 - equivalence:3912e032143a: en=`/blog/nigeria-employer-payroll-compliance-2026/`; x-default=`/blog/nigeria-employer-payroll-compliance-2026/`
 - equivalence:392185ba725a: en=`/agriculture/export-docs/seychelles`, fr=`/fr/agriculture/export-docs/seychelles`; x-default=`/agriculture/export-docs/seychelles`
@@ -5740,6 +5741,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:930ffcca0a3e: en=`/tools/solar-vs-generator/senegal/`; x-default=`/tools/solar-vs-generator/senegal/`
 - equivalence:9315b9f6c607: fr=`/fr/tools/marge-gros-detail/`, en=`/tools/wholesale-retail-spread/`; x-default=`/tools/wholesale-retail-spread/`
 - equivalence:93172924c16f: en=`/tools/business-insurance/kenya`; x-default=`/tools/business-insurance/kenya`
+- equivalence:931892fb7997: en=`/blog/egypt-vat-guide-2026/`; x-default=`/blog/egypt-vat-guide-2026/`
 - equivalence:932346fc83a3: en=`/agriculture/seed-rate/guinea-bissau`, fr=`/fr/agriculture/seed-rate/guinea-bissau`; x-default=`/agriculture/seed-rate/guinea-bissau`
 - equivalence:9329d3b942f9: fr=`/fr/tools/cout-renovation/`, sw=`/sw/zana/gharama-ukarabati-wa-nyumba/`, en=`/tools/home-renovation-cost/`; x-default=`/tools/home-renovation-cost/`
 - equivalence:932c0f922ba5: fr=`/fr/tools/calendrier-traditionnel/`, sw=`/sw/zana/kalenda-ya-kimila/`, en=`/tools/traditional-calendar/`; x-default=`/tools/traditional-calendar/`
@@ -7118,6 +7120,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:d35470caa23a: fr=`/fr/tools/tarifs-electricite/burkina-faso/`, en=`/tools/electricity-tariff/burkina-faso/`; x-default=`/tools/electricity-tariff/burkina-faso/`
 - equivalence:d35b0e90cb0e: en=`/for-schools/`; x-default=`/for-schools/`
 - equivalence:d35da9b0c982: en=`/tools/workers-comp/central-african-republic`; x-default=`/tools/workers-comp/central-african-republic`
+- equivalence:d3769d3ba33c: en=`/blog/public-tender-document-checklist-africa/`; x-default=`/blog/public-tender-document-checklist-africa/`
 - equivalence:d37d1f0c0e08: en=`/blog/nigerian-diaspora-tax/`, fr=`/fr/blog/nigerian-diaspora-tax/`; x-default=`/blog/nigerian-diaspora-tax/`
 - equivalence:d3816ac88719: en=`/agriculture/farm-profit/sierra-leone`, fr=`/fr/agriculture/farm-profit/sierra-leone`; x-default=`/agriculture/farm-profit/sierra-leone`
 - equivalence:d389c2a8fc00: en=`/personal-finance/`; x-default=`/personal-finance/`
@@ -7688,6 +7691,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:f00b76004127: fr=`/fr/tools/verificateur-genotype/`, ha=`/ha/kayan-aiki/duba-genotype/`, en=`/tools/genotype-checker/`; x-default=`/tools/genotype-checker/`
 - equivalence:f00e01559723: fr=`/blog/salaire-moyen-rdc-2026/`; x-default=`/blog/salaire-moyen-rdc-2026/`
 - equivalence:f026bd4eb8c1: en=`/agriculture/harvest-date/liberia`, fr=`/fr/agriculture/harvest-date/liberia`; x-default=`/agriculture/harvest-date/liberia`
+- equivalence:f045b0a42b85: en=`/blog/ghana-e-vat-invoicing-2026/`; x-default=`/blog/ghana-e-vat-invoicing-2026/`
 - equivalence:f050a560b9fd: en=`/agriculture/greenhouse/morocco`, fr=`/fr/agriculture/greenhouse/morocco`; x-default=`/agriculture/greenhouse/morocco`
 - equivalence:f058f266ce72: en=`/tools/afroatlas/country/south-sudan/`; x-default=`/tools/afroatlas/country/south-sudan/`
 - equivalence:f06a12855572: en=`/cars/mozambique/honda/cr-v/2020/`, fr=`/fr/cars/mozambique/honda/cr-v/2020/`; x-default=`/cars/mozambique/honda/cr-v/2020/`

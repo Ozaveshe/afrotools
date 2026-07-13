@@ -1,24 +1,23 @@
 # Blog Audit
 
-Generated: 2026-07-10T04:03:21.109Z
+Generated: 2026-07-13T03:33:03.183Z
 
 ## Summary
-- Posts audited: 211
-- Hub cards: 211 (0 still using default imagery before cleanup)
+- Posts audited: 215
+- Hub cards: 205 (0 still using default imagery before cleanup)
 - Posts using default images: 0
 - Posts with no external sources on fact-heavy topics: 0
 - Posts with obvious encoding issues: 0
 - Average quality score: 94.7/100
-- Average word count: 648
+- Average word count: 650
 - Average AI-pattern hits: 0.2
 
 ## Category Counts
-- tax: 62
-- business: 47
-- tools: 41
+- tax: 63
+- business: 48
+- tools: 42
 - data: 29
 - currency: 23
-- francais: 9
 
 ## Highest-Priority Posts
 - dollar-to-cedi-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
