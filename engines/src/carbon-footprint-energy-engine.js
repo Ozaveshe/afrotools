@@ -1,0 +1,50 @@
+!function() {
+  "use strict";
+  window.AfroTools = window.AfroTools || {}, window.AfroTools.CarbonFootprintEnergyEngine = {
+    calculate: function(o) {
+      var t = parseFloat(o.gridKWh) || 0, r = parseFloat(o.genLitres) || 0, e = parseFloat(o.lpgKg) || 0, n = parseFloat(o.woodKg) || 0, a = o.country || "NG", s = ENERGY_DATA && ENERGY_DATA.countries ? ENERGY_DATA.countries[a] : null, i = s ? s.currencySymbol : "$", u = s ? s.usdRate : 1;
+      if (!(t || r || e || n)) {
+        return {
+          error: "Please enter at least one energy source."
+        };
+      }
+      var l = Math.round(.48 * t), c = Math.round(2.68 * r), g = Math.round(3 * e), d = Math.round(1.7 * n), h = l + c + g + d, p = 12 * h, f = h < 80 ? "Low Carbon" : h < 150 ? "Moderate" : h < 300 ? "High" : "Very High", k = Math.round(p / 1e3 * 15), y = Math.round(k * (u || 1)), M = Math.round(p / 21), C = t, w = Math.round(.48 * C), A = h > 0 ? Math.round(w / h * 100) : 0, m = [];
+      return m.push("Your monthly energy footprint: " + h + " kg CO₂ (" + f + ")."), m.push("Annual total: " + p.toLocaleString() + " kg CO₂ = " + M + " trees needed to offset."),
+      t > 0 && m.push("Solar panels could eliminate " + A + "% of your footprint (grid replacement)."),
+      n > 0 && m.push("Switching from firewood to LPG reduces cooking emissions by 50–80%."),
+      r > 0 && m.push("Generator emissions: " + c + " kg CO₂/month. Solar backup eliminates this entirely."),
+      m.push("Voluntary carbon offset cost: $" + k + "/year (" + i + y.toLocaleString() + ")."),
+      {
+        gridCO2: l + " kg",
+        genCO2: c + " kg",
+        lpgCO2: g + " kg",
+        woodCO2: d + " kg",
+        totalMonthlyCO2: h + " kg",
+        totalAnnualCO2: p.toLocaleString() + " kg",
+        rating: f,
+        offsetCostUSD: "$" + k,
+        offsetCostLocal: i + y.toLocaleString(),
+        treesNeeded: M,
+        solarOffsetPct: A + "%",
+        breakdown: [ {
+          source: "Grid electricity",
+          co2: l + " kg",
+          pct: h > 0 ? Math.round(l / h * 100) + "%" : "0%"
+        }, {
+          source: "Generator (diesel)",
+          co2: c + " kg",
+          pct: h > 0 ? Math.round(c / h * 100) + "%" : "0%"
+        }, {
+          source: "LPG / Gas",
+          co2: g + " kg",
+          pct: h > 0 ? Math.round(g / h * 100) + "%" : "0%"
+        }, {
+          source: "Wood / Biomass",
+          co2: d + " kg",
+          pct: h > 0 ? Math.round(d / h * 100) + "%" : "0%"
+        } ],
+        observations: m
+      };
+    }
+  };
+}();

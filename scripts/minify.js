@@ -9,6 +9,7 @@ const path = require('path');
 const vm = require('vm');
 const { minify } = require('terser');
 const { buildNavbarData } = require('./build-navbar-data');
+const { getEngineTerserOptions } = require('./lib/engine-build');
 
 const ROOT = path.resolve(__dirname, '..');
 const onlyArg = process.argv.find(arg => arg.startsWith('--only='));
@@ -37,6 +38,17 @@ const CSS_PAIRS = [
   ['assets/css/tool-landing.css',  'assets/css/tool-landing.min.css'],
   ['assets/css/animations.css',    'assets/css/animations.min.css'],
 ];
+
+const ENGINE_SOURCE_DIR = path.join(ROOT, 'engines', 'src');
+if (fs.existsSync(ENGINE_SOURCE_DIR)) {
+  for (const entry of fs.readdirSync(ENGINE_SOURCE_DIR, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.js')) continue;
+    JS_PAIRS.push([
+      path.posix.join('engines/src', entry.name),
+      path.posix.join('engines', entry.name),
+    ]);
+  }
+}
 
 function minifyCSS(src) {
   return src
@@ -122,22 +134,7 @@ async function run() {
     const srcSize = Buffer.byteLength(code);
 
     try {
-      const result = await minify(code, {
-        compress: {
-          dead_code: true,
-          drop_console: false,  // keep console.log for debugging
-          passes: 2,
-        },
-        mangle: {
-          reserved: [
-            'AFRO_TOOLS', 'AFRO_CATEGORIES', 'onRegistryReady',
-            'SaveState', 'renderSavedItems', 'clearAllFavs',
-          ],
-        },
-        output: {
-          comments: /^!/,  // keep banner comments starting with !
-        },
-      });
+      const result = await minify(code, getEngineTerserOptions());
 
       let finalCode = result.code || code;
       let fallbackLabel = '';

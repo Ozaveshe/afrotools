@@ -1,0 +1,139 @@
+!function() {
+  "use strict";
+  var e = {
+    id: "creator-hooks",
+    version: "1.0.0",
+    CATEGORIES: [ {
+      key: "pattern_interrupt",
+      label: "⚡ THE PATTERN INTERRUPT",
+      desc: 'Commands attention with "Stop.", "Wait.", "Don\'t scroll."',
+      readRange: "2-3s"
+    }, {
+      key: "question",
+      label: "🤔 THE QUESTION",
+      desc: "Asks something the viewer can't help but think about.",
+      readRange: "3-4s"
+    }, {
+      key: "bold_statement",
+      label: "💥 THE BOLD STATEMENT",
+      desc: "Starts with a controversial or surprising claim.",
+      readRange: "2-4s"
+    }, {
+      key: "story_opener",
+      label: "📖 THE STORY OPENER",
+      desc: "Narrative pull — the viewer needs to know what happened.",
+      readRange: "3-5s"
+    }, {
+      key: "statistic",
+      label: "📈 THE STATISTIC",
+      desc: "Leads with a shocking number or data point.",
+      readRange: "3-4s"
+    }, {
+      key: "direct_address",
+      label: "👋 THE DIRECT ADDRESS",
+      desc: "Calls out the specific viewer. Personal, targeted.",
+      readRange: "3-4s"
+    } ],
+    PLATFORMS: {
+      tiktok: {
+        label: "TikTok",
+        maxSeconds: 3,
+        style: "Ultra-short, punchy, informal, trending language OK"
+      },
+      reels: {
+        label: "Instagram Reels",
+        maxSeconds: 3,
+        style: "Short, punchy, visual-first, informal"
+      },
+      shorts: {
+        label: "YouTube Shorts",
+        maxSeconds: 4,
+        style: "Slightly longer OK, can be more informational"
+      },
+      youtube: {
+        label: "YouTube",
+        maxSeconds: 5,
+        style: "More narrative setup allowed, 4-5s hooks"
+      }
+    },
+    CONTENT_TYPES: [ {
+      key: "educational",
+      label: "Educational"
+    }, {
+      key: "story",
+      label: "Storytime"
+    }, {
+      key: "review",
+      label: "Review"
+    }, {
+      key: "tutorial",
+      label: "Tutorial"
+    }, {
+      key: "reaction",
+      label: "Reaction"
+    }, {
+      key: "entertainment",
+      label: "Entertainment"
+    } ],
+    WPM: 150,
+    calcReadTime: function(e) {
+      var t = this.countWords(e);
+      return Math.round(t / this.WPM * 60 * 10) / 10;
+    },
+    countWords: function(e) {
+      return (e || "").trim().split(/\s+/).filter(Boolean).length;
+    },
+    getTimeBadgeClass: function(e) {
+      return e <= 3 ? "" : e <= 4 ? "warn" : "long";
+    },
+    fitsplatform: function(e, t) {
+      var o = this.PLATFORMS[t];
+      return !o || e <= o.maxSeconds;
+    },
+    getPlatformWarning: function(e, t) {
+      var o = this.PLATFORMS[t];
+      return !o || e <= o.maxSeconds ? null : "This hook is " + e.toFixed(1) + "s — might lose " + o.label + " viewers (aim for " + o.maxSeconds + "s or less)";
+    },
+    LS_HISTORY_KEY: "ch-history",
+    LS_FAVORITES_KEY: "ch-favorites",
+    MAX_HISTORY: 20,
+    getHistory: function() {
+      try {
+        return JSON.parse(localStorage.getItem(this.LS_HISTORY_KEY) || "[]");
+      } catch (e) {
+        return [];
+      }
+    },
+    saveHistory: function(e) {
+      var t = this.getHistory();
+      t.unshift(e), t.length > this.MAX_HISTORY && (t = t.slice(0, this.MAX_HISTORY)),
+      localStorage.setItem(this.LS_HISTORY_KEY, JSON.stringify(t));
+    },
+    clearHistory: function() {
+      localStorage.removeItem(this.LS_HISTORY_KEY);
+    },
+    getFavorites: function() {
+      try {
+        return JSON.parse(localStorage.getItem(this.LS_FAVORITES_KEY) || "[]");
+      } catch (e) {
+        return [];
+      }
+    },
+    saveFavorites: function(e) {
+      localStorage.setItem(this.LS_FAVORITES_KEY, JSON.stringify(e));
+    },
+    toggleFavorite: function(e) {
+      var t = this.getFavorites(), o = t.indexOf(e);
+      return -1 === o ? t.push(e) : t.splice(o, 1), this.saveFavorites(t), -1 === o;
+    },
+    isFavorite: function(e) {
+      return -1 !== this.getFavorites().indexOf(e);
+    },
+    buildSystemPrompt: function(e, t) {
+      var o = this.PLATFORMS[e] || this.PLATFORMS.tiktok;
+      return "You are HookFactory, a video hook expert for African content creators.\n\nRULES:\n- Generate exactly 6 hooks, one per category: Pattern Interrupt, Question, Bold Statement, Story Opener, Statistic, Direct Address\n- Each hook must be 2-5 seconds of spoken word (roughly 8-25 words)\n- Calculate estimated read time (average speaking pace: 150 words per minute)\n- Hooks must feel NATURAL when spoken aloud — no written-language phrases\n- Use African context when relevant — cities, cultural references, local expressions\n- Platform: " + o.label + " — " + o.style + " (max " + o.maxSeconds + "s)\n- Content type: " + t + '\n- NEVER start with "Hey guys" or "What\'s up everyone" — those are weak hooks\n- Every hook should create a REASON to keep watching\n\nOUTPUT FORMAT (JSON only, no other text):\n{"hooks":[{"category":"pattern_interrupt","categoryLabel":"⚡ THE PATTERN INTERRUPT","text":"...","wordCount":17,"readTimeSeconds":3.2,"whyItWorks":"...","deliveryTip":"..."},...]}\n';
+    }
+  };
+  window.AfroTools || (window.AfroTools = {}), window.AfroTools.engines || (window.AfroTools.engines = {}),
+  window.AfroTools.engines.creatorHooks = e;
+}();

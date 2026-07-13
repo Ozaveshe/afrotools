@@ -1,0 +1,171 @@
+!function() {
+  "use strict";
+  window.AfroTools = window.AfroTools || {};
+  var e = {
+    cassava: {
+      product: "Garri/Cassava Flour",
+      conversionRate: 3.5,
+      priceMultiplier: 2.7
+    },
+    rice: {
+      product: "Milled Rice",
+      conversionRate: 1.5,
+      priceMultiplier: 1.9
+    },
+    groundnut: {
+      product: "Groundnut Oil",
+      conversionRate: 3,
+      priceMultiplier: 2.5
+    },
+    oil_palm: {
+      product: "Palm Oil",
+      conversionRate: 5,
+      priceMultiplier: 3.5
+    },
+    cocoa: {
+      product: "Dry Cocoa Beans",
+      conversionRate: 2.5,
+      priceMultiplier: 1.5
+    },
+    coffee_arabica: {
+      product: "Green Coffee Beans",
+      conversionRate: 5,
+      priceMultiplier: 2.5
+    },
+    coffee_robusta: {
+      product: "Green Coffee Beans",
+      conversionRate: 5,
+      priceMultiplier: 2
+    },
+    maize: {
+      product: "Maize Flour",
+      conversionRate: 1.2,
+      priceMultiplier: 1.5
+    },
+    sesame: {
+      product: "Sesame Oil",
+      conversionRate: 3,
+      priceMultiplier: 2.5
+    },
+    shea: {
+      product: "Shea Butter",
+      conversionRate: 4,
+      priceMultiplier: 3.5
+    }
+  };
+  window.AfroTools.FarmProfitEngine = {
+    calculate: function(r, a, o) {
+      var t = a, i = o;
+      if (!t || !i) {
+        return {
+          error: !0,
+          message: "Missing country or cost data"
+        };
+      }
+      var n = (t.crops || []).find(function(e) {
+        return e.id === r.cropId;
+      });
+      if (!n) {
+        return {
+          error: !0,
+          message: "Crop not found"
+        };
+      }
+      var s = t.currencySymbol || "", l = parseFloat(r.farmSizeHa) || 1, c = parseFloat(r.yieldPerHa) || n.baseYieldPerHa || 1, p = c * l, u = parseFloat(r.marketPricePerTonne) || n.localMarketPrice || 0, d = u, m = r.sellingMethod || "local", f = null;
+      if ("export" === m && r.exportPricePerTonne) {
+        d = parseFloat(r.exportPricePerTonne);
+      } else if ("process" === m) {
+        var P = e[r.cropId];
+        P && (d = u * P.priceMultiplier / P.conversionRate, f = P);
+      }
+      var g = p * d, v = parseFloat(r.postHarvestLossPct) || 0, h = g * (v / 100), b = g - h, F = {};
+      F.seeds = parseFloat(r.seedCost) || 0, F.fertilizer = parseFloat(r.fertilizerCost) || 0;
+      var M = parseFloat(r.herbicideCostPerHa) || (i.agrochemicals ? i.agrochemicals.herbicide_perHa : 0) || 0, H = parseFloat(r.pesticideCostPerHa) || (i.agrochemicals ? i.agrochemicals.pesticide_perHa : 0) || 0, y = parseFloat(r.fungicideCostPerHa) || (i.agrochemicals ? i.agrochemicals.fungicide_perHa : 0) || 0;
+      F.agrochemicals = (M + H + y) * l, r.laborMode;
+      var C = parseFloat(r.laborManDaysPerHa) || (i.labor ? i.labor.manDaysPerHa_simplified : 100) || 100, R = parseFloat(r.laborDailyWage) || (i.labor ? i.labor.dailyWageRate : 0) || 0, T = parseFloat(r.familyLaborPct) || 0, _ = i.labor && i.labor.familyLaborDiscount || .5, z = C * l, k = z * (1 - T / 100) * R, S = z * (T / 100) * R * _;
+      F.labor = k + S, F.laborBreakdown = {
+        hired: k,
+        family: S
+      };
+      var w = r.landType || "communal", L = parseFloat(r.landRentPerHa) || (i.landCost ? i.landCost.rental_perHa_perSeason : 0) || 0;
+      F.land = "communal" === w ? 0 : L * l;
+      var B = r.mechanizationType || "none", D = parseFloat(r.tractorCostPerHa) || (i.mechanization ? i.mechanization.tractorPloughing_perHa : 0) || 0;
+      F.mechanization = "tractor" === B ? D * l : "animal" === B ? .4 * D * l : 0, F.irrigation = parseFloat(r.irrigationCost) || 0;
+      var I = parseFloat(r.distanceToMarket) || 20, A = parseFloat(r.transportCostPerTonneKm) || (i.transport ? i.transport.farmToMarket_perTonne_perKm : 0) || 0, E = parseFloat(r.marketFeesPct) || (i.transport ? i.transport.marketFees_percentOfSale : 0) || 0, O = r.throughMiddleman ? parseFloat(r.middlemanCommissionPct) || 15 : 0;
+      F.transport = p * A * I, F.marketingFees = b * (E / 100), F.middleman = b * (O / 100);
+      var Y = parseFloat(r.storageMonths) || 0, G = parseFloat(r.storageCostPerTonneMonth) || i.storage && i.storage.perTonne_perMonth || 0;
+      F.storage = p * G * Y;
+      var x = parseFloat(r.loanAmount) || 0, K = parseFloat(r.loanInterestPct) || (i.finance ? i.finance.averageInterestRate_percent : 0) || 0;
+      F.finance = x * (K / 100);
+      var U = parseFloat(r.insurancePremiumPct) || 0;
+      F.insurance = g * (U / 100);
+      var W = F.seeds + F.fertilizer + F.agrochemicals + F.labor + F.land + F.mechanization + F.irrigation + F.transport + F.marketingFees + F.middleman + F.storage + F.finance + F.insurance, N = b - W, j = N / l, q = W > 0 ? N / W * 100 : 0, J = d > 0 ? W / d : 0, Q = p > 0 ? W / p : 0, V = b > 0 ? N / b * 100 : 0, X = p > 0 ? W / p : 0, Z = b / l, $ = C * l, ee = $ > 0 ? b / $ : 0, re = {};
+      [ "seeds", "fertilizer", "agrochemicals", "labor", "land", "mechanization", "irrigation", "transport", "marketingFees", "middleman", "storage", "finance", "insurance" ].forEach(function(e) {
+        re[e] = W > 0 ? F[e] / W * 100 : 0;
+      });
+      var ae, oe, te, ie, ne, se, le = {
+        yieldUp25: (te = 1.25 * p * d * (1 - v / 100), {
+          label: "Yield +25%",
+          netProfit: te - W,
+          change: te - W - N
+        }),
+        priceUp20: function() {
+          var e = p * d * 1.2 * (1 - v / 100);
+          return {
+            label: "Price +20%",
+            netProfit: e - W,
+            change: e - W - N
+          };
+        }(),
+        phLossHalved: function() {
+          var e = p * d * (1 - v / 2 / 100);
+          return {
+            label: "Post-harvest loss halved",
+            netProfit: e - W,
+            change: e - W - N
+          };
+        }(),
+        familyLabor100: (ae = z * R * _, oe = F.labor - ae, {
+          label: "100% family labor",
+          netProfit: N + oe,
+          change: oe
+        })
+      }, ce = e[r.cropId];
+      return ce && "process" !== m && (le.processBeforeSelling = (ie = u * ce.priceMultiplier / ce.conversionRate,
+      se = (ne = p * ie * (1 - v / 100)) - W - .15 * ne, {
+        label: "Process before selling (" + ce.product + ")",
+        netProfit: se,
+        change: se - N
+      })), {
+        cropName: n.name,
+        farmSizeHa: l,
+        yieldPerHa: c,
+        totalYield: p,
+        currency: t.currency,
+        currencySymbol: s,
+        sellingMethod: m,
+        effectivePrice: d,
+        processingInfo: f,
+        grossRevenue: g,
+        postHarvestLossPct: v,
+        postHarvestLossAmount: h,
+        netRevenue: b,
+        costs: F,
+        costPcts: re,
+        totalCost: W,
+        netProfit: N,
+        profitPerHa: j,
+        roi: q,
+        profitMargin: V,
+        breakEvenYield: J,
+        breakEvenYieldPerHa: l > 0 ? J / l : 0,
+        breakEvenPrice: Q,
+        costOfProductionPerTonne: X,
+        revenuePerHa: Z,
+        revenuePerManDay: ee,
+        scenarios: le,
+        isProfitable: N > 0
+      };
+    }
+  };
+}();
