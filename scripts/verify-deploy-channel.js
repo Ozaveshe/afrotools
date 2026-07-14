@@ -11,9 +11,11 @@ const ROOT = path.resolve(__dirname, '..');
 const MANIFEST_PATH = path.join(ROOT, 'ops', 'deploy-channel.json');
 const NETLIFY_STATE_PATH = path.join(ROOT, '.netlify', 'state.json');
 const allowDirty = process.argv.includes('--allow-dirty');
+const releaseMode = process.argv.includes('--release');
 const deployContext = String(process.env.CONTEXT || '').trim();
 const isHostedNetlifyBuild = process.env.NETLIFY === 'true' || Boolean(process.env.SITE_ID && deployContext);
 const isDeployPreview = deployContext === 'deploy-preview';
+const isBranchDeploy = deployContext === 'branch-deploy';
 
 const EXPECTED = Object.freeze({
   product: 'afrotools',
@@ -100,11 +102,16 @@ requireEqual(
 if (isHostedNetlifyBuild) {
   requireEqual(process.env.SITE_ID || process.env.NETLIFY_SITE_ID, EXPECTED.siteId, 'hosted Netlify SITE_ID');
 } else {
-  const netlifyState = readJson(
-    NETLIFY_STATE_PATH,
-    `Netlify link (run: npx netlify link --id ${EXPECTED.siteId})`
-  );
-  requireEqual(netlifyState.siteId, EXPECTED.siteId, 'linked Netlify site ID');
+  const netlifyState = fs.existsSync(NETLIFY_STATE_PATH)
+    ? readJson(NETLIFY_STATE_PATH, 'Netlify link')
+    : null;
+  const configuredSiteId = process.env.NETLIFY_SITE_ID || (netlifyState && netlifyState.siteId);
+  if (configuredSiteId) {
+    requireEqual(configuredSiteId, EXPECTED.siteId, 'local Netlify site ID');
+  }
+  if (netlifyState && process.env.NETLIFY_SITE_ID) {
+    requireEqual(netlifyState.siteId, process.env.NETLIFY_SITE_ID, 'Netlify state/environment site ID');
+  }
 }
 
 if (process.env.NETLIFY_SITE_ID && !isHostedNetlifyBuild) {
@@ -132,7 +139,9 @@ if (!Array.isArray(releaseBranches)) fail('git.releaseBranches must be an array'
 if (isDeployPreview) {
   const hasPreviewProof = process.env.PULL_REQUEST === 'true' && Boolean(process.env.REVIEW_ID);
   if (!hasPreviewProof) fail('deploy-preview requires PULL_REQUEST=true and REVIEW_ID');
-} else if (!releaseBranches.includes(branch)) {
+} else if (isBranchDeploy) {
+  if (!isHostedNetlifyBuild) fail('branch-deploy context is valid only inside Netlify');
+} else if ((isHostedNetlifyBuild || releaseMode) && !releaseBranches.includes(branch)) {
   fail(`branch ${branch} is not listed in git.releaseBranches`);
 }
 
@@ -149,4 +158,7 @@ console.log(`Netlify: ${EXPECTED.siteName} (${EXPECTED.siteId})`);
 console.log(`Primary URL: ${EXPECTED.primaryUrl}`);
 console.log(`Supabase ref: ${EXPECTED.supabaseProjectRef}`);
 console.log(`Git: ${branch}@${commit}${deployContext ? ` (${deployContext})` : ''}`);
+if (!isHostedNetlifyBuild && !process.env.NETLIFY_SITE_ID && !fs.existsSync(NETLIFY_STATE_PATH)) {
+  console.log('Netlify link: manifest-only local verification (set NETLIFY_SITE_ID for CLI use)');
+}
 if (dirty && allowDirty) console.log('Working tree: dirty (--allow-dirty was supplied)');

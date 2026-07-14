@@ -28,6 +28,9 @@ class WorktreeInfo:
     path: str
     branch: str
     is_main: bool
+    exists: bool
+    locked: bool
+    lock_reason: str
     age_days: int
     stale: bool
     dirty: bool
@@ -83,6 +86,16 @@ def get_last_commit_age_days(path: Path) -> int:
     return max(0, age_seconds // 86400)
 
 
+def get_ref_age_days(repo: Path, ref: str) -> int:
+    try:
+        proc = run(["git", "log", "-1", "--format=%ct", ref], cwd=repo)
+        timestamp = int(proc.stdout.strip() or "0")
+        age_seconds = int(time.time()) - timestamp
+        return max(0, age_seconds // 86400)
+    except (subprocess.CalledProcessError, ValueError):
+        return -1
+
+
 def is_dirty(path: Path) -> bool:
     proc = run(["git", "status", "--porcelain"], cwd=path)
     return bool(proc.stdout.strip())
@@ -103,7 +116,8 @@ def format_text(items: List[WorktreeInfo], removed: List[str]) -> str:
     for item in items:
         lines.append(
             f"- {item.path} | branch={item.branch} | age={item.age_days}d | "
-            f"stale={item.stale} dirty={item.dirty} merged={item.merged_into_base}"
+            f"exists={item.exists} locked={item.locked} stale={item.stale} "
+            f"dirty={item.dirty} merged={item.merged_into_base}"
         )
     if removed:
         lines.append("Removed:")
@@ -154,15 +168,23 @@ def main() -> int:
 
     for entry in entries:
         path = Path(entry.get("worktree", "")).resolve()
-        branch = get_branch(path)
-        age = get_last_commit_age_days(path)
-        dirty = is_dirty(path)
-        stale = age >= stale_days
+        exists = path.is_dir()
+        lock_reason = entry.get("locked", "")
+        locked = bool(lock_reason)
+        branch_ref = entry.get("branch", "")
+        recorded_branch = branch_ref.removeprefix("refs/heads/") if branch_ref else "HEAD"
+        branch = get_branch(path) if exists else recorded_branch
+        age = get_last_commit_age_days(path) if exists else get_ref_age_days(repo, entry.get("HEAD", branch))
+        dirty = is_dirty(path) if exists else False
+        stale = (age >= stale_days) if age >= 0 else True
         merged = is_merged(repo, branch, base_branch)
         info = WorktreeInfo(
             path=str(path),
             branch=branch,
             is_main=path == main_path,
+            exists=exists,
+            locked=locked,
+            lock_reason=lock_reason,
             age_days=age,
             stale=stale,
             dirty=dirty,
@@ -170,7 +192,8 @@ def main() -> int:
         )
         infos.append(info)
 
-        if remove_merged and not info.is_main and info.stale and info.merged_into_base and (force or not info.dirty):
+        if remove_merged and not info.is_main and info.stale and info.merged_into_base and \
+                info.exists and not info.locked and (force or not info.dirty):
             try:
                 cmd = ["git", "worktree", "remove", str(path)]
                 if force:

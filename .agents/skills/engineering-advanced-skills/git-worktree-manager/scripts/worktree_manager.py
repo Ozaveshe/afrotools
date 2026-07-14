@@ -24,7 +24,7 @@ ENV_FILES = [".env", ".env.local", ".env.development", ".envrc"]
 LOCKFILE_COMMANDS = [
     ("pnpm-lock.yaml", ["pnpm", "install"]),
     ("yarn.lock", ["yarn", "install"]),
-    ("package-lock.json", ["npm", "install"]),
+    ("package-lock.json", ["npm", "ci"]),
     ("bun.lockb", ["bun", "install"]),
     ("requirements.txt", [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"]),
 ]

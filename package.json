@@ -111,11 +111,15 @@
     "build:surfaces": "npm run fr:surface:build && npm run sw:surface:build && npm run ha:surface:build && npm run country:build",
     "build:assets": "node scripts/minify.js && node scripts/bundle.js && node scripts/update-html-bundles.js && node scripts/build-related-tools-data.js && node scripts/prune-unused-registry.js",
     "build:seo": "node scripts/build-seo-system.js && node scripts/apply-og-fallbacks.js && node scripts/cachebust.js && node scripts/inject-internal-links.js && node scripts/fix-canonical-alias-links.js && node scripts/update-html-canonical-redirects.js && node scripts/generate-blog-feed.js && node scripts/build-localization-platform.js --write && node scripts/build-public-claims.js --write && node scripts/build-route-contract.js --write && npm run ha:coverage && node scripts/generate-sitemaps.js",
-    "build:checks": "node scripts/build-french-product-surface.js --check && node scripts/build-swahili-product-surface.js --check && node scripts/build-localization-platform.js --check && node scripts/build-public-claims.js --check && node scripts/build-route-contract.js --check && node scripts/audit-scholarship-truth.js && node scripts/audit-public-claims.js && node scripts/audit-automation-registry.js && node scripts/stamp-sw.js && node tests/tool-verification.test.js && node tests/progressive-directories.test.js && npm run calculation-quality:check",
+    "build:checks": "node scripts/build-french-product-surface.js --check && node scripts/build-swahili-product-surface.js --check && node scripts/build-localization-platform.js --check && node scripts/build-route-contract.js --check && node scripts/audit-scholarship-truth.js && node scripts/audit-automation-registry.js && node scripts/stamp-sw.js && node tests/tool-verification.test.js && node tests/progressive-directories.test.js && npm run calculation-quality:check",
     "build": "node scripts/run-build.js",
     "postbuild": "node scripts/sync-yoruba-fallbacks.js --write && npm run content-integrity:build",
     "build:deploy": "npm run build && node scripts/build-dist.js",
     "deploy:channel:verify": "node scripts/verify-deploy-channel.js && node scripts/verify-supabase-consolidation.js",
+    "deploy:doctor": "node scripts/deploy-doctor.js",
+    "deploy:doctor:live": "node scripts/deploy-doctor.js --live",
+    "deploy:verify": "npm run deploy:channel:verify && npm run deploy:doctor",
+    "deploy:ready": "git fetch --prune origin && node scripts/verify-deploy-channel.js --release && node scripts/verify-supabase-consolidation.js && node scripts/deploy-doctor.js --release --live && npm run security:scan && npm run build:deploy && npm run audit:dist",
     "supabase:consolidation:verify": "node scripts/verify-supabase-consolidation.js",
     "supabase:consolidation:verify:live": "node scripts/verify-supabase-consolidation.js --netlify",
     "audit:dist": "node scripts/audit-dist.js",
@@ -260,6 +264,9 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": "24.x"
+  },
   "bugs": {
     "url": "https://github.com/Ozaveshe/afrotools/issues"
   },
