@@ -23,6 +23,7 @@ Future agents should inspect first, keep diffs scoped, preserve unrelated dirty 
 11. `docs/known-traps.md`
 12. `docs/afrotools-ai-transformation-map.md` when touching AI routing, assistant behavior, prefill handoff, source labels, or exports
 13. Relevant workflow docs such as `docs/PDF-CATEGORY-WORKFLOW.md`, `docs/CONTENT-PUBLISHING-WORKFLOW.md`, `docs/MOBILE-AUDIT-WORKFLOW.md`, or `docs/release-checklist.md`
+14. `docs/DEPLOYMENT-WORKFLOW.md` when touching Git worktrees, MCP, Netlify, CI, environments, or release automation
 
 ## Repo Layout
 
@@ -216,6 +217,13 @@ Do not use the AfroTools Supabase project for LATMtools work, and do not use the
 ## Workflow Expectations
 
 - Inspect `git status --short` before editing when the tree may be dirty.
+- For deploy, worktree, MCP, or environment changes, read
+  `docs/DEPLOYMENT-WORKFLOW.md` and run `npm run deploy:doctor` first.
+- Treat Netlify's Git-linked build from `main` as the normal production path.
+  Do not add a second CLI production upload after a healthy Git deploy.
+- Keep one active agent per branch/worktree. Never reset, clean, remove, or
+  overwrite another Claude/Codex worktree; a missing worktree marked
+  `locked initializing` is active setup, not stale metadata.
 - Keep unrelated dirty files untouched.
 - Prefer source files over generated output.
 - Prefer scripts for bulk edits across many pages.

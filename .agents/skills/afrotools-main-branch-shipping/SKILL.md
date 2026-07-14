@@ -56,13 +56,18 @@ Procedure:
    - Keep generated/localization/audit/source-of-truth outputs together only when they are the intended ship set.
 6. If the user asked to push, continue through CI-safe proof.
    - Run `npm run build:deploy` when generated outputs are in play.
-   - Push and watch the generated-output gate outcome.
+   - Push and watch the generated-output gate plus the Git-linked Netlify deploy.
+   - The normal production result must carry the pushed `main` commit SHA. Do
+     not follow a healthy Git deploy with a second CLI production upload.
 7. Recover from generated-output CI drift if needed.
    - If CI says `Generated files are out of date. Run 'npm run build:deploy' and commit source outputs.`, rerun `npm run build:deploy`, inspect the remaining diff, and commit the regenerated outputs.
    - If only `sitemap-index.xml` and `sitemap.xml` still drift, rerun `node scripts/generate-sitemaps.js` and commit just those two files.
 8. Close only when repo and CI agree.
    - Verify `git status --short --branch --ahead-behind` is clean.
    - Verify the GitHub Actions `Verify generated outputs are committed` gate passed.
+   - Verify Netlify published the exact `main` commit. If a manual recovery was
+     explicitly authorized, label its CLI source separately because it has no
+     reliable Git `commit_ref`.
 
 Efficiency plan:
 - Use `git worktree list --porcelain` once up front to classify worktrees instead of exploring branches one by one.

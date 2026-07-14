@@ -139,6 +139,15 @@
 - Use `afrotools-release-qa`
 - Choose checks based on touched files rather than always running the whole repo
 
+### Deployment, worktree, or MCP repair
+
+- Read `docs/DEPLOYMENT-WORKFLOW.md`
+- Run `npm run deploy:doctor` before changing the release lane
+- Keep one active agent per branch/worktree and preserve other dirty checkouts
+- Use the Git-linked Netlify build from `main` as the normal production path
+- Use a manual CLI production upload only for an explicitly authorized recovery
+- Prove GitHub, Netlify, artifact, live-route, and scheduled states separately
+
 ### Supabase task
 
 - Use `afrotools-supabase-ops`
