@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 10280 |
-| Indexable pages | 9298 |
+| Public pages | 10282 |
+| Indexable pages | 9300 |
 | Permanent and temporary redirects | 2777 |
 | Rewrites | 100 |
 | Conditional redirects | 4 |
 | Gone routes | 18 |
 | Dynamic route patterns | 161 |
-| Genuine equivalence groups | 5184 |
-| Documented fallbacks | 13340 |
-| Routes eligible for primary sitemaps | 9298 |
+| Genuine equivalence groups | 5186 |
+| Documented fallbacks | 13342 |
+| Routes eligible for primary sitemaps | 9300 |
 
 ## Locale Coverage
 
-- en: 5849 page records
+- en: 5851 page records
 - fr: 3421 page records
 - ha: 105 page records
 - sw: 860 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 374
+- article: 376
 - auth: 3
 - category: 694
 - country-tool: 497
@@ -4582,6 +4582,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:56a3af0968d2: en=`/cars/ethiopia/honda/cr-v/2016/`, fr=`/fr/cars/ethiopie/honda/cr-v/2016/`; x-default=`/cars/ethiopia/honda/cr-v/2016/`
 - equivalence:56bf9b0272a6: fr=`/fr/tools/roi-solaire/namibia/`, en=`/tools/solar-roi/namibia/`; x-default=`/tools/solar-roi/namibia/`
 - equivalence:56e0a8ab58e8: fr=`/fr/tools/estimateur-fret/`, sw=`/sw/zana/makisio-ya-usafirishaji-wa-biashara/`, en=`/tools/shipping-estimator/`; x-default=`/tools/shipping-estimator/`
+- equivalence:56f25333290f: en=`/blog/gambia-employer-payroll-compliance-2026/`; x-default=`/blog/gambia-employer-payroll-compliance-2026/`
 - equivalence:56f2b76fdb13: en=`/cars/namibia/toyota/corolla/2018/`, fr=`/fr/cars/namibie/toyota/corolla/2018/`; x-default=`/cars/namibia/toyota/corolla/2018/`
 - equivalence:57014500ad9d: en=`/ai/business/`; x-default=`/ai/business/`
 - equivalence:57163f57d92d: en=`/cars/tanzania/toyota/noah/2018/`, fr=`/fr/cars/tanzanie/toyota/noah/2018/`; x-default=`/cars/tanzania/toyota/noah/2018/`
@@ -5868,6 +5869,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:99444e1c0512: en=`/cars/mozambique/honda/accord/`, fr=`/fr/cars/mozambique/honda/accord/`; x-default=`/cars/mozambique/honda/accord/`
 - equivalence:995f64e8ded6: en=`/education/loans/`; x-default=`/education/loans/`
 - equivalence:996b98cced8b: sw=`/sw/zana/kizalishaji-nenosiri/`, en=`/tools/password-generator/`; x-default=`/tools/password-generator/`
+- equivalence:998dfa3bea74: en=`/blog/sickle-cell-genotype-testing-africa/`; x-default=`/blog/sickle-cell-genotype-testing-africa/`
 - equivalence:9991fa908734: fr=`/fr/salary-tax/francophone/`, sw=`/sw/mshahara-na-kodi/francophone/`; x-default=`/fr/salary-tax/francophone/`
 - equivalence:999338e5ad22: en=`/tools/afrokitchen/recipes/djenkoume-tg/`; x-default=`/tools/afrokitchen/recipes/djenkoume-tg/`
 - equivalence:999b763d2267: en=`/cars/south-africa/toyota/corolla/2018/`, fr=`/fr/cars/afrique-du-sud/toyota/corolla/2018/`; x-default=`/cars/south-africa/toyota/corolla/2018/`
