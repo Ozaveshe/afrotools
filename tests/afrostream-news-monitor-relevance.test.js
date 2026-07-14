@@ -10,6 +10,12 @@ function item(title, description = '') {
 }
 
 assert.strictEqual(
+  monitor.decodeXml('BMA&amp;#8217;s &#8220;Trust&#8221; &amp; creator payouts'),
+  'BMA’s “Trust” & creator payouts',
+  'numeric and double-encoded XML entities must not leak into public titles'
+);
+
+assert.strictEqual(
   monitor.isEditoriallyRelevant(item('Mnangagwa defends Zimbabwe term extension')),
   false,
   'politics must not pass because the source category is business'

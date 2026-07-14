@@ -117,7 +117,19 @@ function decodeXml(value) {
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+    .replace(/&apos;/g, "'")
+    .replace(/&#x([0-9a-f]+);?/gi, function(entity, value) {
+      var codePoint = parseInt(value, 16);
+      return codePoint >= 0 && codePoint <= 0x10ffff
+        ? String.fromCodePoint(codePoint)
+        : entity;
+    })
+    .replace(/&#([0-9]+);?/g, function(entity, value) {
+      var codePoint = parseInt(value, 10);
+      return codePoint >= 0 && codePoint <= 0x10ffff
+        ? String.fromCodePoint(codePoint)
+        : entity;
+    });
 }
 
 function stripHtml(value) {
@@ -545,6 +557,7 @@ exports.handler = async function(event) {
 };
 
 exports.__test = {
+  decodeXml: decodeXml,
   isEditoriallyRelevant: isEditoriallyRelevant,
   hasAfricaSignal: hasAfricaSignal,
   shouldPublishWithoutCreatorMatch: shouldPublishWithoutCreatorMatch
