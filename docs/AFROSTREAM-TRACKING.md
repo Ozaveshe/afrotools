@@ -35,7 +35,7 @@ Live stream thumbnails are user-facing media and must pass the same display poli
 
 ## News Mentions
 
-`netlify/functions/afrostream-news-monitor.js` runs daily.
+`netlify/functions/afrostream-news-monitor.js` runs every six hours at minute 46, as configured in `netlify.toml`.
 It reads active rows from `public.as_news_sources`, fetches RSS or Atom feeds, matches published AfroStream creator names, writes matching stories into `public.as_news`, and links them through `public.as_news_creator_mentions`.
 
 Ops workflow:
