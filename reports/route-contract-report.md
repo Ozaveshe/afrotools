@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 10282 |
-| Indexable pages | 9300 |
+| Public pages | 10283 |
+| Indexable pages | 9301 |
 | Permanent and temporary redirects | 2777 |
 | Rewrites | 100 |
 | Conditional redirects | 4 |
 | Gone routes | 18 |
 | Dynamic route patterns | 161 |
-| Genuine equivalence groups | 5186 |
-| Documented fallbacks | 13342 |
-| Routes eligible for primary sitemaps | 9300 |
+| Genuine equivalence groups | 5187 |
+| Documented fallbacks | 13343 |
+| Routes eligible for primary sitemaps | 9301 |
 
 ## Locale Coverage
 
-- en: 5851 page records
+- en: 5852 page records
 - fr: 3421 page records
 - ha: 105 page records
 - sw: 860 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 376
+- article: 377
 - auth: 3
 - category: 694
 - country-tool: 497
@@ -5170,6 +5170,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:7508d7cbcf66: en=`/agriculture/`, fr=`/fr/agriculture/`, ha=`/ha/noma/`, sw=`/sw/kilimo/`; x-default=`/agriculture/`
 - equivalence:7509c267ca5b: fr=`/fr/tools/page-createur/`, sw=`/sw/zana/ukurasa-wa-mtayarishi/`, en=`/tools/creator-page/`; x-default=`/tools/creator-page/`
 - equivalence:75111fb7cc49: en=`/cars/senegal/toyota/prado/2020/`, fr=`/fr/cars/senegal/toyota/prado/2020/`; x-default=`/cars/senegal/toyota/prado/2020/`
+- equivalence:75141dd0a11b: en=`/blog/poultry-farm-budget-africa/`; x-default=`/blog/poultry-farm-budget-africa/`
 - equivalence:7516abc43ee0: fr=`/fr/tools/affacturage/`, sw=`/sw/zana/factoring-ankara/`, en=`/tools/invoice-factoring/`; x-default=`/tools/invoice-factoring/`
 - equivalence:754e64eb002b: en=`/cars/ethiopia/nissan/`, fr=`/fr/cars/ethiopie/nissan/`; x-default=`/cars/ethiopia/nissan/`
 - equivalence:75574d8612c7: en=`/tools/domestic-worker/nigeria/`; x-default=`/tools/domestic-worker/nigeria/`
