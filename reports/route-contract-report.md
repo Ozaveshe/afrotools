@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 10283 |
-| Indexable pages | 9301 |
+| Public pages | 10284 |
+| Indexable pages | 9302 |
 | Permanent and temporary redirects | 2777 |
 | Rewrites | 100 |
 | Conditional redirects | 4 |
 | Gone routes | 18 |
 | Dynamic route patterns | 161 |
-| Genuine equivalence groups | 5187 |
-| Documented fallbacks | 13343 |
-| Routes eligible for primary sitemaps | 9301 |
+| Genuine equivalence groups | 5188 |
+| Documented fallbacks | 13344 |
+| Routes eligible for primary sitemaps | 9302 |
 
 ## Locale Coverage
 
-- en: 5852 page records
+- en: 5853 page records
 - fr: 3421 page records
 - ha: 105 page records
 - sw: 860 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 377
+- article: 378
 - auth: 3
 - category: 694
 - country-tool: 497
@@ -3758,6 +3758,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2e34b0590ebc: en=`/tools/workers-comp/benin`; x-default=`/tools/workers-comp/benin`
 - equivalence:2e38ebe0a8ba: fr=`/fr/tools/eligibilite-pret-immobilier/`, sw=`/sw/zana/ustahiki-wa-mkopo-wa-nyumba/`, en=`/tools/home-loan-eligibility/`; x-default=`/tools/home-loan-eligibility/`
 - equivalence:2e3ce21bd2ac: en=`/cars/namibia/toyota/prado/2020/`, fr=`/fr/cars/namibie/toyota/prado/2020/`; x-default=`/cars/namibia/toyota/prado/2020/`
+- equivalence:2e3eca0e8b93: en=`/blog/mauritius-employer-payroll-compliance-2026/`; x-default=`/blog/mauritius-employer-payroll-compliance-2026/`
 - equivalence:2e40601084ad: en=`/cars/tanzania/toyota/axio/`, fr=`/fr/cars/tanzanie/toyota/axio/`; x-default=`/cars/tanzania/toyota/axio/`
 - equivalence:2e5b0af4475c: en=`/agriculture/farm-profit/mozambique`, fr=`/fr/agriculture/farm-profit/mozambique`; x-default=`/agriculture/farm-profit/mozambique`
 - equivalence:2e9adcf3f62e: fr=`/fr/tools/tarifs-electricite/cameroon/`, en=`/tools/electricity-tariff/cameroon/`; x-default=`/tools/electricity-tariff/cameroon/`
