@@ -9,9 +9,13 @@ const STAGES = [
   'build:registry',
   'build:surfaces',
   'build:assets',
-  'build:seo',
-  'build:checks'
+  'build:seo'
 ];
+
+// Validation remains a separate, explicit release/CI gate via
+// `npm run build:checks`. Running it again inside `npm run build` duplicates
+// the most expensive whole-site scans after the same generators have already
+// completed, which pushes Netlify source builds beyond the platform timeout.
 
 function formatDuration(milliseconds) {
   const totalSeconds = Math.round(milliseconds / 100) / 10;

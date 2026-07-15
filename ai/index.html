@@ -13,18 +13,18 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-  <link rel="stylesheet" href="/assets/css/ai-page-ui-refresh.css?v=a2c61d9b">
+  <link rel="stylesheet" href="/assets/css/ai-page-ui-refresh.css?v=3d60f77b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
   <script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
   <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
   <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
   <style>
-    :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5}
+    :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5;--ai-shell:1080px;--ai-radius:12px;--ai-radius-lg:16px;--ai-measure:70ch}
     body{margin:0;background:var(--ai-bg);color:var(--ai-text);font-family:"DM Sans",system-ui,sans-serif}
     .ai-main *{box-sizing:border-box;min-width:0}
     .ai-main a,.ai-main button,.ai-main input,.ai-main select{touch-action:manipulation}
     .ai-main p,.ai-main li,.ai-main span,.ai-main strong,.ai-main a,.ai-main button,.ai-main input,.ai-main select{overflow-wrap:anywhere}
-    .ai-main{min-height:calc(100vh - 160px);padding:46px 18px 58px;background:linear-gradient(180deg,#f8fbff 0%,#f8fafc 42%,#fff 100%)}
+    .ai-main{min-height:calc(100vh - 160px);padding:46px 18px 58px;background:linear-gradient(180deg,#f8fbff 0%,#fff 38%,#f4f8fd 72%,#eaf1f9 100%)}
     .ai-wrap{max-width:1180px;margin:0 auto}
     .ai-header{max-width:790px;margin:0 auto 22px;text-align:center}
     .ai-kicker-line{display:inline-flex;align-items:center;gap:8px;margin:0 auto 12px;border:1px solid #bfdbfe;border-radius:999px;background:#eff6ff;color:#1d4ed8;padding:7px 12px;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
@@ -57,13 +57,13 @@
     .ai-context-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
     .ai-context-status{color:#475569;font-size:.76rem;font-weight:800;line-height:1.45}
     .ai-trust{margin:0;border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;color:#334155;padding:12px 14px;font-size:.82rem;line-height:1.55}
-    .ai-command-cockpit{max-width:1080px;margin:18px auto 0;border:1px solid #dbe6f4;border-radius:18px;background:linear-gradient(135deg,#fff 0%,#f7fbff 48%,#fff7ed 100%);box-shadow:0 20px 50px rgba(15,23,42,.08);padding:16px}
+    .ai-command-cockpit{max-width:var(--ai-shell);margin:18px auto 0;border:1px solid #dbe6f4;border-radius:var(--ai-radius-lg);background:linear-gradient(135deg,#fff 0%,#f7fbff 48%,#fff7ed 100%);box-shadow:0 20px 50px rgba(15,23,42,.08);padding:16px}
     .ai-cockpit-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
     .ai-cockpit-head h2{margin:0;color:#0f172a;font-size:1.12rem;line-height:1.2;font-weight:900}
     .ai-cockpit-head p{max-width:560px;margin:5px 0 0;color:#52637a;font-size:.84rem;line-height:1.55}
     .ai-cockpit-badge{display:inline-flex;align-items:center;min-height:34px;border:1px solid #bbf7d0;border-radius:999px;background:#f0fdf4;color:#166534;padding:6px 11px;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;white-space:normal;text-align:center}
     .ai-lane-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-    .ai-lane-card{position:relative;display:grid;gap:10px;min-height:176px;border:1px solid #dbe6f4;border-radius:13px;background:#fff;color:inherit;text-decoration:none;padding:13px;overflow:hidden}
+    .ai-lane-card{position:relative;display:grid;gap:10px;min-height:176px;border:1px solid #dbe6f4;border-radius:var(--ai-radius);background:#fff;color:inherit;text-decoration:none;padding:13px;overflow:hidden}
     .ai-lane-card:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--lane-accent,#2563eb)}
     .ai-lane-card strong{display:block;color:#0f172a;font-size:.94rem;line-height:1.25}
     .ai-lane-card span{display:block;color:#52637a;font-size:.78rem;line-height:1.45}
@@ -314,37 +314,46 @@
     .ai-open:hover,.ai-open:focus-visible{background:var(--ai-primary-dark);border-color:var(--ai-primary-dark)}
     .ai-browse{border:1px solid var(--ai-border);background:#fff;color:var(--ai-primary)}
     .ai-browse:hover,.ai-browse:focus-visible{border-color:#9fc4ff;background:#eff6ff}
-    .ai-section-title{max-width:860px;margin:26px auto 12px;color:var(--ai-text);font-size:1.05rem;font-weight:900}
-    .ai-fallback-grid{max-width:860px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-    .ai-fallback-card{display:grid;gap:8px;min-height:150px;border:1px solid var(--ai-border);border-radius:13px;background:#fff;padding:13px;text-decoration:none;color:inherit}
+    .ai-section-title{margin:0 0 6px;color:#0f172a;font-size:1.35rem;line-height:1.2;font-weight:900}
+    .ai-fallback-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .ai-fallback-card{display:grid;gap:8px;min-height:150px;border:1px solid var(--ai-border);border-radius:var(--ai-radius);background:#fff;padding:13px;text-decoration:none;color:inherit}
     .ai-fallback-card strong{color:var(--ai-text);font-size:.92rem;line-height:1.25}
     .ai-fallback-card span{color:#64748b;font-size:.78rem;line-height:1.45}
     .ai-fallback-card em{align-self:end;color:var(--ai-primary);font-style:normal;font-size:.78rem;font-weight:900}
     .ai-fallback-card:hover,.ai-fallback-card:focus-visible{border-color:#9fc4ff;background:#f8fbff}
-    .ai-hub-section{max-width:960px;margin:32px auto 0}
-    .ai-hub-section h2{margin:0 0 10px;color:#0f172a;font-size:1.35rem;line-height:1.2;font-weight:900}
-    .ai-hub-section p{color:#475569;line-height:1.68}
-    .ai-vertical-grid,.ai-example-grid,.ai-tool-link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    .ai-vertical-card,.ai-example-card,.ai-tool-link,.ai-hub-note,.ai-hub-faq details{border:1px solid var(--ai-border);border-radius:8px;background:#fff;padding:14px;text-decoration:none;color:inherit}
-    .ai-vertical-card,.ai-example-card,.ai-tool-link{display:grid;align-content:start;min-height:72px}
-    .ai-vertical-card strong,.ai-example-card strong,.ai-tool-link strong{display:block;color:#0f172a;font-size:.95rem;line-height:1.25}
-    .ai-vertical-card span,.ai-example-card span,.ai-tool-link span{display:block;margin-top:5px;color:#64748b;font-size:.83rem;line-height:1.5}
+    .ai-hub-section{max-width:var(--ai-shell);margin:32px auto 0}
+    .ai-hub-section h2{margin:0 0 6px;color:#0f172a;font-size:1.35rem;line-height:1.2;font-weight:900}
+    .ai-hub-section p{max-width:var(--ai-measure);color:#475569;line-height:1.68}
+    .ai-hub-intro{margin:0 0 12px}
+    .ai-vertical-grid,.ai-example-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    .ai-vertical-card,.ai-example-card,.ai-hub-note,.ai-hub-faq details{border:1px solid var(--ai-border);border-radius:var(--ai-radius);background:#fff;padding:14px;text-decoration:none;color:inherit}
+    .ai-vertical-card,.ai-example-card{display:grid;align-content:start;min-height:72px}
+    .ai-vertical-card strong,.ai-example-card strong{display:block;color:#0f172a;font-size:.95rem;line-height:1.25}
+    .ai-vertical-card span,.ai-example-card span{display:block;margin-top:5px;color:#64748b;font-size:.83rem;line-height:1.5}
     .ai-example-card{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
-    .ai-tool-link:hover,.ai-tool-link:focus-visible,.ai-vertical-card:hover,.ai-vertical-card:focus-visible{border-color:#93c5fd;background:#f8fbff}
+    .ai-example-card strong{color:#1d4ed8;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+    .ai-example-card span{color:#334155}
+    .ai-example-card:hover,.ai-example-card:focus-visible{border-color:#60a5fa;background:#e0edff}
+    .ai-vertical-card:hover,.ai-vertical-card:focus-visible{border-color:#93c5fd;background:#f8fbff}
     .ai-hub-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .ai-hub-note{background:#fffbeb;border-color:#fde68a}
     .ai-hub-note strong{display:block;color:#92400e}
     .ai-hub-list{margin:0;padding-left:20px;color:#475569;line-height:1.65}
-    .ai-hub-faq details{margin-top:8px}
-    .ai-hub-faq summary{cursor:pointer;color:#0f172a;font-weight:900}
-    .ai-hub-faq p{margin:8px 0 0}
+    .ai-hub-faq details{margin-top:8px;padding:0;overflow:hidden}
+    .ai-hub-faq summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:10px 14px;cursor:pointer;color:#0f172a;font-weight:900;list-style:none}
+    .ai-hub-faq summary::-webkit-details-marker{display:none}
+    .ai-hub-faq summary::after{content:"";flex:0 0 auto;width:8px;height:8px;margin-right:3px;border-right:2.5px solid #64748b;border-bottom:2.5px solid #64748b;transform:translateY(-2px) rotate(45deg);transition:transform .18s ease}
+    .ai-hub-faq details[open] summary::after{transform:translateY(2px) rotate(-135deg)}
+    .ai-hub-faq summary:hover,.ai-hub-faq summary:focus-visible{background:#f8fbff;color:var(--ai-primary)}
+    .ai-hub-faq summary:hover::after,.ai-hub-faq summary:focus-visible::after{border-color:var(--ai-primary)}
+    .ai-hub-faq p{margin:0;padding:0 14px 12px;max-width:var(--ai-measure)}
     html[dir="rtl"] body{direction:rtl}
     html[dir="rtl"] .ai-header,html[dir="rtl"] .ai-command,html[dir="rtl"] .ai-status,html[dir="rtl"] .ai-workflow-card,html[dir="rtl"] .ai-hub-section{text-align:right}
     html[dir="rtl"] .ai-card-head,html[dir="rtl"] .ai-projects-head,html[dir="rtl"] .ai-education-head,html[dir="rtl"] .ai-career-head,html[dir="rtl"] .ai-import-head,html[dir="rtl"] .ai-energy-head,html[dir="rtl"] .ai-finance-head,html[dir="rtl"] .ai-country-head,html[dir="rtl"] .ai-local-life-head,html[dir="rtl"] .ai-workflow-panel-head{direction:rtl}
     html[dir="rtl"] .ai-list,html[dir="rtl"] .ai-actions,html[dir="rtl"] .ai-clarification-actions,html[dir="rtl"] .ai-consent-actions{justify-content:flex-start}
     html[dir="rtl"] .ai-hub-list,html[dir="rtl"] .ai-education-plan ul,html[dir="rtl"] .ai-education-plan ol,html[dir="rtl"] .ai-career-plan ul,html[dir="rtl"] .ai-career-plan ol,html[dir="rtl"] .ai-import-plan ul,html[dir="rtl"] .ai-import-plan ol,html[dir="rtl"] .ai-energy-plan ul,html[dir="rtl"] .ai-energy-plan ol,html[dir="rtl"] .ai-finance-plan ul,html[dir="rtl"] .ai-finance-plan ol,html[dir="rtl"] .ai-country-plan ul,html[dir="rtl"] .ai-country-plan ol,html[dir="rtl"] .ai-local-life-plan ul,html[dir="rtl"] .ai-local-life-plan ol,html[dir="rtl"] .ai-construction-panel ul,html[dir="rtl"] .ai-agriculture-panel ul{padding-left:0;padding-right:20px}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media(max-width:760px){.ai-main{padding:26px 12px calc(42px + env(safe-area-inset-bottom))}.ai-header{text-align:left;margin-bottom:16px}.ai-kicker-line{margin-left:0}.ai-title{font-size:clamp(1.85rem,9vw,2.65rem)}.ai-copy{font-size:.95rem;line-height:1.58}.ai-command{padding:0}.ai-form{padding:13px;border-radius:14px}.ai-input-row{grid-template-columns:1fr;gap:9px}.ai-run{width:100%}.ai-quick-rail{display:grid;grid-template-columns:1fr 1fr}.ai-quick-task{border-radius:11px}.ai-command-cockpit{border-radius:14px;padding:13px}.ai-cockpit-head{display:grid;align-items:start}.ai-cockpit-badge{justify-self:start}.ai-trust{font-size:.78rem;padding:10px 11px}.ai-card-head,.ai-projects-head,.ai-context-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head,.ai-country-head,.ai-local-life-head,.ai-workflow-panel-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{display:grid;justify-content:stretch}.ai-chip{justify-self:start}.ai-card-body,.ai-job-grid,.ai-context-grid,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-tools,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-tools,.ai-local-life-source-grid,.ai-result-grid,.ai-result-summary,.ai-vertical-grid,.ai-example-grid,.ai-tool-link-grid,.ai-hub-two,.ai-candidate-list,.ai-lane-grid,.ai-proof-grid{grid-template-columns:1fr}.ai-actions,.ai-context-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions,.ai-feedback{display:grid}.ai-open,.ai-browse,.ai-small-button,.ai-feedback button{width:100%}.ai-list{display:grid;grid-template-columns:1fr}.ai-list li{border-radius:10px}.ai-clarification-chips{display:grid;grid-template-columns:1fr}.ai-answer-chip{width:100%;text-align:center;justify-content:center}.ai-fallback-grid{grid-template-columns:1fr}.ai-fallback-card{min-height:112px}.ai-hub-section{margin-top:26px}}
+    @media(max-width:760px){.ai-main{padding:26px 12px calc(42px + env(safe-area-inset-bottom))}.ai-header{text-align:left;margin-bottom:16px}.ai-kicker-line{margin-left:0}.ai-title{font-size:clamp(1.85rem,9vw,2.65rem)}.ai-copy{font-size:.95rem;line-height:1.58}.ai-command{padding:0}.ai-form{padding:13px;border-radius:14px}.ai-input-row{grid-template-columns:1fr;gap:9px}.ai-run{width:100%}.ai-quick-rail{display:grid;grid-template-columns:1fr 1fr}.ai-quick-task{border-radius:11px}.ai-command-cockpit{border-radius:14px;padding:13px}.ai-cockpit-head{display:grid;align-items:start}.ai-cockpit-badge{justify-self:start}.ai-trust{font-size:.78rem;padding:10px 11px}.ai-card-head,.ai-projects-head,.ai-context-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head,.ai-country-head,.ai-local-life-head,.ai-workflow-panel-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{display:grid;justify-content:stretch}.ai-chip{justify-self:start}.ai-card-body,.ai-job-grid,.ai-context-grid,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-tools,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-tools,.ai-local-life-source-grid,.ai-result-grid,.ai-result-summary,.ai-vertical-grid,.ai-example-grid,.ai-hub-two,.ai-candidate-list,.ai-lane-grid,.ai-proof-grid{grid-template-columns:1fr}.ai-actions,.ai-context-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions,.ai-feedback{display:grid}.ai-open,.ai-browse,.ai-small-button,.ai-feedback button{width:100%}.ai-list{display:grid;grid-template-columns:1fr}.ai-list li{border-radius:10px}.ai-clarification-chips{display:grid;grid-template-columns:1fr}.ai-answer-chip{width:100%;text-align:center;justify-content:center}.ai-fallback-grid{grid-template-columns:1fr}.ai-fallback-card{min-height:112px}.ai-hub-section{margin-top:26px}}
     @media(min-width:761px) and (max-width:1060px){.ai-lane-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(min-width:761px) and (max-width:980px){.ai-fallback-grid,.ai-education-tools,.ai-career-tools,.ai-import-tools,.ai-country-tools,.ai-local-life-tools{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-education-grid,.ai-career-grid,.ai-import-grid,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-source-grid,.ai-result-grid,.ai-proof-grid{grid-template-columns:1fr 1fr}}
     @media(prefers-reduced-motion:reduce){.ai-spinner,.ai-skeleton-line{animation:none}}
@@ -619,12 +628,15 @@
         </div>
       </section>
 
-      <h2 class="ai-section-title">Browse common tasks</h2>
-      <nav class="ai-fallback-grid" id="aiFallbackGrid" aria-label="Common AfroTools tasks"></nav>
+      <section class="ai-hub-section" aria-labelledby="ai-tasks-title">
+        <h2 class="ai-section-title" id="ai-tasks-title">Browse common tasks</h2>
+        <p class="ai-hub-intro">Open any tool directly, or describe your task above and AfroTools AI will pick the tool for you and fill in what it can.</p>
+        <nav class="ai-fallback-grid" id="aiFallbackGrid" aria-label="Common AfroTools tasks"></nav>
+      </section>
 
       <section class="ai-hub-section" aria-labelledby="ai-verticals-title">
         <h2 id="ai-verticals-title">Popular help areas</h2>
-        <p>Each page shows what AfroTools can help with, what it cannot do, and which real tools you will use.</p>
+        <p class="ai-hub-intro">Each page shows what AfroTools can help with, what it cannot do, and which real tools you will use.</p>
         <div class="ai-vertical-grid">
           <a class="ai-vertical-card" href="/ai/education/"><strong>AI Scholarship and Study Abroad Planner</strong><span>Scholarships, destination fit, funding gaps, GPA, IELTS, documents, and deadlines.</span></a>
           <a class="ai-vertical-card" href="/ai/career/"><strong>AI CV and Career Agent</strong><span>CV Builder, cover letters, ATS guidance, LinkedIn helpers, and application packs.</span></a>
@@ -638,19 +650,8 @@
 
       <section class="ai-hub-section" aria-labelledby="ai-examples-title">
         <h2 id="ai-examples-title">Examples you can try</h2>
+        <p class="ai-hub-intro">Pick one to run it and see which tool AfroTools opens.</p>
         <div class="ai-example-grid" id="aiExampleGrid"></div>
-      </section>
-
-      <section class="ai-hub-section" aria-labelledby="ai-tools-title">
-        <h2 id="ai-tools-title">Workflows AfroTools AI can open</h2>
-        <div class="ai-tool-link-grid">
-          <a class="ai-tool-link" href="/tools/scholarship-finder/"><strong>Scholarship Finder</strong><span>Provider links, deadlines, eligibility notes, and source warnings.</span></a>
-          <a class="ai-tool-link" href="/tools/cv-builder/"><strong>CV Builder</strong><span>Templates, local editing, ATS guidance, and export.</span></a>
-          <a class="ai-tool-link" href="/tools/paye-calculator/"><strong>PAYE Calculator</strong><span>Salary tax and payroll planning for supported African countries.</span></a>
-          <a class="ai-tool-link" href="/tools/import-duty/"><strong>Import Duty Calculator</strong><span>CIF, duty, landed cost, and customs verification planning.</span></a>
-          <a class="ai-tool-link" href="/tools/solar-roi/"><strong>Solar ROI Calculator</strong><span>Generator fuel exposure, tariff assumptions, and payback estimates.</span></a>
-          <a class="ai-tool-link" href="/engineering/floor-planner/"><strong>Floor Planner</strong><span>Room layouts, construction notes, and export-oriented planning.</span></a>
-        </div>
       </section>
 
       <section class="ai-hub-section" aria-labelledby="ai-limits-title">
@@ -1205,8 +1206,12 @@
         construction: "Construction",
         agriculture: "Agriculture",
         "country-intelligence": "Country data",
+        government: "Government",
+        african: "African services",
+        legal: "Legal",
+        telecom: "Telecom",
       };
-      return labels[category] || category;
+      return labels[category] || prettyKey(category);
     }
 
     function renderPromptExampleGrid() {
