@@ -174,13 +174,19 @@ function repairHomeLandmarks() {
 }
 
 function ensureAccessibilityRuntime(rel) {
-  const script = '<script src="/assets/js/lib/sw-accessibility.js" defer></script>';
-  let html = read(rel).split(script).join('');
+  const canonicalScript = '<script src="/assets/js/lib/sw-accessibility.js" defer></script>';
+  const runtimePattern = /^[ \t]*<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*\r?\n?/gim;
+  let html = read(rel);
+  const existingScripts = html.match(runtimePattern) || [];
+  const versionedScript = existingScripts.find((tag) => /\?v=[a-f0-9]{8}/i.test(tag));
+  const script = versionedScript ? versionedScript.trim() : canonicalScript;
+  html = html.replace(runtimePattern, '');
+  html = html.replace(/[ \t]+\r?\n(?=\s*<\/body>)/, '');
   if (!/<\/body>\s*<\/html>\s*$/i.test(html)) {
     failures.push(`${rel}: missing final body close for Swahili accessibility runtime`);
     return;
   }
-  html = html.replace(/<\/body>(\s*<\/html>\s*)$/i, `${script}</body>$1`);
+  html = html.replace(/<\/body>(\s*<\/html>\s*)$/i, `  ${script}\n</body>$1`);
   output(rel, html);
 }
 

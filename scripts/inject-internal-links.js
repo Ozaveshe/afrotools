@@ -62,6 +62,22 @@ function slugToName(slug) {
     .replace(/\b\w/g, c => c.toUpperCase());
 }
 
+function localizeFrenchGeneratedName(name) {
+  return [
+    [/\bCalculators\b/gi, 'calculateurs'],
+    [/\bCalculator\b/gi, 'calculateur'],
+    [/\bCalculate\b/gi, 'calculer'],
+    [/\bResults\b/gi, 'r\u00e9sultats'],
+    [/\bResult\b/gi, 'r\u00e9sultat'],
+    [/\bDownload\b/gi, 't\u00e9l\u00e9charger'],
+    [/\bSearch\b/gi, 'rechercher'],
+    [/\bSelect\b/gi, 's\u00e9lectionner'],
+    [/\bAmount\b/gi, 'montant'],
+    [/\bMonthly\b/gi, 'mensuel'],
+    [/\bAnnual\b/gi, 'annuel'],
+  ].reduce((value, [pattern, replacement]) => value.replace(pattern, replacement), name);
+}
+
 const SEO_NAV_MARKER = '<!-- seo-internal-links -->';
 const RELATED_START = '<!-- RELATED_TOOLS_SSR_START -->';
 const RELATED_END = '<!-- RELATED_TOOLS_SSR_END -->';
@@ -591,16 +607,18 @@ function processCategoryHubs() {
       const links = [];
 
       for (const d of subDirs) {
+        const name = slugToName(d.name);
         links.push({
           href: `/${prefix}${cat}/${d.name}/`,
-          text: slugToName(d.name)
+          text: prefix ? localizeFrenchGeneratedName(name) : name
         });
       }
 
       for (const f of subFiles) {
+        const name = slugToName(f);
         links.push({
           href: `/${prefix}${cat}/${f}`,
-          text: slugToName(f)
+          text: prefix ? localizeFrenchGeneratedName(name) : name
         });
       }
 

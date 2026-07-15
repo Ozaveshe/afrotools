@@ -71,6 +71,14 @@ const FORBIDDEN_FILE_PATTERNS = [
   /^.*SECRET.*$/i
 ];
 
+// Public protocol endpoints are the only dot-prefixed deploy paths allowed.
+// Keep this file-level allowlist aligned with scripts/build-dist.js so adding
+// another hidden file cannot silently broaden the publish surface.
+const ALLOWED_HIDDEN_PATHS = new Set([
+  '.well-known',
+  '.well-known/security.txt'
+]);
+
 function exists(relativePath) {
   return fs.existsSync(path.join(DIST, relativePath));
 }
@@ -128,8 +136,10 @@ function main() {
     }
 
     for (const rel of walk(DIST)) {
-      const base = path.basename(rel);
-      if (base.startsWith('.')) failures.push(`Hidden path present in dist: ${rel}`);
+      const hasHiddenSegment = rel.split('/').some((segment) => segment.startsWith('.'));
+      if (hasHiddenSegment && !ALLOWED_HIDDEN_PATHS.has(rel)) {
+        failures.push(`Hidden path present in dist: ${rel}`);
+      }
       if (FORBIDDEN_FILE_PATTERNS.some((pattern) => pattern.test(rel))) {
         failures.push(`Forbidden file type/name present in dist: ${rel}`);
       }

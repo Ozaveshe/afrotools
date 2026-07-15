@@ -51,6 +51,12 @@ test('high and medium risk engines have complete versioned formula metadata', fu
   }
 });
 
+test('legacy HTML formula digests ignore presentation-only disclosure state', function () {
+  const egyptRoute = artifacts.formulas.formulas.find((formula) => formula.id === 'route-eg-paye');
+  assert.ok(egyptRoute, 'missing protected Egypt PAYE route formula');
+  assert.strictEqual(quality.digestFile(ROOT, egyptRoute.artifactPath), egyptRoute.artifactDigest);
+});
+
 test('all high-risk PAYE and VAT routes map to one formula and external source', function () {
   const verification = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-verification.json'), 'utf8'));
   const result = quality.checkHighRiskRouteTraceability(verification, artifacts.formulas);

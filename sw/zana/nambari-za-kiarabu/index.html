@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#7c3aed}
@@ -295,5 +295,6 @@ function cp(text) {
 <script data-language-workbench-script>
 (function(){document.querySelectorAll('[data-language-workbench]').forEach(function(panel){var output=panel.querySelector('[data-language-output]');var status=panel.querySelector('[data-language-status]');var title=panel.getAttribute('data-tool-title')||document.title;function val(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){return [title,'Matini: '+(val('text')||'weka sentensi au namba'),'Muktadha: '+(val('context')||'mazungumzo ya kila siku'),'Hitaji: '+(val('need')||'maana ya awali'),'Tahadhari: si tafsiri iliyothibitishwa; hakiki lahaja, toni, script na matumizi rasmi.'].join(String.fromCharCode(10));}function render(){if(output)output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-language-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Imenakiliwa.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var download=panel.querySelector('[data-language-download]');if(download)download.addEventListener('click',function(){var blob=new Blob([summary()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(title||'language-brief').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.txt';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);});render();});})();
 </script>
-<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
 </html>

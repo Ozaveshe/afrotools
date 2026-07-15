@@ -61,13 +61,16 @@ function registryRow(entry, locale, tools) {
   const localeSlug = locale === "fr" ? entry.frSlug : entry.swSlug;
   const href = locale === "fr" ? `/fr/tools/${localeSlug}/` : `/sw/zana/${localeSlug}/`;
   const id = `${source.id}-${locale}-coverage-${entry.enSlug.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "")}`;
+  const category = source.category && source.category !== "other"
+    ? source.category
+    : entry.category || source.category || "other";
   const fields = [
     `id: ${js(id)}`,
     `name: ${js(entry.name)}`,
     `icon: ${js(source.icon || "AT")}`,
     `desc: ${js(entry.description)}`,
     `href: ${js(href)}`,
-    `category: ${js(source.category || entry.category || "other")}`,
+    `category: ${js(category)}`,
     `tier: ${js(source.tier || "T3")}`,
     `status: "live"`,
     `phase: "LIVE"`,
@@ -89,7 +92,9 @@ function build() {
     START,
     "  // Generated from data/localization/coverage-wave-2026-07.json. Re-run this script after changing the manifest.",
     ...WAVE.french.map((entry) => registryRow(entry, "fr", tools)),
-    ...WAVE.swahili.map((entry) => registryRow(entry, "sw", tools)),
+    ...WAVE.swahili
+      .filter((entry) => !tools.some((tool) => tool.lang === "sw" && tool.href === `/sw/zana/${entry.swSlug}/`))
+      .map((entry) => registryRow(entry, "sw", tools)),
     END,
   ].join("\n");
 

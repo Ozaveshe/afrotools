@@ -98,7 +98,7 @@
 <link rel="stylesheet" href="/assets/css/legal.css?v=a2330ea1">
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
 <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
 <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
@@ -166,5 +166,6 @@ var FEES={pty:{online:125,manual:175,label:'Private Company (Pty) Ltd'},inc:{onl
 function calculateCIPC(){var type=value('entityType','pty'),method=value('method','online'),fee=FEES[type],items=[],total=0;function add(name,cost,note){items.push({name:name,cost:cost,note:note});total+=cost||0;}var reg=fee[method];add(fee.label+' registration',reg);if(q('nameRes').checked)add('Kuhifadhi jina la kampuni',NAME_FEE[method]);if(q('bbbee').checked)add('B-BBEE affidavit',0,'Mara nyingi hutolewa bila malipo katika polisi');if(q('useAgent').checked)add('Ada ya registration agent',type==='ext'?5000:type==='npc'?3000:type==='coop'?3500:2500);if(q('taxReg').checked)add('SARS tax registration'+(q('useAgent').checked?' kupitia agent':' DIY'),q('useAgent').checked?1500:0);if(q('uif').checked)add('UIF registration'+(q('useAgent').checked?' kupitia agent':' DIY'),q('useAgent').checked?800:0);if(q('coida').checked)add('COIDA registration'+(q('useAgent').checked?' kupitia agent':' DIY'),q('useAgent').checked?800:0);q('cipcMetrics').innerHTML='<div class="metric"><span>Jumla ya makadirio</span><b>'+fmtMoney(total,'R')+'</b></div><div class="metric"><span>CIPC fee</span><b>'+fmtMoney(reg,'R')+'</b></div><div class="metric"><span>Processing ya source</span><b>'+(method==='online'?'siku 1-3':'siku 7-21')+'</b></div>';q('cipcBreakdown').innerHTML='<tr><th>Kipengele</th><th>Gharama</th></tr>'+items.map(function(i){return '<tr><td>'+i.name+'</td><td>'+(i.note||fmtMoney(i.cost,'R'))+'</td></tr>';}).join('')+'<tr><th>Jumla</th><th>'+fmtMoney(total,'R')+'</th></tr>';show('cipcResult');}
 </script>
 <script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
-<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
+  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+</body>
 </html>
