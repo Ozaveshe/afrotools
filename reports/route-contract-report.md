@@ -6,20 +6,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 10686 |
-| Indexable pages | 9703 |
+| Public pages | 10687 |
+| Indexable pages | 9704 |
 | Permanent and temporary redirects | 2778 |
 | Rewrites | 102 |
 | Conditional redirects | 4 |
 | Gone routes | 18 |
 | Dynamic route patterns | 161 |
-| Genuine equivalence groups | 5189 |
-| Documented fallbacks | 13749 |
-| Routes eligible for primary sitemaps | 9703 |
+| Genuine equivalence groups | 5190 |
+| Documented fallbacks | 13750 |
+| Routes eligible for primary sitemaps | 9704 |
 
 ## Locale Coverage
 
-- en: 5857 page records
+- en: 5858 page records
 - fr: 3721 page records
 - ha: 105 page records
 - sw: 958 page records
@@ -28,7 +28,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 ## Page Types
 
 - api: 3
-- article: 378
+- article: 379
 - auth: 3
 - category: 694
 - country-tool: 499
@@ -7713,6 +7713,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:f0e685e84190: en=`/cameroon/cm-paye`, fr=`/fr/cameroun/calculateur-salaire-net`, sw=`/sw/cameroon/kikokotoo-kodi-mshahara/`; x-default=`/cameroon/cm-paye`
 - equivalence:f0ecb2457df1: fr=`/fr/tools/contrat-bail/algeria`, en=`/tools/tenancy-agreement/algeria`; x-default=`/tools/tenancy-agreement/algeria`
 - equivalence:f0f17d652a11: en=`/tools/afroatlas/country/dr-congo/`; x-default=`/tools/afroatlas/country/dr-congo/`
+- equivalence:f0f8fa6a07b4: en=`/blog/ghana-motor-insurance-claim-checklist-2026/`; x-default=`/blog/ghana-motor-insurance-claim-checklist-2026/`
 - equivalence:f107d3368c42: en=`/agriculture/seed-rate/zimbabwe`, fr=`/fr/agriculture/seed-rate/zimbabwe`; x-default=`/agriculture/seed-rate/zimbabwe`
 - equivalence:f108cd603c65: en=`/tools/afrokitchen/countries/ethiopia/`; x-default=`/tools/afrokitchen/countries/ethiopia/`
 - equivalence:f10978bd93f4: fr=`/fr/tools/cout-accouchement/`, ha=`/ha/kayan-aiki/kudin-haihuwa/`, sw=`/sw/zana/gharama-za-kujifungua/`, en=`/tools/childbirth-cost/`; x-default=`/tools/childbirth-cost/`
