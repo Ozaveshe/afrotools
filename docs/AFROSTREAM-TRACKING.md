@@ -35,7 +35,7 @@ Live stream thumbnails are user-facing media and must pass the same display poli
 
 ## News Mentions
 
-`netlify/functions/afrostream-news-monitor.js` runs daily.
+`netlify/functions/afrostream-news-monitor.js` runs every six hours at minute 46, as configured in `netlify.toml`.
 It reads active rows from `public.as_news_sources`, fetches RSS or Atom feeds, matches published AfroStream creator names, writes matching stories into `public.as_news`, and links them through `public.as_news_creator_mentions`.
 
 Ops workflow:
@@ -52,6 +52,8 @@ Manual review runs can use dry-run mode before allowing writes:
 ```
 
 Dry-run mode still fetches active sources and checks published creator names, but it reports matched items, existing news rows, would-insert counts, and skipped weak matches without writing news or mention rows. The monitor uses normalized whole-word or whole-phrase creator matching, ignores very short single-token names, and applies a lightweight editorial relevance gate so generic celebrity or birthday items do not become automated AfroStream news.
+
+Scheduled runs cap new article inserts at five per invocation. Existing rows can still receive creator-mention links without consuming that insert budget. This cap limits burst risk; it does not replace source review, duplicate control, or the 48-hour editorial audit.
 
 RSS sources can also be supplied through:
 

@@ -87,6 +87,7 @@ function htmlFor(page) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="content-language" content="sw">
+  <meta name="afrotools-content-id" content="sw-tool-gap:${escapeHtml(page.swSlug)}">
   <meta name="afrotools-source-page" content="tools/${escapeHtml(page.enSlug)}">
   <meta name="afrotools-source-owner" content="scripts/generate-sw-tool-gap-pages.js">
   <title>${escapeHtml(page.name)} | AfroTools</title>
@@ -139,6 +140,7 @@ function repairExisting(page, file) {
   let html = fs.readFileSync(file, "utf8");
   html = html.replace(/<html\b([^>]*)\blang=["'][^"']*["']([^>]*)>/i, '<html$1lang="sw"$2>');
   html = ensureMeta(html, "content-language", "sw");
+  html = ensureMeta(html, "afrotools-content-id", `sw-tool-gap:${page.swSlug}`);
   html = ensureMeta(html, "afrotools-source-page", `tools/${page.enSlug}`);
   html = upsertAlternate(html, "en", enUrl);
   html = upsertAlternate(html, "sw", swUrl);

@@ -10,7 +10,7 @@ var MAX_CONCURRENT_FEEDS = 6;
 var FEED_TIMEOUT_MS = 9000;
 var DEFAULT_SCHEDULED_LOOKBACK_DAYS = 3;
 var DEFAULT_MANUAL_LOOKBACK_DAYS = 10;
-var DEFAULT_SCHEDULED_INSERT_LIMIT = 12;
+var DEFAULT_SCHEDULED_INSERT_LIMIT = 5;
 var DEFAULT_MANUAL_INSERT_LIMIT = 30;
 
 function headers() {
@@ -117,7 +117,19 @@ function decodeXml(value) {
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+    .replace(/&apos;/g, "'")
+    .replace(/&#x([0-9a-f]+);?/gi, function(entity, value) {
+      var codePoint = parseInt(value, 16);
+      return codePoint >= 0 && codePoint <= 0x10ffff
+        ? String.fromCodePoint(codePoint)
+        : entity;
+    })
+    .replace(/&#([0-9]+);?/g, function(entity, value) {
+      var codePoint = parseInt(value, 10);
+      return codePoint >= 0 && codePoint <= 0x10ffff
+        ? String.fromCodePoint(codePoint)
+        : entity;
+    });
 }
 
 function stripHtml(value) {
@@ -224,32 +236,32 @@ function aliasMatches(haystack, alias) {
   return (' ' + haystack + ' ').indexOf(' ' + normalizedAlias + ' ') !== -1;
 }
 
-function isEditoriallyRelevant(item, source) {
-  var haystack = normalizeForMatch([
-    source && source.category,
-    item.title,
-    item.description
-  ].join(' '));
-  var keywords = [
-    'album', 'award', 'awards', 'business', 'chart', 'collaboration',
-    'concert', 'creator', 'creators', 'creator economy', 'festival',
-    'film', 'funding', 'game', 'gaming', 'launch', 'line up', 'lineup',
-    'livestream', 'monetisation', 'monetization', 'music', 'partnership',
-    'platform', 'podcast', 'payout', 'record', 'single', 'spotify',
-    'streaming', 'studio', 'tiktok', 'tour', 'youtube'
-  ];
+function textHasAny(haystack, keywords) {
   return keywords.some(function(keyword) {
     return (' ' + haystack + ' ').indexOf(' ' + keyword + ' ') !== -1;
   });
 }
 
-function hasAfricaSignal(item, source) {
-  var haystack = normalizeForMatch([
-    source && source.name,
-    source && source.category,
-    item.title,
-    item.description
-  ].join(' '));
+function isEditoriallyRelevant(item) {
+  var title = normalizeForMatch(item.title);
+  var haystack = normalizeForMatch([item.title, item.description].join(' '));
+  var lowValueCreatorSignals = [
+    'birthday look', 'birthday outfit', 'birthday style', 'birthday dress'
+  ];
+  var keywords = [
+    'album', 'award', 'awards', 'chart', 'collaboration',
+    'concert', 'creator', 'creators', 'creator economy', 'festival',
+    'film', 'game', 'gaming', 'line up', 'lineup',
+    'livestream', 'monetisation', 'monetization', 'music', 'partnership',
+    'podcast', 'payout', 'record', 'single', 'soundtrack', 'spotify',
+    'streamer', 'streaming', 'studio', 'tiktok', 'tour', 'youtube'
+  ];
+  if (textHasAny(title, lowValueCreatorSignals)) return false;
+  return textHasAny(haystack, keywords);
+}
+
+function hasAfricaSignal(item, titleOnly) {
+  var haystack = normalizeForMatch(titleOnly ? item.title : [item.title, item.description].join(' '));
   var signals = [
     'africa', 'african', 'afrobeats', 'afrobeat', 'afro', 'nigeria',
     'nigerian', 'ghana', 'ghanaian', 'kenya', 'kenyan', 'south africa',
@@ -257,9 +269,7 @@ function hasAfricaSignal(item, source) {
     'ethiopia', 'morocco', 'zambia', 'zambian', 'lagos', 'nairobi',
     'accra', 'kigali', 'johannesburg', 'cape town'
   ];
-  return signals.some(function(signal) {
-    return (' ' + haystack + ' ').indexOf(' ' + signal + ' ') !== -1;
-  });
+  return textHasAny(haystack, signals);
 }
 
 function isRecentEnough(item, cutoffMs) {
@@ -270,9 +280,21 @@ function isRecentEnough(item, cutoffMs) {
 }
 
 function shouldPublishWithoutCreatorMatch(item, source, cutoffMs) {
+  var title = normalizeForMatch(item.title);
+  var strongTitleSignals = [
+    'album', 'award', 'awards', 'concert', 'creator', 'creators', 'festival',
+    'film', 'game', 'gaming', 'livestream', 'music', 'podcast', 'single',
+    'soundtrack', 'spotify', 'streamer', 'streaming', 'tiktok', 'tour', 'youtube'
+  ];
+  var offLaneSignals = [
+    'agriculture', 'bank', 'banking', 'defence', 'defense', 'fintech', 'gold',
+    'government', 'infrastructure', 'military', 'mining', 'oil', 'payment',
+    'payments', 'policy', 'refinery', 'regulation', 'security', 'telecom'
+  ];
   return isRecentEnough(item, cutoffMs) &&
-    isEditoriallyRelevant(item, source) &&
-    hasAfricaSignal(item, source);
+    textHasAny(title, strongTitleSignals) &&
+    !textHasAny(title, offLaneSignals) &&
+    hasAfricaSignal(item, true);
 }
 
 function findCreatorMatches(item, creators) {
@@ -537,4 +559,11 @@ exports.handler = async function(event) {
     );
     return { statusCode: 500, headers: headers(), body: JSON.stringify({ success: false, error: e.message, data: summary }) };
   }
+};
+
+exports.__test = {
+  decodeXml: decodeXml,
+  isEditoriallyRelevant: isEditoriallyRelevant,
+  hasAfricaSignal: hasAfricaSignal,
+  shouldPublishWithoutCreatorMatch: shouldPublishWithoutCreatorMatch
 };
