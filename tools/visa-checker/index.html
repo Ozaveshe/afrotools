@@ -101,11 +101,13 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(2
 .visa-result.arrival{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #fcd34d}
 .visa-result.evisa{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #93c5fd}
 .visa-result.required{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:2px solid #fca5a5}
+.visa-result.unknown{background:#f8fafc;border:2px solid #cbd5e1}
 .visa-status-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:980px;font-size:.88rem;font-weight:800;letter-spacing:.02em;margin-bottom:12px}
 .visa-status-badge.free{background:#16a34a;color:#fff}
 .visa-status-badge.arrival{background:#d97706;color:#fff}
 .visa-status-badge.evisa{background:#1d4ed8;color:#fff}
 .visa-status-badge.required{background:#dc2626;color:#fff}
+.visa-status-badge.unknown{background:#475569;color:#fff}
 .visa-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 .visa-detail{background:rgba(255,255,255,.7);border-radius:7px;padding:10px 12px;text-align:left}
 .visa-detail .vd-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:3px}
@@ -396,7 +398,8 @@ var STATUS_LABELS = {
   "visa-free": "Visa-Free",
   "visa-on-arrival": "Visa on Arrival",
   "e-visa": "e-Visa Required",
-  "visa-required": "Visa Required"
+  "visa-required": "Visa Required",
+  "unknown": "Not confirmed yet"
 };
 
 function checkVisa() {
@@ -411,9 +414,12 @@ function checkVisa() {
   }
 
   var key = origin + '-' + dest;
-  var info = VISA_DATA[key] || { status: "visa-required", conditions: "Contact the " + COUNTRY_NAMES[dest] + " embassy in your country.", processing: "Varies" };
+  // We only hold researched pairs. Never fall back to a verdict — an unresearched
+  // route is "we don't know", not "visa required". Guessing here would wrongly
+  // tell, say, an ECOWAS traveller they need a visa for a visa-free route.
+  var info = VISA_DATA[key] || { status: "unknown", conditions: "We have not researched this route yet, so we are not going to guess. Check with the " + COUNTRY_NAMES[dest] + " embassy or the official immigration portal for " + COUNTRY_NAMES[dest] + " before you travel. If both countries belong to the same bloc (ECOWAS, EAC, SADC), a visa-free protocol may apply." };
   var status = info.status;
-  var cls = status === 'visa-free' ? 'free' : (status === 'visa-on-arrival' ? 'arrival' : (status === 'e-visa' ? 'evisa' : 'required'));
+  var cls = status === 'visa-free' ? 'free' : (status === 'visa-on-arrival' ? 'arrival' : (status === 'e-visa' ? 'evisa' : (status === 'unknown' ? 'unknown' : 'required')));
 
   var details = '';
   if (info.duration) details += '<div class="visa-detail"><div class="vd-label">Max Stay</div><div class="vd-value">' + info.duration + '</div></div>';
