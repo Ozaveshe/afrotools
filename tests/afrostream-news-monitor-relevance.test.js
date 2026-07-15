@@ -21,6 +21,22 @@ assert.strictEqual(
   'politics must not pass because the source category is business'
 );
 assert.strictEqual(
+  monitor.isEditoriallyRelevant(item(
+    'Angelique Kidjo birthday look makes red raffia shine',
+    'The music icon wore a couture gown for her birthday.'
+  )),
+  false,
+  'birthday fashion must not pass because the description mentions music'
+);
+assert.strictEqual(
+  monitor.isEditoriallyRelevant(item(
+    'Angelique Kidjo wins lifetime music award',
+    'The Beninese artist received the honour at a ceremony.'
+  )),
+  true,
+  'real creator milestones must remain eligible'
+);
+assert.strictEqual(
   monitor.shouldPublishWithoutCreatorMatch(
     item('Africa gold shipment seized as exports tighten'), businessSource, Date.now() - 86400000
   ),

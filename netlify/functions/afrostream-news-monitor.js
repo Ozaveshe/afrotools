@@ -10,7 +10,7 @@ var MAX_CONCURRENT_FEEDS = 6;
 var FEED_TIMEOUT_MS = 9000;
 var DEFAULT_SCHEDULED_LOOKBACK_DAYS = 3;
 var DEFAULT_MANUAL_LOOKBACK_DAYS = 10;
-var DEFAULT_SCHEDULED_INSERT_LIMIT = 12;
+var DEFAULT_SCHEDULED_INSERT_LIMIT = 5;
 var DEFAULT_MANUAL_INSERT_LIMIT = 30;
 
 function headers() {
@@ -243,7 +243,11 @@ function textHasAny(haystack, keywords) {
 }
 
 function isEditoriallyRelevant(item) {
+  var title = normalizeForMatch(item.title);
   var haystack = normalizeForMatch([item.title, item.description].join(' '));
+  var lowValueCreatorSignals = [
+    'birthday look', 'birthday outfit', 'birthday style', 'birthday dress'
+  ];
   var keywords = [
     'album', 'award', 'awards', 'chart', 'collaboration',
     'concert', 'creator', 'creators', 'creator economy', 'festival',
@@ -252,6 +256,7 @@ function isEditoriallyRelevant(item) {
     'podcast', 'payout', 'record', 'single', 'soundtrack', 'spotify',
     'streamer', 'streaming', 'studio', 'tiktok', 'tour', 'youtube'
   ];
+  if (textHasAny(title, lowValueCreatorSignals)) return false;
   return textHasAny(haystack, keywords);
 }
 

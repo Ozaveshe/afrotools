@@ -53,6 +53,8 @@ Manual review runs can use dry-run mode before allowing writes:
 
 Dry-run mode still fetches active sources and checks published creator names, but it reports matched items, existing news rows, would-insert counts, and skipped weak matches without writing news or mention rows. The monitor uses normalized whole-word or whole-phrase creator matching, ignores very short single-token names, and applies a lightweight editorial relevance gate so generic celebrity or birthday items do not become automated AfroStream news.
 
+Scheduled runs cap new article inserts at five per invocation. Existing rows can still receive creator-mention links without consuming that insert budget. This cap limits burst risk; it does not replace source review, duplicate control, or the 48-hour editorial audit.
+
 RSS sources can also be supplied through:
 
 ```text
