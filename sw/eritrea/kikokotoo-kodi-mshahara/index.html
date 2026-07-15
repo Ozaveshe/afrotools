@@ -32,9 +32,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -926,7 +925,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -939,7 +938,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
   const text = `Muhtasari wa PAYE wa Eritrea: Gross ERN ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi ERN ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/eritrea/er-paye`;
@@ -968,11 +967,11 @@ async function getAI() {
 - Ghafi ya mwezi: ERN ${Math.round(R.gross).toLocaleString()}
 - Hifadhi ya jamii ya mfanyakazi (${pct(R.socialRate)}): ERN ${Math.round(R.social).toLocaleString()}/mwezi
 - Mapato yanayotozwa kodi baada ya hifadhi ya jamii: ERN ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
-- Monthly income tax: ERN ${Math.round(R.monthlyIncomeTax).toLocaleString()}
+- kila mwezi income tax: ERN ${Math.round(R.monthlyIncomeTax).toLocaleString()}
 - Halisi ya mwezi: ERN ${Math.round(R.netMonthly).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - Hifadhi ya jamii ya mwajiri (11%): ERN ${Math.round(R.empSocialCost).toLocaleString()}/mwezi
-- Total employer cost: ERN ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
+- jumla employer cost: ERN ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
 
 Toa: 1) Muhtasari wa wazi kwa Kiswahili of Eritrea PAYE position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Jibu kwa Kiswahili. Bila markdown wala nyota.`;
 
@@ -984,7 +983,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of Eritrea PAYE position 2) Njia mbili m
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new hitilafu('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1017,7 +1016,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Eritrea. User: monthly gross ERN ${Math.round(R.gross).toLocaleString()}, halisi ERN ${Math.round(R.netMonthly).toLocaleString()}, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Eritrea. User: kila mwezi gross ERN ${Math.round(R.gross).toLocaleString()}, halisi ERN ${Math.round(R.netMonthly).toLocaleString()}, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1116,5 +1115,5 @@ window._grossToNet = function(g) {
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

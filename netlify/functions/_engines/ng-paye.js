@@ -44,6 +44,11 @@ module.exports = {
   currency: 'NGN',
   regimes: ['PITA_2025', 'NTA_2026'],
   lastUpdated: '2026-03-01',
+  /* source-confidence-stamp:start */
+  sourceCheckedOn: '2026-03-01',
+  nextReviewDate: '2026-05-30',
+  /* source-confidence-stamp:end */
+
   source: 'Federal Inland Revenue Service (FIRS)',
 
   calculate(params) {

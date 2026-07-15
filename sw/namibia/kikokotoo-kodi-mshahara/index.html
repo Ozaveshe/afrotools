@@ -30,9 +30,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -124,7 +123,7 @@
             <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">N$ 1M</button>
             <button type="button" class="preset-btn" onclick="setPreset(2000000, this)">N$ 2M</button>
           </div>
-<p class="f-note">SSC: 0.9% employee + 0.9% employer on monthly wages, capped at N$99/mwezi each. Kikokotoo hiki kinaonyesha SSC kando na PAYE.</p><button type="button" class="calc-btn" onclick="calculate()">Kokotoa Mshahara Halisi &rarr;</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Mshahara Halisi kwa Mwaka</div><div class="res-hero-amount" id="resKiasi">N$0</div><div class="res-hero-period">Baada ya PAYE</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button type="button" class="per-btn on" onclick="setPeriod('annual',this)">Kwa Mwaka</button><button type="button" class="per-btn" onclick="setPeriod('monthly',this)">Kwa Mwezi</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Kiwango Halisi cha Kodi</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button type="button" class="chart-tab on" onclick="setChart('donut',this)">Muhtasari</button><button type="button" class="chart-tab" onclick="setChart('bar',this)">Mabanda ya Kodi</button><button type="button" class="chart-tab" onclick="setChart('employer',this)">Gharama ya Mwajiri</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button type="button" class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Pakua PDF</button><button type="button" class="act-btn act-share" id="naShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Shiriki Matokeo</button></div>
+<p class="f-note">SSC: 0.9% employee + 0.9% employer on kila mwezi wages, capped at N$99/mwezi each. Kikokotoo hiki kinaonyesha SSC kando na PAYE.</p><button type="button" class="calc-btn" onclick="calculate()">Kokotoa Mshahara Halisi &rarr;</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Mshahara Halisi kwa Mwaka</div><div class="res-hero-amount" id="resKiasi">N$0</div><div class="res-hero-period">Baada ya PAYE</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button type="button" class="per-btn on" onclick="setPeriod('annual',this)">Kwa Mwaka</button><button type="button" class="per-btn" onclick="setPeriod('monthly',this)">Kwa Mwezi</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Kiwango Halisi cha Kodi</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button type="button" class="chart-tab on" onclick="setChart('donut',this)">Muhtasari</button><button type="button" class="chart-tab" onclick="setChart('bar',this)">Mabanda ya Kodi</button><button type="button" class="chart-tab" onclick="setChart('employer',this)">Gharama ya Mwajiri</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button type="button" class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Pakua PDF</button><button type="button" class="act-btn act-share" id="naShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Shiriki Matokeo</button></div>
 
           <!-- Save & Share -->
           <div class="save-share-row">
@@ -412,7 +411,7 @@ window._grossToNet = function(g) {
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 <script>
 (function(){
   var KEY='afro_favs_v2',TOOL_ID='na-paye',LIMIT=10;
@@ -491,5 +490,5 @@ window._grossToNet = function(g) {
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

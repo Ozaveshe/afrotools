@@ -33,6 +33,7 @@ function calcCumulativeBands(amount, brackets) {
 function createEngine(config) {
   const {
     country, countryName, currency, source,
+    lastUpdated = '2026-03-01', sourceCheckedOn = null, nextReviewDate = null,
     bands, bandType = 'progressive', // 'progressive' (width-based) or 'cumulative' (threshold-based)
     isMonthly = false, // if bands are monthly, multiply result by 12
     socialSecurity = [], // [{key, label, rate, cap, default}]
@@ -46,7 +47,9 @@ function createEngine(config) {
     countryName,
     currency,
     regimes,
-    lastUpdated: '2026-03-01',
+    lastUpdated,
+    sourceCheckedOn,
+    nextReviewDate,
     source,
     formulaParameters: {
       bandType,
@@ -134,7 +137,7 @@ function createEngine(config) {
           marginalRate: lastBand ? (lastBand.rate * 100) + '%' : '0%'
         },
         employer,
-        meta: { regime: regimes[0], currency, lastUpdated: '2026-03-01', source }
+        meta: { regime: regimes[0], currency, lastUpdated, sourceCheckedOn, nextReviewDate, source }
       };
     },
 

@@ -37,7 +37,6 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Mabanda ya kodi CAR ni yapi?","acceptedAnswer":{"@type":"Answer","text":"CAR inatumia mabanda ya kodi ya mapato: 10% hadi XAF 600,000/mwaka; 15% kwa XAF 600,001-1,500,000; 25% kwa XAF 1,500,001-4,000,000; 35% zaidi ya XAF 4,000,000 kwa mwaka."}},{"@type":"Question","name":"OCSS CAR ni nini?","acceptedAnswer":{"@type":"Answer","text":"OCSS (Office Centrafricain de Sécurité Sociale) ni shirika la mafao ya kijamii CAR. Mfanyakazi analipa 4% ya mshahara ghafi, mwajiri analipa 16%."}},{"@type":"Question","name":"XAF ni sarafu gani?","acceptedAnswer":{"@type":"Answer","text":"XAF (Franc CFA ya Afrika ya Kati) ni sarafu ya nchi sita za CEMAC. Imeshikamana na Euro kwa kiwango cha 1 EUR = 655.957 XAF."}}]}
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
 <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
@@ -554,7 +553,7 @@ function generatePdf() {
 }
 
 async function getAI(){
-  if(!RESULT) return;
+  if (!RESULT) return;
   document.getElementById('aiBtn').disabled=true;
   document.getElementById('aiBtn').textContent='Analysing...';
   document.getElementById('aiResp').style.display='block';
@@ -562,8 +561,8 @@ async function getAI(){
   const prompt='Central African Republic PAYE: Gross XAF '+Math.round(RESULT.gross).toLocaleString()+'/mwezi, Tax XAF '+Math.round(RESULT.monthlyPAYE).toLocaleString()+'/mwezi, Net XAF '+Math.round(RESULT.netMonthly).toLocaleString()+'/mwezi, Effective '+((RESULT.monthlyPAYE/RESULT.gross)*100).toFixed(1)+'%. Give 1) summary 2) two tax optimization tips 3) one compliance point. Chini ya maneno 150, no markdown.';
   try{
     const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools Mshauri wa Kodi wa AI specialising in Central African Republic PAYE. Concise, specific, practical. Jibu kwa Kiswahili. Bila markdown.',messages:[{role:'user',content:prompt}]})});
-    if(res.status===429) throw new Error('rate-limit');
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(res.status===429) throw new hitilafu('rate-limit');
+    if(!res.ok) throw new hitilafu('HTTP '+res.status);
     const data=await res.json();
     document.getElementById('aiResp').textContent=data.text||'Imeshindikana kutengeneza uchambuzi.';
     document.getElementById('aiBtn').textContent='Uchambuzi umekamilika';
@@ -575,10 +574,10 @@ async function getAI(){
   }
 }
 async function sendChat(){
-  const input=document.getElementById('chatIn');
-  const msg=input.value.trim();
+  const ingizo=document.getElementById('chatIn');
+  const msg=ingizo.value.trim();
   if(!msg) return;
-  input.value='';
+  ingizo.value='';
   const msgs=document.getElementById('chatMsgs');
   msgs.innerHTML+='<div style="font-size:.78rem;padding:7px 11px;background:#EFF6FF;border-radius:6px;color:#0f172a;align-self:flex-end;max-width:85%">'+msg+'</div>';
   const thinking=document.createElement('div');
@@ -601,7 +600,7 @@ async function sendChat(){
 <script>window._grossToNet=function(g){var d=isOn('cnss')?g*0.03:0;return g-(d+calcAnnualDGI(Math.max(0,(g-d)*12)).tax/12);};</script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 <script>
 (function(){
   var KEY='afro_favs_v2',TOOL_ID='cf-paye',LIMIT=10;
@@ -680,5 +679,5 @@ async function sendChat(){
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

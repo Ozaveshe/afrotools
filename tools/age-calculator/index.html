@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -80,7 +80,7 @@ details summary::-webkit-details-marker{display:none}
   "description": "Calculate your exact age in years, months, days, hours and minutes. Find days until next birthday and zodiac sign.",
   "url": "https://afrotools.com/tools/age-calculator/",
   "inLanguage": "en",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
   "offers": {
@@ -113,11 +113,7 @@ details summary::-webkit-details-marker{display:none}
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"How does the age calculator work?","acceptedAnswer":{"@type":"Answer","text":"Enter your date of birth and the calculator computes the exact difference between that date and today, broken down into years, months, days, hours, and minutes. It accounts for leap years and varying month lengths."}},
-{"@type":"Question","name":"Does it account for leap years?","acceptedAnswer":{"@type":"Answer","text":"Yes. The calculator correctly handles leap years when computing the total number of days you have been alive and when calculating your next birthday."}},
-{"@type":"Question","name":"Can I calculate age between two specific dates?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can optionally set a custom 'Calculate at' date to find the age at any specific point in time, not just today."}}
-]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the age calculator work?","acceptedAnswer":{"@type":"Answer","text":"Enter your date of birth and the calculator computes the exact difference between that date and today, broken down into years, months, days, hours, and minutes. It accounts for leap years and varying month lengths."}},{"@type":"Question","name":"Does it account for leap years?","acceptedAnswer":{"@type":"Answer","text":"Yes. The calculator correctly handles leap years when computing the total number of days you have been alive and when calculating your next birthday."}},{"@type":"Question","name":"Can I calculate age between two specific dates?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can optionally set a custom \"Calculate at\" date to find the age at any specific point in time, not just today."}},{"@type":"Question","name":"How is my age calculated if I was born on 29 February?","acceptedAnswer":{"@type":"Answer","text":"A 29 February birth date is handled correctly. In non-leap years, where 29 February does not exist, the calculator rolls the anniversary to 1 March, so your completed years still advance by one every year. The day and month breakdown is clamped to avoid any negative or impossible values around month boundaries."}},{"@type":"Question","name":"How are days until my next birthday counted?","acceptedAnswer":{"@type":"Answer","text":"The calculator finds the next occurrence of your birth day and month after the calculation date, then counts the whole days remaining. If that date falls in a leap year, 29 February is included in the count. When the calculation date is your birthday, it shows \"Today!\" instead of a day count."}}]}
 </script>
 <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
@@ -158,7 +154,7 @@ details summary::-webkit-details-marker{display:none}
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/age-calculator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/age-calculator/">
@@ -189,16 +185,15 @@ details summary::-webkit-details-marker{display:none}
         <div class="card-head"><span class="card-title">Enter Your Date of Birth</span></div>
         <div class="card-body">
           <div class="field">
-            <label class="f-label">Date of Birth</label>
-            <input aria-label="Dob" type="date" class="f-input" id="dob" value="1995-06-15">
+            <label class="f-label" for="dob">Date of Birth</label>
+            <input aria-label="Date of birth" type="date" class="f-input" id="dob" value="1995-06-15">
           </div>
           <div class="field">
-            <label class="f-label">Calculate At (default: today)</label>
-            <input aria-label="AtDate" type="date" class="f-input" id="atDate">
+            <label class="f-label" for="atDate">Calculate At (default: today)</label>
+            <input aria-label="Calculate age at this date" type="date" class="f-input" id="atDate">
           </div>
           <button type="button" class="calc-btn" onclick="calculate()">Calculate Age</button>
-
-          <div id="results" style="display:none">
+          <div id="results" aria-live="polite" style="display:none">
             <div class="result-grid">
               <div class="result-box"><div class="result-num" id="rYears">0</div><div class="result-label">Years</div></div>
               <div class="result-box"><div class="result-num" id="rMonths">0</div><div class="result-label">Months</div></div>
@@ -268,6 +263,14 @@ details summary::-webkit-details-marker{display:none}
           <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I calculate age between two specific dates?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
           <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. You can optionally set a custom "Calculate at" date to find the age at any specific point in time, not just today.</div>
         </details>
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How is my age calculated if I was born on 29 February?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">A 29 February birth date is handled correctly. In non-leap years, where 29 February does not exist, the calculator rolls the anniversary to 1 March, so your completed years still advance by one every year. The day and month breakdown is clamped to avoid any negative or impossible values around month boundaries.</div>
+        </details>
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How are days until my next birthday counted?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">The calculator finds the next occurrence of your birth day and month after the calculation date, then counts the whole days remaining. If that date falls in a leap year, 29 February is included in the count. When the calculation date is your birthday, it shows "Today!" instead of a day count.</div>
+        </details>
       </section>
     </div>
 
@@ -309,8 +312,11 @@ function calculate(){
 
   if(days<0){
     months--;
-    const prevMonth=new Date(now.getFullYear(),now.getMonth(),0);
-    days+=prevMonth.getDate();
+    // Days in the calendar month immediately before "now".
+    let dim=new Date(now.getFullYear(),now.getMonth(),0).getDate();
+    // Clamp so a long-month birth day (29/30/31) never produces negative days.
+    if(dob.getDate()>dim) dim=dob.getDate();
+    days+=dim;
   }
   if(months<0){
     years--;
@@ -431,12 +437,19 @@ document.getElementById('atDate').addEventListener('change',calculate);
 document.getElementById('atDate').value=new Date().toISOString().split('T')[0];
 calculate();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
+<afro-related-tools data-ssr="1" category="data-productivity" current="age-calculator">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/unit-converter/" data-related-tool data-id="unit-converter" data-name="Unit Converter (African)" data-category="data-productivity" data-icon="UC" data-desc="Convert units including African measurements: Nigerian plots, SA morgen, etc.">Unit Converter (African)</a></li><li><a href="/tools/budget-planner/" data-related-tool data-id="budget-planner" data-name="Monthly Budget Planner" data-category="data-productivity" data-icon="MB" data-desc="50/30/20 rule adapted for African income patterns and mobile money.">Monthly Budget Planner</a></li><li><a href="/tools/public-holidays/" data-related-tool data-id="public-holidays" data-name="African Public Holiday Calendar" data-category="data-productivity" data-icon="AP" data-desc="Public holiday reference for supported African countries. iCal export. Per-country.">African Public Holiday Calendar</a></li><li><a href="/tools/grade-tracker/" data-related-tool data-id="grade-tracker" data-name="Student Grade Tracker" data-category="data-productivity" data-icon="SG" data-desc="Track CA and exam scores with Africa exam presets, risk flags, GPA, CGPA, and revision handoffs.">Student Grade Tracker</a></li><li><a href="/tools/pomodoro/" data-related-tool data-id="pomodoro" data-name="Pomodoro Timer" data-category="data-productivity" data-icon="PT" data-desc="Focus timer with African language motivational quotes. Works offline.">Pomodoro Timer</a></li><li><a href="/tools/time-zone/" data-related-tool data-id="time-zone" data-name="African Time Zone Converter" data-category="data-productivity" data-icon="AT" data-desc="All 8 African time zones. Team meeting planner across Africa.">African Time Zone Converter</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 
 <script>

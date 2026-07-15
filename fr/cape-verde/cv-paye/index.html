@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -942,17 +942,17 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   const url  = URL.createObjectURL(blob);
   const w    = window.open(url,'_blank');
   if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.print()}catch(e){}},1200);
+    w.addEventListener('load',()=>{setTimeout(()=>{w.imprimer();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.imprimer()}catch(e){}},1200);
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── partager ─────────────────────────────────────────────────────
 function shareResult() {
-  if (!RESULT) return;
-  const text = `Mon IUR Cap-Vert : Brut CVE ${Math.round(RESULT.gross).toLocaleString()}/mo → Net CVE ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (taux effectif ${pct(RESULT.effectiveRate)}). Calculé sur afrotools.com/fr/cape-verde/cv-paye/`;
-  if (navigator.share) {
-    navigator.share({title:'Mon IUR Cap-Vert',text,url:'https://afrotools.com/cape-verde/cv-paye'});
+  if (!résultat) return;
+  const text = `Mon IUR Cap-Vert : Brut CVE ${Math.round(résultat.gross).toLocaleString()}/mo → Net CVE ${Math.round(résultat.netMonthly).toLocaleString()}/mo (taux effectif ${pct(résultat.effectiveRate)}). Calculé sur afrotools.com/fr/cape-verde/cv-paye/`;
+  if (navigator.partager) {
+    navigator.partager({title:'Mon IUR Cap-Vert',text,url:'https://afrotools.com/cape-verde/cv-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzPartagerBtn');
@@ -963,8 +963,8 @@ function shareResult() {
 
 // ── AI ADVISOR ────────────────────────────────────────────────
 async function getAI() {
-  if (!RESULT) return;
-  const R   = RESULT;
+  if (!résultat) return;
+  const R   = résultat;
   const btn = document.getElementById('aiBtn');
   const respEl = document.getElementById('aiResp');
 
@@ -993,7 +993,7 @@ Répondez en français. Donnez : 1) Résumé clair de la situation IUR 2) Deux m
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new erreur('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Unable to generate analysis.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1038,7 +1038,7 @@ async function sendChat() {
   } catch { aiEl.textContent='Erreur réseau. Veuillez réessayer.'; }
 }
 
-document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='saisissez')calculer();});
 
 
 // Net-to-Brut : register forward function

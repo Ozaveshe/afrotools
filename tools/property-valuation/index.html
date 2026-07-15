@@ -6,7 +6,7 @@
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Property Valuation Estimator for Africa 2026 — What Is Your Property Worth? | AfroTools</title>
-<meta name="description" content="Estimate property values across African cities. Per-square-meter pricing for Lagos, Nairobi, Cape Town, Accra, Cairo neighborhoods. Know if you're overpaying before you buy.">
+<meta name="description" content="Estimate African property value by neighborhood using per-sqm data for Lagos, Nairobi, Cape Town, Accra and Cairo. See if a price is fair before you offer.">
 <meta property="og:title" content="African Property Valuation Estimator 2026 | AfroTools">
 <meta property="og:description" content="Estimate property values by city and neighborhood across Africa. Per-sqm data for Lagos, Nairobi, Cape Town, Accra, Cairo, Abuja and more.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/property-valuation.webp">
@@ -47,10 +47,9 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
@@ -130,6 +129,8 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 .ai-insight-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .ai-badge{font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--color-primary);background:rgba(0,98,204,.1);border-radius:100px;padding:3px 9px}
 .ai-text{font-size:.83rem;color:#1e3a5f;line-height:1.6}
+.valuation-disclaimer{font-size:.78rem;color:#4b5563;line-height:1.6;background:#fff8e6;border:1px solid #fde68a;border-radius:12px;padding:14px 16px}
+.valuation-disclaimer strong{color:#92400e}
 
 .info-card{background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:20px}
 .info-card-header{padding:14px 18px;border-bottom:1px solid #f3f4f6;font-size:.8rem;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:8px}
@@ -177,7 +178,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/property-valuation.webp">
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/property-valuation/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/property-valuation/">
@@ -256,19 +257,19 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
           <label class="form-label">Property Type</label>
           <div class="radio-group">
             <label class="radio-opt">
-              <input aria-label="PropType" type="radio" name="propType" value="apartment" checked onchange="calculate()">
+              <input type="radio" name="propType" value="apartment" checked onchange="calculate()">
               <span class="radio-label">🏢 Apartment / Flat</span>
             </label>
             <label class="radio-opt">
-              <input aria-label="PropType" type="radio" name="propType" value="house" onchange="calculate()">
+              <input type="radio" name="propType" value="house" onchange="calculate()">
               <span class="radio-label">🏠 Detached House</span>
             </label>
             <label class="radio-opt">
-              <input aria-label="PropType" type="radio" name="propType" value="semi" onchange="calculate()">
+              <input type="radio" name="propType" value="semi" onchange="calculate()">
               <span class="radio-label">🏡 Semi-detached</span>
             </label>
             <label class="radio-opt">
-              <input aria-label="PropType" type="radio" name="propType" value="land" onchange="calculate()">
+              <input type="radio" name="propType" value="land" onchange="calculate()">
               <span class="radio-label">🌿 Land (Plot)</span>
             </label>
           </div>
@@ -278,19 +279,19 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
           <label class="form-label">Property Condition</label>
           <div class="radio-group">
             <label class="radio-opt">
-              <input aria-label="Condition" type="radio" name="condition" value="new" onchange="calculate()">
+              <input type="radio" name="condition" value="new" onchange="calculate()">
               <span class="radio-label">✨ New / Off-plan</span>
             </label>
             <label class="radio-opt">
-              <input aria-label="Condition" type="radio" name="condition" value="good" checked onchange="calculate()">
+              <input type="radio" name="condition" value="good" checked onchange="calculate()">
               <span class="radio-label">👍 Good / Standard</span>
             </label>
             <label class="radio-opt">
-              <input aria-label="Condition" type="radio" name="condition" value="fair" onchange="calculate()">
+              <input type="radio" name="condition" value="fair" onchange="calculate()">
               <span class="radio-label">🔧 Fair / Needs work</span>
             </label>
             <label class="radio-opt">
-              <input aria-label="Condition" type="radio" name="condition" value="poor" onchange="calculate()">
+              <input type="radio" name="condition" value="poor" onchange="calculate()">
               <span class="radio-label">🏚️ Poor / Major reno</span>
             </label>
           </div>
@@ -298,7 +299,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
 
         <button type="button" class="calc-btn" onclick="calculate()">🏘️ Estimate Property Value</button>
 
-        <div class="results" id="results">
+        <div class="results" id="results" aria-live="polite">
           <div class="result-primary">
             <div class="result-label">Estimated Market Value</div>
             <div class="result-amount" id="resultAmount">—</div>
@@ -333,6 +334,8 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary);box-shad
             <div class="ai-insight-header"><span class="ai-badge">AI Observation</span></div>
             <div class="ai-text" id="aiText"></div>
           </div>
+
+          <p class="valuation-disclaimer" role="note">This is an indicative estimate based on average per-square-metre market data — <strong>not a formal valuation</strong>. Before you buy, sell, or borrow against a property, engage a licensed valuer (RICS/API or your national valuation body) for a certified figure.</p>
         </div>
 
       </div>
@@ -562,7 +565,14 @@ Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal a
   </div>
 </section>
 <!-- LEGAL-ACTION-PACK:END -->
-<afro-related-tools category="legal" current="property-valuation"></afro-related-tools>
+<afro-related-tools category="legal" current="property-valuation" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/business-registration/" data-related-tool data-id="business-registration" data-name="Business Registration Checklist" data-category="legal" data-icon="BR" data-desc="Step-by-step business registration checklist for 16 African countries. Documents, fees, timelines, regulatory bodies.">Business Registration Checklist</a></li><li><a href="/tools/nda-generator/" data-related-tool data-id="nda-generator" data-name="NDA Generator" data-category="legal" data-icon="NG" data-desc="Generate Non-Disclosure Agreements for African jurisdictions. Mutual and unilateral NDAs compliant with local contract l">NDA Generator</a></li><li><a href="/tools/rent-intelligence/" data-related-tool data-id="rent-intelligence" data-name="Rent Intelligence" data-category="legal" data-icon="RI" data-desc="Track rent asks, lease terms, deposits, and vacancy signals by neighborhood with moderated contributor data.">Rent Intelligence</a></li><li><a href="/tools/company-type-selector/" data-related-tool data-id="company-type-selector" data-name="Company Type Selector" data-category="legal" data-icon="CT" data-desc="Choose the right business structure for Africa — Sole Trader, LLC, PLC, Partnership. Tax, liability, compliance comparis">Company Type Selector</a></li><li><a href="/tools/land-title-check/" data-related-tool data-id="land-title-check" data-name="Land Title Verification Checklist" data-category="legal" data-icon="LT" data-desc="Verify land titles before buying property in Africa. Country-specific checklists for Nigeria (C of O), Kenya (Title Deed">Land Title Verification Checklist</a></li><li><a href="/tools/lease-risk-check/" data-related-tool data-id="lease-risk-check" data-name="Lease Risk Check" data-category="legal" data-icon="LR" data-desc="Nigeria-first lease scam and risky listing checker powered by contributor reports and reviewer approval.">Lease Risk Check</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 
 <script>

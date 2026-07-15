@@ -38,6 +38,14 @@ assertIncludes(root.html, 'id="solarRootCountryOpen"', "root open country CTA", 
 assertIncludes(root.html, 'URLSearchParams(location.search)', "root query persistence", root.file);
 assertIncludes(root.html, 'localStorage.setItem(STORAGE_KEY,country.code)', "root local storage persistence", root.file);
 assertIncludes(root.html, 'Open "+country.name+" calculator"', "root CTA update", root.file);
+assertIncludes(root.html, '/data/energy/solar-roi-country-dataset.js?v=c61d25bf', "root country dataset", root.file);
+assertIncludes(root.html, 'id="solarAssumptionPreview"', "root assumption preview", root.file);
+assertIncludes(root.html, 'id="solarAssumptionTariff"', "root tariff preview", root.file);
+assertIncludes(root.html, 'id="solarAssumptionFuel"', "root fuel preview", root.file);
+assertIncludes(root.html, 'id="solarAssumptionYield"', "root yield preview", root.file);
+assertIncludes(root.html, 'id="solarAssumptionInstall"', "root install-cost preview", root.file);
+assertIncludes(root.html, 'updateAssumptionPreview(country);', "root assumption preview update", root.file);
+assertIncludes(root.html, 'planning_defaults:assumptionSnapshot(country)', "root evidence-backed JSON export", root.file);
 
 const allGroup = between(root.html, '<optgroup label="All countries">', "</optgroup>");
 assert.strictEqual((allGroup.match(/<option\b/g) || []).length, 54, "All countries optgroup should contain 54 options");

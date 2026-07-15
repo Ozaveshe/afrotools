@@ -92,6 +92,15 @@ test.describe('Hausa product surface and country identity', () => {
     });
     expect(state.signInHref).toContain('/ha/shiga/');
     expect(state.proHref).toContain('/ha/farashi/');
+
+    await page.goto('/ha/jamb/adabi/', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#afrotools-localized-mobile-css')).toHaveAttribute('href', '/assets/css/localized-mobile.css');
+    const mobileLayout = await page.locator('.ha-jamb-export').evaluate((element) => ({
+      columns: getComputedStyle(element).gridTemplateColumns.split(' ').length,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+    }));
+    expect(mobileLayout.columns).toBe(1);
+    expect(mobileLayout.overflow).toBeLessThanOrEqual(1);
   });
 
   test('CAR crop yield identity is correct before and after hydration', async ({ page }) => {

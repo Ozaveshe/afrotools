@@ -64,16 +64,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <script src="/assets/js/lib/progressive-directory.js?v=18e0a585"></script>
 <script src="/assets/js/components/tool-registry.min.js?v=0e33f88d" defer data-directory-dependency></script>
-<script src="/assets/js/data/registry-counts.js?v=da28a659" defer></script>
+<script src="/assets/js/lib/category-icons.js?v=a7b323a5" defer></script>
+<script src="/assets/js/data/registry-counts.js?v=7b854fbf" defer></script>
 <script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 body{font-family:'DM Sans',sans-serif;background:var(--color-bg,#F8FAFD);color:var(--color-text,#0f172a);margin:0;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
@@ -116,6 +117,7 @@ a{text-decoration:none;color:inherit}
 .cc:hover{border-color:var(--cc-accent,#0062CC);box-shadow:0 6px 20px rgba(15,23,42,.08);transform:translateY(-1px)}
 .cc-top{display:flex;align-items:center;gap:12px}
 .cc-i{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;border:1px solid rgba(15,23,42,.06)}
+.cc-i svg{width:22px;height:22px;display:block;color:var(--cc-accent)}
 .cc-info{flex:1;min-width:0}
 .cc-n{font-size:1rem;font-weight:800;color:#111827;line-height:1.2}
 .cc-d{font-size:.82rem;color:#6b7280;line-height:1.6;flex:1}
@@ -790,7 +792,7 @@ function _renderCats() {
 
     html += '<a href="/' + escapeHtml(cm.slug) + '/" class="cc" data-directory-record data-search="' + escapeHtml(searchText) + '" data-intent="' + escapeHtml(intentKey) + '" style="--cc-accent:' + escapeHtml(cm.accent) + '">'
       + '<div class="cc-top">'
-      + '<div class="cc-i" style="background:' + escapeHtml(cm.bg) + '">' + escapeHtml(cm.icon) + '</div>'
+      + '<div class="cc-i" style="background:' + escapeHtml(cm.bg) + '">' + ((window.AFRO_CAT_ICONS && AFRO_CAT_ICONS[cm.key]) || escapeHtml(cm.icon)) + '</div>'
       + '<div class="cc-info"><div class="cc-n">' + escapeHtml(cm.name) + '</div>'
       + '<div class="cc-count">' + escapeHtml(countText) + '</div>'
       + '</div></div>'

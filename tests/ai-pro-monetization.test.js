@@ -20,6 +20,7 @@ function createStorage() {
 
 global.localStorage = createStorage();
 
+const usageLimits = require("../assets/js/ai/usage-limits.js");
 const pro = require("../assets/js/ai/pro-monetization.js");
 
 function testPlanCapabilities() {
@@ -31,6 +32,28 @@ function testPlanCapabilities() {
   assert.equal(pro.PLAN_CAPABILITIES.team.widgets, true);
   assert.equal(pro.PLAN_CAPABILITIES.team.apiAccess, true);
   assert.equal(pro.PLAN_CAPABILITIES.team.whiteLabel, true);
+}
+
+function testSharedAiBriefLimits() {
+  assert.equal(usageLimits.getAiBriefsPerDay("free"), 3);
+  assert.equal(pro.PLAN_CAPABILITIES.free.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("free"));
+  assert.equal(pro.PLAN_CAPABILITIES.pro.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("pro"));
+  assert.equal(pro.PLAN_CAPABILITIES.team.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("team"));
+
+  const underLimit = pro.evaluateFeature("ai_brief_basic", {
+    currentPlan: "free",
+    usage: { date: "2026-07-13", counts: { ai_brief_basic: 2 } }
+  });
+  assert.equal(underLimit.allowed, true);
+
+  const atLimit = pro.evaluateFeature("ai_brief_basic", {
+    currentPlan: "free",
+    usage: { date: "2026-07-13", counts: { ai_brief_basic: 3 } }
+  });
+  assert.equal(atLimit.allowed, false);
+  assert.equal(atLimit.reason, "limit_reached");
+
+  assert.equal(pro.planFromProfile({ subscription_tier: "pro" }), "pro");
 }
 
 function testPricingFlag() {
@@ -124,6 +147,7 @@ function testPromptPrivacyFiltering() {
 }
 
 testPlanCapabilities();
+testSharedAiBriefLimits();
 testPricingFlag();
 testCoreFreeGates();
 testProOnlyGates();

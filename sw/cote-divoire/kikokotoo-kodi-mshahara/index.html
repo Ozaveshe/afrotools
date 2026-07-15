@@ -35,9 +35,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -441,12 +440,12 @@
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Mabanda rasmi ya kila mwezi ya impôt brut huanza na msamaha wa kwanza wa <strong>XOF 75,000</strong> kisha hupanda kupitia <strong>16%, 21%, 24%, 28%</strong> na <strong>32%</strong>. ITS ya mwisho inayolipwa inaweza kupunguzwa kwa kiasi kikubwa na ratiba ya RICF, ambayo hutegemea idadi ya sehemu za familia za mlipakodi.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Côte d'Ivoire uses the XOF (West African CFA franc), fixed to the euro at 655.957. This calculator shows a <strong>baseline employer social-cost estimate</strong> using 7.7% retirement, 5% family benefits, 0.75% maternity and a default 2% accident-at-work rate. Verify specialized employer classifications directly with <a href="https://www.dgi.gouv.ci">dgi.gouv.ci</a> and <a href="https://www.cnps.ci">cnps.ci</a>.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Côte d'Ivoire uses the XOF (West African CFA franc), fixed to the euro at 655.957. This kikokotoo shows a <strong>baseline employer social-cost estimate</strong> using 7.7% retirement, 5% family benefits, 0.75% maternity and a default 2% accident-at-work rate. Verify specialized employer classifications directly with <a href="https://www.dgi.gouv.ci">dgi.gouv.ci</a> and <a href="https://www.cnps.ci">cnps.ci</a>.</p>
         </div>
       </div>
       <div class="ng-guide-col">
         <div class="ng-guide-card ng-guide-card-table">
-          <h3>Côte d'Ivoire ITS Bands 2025/26 (Monthly)</h3>
+          <h3>Côte d'Ivoire ITS Bands 2025/26 (kila mwezi)</h3>
           <div class="ng-bands-table-wrap"><div>
     <table class="ng-bands-table">
       <thead><tr>
@@ -902,7 +901,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -943,13 +942,13 @@ async function getAI() {
 - CNPS employee (6.3%, deductible): XOF ${Math.round(R.cnps).toLocaleString('fr-CI')}/mwezi
 - Mapato yanayotozwa kodi after CNPS: XOF ${Math.round(R.gross - R.cnps).toLocaleString('fr-CI')}/mwezi
 - Family parts: ${R.familyParts.toLocaleString('fr-CI')}
-- Monthly impôt brut: XOF ${Math.round(R.monthlyIB).toLocaleString('fr-CI')}
-- Monthly RICF: XOF ${Math.round(R.monthlyRICF).toLocaleString('fr-CI')}
-- Monthly ITS: XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}
+- kila mwezi impôt brut: XOF ${Math.round(R.monthlyIB).toLocaleString('fr-CI')}
+- kila mwezi RICF: XOF ${Math.round(R.monthlyRICF).toLocaleString('fr-CI')}
+- kila mwezi ITS: XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}
 - Halisi ya mwezi: XOF ${Math.round(R.netMonthly).toLocaleString('fr-CI')}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - Baseline employer social cost (15.45%): XOF ${Math.round(R.empCNPS).toLocaleString('fr-CI')}/mwezi
-- Total employer cost: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString('fr-CI')}/mwezi
+- jumla employer cost: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString('fr-CI')}/mwezi
 
 Toa: 1) Muhtasari wa wazi kwa Kiswahili of ITS position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Jibu kwa Kiswahili. Bila markdown.`;
 
@@ -961,7 +960,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of ITS position 2) Njia mbili maalum za 
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new hitilafu('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -994,7 +993,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Côte d'Ivoire. User: monthly gross XOF ${Math.round(R.gross).toLocaleString('fr-CI')}, halisi XOF ${Math.round(R.netMonthly).toLocaleString('fr-CI')}, ITS XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Côte d'Ivoire. User: kila mwezi gross XOF ${Math.round(R.gross).toLocaleString('fr-CI')}, halisi XOF ${Math.round(R.netMonthly).toLocaleString('fr-CI')}, ITS XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1097,5 +1096,5 @@ window._grossToNet = function(g) {
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

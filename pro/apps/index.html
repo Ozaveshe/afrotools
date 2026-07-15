@@ -16,13 +16,15 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
   <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
   <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
   <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
-  <script src="/assets/js/lib/pro-app-registry.js?v=ea9b223a"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
   <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
   <script src="/assets/js/lib/pro-architecture.js?v=921b3113"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
   <style>
     :root{
       --pad-bg:var(--color-bg,#f8fafd);
@@ -95,7 +97,7 @@
       .pad-metrics{grid-template-columns:1fr}
     }
   </style>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/pro/apps/">
 </head>
@@ -106,8 +108,8 @@
       <div class="pad-topbar">
         <div>
           <div class="pad-crumb"><a href="/pro/workspace/">Pro Workspace</a> / Apps</div>
-          <h1 class="pad-title">Pro App Directory</h1>
-          <p class="pad-subtitle">One registry view for AfroTools Pro workspaces. Payroll is the active account-backed product today. Tax, Books, HR, and the Daily OS layer are sellable preview modules with local, account-sync-pending, or review-only labels.</p>
+          <h1 class="pad-title">All Pro Apps</h1>
+          <p class="pad-subtitle">Every AfroTools Pro app in one place. Payroll is connected to your account today; apps marked "Early preview" keep your work on this device and say so clearly inside the app.</p>
         </div>
         <div class="pad-actions">
           <a class="pad-btn primary" href="/pro/workspace/">Back to Pro Workspace</a>
@@ -121,23 +123,23 @@
       </div>
 
       <div class="pad-warning">
-        Workspaces that are waiting on account sync or deeper setup stay clearly labelled. Users can still see the product direction without false filing, payment, team, or cloud-sync claims.
+        Apps that are still waiting on account sync or deeper setup are clearly labelled — nothing here pretends to file, pay, or sync before it really can.
       </div>
 
       <section class="pad-metrics" aria-label="Pro app summary">
-        <div class="pad-metric"><strong id="metricTotal">0</strong><span>Total Pro apps</span></div>
-        <div class="pad-metric"><strong id="metricActive">0</strong><span>Route-ready apps</span></div>
-        <div class="pad-metric"><strong id="metricShell">0</strong><span>Preview modules</span></div>
-        <div class="pad-metric"><strong id="metricPlanned">0</strong><span>Planned</span></div>
-        <div class="pad-metric"><strong id="metricBlocked">0</strong><span>Limited preview</span></div>
+        <div class="pad-metric"><strong id="metricTotal">0</strong><span>Pro apps</span></div>
+        <div class="pad-metric"><strong id="metricActive">0</strong><span>Apps you can open</span></div>
+        <div class="pad-metric"><strong id="metricShell">0</strong><span>Early previews</span></div>
+        <div class="pad-metric"><strong id="metricPlanned">0</strong><span>Coming soon</span></div>
+        <div class="pad-metric"><strong id="metricBlocked">0</strong><span>Limited previews</span></div>
       </section>
 
       <section class="pad-panel">
         <div class="pad-panel-head">
           <div>
             <div class="pad-kicker">App Launcher</div>
-            <h2 class="pad-h2">Control Pro Apps</h2>
-            <p class="pad-note">Open every Pro control workspace from one place and see which ones are active, sync-pending, or in preview.</p>
+            <h2 class="pad-h2">Business apps</h2>
+            <p class="pad-note">Open any workspace from one place and see what is ready, in early preview, or still limited.</p>
           </div>
         </div>
         <div class="pad-table-wrap">
@@ -146,10 +148,10 @@
               <tr>
                 <th>App</th>
                 <th>Route</th>
-                <th>Availability</th>
-                <th>Product status</th>
-                <th>Data surface</th>
-                <th>Next gap</th>
+                <th>Status</th>
+                <th>What it does today</th>
+                <th>Where your data lives</th>
+                <th>Coming next</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -161,9 +163,9 @@
       <section class="pad-panel">
         <div class="pad-panel-head">
           <div>
-            <div class="pad-kicker">Daily Operating Systems</div>
-            <h2 class="pad-h2">Next Ten Pro Apps</h2>
-            <p class="pad-note">These Pro-gated workspaces cover customer segments, paid workflows, competitor benchmarks, moats, and launch plans for deeper product passes.</p>
+            <div class="pad-kicker">Daily Operations</div>
+            <h2 class="pad-h2">Apps for daily operations</h2>
+            <p class="pad-note">Workspaces for sellers, planners, salons, schools, clinics, farms, and more. Early previews are open to explore now.</p>
           </div>
         </div>
         <div class="pad-table-wrap">
@@ -340,15 +342,13 @@
     }
 
     function statusLabel(status, fallback) {
+      var insights = window.AfroProHomeInsights || window.AfroTools && window.AfroTools.proHomeInsights;
+      if (insights && insights.humaneStatus) return insights.humaneStatus(status, fallback).label;
       status = String(status || "").toLowerCase();
-      if (status === "active") return "Active";
-      if (status === "shell") return "Workspace preview";
-      if (status === "setup needed") return "Setup needed";
-      if (status === "needs schema" || status === "needs cloud setup" || status === "needs account setup") return "Account setup pending";
-      if (status === "coming online") return "Coming online";
-      if (status === "planned") return "Planned";
-      if (status === "blocked") return "Not available";
-      return fallback || "Workspace preview";
+      if (status === "active") return "Ready";
+      if (status === "planned") return "Coming soon";
+      if (status === "blocked") return "Not available yet";
+      return fallback || "Early preview";
     }
 
     function setText(id, value) {
@@ -380,7 +380,7 @@
           "<tr>",
           "<td><div class=\"pad-app-name\">", escapeHtml(app.name), "</div><div class=\"pad-meta\">", escapeHtml(app.domain || ""), " / ", escapeHtml(app.owner || ""), "</div></td>",
           "<td><code class=\"pad-route\">", escapeHtml(app.route), "</code></td>",
-          "<td><span class=\"pad-pill ", statusClass(app.routeStatus), "\">", escapeHtml(statusLabel(app.routeStatus, app.shellState)), "</span><div class=\"pad-meta\">", escapeHtml(exists ? "Route exists" : "Route missing"), "</div></td>",
+          "<td><span class=\"pad-pill ", statusClass(app.routeStatus), "\">", escapeHtml(statusLabel(app.routeStatus, app.shellState)), "</span></td>",
           "<td><span class=\"pad-pill ", escapeHtml(app.statusTone || ""), "\">", escapeHtml(app.shellState || "Workspace preview"), "</span><div class=\"pad-meta\">", escapeHtml(app.buildStatus || ""), "</div></td>",
           "<td>", escapeHtml(app.dataSurface || app.dataModel || "Not connected"), "</td>",
           "<td>", escapeHtml(app.needsAttention || ""), "</td>",

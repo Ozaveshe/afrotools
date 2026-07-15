@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--fr-bg:#f4f8f5;--fr-ink:#0f172a;--fr-muted:#475569;--fr-accent:#0f766e;--fr-accent-2:#047857;--fr-accent-soft:#d1fae5;--fr-card:#ffffff;--fr-border:#dbe4de;--fr-shadow:0 18px 50px rgba(15,23,42,.08)}
 *{box-sizing:border-box}
@@ -154,7 +154,7 @@ main{display:block}
       </div>
     </div>
   </section>
-  <section class="fr-tax-tool"><div class="fr-tax-mount" id="tool-mount"><div class="fr-tax-loading"><div class="fr-tax-loading-card"><h3>Chargement du calculateur…</h3><p>Le module fiscal complet se charge ici. Si la version française échoue, vous pouvez toujours ouvrir la <a href="/tools/side-hustle-tax/">version anglaise</a>.</p></div></div></div></section>
+  <section class="fr-tax-tool"><div class="fr-tax-mount" id="tool-mount"><div class="fr-tax-loading"><div class="fr-tax-loading-card"><h3>Chargement du calculateur…</h3><p>Le module fiscal complet se charge ici. Si la version française échoue, vous pouvez toujours ouvrir la <a href="/fr/tools/side-hustle-tax/">version anglaise</a>.</p></div></div></div></section>
   <section class="fr-tax-article">
     <h2>Comprendre l'impôt sur activité secondaire</h2>
     <p>Les revenus secondaires sont imposables dans la plupart des pays africains. Freelance, livraison, vente en ligne, consulting ou création de contenu: si une activité génère un revenu, il faut l'intégrer dans votre déclaration.</p>
@@ -288,7 +288,7 @@ main{display:block}
       const doc = new DOMParser().parseFromString(html, 'text/html');
       doc.querySelectorAll('style').forEach(style => document.head.appendChild(style.cloneNode(true)));
       const sourceMain = doc.querySelector('main') || doc.body;
-      mount.innerHTML = sourceMain ? sourceMain.outerHTML : '<div class="fr-tax-loading-card"><h3>Chargement impossible</h3><p><a href="/tools/side-hustle-tax/">Ouvrir la version anglaise</a></p></div>';
+      mount.innerHTML = sourceMain ? sourceMain.outerHTML : '<div class="fr-tax-loading-card"><h3>Chargement impossible</h3><p><a href="/fr/tools/side-hustle-tax/">Ouvrir la version anglaise</a></p></div>';
       const externalScripts = [...new Set(Array.from(doc.querySelectorAll('script[src]')).map(script => script.getAttribute('src')).filter(src => src && !/googletagmanager/.test(src)))];
       for (const src of externalScripts) await loadScript(src);
       loadInlineScripts(doc);
@@ -297,7 +297,7 @@ main{display:block}
       observer.observe(mount, { subtree: true, childList: true, characterData: true });
       window.addEventListener('load', () => localizeNode(mount), { once: true });
     } catch (error) {
-      mount.innerHTML = '<div class="fr-tax-loading-card"><h3>Chargement impossible</h3><p>La version française du calculateur n’a pas pu se charger. <a href="/tools/side-hustle-tax/">Ouvrir la version anglaise</a>.</p></div>';
+      mount.innerHTML = '<div class="fr-tax-loading-card"><h3>Chargement impossible</h3><p>La version française du calculateur n’a pas pu se charger. <a href="/fr/tools/side-hustle-tax/">Ouvrir la version anglaise</a>.</p></div>';
     }
   }
   init();

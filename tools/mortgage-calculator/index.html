@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African Mortgage Calculator | AfroTools</title>
-<meta name="description" content="Calculate your mortgage repayments for Nigeria (NHF 6%), Kenya, South Africa (Prime 10.25%), Ghana, Botswana, Rwanda, Zambia, Senegal and 14 African countries. Monthly payments, total cost, amortisation schedule.">
+<title>African Mortgage Repayment Calculator | 14 Countries | AfroTools</title>
+<meta name="description" content="Estimate African mortgage repayments, total interest and a full amortisation schedule for Nigeria, Kenya, South Africa, Ghana and 14 countries. Free, no signup.">
 <meta property="og:title" content="African Mortgage Calculator — Free">
 <meta property="og:description" content="Calculate your monthly mortgage payment for Nigeria, Kenya, South Africa. See amortization schedule.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/mortgage-calculator.webp">
@@ -21,10 +21,9 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <script src="/assets/js/utils.js?v=869324ac" defer></script>
 
@@ -200,9 +199,13 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <link rel="stylesheet" href="/assets/css/financial-focus.css?v=ff735f2c">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="stylesheet" href="/assets/css/finance-calculator-refresh.css?v=8a18478d">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Mortgage Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Mortgage Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Mortgage Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Mortgage Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is the NHF (National Housing Fund) in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"NHF is a government scheme requiring 2.5% of salary contribution. After 6 months, you qualify for loans up to ₦50M at a subsidised 6% rate — much lower than commercial bank rates of 18–26%."}},{"@type":"Question","name":"How much deposit do I need for a mortgage in Africa?","acceptedAnswer":{"@type":"Answer","text":"Deposit requirements vary: Nigeria requires 10–30%, Kenya 10–20%, South Africa as low as 0% for qualifying buyers (FLISP), Ghana 20–30%. Higher deposits mean lower rates."}},{"@type":"Question","name":"Why are mortgage rates so high in Ghana?","acceptedAnswer":{"@type":"Answer","text":"Ghana's mortgage rates (25–32%) reflect the central bank's policy rate (29%) and high inflation. They're tied to T-bill rates. The Ghana Home Loans (GHL) scheme offers some relief for formal sector workers."}},{"@type":"Question","name":"What is the maximum mortgage term in Africa?","acceptedAnswer":{"@type":"Answer","text":"Nigeria: up to 30 years (NHF), 15–20 years (commercial). Kenya: up to 25 years. South Africa: up to 30 years. Ghana: up to 20 years. Most banks require full repayment before retirement age."}},{"@type":"Question","name":"Should I use a fixed or variable rate mortgage?","acceptedAnswer":{"@type":"Answer","text":"Most African mortgages are variable rate, tied to the central bank rate. Fixed rates offer predictability. In high-inflation environments like Nigeria, variable rates carry more risk — budget for rate increases."}},{"@type":"Question","name":"What other costs should I budget for beyond the mortgage?","acceptedAnswer":{"@type":"Answer","text":"Budget for: Stamp Duty (1.5–8% in most countries), legal fees (1–2%), valuation fees, estate agent commission (3–5%), and home insurance. Use the Stamp Duty Calculator for your country's exact costs."}}]}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/mortgage-calculator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mortgage-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-hypothecaire/">
@@ -333,11 +336,12 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       </div>
 
       <button type="button" class="calc-btn" onclick="calculate()">Calculate Mortgage →</button>
+      <p style="font-size:.7rem;color:#9ca3af;text-align:center;margin-top:10px;line-height:1.5">This is a planning estimate. Actual rates, fees and terms vary by lender, product and country — always confirm with your bank before you commit.</p>
     </div>
 
     <!-- Results -->
     <div class="card results" id="results">
-      <div class="result-hero">
+      <div class="result-hero" role="status" aria-live="polite">
         <div class="result-label">Monthly Repayment</div>
         <div class="result-value" id="monthlyPayment">—</div>
         <div class="result-sub" id="monthlyBreakdown">Principal + Interest</div>
@@ -524,9 +528,9 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
     <div>
       <span class="df-upgrade__kicker">Mortgage stress test</span>
       <h2>Turn the repayment into a buying checklist</h2>
-      <p>Use the calculator for monthly repayments and amortisation, then copy a home-buying brief before comparing lenders or making an offer.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: a mortgage brief with property price, deposit, rate, affordability, and verification tasks.</li><li>Use saved scenarios above when comparing neighbourhoods, lenders, or rent-versus-buy options.</li><li>Freshness note: mortgage rates, taxes, insurance, service charges, valuation fees, and transfer costs change by market and lender.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning estimate only. Confirm the lender quote, APR, fees, taxes, title checks, insurance, valuation, and legal process before committing.</p>
+      <p>Not sure how to get the most from the Mortgage Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Mortgage Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
     </div>
     <form class="df-form" data-df-form="mortgage-calculator">
       <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="South Africa">South Africa</option><option value="Ghana">Ghana</option></select></label>
@@ -534,14 +538,14 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
       <label>Deposit percent<input name="deposit" type="number" value="20" min="0" max="100" step="any" aria-label="Deposit percent"></label>
       <label>Annual rate percent<input name="rate" type="number" value="15" min="0" step="any" aria-label="Annual rate percent"></label>
       <button type="submit">Create mortgage brief</button>
-      <output class="df-result" data-df-result="mortgage-calculator" data-df-base="Mortgage brief ready. Calculate above, then verify lender quote, fees, taxes, title checks, insurance, valuation, and legal process before committing." aria-live="polite">Mortgage brief ready. Calculate above, then verify lender quote, fees, taxes, title checks, insurance, valuation, and legal process before committing.</output>
+      <output class="df-result" data-df-result="mortgage-calculator" data-df-base="Mortgage Calculator — enter your details above to see your result." aria-live="polite">Mortgage Calculator — enter your details above to see your result.</output>
       <div class="df-actions"><button type="button" data-df-copy="mortgage-calculator">Copy brief</button><a class="df-action-link" href="#results">View repayment</a></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="mortgage-calculator-faq-title">
   <h2 id="mortgage-calculator-faq-title">Mortgage Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Calculate repayments, compare saved scenarios, and copy the mortgage brief before speaking to a lender, estate agent, or lawyer.</p></details><details><summary>What should I verify?</summary><p>Confirm APR, arrangement fees, valuation, legal fees, property tax, title status, insurance, service charges, and early-repayment rules.</p></details><details><summary>Is this official?</summary><p>No. It is a planning estimate, not a lender quote, property valuation, legal advice, tax advice, or mortgage approval.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How do I use the Mortgage Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Mortgage Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Mortgage Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Mortgage Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
 </section>
 <section class="df-upgrade" data-tool-verification-panel="mortgage-calculator" aria-labelledby="mortgage-verification-title">
   <div class="df-upgrade__card">
@@ -556,7 +560,14 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 </section>
 
 <afro-business-cta tool-name="African Mortgage Calculator" prospect-segment="property-finance" save-note="Calculate and copy a mortgage brief before comparing lenders or requesting a custom housing-finance widget."></afro-business-cta>
-<afro-related-tools category="legal" current="mortgage-calculator"></afro-related-tools>
+<afro-related-tools category="financial" current="mortgage-calculator" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 
 <script>
@@ -668,7 +679,7 @@ function renderLoanTypes() {
   const c = COUNTRIES[currentCountry];
   const wrap = document.getElementById('loanTypes');
   wrap.innerHTML = c.loanTypes.map((lt, i) => `
-    <div class="lt-btn ${i === currentLoanType ? 'active' : ''}" onclick="selectLoanType(${i}, this)">
+    <div class="lt-btn ${i === currentLoanType ? 'active' : ''}" role="button" tabindex="0" aria-pressed="${i === currentLoanType}" onclick="selectLoanType(${i}, this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectLoanType(${i}, this);}">
       <div class="lt-name">${lt.name}</div>
       <div class="lt-rate">${lt.rate}% — ${lt.desc}</div>
     </div>`).join('');
@@ -676,8 +687,9 @@ function renderLoanTypes() {
 
 function selectLoanType(idx, el) {
   currentLoanType = idx;
-  document.querySelectorAll('.lt-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lt-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
   el.classList.add('active');
+  el.setAttribute('aria-pressed','true');
   document.getElementById('rate').value = COUNTRIES[currentCountry].loanTypes[idx].rate;
 }
 
@@ -895,7 +907,7 @@ async function sendAI(){
 }
 </script>
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/pages/financial-focus.js?v=22bd406b" defer></script>
 </body>
 </html>

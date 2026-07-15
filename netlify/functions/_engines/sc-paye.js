@@ -5,6 +5,12 @@ const { createEngine } = require('./_factory');
 module.exports = createEngine({
   country: 'SC', countryName: 'Seychelles', currency: 'SCR',
   source: 'Seychelles Revenue Commission (SRC)',
+  /* source-confidence-stamp:start */
+  lastUpdated: '2026-03-01',
+  sourceCheckedOn: '2025-07-01',
+  nextReviewDate: '2025-09-29',
+  /* source-confidence-stamp:end */
+
   isMonthly: true,
   bands: [[8555.50,0],[1444.50,0.15],[73333,0.20],[Infinity,0.30]],
   socialSecurity: [{ key: 'spf', label: 'SPF Pension (5%)', rate: 0.05 }],

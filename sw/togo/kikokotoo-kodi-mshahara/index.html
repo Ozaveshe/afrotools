@@ -30,9 +30,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -463,7 +462,7 @@
       <div class="ng-faq-col">
         <details class="ng-faq-item" open>
           <summary>Mabanda ya kodi ya hatua ya OTR ya Togo kwa 2025/26 ni yapi?</summary>
-          <p lang="en" data-explicit-language-fallback="true">For salary income, OTR applies the annual barème to net taxable pay: 0% up to XOF 900,000; 3% from XOF 900,001 to 3,000,000; 10% from XOF 3,000,001 to 6,000,000; 15% from XOF 6,000,001 to 9,000,000; 20% from XOF 9,000,001 to 12,000,000; 25% from XOF 12,000,001 to 15,000,000; 30% from XOF 15,000,001 to 20,000,000; and 35% above XOF 20,000,000.</p>
+          <p lang="en" data-explicit-language-fallback="true">For salary income, OTR applies the kila mwaka barème to net taxable pay: 0% up to XOF 900,000; 3% from XOF 900,001 to 3,000,000; 10% from XOF 3,000,001 to 6,000,000; 15% from XOF 6,000,001 to 9,000,000; 20% from XOF 9,000,001 to 12,000,000; 25% from XOF 12,000,001 to 15,000,000; 30% from XOF 15,000,001 to 20,000,000; and 35% above XOF 20,000,000.</p>
         </details>
         <details class="ng-faq-item">
           <summary>Je, mchango wa CNSS unapunguzwa kutoka mapato ya OTR yanayotozwa kodi?</summary>
@@ -471,13 +470,13 @@
         </details>
         <details class="ng-faq-item">
           <summary>Kodi za PAYE za Togo hukokotolewa na kulipwa lini?</summary>
-          <p lang="en" data-explicit-language-fallback="true">Togo PAYE is calculated annually based on total employment income for the fiscal year. Employers withhold PAYE monthly from salaries and remit to OTR by the 15th of the following month. Annual reconciliation occurs at year-end.</p>
+          <p lang="en" data-explicit-language-fallback="true">Togo PAYE is calculated annually based on jumla employment income for the fiscal year. Employers withhold PAYE kila mwezi from salaries and remit to OTR by the 15th of the following month. kila mwaka reconciliation occurs at year-end.</p>
         </details>
       </div>
       <div class="ng-faq-col">
         <details class="ng-faq-item">
           <summary>Jumla ya kiwango cha mchango wa CNSS nchini Togo ni kipi?</summary>
-          <p lang="en" data-explicit-language-fallback="true">For salaried workers, the Pensheni ya CNSS branch is 21.5% of salary in total: 4% paid by the employee and 17.5% by the employer.</p>
+          <p lang="en" data-explicit-language-fallback="true">For salaried workers, the Pensheni ya CNSS branch is 21.5% of salary in jumla: 4% paid by the employee and 17.5% by the employer.</p>
         </details>
         <details class="ng-faq-item">
           <summary>Je, kuna makato mengine ya lazima nchini Togo?</summary>
@@ -974,7 +973,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -987,7 +986,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
   const text = `Muhtasari wa PAYE wa Togo: Gross XOF ${Math.round(RESULT.annual).toLocaleString()}/mwaka → Halisi XOF ${Math.round(RESULT.netAnnual).toLocaleString()}/mwaka (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/togo/tg-paye`;
@@ -1017,12 +1016,12 @@ async function getAI() {
 - CNSS employee (${pct(R.cnssRate)}): XOF ${Math.round(R.cnss).toLocaleString()}/mwaka
 - Professional deduction: XOF ${Math.round(R.professionalDeduction).toLocaleString()}/mwaka
 - Unafuu wa familia: XOF ${Math.round(R.familyRelief).toLocaleString()}/mwaka
-- Annual net taxable salary: XOF ${Math.round(R.taxableIncome).toLocaleString()}/mwaka
-- Annual OTR: XOF ${Math.round(R.annualOTR).toLocaleString()}
+- kila mwaka net taxable salary: XOF ${Math.round(R.taxableIncome).toLocaleString()}/mwaka
+- kila mwaka OTR: XOF ${Math.round(R.annualOTR).toLocaleString()}
 - Halisi ya mwaka: XOF ${Math.round(R.netAnnual).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - CNSS ya Mwajiri (17.5%): XOF ${Math.round(R.employerCnssCost).toLocaleString()}/mwaka
-- Total employer cost: XOF ${Math.round(R.totalEmployerCostAnnual).toLocaleString()}/mwaka
+- jumla employer cost: XOF ${Math.round(R.totalEmployerCostAnnual).toLocaleString()}/mwaka
 
 Toa: 1) Muhtasari wa wazi kwa Kiswahili of Togo salary-tax position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Jibu kwa Kiswahili. Bila markdown wala nyota.`;
 
@@ -1034,7 +1033,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of Togo salary-tax position 2) Njia mbil
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new hitilafu('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1166,5 +1165,5 @@ window._grossToNet = function(g) {
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

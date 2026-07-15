@@ -19,7 +19,7 @@ Priority is based on the three scores plus current exposure.
 | R1 | P1 | Auth/session state is split across HttpOnly cookies, Bearer compatibility, direct Supabase browser auth, and legacy localStorage caches | 5 | 4 | 4 |
 | R2 | P1 | Supabase migrations target both AUTH and legacy DATA projects, including a documented cross-instance trigger caveat | 5 | 4 | 5 |
 | R3 | P1 | High-stakes AI advisor context contains hard-coded rates and domain facts outside the source-confidence ledgers | 5 | 3 | 3 |
-| R4 | P1 | `/all-tools/` has no useful tool directory when JavaScript is disabled | 4 | 5 | 2 |
+| R4 | Mitigated | `/all-tools/` and related-tool navigation are generated as crawlable HTML, with JavaScript retained as progressive enhancement | 1 | 5 | 1 |
 | R5 | P3 | Canonical public counters are enforced, but specialized feature registries still need explicit collection migration before they can publish totals | 2 | 2 | 2 |
 | R6 | P1 | Consent-enabled analytics can send raw search fragments and error-message text | 4 | 3 | 2 |
 | R7 | P2 | The build mutates committed source/output in place and spans thousands of generated files | 4 | 5 | 3 |
@@ -117,27 +117,30 @@ Smallest safe mitigation: replace numeric domain facts in prompts with
 structured, source-labeled inputs from the same versioned engine/data contract
 used by the result.
 
-## R4: JavaScript-Only All-Tools Directory
+## R4: JavaScript-Only All-Tools Directory (Mitigated 2026-07-13)
 
-Evidence: in a real Chromium context at 390x844 with JavaScript disabled,
-`/all-tools/` rendered its title and explanatory shell but only one link and
-zero tool cards. The homepage under the same conditions retained 175 links and
-the `2,606+` count.
+Evidence: `scripts/build-progressive-directories.js` now generates every live
+English row from `data/tool-directory.json` into category-grouped links on
+`/all-tools/`. `scripts/inject-internal-links.js` also writes four to six
+related links into every English directory page, and the related-tools web
+component reads that page-local slice instead of requiring the full shared
+recommendation dataset.
 
-User risk: low-bandwidth users, failed bundles, restrictive browsers, and
-crawlers that do not execute the directory script cannot browse tools from the
-primary directory route.
+Residual risk: a generator failure could leave committed output stale, so the
+progressive-directory contract test compares the rendered link total with the
+registry rather than a hard-coded count.
 
 Reproduce:
 
 ```bash
 node tests/support/static-server.js
-# Open http://127.0.0.1:4173/all-tools/ with JavaScript disabled.
+node tests/progressive-directories.test.js
+# View source for http://127.0.0.1:4173/all-tools/ and representative tool pages.
 ```
 
-Smallest safe mitigation: generate a compact initial list or category index
-from `data/tool-directory.json`, then let JavaScript enhance filtering and
-pagination.
+Mitigation: complete. The raw HTML contains the complete directory and related
+links; JavaScript replaces the directory list with search, filtering, richer
+cards, and pagination only after the registry loads successfully.
 
 ## R5: Residual Specialized-Registry Drift
 

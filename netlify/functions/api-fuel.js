@@ -148,6 +148,11 @@ exports.handler = async function (event) {
     }
     return jsonResponse(200, {
       timestamp: data.timestamp,
+      source: data.source || country.source || '',
+      source_state: data.source_state || country.source_state || '',
+      source_note: data.source_note || country.source_note || '',
+      served_from: data.served_from,
+      as_of: data.as_of || data.timestamp || null,
       country,
     }, rlHeaders);
   }
@@ -200,6 +205,12 @@ exports.handler = async function (event) {
 
   return jsonResponse(200, {
     timestamp: data.timestamp,
+    source: data.source || '',
+    source_state: data.source_state || '',
+    source_note: data.source_note || '',
+    source_reviewed_at: data.source_reviewed_at || '',
+    served_from: data.served_from,
+    as_of: data.as_of || data.timestamp || null,
     summary,
     countries,
   }, rlHeaders);

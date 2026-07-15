@@ -4,7 +4,7 @@
  *
  * CACHE_VERSION is stamped by `npm run build`; changing it purges old caches.
  */
-const CACHE_VERSION = '1df15691';
+const CACHE_VERSION = '6d7afba6';
 const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
@@ -14,16 +14,18 @@ const PRECACHE = [
   '/assets/css/design-system.min.css',
   '/assets/css/tokens.min.css',
   '/assets/css/skeleton.css',
-  '/assets/js/components/tool-registry.js',
-  '/assets/js/components/navbar.min.js?v=43e4d9b2',
-  '/assets/js/components/footer.min.js',
   '/assets/js/utils.js',
   '/assets/js/lib/error-boundary.js',
   '/assets/img/logo-mark.svg',
   '/assets/img/icon-192.svg',
-  '/assets/img/icon-512.svg',  '/assets/js/bundles/core.a7c76d68.min.js',
+  '/assets/img/icon-512.svg',
+  // BUILD-GENERATED PRECACHE START
+  '/assets/js/components/navbar.min.js?v=962eaf1b',
+  '/assets/js/components/footer.min.js?v=dfb30911',
+  '/assets/js/bundles/core.a7c76d68.min.js',
   '/assets/js/bundles/tool-page.315f0428.min.js',
   '/assets/js/bundles/chat.88bd45ff.min.js',
+  // BUILD-GENERATED PRECACHE END
 ];
 
 self.addEventListener('install', e => {

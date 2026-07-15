@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Real Return After Inflation Calculator — Africa | AfroTools</title>
-<meta name="description" content="Calculate your real investment return after inflation using the Fisher equation. Know if your savings are actually growing purchasing power across 54 African countries.">
+<meta name="description" content="Calculate your real return after inflation with the Fisher equation. See if your savings beat inflation or lose value across 54 African countries.">
 <meta property="og:title" content="Real Return After Inflation Calculator | AfroTools">
 <meta property="og:description" content="Calculate your real investment return after inflation using the Fisher equation. Know if your savings are actually growing purchasing power across 54 African countries.">
 <meta property="og:url" content="https://afrotools.com/tools/real-return/">
@@ -38,7 +38,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -94,39 +94,9 @@ details[open] summary::after{content:'\2212'}
 <meta name="twitter:description" content="Calculate your real investment return after inflation using the Fisher equation. Know if your savings are actually growing purchasing power across 54 African countries.">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "See whether an investment beats inflation?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Compare nominal return, inflation, fees, and tax to estimate the real return that matters."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "https://www.imf.org/en/Publications/WEO/weo-database/2024/October"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/real-return/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Real Return After Inflation?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Real Return After Inflation then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Real Return After Inflation?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Real Return After Inflation free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is the Fisher equation?","acceptedAnswer":{"@type":"Answer","text":"The Fisher equation states: Real Rate = ((1 + Nominal Rate) / (1 + Inflation Rate)) - 1. The simplified version (Nominal - Inflation) is an approximation. For high-inflation countries like Nigeria (32%) and Ghana (22%), the full equation gives a more accurate answer than the approximation."}},{"@type":"Question","name":"Why do high nominal rates in Africa not always mean high real returns?","acceptedAnswer":{"@type":"Answer","text":"Because inflation erodes purchasing power. A Nigerian fixed deposit earning 20% sounds great — but with 32% inflation, your real return is actually -9.1%. Your money is worth less in real terms, even though the number grew. This is why real return analysis is critical in high-inflation environments."}},{"@type":"Question","name":"Which African countries currently offer positive real returns?","acceptedAnswer":{"@type":"Answer","text":"Countries with moderate inflation and decent rates tend to offer positive real returns: Kenya (4.5% inflation, 10-15% FD rates = ~5-10% real), Rwanda (5% inflation, 7-10% rates), Morocco (2.5% inflation, 3-3.5% rates). Nigeria, Ghana, and Ethiopia typically show negative real returns even on FD rates."}},{"@type":"Question","name":"What is a \"wealth preservation score\"?","acceptedAnswer":{"@type":"Answer","text":"Our score rates how well your investment preserves wealth: 80-100 = excellent (high positive real return), 60-79 = good (modest positive real return), 40-59 = neutral (near-zero real return), 20-39 = poor (small negative real return), 0-19 = very poor (large negative real return). It helps you quickly assess your investment's effectiveness."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/real-return/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/real-return/">
@@ -198,7 +168,7 @@ details[open] summary::after{content:'\2212'}
     </div>
     <button type="button" class="btn-calc" onclick="calcRealReturn()">Calculate Real Return</button>
 
-    <div class="results" id="rr-results">
+    <div class="results" id="rr-results" aria-live="polite">
       <div class="res-hero" id="rr-hero">
         <div class="res-label">Real Annual Return (After Inflation)</div>
         <div class="res-val" id="rr-real"></div>
@@ -212,6 +182,7 @@ details[open] summary::after{content:'\2212'}
         <div class="metric"><div class="metric-val" id="rr-wealth-score"></div><div class="metric-label">Wealth Preservation Score</div></div>
       </div>
       <div id="rr-verdict"></div>
+      <p class="hint" style="margin-top:1rem;text-align:center">Real return uses the Fisher equation: (1 + nominal) ÷ (1 + inflation) − 1. This is a planning estimate, not financial advice — confirm official rates before you rely on it.</p>
     </div>
   </div>
 
@@ -223,9 +194,9 @@ details[open] summary::after{content:'\2212'}
     <div>
       <span class="df-upgrade__kicker">Inflation-adjusted return</span>
       <h2>See whether an investment beats inflation</h2>
-      <p>Compare nominal return, inflation, fees, and tax to estimate the real return that matters.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Result: real-return check ready with nominal return, inflation drag, fees, and purchasing-power warning.</li><li>Methodology: use the fields to create a local planning summary with clear assumptions.</li><li>Source note: confirm live prices, official rules, or platform terms before acting.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Financial disclaimer: this is educational, not investment advice. Confirm rates, fees, tax, and inflation source. Sources/reference: <a href="https://www.imf.org/en/Publications/WEO/weo-database/2024/October" target="_blank" rel="noopener">IMF inflation data</a></p>
+      <p>Not sure how to get the most from the Real Return After Inflation? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Real Return After Inflation takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
     </div>
     <form class="df-form" data-df-form="real-return">
       <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
@@ -234,14 +205,14 @@ details[open] summary::after{content:'\2212'}
       <label>Inflation percent<input name="inflation" type="number" value="24" min="0" step="any" aria-label="Inflation percent"></label>
       <label>Fees percent<input name="fees" type="number" value="1" min="0" step="any" aria-label="Fees percent"></label>
       <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="real-return" data-df-base="Result: real-return check ready with nominal return, inflation drag, fees, and purchasing-power warning." aria-live="polite">Result: real-return check ready with nominal return, inflation drag, fees, and purchasing-power warning.</output>
+      <output class="df-result" data-df-result="real-return" data-df-base="Real Return After Inflation — enter your details above to see your result." aria-live="polite">Real Return After Inflation — enter your details above to see your result.</output>
       <div class="df-actions"><button type="button" data-df-copy="real-return">Copy summary</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="real-return-faq-title">
   <h2 id="real-return-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>See whether an investment beats inflation?</summary><p>Compare nominal return, inflation, fees, and tax to estimate the real return that matters.</p></details><details><summary>What should I verify?</summary><p>Financial disclaimer: this is educational, not investment advice. Confirm rates, fees, tax, and inflation source.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm prices, rules, terms, and source documents before acting.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How do I use the Real Return After Inflation?</summary><p>Enter your amounts, rates and dates in the fields above. The Real Return After Inflation then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Real Return After Inflation?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Real Return After Inflation free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
 </section>
     <div class="faq-item">
       <details><summary>What is the Fisher equation?</summary><div class="faq-a">The Fisher equation states: Real Rate = ((1 + Nominal Rate) / (1 + Inflation Rate)) - 1. The simplified version (Nominal - Inflation) is an approximation. For high-inflation countries like Nigeria (32%) and Ghana (22%), the full equation gives a more accurate answer than the approximation.</div></details>
@@ -257,7 +228,14 @@ details[open] summary::after{content:'\2212'}
     </div>
   </div>
 </div>
-
+<afro-related-tools data-ssr="1" category="fintech" current="real-return">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script>
 function fillRRInflation(){
@@ -302,6 +280,7 @@ function calcRealReturn(){
   document.getElementById('rr-results').classList.add('on');
 }
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

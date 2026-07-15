@@ -89,6 +89,11 @@ module.exports = {
   currency: 'EGP',
   regimes: ['STANDARD'],
   lastUpdated: '2026-04-06',
+  /* source-confidence-stamp:start */
+  sourceCheckedOn: '2025-03-01',
+  nextReviewDate: '2025-05-30',
+  /* source-confidence-stamp:end */
+
   source: 'Egyptian Tax Authority (ETA)',
 
   calculate(params) {

@@ -32,9 +32,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -100,6 +99,7 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/benin/bj-paye" />
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 </head>
 <script>
 window.addEventListener('load', function() {
@@ -216,7 +216,7 @@ window.addEventListener('load', function() {
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button type="button" class="per-btn on" onclick="setPeriod('annual',this)">Annual</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('annual',this)">annuel</button>
             <button type="button" class="per-btn" onclick="setPeriod('monthly',this)">Equivalent mensuel</button>
           </div>
           <div id="resContent"></div>
@@ -375,7 +375,7 @@ window.addEventListener('load', function() {
 <div class="modal-bg" id="pdfModal">
   <div class="modal">
     <div id="modalForm">
-      <h3>📄 Download Your PAYE Summary</h3>
+      <h3>📄 télécharger Your PAYE Summary</h3>
       <p>Entrez votre email pour obtenir un PDF détaillé — we'll notify you when Bénin tax rates change.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
@@ -396,7 +396,7 @@ window.addEventListener('load', function() {
       <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
       <div class="big-check">✅</div>
       <h4>PDF opening now</h4>
-      <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
+      <p>Click <strong>enregistrer as PDF</strong> in the imprimer dialog.</p>
       <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
     </div>
   </div>
@@ -411,7 +411,7 @@ window.addEventListener('load', function() {
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
         </div>
         <div>
-          <h3 class="ng-save-title">Save this calculator</h3>
+          <h3 class="ng-save-title">enregistrer this calculateur</h3>
           <p class="ng-save-desc">Bookmark Bénin PAYE to your personal dashboard for quick access anytime.</p>
         </div>
       </div>
@@ -438,17 +438,17 @@ window.addEventListener('load', function() {
     <div class="ng-guide-grid">
       <div class="ng-guide-col">
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Bénin's PAYE system is administered by the <strong>DGI</strong> (Direction Générale des Impôts) using seven progressive annual bands from 0% to 25%. The tax-free threshold is XOF 300,000 per year (XOF 25,000 per month). Bénin uses the West African CFA Franc (XOF), shared with other UEMOA member states including Sénégal and Côte d'Ivoire.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Bénin's PAYE system is administered by the <strong>DGI</strong> (Direction Générale des Impôts) using seven progressive annuel bands from 0% to 25%. The tax-free threshold is XOF 300,000 per year (XOF 25,000 per month). Bénin uses the West African CFA Franc (XOF), shared with other UEMOA member states including Sénégal and Côte d'Ivoire.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Employées contribute to <strong>CNPS</strong> (Caisse Nationale de Protection Sociale) at 2.5% of gross salary, with employers contributing 9.5%. CNPS contributions are deductible from taxable income before DGI rates are applied. PAYE is remitted monthly to the DGI, while employer payroll filings can also include payroll items such as VPS that are not modeled in this employée take-home estimate.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Employées contribute to <strong>CNPS</strong> (Caisse Nationale de Protection Sociale) at 2.5% of gross salary, with employers contributing 9.5%. CNPS contributions are deductible from taxable income before DGI rates are applied. PAYE is remitted mensuel to the DGI, while employer payroll filings can also include payroll items such as VPS that are not modeled in this employée take-home estimate.</p>
         </div>
       </div>
       <div class="ng-guide-col">
         <div class="ng-guide-card ng-guide-card-table">
           <h3>Bénin Tranches d'Imposition</h3>
           <div class="ng-bands-table-wrap"><table class="ng-bands-table">
-      <thead><tr><th>Annual Income (XOF)</th><th>Rate</th><th>Tax on Band</th></tr></thead>
+      <thead><tr><th>annuel Income (XOF)</th><th>Rate</th><th>Tax on Band</th></tr></thead>
       <tbody>
         <tr><td>XOF 0 – 300,000</td><td>0%</td><td>XOF 0</td></tr>
         <tr><td>XOF 300,001 – 600,000</td><td>2%</td><td>Up to XOF 6,000</td></tr>
@@ -463,7 +463,7 @@ window.addEventListener('load', function() {
       </div>
     </div>
     <div class="ng-guide-footer-note">
-      <p>The table below shows Bénin's 2025/26 annual DGI income tax bands. Note that Bénin's top rate is 25% — lower than many West African peers.</p>
+      <p>The table below shows Bénin's 2025/26 annuel DGI income tax bands. Note that Bénin's top rate is 25% — lower than many West African peers.</p>
     </div>
   </div>
 </section>
@@ -479,7 +479,7 @@ window.addEventListener('load', function() {
       <div class="ng-faq-col">
         <details class="ng-faq-item" open>
           <summary>Quelles sont les Bénin DGI progressive tax bands for 2025/26?</summary>
-          <p>Seven annual bands: 0% on first XOF 300,000; 2% on XOF 300,001–600,000; 5% on XOF 600,001–1,200,000; 10% on XOF 1,200,001–2,400,000; 15% on XOF 2,400,001–4,800,000; 20% on XOF 4,800,001–9,600,000; 25% above XOF 9,600,000. All rates apply to taxable income after CNPS déduction.</p>
+          <p>Seven annuel bands: 0% on first XOF 300,000; 2% on XOF 300,001–600,000; 5% on XOF 600,001–1,200,000; 10% on XOF 1,200,001–2,400,000; 15% on XOF 2,400,001–4,800,000; 20% on XOF 4,800,001–9,600,000; 25% above XOF 9,600,000. All rates apply to taxable income after CNPS déduction.</p>
         </details>
         <details class="ng-faq-item">
           <summary>Is CNPS contribution deductible from DGI taxable income?</summary>
@@ -487,7 +487,7 @@ window.addEventListener('load', function() {
         </details>
         <details class="ng-faq-item">
           <summary>Quand les Bénin PAYE impôts sont-ils calcules et payes ?</summary>
-          <p>Bénin PAYE is calculated annually based on total employment income for the fiscal year. Employers withhold PAYE monthly from salariés and remit to DGI by the 15th of the following month. Annual reconciliation occurs at year-end.</p>
+          <p>Bénin PAYE is calculated annually based on total employment income for the fiscal year. Employers withhold PAYE mensuel from salariés and remit to DGI by the 15th of the following month. annuel reconciliation occurs at year-end.</p>
         </details>
       </div>
       <div class="ng-faq-col">
@@ -497,11 +497,11 @@ window.addEventListener('load', function() {
         </details>
         <details class="ng-faq-item">
           <summary>Are there any other mandatory déductions in Bénin?</summary>
-          <p>Beyond DGI income tax and CNPS, official Bénin payroll filings can also include employer-side payroll items such as VPS. This calculator focuses on employée DGI and CNPS, plus employer CNPS cost, so contract-specific déductions such as health insurance or union dues are not included.</p>
+          <p>Beyond DGI income tax and CNPS, official Bénin payroll filings can also include employer-side payroll items such as VPS. This calculateur focuses on employée DGI and CNPS, plus employer CNPS cost, so contract-specific déductions such as health insurance or union dues are not included.</p>
         </details>
         <details class="ng-faq-item">
           <summary>A quoi correspond le salaire du calculateur en equivalent mensuel ?</summary>
-          <p>The annual gross salary you enter is divided by 12 to show a monthly equivalent salary. However, Bénin income tax is calculated on annual total income, not monthly bands like some other countries. Use the monthly equivalent for salary planning purposes only.</p>
+          <p>The annuel gross salary you saisissez is divided by 12 to show a mensuel equivalent salary. However, Bénin income tax is calculated on annuel total income, not mensuel bands like some other countries. Use the mensuel equivalent for salary planning purposes only.</p>
         </details>
       </div>
     </div>
@@ -510,6 +510,8 @@ window.addEventListener('load', function() {
 
 <!-- TOOL_VERIFICATION_PANEL_START -->
 <section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="bj-paye-fr">
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="paye-bj-source" data-source-meta-compact="true"></div>
   <div class="container">
     <div class="tool-verification-card">
       <div class="tool-verification-head">
@@ -1020,17 +1022,17 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   const url  = URL.createObjectURL(blob);
   const w    = window.open(url,'_blank');
   if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.print()}catch(e){}},1200);
+    w.addEventListener('load',()=>{setTimeout(()=>{w.imprimer();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.imprimer()}catch(e){}},1200);
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── partager ─────────────────────────────────────────────────────
 function shareResult() {
-  if (!RESULT) return;
-  const text = `My Benin PAYE breakdown: Gross XOF ${Math.round(RESULT.annual).toLocaleString()}/year → Take-home XOF ${Math.round(RESULT.netAnnual).toLocaleString()}/year (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/benin/bj-paye`;
-  if (navigator.share) {
-    navigator.share({title:'My Benin PAYE',text,url:'https://afrotools.com/benin/bj-paye'});
+  if (!résultat) return;
+  const text = `My Benin PAYE breakdown: Gross XOF ${Math.round(résultat.annuel).toLocaleString()}/year → Take-home XOF ${Math.round(résultat.netAnnual).toLocaleString()}/year (${pct(résultat.effectiveRate)} effective rate). Calculated at afrotools.com/benin/bj-paye`;
+  if (navigator.partager) {
+    navigator.partager({title:'My Benin PAYE',text,url:'https://afrotools.com/benin/bj-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('bjPartagerBtn');
@@ -1041,8 +1043,8 @@ function shareResult() {
 
 // ── AI ADVISOR ────────────────────────────────────────────────
 async function getAI() {
-  if (!RESULT) return;
-  const R   = RESULT;
+  if (!résultat) return;
+  const R   = résultat;
   const btn = document.getElementById('aiBtn');
   const respEl = document.getElementById('aiResp');
 
@@ -1051,11 +1053,11 @@ async function getAI() {
   document.getElementById('aiStatus').style.display = 'none';
 
   const prompt = `Benin PAYE analysis (2025/26, DGI):
-- Annual gross: XOF ${Math.round(R.annual).toLocaleString()}
+- annuel gross: XOF ${Math.round(R.annuel).toLocaleString()}
 - CNPS employee (${pct(R.cnpsRate)}): XOF ${Math.round(R.cnps).toLocaleString()}/year
-- Taxable income after CNPS: XOF ${Math.round(R.annual - R.cnps).toLocaleString()}/year
-- Annual DGI: XOF ${Math.round(R.annualDGI).toLocaleString()}
-- Annual take-home: XOF ${Math.round(R.netAnnual).toLocaleString()}
+- Taxable income after CNPS: XOF ${Math.round(R.annuel - R.cnps).toLocaleString()}/year
+- annuel DGI: XOF ${Math.round(R.annualDGI).toLocaleString()}
+- annuel take-home: XOF ${Math.round(R.netAnnual).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - Employer CNPS (9.5%): XOF ${Math.round(R.empCNPSCost).toLocaleString()}/year
 - Total employer cost: XOF ${Math.round(R.totalEmployerCostAnnual).toLocaleString()}/year
@@ -1070,7 +1072,7 @@ Give: 1) Plain English summary of Benin PAYE position 2) Two specific legal ways
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new erreur('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Unable to generate analysis.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1103,7 +1105,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools AI Tax Advisor, Benin. User: annual gross XOF ${Math.round(R.annual).toLocaleString()}, take-home XOF ${Math.round(R.netAnnual).toLocaleString()}, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        system:`AfroTools AI Tax Advisor, Benin. User: annuel gross XOF ${Math.round(R.annuel).toLocaleString()}, take-home XOF ${Math.round(R.netAnnual).toLocaleString()}, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1112,10 +1114,10 @@ async function sendChat() {
     aiEl.textContent = text;
     CHAT_HISTORY.push({role:'assistant',content:text});
     msgs.scrollTop = msgs.scrollHeight;
-  } catch { aiEl.textContent='Network error. Please try again.'; }
+  } catch { aiEl.textContent='Network erreur. Please try again.'; }
 }
 
-document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='saisissez')calculer();});
 
 // Net-to-Brut : register forward function
 window._grossToNet = function(g) {

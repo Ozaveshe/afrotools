@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Farm Profit/Loss Calculator — 54 African Countries | AfroTools</title>
-<meta name="description" content="Free farm profitability calculator for all 54 African countries. Analyze complete farm economics: seeds, fertilizer, labor, transport, post-harvest losses. Calculate ROI, break-even yield, and profit per hectare.">
+<title>Farm Profit/Loss Calculator for Africa — ROI &amp; Break-Even | AfroTools</title>
+<meta name="description" content="Free farm profit/loss calculator for all 54 African countries. Enter your costs and yield to get net profit per hectare, ROI, and break-even in your local currency.">
 <meta property="og:title" content="Farm Profit/Loss Calculator for Africa — AfroTools">
 <meta property="og:description" content="Free farm profitability analysis for all 54 African countries. Full cost breakdown and ROI calculator.">
 <meta property="og:url" content="https://afrotools.com/agriculture/farm-profit/">
@@ -34,6 +34,29 @@
 }
 </script>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Farm Profit/Loss Calculator for Africa",
+  "url": "https://afrotools.com/agriculture/farm-profit/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "description": "Free farm profit and loss calculator for all 54 African countries. Enter costs and yield to calculate net profit per hectare, ROI, and break-even in local currency.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/farm-profit-calculator.webp"
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -41,11 +64,11 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
 
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 
 <style>
 :root {
@@ -187,7 +210,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
       "name": "What costs does the calculator include?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Seeds, fertilizer, herbicides/pesticides/fungicides, labor (hired and family), land (rent or opportunity cost), mechanization (tractor hire or animal traction), irrigation, transport to market, market fees, middleman commission, storage, loan interest, and crop insurance."
+        "text": "Seeds, fertilizer, herbicides/pesticides/fungicides, labor (hired and family), land (rent or opportunity cost), mechanization (tractor hire or animal traction), irrigation, transport to market, market fees, middleman commission, storage, loan interest, and crop insurance. All 11 cost categories are pre-filled with country-specific data."
       }
     },
     {
@@ -195,7 +218,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
       "name": "What is post-harvest loss and why does it matter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Post-harvest losses occur between harvest and sale - from spoilage, pests, improper storage, and handling. In Africa, these losses average 20-40% for roots and vegetables, and 15-25% for cereals."
+        "text": "Post-harvest losses occur between harvest and sale — from spoilage, pests, improper storage, and handling. In Africa, these losses average 20-40% for roots and vegetables, and 15-25% for cereals. This calculator accounts for post-harvest losses as a revenue reduction, not a cost, which is the correct way to model it."
       }
     },
     {
@@ -203,7 +226,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
       "name": "Can I see what-if scenarios?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. After calculating, you can see the impact of increasing yield by 25%, raising your selling price by 20%, halving post-harvest losses, switching to 100% family labor, and processing your crop before selling."
+        "text": "Yes. After calculating, you can see the impact of: increasing yield by 25%, raising your selling price by 20%, halving post-harvest losses, switching to 100% family labor, and processing your crop before selling (e.g., cassava into garri, paddy into milled rice)."
       }
     },
     {
@@ -211,7 +234,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
       "name": "How is family labor valued?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Family labor is valued at 50% of the hired labor daily wage rate, representing the opportunity cost. It is counted as a real cost because it is a real economic sacrifice, even if no cash changes hands."
+        "text": "Family labor is valued at 50% of the hired labor daily wage rate — this represents the opportunity cost (what family members could earn doing other work). It is counted as a real cost because it is a real economic sacrifice, even if no cash changes hands."
       }
     },
     {
@@ -219,7 +242,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
       "name": "What data sources are used?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Labor wage rates from ILO and national labor ministries. Land rental rates from country agricultural surveys. Post-harvest loss rates from APHLIS (African Postharvest Losses Information System). Market prices from FAO GIEWS and national commodity boards."
+        "text": "Labor wage rates from ILO and national labor ministries. Land rental rates from country agricultural surveys. Transport costs from World Food Programme and national data. Post-harvest loss rates from APHLIS (African Postharvest Losses Information System). Market prices from FAO GIEWS and national commodity boards."
       }
     }
   ]
@@ -271,7 +294,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">AfroTools</a> &rsaquo; Agriculture &rsaquo; Farm Profit/Loss Calculator
     </nav>
-    <h1>&#128202; Farm Profit/Loss Calculator</h1>
+    <h1>&#128202; Farm Profit/Loss Calculator for Africa</h1>
     <p>The capstone agriculture tool. Analyze complete farm economics for all 54 African countries — revenue, all input costs, ROI, and break-even analysis.</p>
     <div class="badge-row">
       <span class="hub-badge">&#127758; 54 Countries</span>
@@ -373,6 +396,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
 <section class="seo-content">
   <h2>About the Farm Profit/Loss Calculator</h2>
   <p>AfroTools' Farm Profit/Loss Calculator is the most comprehensive farm economics tool for Africa. It brings together all agricultural costs — seeds, fertilizer, agrochemicals, labor, land, mechanization, irrigation, transport, storage, and finance — into a single profitability analysis. Calculate your net profit, ROI, and break-even yield before the season starts.</p>
+  <p><strong>Estimate only.</strong> Results are indicative planning figures, not a guaranteed outcome. Actual profit varies with season, yield, disease pressure, buyer price, and input quality — always confirm current local costs and prices before committing money.</p>
 
   <h2>What Makes This Different</h2>
   <p>Unlike basic profit calculators, this tool accounts for Africa-specific realities: post-harvest losses (which can wipe out 20-40% of revenue), the choice between family and hired labor, communal versus rented land, and the option to process crops before selling for higher revenue. All data uses country-specific costs for accuracy.</p>
@@ -429,6 +453,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
   <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. Use it to pressure-test farm profit numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
 </section>
 
+
+<afro-related-tools data-ssr="1" category="agriculture" current="farm-profit-calculator">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/cassava-processing/" data-related-tool data-id="cassava-processing-calculator" data-name="Cassava Processing Profit Calculator" data-category="agriculture" data-icon="CP" data-desc="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with loca">Cassava Processing Profit Calculator</a></li><li><a href="/agriculture/crop-yield/" data-related-tool data-id="crop-yield-estimator" data-name="Crop Yield Estimator" data-category="agriculture" data-icon="CY" data-desc="Estimate crop yields across Africa with region-specific data. 40+ crops, 54 countries, FAOSTAT-backed.">Crop Yield Estimator</a></li><li><a href="/agriculture/farm-budget/" data-related-tool data-id="farm-budget" data-name="Smallholder Farm Budget Planner" data-category="agriculture" data-icon="SF" data-desc="Plan your seasonal farming budget with cost breakdown and cash flow timeline. Know exactly how much you need before plan">Smallholder Farm Budget Planner</a></li><li><a href="/agriculture/fish-farming/" data-related-tool data-id="fish-farming-roi" data-name="Fish Farming ROI Calculator" data-category="agriculture" data-icon="FF" data-desc="Calculate aquaculture profitability for catfish, tilapia and trout. Full ROI with local feed prices, fingerling costs, p">Fish Farming ROI Calculator</a></li><li><a href="/agriculture/greenhouse/" data-related-tool data-id="greenhouse-cost-estimator" data-name="Greenhouse Cost Estimator" data-category="agriculture" data-icon="GC" data-desc="Estimate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops, local pri">Greenhouse Cost Estimator</a></li><li><a href="/agriculture/input-prices/" data-related-tool data-id="input-prices" data-name="Agri-Input Price Comparator" data-category="agriculture" data-icon="AI" data-desc="Compare fertilizer, seed, and agrochemical prices across brands and suppliers in 15 African countries. Compare value for">Agri-Input Price Comparator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
 <!-- seo-internal-links -->
 <nav class="seo-links" aria-label="Farm Profit — Available Countries">
 <h2 class="seo-links-title">Farm Profit — Available Countries</h2>
@@ -480,6 +514,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
 
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

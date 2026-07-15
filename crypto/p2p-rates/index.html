@@ -6,7 +6,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>P2P Crypto Rate Comparator — Compare 8+ Platforms in Africa</title>
-<meta name="description" content="Compare reference P2P crypto rate estimates across Africa. Check Binance, Bybit, KuCoin, Luno, Yellow Card and more, then confirm the final rate in the provider app.">
+<meta name="description" content="Compare live P2P crypto rates across Africa: Binance, Bybit, Yellow Card and more. Find the best USDT, BTC and ETH price in NGN, KES, ZAR before you trade.">
 <meta property="og:title" content="P2P Crypto Rate Comparator — Best Prices Across Africa">
 <meta property="og:description" content="Compare P2P crypto rates from 8+ platforms. Find the cheapest USDT, BTC, ETH in NGN, KES, ZAR, GHS and more African currencies.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-p2p.webp">
@@ -65,10 +65,9 @@
 <script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
 <script src="/assets/js/lib/crypto-data.js?v=b7faee1b"></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <style>
@@ -284,39 +283,9 @@
 <meta property="article:modified_time" content="2026-03-28">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use P2P Rate Comparator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on P2P Rate Comparator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is P2P Rate Comparator an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/crypto/p2p-rates/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the P2P Rate Comparator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The P2P Rate Comparator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the P2P Rate Comparator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the P2P Rate Comparator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/crypto/p2p-rates/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/p2p-rates/">
@@ -347,9 +316,9 @@
 
   <!-- Controls -->
   <div class="crypto-controls">
-    <div class="toggle-group" id="sideToggle">
-      <button type="button" class="active" data-side="buy">BUY</button>
-      <button type="button" data-side="sell">SELL</button>
+    <div class="toggle-group" id="sideToggle" role="group" aria-label="Trade side: buy or sell">
+      <button type="button" class="active" data-side="buy" aria-pressed="true">BUY</button>
+      <button type="button" data-side="sell" aria-pressed="false">SELL</button>
     </div>
 
     <div>
@@ -395,7 +364,7 @@
 
   <!-- Refresh bar -->
   <div class="refresh-bar">
-    <span class="result-count" id="resultCount"></span>
+    <span class="result-count" id="resultCount" aria-live="polite"></span>
     <button type="button" onclick="fetchAndRender()" style="background:none;border:1px solid var(--color-border);padding:6px 14px;border-radius:var(--radius-sm);font-size:var(--text-sm);font-weight:600;cursor:pointer;color:var(--color-text);font-family:var(--font-body);">Refresh Now</button>
   </div>
 
@@ -405,6 +374,11 @@
     <div class="loading-skeleton"></div>
     <div class="loading-skeleton"></div>
   </div>
+
+  <!-- Source + freshness + disclaimer -->
+  <p class="p2p-source-note" style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:14px;line-height:1.6;">
+    <strong>Source:</strong> live Binance P2P and Bybit P2P order books, plus admin-reviewed reference rates (CoinGecko spot as fallback). <span id="p2pAsOf"></span>Rates are indicative and move fast — always confirm the final executable price, fees and merchant reputation on the platform before trading. This is not financial advice.
+  </p>
 
   <!-- Spread Chart -->
   <div class="p2p-chart-section">
@@ -475,10 +449,10 @@
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>P2P Rate Comparator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for p2p rate comparator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: P2P Rate Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, officialSource, businessCta, verificationPanel.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <h2>P2P Rate Comparator: quick guide</h2>
+      <p>Not sure how to get the most from the P2P Rate Comparator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the P2P Rate Comparator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
     </div>
     <form class="df-form" data-df-form="crypto-p2p">
       <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
@@ -486,14 +460,14 @@
       <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
       <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
       <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="crypto-p2p" data-df-base="P2P Rate Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">P2P Rate Comparator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
+      <output class="df-result" data-df-result="crypto-p2p" data-df-base="P2P Rate Comparator — enter your details above to see your result." aria-live="polite">P2P Rate Comparator — enter your details above to see your result.</output>
       <div class="df-actions"><button type="button" data-df-copy="crypto-p2p">Copy summary</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="crypto-p2p-faq-title">
   <h2 id="crypto-p2p-faq-title">P2P Rate Comparator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it to pressure-test p2p rates numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How do I use the P2P Rate Comparator?</summary><p>Enter your amounts, rates and dates in the fields above. The P2P Rate Comparator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the P2P Rate Comparator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the P2P Rate Comparator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
 </section>
 <section class="df-faq quality-verification-panel" data-tool-verification-panel aria-labelledby="crypto-p2p-verification-title">
   <h2 id="crypto-p2p-verification-title">P2P rate verification notes</h2>
@@ -508,7 +482,14 @@
     tool-name="P2P Rate Comparator"
     save-note="Compare reference rates, copy the summary, then verify final price and merchant safety in the provider app."></afro-business-cta>
 </div>
-<afro-related-tools category="financial" current="crypto-p2p"></afro-related-tools>
+<afro-related-tools category="financial" current="crypto-p2p" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 
 <script>
@@ -556,8 +537,9 @@
     var toggleBtns = document.querySelectorAll('#sideToggle button');
     toggleBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
-        toggleBtns.forEach(function (b) { b.classList.remove('active'); });
+        toggleBtns.forEach(function (b) { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
         btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
         state.side = btn.dataset.side;
         renderResults();
       });
@@ -706,6 +688,12 @@
     if (manualCount > 0) countText += (liveCount > 0 ? ', ' : '(') + manualCount + ' reference estimate';
     if (liveCount > 0 || manualCount > 0) countText += ')';
     $resultCount.textContent = countText;
+
+    var asOfEl = document.getElementById('p2pAsOf');
+    if (asOfEl) {
+      var ts = state.apiData.timestamp ? new Date(state.apiData.timestamp) : new Date();
+      asOfEl.textContent = 'Rates as of ' + ts.toLocaleString([], { hour: '2-digit', minute: '2-digit' }) + '. ';
+    }
 
     renderSpreadChart(results, currencyUpper, coinSymbol);
   }
@@ -917,6 +905,6 @@
 </script>
 
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 </body>
 </html>

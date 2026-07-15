@@ -123,6 +123,8 @@ exports.handler = async function (event) {
       rate: Math.round(rate * 1000000) / 1000000,
       timestamp: data.timestamp,
       source: data.source,
+      served_from: data.served_from,
+      as_of: data.as_of || data.timestamp || null,
     });
   }
 
@@ -151,6 +153,8 @@ exports.handler = async function (event) {
       pairs: results,
       timestamp: data.timestamp,
       source: data.source,
+      served_from: data.served_from,
+      as_of: data.as_of || data.timestamp || null,
     });
   }
 
@@ -165,6 +169,8 @@ exports.handler = async function (event) {
       timestamp: data.timestamp,
       source: data.source,
       next_update: data.next_update,
+      served_from: data.served_from,
+      as_of: data.as_of || data.timestamp || null,
     });
   }
 
@@ -187,6 +193,8 @@ exports.handler = async function (event) {
     rates: convertedRates,
     timestamp: data.timestamp,
     source: data.source,
+    served_from: data.served_from,
+    as_of: data.as_of || data.timestamp || null,
   });
 };
 
@@ -210,7 +218,10 @@ async function handleHistorical(pairStr, period) {
     });
   }
 
-  return jsonResponse(200, data, { 'Cache-Control': 'public, max-age=3600, s-maxage=7200' });
+  return jsonResponse(200, Object.assign({}, data, {
+    served_from: data.served_from,
+    as_of: data.as_of || data.timestamp || null,
+  }), { 'Cache-Control': 'public, max-age=3600, s-maxage=7200' });
 }
 
 exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-forex' });

@@ -409,6 +409,7 @@ exports.handler = async function(event) {
 };
 
 exports._test = {
+  CATEGORY_CONFIGS,
   ageMinutes,
   claimSafeStatus,
   findTimestamp,

@@ -6,6 +6,12 @@ const { createEngine } = require('./_factory');
 module.exports = createEngine({
   country: 'MU', countryName: 'Mauritius', currency: 'MUR',
   source: 'Mauritius Revenue Authority (MRA)',
+  /* source-confidence-stamp:start */
+  lastUpdated: '2026-03-01',
+  sourceCheckedOn: '2025-07-01',
+  nextReviewDate: '2025-09-29',
+  /* source-confidence-stamp:end */
+
   bands: [[500000,0],[500000,0.10],[Infinity,0.20]],
   socialSecurity: [
     { key: 'csg', label: 'CSG (3%)', rate: 0.03 },

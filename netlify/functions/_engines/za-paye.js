@@ -32,6 +32,11 @@ module.exports = {
   currency: 'ZAR',
   regimes: ['STANDARD'],
   lastUpdated: '2026-03-01',
+  /* source-confidence-stamp:start */
+  sourceCheckedOn: '2025-03-01',
+  nextReviewDate: '2025-05-30',
+  /* source-confidence-stamp:end */
+
   source: 'South African Revenue Service (SARS)',
 
   calculate(params) {

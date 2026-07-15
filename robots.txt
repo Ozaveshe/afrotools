@@ -29,21 +29,36 @@ Disallow: /api/
 Disallow: /fr/api/
 Disallow: /supabase-proxy/
 
-# AI Search Crawlers — Allow for search visibility
-User-agent: GPTBot
-Allow: /
-
+# AI search and user-requested retrieval — allow for answer visibility
 User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
 User-agent: PerplexityBot
+User-agent: Perplexity-User
 Allow: /
+Allow: /api/docs/
+Allow: /api/pricing
+Allow: /api/$
+Allow: /fr/api/pricing
+Allow: /fr/api/$
+Disallow: /api/
+Disallow: /fr/api/
+Disallow: /supabase-proxy/
 
+# AI model development and grounding — current AfroTools opt-in policy
+User-agent: GPTBot
+User-agent: ClaudeBot
 User-agent: Google-Extended
 Allow: /
+Allow: /api/docs/
+Allow: /api/pricing
+Allow: /api/$
+Allow: /fr/api/pricing
+Allow: /fr/api/$
+Disallow: /api/
+Disallow: /fr/api/
+Disallow: /supabase-proxy/
 
 # AI Training-Only Crawlers — Block
 User-agent: CCBot

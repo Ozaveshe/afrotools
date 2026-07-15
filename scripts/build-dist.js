@@ -94,6 +94,16 @@ const BLOCKED_ROOT_EXTENSIONS = new Set([
   '.yml'
 ]);
 
+// Dot-prefixed paths are stripped by default; these are the deliberate exceptions
+// that must ship to the deployed site.
+const ALLOWED_DOT_DIRS = new Set([
+  '.well-known'
+]);
+
+const ALLOWED_RELATIVE_FILES = new Set([
+  '.well-known/security.txt'
+]);
+
 const BLOCKED_RELATIVE_FILES = new Set([
   'assets/js/ai/prompt-registry.js',
   'fr/widgets/iframe/template.html',
@@ -188,8 +198,8 @@ function isBlockedRootFile(fileName) {
 }
 
 function shouldSkipDir(dirName, relativeFromRoot) {
-  if (dirName.startsWith('.')) return true;
   const normalizedRelative = relativeFromRoot.replace(/\\/g, '/');
+  if (dirName.startsWith('.') && !ALLOWED_DOT_DIRS.has(normalizedRelative)) return true;
   if (BLOCKED_RELATIVE_DIRS.has(normalizedRelative)) return true;
 
   const parts = relativeFromRoot.split(path.sep).filter(Boolean);
@@ -198,6 +208,7 @@ function shouldSkipDir(dirName, relativeFromRoot) {
 
 function shouldSkipFile(fileName, relativeFromRoot) {
   const normalizedRelative = relativeFromRoot.replace(/\\/g, '/');
+  if (ALLOWED_RELATIVE_FILES.has(normalizedRelative)) return false;
   if (BLOCKED_RELATIVE_FILES.has(normalizedRelative)) return true;
   if (BLOCKED_RELATIVE_FILE_PATTERNS.some((pattern) => pattern.test(normalizedRelative))) return true;
 

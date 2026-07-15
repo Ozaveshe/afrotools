@@ -4,6 +4,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const registryApi = require('../scripts/lib/canonical-registry');
+const toolDirectory = require('../data/tool-directory.json');
 
 function read(relative) {
   return fs.readFileSync(path.join(ROOT, relative), 'utf8');
@@ -76,5 +77,26 @@ assert.ok(new RegExp(`data-directory-count="tools\\.locale\\.fr\\.category\\.dev
 const generator = require('../scripts/build-progressive-directories');
 const check = generator.run({ write: false });
 assert.deepStrictEqual(check.stale, [], `progressive directory output is stale:\n${check.stale.join('\n')}`);
+
+const englishDirectoryRows = toolDirectory.filter((tool) => tool && tool.language === 'en' && String(tool.status).toLowerCase() === 'live');
+const allToolsHtml = read('all-tools/index.html');
+const staticDirectoryMatch = allToolsHtml.match(/<!-- PROGRESSIVE_DIRECTORY_FALLBACK_START -->([\s\S]*?)<!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->/);
+assert.ok(staticDirectoryMatch, 'all-tools/index.html must contain the generated static directory block');
+assert.strictEqual(anchorCount(staticDirectoryMatch[1]), englishDirectoryRows.length, 'all-tools/index.html must expose every live English directory row without JavaScript');
+assert.strictEqual((staticDirectoryMatch[1].match(/data-static-tool-category=/g) || []).length, new Set(englishDirectoryRows.map((tool) => tool.category_key || 'other')).size, 'all-tools/index.html must group the complete directory by category');
+
+englishDirectoryRows.forEach((tool) => {
+  const relative = tool.url.endsWith('/')
+    ? `${tool.url.replace(/^\//, '')}index.html`
+    : `${tool.url.replace(/^\//, '')}.html`;
+  const html = read(relative);
+  const blocks = html.match(/data-related-tools-ssr/g) || [];
+  const block = html.match(/<!-- RELATED_TOOLS_SSR_START -->([\s\S]*?)<!-- RELATED_TOOLS_SSR_END -->/);
+  assert.strictEqual(blocks.length, 1, `${relative} must contain one static related-tools block`);
+  assert.ok(block, `${relative} must contain the related-tools build markers`);
+  const links = block[1].match(/data-related-tool(?:\s|>)/g) || [];
+  assert.ok(links.length >= 4 && links.length <= 6, `${relative} must expose 4-6 related links without JavaScript`);
+  assert.ok(!/related-tools-data(?:\.min)?\.js/i.test(html), `${relative} must not load the full related-tools dataset after SSR injection`);
+});
 
 console.log('Progressive directory static contract tests passed');

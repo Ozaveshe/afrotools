@@ -24,6 +24,7 @@ const STATIC_PATHS = {
   'forex-latest': '/data/forex/latest.json',
   'fuel-latest': '/data/fuel/latest.json',
   'rates-latest': '/data/rates/latest.json',
+  'commodity-prices-latest': '/data/commodities/latest.json',
   'meta': '/data/_meta.json',
   'forex-history-usd-ngn-30d': '/data/forex/history/usd-ngn-30d.json',
   'forex-history-usd-kes-30d': '/data/forex/history/usd-kes-30d.json',
@@ -32,7 +33,6 @@ const STATIC_PATHS = {
   'forex-history-usd-egp-30d': '/data/forex/history/usd-egp-30d.json',
   'fuel-history-ng-12m': '/data/fuel/history/ng-12m.json',
   'scholarships-latest': null,
-  'commodity-prices-latest': null,
   'electricity-latest': null,
   'telecom-latest': null,
   'insurance-rates-latest': null,
@@ -65,19 +65,67 @@ function shouldSkipWrites() {
   return value === '1' || value === 'true' || value === 'yes';
 }
 
+function toIso(value) {
+  if (!value) return null;
+  var parsed = new Date(value);
+  return Number.isFinite(parsed.getTime()) ? parsed.toISOString() : null;
+}
+
+function findDataTimestamp(data) {
+  if (!data || typeof data !== 'object') return null;
+  return toIso(
+    data.last_fetch ||
+    data.updated_at ||
+    data.timestamp ||
+    data.fetched_at ||
+    data.last_updated ||
+    data.lastCheckedAt ||
+    data.cachedAt
+  );
+}
+
+/**
+ * Attach storage provenance without persisting it back into snapshot JSON.
+ * The properties remain directly readable by API functions, but are
+ * intentionally non-enumerable so updateMeta/setData cannot write them into
+ * live_data_store by accident.
+ */
+function withProvenance(data, servedFrom, storageUpdatedAt) {
+  if (!data || typeof data !== 'object') return data;
+
+  var result = Array.isArray(data) ? data.slice() : Object.assign({}, data);
+  delete result.served_from;
+  delete result.as_of;
+
+  Object.defineProperties(result, {
+    served_from: {
+      value: servedFrom,
+      enumerable: false,
+      configurable: true,
+    },
+    as_of: {
+      value: findDataTimestamp(data) || toIso(storageUpdatedAt),
+      enumerable: false,
+      configurable: true,
+    },
+  });
+
+  return result;
+}
+
 async function getData(key, siteUrl) {
   // 1. Try Supabase (primary — always available)
   if (SUPABASE_KEY) {
     try {
       var res = await fetch(
-        SUPABASE_URL + '/rest/v1/live_data_store?key=eq.' + encodeURIComponent(key) + '&select=data',
+        SUPABASE_URL + '/rest/v1/live_data_store?key=eq.' + encodeURIComponent(key) + '&select=data,updated_at',
         { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
       );
       if (res.ok) {
         var rows = await res.json();
         if (rows && rows.length > 0 && rows[0].data) {
           console.log('[data-store] Supabase hit for key: ' + key);
-          return rows[0].data;
+          return withProvenance(rows[0].data, 'live', rows[0].updated_at);
         }
       }
     } catch (err) {
@@ -91,7 +139,7 @@ async function getData(key, siteUrl) {
     var blob = await store.get(key, { type: 'json' });
     if (blob) {
       console.log('[data-store] Blob hit for key: ' + key);
-      return blob;
+      return withProvenance(blob, 'blob');
     }
   } catch (err) {
     console.log('[data-store] Blob miss for key: ' + key + ' — ' + err.message);
@@ -112,7 +160,7 @@ async function getData(key, siteUrl) {
     if (!response.ok) throw new Error('HTTP ' + response.status);
     var data = await response.json();
     console.log('[data-store] Static fallback loaded for key: ' + key);
-    return data;
+    return withProvenance(data, 'fallback');
   } catch (err) {
     console.error('[data-store] Static fallback failed for key: ' + key + ' — ' + err.message);
     return null;
@@ -198,4 +246,12 @@ async function updateMeta(category, metaUpdate) {
   }
 }
 
-module.exports = { getData, setData, updateMeta, validateDataForKey, STORE_NAME, STATIC_PATHS };
+module.exports = {
+  getData,
+  setData,
+  updateMeta,
+  validateDataForKey,
+  STORE_NAME,
+  STATIC_PATHS,
+  _test: { findDataTimestamp, toIso, withProvenance },
+};

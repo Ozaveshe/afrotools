@@ -3,6 +3,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const { execFileSync } = require('child_process');
 const { buildCanonicalRegistry, getSelector } = require('../scripts/lib/canonical-registry');
 const localization = require('../assets/js/lib/localization.js');
@@ -55,6 +56,10 @@ const home = read('sw/index.html');
 const directory = read('sw/zana-zote/index.html');
 assert(home.includes(`data-registry-count="tools.locale.sw.published">${swCount}<`));
 assert(directory.includes(`data-registry-count="tools.locale.sw.published">${swCount}<`));
+assert(home.includes('class="sw-skip-link"'));
+assert(/<main\b[^>]*id="main-content"/i.test(home));
+assert(home.indexOf('<!-- sw-religious-cultural:start -->') < home.indexOf('<afro-footer>'));
+assert(home.indexOf('</main>') < home.indexOf('<afro-footer>'));
 assert(!/Inatumiwa na wataalamu|Viwango vya leo|Fedha za Kigeni vya Moja kwa Moja|Kila nchi ya Afrika ina vikokotoo/i.test(visibleText(home)));
 assert(/nchi na lugha ni vitu tofauti/i.test(visibleText(home)));
 assert(/Matokeo ya Kiingereza huwekwa alama/i.test(visibleText(directory)));
@@ -67,9 +72,14 @@ for (const key of ['free.public-core', 'pro.current-capabilities', 'privacy.brow
 
 const privacy = read('sw/faragha/index.html');
 const terms = read('sw/masharti/index.html');
+const help = read('sw/msaada/index.html');
 assert(privacy.includes('data-claim-key="privacy.browser-local"'));
 assert(terms.includes('data-claim-key="free.public-core"'));
 assert(terms.includes('data-claim-key="pro.current-capabilities"'));
+assert(privacy.includes('hreflang="fr" href="https://afrotools.com/fr/privacy/"'));
+assert(terms.includes('hreflang="fr" href="https://afrotools.com/fr/terms-of-use/"'));
+assert(help.includes('hreflang="sw" href="https://afrotools.com/sw/msaada/"'));
+assert(help.includes('hreflang="x-default" href="https://afrotools.com/sw/msaada/"'));
 assert(!/Mahesabu yote|hazitumiwi kwenye seva zetu kamwe|haikusanyi kamwe/i.test(visibleText(privacy)));
 assert(!/jukwaa bure la zana|kwa nchi 54 za Afrika|kusasisha zana zetu ndani ya siku/i.test(visibleText(terms)));
 
@@ -87,6 +97,8 @@ for (const [route, fallbackRoute] of [['/sw/auth/', '/auth/'], ['/sw/dashboard/'
 }
 
 const pricing = read('sw/bei/index.html');
+assert(pricing.includes('hreflang="sw" href="https://afrotools.com/sw/bei/"'));
+assert(pricing.includes('hreflang="x-default" href="https://afrotools.com/sw/bei/"'));
 assert(pricing.includes(registry.productPlans.find((plan) => plan.id === 'product:monthly_kes').title));
 assert(pricing.includes(registry.productPlans.find((plan) => plan.id === 'product:annual_kes').title));
 assert(/hatua ya sasa ya malipo.*Kiingereza/i.test(visibleText(pricing)));
@@ -117,6 +129,21 @@ assert(fx.includes('si viwango vya moja kwa moja'));
 assert(fx.includes("Object.keys(data.rates).length"));
 assert.strictEqual((fx.match(/addEventListener\('click',fetchFx\)/g) || []).length, 1, 'retry listener must be idempotent');
 
+const vat = read('sw/zana/kikokotoo-vat/index.html');
+assert(vat.includes('id="vatStatus"'));
+assert(vat.includes('role="status"'));
+assert(!vat.includes("alert('Tafadhali ingiza kiasi.');"));
+
+for (const rel of ['sw/biashara-ndogo/index.html', 'sw/biashara-na-uzingatiaji/index.html']) {
+  const html = read(rel);
+  assert(html.includes('sw-business-pdf-crosslinks'), `${rel} is missing the stable PDF cross-link class`);
+  assert(!html.includes('sw-malipo ya awalid-pdf-crosslinks'), `${rel} contains a translated CSS class token`);
+}
+
+assert(read('sw/zana/kilinganisha-tv-na-streaming/index.html').includes('min-width:min(600px,100%)'));
+assert(read('sw/zana/kulinganisha-hosting/index.html').includes('min-width:min(980px,100%)'));
+assert(read('sw/zana/orodha-vifaa/index.html').includes('min-width: min(700px, 100%)'));
+
 const payePages = fs.readdirSync(path.join(ROOT, 'sw'), { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => path.join('sw', entry.name, 'kikokotoo-kodi-mshahara', 'index.html'))
@@ -126,6 +153,14 @@ for (const rel of payePages) {
   const html = read(rel);
   assert(!html.includes("window.location.href='/auth/?mode=login&next=/dashboard/';"), `${rel} silently switches to English auth`);
   assert(!/>Share as Image</i.test(html), `${rel} exposes English share UI`);
+  assert(!/\b(?:matokeo\.kila mwaka|navigator\.shiriki|kokotoa\(\)|\.chapisha\(\)|(?:e|event)\.key\s*={2,3}\s*['"]ingiza['"])/.test(html), `${rel} contains translated JavaScript control tokens`);
+  assert(/<script src="\/assets\/js\/lib\/sw-accessibility\.js" defer><\/script><\/body>\s*<\/html>\s*$/i.test(html), `${rel} must inject accessibility at the final body close`);
+  let scriptIndex = 0;
+  for (const match of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    scriptIndex += 1;
+    if (/\bsrc\s*=|application\/(?:ld\+json|json)|speculationrules|type=["']module["']/i.test(match[1])) continue;
+    assert.doesNotThrow(() => new vm.Script(match[2]), `${rel} inline script ${scriptIndex} must parse`);
+  }
 }
 
 const critical = [
@@ -144,7 +179,13 @@ for (const file of fs.readdirSync(path.join(ROOT, 'sw'), { recursive: true, with
   if (!file.isFile() || !file.name.endsWith('.html')) continue;
   const html = fs.readFileSync(path.join(file.parentPath || file.path, file.name), 'utf8');
   const absolute = path.join(file.parentPath || file.path, file.name);
+  assert(html.includes('/assets/js/lib/sw-accessibility.js'), `${path.relative(ROOT, absolute)} is missing the Swahili accessibility runtime`);
   assert(!/>\s*(?:Save Tool|Share as Image|Copy|Copy Link|Print|Reset|Result|Export CSV|Export JSON|Download TXT|Try again|No results|Loading tools|Sign in|Privacy Policy|Terms of Use)\s*</i.test(html), `${path.relative(ROOT, absolute)} contains an unexplained English action`);
+  const text = visibleText(html
+    .replace(/<pre\b[\s\S]*?<\/pre>/gi, ' ')
+    .replace(/<code\b[\s\S]*?<\/code>/gi, ' ')
+    .replace(/<textarea\b[\s\S]*?<\/textarea>/gi, ' '));
+  assert(!/\b(?:privacy policy|cookie consent|breach notification|client-side|developer tools?|developers?|workflows?|categories|browsers?|uploads?|creators?|apps?|accounts?|results|preview|outputs?|inputs?|signup|online|servers?)\b/i.test(text), `${path.relative(ROOT, absolute)} contains unexplained English product copy`);
 }
 
 console.log('Swahili product surface contract tests passed');

@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/multi-country.css?v=57434195">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script><script src="/assets/js/components/footer.min.js?v=86b11637" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <style>
 :root{--blue:#1d4ed8;--blue-light:#eff6ff;--blue-dark:#1e40af}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -111,14 +111,14 @@ window.addEventListener('load', function() {
 <afro-navbar theme="dark" active="legal"></afro-navbar>
 <aside data-language-fallback-notice="fr-generated-country-reference-copy" lang="fr" role="note" style="max-width:1120px;margin:16px auto;padding:14px 18px;border:1px solid #d9a441;border-left-width:4px;border-radius:10px;background:#fff8e6;color:#4b3a16;line-height:1.55">Certains passages de référence restent en anglais. Ils sont signalés comme tels afin de ne pas les présenter comme une traduction française.</aside>
 <section class="hero">
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/fr/">Accueil</a> <span>›</span> <a href="/fr/legal/">Droit et conformite</a> <span>›</span> <a href="/tools/tenancy-agreement/">Tenancy Agreement</a> <span>›</span> DR Congo</nav>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/fr/">Accueil</a> <span>›</span> <a href="/fr/legal/">Droit et conformite</a> <span>›</span> <a href="/fr/tools/tenancy-agreement/">Tenancy Agreement</a> <span>›</span> DR Congo</nav>
 <h1>🇨🇩 DR Congo Générateur de contrat de bail</h1>
 <p>Generate a rental agreement compliant with Loi No. 015/2002 portant Code du Travail (general civil provisions). Pre-configured with DR Congo tenancy law requirements.</p>
 </section>
 <div class="container" id="main-content" role="main">
 <div class="info-cards">
 <div class="info-card"><div class="val">1–3 months rent (by agreement; no statutory cap)</div><div class="lbl">Max Deposit</div></div>
-<div class="info-card"><div class="val">3 months for annual lease; 1 month for monthly</div><div class="lbl">Landlord Notice</div></div>
+<div class="info-card"><div class="val">3 months for annuel lease; 1 month for mensuel</div><div class="lbl">Landlord Notice</div></div>
 <div class="info-card"><div class="val">1–3 months depending on tenancy type</div><div class="lbl">Tenant Notice</div></div>
 <div class="info-card"><div class="val">Tribunal de Paix / Tribunal de Grande Instance</div><div class="lbl">Dispute Body</div></div>
 </div>
@@ -142,16 +142,16 @@ window.addEventListener('load', function() {
 <div class="card"><h2>Tenant Details</h2>
 <div class="form-grid">
 <div class="form-group"><label for="tenName">Full Name</label><input type="text" id="tenName" placeholder="Tenant's full name"></div>
-<div class="form-group"><label for="tenAddr">Previous Address</label><input type="text" id="tenAddr" placeholder="Tenant's current address"></div>
+<div class="form-group"><label for="tenAddr">précédent Address</label><input type="text" id="tenAddr" placeholder="Tenant's current address"></div>
 <div class="form-group"><label for="tenPhone">Phone</label><input type="tel" id="tenPhone" placeholder="Phone number"></div>
 <div class="form-group"><label for="tenOccupation">Occupation</label><input type="text" id="tenOccupation" placeholder="Tenant's occupation"></div>
 </div></div>
 
 <div class="card"><h2>Lease Terms</h2>
 <div class="form-grid">
-<div class="form-group"><label for="rent">Rent Amount (FC)</label><input aria-label="Line item amount" type="number" id="rent" placeholder="0" inputmode="numeric"></div>
+<div class="form-group"><label for="rent">Rent montant (FC)</label><input aria-label="Line item montant" type="number" id="rent" placeholder="0" inputmode="numeric"></div>
 <div class="form-group"><label for="payFreq">Payment Frequency</label><select id="payFreq"><option value="month">Mensuel</option><option value="quarter">Quarterly</option><option value="year">Annuelly</option></select></div>
-<div class="form-group"><label for="deposit">Security Deposit (FC)</label><input aria-label="Line item amount" type="number" id="deposit" placeholder="0" inputmode="numeric"></div>
+<div class="form-group"><label for="deposit">Security Deposit (FC)</label><input aria-label="Line item montant" type="number" id="deposit" placeholder="0" inputmode="numeric"></div>
 <div class="form-group"><label for="startDate">Lease Date de début</label><input type="date" id="startDate"></div>
 <div class="form-group"><label for="duration">Lease Duration</label><select id="duration"><option value="6 months">6 months</option><option value="12 months" selected>12 months</option><option value="24 months">2 years</option><option value="36 months">3 years</option></select></div>
 <div class="form-group"><label for="rentReview">Annuel Rent Increase (%)</label><input type="number" id="rentReview" placeholder="e.g. 10" inputmode="numeric"></div>
@@ -176,12 +176,12 @@ window.addEventListener('load', function() {
 
 <div style="text-align:center;margin:1.5rem 0"><button type="button" class="btn btn-primary" id="generateBtn" style="font-size:1.05rem;padding:.75rem 2.5rem">Generate Agreement</button></div>
 <div id="output" style="display:none"><div class="agreement-preview" id="agreementContent"></div>
-<div class="actions"><button type="button" class="btn btn-primary" onclick="window.print()">Print Agreement</button><button type="button" class="btn btn-outline" id="copyAgreementBtn">Copier le texte</button><button type="button" class="btn btn-outline" id="downloadBtn">Télécharger en texte</button><span id="agreementCopyStatus" aria-live="polite" style="align-self:center;color:#475569;font-size:.9rem"></span></div></div>
+<div class="actions"><button type="button" class="btn btn-primary" onclick="window.print()">imprimer Agreement</button><button type="button" class="btn btn-outline" id="copyAgreementBtn">Copier le texte</button><button type="button" class="btn btn-outline" id="downloadBtn">Télécharger en texte</button><span id="agreementCopyStatus" aria-live="polite" style="align-self:center;color:#475569;font-size:.9rem"></span></div></div>
 </div>
 
 <section class="seo-section">
 <h2>DR Congo Tenancy Agreement — Legal Requirements</h2>
-<p>Tenancy agreements in DR Congo are governed by Loi No. 015/2002 portant Code du Travail (general civil provisions) & Loi foncière of 1973. The maximum security deposit is 1–3 months rent (by agreement; no statutory cap). Landlord notice period: 3 months for annual lease; 1 month for monthly. Tenant notice period: 1–3 months depending on tenancy type. Disputes are resolved through the Tribunal de Paix / Tribunal de Grande Instance.</p>
+<p>Tenancy agreements in DR Congo are governed by Loi No. 015/2002 portant Code du Travail (general civil provisions) & Loi foncière of 1973. The maximum security deposit is 1–3 months rent (by agreement; no statutory cap). Landlord notice period: 3 months for annuel lease; 1 month for mensuel. Tenant notice period: 1–3 months depending on tenancy type. Disputes are resolved through the Tribunal de Paix / Tribunal de Grande Instance.</p>
 <p>Tenant protection: Formal eviction requires court order; informal evictions common in practice. Rent increases: No national cap; municipal authorities may impose local controls. Stamp duty: Yes — registration tax (droit d'enregistrement) applies.</p>
 <p lang="en" data-explicit-language-fallback="true"><strong>Disclaimer:</strong> This is a template. Tenancy laws vary and change. Consult a qualified property lawyer in DR Congo before signing any lease agreement.</p>
 </section>

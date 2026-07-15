@@ -13,47 +13,27 @@
 <meta name="twitter:description" content="Calculate electricity consumption and cost for all your appliances in Africa. Find your biggest energy consumers and see monthly bill breakdown by appliance.">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf"><link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script><script src="/assets/js/components/footer.min.js?v=86b11637" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.app-row{display:grid;grid-template-columns:1fr 70px 70px 50px 70px 28px;gap:6px;align-items:end;margin-bottom:8px}.app-row input{width:100%}.rm-btn{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;cursor:pointer;font-size:14px;height:36px;padding:0 6px}.add-btn{background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;font-size:14px}.app-header{display:grid;grid-template-columns:1fr 70px 70px 50px 70px 28px;gap:6px;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px}.en-bar-wrap{background:#f3f4f6;border-radius:980px;height:8px;margin-top:4px}.en-bar-fill{height:8px;border-radius:980px;background:#F59E0B;transition:width 0.4s}@media(max-width:600px){.app-row,.app-header{grid-template-columns:1fr 60px 60px 40px 60px 24px}}</style>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4"><link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.app-row{display:grid;grid-template-columns:1fr 70px 70px 50px 70px 28px;gap:6px;align-items:end;margin-bottom:8px}.app-row input{width:100%}.rm-btn{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;cursor:pointer;font-size:14px;height:36px;padding:0 6px}.add-btn{background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;font-size:14px}.app-header{display:grid;grid-template-columns:1fr 70px 70px 50px 70px 28px;gap:6px;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px}.bill-breakdown-head{display:flex;gap:12px;align-items:center;margin-bottom:8px}.bill-breakdown-icon{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:12px;background:#fff7ed;color:#c2410c}.bill-breakdown-icon svg{width:24px;height:24px}.bill-breakdown-context,.bill-breakdown-note{color:#475569;font-size:13px;line-height:1.5}.bill-breakdown-context{margin-bottom:12px}.bill-breakdown-scroll{overflow-x:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff}.bill-breakdown-table{width:100%;border-collapse:collapse;min-width:520px}.bill-breakdown-table th,.bill-breakdown-table td{padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:right;font-size:13px}.bill-breakdown-table th{background:#f8fafc;color:#475569;font-size:11px;text-transform:uppercase;letter-spacing:.04em}.bill-breakdown-table th:first-child,.bill-breakdown-table td:first-child{text-align:left}.bill-breakdown-table tbody tr:last-child td{border-bottom:0}.bill-breakdown-cost{font-weight:800;color:#9a3412}.bill-breakdown-note{margin:10px 0 12px}.bill-breakdown-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.bill-breakdown-actions .en-btn{margin:0}.bill-breakdown-status{min-height:20px;color:#475569;font-size:13px}.bill-breakdown-status[data-state="success"]{color:#166534}.bill-breakdown-status[data-state="stale"]{color:#9a3412}@media(max-width:600px){.app-row,.app-header{grid-template-columns:1fr 60px 60px 40px 60px 24px}.bill-breakdown-table{min-width:480px}.bill-breakdown-table th,.bill-breakdown-table td{padding:9px 10px}}
+</style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/appliance-power.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Estimate monthly energy use by appliance?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Model watts, daily hours, days, and tariff before comparing generator, inverter, or grid cost."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Energy disclaimer: actual draw varies by appliance age, duty cycle, voltage, and tariff class."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/appliance-power/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How are the per-appliance monthly costs calculated?","acceptedAnswer":{"@type":"Answer","text":"The calculator allocates its rounded household bill across appliances in proportion to each appliance's modeled monthly kWh. This keeps the appliance rows aligned with the displayed total bill."}},{"@type":"Question","name":"Does the wattage field show actual appliance consumption?","acceptedAnswer":{"@type":"Answer","text":"Not necessarily. Nameplate wattage is a planning input; compressors, thermostats, voltage, age, and duty cycles change real consumption. Use a suitable plug-in meter or submeter where practical."}},{"@type":"Question","name":"How does the calculator treat standby power?","acceptedAnswer":{"@type":"Answer","text":"Appliance rows apply standby watts during the hours remaining after active use. The separate standby-cost metric assumes 24 standby hours per day as a conservative upper bound; measure standby draw where practical."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/energy-focus.css?v=cf912bfe">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/energy-focus.css?v=ddb6898a">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Appliance Power Consumption Calculator Africa","description":"Calculate electricity consumption and cost for all your appliances in Africa. Find your biggest energy consumers and see monthly bill breakdown by appliance.","url":"https://afrotools.com/tools/appliance-power/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Appliance Power Consumption Calculator Africa","item":"https://afrotools.com/tools/appliance-power/"}]}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/appliance-power/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/appliance-power/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/consommation-appareils/">
@@ -65,7 +45,7 @@
 <section class="en-tool-hero"><div class="container">
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Appliance Power</nav>
 <h1>🔌 <em>Appliance Power Consumption Calculator</em></h1>
-<p class="en-tool-hero-sub">Calculate exactly how much electricity each appliance uses and costs. Find your top energy consumers and see where to cut your electricity bill in Africa.</p>
+<p class="en-tool-hero-sub">Estimate how much electricity each appliance uses and costs. Find your top energy consumers and see where to investigate your electricity bill in Africa.</p>
 </div></section>
 <main class="en-main">
 <div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>📋</span><h2>Your Appliances</h2><span class="en-card-toggle">&#x25BE;</span></div>
@@ -86,12 +66,19 @@
 <tr><td>Annual Usage</td><td id="rAnnualKwh">—</td></tr>
 <tr><td>Monthly Bill</td><td id="rMonthlyBill">—</td></tr>
 <tr><td>Annual Bill</td><td id="rAnnualBill">—</td></tr>
-<tr><td>Standby Cost / Month</td><td id="rStandby">—</td></tr>
+<tr><td>Standby Upper-Bound / Month</td><td id="rStandby">—</td></tr>
 </tbody></table>
-<div class="en-card" style="margin-top:16px"><div class="en-card-body">
-<h3 style="font-size:15px;font-weight:700;margin-bottom:12px">Top Energy Consumers</h3>
-<div id="rTopList"></div>
-</div></div>
+<section class="en-card" style="margin-top:16px" aria-labelledby="bill-breakdown-title"><div class="en-card-body">
+<div class="bill-breakdown-head">
+<span class="bill-breakdown-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span>
+<div><h3 id="bill-breakdown-title" style="font-size:17px;font-weight:800">Appliance-by-appliance bill breakdown</h3><p class="bill-breakdown-context" id="billBreakdownContext">Calculate consumption to allocate the estimated monthly bill across your appliances.</p></div>
+</div>
+<div class="bill-breakdown-scroll">
+<table class="bill-breakdown-table"><thead><tr><th scope="col">Appliance</th><th scope="col">kWh / month</th><th scope="col">Bill share</th><th scope="col">Allocated cost</th></tr></thead><tbody id="billBreakdownBody"><tr><td colspan="4">No breakdown calculated yet.</td></tr></tbody></table>
+</div>
+<p class="bill-breakdown-note" id="billBreakdownNote">Rows allocate the rounded household bill in proportion to modeled kWh, so they add back to the displayed total. This is a nameplate estimate, not a meter reading.</p>
+<div class="bill-breakdown-actions"><button class="en-btn" id="copyBillBreakdown" type="button" disabled>Copy bill breakdown</button><p class="bill-breakdown-status" id="billBreakdownStatus" role="status" aria-live="polite">No breakdown calculated yet.</p></div>
+</div></section>
 <div class="en-observations" id="rObs"></div>
 </div>
 <section class="en-seo">
@@ -103,27 +90,18 @@
 <section class="df-upgrade" data-df-upgrade="appliance-power">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Appliance power audit</span>
-      <h2>Estimate monthly energy use by appliance</h2>
-      <p>Model watts, daily hours, days, and tariff before comparing generator, inverter, or grid cost.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Result: appliance power audit ready with kWh, monthly cost, and load-planning note.</li><li>Methodology: use the fields to create a local planning summary with visible assumptions.</li><li>Source note: Energy efficiency references should be checked when live prices, policy, or eligibility matters.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Energy disclaimer: actual draw varies by appliance age, duty cycle, voltage, and tariff class. Source/reference: Energy efficiency references.</p>
+      <span class="df-upgrade__kicker">From nameplate to bill share</span>
+      <h2>Build an appliance bill breakdown you can verify</h2>
+      <p>The main calculator now ranks every entered appliance and allocates the displayed household bill by modeled monthly kWh. The rows add back to the calculator's rounded monthly total.</p>
+      <ul class="df-upgrade__bullets"><li><strong>Start with labels:</strong> enter rated watts, quantity, active hours, and any known standby watts.</li><li><strong>Read cost as an allocation:</strong> cycling appliances may use less than nameplate power, so a row is a planning estimate rather than a utility charge.</li><li><strong>Verify the largest row first:</strong> use a suitable plug-in meter, submeter, or a timed meter-reading test before buying replacement equipment.</li></ul>
+      <p class="df-upgrade__note"><strong>Private by default.</strong> Appliance entries and the bill breakdown stay in this browser unless you choose to copy the result.</p>
     </div>
-    <form class="df-form" data-df-form="appliance-power">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Appliance watts<input name="watts" type="number" value="1500" min="0" step="any" aria-label="Appliance watts"></label>
-      <label>Hours per day<input name="hours" type="number" value="4" min="0" step="any" aria-label="Hours per day"></label>
-      <label>Days per month<input name="days" type="number" value="30" min="0" step="any" aria-label="Days per month"></label>
-      <label>Tariff per kWh<input name="tariff" type="number" value="85" min="0" step="any" aria-label="Tariff per kWh"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="appliance-power" data-df-base="Result: appliance power audit ready with kWh, monthly cost, and load-planning note." aria-live="polite">Result: appliance power audit ready with kWh, monthly cost, and load-planning note.</output>
-      <div class="df-actions"><button type="button" data-df-copy="appliance-power">Copy summary</button></div>
-    </form>
+    <aside class="df-result" aria-label="Bill breakdown method"><strong>Allocation method</strong><br>The household bill is calculated with the selected country's residential tariff, then distributed across appliance rows in proportion to modeled kWh. Appliance-row rounding is reconciled so the copied costs equal the displayed household total.</aside>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="appliance-power-faq-title">
   <h2 id="appliance-power-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>Estimate monthly energy use by appliance?</summary><p>Model watts, daily hours, days, and tariff before comparing generator, inverter, or grid cost.</p></details><details><summary>What should I verify before acting?</summary><p>Energy disclaimer: actual draw varies by appliance age, duty cycle, voltage, and tariff class.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How are the per-appliance monthly costs calculated?</summary><p>The calculator allocates its rounded household bill across appliances in proportion to each appliance's modeled monthly kWh. This keeps the appliance rows aligned with the displayed total bill.</p></details><details><summary>Does the wattage field show actual appliance consumption?</summary><p>Not necessarily. Nameplate wattage is a planning input; compressors, thermostats, voltage, age, and duty cycles change real consumption. Use a suitable plug-in meter or submeter where practical.</p></details><details><summary>How does the calculator treat standby power?</summary><p>Appliance rows apply standby watts during the hours remaining after active use. The separate standby-cost metric assumes 24 standby hours per day as a conservative upper bound; measure standby draw where practical.</p></details></div>
 </section>
 
 <section class="tool-verification-sec" data-tool-verification-panel="appliance-power">
@@ -167,6 +145,14 @@
 </section>
 <afro-business-cta tool-name="Appliance Power Consumption" prospect-segment="energy-audits" save-note="Run the appliance load audit before sizing solar, batteries, generator, or efficiency upgrades."></afro-business-cta>
 </main>
+<afro-related-tools data-ssr="1" category="energy" current="appliance-power">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Tariff Calculator" data-category="energy" data-icon="ET" data-desc="Estimate electricity bills for supported African countries. Residential, commercial, industrial, and tiered tariff bands">Electricity Tariff Calculator</a></li><li><a href="/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/tools/prepaid-meter/" data-related-tool data-id="prepaid-meter" data-name="Prepaid Meter Calculator" data-category="energy" data-icon="PM" data-desc="Estimate prepaid electricity units in any African country. Token amount, service charges, account type, and days of supp">Prepaid Meter Calculator</a></li><li><a href="/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script src="/data/energy/country-energy-index.js?v=5083c43c"></script>
 <script src="/engines/appliance-power-engine.js?v=b7f33070"></script>
@@ -190,10 +176,106 @@ var PRESETS=[
   {name:"Microwave",watts:1100,hours:0.5,qty:1,standbyWatts:3},
   {name:"Washing Machine",watts:500,hours:1,qty:1,standbyWatts:2}
 ];
+var latestBreakdown="";
+function countryRecord(code){
+  return window.ENERGY_DATA&&window.ENERGY_DATA.countries?window.ENERGY_DATA.countries[code]:null;
+}
+function numberFromMoney(value){
+  return parseFloat(String(value||"").replace(/[^0-9.-]/g,""))||0;
+}
+function money(value,symbol){
+  return(symbol||"$")+Math.round(value).toLocaleString();
+}
+function allocatedRows(result){
+  var appliances=result.appliances||[];
+  var totalKWh=appliances.reduce(function(sum,appliance){return sum+(parseFloat(appliance.monthlyKWh)||0);},0);
+  var totalCost=numberFromMoney(result.monthlyBill);
+  var allocated=0;
+  return appliances.map(function(appliance,index){
+    var last=index===appliances.length-1;
+    var cost=last?Math.max(0,totalCost-allocated):Math.round(totalCost*(parseFloat(appliance.monthlyKWh)||0)/totalKWh);
+    allocated+=cost;
+    return{
+      name:appliance.name,
+      monthlyKWh:appliance.monthlyKWh,
+      share:totalKWh?Math.round(appliance.monthlyKWh/totalKWh*1000)/10:0,
+      allocatedCost:cost
+    };
+  });
+}
+function breakdownText(result,country,breakdown){
+  var symbol=country&&country.currencySymbol?country.currencySymbol:"$";
+  var lines=[
+    "APPLIANCE BILL BREAKDOWN",
+    "Country: "+(country?country.name:document.getElementById("countrySelect").value),
+    "Energy dataset: "+(window.ENERGY_DATA&&window.ENERGY_DATA.lastUpdated?window.ENERGY_DATA.lastUpdated:"not stated"),
+    "Residential tariff: "+result.tariff,
+    "Household total: "+result.monthlyBill+" for "+result.monthlyKWh,
+    "Standby upper-bound estimate: "+result.standbyMonthlyCost+"/month (assumes 24 standby hours/day)",
+    "",
+    "ALLOCATED MONTHLY BILL"
+  ];
+  breakdown.forEach(function(item,index){
+    lines.push((index+1)+". "+item.name+" | "+item.monthlyKWh+" kWh | "+item.share+"% | "+money(item.allocatedCost,symbol));
+  });
+  lines.push("");
+  lines.push("Method: the rounded household bill is allocated in proportion to each appliance's modeled monthly kWh; row rounding is reconciled to the displayed total.");
+  lines.push("Planning estimate only: nameplate watts may differ from measured draw because of cycling, age, voltage, temperature, and usage patterns.");
+  lines.push("Privacy: appliance entries and this breakdown stay in your browser unless you choose to copy them.");
+  return lines.join("\n");
+}
+function renderBreakdown(result,countryCode){
+  var country=countryRecord(countryCode);
+  var symbol=country&&country.currencySymbol?country.currencySymbol:"$";
+  var breakdown=allocatedRows(result);
+  var body=document.getElementById("billBreakdownBody");
+  body.replaceChildren();
+  breakdown.forEach(function(item){
+    var row=document.createElement("tr");
+    [item.name,item.monthlyKWh+" kWh",item.share+"%",money(item.allocatedCost,symbol)].forEach(function(value,index){
+      var cell=document.createElement("td");
+      cell.textContent=value;
+      if(index===3){cell.className="bill-breakdown-cost";}
+      row.appendChild(cell);
+    });
+    body.appendChild(row);
+  });
+  var top=result.topConsumers&&result.topConsumers[0]?" Largest modeled consumer: "+result.topConsumers[0].name+".":"";
+  document.getElementById("billBreakdownContext").textContent=(country?country.name:countryCode)+" · dataset "+(window.ENERGY_DATA&&window.ENERGY_DATA.lastUpdated?window.ENERGY_DATA.lastUpdated:"not stated")+" · residential tariff "+result.tariff+" · household total "+result.monthlyBill+" for "+result.monthlyKWh+"."+top;
+  latestBreakdown=breakdownText(result,country,breakdown);
+  document.getElementById("copyBillBreakdown").disabled=false;
+  var status=document.getElementById("billBreakdownStatus");
+  status.textContent="Breakdown ready. Verify the largest modeled cost first.";
+  status.dataset.state="success";
+}
+function invalidateBreakdown(){
+  if(!latestBreakdown){return;}
+  latestBreakdown="";
+  var body=document.getElementById("billBreakdownBody");
+  body.innerHTML='<tr><td colspan="4">Inputs changed. Recalculate before using this breakdown.</td></tr>';
+  document.getElementById("billBreakdownContext").textContent="Your appliance or country inputs changed, so the previous bill allocation is stale.";
+  document.getElementById("copyBillBreakdown").disabled=true;
+  var status=document.getElementById("billBreakdownStatus");
+  status.textContent="Breakdown marked stale. Recalculate to refresh the allocated costs.";
+  status.dataset.state="stale";
+}
+function copyText(value){
+  if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(value);}
+  var area=document.createElement("textarea");
+  area.value=value;
+  area.setAttribute("readonly","");
+  area.style.position="fixed";
+  area.style.opacity="0";
+  document.body.appendChild(area);
+  area.select();
+  var copied=document.execCommand("copy");
+  area.remove();
+  return copied?Promise.resolve():Promise.reject(new Error("Copy unavailable"));
+}
 var rows=[];
-function addRow(p){rows.push(p||{name:"",watts:0,hours:1,qty:1,standbyWatts:0});renderRows();}
-function removeRow(i){rows.splice(i,1);renderRows();}
-window.updateRow=function(i,f,v){if(f==="name")rows[i].name=v;else rows[i][f]=parseFloat(v)||0;};
+function addRow(p){rows.push(p||{name:"",watts:0,hours:1,qty:1,standbyWatts:0});renderRows();invalidateBreakdown();}
+function removeRow(i){rows.splice(i,1);renderRows();invalidateBreakdown();}
+window.updateRow=function(i,f,v){if(f==="name")rows[i].name=v;else rows[i][f]=parseFloat(v)||0;invalidateBreakdown();};
 window.removeRow=removeRow;
 function renderRows(){
   var list=document.getElementById("appList");
@@ -218,8 +300,22 @@ function esc(s){return (s||"").replace(/[&<>"']/g,function(ch){return {"&":"&amp
 window.addEventListener("afro-energy-appliance-preset",function(ev){
   rows=(ev.detail&&ev.detail.appliances||[]).map(function(p){return Object.assign({},p);});
   renderRows();
+  invalidateBreakdown();
 });
 document.getElementById("addBtn").addEventListener("click",function(){addRow({name:"",watts:0,hours:1,qty:1,standbyWatts:0});});
+document.getElementById("appList").addEventListener("input",invalidateBreakdown);
+document.getElementById("countrySelect").addEventListener("change",invalidateBreakdown);
+document.getElementById("copyBillBreakdown").addEventListener("click",function(){
+  if(!latestBreakdown){return;}
+  var status=document.getElementById("billBreakdownStatus");
+  copyText(latestBreakdown).then(function(){
+    status.textContent="Appliance bill breakdown copied.";
+    status.dataset.state="success";
+  }).catch(function(){
+    status.textContent="Copy was blocked. Try another browser or select the result manually.";
+    status.dataset.state="stale";
+  });
+});
 document.getElementById("calcBtn").addEventListener("click",function(){
   var cc=document.getElementById("countrySelect").value;
   var appliances=rows.filter(function(r){return r.watts>0;});
@@ -234,12 +330,7 @@ document.getElementById("calcBtn").addEventListener("click",function(){
   document.getElementById("rMonthlyBill").textContent=r.monthlyBill;
   document.getElementById("rAnnualBill").textContent=r.annualBill;
   document.getElementById("rStandby").textContent=r.standbyMonthlyCost;
-  var topList=document.getElementById("rTopList");
-  var totalKwh=parseFloat((r.monthlyKWh||"").replace(/[^0-9.]/g,""))||1;
-  topList.innerHTML=(r.appliances||[]).map(function(a){
-    var pct=Math.round(a.monthlyKWh/totalKwh*100);
-    return'<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px"><span>'+esc(a.name)+'</span><span style="font-weight:600">'+a.monthlyKWh+' kWh ('+pct+'%)</span></div><div class="en-bar-wrap"><div class="en-bar-fill" style="width:'+Math.min(pct,100)+'%"></div></div></div>';
-  }).join("");
+  renderBreakdown(r,cc);
   var obs=document.getElementById("rObs");
   if(r.observations&&r.observations.length&&window.AfroEnergyTools&&window.AfroEnergyTools.renderObservations){window.AfroEnergyTools.renderObservations(obs,r.observations,"Calculation Notes");}
   document.getElementById("results").classList.add("on");
@@ -247,7 +338,7 @@ document.getElementById("calcBtn").addEventListener("click",function(){
 });
 }();
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 <script src="/assets/js/pages/energy-focus.js?v=8ad94082" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

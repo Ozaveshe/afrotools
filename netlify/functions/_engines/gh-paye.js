@@ -70,6 +70,11 @@ module.exports = {
   currency: 'GHS',
   regimes: ['STANDARD'],
   lastUpdated: '2026-04-06',
+  /* source-confidence-stamp:start */
+  sourceCheckedOn: '2026-05-04',
+  nextReviewDate: '2026-08-02',
+  /* source-confidence-stamp:end */
+
   source: 'Ghana Revenue Authority (GRA)',
 
   calculate(params) {

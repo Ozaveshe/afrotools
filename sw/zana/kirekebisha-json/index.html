@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{
   --page:#f6f8fb;
@@ -147,11 +147,11 @@ input[type="file"]{display:none}
   <div class="hero-inner">
     <nav class="crumb">
       <a href="/sw/">AfroTools</a><span>/</span>
-      <a href="/sw/zana-za-developer/">Zana za Developer</a><span>/</span>
+      <a href="/sw/zana-za-developer/">Zana za msanidi programu</a><span>/</span>
       <span>Kirekebisha JSON</span>
     </nav>
     <h1>Kirekebisha JSON, diff na schema</h1>
-    <p>Bandika API payloads, webhook bodies, config files au NDJSON logs. Format, repair, query na diff hufanyika kwenye browser isipokuwa ukiamua kunakili data kwenda mahali pengine.</p>
+    <p>Bandika API payloads, webhook bodies, config files au NDJSON logs. Format, repair, query na diff hufanyika kwenye kivinjari isipokuwa ukiamua kunakili data kwenda mahali pengine.</p>
     <div class="hero-meta">
       <span class="pill">JSON na NDJSON</span>
       <span class="pill">JSON Pointer RFC 6901</span>
@@ -161,14 +161,14 @@ input[type="file"]{display:none}
   </div>
 </section>
 
-<main class="layout"><section data-sw-prompt-note="67" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:18px;color:#334155;line-height:1.65;"><strong style="color:#0f172a;">Istilahi na mipaka:</strong> Istilahi za developer hazitafsiriwi kiholela: JSON, SQL, Regex, JWT, Base64, UUID, PWA, HTML, API, cron na manifest ni majina ya teknolojia. Kiswahili hapa kinaeleza kazi ya zana, lini uitumie, nini kinabaki ndani ya browser, na wapi unahitaji provider docs au ukaguzi wa security kabla ya production.</div></section>
-<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kirekebisha JSON kwa Kiswahili.</strong> Safisha JSON, tafuta makosa, repair payloads, query kwa JSON Pointer na export snippets bila kutuma data kwenye server isipokuwa source behavior inasema vingine. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source output, provider docs na production environment kabla ya launch/uzinduzi.</span></div></section>
+<main class="layout"><section data-sw-prompt-note="67" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:18px;color:#334155;line-height:1.65;"><strong style="color:#0f172a;">Istilahi na mipaka:</strong> Istilahi za msanidi programu hazitafsiriwi kiholela: JSON, SQL, Regex, JWT, Base64, UUID, PWA, HTML, API, cron na manifest ni majina ya teknolojia. Kiswahili hapa kinaeleza kazi ya zana, lini uitumie, nini kinabaki ndani ya kivinjari, na wapi unahitaji provider docs au ukaguzi wa security kabla ya production.</div></section>
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kirekebisha JSON kwa Kiswahili.</strong> Safisha JSON, tafuta makosa, repair payloads, query kwa JSON Pointer na export snippets bila kutuma data kwenye seva isipokuwa source behavior inasema vingine. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source matokeo, provider docs na production environment kabla ya launch/uzinduzi.</span></div></section>
   <div class="toolbar" aria-label="JSON tools toolbar">
     <button id="formatBtn" class="primary" type="button">Panga vizuri</button>
     <button id="minifyBtn" type="button">Finya</button>
     <button id="repairBtn" class="warn" type="button">Jaribu kurekebisha</button>
     <button id="sortBtn" type="button">Panga keys</button>
-    <select id="modeSelect" aria-label="Input mode">
+    <select id="modeSelect" aria-label="ingizo mode">
       <option value="json">JSON</option>
       <option value="ndjson">NDJSON / JSON Mistari</option>
     </select>
@@ -180,7 +180,7 @@ input[type="file"]{display:none}
     <button id="sampleBtn" type="button">Mfano</button>
     <label class="file-label" for="fileInput">Fungua faili</label>
     <input id="fileInput" type="file" accept=".json,.jsonl,.ndjson,.txt,application/json">
-    <button id="copyBtn" type="button">Nakili Output</button>
+    <button id="copyBtn" type="button">Nakili matokeo</button>
     <button id="downloadBtn" type="button">Pakua</button>
     <button id="apiTesterBtn" class="success" type="button">Hifadhi kwa API Tester</button>
     <span class="spacer"></span>
@@ -191,10 +191,10 @@ input[type="file"]{display:none}
     <div class="panel">
       <div class="panel-head">
         <div>
-          <div class="panel-title">Input</div>
-          <div class="panel-sub">Ctrl+Enter hupanga JSON. Tab huongeza indentation.</div>
+          <div class="panel-title">ingizo</div>
+          <div class="panel-sub">Ctrl+ingiza hupanga JSON. Tab huongeza indentation.</div>
         </div>
-        <div class="panel-sub" id="privacyNote">Client-side</div>
+        <div class="panel-sub" id="privacyNote">upande wa kivinjari</div>
       </div>
       <textarea id="input" class="editor" spellcheck="false" placeholder='Bandika JSON hapa, mfano: {"customer":"Amina","country":"NG","orders":[{"id":1,"total":12500}]}' aria-label="Bandika JSON hapa"></textarea>
       <div id="status" class="status"></div>
@@ -204,7 +204,7 @@ input[type="file"]{display:none}
       <div class="panel-head">
         <div>
           <div class="panel-title">Workbench</div>
-          <div class="panel-sub" id="outputSub">Output iliyopangwa</div>
+          <div class="panel-sub" id="outputSub">matokeo iliyopangwa</div>
         </div>
         <div class="tabs">
           <button id="tabFormatted" class="active" type="button">Iliyopangwa</button>
@@ -218,7 +218,7 @@ input[type="file"]{display:none}
       </div>
       <div id="queryBox" class="query-box" hidden>
         <div class="tools-row">
-          <input id="pointerInput" type="text" value="/orders/0/total" aria-label="JSON Pointer au dot path rahisi">
+          <input id="pointerInput" type="text" value="/orders/0/jumla" aria-label="JSON Pointer au dot path rahisi">
           <button id="runPointerBtn" type="button">Endesha query</button>
         </div>
         <p class="helper">Tumia JSON Pointer ya RFC 6901 kama <code>/orders/0/total</code>, au paths rahisi kama <code>orders.0.total</code>.</p>
@@ -242,7 +242,7 @@ input[type="file"]{display:none}
     <div class="panel-head">
       <div>
         <div class="panel-title">Marejeo na uthibitishaji</div>
-        <div class="panel-sub">Mbinu, chanzo na kanusho kabla ya kutumia output kwenye production.</div>
+        <div class="panel-sub">Mbinu, chanzo na kanusho kabla ya kutumia matokeo kwenye production.</div>
       </div>
     </div>
     <div class="source-grid" style="padding:14px">
@@ -253,7 +253,7 @@ input[type="file"]{display:none}
       </div>
       <div class="source-card">
         <strong>JSON.parse and JSON.stringify</strong>
-        <p>Mbinu ya browser hutumia parsing na stringifying kwa validation, formatting na minification. Hakiki chanzo cha payload kabla ya production.</p>
+        <p>Mbinu ya kivinjari hutumia parsing na stringifying kwa validation, formatting na minification. Hakiki chanzo cha payload kabla ya production.</p>
         <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" target="_blank" rel="noopener">MDN JSON.parse (Kiingereza)</a>
       </div>
       <div class="source-card">
@@ -268,7 +268,7 @@ input[type="file"]{display:none}
       </div>
       <div class="source-card">
         <strong>JSON Schema</strong>
-        <p>Schema inference hutoa draft ya kuanzia. Si taarifa rasmi ya validation; thibitisha required fields, privacy na rules zako.</p>
+        <p>Schema inference hutoa draft ya kuanzia. Si taarifa rasmi ya validation; thibitisha inahitajika fields, privacy na rules zako.</p>
         <a href="https://json-schema.org/learn/getting-started-step-by-step" target="_blank" rel="noopener">JSON Schema</a>
       </div>
     </div>
@@ -710,5 +710,5 @@ input[type="file"]{display:none}
   }).observe(document.documentElement, { childList: true, subtree: true });
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

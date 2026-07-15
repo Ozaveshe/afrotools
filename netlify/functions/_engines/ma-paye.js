@@ -3,6 +3,12 @@ const { createEngine } = require('./_factory');
 module.exports = createEngine({
   country: 'MA', countryName: 'Morocco', currency: 'MAD',
   source: 'Direction Générale des Impôts (DGI)',
+  /* source-confidence-stamp:start */
+  lastUpdated: '2026-03-01',
+  sourceCheckedOn: '2025-01-01',
+  nextReviewDate: '2025-04-01',
+  /* source-confidence-stamp:end */
+
   bands: [[30000,0],[20000,0.10],[20000,0.20],[20000,0.30],[40000,0.34],[Infinity,0.38]],
   socialSecurity: [
     { key: 'cnss', label: 'CNSS (4.48%)', rate: 0.0448, cap: 6000 * 12 },

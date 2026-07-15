@@ -26,7 +26,7 @@
   "description": "Build reusable client-side PDF workflows with repair, optimize, compress, watermark, keep pages, rotate, merge, page numbering, flattening, encryption, and execution reports.",
   "url": "https://afrotools.com/tools/pdf-workflow/",
   "inLanguage": "en",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "WebApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
   "offers": {
@@ -63,10 +63,9 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools.js?v=dcd09493" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -903,47 +902,9 @@
 <meta property="article:modified_time" content="2026-05-01">
 <meta name="tool-id" content="pdf-workflow">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Does the order of PDF workflow operations matter?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Operations run from left to right, so merging, rotating, numbering, watermarking, compression, and password protection should be ordered deliberately before export."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Are my files uploaded to a server?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. The workflow runs in the browser using local pdf.js, pdf-lib, and qpdf WebAssembly assets. Your PDF stays on your device unless you intentionally export or share it."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I save a PDF workflow recipe?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. You can save a recipe in this browser, load it later, or export and import JSON so another workstation can reuse the same operation chain."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What does the Compress step do?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The Compress step rasterizes pages at the selected quality and rebuilds the PDF. That can reduce image-heavy files, but text may become image-based."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/pdf-workflow/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does the order of operations matter?","acceptedAnswer":{"@type":"Answer","text":"Yes. Operations execute in sequence from left to right. For example, if you compress before adding a watermark, the watermark text will be sharp. If you compress after, the watermark may lose some quality. A common order is: merge, rotate, page numbers, watermark, compress, password."}},{"@type":"Question","name":"Are my files uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The workflow runs in your browser using local pdf.js, pdf-lib, and qpdf/WASM assets. Your PDF never leaves your device."}},{"@type":"Question","name":"Can I use the same operation more than once?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can add the same operation multiple times with different configurations. For example, you could add two watermark steps to place text at both the top and bottom of each page."}},{"@type":"Question","name":"Is there a page or file size limit?","acceptedAnswer":{"@type":"Answer","text":"There is no hard limit, but very large PDFs (over 100 MB or hundreds of pages) may be slow to process since everything runs in the browser. For best results, keep files under 50 MB."}},{"@type":"Question","name":"What does the Compress step actually do?","acceptedAnswer":{"@type":"Answer","text":"The compress step rasterizes pages at the selected quality and rebuilds the PDF. This can reduce file size for image-heavy files, but it can also make text image-based. Use optimize when you only want structural cleanup."}},{"@type":"Question","name":"Can I save a workflow?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can save a recipe in this browser, load it later, or export/import it as JSON so another team member can reuse the same steps."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-workflow/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-workflow/">
@@ -1168,7 +1129,14 @@
   </div>
 </section>
 
-<afro-related-tools category="document-pdf" current="pdf-workflow"></afro-related-tools>
+<afro-related-tools category="document-pdf" current="pdf-workflow" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/cv-builder/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Builder</a></li><li><a href="/tools/invoice-generator/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Invoice Generator</a></li><li><a href="/tools/pdf-editor/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">PDF Editor</a></li><li><a href="/tools/pdf-merge-split/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">PDF Merge &amp; Split</a></li><li><a href="/tools/pdf-workspace/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">PDF Workspace</a></li><li><a href="/tools/pdf-compress/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 
 <email-gate-modal></email-gate-modal>

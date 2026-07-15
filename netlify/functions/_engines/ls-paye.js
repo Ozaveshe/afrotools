@@ -7,6 +7,12 @@ const { createEngine, calcProgressiveBands } = require('./_factory');
 const base = createEngine({
   country: 'LS', countryName: 'Lesotho', currency: 'LSL',
   source: 'Revenue Services Lesotho (RSL)',
+  /* source-confidence-stamp:start */
+  lastUpdated: '2026-03-01',
+  sourceCheckedOn: '2025-07-01',
+  nextReviewDate: '2025-09-29',
+  /* source-confidence-stamp:end */
+
   bands: [[74040,0.20],[Infinity,0.30]],
   socialSecurity: [],
   employerSS: []

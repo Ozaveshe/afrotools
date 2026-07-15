@@ -80,7 +80,13 @@ function digestText(value) {
 }
 
 function digestFile(root, relativePath) {
-  const source = fs.readFileSync(path.join(root, relativePath), 'utf8');
+  let source = fs.readFileSync(path.join(root, relativePath), 'utf8');
+  if (/^netlify\/functions\/_engines\/[a-z]{2}-paye\.js$/i.test(slash(relativePath))) {
+    // Review scheduling metadata does not change calculation behavior. The
+    // explicit marker keeps these fields outside protected formula digests,
+    // while every unmarked engine line remains covered by the digest gate.
+    source = source.replace(/^[ \t]*\/\* source-confidence-stamp:start \*\/[\s\S]*?^[ \t]*\/\* source-confidence-stamp:end \*\/\r?\n?(?:[ \t]*\r?\n)?/gm, '');
+  }
   if (!relativePath.endsWith('.html')) return digestText(source);
   const executableScripts = [];
   for (const match of source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {

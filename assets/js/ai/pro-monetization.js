@@ -1,24 +1,28 @@
 (function initAfroToolsAIProMonetization(root, factory) {
   if (typeof module === "object" && module.exports) {
-    module.exports = factory(root || {});
+    module.exports = factory(root || {}, require("./usage-limits.js"));
   } else {
-    root.AfroToolsAIProMonetization = factory(root || {});
+    root.AfroToolsAIProMonetization = factory(root || {}, root.AfroToolsAIUsageLimits);
   }
-})(typeof window !== "undefined" ? window : globalThis, function createAfroToolsAIProMonetization(root) {
+})(typeof window !== "undefined" ? window : globalThis, function createAfroToolsAIProMonetization(root, usageLimits) {
   "use strict";
+
+  if (!usageLimits || typeof usageLimits.getAiBriefsPerDay !== "function") {
+    throw new Error("AfroTools AI usage limits must load before Pro monetization.");
+  }
 
   var STORAGE_KEY = "afrotools.aiProUsage.v1";
   var PLAN_OVERRIDE_KEY = "afrotools.aiProPlanOverride";
   var PRICE_FLAG_KEY = "AFROTOOLS_AI_PRO_PRICING_DISPLAY";
   var PUBLIC_PRICE_FLAG_KEY = "NEXT_PUBLIC_AFROTOOLS_AI_PRO_PRICING_DISPLAY";
-  var PLAN_ORDER = { free: 0, pro: 1, team: 2, b2b: 2, enterprise: 2 };
+  var PLAN_ORDER = { free: 0, pro: 1, team: 2 };
 
   var PLAN_CAPABILITIES = {
     free: {
       id: "free",
       label: "Free",
       summary: "Basic routing, calculators, limited AI briefs, limited exports, and sponsor-supported workflows.",
-      aiBriefsPerDay: 2,
+      aiBriefsPerDay: usageLimits.getAiBriefsPerDay("free"),
       aiDocumentsPerMonth: 0,
       exportsPerDay: 3,
       savedProjects: 6,
@@ -35,7 +39,7 @@
       id: "pro",
       label: "Pro",
       summary: "More AI documents, saved project depth, richer PDF exports, no ads, and advanced planning workflows.",
-      aiBriefsPerDay: 20,
+      aiBriefsPerDay: usageLimits.getAiBriefsPerDay("pro"),
       aiDocumentsPerMonth: 60,
       exportsPerDay: -1,
       savedProjects: -1,
@@ -52,7 +56,7 @@
       id: "team",
       label: "Team / B2B",
       summary: "Widgets, API access, sponsor/data workflows, team seats, and white-label implementation paths.",
-      aiBriefsPerDay: -1,
+      aiBriefsPerDay: usageLimits.getAiBriefsPerDay("team"),
       aiDocumentsPerMonth: -1,
       exportsPerDay: -1,
       savedProjects: -1,
@@ -177,9 +181,7 @@
   };
 
   function normalizePlan(plan) {
-    var clean = String(plan || "free").toLowerCase().trim();
-    if (clean === "business" || clean === "b2b" || clean === "enterprise") return "team";
-    return PLAN_CAPABILITIES[clean] ? clean : "free";
+    return usageLimits.normalizePlan(plan);
   }
 
   function isPlanAtLeast(currentPlan, requiredPlan) {
@@ -220,7 +222,7 @@
 
   function planFromProfile(profile) {
     if (!profile) return "";
-    return normalizePlan(profile.plan || profile.planId || profile.subscriptionPlan || profile.tier || profile.accountType);
+    return normalizePlan(profile.subscription_tier || profile.plan || profile.planId || profile.subscriptionPlan || profile.tier || profile.accountType);
   }
 
   function getPlanCapabilities(plan) {

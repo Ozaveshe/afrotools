@@ -8,10 +8,23 @@
  */
 
 const { run } = require('./build-canonical-registry');
+const canonicalRegistry = require('./lib/canonical-registry');
 
-try {
-  run({ write: process.argv.includes('--write') });
-} catch (error) {
-  console.error(error.message);
-  process.exit(1);
+function getPublicCounts(registry = canonicalRegistry.buildCanonicalRegistry()) {
+  return Object.fromEntries(registry.selectors.map((selector) => [selector.id, selector.value]));
 }
+
+function main(argv = process.argv.slice(2)) {
+  return run({ write: argv.includes('--write') });
+}
+
+if (require.main === module) {
+  try {
+    main();
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+}
+
+module.exports = { getPublicCounts, main };

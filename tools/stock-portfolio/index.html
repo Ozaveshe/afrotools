@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -96,39 +96,9 @@ details[open] summary::after{content:'\2212'}
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/stock-portfolio.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Review concentration and cash exposure?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Enter portfolio value, largest holding, cash, and markets before judging diversification."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Investment disclaimer: this is educational, not investment advice. Confirm prices, fees, tax, and risk tolerance."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/stock-portfolio/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Stock Portfolio Tracker?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Stock Portfolio Tracker then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Stock Portfolio Tracker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Stock Portfolio Tracker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"How do I read African stock prices?","acceptedAnswer":{"@type":"Answer","text":"NSE Nigeria quotes stocks in Naira (kobo for fractions). JSE quotes in South African cents (1 Rand = 100 cents). GSE Ghana and NSE Kenya quote in local currency units. Most African exchanges publish prices on their websites daily and many mobile apps (like Robinhood-equivalents) provide real-time NSE and JSE quotes."}},{"@type":"Question","name":"How can I buy stocks on NSE, JSE, or GSE?","acceptedAnswer":{"@type":"Answer","text":"You need a stockbroker or licensed investment platform. In Nigeria: Stanbic IBTC, Meristem, Chaka, Trove. In South Africa: Easy Equities, Investec, Standard Bank Online Share Trading. In Kenya: Dyer Blair, Standard Investment Bank. In Ghana: Databank Brokerage, IC Securities. Online platforms are making access much easier."}},{"@type":"Question","name":"Are African stocks a good investment?","acceptedAnswer":{"@type":"Answer","text":"African stock markets offer opportunities for growth but come with higher volatility and currency risk. The JSE (South Africa) is the most liquid and internationally accessible. The NSE Nigeria offers some of the highest potential returns but also more volatility. Diversification across sectors and countries is advisable."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/stock-portfolio/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/stock-portfolio/">
@@ -187,9 +157,9 @@ details[open] summary::after{content:'\2212'}
     <div>
       <span class="df-upgrade__kicker">Portfolio risk snapshot</span>
       <h2>Review concentration and cash exposure</h2>
-      <p>Enter portfolio value, largest holding, cash, and markets before judging diversification.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Result: portfolio risk snapshot ready with concentration, cash, markets, and review date.</li><li>Methodology: use the fields to create a local planning summary with visible assumptions.</li><li>Source note: Investor education references should be checked when live prices, policy, or eligibility matters.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Investment disclaimer: this is educational, not investment advice. Confirm prices, fees, tax, and risk tolerance. Source/reference: Investor education references.</p>
+      <p>Not sure how to get the most from the Stock Portfolio Tracker? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Stock Portfolio Tracker takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
     </div>
     <form class="df-form" data-df-form="stock-portfolio">
       <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
@@ -198,20 +168,28 @@ details[open] summary::after{content:'\2212'}
       <label>Cash balance<input name="cash" type="number" value="300000" min="0" step="any" aria-label="Cash balance"></label>
       <label>Markets held<input name="markets" type="number" value="2" min="0" step="any" aria-label="Markets held"></label>
       <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="stock-portfolio" data-df-base="Result: portfolio risk snapshot ready with concentration, cash, markets, and review date." aria-live="polite">Result: portfolio risk snapshot ready with concentration, cash, markets, and review date.</output>
+      <output class="df-result" data-df-result="stock-portfolio" data-df-base="Stock Portfolio Tracker — enter your details above to see your result." aria-live="polite">Stock Portfolio Tracker — enter your details above to see your result.</output>
       <div class="df-actions"><button type="button" data-df-copy="stock-portfolio">Copy summary</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="stock-portfolio-faq-title">
   <h2 id="stock-portfolio-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>Review concentration and cash exposure?</summary><p>Enter portfolio value, largest holding, cash, and markets before judging diversification.</p></details><details><summary>What should I verify before acting?</summary><p>Investment disclaimer: this is educational, not investment advice. Confirm prices, fees, tax, and risk tolerance.</p></details><details><summary>Is this an official result?</summary><p>No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How do I use the Stock Portfolio Tracker?</summary><p>Enter your amounts, rates and dates in the fields above. The Stock Portfolio Tracker then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Stock Portfolio Tracker?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Stock Portfolio Tracker free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
 </section>
     <div class="faq-item"><details><summary>How do I read African stock prices?</summary><div class="faq-a">NSE Nigeria quotes stocks in Naira (kobo for fractions). JSE quotes in South African cents (1 Rand = 100 cents). GSE Ghana and NSE Kenya quote in local currency units. Most African exchanges publish prices on their websites daily and many mobile apps (like Robinhood-equivalents) provide real-time NSE and JSE quotes.</div></details></div>
     <div class="faq-item"><details><summary>How can I buy stocks on NSE, JSE, or GSE?</summary><div class="faq-a">You need a stockbroker or licensed investment platform. In Nigeria: Stanbic IBTC, Meristem, Chaka, Trove. In South Africa: Easy Equities, Investec, Standard Bank Online Share Trading. In Kenya: Dyer Blair, Standard Investment Bank. In Ghana: Databank Brokerage, IC Securities. Online platforms are making access much easier.</div></details></div>
     <div class="faq-item"><details><summary>Are African stocks a good investment?</summary><div class="faq-a">African stock markets offer opportunities for growth but come with higher volatility and currency risk. The JSE (South Africa) is the most liquid and internationally accessible. The NSE Nigeria offers some of the highest potential returns but also more volatility. Diversification across sectors and countries is advisable.</div></details></div>
   </div>
 </div>
+<afro-related-tools data-ssr="1" category="fintech" current="stock-portfolio">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script>
 var currentSym='&#x20A6;';
@@ -269,6 +247,7 @@ function calcPortfolio(){
   document.getElementById('sp-results').classList.add('on');
 }
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

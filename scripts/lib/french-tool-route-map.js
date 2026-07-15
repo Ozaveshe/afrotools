@@ -1,6 +1,6 @@
 "use strict";
 
-const FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL = Object.freeze({
+const CURATED_FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL = Object.freeze({
   "afrocuisine": "afrokitchen",
   "afroprix": "afroprices",
   "afropoints": "afropoints",
@@ -602,6 +602,12 @@ const FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL = Object.freeze({
   "planning-examens": "exam-timetable",
 });
 
+const COVERAGE_WAVE = require("../../data/localization/coverage-wave-2026-07.json");
+const FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL = Object.freeze({
+  ...CURATED_FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL,
+  ...Object.fromEntries(COVERAGE_WAVE.french.map((entry) => [entry.frSlug, entry.enSlug])),
+});
+
 const ENGLISH_TOOL_TO_FRENCH_SLUG = Object.freeze(
   Object.fromEntries(
     Object.entries(FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL).map(([frSlug, enSlug]) => [enSlug, frSlug])
@@ -615,7 +621,7 @@ function frenchToolSlugToEnglishSource(frSlug) {
 
 function frenchRouteForEnglishToolSource(source) {
   const clean = String(source || "").replace(/^\/+|\/+$/g, "");
-  const match = clean.match(/^tools\/([^/]+)$/);
+  const match = clean.match(/^tools\/(.+)$/);
   if (!match) return null;
 
   const frSlug = ENGLISH_TOOL_TO_FRENCH_SLUG[match[1]];

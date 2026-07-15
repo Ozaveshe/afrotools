@@ -31,6 +31,10 @@ const {
   frenchToolSlugToEnglishSource,
 } = require('./lib/french-tool-route-map');
 const {
+  SWAHILI_TOOL_SLUG_TO_ENGLISH_TOOL,
+  swahiliRouteForEnglishToolSource,
+} = require('./lib/swahili-tool-route-map');
+const {
   frenchRouteForEnglishTelecomSource,
   frenchTelecomSlugToEnglishSource,
 } = require('./lib/french-telecom-route-map');
@@ -558,7 +562,7 @@ discoverExistingFrPages();
 // Hand-crafted Swahili pages under /sw/ that predate the build system.
 // We map each to its English equivalent so hreflang/sitemap can reference them.
 
-const SW_SLUG_TO_EN = {
+const CURATED_SW_SLUG_TO_EN = {
   // Category hubs
   'afya': 'health',
   'afya-na-bima': 'health-insurance',
@@ -614,6 +618,11 @@ const SW_SLUG_TO_EN = {
   'kilimo/umwagiliaji/uganda': 'agriculture/irrigation/uganda',
   'kilimo/umwagiliaji/rwanda': 'agriculture/irrigation/rwanda',
   'kilimo/umwagiliaji/burundi': 'agriculture/irrigation/burundi',
+};
+
+const SW_SLUG_TO_EN = {
+  ...CURATED_SW_SLUG_TO_EN,
+  ...SWAHILI_TOOL_SLUG_TO_ENGLISH_TOOL,
 };
 
 const SW_EN_TO_SLUG = new Map(
@@ -781,6 +790,13 @@ function buildOutputPath(pagePath, lang) {
       }
 
       return path.join(ROOT, preferredClean, 'index.html');
+    }
+  }
+
+  if (lang === 'sw') {
+    const preferredSwahiliRoute = swahiliRouteForEnglishToolSource(clean);
+    if (preferredSwahiliRoute) {
+      return path.join(ROOT, preferredSwahiliRoute.replace(/^\/+|\/+$/g, ''), 'index.html');
     }
   }
 

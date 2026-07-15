@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Stamps service-worker.js with a CACHE_VERSION based on tracked asset content.
- * Also injects bundle paths from manifest.json into the PRECACHE list.
- * This forces browsers to purge the old cache on next visit.
+ * Stamps service-worker.js with a deterministic CACHE_VERSION and injects the
+ * cachebusted shell scripts plus live bundle paths into its generated PRECACHE
+ * block. Run after cachebust.js and bundle.js.
  *
  * Run: node scripts/stamp-sw.js
  * Part of: npm run build
@@ -12,67 +12,92 @@ const path = require('path');
 const crypto = require('crypto');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
-const SW_PATH = path.join(__dirname, '..', 'service-worker.js');
-const MANIFEST_PATH = path.join(__dirname, '..', 'assets', 'js', 'bundles', 'manifest.json');
+const ROOT = path.join(__dirname, '..');
+const SW_PATH = path.join(ROOT, 'service-worker.js');
+const INDEX_PATH = path.join(ROOT, 'index.html');
+const MANIFEST_PATH = path.join(ROOT, 'assets', 'js', 'bundles', 'manifest.json');
+const PRECACHE_START = '  // BUILD-GENERATED PRECACHE START';
+const PRECACHE_END = '  // BUILD-GENERATED PRECACHE END';
 
-// Build a short hash from key file contents so CI builds are deterministic.
 const keyFiles = [
   'assets/css/tokens.min.css',
   'assets/css/design-system.min.css',
   'assets/js/components/navbar.min.js',
   'assets/js/components/footer.min.js',
-  'assets/js/components/tool-registry.js',
-].map(f => path.join(__dirname, '..', f));
-
-const hash = crypto.createHash('md5');
+].map(file => path.join(ROOT, file));
 
 function readNormalizedText(filePath) {
   return fs.readFileSync(filePath, 'utf8').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 }
 
-for (const f of keyFiles) {
-  if (fs.existsSync(f)) {
-    hash.update(readNormalizedText(f));
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function readCachebustedScriptUrl(assetPath) {
+  if (!fs.existsSync(INDEX_PATH)) {
+    throw new Error('index.html not found; run cachebust.js before stamp-sw.js');
   }
+  const html = fs.readFileSync(INDEX_PATH, 'utf8');
+  const pattern = new RegExp(
+    `<script\\b[^>]*\\bsrc=["'](${escapeRegExp(assetPath)}\\?v=[a-f0-9]{8})["']`,
+    'i'
+  );
+  const match = html.match(pattern);
+  if (!match) {
+    throw new Error(`Cachebusted ${assetPath} reference not found in index.html`);
+  }
+  return match[1];
 }
 
-// Also hash bundle manifest if it exists
-if (fs.existsSync(MANIFEST_PATH)) {
-  hash.update(readNormalizedText(MANIFEST_PATH));
+function readLiveBundlePaths() {
+  if (!fs.existsSync(MANIFEST_PATH)) {
+    throw new Error('Bundle manifest not found; run bundle.js before stamp-sw.js');
+  }
+  const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+  const paths = Object.values(manifest).map(info => info && info.path).filter(Boolean);
+  if (paths.length === 0) {
+    throw new Error('Bundle manifest contains no live bundle paths');
+  }
+  return paths;
 }
 
-const version = hash.digest('hex').slice(0, 8);
+function injectGeneratedPrecache(sw, urls) {
+  const pattern = new RegExp(
+    `${escapeRegExp(PRECACHE_START)}[\\s\\S]*?${escapeRegExp(PRECACHE_END)}`
+  );
+  if (!pattern.test(sw)) {
+    throw new Error('Build-generated PRECACHE markers not found in service-worker.js');
+  }
+  const entries = Array.from(new Set(urls)).map(url => `  '${url}',`);
+  return sw.replace(pattern, [PRECACHE_START, ...entries, PRECACHE_END].join('\n'));
+}
 
 let sw = fs.readFileSync(SW_PATH, 'utf8');
+const generatedPrecacheUrls = [
+  readCachebustedScriptUrl('/assets/js/components/navbar.min.js'),
+  readCachebustedScriptUrl('/assets/js/components/footer.min.js'),
+  ...readLiveBundlePaths(),
+];
+sw = injectGeneratedPrecache(sw, generatedPrecacheUrls);
 
-// 1. Stamp CACHE_VERSION
 const cacheVersionPattern = /const\s+CACHE_VERSION\s*=\s*['"][^'"]+['"]/;
 if (!cacheVersionPattern.test(sw)) {
-  console.log('  WARN  CACHE_VERSION pattern not found in service-worker.js');
-  process.exit(1);
+  throw new Error('CACHE_VERSION pattern not found in service-worker.js');
 }
-sw = sw.replace(cacheVersionPattern, `const CACHE_VERSION = '${version}'`);
 
-// 2. Inject bundle paths into PRECACHE list (if manifest exists)
-if (fs.existsSync(MANIFEST_PATH)) {
-  const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
-  const bundlePaths = Object.values(manifest)
-    .filter(info => info.path) // skip chat bundle from precache (lazy-loaded)
-    .map(info => `  '${info.path}'`);
-
-  // Replace the PRECACHE array — inject bundle paths before the closing bracket
-  // We add bundle paths as additional entries, keeping existing ones
-  const precacheRegex = /(const PRECACHE = \[[\s\S]*?)(];)/;
-  const precacheMatch = sw.match(precacheRegex);
-  if (precacheMatch) {
-    const existingEntries = precacheMatch[1];
-    // Remove old bundle entries (from previous builds)
-    const cleaned = existingEntries.replace(/\s*'\/assets\/js\/bundles\/[^']*',?\n?/g, '');
-    // Add new bundle entries
-    const bundleEntries = bundlePaths.map(p => p + ',').join('\n') + '\n';
-    sw = sw.replace(precacheRegex, cleaned + bundleEntries + precacheMatch[2]);
+const hash = crypto.createHash('md5');
+for (const filePath of keyFiles) {
+  if (fs.existsSync(filePath)) {
+    hash.update(readNormalizedText(filePath));
   }
 }
+hash.update(readNormalizedText(MANIFEST_PATH));
+hash.update(sw.replace(cacheVersionPattern, "const CACHE_VERSION = '__BUILD_STAMP__'"));
+
+const version = hash.digest('hex').slice(0, 8);
+sw = sw.replace(cacheVersionPattern, `const CACHE_VERSION = '${version}'`);
 
 writeFileSyncWithRetry(SW_PATH, sw, 'utf8');
+console.log(`  SW    PRECACHE generated: ${generatedPrecacheUrls.length} current asset URLs`);
 console.log(`  SW    CACHE_VERSION stamped: ${version}`);

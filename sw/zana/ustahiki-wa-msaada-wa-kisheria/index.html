@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/data/legal/country-legal-index.js?v=02e28276"></script>
 <script src="/engines/legal-engine.js?v=cade292f"></script>
 <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
@@ -78,7 +78,7 @@
 <option value="ZW">Zimbabwe</option>
 <option value="EG">Misri</option>
 <option value="MA">Moroko</option></select></div>
-  <div class="field"><label for="monthlyIncome">Mapato ya kaya kwa mwezi</label><input aria-label="Line item amount" class="input" id="monthlyIncome" type="number" min="0" placeholder="0"><span class="hint">Tumia sarafu ya nchi uliyochagua.</span></div>
+  <div class="field"><label for="monthlyIncome">Mapato ya kaya kwa mwezi</label><input aria-label="Line item kiasi" class="input" id="monthlyIncome" type="number" min="0" placeholder="0"><span class="hint">Tumia sarafu ya nchi uliyochagua.</span></div>
   <div class="field"><label for="totalAssets">Thamani ya mali binafsi</label><input class="input" id="totalAssets" type="number" min="0" value="0"></div>
   <div class="field"><label for="dependants">Wategemezi</label><input class="input" id="dependants" type="number" min="0" value="0"></div>
   <div class="field full"><label>Aina ya shauri</label><div class="radio-grid"><label class="radio-card"><input aria-label="Matter" type="radio" name="matter" value="criminal" checked> Jinai</label><label class="radio-card"><input aria-label="Matter" type="radio" name="matter" value="family"> Familia</label><label class="radio-card"><input aria-label="Matter" type="radio" name="matter" value="land"> Ardhi/mali</label><label class="radio-card"><input aria-label="Matter" type="radio" name="matter" value="employment"> Ajira</label><label class="radio-card"><input aria-label="Matter" type="radio" name="matter" value="civil"> Madai ya kiraia</label><label class="radio-card"><input aria-label="Matter" type="radio" name="matter" value="other"> Mengine</label></div></div>
@@ -131,10 +131,10 @@ function n(id){var x=parseFloat(v(id));return isNaN(x)?0:x;}
 function radio(name){var el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:'';}
 function money(amount, currency){return currency+' '+Number(amount||0).toLocaleString('en-US',{maximumFractionDigits:0});}
 function today(){return new Date().toISOString().slice(0,10);}
-function requireFields(ids){for(var i=0;i<ids.length;i++){if(!v(ids[i])){alert('Jaza sehemu muhimu kabla ya kuunda matokeo.');return false;}}return true;}
+function requireFields(ids){for(var i=0;i<ids.length;i++){if(!v(ids[i])){alert('Jaza sehemu muhimu kabla ya kuunda RESULT.');return false;}}return true;}
 function setMetrics(items){var grid=document.getElementById('metricGrid');grid.innerHTML='';items.forEach(function(item){var d=document.createElement('div');d.className='metric';var s=document.createElement('span');s.textContent=item.label;var b=document.createElement('b');b.textContent=item.value;d.appendChild(s);d.appendChild(b);grid.appendChild(d);});}
 function showResult(title, text, metrics){document.getElementById('resultTitle').textContent=title;document.getElementById('resultOutput').textContent=text;setMetrics(metrics||[]);document.getElementById('resultBox').classList.add('on');document.getElementById('resultBox').scrollIntoView({behavior:'smooth',block:'start'});}
-function copyResult(){navigator.clipboard.writeText(document.getElementById('resultOutput').textContent).then(function(){alert('Matokeo yamenakiliwa.');}).catch(function(){alert('Nakili kwa mikono kutoka kwenye kisanduku cha matokeo.');});}
+function copyResult(){navigator.clipboard.writeText(document.getElementById('resultOutput').textContent).then(function(){alert('Matokeo yamenakiliwa.');}).catch(function(){alert('Nakili kwa mikono kutoka kwenye kisanduku cha RESULT.');});}
 function printResult(){window.print();}
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('input[type="date"]').forEach(function(el){if(!el.value)el.value=today();});});
 
@@ -169,5 +169,5 @@ function checkAid(){var cc=v('selCountry');var d=AID_DATA[cc];var income=n('mont
 'Huu si uamuzi rasmi wa ustahiki.'
 ].join('\n');showResult('Ustahiki wa msaada wa kisheria',text,[{label:'Matokeo',value:likely?'Jaribu kuomba':'Thibitisha njia mbadala'},{label:'Kizingiti cha mapato',value:money(adj,d.currency)},{label:'Mamlaka',value:d.authority}]);}
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

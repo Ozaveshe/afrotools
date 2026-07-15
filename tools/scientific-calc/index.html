@@ -19,9 +19,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <meta name="tool-id" content="scientific-calc">
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <style>
   :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; }
@@ -109,7 +108,7 @@
   details[open] summary svg { transform: rotate(180deg); }
   details summary::-webkit-details-marker { display: none; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Scientific Calculator","description":"Free scientific calculator with trigonometry, logarithms, parentheses, memory (M+/M-/MR/MC), constants, factorial, powers, and full keyboard support.","url":"https://afrotools.com/tools/scientific-calc/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/scientific-calc.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Scientific Calculator","description":"Free scientific calculator with trigonometry, logarithms, parentheses, memory (M+/M-/MR/MC), constants, factorial, powers, and full keyboard support.","url":"https://afrotools.com/tools/scientific-calc/","inLanguage":"en","applicationCategory":"EducationalApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/scientific-calc.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Scientific Calculator","url":"https://afrotools.com/tools/scientific-calc/","description":"Free scientific calculator with trigonometry, logarithms, parentheses, memory (M+/M-/MR/MC), constants, factorial, powers, and full keyboard support.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/scientific-calc.webp"}</script>
 <script type="application/ld+json">
 {
@@ -194,7 +193,7 @@
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/scientific-calc/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scientific-calc/">
@@ -252,15 +251,15 @@
           <button type="button" class="btn btn-func" onclick="addFunc('asin(')">asin</button>
           <button type="button" class="btn btn-func" onclick="addFunc('acos(')">acos</button>
           <button type="button" class="btn btn-func" onclick="addFunc('atan(')">atan</button>
-          <button type="button" class="btn btn-func" onclick="addText('!')">n!</button>
+          <button type="button" class="btn btn-func" onclick="addText('!')" aria-label="Factorial">n!</button>
           <button type="button" class="btn btn-func" onclick="addText('pi')">pi</button>
           <button type="button" class="btn btn-func" onclick="addText('e')">e</button>
 
           <!-- Row 4: Parens, power, mod -->
           <button type="button" class="btn btn-op" onclick="addText('(')">(</button>
           <button type="button" class="btn btn-op" onclick="addText(')')">)</button>
-          <button type="button" class="btn btn-op" onclick="addText('^')">x^y</button>
-          <button type="button" class="btn btn-op" onclick="addText('%')">mod</button>
+          <button type="button" class="btn btn-op" onclick="addText('^')" aria-label="Power (x to the y)">x^y</button>
+          <button type="button" class="btn btn-op" onclick="addText('%')" aria-label="Modulo">mod</button>
           <button type="button" class="btn btn-op" onclick="addText('*')">*</button>
           <button type="button" class="btn btn-op" onclick="addText('/')">/</button>
 
@@ -269,30 +268,30 @@
           <button type="button" class="btn btn-num" onclick="addText('8')">8</button>
           <button type="button" class="btn btn-num" onclick="addText('9')">9</button>
           <button type="button" class="btn btn-op" onclick="addText('-')">-</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('abs(')">|x|</button>
-          <button type="button" class="btn btn-func" onclick="squareVal()">x^2</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('abs(')" aria-label="Absolute value">|x|</button>
+          <button type="button" class="btn btn-func" onclick="squareVal()" aria-label="Square (x squared)">x^2</button>
 
           <!-- Row 6: Numbers 4-6, plus -->
           <button type="button" class="btn btn-num" onclick="addText('4')">4</button>
           <button type="button" class="btn btn-num" onclick="addText('5')">5</button>
           <button type="button" class="btn btn-num" onclick="addText('6')">6</button>
           <button type="button" class="btn btn-op" onclick="addText('+')">+</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('10^(')">10^x</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('exp(')">e^x</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('10^(')" aria-label="10 to the power of x">10^x</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('exp(')" aria-label="e to the power of x">e^x</button>
 
           <!-- Row 7: Numbers 1-3 -->
           <button type="button" class="btn btn-num" onclick="addText('1')">1</button>
           <button type="button" class="btn btn-num" onclick="addText('2')">2</button>
           <button type="button" class="btn btn-num" onclick="addText('3')">3</button>
-          <button type="button" class="btn btn-op" onclick="toggleSign()">+/-</button>
+          <button type="button" class="btn btn-op" onclick="toggleSign()" aria-label="Toggle positive or negative sign">+/-</button>
           <button type="button" class="btn btn-eq btn-span2" onclick="calcEvaluate()">=</button>
 
           <!-- Row 8: 0, dot, Ans -->
           <button type="button" class="btn btn-num btn-span2" onclick="addText('0')">0</button>
           <button type="button" class="btn btn-num" onclick="addText('.')">.</button>
           <button type="button" class="btn btn-ans" onclick="useAns()">Ans</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('cbrt(')">cbrt</button>
-          <button type="button" class="btn btn-func" onclick="addFunc('1/(')">1/x</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('cbrt(')" aria-label="Cube root">cbrt</button>
+          <button type="button" class="btn btn-func" onclick="addFunc('1/(')" aria-label="Reciprocal (one over x)">1/x</button>
         </div>
 
         <!-- History -->
@@ -437,7 +436,14 @@
   </div>
 </section>
 
-<afro-related-tools category="education" current="scientific-calc"></afro-related-tools>
+<afro-related-tools category="education" current="scientific-calc" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Hub" data-category="education" data-icon="EH" data-desc="Your complete education journey for GPA, JAMB, IELTS pathway planning, and personalized scholarship matching.">Education Hub</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Grade Calculator" data-category="education" data-icon="WN" data-desc="Aggregate score, JAMB + O’Level eligibility, GPA converter (4.0 &amp; 5.0 scale), Ghana WASSCE. 12 universities, all cut-off">WAEC/NECO Grade Calculator</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Quick scholarship check using source-linked opportunities where available, with profile-aware match scoring, fit notes, ">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Calculator" data-category="education" data-icon="SA" data-desc="Total cost of studying abroad from Africa — tuition, visa, accommodation, living expenses. 20 destination countries.">Study Abroad Cost Calculator</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Aggregate Calculator" data-category="education" data-icon="JA" data-desc="Calculate JAMB aggregate score for any Nigerian university department.">JAMB Aggregate Calculator</a></li><li><a href="/tools/university-ranking/" data-related-tool data-id="university-ranking" data-name="African University Rankings" data-category="education" data-icon="AU" data-desc="Compare 200+ African universities by ranking, cost, programmes, and employment rate.">African University Rankings</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
@@ -573,6 +579,54 @@
     updateDisplay();
   }
 
+  // Map a named math function + its (already-converted) argument to Math.*
+  // Trig honours the current DEG/RAD mode; inverse trig returns degrees in DEG.
+  function wrapMathFn(name, arg) {
+    switch (name) {
+      case 'sin': return isDeg ? `Math.sin((${arg})*Math.PI/180)` : `Math.sin(${arg})`;
+      case 'cos': return isDeg ? `Math.cos((${arg})*Math.PI/180)` : `Math.cos(${arg})`;
+      case 'tan': return isDeg ? `Math.tan((${arg})*Math.PI/180)` : `Math.tan(${arg})`;
+      case 'asin': return isDeg ? `(Math.asin(${arg})*180/Math.PI)` : `Math.asin(${arg})`;
+      case 'acos': return isDeg ? `(Math.acos(${arg})*180/Math.PI)` : `Math.acos(${arg})`;
+      case 'atan': return isDeg ? `(Math.atan(${arg})*180/Math.PI)` : `Math.atan(${arg})`;
+      case 'sqrt': return `Math.sqrt(${arg})`;
+      case 'cbrt': return `Math.cbrt(${arg})`;
+      case 'abs': return `Math.abs(${arg})`;
+      case 'exp': return `Math.exp(${arg})`;
+      case 'log': return `Math.log10(${arg})`;
+      case 'ln': return `Math.log(${arg})`;
+      // Unknown identifier: keep literal so the token validator rejects it.
+      default: return name + '(' + arg + ')';
+    }
+  }
+
+  // Recursively rewrite function calls using balanced-parenthesis matching so
+  // nested parentheses (e.g. sin(2*(3+1))) evaluate correctly. Plain grouping
+  // parens are copied through untouched.
+  function convertMathFns(s) {
+    let out = '';
+    let i = 0;
+    while (i < s.length) {
+      const m = /^[A-Za-z]+/.exec(s.slice(i));
+      if (m && s.charAt(i + m[0].length) === '(') {
+        const name = m[0];
+        const openIdx = i + name.length;
+        let depth = 0, j = openIdx;
+        for (; j < s.length; j++) {
+          if (s.charAt(j) === '(') depth++;
+          else if (s.charAt(j) === ')') { depth--; if (depth === 0) break; }
+        }
+        const inner = s.slice(openIdx + 1, j < s.length ? j : s.length);
+        out += wrapMathFn(name, convertMathFns(inner));
+        i = (j < s.length) ? j + 1 : s.length;
+      } else {
+        out += s.charAt(i);
+        i++;
+      }
+    }
+    return out;
+  }
+
   function evalExpression(expr) {
     let e = expr
       .replace(/π/g, 'pi')
@@ -583,38 +637,14 @@
     // Factorial
     e = e.replace(/(\d+(?:\.\d+)?)!/g, (_, n) => String(factorial(parseFloat(n))));
 
-    // Math functions
-    e = e.replace(/sqrt\(/g, 'Math.sqrt(');
-    e = e.replace(/cbrt\(/g, 'Math.cbrt(');
-    e = e.replace(/abs\(/g, 'Math.abs(');
-    e = e.replace(/10\^\(/g, 'Math.pow(10,');
-    e = e.replace(/exp\(/g, 'Math.exp(');
-    e = e.replace(/1\/\(/g, '(1/(');
-
-    // Trig functions with degree/radian conversion
-    if (isDeg) {
-      e = e.replace(/asin\(([^)]+)\)/g, (_, a) => `(Math.asin(${a})*180/Math.PI)`);
-      e = e.replace(/acos\(([^)]+)\)/g, (_, a) => `(Math.acos(${a})*180/Math.PI)`);
-      e = e.replace(/atan\(([^)]+)\)/g, (_, a) => `(Math.atan(${a})*180/Math.PI)`);
-      e = e.replace(/sin\(([^)]+)\)/g, (_, a) => `Math.sin((${a})*Math.PI/180)`);
-      e = e.replace(/cos\(([^)]+)\)/g, (_, a) => `Math.cos((${a})*Math.PI/180)`);
-      e = e.replace(/tan\(([^)]+)\)/g, (_, a) => `Math.tan((${a})*Math.PI/180)`);
-    } else {
-      e = e.replace(/asin\(/g, 'Math.asin(');
-      e = e.replace(/acos\(/g, 'Math.acos(');
-      e = e.replace(/atan\(/g, 'Math.atan(');
-      e = e.replace(/sin\(/g, 'Math.sin(');
-      e = e.replace(/cos\(/g, 'Math.cos(');
-      e = e.replace(/tan\(/g, 'Math.tan(');
-    }
-
-    e = e.replace(/log\(/g, 'Math.log10(');
-    e = e.replace(/ln\(/g, 'Math.log(');
-
-    // Auto-close parens
+    // Auto-close parens BEFORE function conversion so every argument is balanced.
     const opens = (e.match(/\(/g) || []).length;
     const closes = (e.match(/\)/g) || []).length;
     for (let i = 0; i < opens - closes; i++) e += ')';
+
+    // Convert named functions (trig, log/ln, sqrt, abs, exp, …) with balanced
+    // parenthesis matching. 10^x and 1/x already work via ** and / respectively.
+    e = convertMathFns(e);
 
     // Validate transformed expressions against the exact Math tokens this tool emits.
     var tokenRemainder = e.replace(/Math\.|PI|log10|asin|acos|atan|sin|cos|tan|log|sqrt|cbrt|abs|exp|pow/g, '');
@@ -803,9 +833,31 @@
     else if (key === '%') { addText('%'); e.preventDefault(); }
   });
 
+  // Restore history (and angle mode) previously kept via "Save in browser".
+  (function restoreSavedHistory() {
+    try {
+      var raw = localStorage.getItem('afrotools-scientific-calculator-history');
+      if (!raw) return;
+      var saved = JSON.parse(raw);
+      if (saved && Array.isArray(saved.history)) {
+        history = saved.history
+          .filter(function (h) { return h && typeof h.expr === 'string' && typeof h.result === 'string'; })
+          .slice(0, 20);
+        renderHistory();
+      }
+      if (saved && (saved.mode === 'DEG' || saved.mode === 'RAD')) {
+        isDeg = saved.mode === 'DEG';
+        modeBtn.textContent = isDeg ? 'DEG' : 'RAD';
+        modeBtn.className = 'calc-mode ' + (isDeg ? 'mode-deg' : 'mode-rad');
+        modeBtn.setAttribute('aria-pressed', String(isDeg));
+        modeBtn.setAttribute('aria-label', isDeg ? 'Angle mode: Degrees' : 'Angle mode: Radians');
+      }
+    } catch (e) {}
+  })();
+
   updateDisplay();
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
 </body>
 </html>

@@ -5,12 +5,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const { renameSyncWithRetry, writeFileSyncWithRetry } = require('./lib/safe-write');
 const registryApi = require('./lib/canonical-registry');
 const localizationApi = require('./lib/localization-platform');
 
 const ROOT = path.join(__dirname, '..');
 const SEARCH_INDEX_PATH = path.join(ROOT, 'data/search-index.json');
+const SEARCH_INDEX_FULL_PATH = path.join(ROOT, 'data/search-index-full.json');
 
 const CATEGORY_ALIASES = {
   financial: ['finance', 'money', 'salary', 'tax', 'paye', 'fx', 'forex', 'rates', 'market data', 'prices', 'fuel prices'],
@@ -105,15 +106,39 @@ function searchRecord(tool, categoryById, countryById) {
   ];
 }
 
+function slimSearchRecord(tool) {
+  return [
+    localizationApi.normalizeDisplayString(tool.title),
+    tool.route,
+    tool.categoryId,
+    Number(tool.source.priority || 0)
+  ];
+}
+
+function writeAtomically(filePath, content) {
+  const tempPath = path.join(path.dirname(filePath), `.${path.basename(filePath)}.${process.pid}.${Date.now()}.tmp`);
+  try {
+    writeFileSyncWithRetry(tempPath, content, 'utf8');
+    renameSyncWithRetry(tempPath, filePath);
+  } finally {
+    try {
+      if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+    } catch {}
+  }
+}
+
 const registry = registryApi.buildCanonicalRegistry();
 const validation = registryApi.validateCanonicalRegistry(registry);
 if (!validation.ok) throw new Error(validation.errors.map(registryApi.formatIssue).join('\n'));
 const categoryById = new Map(registry.categories.map((category) => [category.id, category]));
 const countryById = new Map(registry.countries.map((country) => [country.id, country]));
-const records = registry.tools
-  .filter((tool) => tool.publicationStatus === 'published' && !tool.deprecated)
-  .map((tool) => searchRecord(tool, categoryById, countryById));
+const publishedTools = registry.tools
+  .filter((tool) => tool.publicationStatus === 'published' && !tool.deprecated);
+const slimRecords = publishedTools.map(slimSearchRecord);
+const fullRecords = publishedTools.map((tool) => searchRecord(tool, categoryById, countryById));
 
 fs.mkdirSync(path.dirname(SEARCH_INDEX_PATH), { recursive: true });
-writeFileSyncWithRetry(SEARCH_INDEX_PATH, `${JSON.stringify(records)}\n`, 'utf8');
-console.log(`Built ${records.length} canonical search index rows (${Math.round(fs.statSync(SEARCH_INDEX_PATH).size / 1024)} KB)`);
+writeAtomically(SEARCH_INDEX_PATH, `${JSON.stringify(slimRecords)}\n`);
+writeAtomically(SEARCH_INDEX_FULL_PATH, `${JSON.stringify(fullRecords)}\n`);
+console.log(`Built ${slimRecords.length} slim search rows (${Math.round(fs.statSync(SEARCH_INDEX_PATH).size / 1024)} KB)`);
+console.log(`Built ${fullRecords.length} full-text search rows (${Math.round(fs.statSync(SEARCH_INDEX_FULL_PATH).size / 1024)} KB)`);

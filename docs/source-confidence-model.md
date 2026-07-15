@@ -31,6 +31,8 @@ Optional fields:
 - `effectiveFrom`
 - `effectiveTo`
 - `reviewCadenceDays`
+- `toolIds`: canonical tool-registry ids covered by the source entry.
+- `routes`: public routes that should render this source entry.
 
 ## Confidence Rules
 

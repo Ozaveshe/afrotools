@@ -3,8 +3,10 @@ const fs = require("fs");
 const path = require("path");
 
 const sourceConfidence = require("../assets/js/lib/source-confidence.js");
+const sourceHookBuilder = require("../scripts/apply-source-confidence-hooks.js");
 
-const registryPath = path.join(__dirname, "..", "data", "source-registry.json");
+const ROOT = path.join(__dirname, "..");
+const registryPath = path.join(ROOT, "data", "source-registry.json");
 const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
 const schemaPath = path.join(__dirname, "..", "data", "source-registry.schema.json");
 const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
@@ -84,6 +86,31 @@ test("source registry entries satisfy the DataSourceMeta schema", function () {
     assert.ok(source.lastReviewedAt === null || /^\d{4}-\d{2}-\d{2}$/.test(source.lastReviewedAt), source.id + " lastReviewedAt date or null");
     assert.ok(source.displayDisclaimer, source.id + " displayDisclaimer required");
   }
+});
+
+test("source registry covers the full PAYE and VAT money surface", function () {
+  assert.ok(registry.sources.length >= 100, "source registry should contain at least 100 entries");
+  assert.strictEqual(registry.sources.filter((source) => /^paye-[a-z]{2}-source$/.test(source.id)).length, 53);
+  assert.strictEqual(registry.sources.filter((source) => /^vat-[a-z]{2}-source$/.test(source.id)).length, 54);
+  for (const source of registry.sources.filter((entry) => entry.confidence === "official_verified")) {
+    assert.match(source.id, /^official-/, source.id + " official verification should come from a ledger source row");
+    assert.ok(source.lastCheckedAt, source.id + " official verification requires a checked date");
+  }
+});
+
+test("all server PAYE engines carry source review stamps", function () {
+  const engineDir = path.join(ROOT, "netlify", "functions", "_engines");
+  const engines = fs.readdirSync(engineDir).filter((name) => /-paye\.js$/.test(name));
+  assert.strictEqual(engines.length, 53);
+  for (const engine of engines) {
+    const source = fs.readFileSync(path.join(engineDir, engine), "utf8");
+    assert.match(source, /^\s*lastUpdated:/m, engine + " lastUpdated");
+    assert.match(source, /^\s*sourceCheckedOn:/m, engine + " sourceCheckedOn");
+    assert.match(source, /^\s*nextReviewDate:/m, engine + " nextReviewDate");
+  }
+  const report = JSON.parse(fs.readFileSync(path.join(ROOT, "reports", "paye-source-review-needs-review.json"), "utf8"));
+  assert.strictEqual(report.summary.stamped, 53);
+  assert.strictEqual(report.engines.length, 53);
 });
 
 test("freshness calculation uses review cadence conservatively", function () {
@@ -205,5 +232,25 @@ test("migrated data-heavy tools include source registry UI hooks", function () {
     const html = fs.readFileSync(path.join(__dirname, "..", file), "utf8");
     assert.match(html, /source-confidence\.js/, file + " should load source-confidence helper");
     assert.ok(html.includes('data-source-meta-id="' + sourceId + '"'), file + " should render " + sourceId);
+  }
+});
+
+test("registered money routes render their primary source metadata", function () {
+  const targets = sourceHookBuilder.primaryRouteTargets(registry);
+  assert.ok(targets.length >= 100, "at least 100 money routes should have a primary source hook");
+  for (const target of targets) {
+    const html = fs.readFileSync(path.join(ROOT, target.file), "utf8");
+    assert.match(html, /source-confidence\.js/, target.file + " should load source-confidence helper");
+    assert.ok(html.includes('data-source-meta-id="' + target.sourceId + '"'), target.file + " should render " + target.sourceId);
+    const hookIndex = html.indexOf('data-source-meta-id="' + target.sourceId + '"');
+    assert.strictEqual(sourceHookBuilder.isInsideScript(html, hookIndex), false, target.file + " hook must not be inside a script or template literal");
+  }
+});
+
+test("five representative money pages use the sampled source-meta pattern", function () {
+  for (const target of sourceHookBuilder.SAMPLE_TARGETS) {
+    const html = fs.readFileSync(path.join(ROOT, target.file), "utf8");
+    assert.match(html, /source-confidence\.js/, target.file + " should load source-confidence helper");
+    assert.ok(html.includes('data-source-meta-id="' + target.sourceId + '"'), target.file + " should render " + target.sourceId);
   }
 });

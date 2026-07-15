@@ -3,57 +3,37 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Power Backup Duration Calculator Africa | AfroTools</title>
-<meta name="description" content="Calculate how long your battery backup or inverter will last in Africa. Enter battery capacity, load, and battery type to get accurate backup hours.">
+<meta name="description" content="Estimate how long your battery backup or inverter may last. Compare full, reduced, critical, and emergency load runtime with visible battery assumptions.">
 <meta property="og:title" content="Power Backup Duration Calculator Africa | AfroTools">
 <meta property="og:description" content="Calculate how long your battery backup or inverter will last in Africa.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/backup-duration.webp">
 <meta property="og:url" content="https://afrotools.com/tools/backup-duration/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Power Backup Duration Calculator Africa | AfroTools">
-<meta name="twitter:description" content="Calculate how long your battery backup or inverter will last in Africa. Enter battery capacity, load, and battery type to get accurate backup hours.">
+<meta name="twitter:description" content="Estimate battery backup runtime and compare full, reduced, critical, and emergency load scenarios.">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf"><link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script><script src="/assets/js/components/footer.min.js?v=86b11637" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4"><link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.runtime-ladder-head{display:flex;gap:12px;align-items:center;margin-bottom:8px}.runtime-ladder-icon{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:12px;background:#ecfdf5;color:#047857}.runtime-ladder-icon svg{width:24px;height:24px}.runtime-ladder-context,.runtime-ladder-note{color:#475569;font-size:13px;line-height:1.5}.runtime-ladder-context{margin-bottom:12px}.runtime-ladder-scroll{overflow-x:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff}.runtime-ladder-table{width:100%;border-collapse:collapse;min-width:520px}.runtime-ladder-table th,.runtime-ladder-table td{padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:right;font-size:13px}.runtime-ladder-table th{background:#f8fafc;color:#475569;font-size:11px;text-transform:uppercase;letter-spacing:.04em}.runtime-ladder-table th:first-child,.runtime-ladder-table td:first-child{text-align:left}.runtime-ladder-table tbody tr:last-child td{border-bottom:0}.runtime-ladder-hours{font-weight:800;color:#047857}.runtime-ladder-note{margin:10px 0 12px}.runtime-ladder-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.runtime-ladder-actions .en-btn{margin:0}.runtime-ladder-status{min-height:20px;color:#475569;font-size:13px}.runtime-ladder-status[data-state="success"]{color:#166534}.runtime-ladder-status[data-state="stale"]{color:#9a3412}@media(max-width:560px){.runtime-ladder-table{min-width:480px}.runtime-ladder-table th,.runtime-ladder-table td{padding:9px 10px}}
+</style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/backup-duration.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Estimate how long backup power may last?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Compare battery capacity, usable depth, inverter loss, and load before buying or sizing backup power."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Energy disclaimer: battery age, temperature, inverter efficiency, and surge loads can shorten runtime."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is a planning workflow. Confirm live prices, rules, terms, and source documents before acting."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/backup-duration/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is the load-shedding runtime ladder calculated?","acceptedAnswer":{"@type":"Answer","text":"The calculator re-runs the same protected runtime formula at 100%, 75%, 50%, 40%, and 25% of the entered load while keeping battery capacity, chemistry, depth of discharge, and 90% inverter efficiency unchanged."}},{"@type":"Question","name":"What happens if I enter both kWh and Ah battery capacity?","acceptedAnswer":{"@type":"Answer","text":"The kWh input takes priority. Leave it blank if you want the calculator to convert amp-hours and system voltage into total kWh."}},{"@type":"Question","name":"Why can real backup runtime be shorter than the estimate?","acceptedAnswer":{"@type":"Answer","text":"Battery age, temperature, wiring loss, inverter idle draw, startup surge, cycling loads, and lead-acid discharge behavior are not fully modeled. Measure real loads and verify battery and inverter specifications."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/energy-focus.css?v=cf912bfe">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/energy-focus.css?v=ddb6898a">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Power Backup Duration Calculator Africa","description":"Estimate how long a battery backup or inverter may last and compare runtime at full, reduced, critical, and emergency loads.","url":"https://afrotools.com/tools/backup-duration/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Power Backup Duration Calculator Africa","item":"https://afrotools.com/tools/backup-duration/"}]}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/backup-duration/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/backup-duration/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/autonomie-secours/">
@@ -65,7 +45,7 @@
 <section class="en-tool-hero"><div class="container">
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Backup Duration</nav>
 <h1>🔦 <em>Power Backup Duration Calculator</em></h1>
-<p class="en-tool-hero-sub">Find out exactly how long your battery backup or inverter system will power your loads during an outage in Africa.</p>
+<p class="en-tool-hero-sub">Estimate how long your battery backup or inverter may power your loads, then compare practical load-shedding targets for an outage.</p>
 </div></section>
 <main class="en-main">
 <div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>🔋</span><h2>Your Battery System</h2><span class="en-card-toggle">&#x25BE;</span></div>
@@ -88,6 +68,17 @@
 <tr><td>Depth of Discharge</td><td id="rDOD">—</td></tr>
 <tr><td>Battery Type</td><td id="rType">—</td></tr>
 </tbody></table>
+<section class="en-card" style="margin-top:16px" aria-labelledby="runtime-ladder-title"><div class="en-card-body">
+<div class="runtime-ladder-head">
+<span class="runtime-ladder-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h14"/><path d="M7 16h3v3H7zM11 11h3v8h-3zM15 6h3v13h-3z"/><path d="m6 11 4-4 3 2 5-5"/></svg></span>
+<div><h3 id="runtime-ladder-title" style="font-size:17px;font-weight:800">Load-shedding runtime ladder</h3><p class="runtime-ladder-context" id="runtimeLadderContext">Calculate backup time to compare full, reduced, critical, and emergency load targets.</p></div>
+</div>
+<div class="runtime-ladder-scroll">
+<table class="runtime-ladder-table"><thead><tr><th scope="col">Outage plan</th><th scope="col">Target load</th><th scope="col">Modeled runtime</th><th scope="col">Extra vs full</th></tr></thead><tbody id="runtimeLadderBody"><tr><td colspan="4">No runtime ladder calculated yet.</td></tr></tbody></table>
+</div>
+<p class="runtime-ladder-note" id="runtimeLadderNote">Each row re-runs the protected engine at a lower wattage. It does not identify which appliances to switch off or check whether the inverter can handle startup surge.</p>
+<div class="runtime-ladder-actions"><button class="en-btn" id="copyRuntimePlan" type="button" disabled>Copy outage runtime plan</button><p class="runtime-ladder-status" id="runtimeLadderStatus" role="status" aria-live="polite">No runtime plan calculated yet.</p></div>
+</div></section>
 <div class="en-observations" id="rObs"></div>
 </div>
 <section class="en-seo">
@@ -100,26 +91,18 @@
 <section class="df-upgrade" data-df-upgrade="backup-duration">
   <div class="df-upgrade__card">
     <div>
-      <span class="df-upgrade__kicker">Battery backup duration</span>
-      <h2>Estimate how long backup power may last</h2>
-      <p>Compare battery capacity, usable depth, inverter loss, and load before buying or sizing backup power.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: a backup runtime brief with usable energy, load, inverter loss, battery type, critical-load runtime, and safety caveats.</li><li>Use the calculator above first, then copy the brief before buying batteries or changing the load list.</li><li>Verify real appliance draw, surge load, battery age, temperature, inverter efficiency, wiring, ventilation, and installer advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Runtime can drop with battery age, heat, poor wiring, inverter losses, and surge loads. This is an energy planning estimate, not an installer quote, electrical certificate, warranty, or safety sign-off.</p>
+      <span class="df-upgrade__kicker">Plan the outage before it starts</span>
+      <h2>Choose a wattage target, not a promised runtime</h2>
+      <p>The runtime ladder keeps the battery assumptions fixed and shows what happens when the entered load falls to 75%, 50%, 40%, or 25%. Use each wattage as a target for a real appliance list.</p>
+      <ul class="df-upgrade__bullets"><li><strong>Count running watts:</strong> use nameplates or measured draw for devices that will operate at the same time.</li><li><strong>Check startup separately:</strong> a motor, pump, compressor, or fridge can exceed its running watts for a short period.</li><li><strong>Keep a reserve:</strong> battery age, heat, wiring, inverter idle draw, and cycling loads can reduce observed runtime.</li></ul>
+      <p class="df-upgrade__note"><strong>Private by default.</strong> Battery and load inputs stay in this browser unless you choose to copy the outage plan.</p>
     </div>
-    <form class="df-form" data-df-form="backup-duration">
-      <label>Battery Wh<input name="batteryWh" type="number" value="2400" min="0" step="any" aria-label="Battery Wh"></label>
-      <label>Load watts<input name="loadWatts" type="number" value="350" min="0" step="any" aria-label="Load watts"></label>
-      <label>Usable percent<input name="usable" type="number" value="80" min="0" step="any" aria-label="Usable percent"></label>
-      <label>Inverter loss percent<input name="loss" type="number" value="10" min="0" step="any" aria-label="Inverter loss percent"></label>
-      <button type="submit">Create runtime brief</button>
-      <output class="df-result" data-df-result="backup-duration" data-df-base="Backup runtime brief ready. Calculate above, then verify usable battery capacity, load watts, inverter loss, surge load, battery age, ventilation, wiring, and installer advice before relying on the estimate." aria-live="polite">Backup runtime brief ready. Calculate above, then verify usable battery capacity, load watts, inverter loss, surge load, battery age, ventilation, wiring, and installer advice before relying on the estimate.</output>
-      <div class="df-actions"><button type="button" data-df-copy="backup-duration">Copy runtime brief</button><a class="df-action-link" href="#results">View runtime</a></div>
-    </form>
+    <aside class="df-result" aria-label="Runtime formula assumptions"><strong>Protected runtime assumptions</strong><br>LiFePO4 uses 85% depth of discharge; lead-acid uses 50%. The engine applies 90% inverter efficiency, divides usable battery energy by running load, and does not model startup surge or battery aging.</aside>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="backup-duration-faq-title">
   <h2 id="backup-duration-faq-title">Frequently Asked Questions</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Calculate runtime with your real load, then copy the brief before changing appliances, buying batteries, or speaking to an installer.</p></details><details><summary>What should I verify before acting?</summary><p>Check appliance draw, surge load, battery age, depth of discharge, temperature, inverter efficiency, wiring, ventilation, and installer advice.</p></details><details><summary>Is this official?</summary><p>No. It is an energy planning estimate, not an installer quote, electrical certificate, warranty, or safety sign-off.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How is the load-shedding runtime ladder calculated?</summary><p>The calculator re-runs the same protected runtime formula at 100%, 75%, 50%, 40%, and 25% of the entered load while keeping battery capacity, chemistry, depth of discharge, and 90% inverter efficiency unchanged.</p></details><details><summary>What happens if I enter both kWh and Ah battery capacity?</summary><p>The kWh input takes priority. Leave it blank if you want the calculator to convert amp-hours and system voltage into total kWh.</p></details><details><summary>Why can real backup runtime be shorter than the estimate?</summary><p>Battery age, temperature, wiring loss, inverter idle draw, startup surge, cycling loads, and lead-acid discharge behavior are not fully modeled. Measure real loads and verify battery and inverter specifications.</p></details></div>
 </section>
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -165,6 +148,14 @@
 </section>
 <afro-business-cta tool-name="Power Backup Duration" prospect-segment="battery-backup" save-note="Calculate runtime, then copy the backup brief before changing load lists or buying batteries."></afro-business-cta>
 </main>
+<afro-related-tools data-ssr="1" category="energy" current="backup-duration">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Tariff Calculator" data-category="energy" data-icon="ET" data-desc="Estimate electricity bills for supported African countries. Residential, commercial, industrial, and tiered tariff bands">Electricity Tariff Calculator</a></li><li><a href="/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/tools/prepaid-meter/" data-related-tool data-id="prepaid-meter" data-name="Prepaid Meter Calculator" data-category="energy" data-icon="PM" data-desc="Estimate prepaid electricity units in any African country. Token amount, service charges, account type, and days of supp">Prepaid Meter Calculator</a></li><li><a href="/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script src="/data/energy/country-energy-index.js?v=5083c43c"></script>
 <script src="/engines/backup-duration-engine.js?v=41108a69"></script>
@@ -173,14 +164,131 @@
 !function(){
 "use strict";
 var E=window.AfroTools.BackupDurationEngine;
+var latestRuntimePlan="";
+var runtimeInputIds=["batteryKWh","batteryAh","systemVoltage","loadWatts","batteryType"];
+var LOAD_SCENARIOS=[
+  {name:"All entered loads",ratio:1,action:"Keep the full entered load"},
+  {name:"Shed 25% of load",ratio:.75,action:"Switch off about one quarter of running watts"},
+  {name:"Half-load plan",ratio:.5,action:"Keep only half of the entered running watts"},
+  {name:"Critical-load target",ratio:.4,action:"Keep essential loads near 40% of the entered watts"},
+  {name:"Emergency essentials",ratio:.25,action:"Keep only one quarter of the entered running watts"}
+];
+function inputValues(){
+  return{
+    batteryKWh:parseFloat(document.getElementById("batteryKWh").value)||0,
+    batteryAh:parseFloat(document.getElementById("batteryAh").value)||0,
+    systemVoltage:document.getElementById("systemVoltage").value,
+    loadWatts:parseFloat(document.getElementById("loadWatts").value)||0,
+    batteryType:document.getElementById("batteryType").value
+  };
+}
+function hoursNumber(value){
+  return parseFloat(String(value||"").replace(/[^0-9.]/g,""))||0;
+}
+function scenarioRows(input){
+  return LOAD_SCENARIOS.map(function(scenario){
+    var targetWatts=Math.max(1,Math.round(input.loadWatts*scenario.ratio));
+    var scenarioResult=E.calculate(Object.assign({},input,{loadWatts:targetWatts}));
+    return{
+      name:scenario.name,
+      action:scenario.action,
+      ratio:scenario.ratio,
+      targetWatts:targetWatts,
+      runtime:scenarioResult.backupHours,
+      runtimeHours:hoursNumber(scenarioResult.backupHours)
+    };
+  });
+}
+function runtimePlanText(input,result,scenarios){
+  var basis=input.batteryKWh>0?input.batteryKWh+" kWh entered":input.batteryAh+" Ah × "+input.systemVoltage+"V converted by the engine";
+  var baseline=scenarios[0].runtimeHours;
+  var lines=[
+    "LOAD-SHEDDING RUNTIME PLAN",
+    "Battery input used: "+basis,
+    "Battery: "+result.batteryType+" | "+result.batteryKWh+" total | "+result.usableKWh+" usable | "+result.dod+" DoD",
+    "System voltage: "+result.systemVoltage,
+    "Inverter efficiency assumption: 90%",
+    "Entered running load: "+input.loadWatts+"W",
+    "",
+    "OUTAGE LOAD TARGETS"
+  ];
+  scenarios.forEach(function(scenario,index){
+    var extra=Math.round((scenario.runtimeHours-baseline)*10)/10;
+    lines.push((index+1)+". "+scenario.name+" | "+scenario.targetWatts+"W | "+scenario.runtime+(extra>0?" | +"+extra+" hours vs full load":""));
+    lines.push("   Action: "+scenario.action+". Build an appliance list that stays at or below this target.");
+  });
+  lines.push("");
+  lines.push("Method: each row re-runs the protected formula with the same battery inputs, chemistry, depth of discharge, and 90% inverter efficiency at a different load target.");
+  lines.push("Not modeled: startup surge, inverter idle draw, battery age, temperature, wiring loss, cycling loads, and detailed lead-acid discharge behavior.");
+  lines.push("Planning estimate only. Confirm running and startup watts, battery condition, inverter limits, wiring, ventilation, and installer guidance.");
+  lines.push("Privacy: battery and load inputs stay in your browser unless you choose to copy this plan.");
+  return lines.join("\n");
+}
+function renderRuntimeLadder(input,result){
+  var scenarios=scenarioRows(input);
+  var baseline=scenarios[0].runtimeHours;
+  var body=document.getElementById("runtimeLadderBody");
+  body.replaceChildren();
+  scenarios.forEach(function(scenario){
+    var extra=Math.round((scenario.runtimeHours-baseline)*10)/10;
+    var row=document.createElement("tr");
+    [scenario.name,scenario.targetWatts+"W",scenario.runtime,extra>0?"+"+extra+" h":"—"].forEach(function(value,index){
+      var cell=document.createElement("td");
+      cell.textContent=value;
+      if(index===2){cell.className="runtime-ladder-hours";}
+      row.appendChild(cell);
+    });
+    body.appendChild(row);
+  });
+  document.getElementById("runtimeLadderContext").textContent=result.batteryType+" · "+result.batteryKWh+" total · "+result.usableKWh+" usable · "+result.dod+" DoD · fixed 90% inverter efficiency · "+input.loadWatts+"W baseline.";
+  latestRuntimePlan=runtimePlanText(input,result,scenarios);
+  document.getElementById("copyRuntimePlan").disabled=false;
+  var status=document.getElementById("runtimeLadderStatus");
+  status.textContent="Runtime ladder ready. Match each wattage target to a real appliance list.";
+  status.dataset.state="success";
+}
+function invalidateRuntimePlan(){
+  if(!latestRuntimePlan){return;}
+  latestRuntimePlan="";
+  var body=document.getElementById("runtimeLadderBody");
+  body.innerHTML='<tr><td colspan="4">Inputs changed. Recalculate before using this outage plan.</td></tr>';
+  document.getElementById("runtimeLadderContext").textContent="Battery or load inputs changed, so the previous runtime ladder is stale.";
+  document.getElementById("copyRuntimePlan").disabled=true;
+  var status=document.getElementById("runtimeLadderStatus");
+  status.textContent="Runtime plan marked stale. Recalculate to refresh every load target.";
+  status.dataset.state="stale";
+}
+function copyText(value){
+  if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(value);}
+  var area=document.createElement("textarea");
+  area.value=value;
+  area.setAttribute("readonly","");
+  area.style.position="fixed";
+  area.style.opacity="0";
+  document.body.appendChild(area);
+  area.select();
+  var copied=document.execCommand("copy");
+  area.remove();
+  return copied?Promise.resolve():Promise.reject(new Error("Copy unavailable"));
+}
+runtimeInputIds.forEach(function(id){
+  var field=document.getElementById(id);
+  field.addEventListener("input",invalidateRuntimePlan);
+  field.addEventListener("change",invalidateRuntimePlan);
+});
+document.getElementById("copyRuntimePlan").addEventListener("click",function(){
+  if(!latestRuntimePlan){return;}
+  var status=document.getElementById("runtimeLadderStatus");
+  copyText(latestRuntimePlan).then(function(){
+    status.textContent="Outage runtime plan copied.";
+    status.dataset.state="success";
+  }).catch(function(){
+    status.textContent="Copy was blocked. Try another browser or select the result manually.";
+    status.dataset.state="stale";
+  });
+});
 document.getElementById("calcBtn").addEventListener("click",function(){
-var i={
-  batteryKWh:parseFloat(document.getElementById("batteryKWh").value)||0,
-  batteryAh:parseFloat(document.getElementById("batteryAh").value)||0,
-  systemVoltage:document.getElementById("systemVoltage").value,
-  loadWatts:parseFloat(document.getElementById("loadWatts").value)||0,
-  batteryType:document.getElementById("batteryType").value
-};
+var i=inputValues();
 var r=E.calculate(i);
 if(r.error){alert(r.error);return;}
 document.getElementById("rHours").textContent=r.backupHours;
@@ -191,6 +299,7 @@ document.getElementById("rAh").textContent=r.batteryAh;
 document.getElementById("rVolt").textContent=r.systemVoltage;
 document.getElementById("rDOD").textContent=r.dod;
 document.getElementById("rType").textContent=r.batteryType;
+renderRuntimeLadder(i,r);
 var obs=document.getElementById("rObs");
 if(r.observations&&r.observations.length&&window.AfroEnergyTools&&window.AfroEnergyTools.renderObservations){window.AfroEnergyTools.renderObservations(obs,r.observations,"Calculation Notes");}
 document.getElementById("results").classList.add("on");
@@ -198,7 +307,7 @@ document.getElementById("results").scrollIntoView({behavior:"smooth",block:"star
 });
 }();
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
 <script src="/assets/js/pages/energy-focus.js?v=8ad94082" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

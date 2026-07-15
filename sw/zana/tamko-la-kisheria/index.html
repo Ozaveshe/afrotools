@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/data/legal/country-legal-index.js?v=02e28276"></script>
 <script src="/engines/legal-engine.js?v=cade292f"></script>
 <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
@@ -54,7 +54,7 @@
   <p class="sub">Tamko la kisheria ni tamko rasmi la ukweli. Zana hii hupanga maneno ya msingi, lakini mamlaka ya nchi ndiyo huamua format na acceptance.</p>
   <div class="badges"><span class="badge">Tamko rasmi</span><span class="badge">ID + madhumuni</span><span class="badge">Mthibitishaji wa nyaraka au afisa husika</span></div>
 </div></header>
-<main class="main"><section data-sw-prompt-note="68" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:18px;color:#334155;line-height:1.65;"><strong style="color:#0f172a;">Istilahi na mipaka:</strong> Istilahi za kampuni na nyaraka zimewekwa wazi: board resolution ni azimio la bodi, affidavit ni kiapo, NDA ni makubaliano ya kutunza siri, company secretary ni katibu wa kampuni, annual returns ni marejesho ya mwaka, filing ni uwasilishaji kwa msajili, registrar ni msajili, private company ni kampuni binafsi, public company ni kampuni ya umma, na compliance calendar ni kalenda ya uzingatiaji. Hizi ni rasimu na makadirio, si ushauri wa kisheria au idhini rasmi.</div></section><div class="wrap"><div class="layout">
+<main class="main"><section data-sw-prompt-note="68" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:18px;color:#334155;line-height:1.65;"><strong style="color:#0f172a;">Istilahi na mipaka:</strong> Istilahi za kampuni na nyaraka zimewekwa wazi: board resolution ni azimio la bodi, affidavit ni kiapo, NDA ni makubaliano ya kutunza siri, company secretary ni katibu wa kampuni, kila mwaka returns ni marejesho ya mwaka, filing ni uwasilishaji kwa msajili, registrar ni msajili, private company ni kampuni binafsi, public company ni kampuni ya umma, na compliance calendar ni kalenda ya uzingatiaji. Hizi ni rasimu na makadirio, si ushauri wa kisheria au idhini rasmi.</div></section><div class="wrap"><div class="layout">
   <section>
     <div class="card">
       <div class="kicker" style="color:#1d4ed8">Jaza taarifa</div>
@@ -131,10 +131,10 @@ function n(id){var x=parseFloat(v(id));return isNaN(x)?0:x;}
 function radio(name){var el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:'';}
 function money(amount, currency){return currency+' '+Number(amount||0).toLocaleString('en-US',{maximumFractionDigits:0});}
 function today(){return new Date().toISOString().slice(0,10);}
-function requireFields(ids){for(var i=0;i<ids.length;i++){if(!v(ids[i])){alert('Jaza sehemu muhimu kabla ya kuunda matokeo.');return false;}}return true;}
+function requireFields(ids){for(var i=0;i<ids.length;i++){if(!v(ids[i])){alert('Jaza sehemu muhimu kabla ya kuunda RESULT.');return false;}}return true;}
 function setMetrics(items){var grid=document.getElementById('metricGrid');grid.innerHTML='';items.forEach(function(item){var d=document.createElement('div');d.className='metric';var s=document.createElement('span');s.textContent=item.label;var b=document.createElement('b');b.textContent=item.value;d.appendChild(s);d.appendChild(b);grid.appendChild(d);});}
 function showResult(title, text, metrics){document.getElementById('resultTitle').textContent=title;document.getElementById('resultOutput').textContent=text;setMetrics(metrics||[]);document.getElementById('resultBox').classList.add('on');document.getElementById('resultBox').scrollIntoView({behavior:'smooth',block:'start'});}
-function copyResult(){navigator.clipboard.writeText(document.getElementById('resultOutput').textContent).then(function(){alert('Matokeo yamenakiliwa.');}).catch(function(){alert('Nakili kwa mikono kutoka kwenye kisanduku cha matokeo.');});}
+function copyResult(){navigator.clipboard.writeText(document.getElementById('resultOutput').textContent).then(function(){alert('Matokeo yamenakiliwa.');}).catch(function(){alert('Nakili kwa mikono kutoka kwenye kisanduku cha RESULT.');});}
 function printResult(){window.print();}
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('input[type="date"]').forEach(function(el){if(!el.value)el.value=today();});});
 
@@ -160,5 +160,5 @@ v('statement'),
 'Kumbuka: baadhi ya nchi zinahitaji muundo maalum, shahidi, muhuri au uthibitishaji wa mthibitishaji wa nyaraka.'
 ].join('\n');showResult('Tamko la kisheria',text,[{label:'Madhumuni',value:purposeMap[v('purpose')]},{label:'Nchi',value:v('country')},{label:'Tarehe',value:v('dateSigned')}]);}
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

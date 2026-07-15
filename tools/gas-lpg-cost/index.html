@@ -22,9 +22,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -100,6 +100,11 @@ a{color:inherit;text-decoration:none}
 .lpg-breakdown th,.lpg-breakdown td{padding:11px 12px;border-bottom:1px solid #e8eef7;text-align:left;vertical-align:top}
 .lpg-breakdown th{background:#f8fbff;color:#334155;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
 .lpg-breakdown td:last-child{font-weight:800;color:#0f172a}
+.lpg-fill-guide{display:flex;gap:12px;align-items:center;border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:10px;padding:13px 15px}
+.lpg-fill-icon{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;border-radius:10px;background:#fff;color:#1d4ed8}
+.lpg-fill-icon svg{width:22px;height:22px}
+.lpg-fill-guide strong{display:block;font-size:.9rem}
+.lpg-fill-guide span{display:block;margin-top:3px;color:#475569;font-size:.8rem;line-height:1.45}
 .lpg-alert{border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:10px;padding:13px 15px;font-size:.88rem;line-height:1.55}
 .lpg-notes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .lpg-note-card{border:1px solid #dbe4f0;border-radius:10px;background:#fff;padding:15px}
@@ -128,7 +133,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:700px){.lpg-main{padding-top:18px}.lpg-fieldset,.lpg-assumptions-grid,.lpg-metrics,.lpg-notes,.lpg-side{grid-template-columns:1fr}.lpg-panel-head{display:block}.lpg-panel-body{padding:16px}.lpg-link-grid,.lpg-country-grid{grid-template-columns:1fr}.lpg-btn{width:100%}.lpg-input,.lpg-select{font-size:16px}.lpg-metric{min-height:auto}}
 @media print{afro-navbar,afro-footer,.lpg-action-row,.lpg-related,.lpg-commercial,.lpg-countries,.lpg-breadcrumb{display:none!important}.lpg-hero{background:#fff;color:#0f172a;padding:0 0 18px}.lpg-hero p{color:#334155}.lpg-layout{display:block}.lpg-panel,.lpg-side-card{box-shadow:none;break-inside:avoid}}
 </style>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/gas-lpg-cost/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/gas-lpg-cost/">
@@ -232,6 +237,16 @@ a{color:inherit;text-decoration:none}
                 <span class="lpg-help">Total amount paid to refill the selected cylinder.</span>
               </div>
               <div class="lpg-field">
+                <label class="lpg-label" for="tareWeightKg">Cylinder tare weight (optional)</label>
+                <input class="lpg-input" id="tareWeightKg" name="tareWeightKg" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 6.20">
+                <span class="lpg-help">Empty-cylinder weight stamped on the cylinder or measured on a scale.</span>
+              </div>
+              <div class="lpg-field">
+                <label class="lpg-label" for="filledWeightKg">Filled scale weight (optional)</label>
+                <input class="lpg-input" id="filledWeightKg" name="filledWeightKg" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 18.10">
+                <span class="lpg-help">Cylinder plus LPG after refill. Delivered LPG equals filled weight minus tare weight.</span>
+              </div>
+              <div class="lpg-field">
                 <label class="lpg-label" for="mode">Usage mode</label>
                 <select class="lpg-select" id="mode" name="mode">
                   <option value="household">Household cooking</option>
@@ -298,6 +313,7 @@ a{color:inherit;text-decoration:none}
 
           <section class="lpg-results" aria-labelledby="results-title">
             <h2 class="lpg-panel-title" id="results-title">Cost breakdown</h2>
+            <div class="lpg-fill-guide"><span class="lpg-fill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l2 18H4z"/><path d="M9 8a3 3 0 0 1 6 0"/><path d="M12 8v3"/></svg></span><div><strong>Optional weigh-back check</strong><span id="fillBasisSummary">Rated cylinder size is being used. Add tare and filled scale weights to verify delivered LPG.</span></div></div>
             <div class="lpg-metrics">
               <div class="lpg-metric lpg-metric-main"><span>Daily cost</span><strong id="dailyCost">-</strong><em id="dailyKg">Average LPG use</em></div>
               <div class="lpg-metric"><span>Weekly cost</span><strong id="weeklyCost">-</strong><em id="weeklyKg">Usage week</em></div>
@@ -309,7 +325,9 @@ a{color:inherit;text-decoration:none}
             <table class="lpg-breakdown" aria-label="LPG calculation breakdown">
               <thead><tr><th>Item</th><th>Method</th><th>Result</th></tr></thead>
               <tbody>
-                <tr><td>Refill price per kg</td><td>Refill price divided by cylinder size</td><td id="pricePerKg">-</td></tr>
+                <tr><td>Refill price per kg</td><td>Refill price divided by measured delivered LPG or rated-size fallback</td><td id="pricePerKg">-</td></tr>
+                <tr><td>Delivered LPG basis</td><td>Filled scale weight minus tare weight; rated size is the fallback</td><td id="fillWeightResult">-</td></tr>
+                <tr><td>Fill variance</td><td>Measured LPG compared with the rated cylinder capacity</td><td id="fillVarianceResult">-</td></tr>
                 <tr><td>Primary usage estimate</td><td id="usageFormula">Meals or burner hours multiplied by frequency</td><td id="usageEstimate">-</td></tr>
                 <tr><td>Planning buffer</td><td>Reserve added to avoid under-budgeting</td><td id="bufferResult">-</td></tr>
                 <tr><td>Full-cylinder duration</td><td>Cylinder kg divided by average daily kg</td><td id="durationResult">-</td></tr>
@@ -340,11 +358,12 @@ a{color:inherit;text-decoration:none}
         <section class="lpg-side-card">
           <h2>Methodology</h2>
           <ol>
-            <li>Price per kg equals refill price divided by cylinder size.</li>
+            <li>If both scale weights are entered, delivered LPG equals filled weight minus tare weight; otherwise the rated cylinder size is used.</li>
+            <li>Price per kg equals refill price divided by the delivered-LPG basis.</li>
             <li>Meal model: meals per day times cooking days times kg per meal.</li>
             <li>Hour model: burner hours times active burners times kg per burner-hour.</li>
             <li>The planning buffer is added before daily, weekly, and monthly cost are calculated.</li>
-            <li>Refill forecast divides cylinder size by average daily LPG use.</li>
+            <li>Refill forecast divides measured delivered LPG, or the rated-size fallback, by average daily LPG use.</li>
           </ol>
         </section>
         <section class="lpg-side-card">
@@ -398,6 +417,14 @@ a{color:inherit;text-decoration:none}
 
   </div>
 </main>
+<afro-related-tools data-ssr="1" category="energy" current="gas-lpg-cost">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Tariff Calculator" data-category="energy" data-icon="ET" data-desc="Estimate electricity bills for supported African countries. Residential, commercial, industrial, and tiered tariff bands">Electricity Tariff Calculator</a></li><li><a href="/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/tools/prepaid-meter/" data-related-tool data-id="prepaid-meter" data-name="Prepaid Meter Calculator" data-category="energy" data-icon="PM" data-desc="Estimate prepaid electricity units in any African country. Token amount, service charges, account type, and days of supp">Prepaid Meter Calculator</a></li><li><a href="/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
 <script>
@@ -424,7 +451,7 @@ a{color:inherit;text-decoration:none}
 
   var lastReport = null;
   var ids = [
-    "country","currency","cylinderKg","refillPrice","mode","daysPerWeek","usageBasis",
+    "country","currency","cylinderKg","refillPrice","tareWeightKg","filledWeightKg","mode","daysPerWeek","usageBasis",
     "mealsPerDay","burnerHours","activeBurners","kgPerMeal","kgPerHour","daysPerMonth","safetyBuffer"
   ];
   var el = {};
@@ -475,6 +502,8 @@ a{color:inherit;text-decoration:none}
     el.currency.value = preset.currency;
     el.cylinderKg.value = String(preset.cylinder);
     el.refillPrice.value = String(preset.price);
+    el.tareWeightKg.value = "";
+    el.filledWeightKg.value = "";
     calculate();
   }
 
@@ -484,6 +513,14 @@ a{color:inherit;text-decoration:none}
     var currency = el.currency.value || country.currency;
     var cylinderKg = Math.max(0.1, numberValue("cylinderKg", country.cylinder));
     var refillPrice = Math.max(0, numberValue("refillPrice", country.price));
+    var tareWeightKg = numberValue("tareWeightKg", NaN);
+    var filledWeightKg = numberValue("filledWeightKg", NaN);
+    var hasAnyWeight = Number.isFinite(tareWeightKg) || Number.isFinite(filledWeightKg);
+    var hasMeasuredFill = Number.isFinite(tareWeightKg) && Number.isFinite(filledWeightKg) && tareWeightKg >= 0 && filledWeightKg > tareWeightKg;
+    var deliveredKg = hasMeasuredFill ? filledWeightKg - tareWeightKg : cylinderKg;
+    var fillPct = deliveredKg / cylinderKg * 100;
+    var fillGapKg = cylinderKg - deliveredKg;
+    var fillShortfallPct = fillGapKg / cylinderKg * 100;
     var daysPerWeek = clamp(numberValue("daysPerWeek", 7), 1, 7);
     var basis = el.usageBasis.value;
     var mealsPerDay = Math.max(0, numberValue("mealsPerDay", 0));
@@ -493,7 +530,7 @@ a{color:inherit;text-decoration:none}
     var kgPerHour = Math.max(0.01, numberValue("kgPerHour", 0.20));
     var daysPerMonth = clamp(numberValue("daysPerMonth", 30), 28, 31);
     var bufferPct = clamp(numberValue("safetyBuffer", 10), 0, 50) / 100;
-    var pricePerKg = refillPrice / cylinderKg;
+    var pricePerKg = refillPrice / deliveredKg;
     var weeklyBaseKg;
     var formula;
 
@@ -516,8 +553,8 @@ a{color:inherit;text-decoration:none}
     var dailyCost = dailyKg * pricePerKg;
     var weeklyCost = weeklyKg * pricePerKg;
     var monthlyCost = monthlyKg * pricePerKg;
-    var daysPerCylinder = cylinderKg / dailyKg;
-    var refillsPerMonth = monthlyKg / cylinderKg;
+    var daysPerCylinder = deliveredKg / dailyKg;
+    var refillsPerMonth = monthlyKg / deliveredKg;
     var mealCountWeek = mealsPerDay * daysPerWeek;
     var costPerMeal = mealCountWeek > 0 ? weeklyCost / mealCountWeek : 0;
     var costPerHour = activeBurners * kgPerHour * pricePerKg;
@@ -541,10 +578,35 @@ a{color:inherit;text-decoration:none}
     setText("costPerHour", money(costPerHour, currency));
     setText("hourNote", activeBurners + " burner(s) at " + kgPerHour + " kg/hour");
     setText("pricePerKg", money(pricePerKg, currency) + " per kg");
+    var fillBasisSummary;
+    var fillWeightResult;
+    var fillVarianceResult;
+    if(hasMeasuredFill){
+      fillBasisSummary = "Measured fill used: " + round(deliveredKg, 2) + " kg LPG from " + round(filledWeightKg, 2) + " kg filled minus " + round(tareWeightKg, 2) + " kg tare.";
+      fillWeightResult = round(deliveredKg, 2) + " kg measured LPG (" + round(fillPct, 1) + "% of " + cylinderKg + " kg rating)";
+      if(Math.abs(fillGapKg) < 0.05){
+        fillVarianceResult = "Measured fill matches the rated capacity.";
+      } else if(fillGapKg > 0){
+        fillVarianceResult = round(fillGapKg, 2) + " kg below rated (" + round(fillShortfallPct, 1) + "% shortfall)";
+      } else {
+        fillVarianceResult = round(Math.abs(fillGapKg), 2) + " kg above rated (" + round(Math.abs(fillShortfallPct), 1) + "%); verify the cylinder size and scale.";
+      }
+    } else if(hasAnyWeight){
+      fillBasisSummary = "Weight check is incomplete or invalid, so the rated " + cylinderKg + " kg capacity is still being used.";
+      fillWeightResult = "Rated " + cylinderKg + " kg fallback";
+      fillVarianceResult = "Enter both weights with filled weight greater than tare weight.";
+    } else {
+      fillBasisSummary = "Rated " + cylinderKg + " kg capacity is being used. Add tare and filled scale weights to verify delivered LPG.";
+      fillWeightResult = "Rated " + cylinderKg + " kg fallback";
+      fillVarianceResult = "Not measured";
+    }
+    setText("fillBasisSummary", fillBasisSummary);
+    setText("fillWeightResult", fillWeightResult);
+    setText("fillVarianceResult", fillVarianceResult);
     setText("usageFormula", formula);
     setText("usageEstimate", round(weeklyBaseKg, 2) + " kg/week before buffer");
     setText("bufferResult", Math.round(bufferPct * 100) + "% buffer gives " + round(weeklyKg, 2) + " kg/week");
-    setText("durationResult", "About " + round(daysPerCylinder, 1) + " days per full " + cylinderKg + " kg cylinder");
+    setText("durationResult", "About " + round(daysPerCylinder, 1) + " days per " + (hasMeasuredFill ? "measured " + round(deliveredKg, 2) + " kg fill" : "rated " + cylinderKg + " kg fallback"));
     setText("nextRefillDate", nextDate);
 
     var priceSummary;
@@ -553,6 +615,9 @@ a{color:inherit;text-decoration:none}
       "Check the cylinder tare weight and filled weight so the refill is priced on actual LPG, not only the cylinder label.",
       "Delivery, deposits, regulator hoses, and cylinder swaps can change the final cash price."
     ];
+    if(hasMeasuredFill){
+      priceNotes.unshift("Scale check: " + round(filledWeightKg, 2) + " kg filled minus " + round(tareWeightKg, 2) + " kg tare = " + round(deliveredKg, 2) + " kg delivered LPG.");
+    }
     if(variance > 0.15){
       priceSummary = "Your quote is more than 15% above the starter " + country.name + " assumption. Compare at least two dealers before refill.";
       priceNotes.push("Ask whether transport, delivery, or cylinder exchange fees are included.");
@@ -561,6 +626,12 @@ a{color:inherit;text-decoration:none}
       priceNotes.push("Very low prices can reflect underfilled cylinders or a different cylinder size.");
     } else {
       priceSummary = "Your quote is close to the editable starter assumption for " + country.name + ". Still confirm the price on refill day.";
+    }
+    if(hasMeasuredFill && fillShortfallPct > 5){
+      priceSummary = "Measured LPG is " + round(fillShortfallPct, 1) + "% below the rated cylinder capacity. Ask the dealer to confirm fill weight. " + priceSummary;
+      priceNotes.push("The measured shortfall changes price per kg, cylinder duration, and planned refill count in this report.");
+    } else if(hasAnyWeight && !hasMeasuredFill){
+      priceSummary = "The weight check is incomplete or invalid, so calculations use rated capacity. " + priceSummary;
     }
     setText("priceCheck", priceSummary + " Reference path: local dealer quote plus " + country.agency + ".");
 
@@ -584,6 +655,11 @@ a{color:inherit;text-decoration:none}
       currency:currency,
       cylinderKg:cylinderKg,
       refillPrice:refillPrice,
+      tareWeightKg:hasMeasuredFill?tareWeightKg:null,
+      filledWeightKg:hasMeasuredFill?filledWeightKg:null,
+      deliveredKg:deliveredKg,
+      fillBasis:hasMeasuredFill?"measured":"rated fallback",
+      fillVariance:fillVarianceResult,
       pricePerKg:pricePerKg,
       basis:primaryUnit,
       formula:formula,
@@ -601,7 +677,7 @@ a{color:inherit;text-decoration:none}
       priceSummary:priceSummary
     };
     try { localStorage.setItem("afro_lpg_cost_last", JSON.stringify(lastReport)); } catch(error) {}
-    byId("lpgStatus").textContent = "Updated";
+    byId("lpgStatus").textContent = hasAnyWeight && !hasMeasuredFill ? "Check both scale weights" : hasMeasuredFill ? "Measured fill used" : "Updated";
     return lastReport;
   }
 
@@ -614,6 +690,8 @@ a{color:inherit;text-decoration:none}
       "Mode: " + report.mode,
       "Cylinder: " + report.cylinderKg + " kg",
       "Refill price: " + money(report.refillPrice, report.currency),
+      "Delivered LPG basis: " + round(report.deliveredKg, 2) + " kg (" + report.fillBasis + ")",
+      "Fill variance: " + report.fillVariance,
       "Price per kg: " + money(report.pricePerKg, report.currency),
       "Usage model: " + report.formula,
       "Daily cost: " + money(report.dailyCost, report.currency) + " (" + round(report.dailyKg, 2) + " kg)",
@@ -659,6 +737,11 @@ a{color:inherit;text-decoration:none}
       ["currency",report.currency],
       ["cylinder_kg",report.cylinderKg],
       ["refill_price",round(report.refillPrice, 2)],
+      ["tare_weight_kg",report.tareWeightKg == null ? "" : round(report.tareWeightKg, 2)],
+      ["filled_weight_kg",report.filledWeightKg == null ? "" : round(report.filledWeightKg, 2)],
+      ["delivered_lpg_kg",round(report.deliveredKg, 2)],
+      ["fill_basis",report.fillBasis],
+      ["fill_variance",report.fillVariance],
       ["price_per_kg",round(report.pricePerKg, 2)],
       ["usage_formula",report.formula],
       ["daily_kg",round(report.dailyKg, 3)],
@@ -712,5 +795,6 @@ a{color:inherit;text-decoration:none}
   applyCountryPreset();
 }());
 </script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

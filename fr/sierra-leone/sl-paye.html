@@ -32,9 +32,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -96,6 +95,7 @@
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/sierra-leone/sl-paye">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/sierra-leone/sl-paye">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/sierra-leone/sl-paye">
@@ -242,8 +242,8 @@ window.addEventListener('load', function() {
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">mensuel</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">annuel</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
@@ -322,14 +322,14 @@ window.addEventListener('load', function() {
 <!-- NRA TAX BANDS -->
       <div class="card bands-card">
         <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">NRA 2025/26 Monthly Bands (SLE)</span>
+          <span class="card-title">NRA 2025/26 mensuel Bands (SLE)</span>
           <span class="tog-arrow">▾</span>
         </div>
         <div class="bands-body">
           <div class="band-row"><span class="band-range">SLE 0 – 600 / month</span><span class="band-zero">0% — exempt</span></div>
-          <div class="band-row"><span class="band-range">SLE 600.01 – 1,200 / month</span><span class="band-rate">15% on the next SLE 600</span></div>
-          <div class="band-row"><span class="band-range">SLE 1,200.01 – 1,800 / month</span><span class="band-rate">20% on the next SLE 600</span></div>
-          <div class="band-row"><span class="band-range">SLE 1,800.01 – 2,400 / month</span><span class="band-rate">25% on the next SLE 600</span></div>
+          <div class="band-row"><span class="band-range">SLE 600.01 – 1,200 / month</span><span class="band-rate">15% on the suivant SLE 600</span></div>
+          <div class="band-row"><span class="band-range">SLE 1,200.01 – 1,800 / month</span><span class="band-rate">20% on the suivant SLE 600</span></div>
+          <div class="band-row"><span class="band-range">SLE 1,800.01 – 2,400 / month</span><span class="band-rate">25% on the suivant SLE 600</span></div>
           <div class="band-row"><span class="band-range">Above SLE 2,400 / month</span><span class="band-rate">30% on the excess</span></div>
           <p class="band-note">Les tranches mensuelles ci-dessus sont exprimées en SLE après la redénomination. La NASSIT salariale est déduite avant le calcul du PAYE, conformément aux indications de la NRA.</p>
         </div>
@@ -478,6 +478,8 @@ window.addEventListener('load', function() {
 
 <!-- TOOL_VERIFICATION_PANEL_START -->
 <section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="sl-paye-fr">
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="paye-sl-source" data-source-meta-compact="true"></div>
   <div class="container">
     <div class="tool-verification-card">
       <div class="tool-verification-head">
@@ -1012,17 +1014,17 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   const url  = URL.createObjectURL(blob);
   const w    = window.open(url,'_blank');
   if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.print()}catch(e){}},1200);
+    w.addEventListener('load',()=>{setTimeout(()=>{w.imprimer();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.imprimer()}catch(e){}},1200);
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── partager ─────────────────────────────────────────────────────
 function shareResult() {
-  if (!RESULT) return;
-  const text = `Mon PAYE Sierra Leone récapitulatif : Brut SLE ${Math.round(RESULT.gross).toLocaleString()}/mo → Net SLE ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/sierra-leone/sl-paye`;
-  if (navigator.share) {
-    navigator.share({title:'Mon PAYE Sierra Leone',text,url:'https://afrotools.com/fr/sierra-leone/sl-paye'});
+  if (!résultat) return;
+  const text = `Mon PAYE Sierra Leone récapitulatif : Brut SLE ${Math.round(résultat.gross).toLocaleString()}/mo → Net SLE ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/sierra-leone/sl-paye`;
+  if (navigator.partager) {
+    navigator.partager({title:'Mon PAYE Sierra Leone',text,url:'https://afrotools.com/fr/sierra-leone/sl-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzPartagerBtn');
@@ -1033,8 +1035,8 @@ function shareResult() {
 
 // ── AI ADVISOR ────────────────────────────────────────────────
 async function getAI() {
-  if (!RESULT) return;
-  const R   = RESULT;
+  if (!résultat) return;
+  const R   = résultat;
   const btn = document.getElementById('aiBtn');
   const respEl = document.getElementById('aiResp');
 
@@ -1064,7 +1066,7 @@ Donnez : 1) Résumé clair en français de la situation PAYE 2) Deux moyens lég
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new erreur('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Impossible de générer l’analyse.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1109,7 +1111,7 @@ async function sendChat() {
   } catch { aiEl.textContent='Erreur réseau. Please try again.'; }
 }
 
-document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='saisissez')calculer();});
 
 // Net-to-Brut : register forward function
 window._grossToNet = function(g) {

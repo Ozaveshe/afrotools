@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AfroConflict - Africa Conflict Information Dashboard | AfroTools</title>
+<title>Africa Conflict Tracker & Information Dashboard | AfroConflict</title>
 <meta name="description" content="Information dashboard for understanding armed conflict data across Africa, including event records, displacement estimates, economic indicators, and source limitations.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="AfroConflict - Africa Conflict Information Dashboard">
@@ -54,11 +54,23 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AfroConflict - Africa Conflict Information Dashboard | AfroTools">
 <meta name="twitter:description" content="Information dashboard for understanding armed conflict data across Africa, source limitations, and context without sensational framing.">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AfroConflict - Africa Conflict Information Dashboard","description":"Information dashboard for understanding armed conflict data across Africa, including event records, displacement estimates, economic indicators, and source limitations.","url":"https://afrotools.com/tools/africa-conflict/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroConflict - Africa Conflict Information Dashboard","item":"https://afrotools.com/tools/africa-conflict/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Dataset","name":"AfroConflict — Africa Conflict Information Dataset","description":"Curated, non-sensational dashboard of African armed-conflict indicators: event records, displacement estimates, economic and military-spend context, and spillover exposure by country. For orientation only; not security, travel, or tactical guidance.","url":"https://afrotools.com/tools/africa-conflict/","inLanguage":"en","dateModified":"2026-04-14","spatialCoverage":{"@type":"Place","name":"Africa"},"creator":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"isBasedOn":["https://acleddata.com/","https://www.unhcr.org/","https://www.internal-displacement.org/","https://data.worldbank.org/","https://www.sipri.org/"],"license":"https://afrotools.com/tools/africa-conflict/methodology"}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/africa-conflict/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/africa-conflict/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/carte-conflits-afrique/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/migogoro-ya-afrika/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/africa-conflict/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -74,7 +86,7 @@
           Information dashboard
         </div>
         <div class="acd-hero-heading-wrap">
-          <h1>AfroConflict</h1>
+          <h1>AfroConflict — Africa Conflict Information Dashboard</h1>
           <p class="acd-hero-desc">A conflict information dashboard for understanding risk without doomscrolling. It is not security advice, not travel advice, not tactical guidance, and not a substitute for verified local sources.</p>
         </div>
         <div class="acd-hero-statline" id="acd-hero-statline">Loading conflict intelligence...</div>
@@ -164,6 +176,7 @@
         <h2 id="acd-method-card-title">Understand risk without doomscrolling.</h2>
         <p>AfroConflict is an information dashboard. It summarizes data types, update cadence, known limitations, and source labels so readers can orient themselves without graphic, inflammatory, or sensational framing.</p>
         <p class="acd-method-caveat">Not security advice, not travel advice, not legal advice, not tactical guidance, and not emergency instruction. Do not use it to choose routes, evade checkpoints, handle weapons, or make field decisions.</p>
+        <p class="acd-method-asof">Static snapshot last reviewed <time datetime="2026-04-14">14 April 2026</time>. Live figures refresh from the source feeds above, but displacement and event data can lag real conditions — always verify against the original ACLED, UNHCR, IDMC, World Bank, or SIPRI release before quoting.</p>
         <div class="acd-method-links">
           <a class="acd-btn acd-btn-primary" href="/tools/africa-conflict/methodology">Read full methodology</a>
           <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/map">Map</a>
@@ -261,7 +274,7 @@
           <button class="acd-map-toggle" data-layer="spillover" type="button">Spillover</button>
         </div>
       </div>
-      <div id="acd-map"></div>
+      <div id="acd-map" role="region" aria-label="Interactive Africa conflict map"></div>
       <div class="acd-map-footer">
         <div class="acd-map-legend">
           <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#dc2626"></div>Critical</div>
@@ -429,6 +442,16 @@
 <!-- ac-static-dossiers:end -->
 </main>
 
+
+<afro-related-tools data-ssr="1" category="african" current="africa-conflict">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afropoints/" data-related-tool data-id="afropoints" data-name="AfroPoints — Earn Money Contributing Data" data-category="african" data-icon="AE" data-desc="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via m">AfroPoints — Earn Money Contributing Data</a></li><li><a href="/tools/remittance-compare/" data-related-tool data-id="remittance-compare" data-name="Remittance Comparator" data-category="african" data-icon="RC" data-desc="Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.">Remittance Comparator</a></li><li><a href="/tools/remittance-v2/" data-related-tool data-id="remittance-v2" data-name="Remittance Comparator Pro" data-category="african" data-icon="RC" data-desc="Compare editable remittance quotes by recipient value, FX margin, fee, speed, and payout method.">Remittance Comparator Pro</a></li><li><a href="/tools/afroatlas/" data-related-tool data-id="afroatlas" data-name="AfroAtlas — Africa Resource Explorer" data-category="african" data-icon="AA" data-desc="Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side compar">AfroAtlas — Africa Resource Explorer</a></li><li><a href="/tools/informal-fx-watch/" data-related-tool data-id="informal-fx-watch" data-name="Informal FX Watch" data-category="african" data-icon="IF" data-desc="Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.">Informal FX Watch</a></li><li><a href="/tools/japa-calculator/" data-related-tool data-id="japa-calculator" data-name="Japa Cost Calculator" data-category="african" data-icon="JC" data-desc="Total relocation cost from Africa. 38 origins, 22 destinations, 73 visa pathways. Cost of living, quality of life, Visa ">Japa Cost Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
 <!-- seo-internal-links -->
 <nav class="seo-links" aria-label="Africa Conflict — All Pages">
 <h2 class="seo-links-title">Africa Conflict — All Pages</h2>
@@ -437,8 +460,8 @@
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.js?v=efb72dbe" defer></script>
-<script src="/assets/js/components/footer.js?v=c9514a92" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/tools/africa-conflict/dashboard.js?v=786e9d71" defer></script>
 <script src="/tools/africa-conflict/what-changed.js?v=a85a85ae" defer></script>
 <script>
@@ -587,5 +610,6 @@
 <script src="/tools/africa-conflict/brief-builder.js?v=4472e98b" defer></script>
 <script src="/tools/africa-conflict/dashboard-qa.js?v=78c1a83b" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

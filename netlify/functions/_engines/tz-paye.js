@@ -5,6 +5,12 @@ const { createEngine } = require('./_factory');
 module.exports = createEngine({
   country: 'TZ', countryName: 'Tanzania', currency: 'TZS',
   source: 'Tanzania Revenue Authority (TRA)',
+  /* source-confidence-stamp:start */
+  lastUpdated: '2026-03-01',
+  sourceCheckedOn: '2025-07-01',
+  nextReviewDate: '2025-09-29',
+  /* source-confidence-stamp:end */
+
   isMonthly: true,
   bands: [[270000,0],[250000,0.08],[240000,0.20],[240000,0.25],[Infinity,0.30]],
   socialSecurity: [{ key: 'nssf', label: 'NSSF (10%)', rate: 0.10 }],

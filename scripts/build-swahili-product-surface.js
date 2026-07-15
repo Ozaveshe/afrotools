@@ -19,6 +19,22 @@ const GENERATED_HTML = new Set([
   'sw/dashboard/index.html',
   'sw/vault/index.html'
 ]);
+const GENERATED_ALTERNATES = {
+  'sw/faragha/index.html': [
+    '<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/privacy/">'
+  ],
+  'sw/masharti/index.html': [
+    '<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/terms-of-use/">'
+  ],
+  'sw/msaada/index.html': [
+    '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/msaada/">',
+    '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sw/msaada/">'
+  ],
+  'sw/bei/index.html': [
+    '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/bei/">',
+    '<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sw/bei/">'
+  ]
+};
 
 function filePath(rel) { return path.join(ROOT, rel); }
 function read(rel) { return fs.readFileSync(filePath(rel), 'utf8'); }
@@ -31,6 +47,24 @@ function sourceHash(value) { return crypto.createHash('sha256').update(value).di
 
 function output(rel, value) {
   let normalized = normalize(value);
+  for (const alternate of GENERATED_ALTERNATES[rel] || []) {
+    if (!normalized.includes(alternate)) normalized = normalized.replace('</head>', `${alternate}</head>`);
+  }
+  if (GENERATED_HTML.has(rel)) {
+    normalized = normalized
+      .replace('/assets/css/design-system.css', '/assets/css/design-system.min.css')
+      .replace('/assets/js/components/navbar.js', '/assets/js/components/navbar.min.js')
+      .replace('/assets/js/components/footer.js', '/assets/js/components/footer.min.js');
+    if (!normalized.includes('/assets/js/lib/sw-accessibility.js')) {
+      normalized = normalized.replace(/<\/body>(\s*<\/html>\s*)$/i, '<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>$1');
+    }
+    if (!/<meta\b[^>]*\bproperty=["']og:url["']/i.test(normalized)) {
+      normalized = normalized.replace(
+        /(<link\s+rel="canonical"\s+href="([^"]+)">)/i,
+        '$1<meta property="og:url" content="$2">'
+      );
+    }
+  }
   const file = filePath(rel);
   const current = fs.existsSync(file) ? normalize(fs.readFileSync(file, 'utf8')) : '';
   if (GENERATED_HTML.has(rel)) {
@@ -54,6 +88,99 @@ function repair(rel, transforms) {
   for (const [from, to] of transforms) {
     html = from instanceof RegExp ? html.replace(from, to) : html.split(from).join(to);
   }
+  output(rel, html);
+}
+
+function repairVisibleLanguage(rel, transforms) {
+  const source = read(rel);
+  let cursor = 0;
+  let html = '';
+  const protectedBlock = /<(script|style|noscript|textarea|pre|code)\b[\s\S]*?<\/\1\s*>/gi;
+  const applyTransforms = (text) => transforms.reduce(
+    (current, [pattern, replacement]) => current.replace(pattern, replacement),
+    text
+  );
+  const translate = (fragment) => fragment
+    .replace(/(^|>)([^<]+)(?=<|$)/g, (whole, boundary, text) => `${boundary}${applyTransforms(text)}`)
+    .replace(/\b(placeholder|aria-label|title|alt|value)=(['"])(.*?)\2/gi, (whole, attribute, quote, text) => (
+      `${attribute}=${quote}${applyTransforms(text)}${quote}`
+    ));
+
+  for (const match of source.matchAll(protectedBlock)) {
+    html += translate(source.slice(cursor, match.index));
+    html += match[0];
+    cursor = match.index + match[0].length;
+  }
+  html += translate(source.slice(cursor));
+  output(rel, html);
+}
+
+function repairScriptLanguage(rel, transforms) {
+  const source = read(rel);
+  const html = source.replace(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi, (whole, attributes, body) => {
+    if (/\bsrc\s*=/i.test(attributes) || /application\/(?:ld\+json|json)/i.test(attributes) || /speculationrules/i.test(attributes)) return whole;
+    const repaired = transforms.reduce((current, [pattern, replacement]) => current.replace(pattern, replacement), body);
+    return `<script${attributes}>${repaired}</script>`;
+  });
+  output(rel, html);
+}
+
+function repairScriptBoundaries(rel) {
+  let html = read(rel);
+  // Restore ordinary analytics script tags that an older translation pass escaped.
+  html = html.replace(
+    /(<script\s+defer\s+src="\/assets\/js\/lazy-analytics\.js[^">]*"\s*>)<\\\/script>/gi,
+    '$1</script>'
+  );
+  // PAYE print templates embed script tags inside an outer template literal. Their
+  // closing tag must stay escaped or the browser terminates the calculator script.
+  html = html.replace(
+    /(<script\s+src="\/assets\/js\/components\/salary-benchmark-widget\.js[^">]*"\s+defer><\\\/script>\s*<script\s+defer\s+src="\/assets\/js\/lazy-analytics\.js[^">]*"\s*>)<\/script>/gi,
+    '$1<\\/script>'
+  );
+  html = html.replace(
+    /(<script\s+defer\s+src="\/assets\/js\/lazy-analytics\.js[^">]*"\s*>)<\/script>(\s*<\/body><\/html>\s*`)/gi,
+    '$1<\\/script>$2'
+  );
+  output(rel, html);
+}
+
+function repairHomeLandmarks() {
+  const rel = 'sw/index.html';
+  let html = read(rel);
+  const assistantScript = '<script src="/assets/js/components/site-assistant.js" defer></script>';
+  const discoveryPattern = /\s*<!-- sw-religious-cultural:start -->[\s\S]*?<!-- sw-religious-cultural:end -->\s*/i;
+  const discovery = (html.match(discoveryPattern) || [''])[0].trim();
+  html = html.replace(discoveryPattern, '\n');
+
+  if (!html.includes('class="sw-skip-link"')) {
+    html = html.replace('</head>', '<style>.sw-skip-link{position:absolute;top:-100%;left:50%;transform:translateX(-50%);z-index:10000;padding:12px 18px;border-radius:0 0 10px 10px;background:#0f172a;color:#fff;font-weight:800;text-decoration:none}.sw-skip-link:focus{top:0}</style></head>');
+    html = html.replace('<body class="top-level-page-ui-refresh">', '<body class="top-level-page-ui-refresh">\n<a class="sw-skip-link" href="#main-content">Ruka hadi maudhui makuu</a>');
+  }
+  if (!html.includes('/assets/js/components/site-assistant')) {
+    html = html.replace('</head>', `${assistantScript}</head>`);
+  }
+  if (!/<main\b[^>]*id="main-content"/i.test(html)) {
+    html = html.replace('<afro-navbar theme="dark"></afro-navbar>', '<afro-navbar theme="dark"></afro-navbar>\n<main id="main-content">');
+  }
+
+  const discoveryMarkup = discovery ? `${discovery}\n` : '';
+  if (/<\/main>\s*<afro-footer>/i.test(html)) {
+    html = html.replace(/\s*<\/main>\s*(<afro-footer>)/i, `\n${discoveryMarkup}</main>\n$1`);
+  } else {
+    html = html.replace('<afro-footer></afro-footer>', `${discoveryMarkup}</main>\n<afro-footer></afro-footer>`);
+  }
+  output(rel, html);
+}
+
+function ensureAccessibilityRuntime(rel) {
+  const script = '<script src="/assets/js/lib/sw-accessibility.js" defer></script>';
+  let html = read(rel).split(script).join('');
+  if (!/<\/body>\s*<\/html>\s*$/i.test(html)) {
+    failures.push(`${rel}: missing final body close for Swahili accessibility runtime`);
+    return;
+  }
+  html = html.replace(/<\/body>(\s*<\/html>\s*)$/i, `${script}</body>$1`);
   output(rel, html);
 }
 
@@ -97,7 +224,7 @@ function claim(key) {
 }
 
 function shellHead({ title, description, canonical, robots = 'index,follow' }) {
-  return `<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><meta name="robots" content="${robots}"><link rel="canonical" href="https://afrotools.com${canonical}"><link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css"><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><style>.sw-contract-main{max-width:900px;margin:auto;padding:56px 20px 80px}.sw-contract-main h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.05}.sw-contract-main h2{margin-top:2rem}.sw-contract-main p,.sw-contract-main li{line-height:1.75}.sw-contract-note{padding:1rem 1.2rem;border-left:4px solid #0062cc;background:#eef6ff;border-radius:8px}.sw-contract-warning{padding:1rem 1.2rem;border:1px solid #f0c36d;background:#fff8e7;border-radius:12px}.sw-contract-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:1.25rem 0}.sw-contract-card{padding:18px;border:1px solid #dce5ef;border-radius:14px;background:#fff}.sw-contract-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.25rem}.sw-contract-actions a{display:inline-flex;min-height:44px;align-items:center;padding:10px 16px;border-radius:10px;background:#0062cc;color:#fff;font-weight:800;text-decoration:none}.sw-contract-actions a.alt{background:#fff;color:#075fb8;border:1px solid #9dc4ec}.sw-contract-table{width:100%;border-collapse:collapse;margin:1rem 0}.sw-contract-table th,.sw-contract-table td{padding:10px;border:1px solid #dce5ef;text-align:left;vertical-align:top}@media(max-width:680px){.sw-contract-grid{grid-template-columns:1fr}.sw-contract-table,.sw-contract-table tbody,.sw-contract-table tr,.sw-contract-table th,.sw-contract-table td{display:block}.sw-contract-table th{background:#f4f8fc}}</style>`;
+  return `<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><meta name="robots" content="${robots}"><link rel="canonical" href="https://afrotools.com${canonical}"><link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css"><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/lib/sw-accessibility.js" defer></script><style>.sw-contract-main{max-width:900px;margin:auto;padding:56px 20px 80px}.sw-contract-main h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.05}.sw-contract-main h2{margin-top:2rem}.sw-contract-main p,.sw-contract-main li{line-height:1.75}.sw-contract-note{padding:1rem 1.2rem;border-left:4px solid #0062cc;background:#eef6ff;border-radius:8px}.sw-contract-warning{padding:1rem 1.2rem;border:1px solid #f0c36d;background:#fff8e7;border-radius:12px}.sw-contract-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:1.25rem 0}.sw-contract-card{padding:18px;border:1px solid #dce5ef;border-radius:14px;background:#fff}.sw-contract-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.25rem}.sw-contract-actions a{display:inline-flex;min-height:44px;align-items:center;padding:10px 16px;border-radius:10px;background:#0062cc;color:#fff;font-weight:800;text-decoration:none}.sw-contract-actions a.alt{background:#fff;color:#075fb8;border:1px solid #9dc4ec}.sw-contract-table{width:100%;border-collapse:collapse;margin:1rem 0}.sw-contract-table th,.sw-contract-table td{padding:10px;border:1px solid #dce5ef;text-align:left;vertical-align:top}@media(max-width:680px){.sw-contract-grid{grid-template-columns:1fr}.sw-contract-table,.sw-contract-table tbody,.sw-contract-table tr,.sw-contract-table th,.sw-contract-table td{display:block}.sw-contract-table th{background:#f4f8fc}}</style>`;
 }
 
 function privacyPage() {
@@ -128,6 +255,7 @@ function bridgePage(kind) {
 }
 
 const homeTransforms = [
+  [/data-registry-count="tools\.locale\.sw\.published">\d+</g, `data-registry-count="tools.locale.sw.published">${swTools}<`],
   ['Inatumiwa na wataalamu kote Afrika &middot; matumizi ya msingi bila usajili wa kulipia', 'Zana za vitendo kwa masoko ya Afrika · matumizi ya msingi bila usajili wa kulipia'],
   [`Kuna <span data-registry-count="tools.live_experiences">${liveTools}</span> matukio ya zana hai yaliyoundwa kwa muktadha wa Afrika.`, `Sajili ina <span data-registry-count="tools.locale.sw.published">${swTools}</span> rekodi zilizochapishwa kwa Kiswahili; kila zana inaonyesha nchi na chanzo chake.`],
   [/Kuna 2606 matukio ya zana hai yaliyoundwa kwa muktadha wa Afrika\./g, `Sajili ina <span data-registry-count="tools.locale.sw.published">${swTools}</span> rekodi zilizochapishwa kwa Kiswahili; kila zana inaonyesha nchi na chanzo chake.`],
@@ -148,7 +276,9 @@ const homeTransforms = [
 ];
 
 repair('sw/index.html', homeTransforms);
+repairHomeLandmarks();
 repair('sw/zana-zote/index.html', [
+  [/data-registry-count="tools\.locale\.sw\.published">\d+</g, `data-registry-count="tools.locale.sw.published">${swTools}<`],
   [/Vikokotoo 2,606\+ bure vya/g, `${swTools} rekodi zilizochapishwa za`],
   [/zana nyingine 2,606\+ za Afrika kwa Kiswahili/g, `rekodi ${swTools} zilizochapishwa kwa Kiswahili`],
   [`PAYE, mishahara na zana 2,606+ za Afrika`, `PAYE, mishahara na rekodi <span data-registry-count="tools.locale.sw.published">${swTools}</span> za Kiswahili`],
@@ -188,13 +318,106 @@ const staticUiTransforms = [
 const runtimeTransforms = [
   ["'Share as Image'", "'Shiriki kama picha'"], ['"Share as Image"', '"Shiriki kama picha"'],
   ["window.location.href='/auth/?mode=login&next=/dashboard/';", "window.location.href='/sw/auth/?mode=login&next=%2Fsw%2Fdashboard%2F';"],
-  ['window.location.href="/auth/?mode=login&next=/dashboard/";', 'window.location.href="/sw/auth/?mode=login&next=%2Fsw%2Fdashboard%2F";']
+  ['window.location.href="/auth/?mode=login&next=/dashboard/";', 'window.location.href="/sw/auth/?mode=login&next=%2Fsw%2Fdashboard%2F";'],
+  [/(\b(?:e|event)\.key\s*={2,3}\s*)'ingiza'/g, "$1'Enter'"],
+  [/(\b(?:e|event)\.key\s*={2,3}\s*)"ingiza"/g, '$1"Enter"'],
+  [/\bkokotoa\(\)/g, 'calculate()'],
+  [/\.chapisha\(\)/g, '.print()']
+];
+const visibleLanguageTransforms = [
+  [/\bterms of use\b/gi, 'masharti ya matumizi'],
+  [/\bprivacy policy\b/gi, 'sera ya faragha'],
+  [/\bcookie consent\b/gi, 'idhini ya vidakuzi'],
+  [/\bbreach notification\b/gi, 'taarifa ya uvujaji wa data'],
+  [/\bclient-side\b/gi, 'upande wa kivinjari'],
+  [/\bdeveloper tools\b/gi, 'zana za wasanidi programu'],
+  [/\bdevelopers\b/gi, 'wasanidi programu'],
+  [/\bdeveloper\b/gi, 'msanidi programu'],
+  [/\bworkflows\b/gi, 'michakato ya kazi'],
+  [/\bworkflow\b/gi, 'mchakato wa kazi'],
+  [/\bcategories\b/gi, 'kategoria'],
+  [/\bcategory\b/gi, 'kategoria'],
+  [/\bbrowsers\b/gi, 'vivinjari'],
+  [/\bbrowser\b/gi, 'kivinjari'],
+  [/\bdownloads\b/gi, 'vipakuliwa'],
+  [/\bdownload ya\b/gi, 'upakuaji wa'],
+  [/\bdownload\b/gi, 'pakua'],
+  [/\buploads\b/gi, 'upakiaji'],
+  [/\bupload\b/gi, 'upakiaji'],
+  [/\bcreators\b/gi, 'watayarishi'],
+  [/\bcreator\b/gi, 'mtayarishi'],
+  [/\bapps\b/gi, 'programu'],
+  [/\bapp\b/gi, 'programu'],
+  [/\baccounts\b/gi, 'akaunti'],
+  [/\baccount\b/gi, 'akaunti'],
+  [/\bresults\b/gi, 'matokeo'],
+  [/\bpreview\b/gi, 'mwonekano wa awali'],
+  [/\boutputs\b/gi, 'matokeo'],
+  [/\boutput\b/gi, 'matokeo'],
+  [/\binputs\b/gi, 'maingizo'],
+  [/\binput\b/gi, 'ingizo'],
+  [/\bsignup\b/gi, 'usajili'],
+  [/\bonline\b/gi, 'mtandaoni'],
+  [/\bservers\b/gi, 'seva'],
+  [/\bserver\b/gi, 'seva'],
+  [/\bcalculators\b/gi, 'vikokotoo'],
+  [/\bcalculator\b/gi, 'kikokotoo'],
+  [/\bcalculate\b/gi, 'kokotoa'],
+  [/\benter\b/gi, 'ingiza'],
+  [/\bresult\b/gi, 'matokeo'],
+  [/\breset\b/gi, 'weka upya'],
+  [/\bsave\b/gi, 'hifadhi'],
+  [/\bsearch\b/gi, 'tafuta'],
+  [/\bselect\b/gi, 'chagua'],
+  [/\bamount\b/gi, 'kiasi'],
+  [/\bmonthly\b/gi, 'kila mwezi'],
+  [/\bannual\b/gi, 'kila mwaka'],
+  [/\btotal\b/gi, 'jumla'],
+  [/\bsubmit\b/gi, 'wasilisha'],
+  [/\bloading\b/gi, 'inapakia'],
+  [/\berror\b/gi, 'hitilafu'],
+  [/\brequired\b/gi, 'inahitajika'],
+  [/\bnext\b/gi, 'inayofuata'],
+  [/\bprevious\b/gi, 'iliyotangulia'],
+  [/\bprint\b/gi, 'chapisha'],
+  [/\bshare\b/gi, 'shiriki'],
+  [/\bcopy\b/gi, 'nakili']
+];
+const scriptLanguageRepairs = [
+  [/\bif\s*\(\s*!matokeo\s*\)/g, 'if (!RESULT)'],
+  [/\bconst R(\s*)=(\s*)matokeo\b/g, 'const R$1=$2RESULT'],
+  [/\bmatokeo\./g, 'RESULT.'],
+  [/\b([A-Za-z_$][\w$]*)\.kila mwaka\b/g, '$1.annual'],
+  [/\b([A-Za-z_$][\w$]*)\.kila mwezi\b/g, '$1.monthly'],
+  [/\bnavigator\.shiriki\b/g, 'navigator.share']
 ];
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
   if (GENERATED_HTML.has(rel)) continue;
   repair(rel, staticUiTransforms.concat(runtimeTransforms));
+  repairScriptBoundaries(rel);
 }
+
+repair('sw/zana/kitengeneza-flyer/index.html', [
+  ['bidhaa za creator', 'bidhaa za mtayarishi']
+]);
+
+repair('sw/zana/kijaribu-api/index.html', [
+  ['<strong>{{baseUrl}}</strong>, <strong>{{token}}</strong>', '<code>{{baseUrl}}</code>, <code>{{token}}</code>']
+]);
+
+repair('sw/kenya/kikokotoo-kodi-mshahara/index.html', [
+  ['.tool-hero { background: #0A1628; }', '.tool-hero { background: #0A1628; overflow: hidden; }']
+]);
+
+repair('sw/zana/nafasi-pdf/index.html', [
+  [/<img id="imgPrev"(?![^>]*\balt=)/g, '<img id="imgPrev" alt="Mwonekano wa picha iliyopakiwa"']
+]);
+
+repair('sw/zana/kikokotoo-vat/index.html', [
+  ['<div class="sw-field"><label for="vatAmount" id="amountLabel">Kiasi bila VAT</label><input class="sw-input" id="vatAmount" type="number" min="0" step="any" placeholder="Ingiza kiasi"></div>', '<div class="sw-field"><label for="vatAmount" id="amountLabel">Kiasi bila VAT</label><input class="sw-input" id="vatAmount" type="number" min="0" step="any" placeholder="Ingiza kiasi" aria-describedby="vatStatus"></div><p id="vatStatus" class="sw-muted" role="status" aria-live="polite"></p>'],
+  ["function calcVat(){var amt=parseFloat(document.getElementById('vatAmount').value)||0;if(!amt){alert('Tafadhali ingiza kiasi.');return;}var c=currentCountry||VAT_DB.KE;", "function calcVat(){var amountInput=document.getElementById('vatAmount'),status=document.getElementById('vatStatus'),amt=parseFloat(amountInput.value)||0;if(!amt){status.textContent='Tafadhali ingiza kiasi kikubwa kuliko sifuri.';amountInput.focus();return;}status.textContent='';var c=currentCountry||VAT_DB.KE;"]
+]);
 
 repair('sw/zana/kibadilishaji-sarafu/index.html', [
   ['<p>Inapopatikana, zana hutumia /data/forex/latest.json kama chanzo cha kiwango cha ubadilishaji. Ikishindikana, hutumia kiwango cha akiba cha makadirio kama ukurasa wa Kiingereza.</p>', '<p>Inapopatikana, zana hutumia <code>/data/forex/latest.json</code> kama snapshot yenye chanzo na muda. Ikishindikana au ikiwa rekodi ni tupu, hutumia viwango vya akiba vya makadirio na kuonyesha hali hiyo wazi.</p><p id="fxDataStatus" role="status" aria-live="polite">Inapakia hali ya kiwango…</p><button id="fxRetry" type="button" hidden>Jaribu tena</button>'],
@@ -213,6 +436,41 @@ output('sw/auth/index.html', bridgePage('auth'));
 output('sw/dashboard/index.html', bridgePage('dashboard'));
 output('sw/vault/index.html', bridgePage('vault'));
 
+// Run visible-copy cleanup after route-specific repairs so a single build is idempotent.
+for (const file of allHtml(path.join(ROOT, 'sw'))) {
+  const rel = path.relative(ROOT, file).replace(/\\/g, '/');
+  if (GENERATED_HTML.has(rel)) continue;
+  repairVisibleLanguage(rel, visibleLanguageTransforms);
+  repairScriptLanguage(rel, scriptLanguageRepairs);
+}
+
+// A historic visible-copy pass translated part of this CSS token. Keep the
+// stable class name in generated output; classes are implementation data, not
+// user-facing copy.
+for (const rel of ['sw/biashara-ndogo/index.html', 'sw/biashara-na-uzingatiaji/index.html']) {
+  repair(rel, [
+    [/sw-malipo ya awalid-pdf-crosslinks/g, 'sw-business-pdf-crosslinks']
+  ]);
+}
+
+repair('sw/zana/kilinganisha-tv-na-streaming/index.html', [
+  ['min-width:600px', 'min-width:min(600px,100%)']
+]);
+
+repair('sw/zana/kulinganisha-hosting/index.html', [
+  ['min-width:980px', 'min-width:min(980px,100%)']
+]);
+
+repair('sw/zana/orodha-vifaa/index.html', [
+  ['min-width: 700px', 'min-width: min(700px, 100%)']
+]);
+
+for (const file of allHtml(path.join(ROOT, 'sw'))) {
+  const rel = path.relative(ROOT, file).replace(/\\/g, '/');
+  if (GENERATED_HTML.has(rel)) continue;
+  ensureAccessibilityRuntime(rel);
+}
+
 const criticalFiles = [
   'sw/index.html', 'sw/zana-zote/index.html', 'sw/nchi/index.html',
   'sw/kenya/kikokotoo-kodi-mshahara/index.html', 'sw/zana/kibadilishaji-sarafu/index.html',
@@ -221,7 +479,7 @@ const criticalFiles = [
   'sw/kuhusu/index.html',
   'sw/auth/index.html', 'sw/dashboard/index.html', 'sw/vault/index.html'
 ];
-const prohibitedVisible = /\b(?:Save Tool|Share as Image|Open Ask AfroTools AI|Privacy Policy|Terms of Use|Sign in|Try again|No results|Loading tools)\b/i;
+const prohibitedVisible = /\b(?:Save Tool|Share as Image|Open Ask AfroTools AI|Privacy Policy|Terms of Use|Sign in|Try again|No results|Loading tools|Calculator|Calculate|Enter|Result|Reset|Save|Search|Select|Amount|Monthly|Annual|Total|Submit|Loading|Error|Required|Next|Previous|Print|Share|Copy)\b/i;
 for (const rel of criticalFiles) {
   if (!fs.existsSync(filePath(rel))) { failures.push(`${rel}: required Swahili journey route is missing`); continue; }
   const text = visibleText(read(rel));

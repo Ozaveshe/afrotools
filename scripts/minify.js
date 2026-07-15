@@ -10,6 +10,11 @@ const vm = require('vm');
 const { minify } = require('terser');
 const { buildNavbarData } = require('./build-navbar-data');
 const { getEngineTerserOptions } = require('./lib/engine-build');
+const {
+  writeFileSyncWithRetry: writeTempFileSyncWithRetry,
+  renameSyncWithRetry,
+  unlinkSyncWithRetry,
+} = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
 const onlyArg = process.argv.find(arg => arg.startsWith('--only='));
@@ -73,29 +78,26 @@ function isValidJavaScript(code, filename) {
   }
 }
 
-function waitSync(ms) {
-  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
-}
-
 function writeFileSyncWithRetry(filePath, data, encoding) {
-  const retryable = new Set(['EBUSY', 'EPERM', 'UNKNOWN']);
-  let lastError = null;
-  for (let attempt = 0; attempt < 20; attempt++) {
-    const tempPath = `${filePath}.${process.pid}.${attempt}.tmp`;
+  const tempPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
+  try {
+    writeTempFileSyncWithRetry(tempPath, data, encoding);
     try {
-      fs.writeFileSync(tempPath, data, encoding);
       fs.renameSync(tempPath, filePath);
-      return;
     } catch (error) {
-      lastError = error;
-      try {
-        if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
-      } catch {}
-      if (!retryable.has(error.code)) throw error;
-      waitSync(75 * (attempt + 1));
+      // Windows/OneDrive can reject replacement renames even when the target
+      // can be removed safely. The complete output already exists beside it,
+      // so remove only the intended generated target and finish the rename.
+      if (process.platform === 'win32' && error && error.code === 'EPERM' && fs.existsSync(filePath)) {
+        unlinkSyncWithRetry(filePath);
+      }
+      renameSyncWithRetry(tempPath, filePath);
     }
+  } finally {
+    try {
+      if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+    } catch {}
   }
-  throw lastError;
 }
 
 function writeFileIfChanged(filePath, data, encoding) {
@@ -116,6 +118,7 @@ async function minifyToFixedPoint(code, options, maxPasses = 3) {
 
 async function run() {
   buildNavbarData();
+  let errorCount = 0;
   let jsTotal = { before: 0, after: 0, count: 0 };
   let cssTotal = { before: 0, after: 0, count: 0 };
 
@@ -152,6 +155,7 @@ async function run() {
       jsTotal.count++;
     } catch (err) {
       console.error(`  ERR   ${srcRel}: ${err.message}`);
+      errorCount += 1;
     }
   }
 
@@ -332,6 +336,9 @@ async function run() {
   const totalPct = totalBefore ? ((1 - totalAfter / totalBefore) * 100).toFixed(1) : 0;
   console.log(`\n  TOTAL ${jsTotal.count + inplaceTotal.count} JS + ${cssTotal.count + inplaceCssTotal.count} CSS files`);
   console.log(`        ${fmtKB(totalBefore)} -> ${fmtKB(totalAfter)} (${totalPct}% smaller, saved ${fmtKB(totalBefore - totalAfter)})`);
+  if (errorCount) {
+    throw new Error(`${errorCount} asset${errorCount === 1 ? '' : 's'} failed to minify`);
+  }
 }
 
 function fmtKB(bytes) {

@@ -34,9 +34,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -929,7 +928,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   </div>
 </div>
 
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -942,7 +941,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   }
 }
 
-// ── WHATSAPP SHARE ───────────────────────────────────────────
+// ── WHATSAPP shiriki ───────────────────────────────────────────
 function whatsappShare() {
   if (!RESULT) return;
   AfroTools.shareState.whatsappShare({
@@ -957,7 +956,7 @@ function whatsappShare() {
   });
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
   const text = `Muhtasari wa mshahara wa Egypt: Gross EGP ${Math.round(RESULT.gross).toLocaleString()}/mwaka → Halisi EGP ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/egypt/eg-paye`;
@@ -990,7 +989,7 @@ async function getAI() {
 - Mapato Halisi ya Mwaka Yanayotozwa Kodi (NATI): EGP ${Math.round(R.nati).toLocaleString()}
 - Kodi ya mapato (standard): EGP ${Math.round(R.standardTax).toLocaleString()}
 - Bracket exclusion extra tax: EGP ${Math.round(R.exclusionExtra).toLocaleString()}
-- Total income tax: EGP ${Math.round(R.tax).toLocaleString()}
+- jumla income tax: EGP ${Math.round(R.tax).toLocaleString()}
 - Excluded brackets: ${R.excludedBands.length} (${R.hasExclusion ? 'bracket exclusion rule triggered' : 'not triggered'})
 - Halisi ya mwezi: EGP ${Math.round(R.netMonthly).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
@@ -1007,7 +1006,7 @@ Toa: 1) muhtasari wa wazi kwa Kiswahili of their tax position including bracket 
         messages: [{ role: 'user', content: prompt }]
       })
     });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (!res.ok) throw new hitilafu('HTTP ' + res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi. Matokeo yako ya hesabu hapo juu ni sahihi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1060,7 +1059,7 @@ async function sendChat() {
 
 document.getElementById('grossSalary').addEventListener('keydown', e => { if (e.key === 'Enter') calculate(); });
 
-// Net-to-Ghafi: register forward function (annual basis)
+// Net-to-Ghafi: register forward function (kila mwaka basis)
 window._grossToNet = function(g) {
   var pe = isOn('disabled') ? 30000 : 20000;
   var nosiBase = isOn('nosi') ? Math.min(g, 174000) : 0;
@@ -1151,5 +1150,5 @@ window._grossToNet = function(g) {
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

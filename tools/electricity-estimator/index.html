@@ -22,12 +22,12 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <meta name="tool-id" content="electricity-estimator">
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "description": "Estimate monthly electricity bills for 10 African countries with real tariff data, appliance calculator, solar savings and generator comparison.",
   "url": "https://afrotools.com/tools/electricity-estimator/",
   "inLanguage": "en",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "WebApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
   "offers": {
@@ -216,6 +216,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
 .eb-tariff-table{width:100%;border-collapse:collapse;font-size:.72rem;margin-top:8px}
 .eb-tariff-table th{text-align:left;padding:6px 8px;background:#F5F9FF;color:var(--eb-dark);font-weight:700;border-bottom:1px solid var(--eb-border)}
 .eb-tariff-table td{padding:5px 8px;border-bottom:1px solid #EFF6FF;color:#333}
+.eb-data-state{margin-top:12px}
+.eb-fallback-note{margin:10px 0 0;padding:10px 12px;border:1px solid #f59e0b;border-radius:8px;background:#fffbeb;color:#78350f;font-size:.76rem;font-weight:700;line-height:1.45}
+.eb-fallback-note[hidden]{display:none}
 
 /* FAQ */
 .eb-faq{max-width:1200px;margin:40px auto;padding:0 24px}
@@ -234,11 +237,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which countries are supported?","acceptedAnswer":{"@type":"Answer","text":"Nigeria (NERC bands A-E), Kenya (KPLC tiers), South Africa (Eskom blocks), Ghana (ECG tiers), Tanzania (TANESCO), Uganda (UMEME), Ethiopia (EEU), Egypt (EEHC), Rwanda (REG), and Cameroon (ENEO). Each uses published tariff structures."}},{"@type":"Question","name":"How accurate are the tariff rates?","acceptedAnswer":{"@type":"Answer","text":"Rates reflect publicly available tariff schedules. Actual bills may include fixed charges, taxes, levies, and VAT not captured here. Use results as estimates only."}},{"@type":"Question","name":"How does the generator comparison work?","acceptedAnswer":{"@type":"Answer","text":"The tool estimates what it would cost to generate the same kWh using a petrol generator (typically 3-4 kWh per litre). This helps you compare grid vs generator costs — especially useful in countries with frequent outages."}},{"@type":"Question","name":"What are Nigeria's electricity bands?","acceptedAnswer":{"@type":"Answer","text":"Customers are classified A through E based on hours of supply. Band A gets 20+ hours daily at ₦225/kWh, Band B gets 16-20 hours at ₦63.36/kWh, Band C 12-16 hours at ₦50.45/kWh, Band D 8-12 hours at ₦40.98/kWh, and Band E 4-8 hours at ₦31.59/kWh."}},{"@type":"Question","name":"How does the solar savings estimate work?","acceptedAnswer":{"@type":"Answer","text":"After calculating your bill, adjust the solar coverage slider (20-100%) to see how much you could save. The tool estimates the system size needed and typical payback period based on residential solar costs in your country."}}]}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/electricity-estimator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/electricity-estimator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/estimateur-electricite/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/makisio-ya-bili-ya-umeme/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/electricity-estimator/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -377,6 +385,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
   <div class="eb-info-card">
     <div class="eb-info-title" id="tariffTitle">Select a Country</div>
     <div class="eb-info-text" id="tariffInfo">Choose a country above to see tariff details.</div>
+    <div class="afro-source-meta eb-data-state" id="electricity-source-meta" data-source-meta-id="electricity-tariff-rates" data-source-meta-compact="true"></div>
+    <p class="eb-fallback-note" id="electricity-fallback-note" role="status" aria-live="polite" hidden></p>
   </div>
   <div class="eb-info-card">
     <div class="eb-info-title">💡 Energy Saving Tips</div>
@@ -459,13 +469,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
 <details><summary>How does the solar savings estimate work?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-body">After calculating your bill, adjust the solar coverage slider (20-100%) to see how much you could save. The tool estimates the system size needed and typical payback period based on residential solar costs in your country.</div></details>
 </section>
 
-<afro-related-tools category="african" current="electricity-estimator"></afro-related-tools>
+<afro-related-tools category="african" current="electricity-estimator" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afropoints/" data-related-tool data-id="afropoints" data-name="AfroPoints — Earn Money Contributing Data" data-category="african" data-icon="AE" data-desc="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via m">AfroPoints — Earn Money Contributing Data</a></li><li><a href="/tools/remittance-compare/" data-related-tool data-id="remittance-compare" data-name="Remittance Comparator" data-category="african" data-icon="RC" data-desc="Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.">Remittance Comparator</a></li><li><a href="/tools/remittance-v2/" data-related-tool data-id="remittance-v2" data-name="Remittance Comparator Pro" data-category="african" data-icon="RC" data-desc="Compare editable remittance quotes by recipient value, FX margin, fee, speed, and payout method.">Remittance Comparator Pro</a></li><li><a href="/tools/afroatlas/" data-related-tool data-id="afroatlas" data-name="AfroAtlas — Africa Resource Explorer" data-category="african" data-icon="AA" data-desc="Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side compar">AfroAtlas — Africa Resource Explorer</a></li><li><a href="/tools/informal-fx-watch/" data-related-tool data-id="informal-fx-watch" data-name="Informal FX Watch" data-category="african" data-icon="IF" data-desc="Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.">Informal FX Watch</a></li><li><a href="/tools/africa-conflict/" data-related-tool data-id="africa-conflict" data-name="AfroConflict — Conflict Intelligence" data-category="african" data-icon="AC" data-desc="Africa conflict intelligence dashboard — active conflicts, displacement tracker, economic impact, actor networks, scenar">AfroConflict — Conflict Intelligence</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <script>
 /* ═══════ DATA ═══════ */
-var COUNTRIES = {
+var ELECTRICITY_FALLBACK_AS_OF = '2026-03-28';
+var ELECTRICITY_FALLBACK_COUNTRIES = {
   ng: { name:'Nigeria', flag:'🇳🇬', currency:'NGN', symbol:'₦', fuelPerL:700, solarCostPerKw:800000,
     bands: { A:{rate:225,label:'Band A — ₦225/kWh (20+ hrs)'}, B:{rate:63.36,label:'Band B — ₦63.36/kWh (16-20 hrs)'}, C:{rate:50.45,label:'Band C — ₦50.45/kWh (12-16 hrs)'}, D:{rate:40.98,label:'Band D — ₦40.98/kWh (8-12 hrs)'}, E:{rate:31.59,label:'Band E — ₦31.59/kWh (4-8 hrs)'} },
     calc:function(kwh,band){return kwh*this.bands[band].rate},
@@ -508,6 +526,7 @@ var COUNTRIES = {
     info:'<table class="eb-tariff-table"><tr><th>Tier</th><th>Rate</th></tr><tr><td>0-110 kWh</td><td>XAF 50/kWh</td></tr><tr><td>111-400 kWh</td><td>XAF 79/kWh</td></tr><tr><td>401+ kWh</td><td>XAF 94/kWh</td></tr></table>'
   }
 };
+var COUNTRIES = ELECTRICITY_FALLBACK_COUNTRIES;
 
 var APPLIANCES = {
   cooling:[
@@ -565,6 +584,107 @@ function init() {
   filterAppliances();
   renderApps();
   selectCountry('ng');
+}
+
+function escapeTariffText(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatTariffDate(value) {
+  if (!value) return '';
+  var parsed = new Date(value);
+  return isNaN(parsed.getTime()) ? String(value).slice(0, 10) : parsed.toISOString().slice(0, 10);
+}
+
+function renderElectricitySourceState(state, asOf, sourceName) {
+  var fallback = state !== 'live';
+  var note = document.getElementById('electricity-fallback-note');
+  var target = document.getElementById('electricity-source-meta');
+  var day = formatTariffDate(asOf) || ELECTRICITY_FALLBACK_AS_OF;
+
+  if (note) {
+    note.hidden = !fallback;
+    note.textContent = fallback
+      ? 'Showing cached rates from ' + day + ' — live rates unavailable.'
+      : '';
+  }
+
+  if (target && window.AfroToolsSourceConfidence && typeof window.AfroToolsSourceConfidence.renderSourceSummary === 'function') {
+    target.innerHTML = window.AfroToolsSourceConfidence.renderSourceSummary({
+      id: fallback ? 'electricity-estimator-inline-fallback' : 'electricity-live-api',
+      sourceName: fallback ? 'Cached electricity tariff table' : (sourceName || 'AfroTools live electricity feed'),
+      sourceType: 'third_party_snapshot',
+      countryCodes: ['NG', 'KE', 'ZA', 'GH', 'TZ', 'UG', 'ET', 'EG', 'RW', 'CM'],
+      appliesTo: ['energy'],
+      lastCheckedAt: day,
+      freshnessStatus: fallback ? 'stale' : 'fresh',
+      confidence: 'estimated',
+      displayDisclaimer: fallback
+        ? 'Live rates are unavailable. Verify the cached tariff assumption with the local utility or regulator.'
+        : 'Latest available residential reference rate. Bills can still include tariff bands, fixed charges, taxes, and local utility adjustments.'
+    }, { compact: true });
+  } else if (target) {
+    target.textContent = (fallback ? 'Cached electricity tariff table' : 'AfroTools live electricity feed') + ' · As of ' + day;
+  }
+}
+
+function liveCountryConfig(fallback, row) {
+  var residential = row && row.residential;
+  var rate = residential && Number(residential.price_kwh_local);
+  if (!Number.isFinite(rate) || rate <= 0) return null;
+
+  var provider = row.provider || 'Local utility';
+  var source = row.source || 'AfroTools electricity feed';
+  var currency = row.currency || fallback.currency;
+  var displayRate = rate.toLocaleString('en-US', { maximumFractionDigits: 4 });
+  var live = Object.assign({}, fallback, {
+    name: row.name || fallback.name,
+    currency: currency,
+    bands: null,
+    liveRate: rate,
+    liveAsOf: row.last_updated || '',
+    calc: function(kwh) { return kwh * rate; },
+    info: '<table class="eb-tariff-table"><tr><th>Residential reference</th><th>Provider</th></tr>' +
+      '<tr><td>' + escapeTariffText(currency) + ' ' + escapeTariffText(displayRate) + '/kWh</td><td>' + escapeTariffText(provider) + '</td></tr></table>' +
+      '<p style="margin-top:8px">Source: ' + escapeTariffText(source) + '. Confirm tariff bands, fixed charges and taxes locally.</p>'
+  });
+  return live;
+}
+
+function loadElectricityRates() {
+  return fetch('/api/electricity', { cache: 'no-cache', credentials: 'same-origin' })
+    .then(function(response) {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    })
+    .then(function(payload) {
+      if (!payload || !Array.isArray(payload.countries)) throw new Error('Electricity API returned no countries');
+      var rows = {};
+      payload.countries.forEach(function(row) {
+        if (row && row.code) rows[String(row.code).toLowerCase()] = row;
+      });
+
+      var liveCountries = {};
+      var supported = Object.keys(ELECTRICITY_FALLBACK_COUNTRIES);
+      supported.forEach(function(code) {
+        liveCountries[code] = liveCountryConfig(ELECTRICITY_FALLBACK_COUNTRIES[code], rows[code]);
+      });
+      if (supported.some(function(code) { return !liveCountries[code]; })) {
+        throw new Error('Electricity API returned partial supported-country coverage');
+      }
+
+      COUNTRIES = liveCountries;
+      renderElectricitySourceState('live', payload.timestamp, payload.source ? 'AfroTools electricity API · ' + payload.source : 'AfroTools live electricity feed');
+    })
+    .catch(function() {
+      COUNTRIES = ELECTRICITY_FALLBACK_COUNTRIES;
+      renderElectricitySourceState('fallback', ELECTRICITY_FALLBACK_AS_OF, 'Cached electricity tariff table');
+    });
 }
 
 /* ═══════ COUNTRIES ═══════ */
@@ -641,7 +761,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('addWatts').value = opt.dataset.watts;
     }
   });
-  init();
+  loadElectricityRates().then(init);
 });
 
 /* ═══════ APPLIANCE MANAGEMENT ═══════ */

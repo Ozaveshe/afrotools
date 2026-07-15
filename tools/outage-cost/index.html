@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Outage Cost Calculator for Business | AfroTools</title>
-<meta name="description" content="Estimate business power outage cost with revenue loss, staff idle time, generator or fuel backup, spoilage, internet downtime, recovery buffer, and exportable action plan.">
+<meta name="description" content="Estimate business power outage cost, separate avoidable losses from backup running cost, and screen a proposed backup investment with an auditable gross payback estimate.">
 <meta name="tool-id" content="outage-cost">
 <meta property="og:title" content="Outage Cost Calculator for Business | AfroTools">
-<meta property="og:description" content="Calculate lost revenue, backup cost, spoilage exposure, payment downtime, and a break-even backup budget for African businesses.">
+<meta property="og:description" content="Calculate lost revenue, backup cost, spoilage exposure, payment downtime, and a coverage-aware gross backup investment case for African businesses.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/outage-cost.webp">
 <meta property="og:url" content="https://afrotools.com/tools/outage-cost/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
-<meta property="article:modified_time" content="2026-05-16">
+<meta property="article:modified_time" content="2026-07-14">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Outage Cost Calculator for Business | AfroTools">
 <meta name="twitter:description" content="Model outage hours, revenue loss, staff idle cost, backup fuel, inventory spoilage, payment downtime, and recovery actions.">
@@ -22,15 +22,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Outage Cost Calculator for Business",
-  "description": "Estimate power outage cost for businesses using revenue loss, staff idle cost, backup energy cost, spoiled inventory risk, internet and payment downtime, and recovery buffer assumptions.",
+  "description": "Estimate power outage cost for businesses, separate avoidable losses from existing backup running cost, and screen a proposed backup investment with a gross payback estimate.",
   "url": "https://afrotools.com/tools/outage-cost/",
   "inLanguage": "en",
   "applicationCategory": "UtilitiesApplication",
@@ -46,7 +46,7 @@
     "name": "AfroTools",
     "url": "https://afrotools.com/"
   },
-  "dateModified": "2026-05-16",
+  "dateModified": "2026-07-14",
   "image": "https://afrotools.com/assets/img/tools/outage-cost.webp"
 }
 </script>
@@ -101,7 +101,9 @@ a{color:inherit;text-decoration:none}
 .oc-breakdown th,.oc-breakdown td{padding:11px 12px;border-bottom:1px solid #e7edf5;text-align:left;vertical-align:top;overflow-wrap:anywhere;word-break:break-word}
 .oc-breakdown th{background:#f8fbff;color:#344054;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
 .oc-breakdown td:last-child{font-weight:800;color:#101828}
-.oc-recommendation{border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:10px;padding:13px 15px;font-size:.9rem;line-height:1.58}
+.oc-recommendation{border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:10px;padding:13px 15px;font-size:.9rem;line-height:1.58;display:flex;gap:11px;align-items:flex-start}
+.oc-recommendation-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;border-radius:999px;background:#dcfce7;color:#15803d}
+.oc-recommendation-icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .oc-warning{border-color:#fed7aa;background:#fff7ed;color:#7c2d12}
 .oc-checks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .oc-check-card{border:1px solid #d9e2ef;border-radius:10px;background:#fff;padding:15px}
@@ -127,8 +129,8 @@ a{color:inherit;text-decoration:none}
 @media(max-width:700px){.oc-main{padding-top:18px}.oc-grid,.oc-assumptions .oc-grid,.oc-metrics,.oc-checks,.oc-side,.oc-link-grid,.oc-country-grid{grid-template-columns:1fr}.oc-panel-head{display:block}.oc-panel-body{padding:16px}.oc-btn{width:100%}.oc-input,.oc-select{font-size:16px}.oc-metric{min-height:auto}}
 @media print{afro-navbar,afro-footer,.oc-actions,.oc-related,.oc-commercial,.oc-breadcrumb{display:none!important}.oc-hero{background:#fff;color:#101828;padding:0 0 18px}.oc-hero p{color:#344054}.oc-layout{display:block}.oc-panel,.oc-card{box-shadow:none;break-inside:avoid}}
 </style>
-<link rel="stylesheet" href="/assets/css/energy-focus.css?v=cf912bfe">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/energy-focus.css?v=ddb6898a">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/outage-cost/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/outage-cost/">
@@ -228,18 +230,18 @@ a{color:inherit;text-decoration:none}
                 <span class="oc-help">Fuel, generator rental, battery hire, maintenance, or inverter runtime cost.</span>
               </div>
               <div class="oc-field">
-                <label class="oc-label" for="spoiledInventory">Spoiled inventory risk</label>
+                <label class="oc-label" for="spoiledInventory">Residual spoiled inventory risk</label>
                 <input class="oc-input" id="spoiledInventory" name="spoiledInventory" type="number" min="0" step="0.01" inputmode="decimal" value="80000">
-                <span class="oc-help">Value at risk from cold chain, ingredients, stock, lab samples, or damaged production.</span>
+                <span class="oc-help">Value still at risk from cold chain, ingredients, stock, lab samples, or damaged production after current backup.</span>
               </div>
               <div class="oc-field">
                 <label class="oc-label" for="spoilagePct">Expected spoilage percent</label>
                 <input class="oc-input" id="spoilagePct" name="spoilagePct" type="number" min="0" max="100" step="1" inputmode="numeric" value="25">
               </div>
               <div class="oc-field">
-                <label class="oc-label" for="internetPaymentCost">Internet or payment downtime</label>
+                <label class="oc-label" for="internetPaymentCost">Residual internet or payment downtime</label>
                 <input class="oc-input" id="internetPaymentCost" name="internetPaymentCost" type="number" min="0" step="0.01" inputmode="decimal" value="15000">
-                <span class="oc-help">POS failure, router downtime, missed delivery orders, call center loss, or manual reconciliation.</span>
+                <span class="oc-help">Cost still expected from POS failure, router downtime, missed orders, call center loss, or reconciliation after current backup.</span>
               </div>
               <div class="oc-field">
                 <label class="oc-label" for="recoveryBufferPct">Recovery buffer percent</label>
@@ -265,9 +267,9 @@ a{color:inherit;text-decoration:none}
                   <input class="oc-input" id="monthlyOutages" name="monthlyOutages" type="number" min="0" max="60" step="0.5" inputmode="decimal" value="4">
                 </div>
                 <div class="oc-field">
-                  <label class="oc-label" for="backupInvestment">Possible backup investment</label>
+                  <label class="oc-label" for="backupInvestment">Proposed backup capital cost</label>
                   <input class="oc-input" id="backupInvestment" name="backupInvestment" type="number" min="0" step="0.01" inputmode="decimal" value="1200000">
-                  <span class="oc-help">Generator, inverter, battery, solar, Starlink, POS backup, or cold storage upgrade.</span>
+                  <span class="oc-help">Up-front generator, inverter, battery, solar, connectivity, POS, or cold-storage cost. Do not include recurring running costs here.</span>
                 </div>
               </div>
             </details>
@@ -288,7 +290,7 @@ a{color:inherit;text-decoration:none}
               <div class="oc-metric"><span>Backup running cost</span><strong id="backupCost">-</strong><em id="backupNote">Generator or backup energy</em></div>
               <div class="oc-metric"><span>Staff idle cost</span><strong id="staffCost">-</strong><em id="staffNote">Paid idle time</em></div>
               <div class="oc-metric"><span>Spoilage and payment risk</span><strong id="riskCost">-</strong><em id="riskNote">Inventory plus digital downtime</em></div>
-              <div class="oc-metric"><span>Break-even backup budget</span><strong id="breakEvenBudget">-</strong><em id="breakEvenNote">Monthly loss avoided</em></div>
+              <div class="oc-metric"><span>Gross avoidable loss / month</span><strong id="breakEvenBudget">-</strong><em id="breakEvenNote">Before proposed-system costs</em></div>
             </div>
             <table class="oc-breakdown" aria-label="Outage cost breakdown">
               <thead><tr><th>Cost lane</th><th>Method</th><th>Result</th></tr></thead>
@@ -297,10 +299,11 @@ a{color:inherit;text-decoration:none}
                 <tr><td>Backup cost</td><td id="backupFormula">Backup cost per hour x outage hours</td><td id="backupResult">-</td></tr>
                 <tr><td>Operational risk</td><td id="riskFormula">Spoilage exposure plus internet or payment downtime</td><td id="riskResult">-</td></tr>
                 <tr><td>Recovery buffer</td><td id="bufferFormula">Subtotal x recovery buffer percent</td><td id="bufferResult">-</td></tr>
+                <tr><td>Gross avoidable loss</td><td id="avoidableFormula">Residual revenue, staff, risk, and related recovery cost; current backup running cost excluded</td><td id="avoidableResult">-</td></tr>
                 <tr><td>Monthly exposure</td><td id="monthlyFormula">Total incident cost x similar outages per month</td><td id="monthlyExposure">-</td></tr>
               </tbody>
             </table>
-            <div class="oc-recommendation" id="recommendation">Run a calculation to see the backup recommendation.</div>
+            <div class="oc-recommendation" id="recommendation"><span class="oc-recommendation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4.8 13.2h6.4L10.5 22 19.2 10.8h-6.5L13 2Z"></path></svg></span><span id="recommendationText">Run a calculation to see the backup investment case.</span></div>
             <div class="oc-checks">
               <article class="oc-check-card">
                 <h2 class="oc-kicker">Operating checklist</h2>
@@ -318,7 +321,7 @@ a{color:inherit;text-decoration:none}
       <aside class="oc-side" aria-label="Assumptions and sources">
         <section class="oc-card oc-source" data-tool-verification-panel>
           <h2>Sources &amp; verification</h2>
-          <p><strong>Last verified:</strong> <time datetime="2026-05-16">16 May 2026</time>. Assumptions are user-entered and designed for African business outage planning, not a live utility tariff feed.</p>
+          <p><strong>Last verified:</strong> <time datetime="2026-07-14">14 July 2026</time>. Assumptions are user-entered and designed for African business outage planning, not a live utility tariff feed.</p>
           <p>Use your meter logs, generator fuel receipts, POS reports, wage sheet, inventory register, internet provider outage log, and local utility or energy regulator notices for final decisions.</p>
         </section>
         <section class="oc-card">
@@ -326,8 +329,9 @@ a{color:inherit;text-decoration:none}
           <ol>
             <li>Revenue per hour is entered directly or derived from daily revenue divided by operating hours.</li>
             <li>Lost revenue is reduced by backup coverage and recoverable sales assumptions.</li>
-            <li>Staff idle, backup running, spoilage, payment downtime, and recovery buffer are added to the incident cost.</li>
-            <li>Break-even backup budget equals monthly outage exposure. A backup investment below that amount may pay back within about one month.</li>
+            <li>Staff idle, current backup running cost, residual spoilage, residual payment downtime, and a recovery buffer are added to the incident cost.</li>
+            <li>Gross avoidable loss includes residual revenue, staff, operational-risk, and related recovery costs. It excludes current backup running cost and its recovery markup.</li>
+            <li>Gross payback divides proposed capital cost by gross monthly avoidable loss. It is an optimistic screen before financing, maintenance, replacement energy, taxes, and coverage gaps.</li>
           </ol>
         </section>
         <section class="oc-card">
@@ -381,6 +385,14 @@ a{color:inherit;text-decoration:none}
 
   </div>
 </main>
+<afro-related-tools data-ssr="1" category="energy" current="outage-cost">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Tariff Calculator" data-category="energy" data-icon="ET" data-desc="Estimate electricity bills for supported African countries. Residential, commercial, industrial, and tiered tariff bands">Electricity Tariff Calculator</a></li><li><a href="/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/tools/prepaid-meter/" data-related-tool data-id="prepaid-meter" data-name="Prepaid Meter Calculator" data-category="energy" data-icon="PM" data-desc="Estimate prepaid electricity units in any African country. Token amount, service charges, account type, and days of supp">Prepaid Meter Calculator</a></li><li><a href="/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script src="/assets/js/energy-tool-assistant.js?v=b5a3b994"></script>
 <script>
@@ -476,7 +488,9 @@ a{color:inherit;text-decoration:none}
     var recoveryBuffer = subtotal * recoveryBufferPct;
     var totalCost = subtotal + recoveryBuffer;
     var monthlyExposure = totalCost * monthlyOutages;
-    var avoidableIncidentLoss = lostRevenue + staffCost + riskCost + recoveryBuffer;
+    var avoidableBase = lostRevenue + staffCost + riskCost;
+    var avoidableRecovery = avoidableBase * recoveryBufferPct;
+    var avoidableIncidentLoss = avoidableBase + avoidableRecovery;
     var breakEvenBudget = avoidableIncidentLoss * monthlyOutages;
     var paybackMonths = backupInvestment > 0 && breakEvenBudget > 0 ? backupInvestment / breakEvenBudget : 0;
     var revenueLossLabel = Math.round(revenueLossPct * 100) + "%";
@@ -493,7 +507,7 @@ a{color:inherit;text-decoration:none}
     text("riskCost", money(riskCost, currency));
     text("riskNote", "Spoilage " + money(spoilageCost, currency) + " plus digital downtime");
     text("breakEvenBudget", money(breakEvenBudget, currency));
-    text("breakEvenNote", monthlyOutages + " similar outage(s)/month");
+    text("breakEvenNote", monthlyOutages + " similar outage(s); gross ceiling");
     text("revenueFormula", money(revenuePerHour, currency) + " per hour x " + outageHours + " hours x " + revenueLossLabel + " lost x " + Math.round(uncoveredShare * 100) + "% uncovered");
     text("revenueResult", money(lostRevenue, currency));
     text("backupFormula", money(backupCostHour, currency) + " per hour x " + outageHours + " hours");
@@ -502,12 +516,14 @@ a{color:inherit;text-decoration:none}
     text("riskResult", money(riskCost, currency));
     text("bufferFormula", money(subtotal, currency) + " subtotal x " + Math.round(recoveryBufferPct * 100) + "%");
     text("bufferResult", money(recoveryBuffer, currency));
+    text("avoidableFormula", money(avoidableBase, currency) + " residual loss + " + money(avoidableRecovery, currency) + " related recovery; current backup operation excluded");
+    text("avoidableResult", money(avoidableIncidentLoss, currency) + " per incident");
     text("monthlyFormula", money(totalCost, currency) + " x " + monthlyOutages + " outage(s)");
     text("monthlyExposure", money(monthlyExposure, currency));
 
-    var recommendation = "Break-even backup recommendation: if a reliable backup package costs less than about " + money(breakEvenBudget, currency) + " per month of avoided losses, it deserves a quote this week.";
+    var recommendation = "Gross investment screen: modeled residual losses that a fully effective upgrade could avoid total about " + money(breakEvenBudget, currency) + " per month. Current backup running cost and its recovery markup are excluded from that saving.";
     if(backupInvestment > 0 && paybackMonths > 0){
-      recommendation += " Your entered backup investment of " + money(backupInvestment, currency) + " has an estimated payback of " + round(paybackMonths, 1) + " month(s) if it prevents this outage pattern.";
+      recommendation += " The proposed capital cost of " + money(backupInvestment, currency) + " has a gross payback of " + round(paybackMonths, 1) + " month(s) only if it eliminates all modeled residual losses. Financing, maintenance, replacement energy, taxes, and coverage gaps can lengthen it.";
     }
     if(backupCoveragePct < 0.35){
       recommendation += " Current backup coverage is low, so prioritize the few loads that keep revenue, payments, refrigeration, and safety online.";
@@ -515,7 +531,7 @@ a{color:inherit;text-decoration:none}
     } else {
       byId("recommendation").classList.remove("oc-warning");
     }
-    text("recommendation", recommendation);
+    text("recommendationText", recommendation);
 
     var checklist = preset.checks.slice();
     if(outageHours >= 8) checklist.push("Prepare overnight continuity steps for security, refrigeration, and customer communication.");
@@ -524,7 +540,7 @@ a{color:inherit;text-decoration:none}
     renderList("opsChecklist", checklist);
 
     var actions = preset.actions.slice();
-    actions.push("Price backup against the monthly break-even budget, not only against fuel per hour.");
+    actions.push("Compare an all-in backup quote with gross avoidable loss, including financing, maintenance, replacement energy, taxes, and realistic coverage.");
     actions.push("Keep the outage log: date, duration, cause, staff impact, lost sales, fuel used, and recovery work.");
     if(backupInvestment > breakEvenBudget && breakEvenBudget > 0) actions.push("If backup is expensive, phase it: router/POS UPS, lights, refrigeration, then full generator or solar battery.");
     renderList("actionPlan", actions);
@@ -543,6 +559,9 @@ a{color:inherit;text-decoration:none}
       spoilageCost:spoilageCost,
       internetPaymentCost:internetPaymentCost,
       recoveryBuffer:recoveryBuffer,
+      avoidableBase:avoidableBase,
+      avoidableRecovery:avoidableRecovery,
+      avoidableIncidentLoss:avoidableIncidentLoss,
       totalCost:totalCost,
       monthlyOutages:monthlyOutages,
       monthlyExposure:monthlyExposure,
@@ -572,8 +591,10 @@ a{color:inherit;text-decoration:none}
       "Recovery buffer: " + money(report.recoveryBuffer, report.currency),
       "Total outage cost: " + money(report.totalCost, report.currency),
       "Monthly exposure: " + money(report.monthlyExposure, report.currency),
-      "Break-even backup budget: " + money(report.breakEvenBudget, report.currency),
-      "Backup investment payback: " + (report.paybackMonths ? round(report.paybackMonths, 1) + " month(s)" : "not enough data"),
+      "Gross avoidable loss per incident: " + money(report.avoidableIncidentLoss, report.currency),
+      "Gross avoidable loss per month: " + money(report.breakEvenBudget, report.currency),
+      "Gross backup investment payback: " + (report.paybackMonths ? round(report.paybackMonths, 1) + " month(s)" : "not enough data"),
+      "Payback boundary: before financing, maintenance, replacement energy, taxes, and coverage gaps.",
       "Recommendation: " + report.recommendation,
       "Disclaimer: estimate only. Confirm utility, insurance, generator, fuel, staff, and inventory records."
     ];
@@ -616,11 +637,15 @@ a{color:inherit;text-decoration:none}
       ["spoilage_cost",round(report.spoilageCost,2)],
       ["internet_payment_cost",round(report.internetPaymentCost,2)],
       ["recovery_buffer",round(report.recoveryBuffer,2)],
+      ["gross_avoidable_base",round(report.avoidableBase,2)],
+      ["gross_avoidable_recovery",round(report.avoidableRecovery,2)],
+      ["gross_avoidable_loss_per_incident",round(report.avoidableIncidentLoss,2)],
       ["total_outage_cost",round(report.totalCost,2)],
       ["monthly_exposure",round(report.monthlyExposure,2)],
-      ["break_even_backup_budget",round(report.breakEvenBudget,2)],
+      ["gross_avoidable_loss_per_month",round(report.breakEvenBudget,2)],
       ["backup_investment",round(report.backupInvestment,2)],
-      ["estimated_payback_months",round(report.paybackMonths,2)]
+      ["gross_estimated_payback_months",round(report.paybackMonths,2)],
+      ["payback_excludes","financing; maintenance; replacement energy; taxes; coverage gaps"]
     ];
     var csv = rows.map(function(row){ return row.map(csvCell).join(","); }).join("\n");
     var blob = new Blob([csv], { type:"text/csv;charset=utf-8" });
@@ -665,5 +690,6 @@ a{color:inherit;text-decoration:none}
 }());
 </script>
 <script src="/assets/js/pages/energy-focus.js?v=8ad94082" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

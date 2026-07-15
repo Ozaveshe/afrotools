@@ -288,6 +288,41 @@
       border-top: 1px solid var(--svg-line);
     }
 
+    .svg-market-context {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      margin-top: 4px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--svg-blue);
+      background: var(--svg-soft);
+      color: var(--svg-muted);
+      font-size: .8rem;
+      line-height: 1.5;
+    }
+
+    .svg-market-context svg {
+      width: 20px;
+      height: 20px;
+      color: var(--svg-blue);
+    }
+
+    .svg-market-context p {
+      margin: 0;
+    }
+
+    .svg-market-context a {
+      display: inline-block;
+      margin-top: 4px;
+      color: var(--svg-green-dark);
+      font-weight: 800;
+    }
+
+    .svg-market-context a[hidden] {
+      display: none !important;
+    }
+
     .svg-actions {
       display: flex;
       flex-wrap: wrap;
@@ -691,8 +726,8 @@
       }
     }
   </style>
-<link rel="stylesheet" href="/assets/css/energy-focus.css?v=cf912bfe">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/energy-focus.css?v=ddb6898a">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/solar-vs-generator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/solar-vs-generator/">
@@ -729,7 +764,7 @@
         </div>
         <aside class="svg-freshness" aria-label="Source and freshness note">
           <strong>Source and freshness</strong>
-          <p>Reviewed 16 May 2026. This calculator uses your entered quotes, fuel receipts, utility bill, generator manual, installer warranty, and national energy regulator or utility authority guidance. Prices are not live feeds.</p>
+          <p>Reviewed 16 May 2026. Market starter profiles use the bundled Energy dataset reviewed 2026-03; your receipts, utility bill, supplier quotes, generator manual, and installer warranty should replace those planning defaults. Prices are not live feeds.</p>
         </aside>
       </div>
     </div>
@@ -746,6 +781,33 @@
           </div>
 
           <div class="svg-input-grid">
+            <div class="svg-field full">
+              <label for="market-profile">Market starter profile</label>
+              <select id="market-profile" name="marketProfile" aria-describedby="market-profile-help market-profile-status">
+                <option value="NG" selected>Nigeria</option>
+                <option value="KE">Kenya</option>
+                <option value="GH">Ghana</option>
+                <option value="ZA">South Africa</option>
+                <option value="EG">Egypt</option>
+                <option value="TZ">Tanzania</option>
+                <option value="UG">Uganda</option>
+                <option value="CI">Côte d'Ivoire</option>
+                <option value="CM">Cameroon</option>
+                <option value="SN">Senegal</option>
+                <option value="MA">Morocco</option>
+                <option value="TN">Tunisia</option>
+                <option value="AO">Angola</option>
+                <option value="RW">Rwanda</option>
+                <option value="ET">Ethiopia</option>
+                <option value="custom">Custom — enter all local prices</option>
+              </select>
+              <span class="svg-help" id="market-profile-help">Applies currency, fuel price, and residential grid-tariff planning defaults. It does not replace current quotes.</span>
+              <div class="svg-market-context" id="market-profile-status" role="status" aria-live="polite">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Zm0-8.5A2.5 2.5 0 1 0 12 7a2.5 2.5 0 0 0 0 5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <div><p id="market-profile-status-text">Loading the Nigeria market profile…</p><a id="market-profile-guide" href="/tools/solar-vs-generator/nigeria/">Open Nigeria comparison guide</a></div>
+              </div>
+            </div>
+
             <div class="svg-field">
               <label for="currency">Local currency</label>
               <select id="currency" name="currency">
@@ -758,6 +820,11 @@
                 <option value="UGX">UGX - Ugandan shilling</option>
                 <option value="XOF">XOF - West African CFA franc</option>
                 <option value="XAF">XAF - Central African CFA franc</option>
+                <option value="MAD">MAD - Moroccan dirham</option>
+                <option value="TND">TND - Tunisian dinar</option>
+                <option value="AOA">AOA - Angolan kwanza</option>
+                <option value="RWF">RWF - Rwandan franc</option>
+                <option value="ETB">ETB - Ethiopian birr</option>
                 <option value="USD">USD - US dollar</option>
               </select>
             </div>
@@ -789,7 +856,7 @@
 
             <div class="svg-field">
               <label for="fuel-price">Fuel price per litre</label>
-              <input id="fuel-price" name="fuelPrice" type="number" min="0" step="1" value="950">
+              <input id="fuel-price" name="fuelPrice" type="number" min="0" step="any" value="700" aria-describedby="market-profile-status">
             </div>
 
             <div class="svg-field">
@@ -799,8 +866,8 @@
 
             <div class="svg-field">
               <label for="grid-cost">Current grid cost per kWh</label>
-              <input id="grid-cost" name="gridCost" type="number" min="0" step="1" value="220">
-              <span class="svg-help">Use the tariff or prepaid unit rate from your bill.</span>
+              <input id="grid-cost" name="gridCost" type="number" min="0" step="any" value="68" aria-describedby="grid-cost-help market-profile-status">
+              <span class="svg-help" id="grid-cost-help">Use the tariff or prepaid unit rate from your bill.</span>
             </div>
 
             <div class="svg-field">
@@ -938,6 +1005,7 @@
           <h2>Assumptions and sources</h2>
           <p>Use this source checklist before committing money. The tool is based on user-entered assumptions, not a live official price feed.</p>
           <ul>
+            <li>Market profile: bundled fuel and residential grid planning values reviewed 2026-03. Replace them with current local evidence.</li>
             <li>Fuel price: latest receipt or station board near your business or home.</li>
             <li>Grid cost: utility bill, prepaid statement, or published tariff from the electricity authority.</li>
             <li>Solar price: installer quote that separates panels, inverter, battery, installation, warranty, and finance fees.</li>
@@ -984,20 +1052,40 @@
     </div>
   </footer>
 
+  <script src="/data/energy/country-energy-index.js?v=5083c43c"></script>
   <script>
     (function () {
       'use strict';
 
       const daysPerMonth = 365.25 / 12;
+      const energyDataset = window.ENERGY_DATA && window.ENERGY_DATA.countries ? window.ENERGY_DATA : null;
+      const marketRoutes = {
+        NG: '/tools/solar-vs-generator/nigeria/',
+        KE: '/tools/solar-vs-generator/kenya/',
+        GH: '/tools/solar-vs-generator/ghana/',
+        ZA: '/tools/solar-vs-generator/south-africa/',
+        EG: '/tools/solar-vs-generator/egypt/',
+        TZ: '/tools/solar-vs-generator/tanzania/',
+        UG: '/tools/solar-vs-generator/uganda/',
+        CI: '/tools/solar-vs-generator/cote-divoire/',
+        CM: '/tools/solar-vs-generator/cameroon/',
+        SN: '/tools/solar-vs-generator/senegal/',
+        MA: '/tools/solar-vs-generator/morocco/',
+        TN: '/tools/solar-vs-generator/tunisia/',
+        AO: '/tools/solar-vs-generator/angola/',
+        RW: '/tools/solar-vs-generator/rwanda/',
+        ET: '/tools/solar-vs-generator/ethiopia/'
+      };
       const defaults = {
+        marketProfile: 'NG',
         currency: 'NGN',
         fuelType: 'petrol',
         outageHours: 6,
         criticalLoad: 0.8,
         fuelUse: 1.1,
-        fuelPrice: 950,
+        fuelPrice: 700,
         generatorMaintenance: 25000,
-        gridCost: 220,
+        gridCost: 68,
         solarKitCost: 1850000,
         solarDeposit: 250000,
         batterySize: 5,
@@ -1019,8 +1107,13 @@
         map[id] = document.getElementById(id);
         return map;
       }, {});
+      const marketSelect = document.getElementById('market-profile');
+      const marketStatus = document.getElementById('market-profile-status-text');
+      const marketGuide = document.getElementById('market-profile-guide');
 
       let latest = null;
+      let fuelPriceBasis = 'bundled market planning default';
+      let gridCostBasis = 'bundled market planning default';
 
       function value(name) {
         const field = form.elements[name];
@@ -1030,7 +1123,15 @@
       }
 
       function getInputs() {
+        const market = currentMarket();
         return {
+          marketCode: market ? market.code : 'custom',
+          marketName: market ? market.name : 'Custom scenario',
+          marketGuide: market ? marketRoutes[market.code] : '',
+          datasetReviewed: market && energyDataset ? energyDataset.lastUpdated : 'not applicable',
+          regulatorContext: market ? market.regulator : 'User-supplied market context',
+          fuelPriceBasis,
+          gridCostBasis,
           currency: value('currency'),
           fuelType: value('fuelType'),
           outageHours: Math.max(0, Math.min(24, value('outageHours'))),
@@ -1063,6 +1164,47 @@
 
       function number(amount, digits) {
         return Number(amount || 0).toLocaleString(undefined, { maximumFractionDigits: digits });
+      }
+
+      function currentMarket() {
+        if (!energyDataset || marketSelect.value === 'custom') return null;
+        return energyDataset.countries[marketSelect.value] || null;
+      }
+
+      function updateMarketContext(customMessage) {
+        const market = currentMarket();
+        if (!market) {
+          marketStatus.textContent = customMessage || 'Custom scenario. Existing numbers are retained; replace the currency, fuel price, and grid tariff with values from current local evidence before relying on the comparison.';
+          marketGuide.hidden = true;
+          return;
+        }
+
+        const fuelLabel = form.elements.fuelType.value === 'diesel' ? 'diesel' : 'petrol';
+        marketStatus.textContent = `${market.name} profile: ${fuelLabel} ${market.currency} ${number(form.elements.fuelPrice.value, 4)}/litre (${fuelPriceBasis}); residential grid ${market.currency} ${number(form.elements.gridCost.value, 4)}/kWh (${gridCostBasis}). Bundled dataset reviewed ${energyDataset.lastUpdated}. Regulator context: ${market.regulator}. Replace the defaults with current receipts and bills.`;
+        marketGuide.href = marketRoutes[market.code];
+        marketGuide.textContent = `Open ${market.name} comparison guide`;
+        marketGuide.hidden = false;
+      }
+
+      function applyMarketProfile() {
+        const market = currentMarket();
+        if (!market) {
+          fuelPriceBasis = 'user-managed custom value';
+          gridCostBasis = 'user-managed custom value';
+          updateMarketContext();
+          calculateAndRender();
+          return;
+        }
+
+        const fuelType = form.elements.fuelType.value;
+        const fuelPrice = Number(market.fuel && market.fuel[fuelType]);
+        form.elements.currency.value = market.currency;
+        if (Number.isFinite(fuelPrice)) form.elements.fuelPrice.value = fuelPrice;
+        form.elements.gridCost.value = Number(market.electricityTariff.residential) || 0;
+        fuelPriceBasis = 'bundled market planning default';
+        gridCostBasis = 'bundled market planning default';
+        updateMarketContext();
+        calculateAndRender();
       }
 
       function calculate(input) {
@@ -1157,7 +1299,7 @@
         const rec = recommendation(result);
         latest = result;
 
-        el['scenario-summary'].textContent = `${number(result.monthlyBackupKwh, 1)} kWh/month backup need, ${number(result.monthlyFuelLitres, 1)} litres/month generator fuel, ${input.paymentTerm}-month solar payment term.`;
+        el['scenario-summary'].textContent = `${input.marketName}: ${number(result.monthlyBackupKwh, 1)} kWh/month backup need, ${number(result.monthlyFuelLitres, 1)} litres/month generator fuel, ${input.paymentTerm}-month solar payment term.`;
         el['recommendation-badge'].textContent = rec.title;
         el['generator-year'].textContent = money(result.generatorYear, input.currency);
         el['generator-monthly'].textContent = `${money(result.generatorMonthly, input.currency)} per month`;
@@ -1192,11 +1334,16 @@
         const { input } = result;
         return [
           ['Metric', 'Value'],
+          ['Market profile', input.marketName],
+          ['Market code', input.marketCode],
           ['Currency', input.currency],
           ['Daily outage hours', input.outageHours],
           ['Critical load kW', input.criticalLoad],
           ['Generator fuel litres per hour', input.fuelUse],
           ['Fuel price per litre', input.fuelPrice],
+          ['Fuel price basis', input.fuelPriceBasis],
+          ['Grid cost per kWh', input.gridCost],
+          ['Grid cost basis', input.gridCostBasis],
           ['Generator monthly cost', result.generatorMonthly.toFixed(2)],
           ['Solar monthly cost during term', result.solarMonthlyDuringTerm.toFixed(2)],
           ['Generator 1-year cost', result.generatorYear.toFixed(2)],
@@ -1207,6 +1354,9 @@
           ['Payback month', result.paybackMonth || 'No payback within 10 years'],
           ['Battery hours', result.batteryHours.toFixed(2)],
           ['Estimated generator CO2 kg per month', result.emissionsMonthly.toFixed(2)],
+          ['Bundled market dataset reviewed', input.datasetReviewed],
+          ['Regulator context', input.regulatorContext],
+          ['Market comparison guide', input.marketGuide],
           ['Last reviewed', '2026-05-16']
         ];
       }
@@ -1219,7 +1369,10 @@
         const { input } = result;
         return [
           'Solar vs Generator Cost Calculator - AfroTools',
+          `Market profile: ${input.marketName}`,
           `Currency: ${input.currency}`,
+          `Fuel price: ${input.fuelPrice} ${input.currency}/litre (${input.fuelPriceBasis})`,
+          `Grid tariff: ${input.gridCost} ${input.currency}/kWh (${input.gridCostBasis})`,
           `1-year generator cost: ${money(result.generatorYear, input.currency)}`,
           `1-year solar cost: ${money(result.solarYear, input.currency)}`,
           `5-year generator cost: ${money(result.generatorFiveYear, input.currency)}`,
@@ -1228,6 +1381,8 @@
           `Monthly cashflow during finance: ${money(result.cashflowDuringTerm, input.currency)}`,
           `Battery coverage: ${number(result.batteryHours, 1)} hours`,
           `Emissions estimate: ${number(result.emissionsMonthly, 0)} kg CO2/month`,
+          `Bundled market dataset reviewed: ${input.datasetReviewed}`,
+          `Regulator context: ${input.regulatorContext}`,
           'Disclaimer: estimate only. Verify with supplier quotes, utility tariff, regulator guidance, and a qualified electrician.'
         ].join('\n');
       }
@@ -1237,7 +1392,37 @@
         calculateAndRender();
       });
 
+      marketSelect.addEventListener('change', applyMarketProfile);
+
+      form.elements.fuelType.addEventListener('change', applyMarketProfile);
+
+      form.elements.currency.addEventListener('change', () => {
+        const market = currentMarket();
+        if (market && form.elements.currency.value === market.currency) {
+          calculateAndRender();
+          return;
+        }
+        marketSelect.value = 'custom';
+        fuelPriceBasis = 'retained value after manual currency change';
+        gridCostBasis = 'retained value after manual currency change';
+        updateMarketContext('Custom currency selected. The existing fuel and grid numbers were retained, not converted. Replace both with current local values before relying on the result.');
+        calculateAndRender();
+      });
+
+      form.elements.fuelPrice.addEventListener('input', () => {
+        fuelPriceBasis = 'user-entered receipt or quote';
+        updateMarketContext();
+        calculateAndRender();
+      });
+
+      form.elements.gridCost.addEventListener('input', () => {
+        gridCostBasis = 'user-entered bill or tariff';
+        updateMarketContext();
+        calculateAndRender();
+      });
+
       fields.forEach((field) => {
+        if (['marketProfile', 'currency', 'fuelType', 'fuelPrice', 'gridCost'].includes(field.name)) return;
         field.addEventListener('input', calculateAndRender);
         field.addEventListener('change', calculateAndRender);
       });
@@ -1246,7 +1431,7 @@
         Object.keys(defaults).forEach((name) => {
           if (form.elements[name]) form.elements[name].value = defaults[name];
         });
-        calculateAndRender();
+        applyMarketProfile();
       });
 
       document.getElementById('copy-result').addEventListener('click', async () => {
@@ -1278,9 +1463,18 @@
         window.print();
       });
 
-      calculateAndRender();
+      applyMarketProfile();
     })();
   </script>
   <script src="/assets/js/pages/energy-focus.js?v=8ad94082" defer></script>
+<afro-related-tools data-ssr="1" category="energy" current="solar-vs-generator">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Tariff Calculator" data-category="energy" data-icon="ET" data-desc="Estimate electricity bills for supported African countries. Residential, commercial, industrial, and tiered tariff bands">Electricity Tariff Calculator</a></li><li><a href="/tools/prepaid-meter/" data-related-tool data-id="prepaid-meter" data-name="Prepaid Meter Calculator" data-category="energy" data-icon="PM" data-desc="Estimate prepaid electricity units in any African country. Token amount, service charges, account type, and days of supp">Prepaid Meter Calculator</a></li><li><a href="/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li><li><a href="/tools/solar-sizing/" data-related-tool data-id="solar-sizing" data-name="Solar Sizing Calculator" data-category="energy" data-icon="SS" data-desc="Size a solar system for your African home or business. Panel wattage, battery capacity, inverter size — load-based recom">Solar Sizing Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

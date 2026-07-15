@@ -5,7 +5,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blood Pressure Checker & Tracker | AfroTools</title>
-<meta name="description" content="Check your blood pressure reading against medical guidelines. Track readings over time. Understand what your numbers mean with clear categories and health advice.">
+<meta name="description" content="Check your blood pressure reading against AHA guidelines, see your category, and track readings over time. Educational tool only, not medical advice.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Blood Pressure Checker | AfroTools">
 <meta property="og:description" content="Check and track your blood pressure readings with health advice.">
@@ -15,10 +15,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#dc2626}
 .tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
@@ -70,6 +69,8 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.bp-disclaimer{background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:8px;padding:12px 16px;margin-bottom:18px;font-size:.8rem;line-height:1.6;color:#991b1b}
+.bp-disclaimer strong{color:#7f1d1d}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr 1fr}}
 </style>
 <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
@@ -109,11 +110,57 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Blood Pressure Checker & Tracker",
+  "url": "https://afrotools.com/tools/blood-pressure/",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "description": "Check a blood pressure reading against AHA categories (Normal, Elevated, Stage 1, Stage 2, Crisis), track readings over time, and see health guidance. Educational tool only, not medical advice.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isAccessibleForFree": true,
+  "publisher": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What should I do if my blood pressure is high?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If your reading is consistently above 130/80, see a healthcare provider. Immediate lifestyle changes that help: reduce salt intake, exercise regularly (30 minutes/day), maintain healthy weight, limit alcohol, stop smoking, manage stress, and eat more fruits and vegetables. Your doctor may prescribe medication if lifestyle changes aren't enough."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can blood pressure be too low?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Low blood pressure (hypotension) is generally below 90/60 mmHg. While some people naturally have low BP without problems, sudden drops can cause dizziness, fainting, or shock. If you experience symptoms like lightheadedness, blurred vision, or fatigue with low readings, consult a doctor."
+      }
+    }
+  ]
+}
+</script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
 <meta name="tool-id" content="blood-pressure">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/blood-pressure/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/blood-pressure/">
@@ -132,6 +179,7 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22
 
 <section class="tool-main"><div class="tool-main-inner">
 <div class="calculator">
+<div class="bp-disclaimer" role="note"><strong>Educational tool only, not medical advice.</strong> These categories follow American Heart Association guidelines to help you understand a reading. They do not diagnose any condition. Always consult a doctor about your blood pressure. If a reading is above 180/120 mmHg or you have severe symptoms, seek urgent medical care immediately.</div>
 <div class="card">
 <div class="card-head"><span class="card-title">Enter Your Reading</span></div>
 <div class="card-body">
@@ -219,7 +267,14 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
-<afro-related-tools category="health" current="blood-pressure"></afro-related-tools>
+<afro-related-tools category="health" current="blood-pressure" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <!-- HEALTH-DEEP-IMPROVEMENT:START -->
 <section class="health-deep" aria-labelledby="health-deep-title">
@@ -288,7 +343,16 @@ function check() {
   const dia = +document.getElementById('diastolic').value;
   const pulse = document.getElementById('pulse').value;
 
-  if (sys < 60 || sys > 260 || dia < 40 || dia > 160) return;
+  if (!(sys >= 60 && sys <= 260) || !(dia >= 40 && dia <= 160)) {
+    document.getElementById('bpResult').innerHTML = '<div class="bp-result bp-high2" role="alert">Please enter a systolic value between 60 and 260 and a diastolic value between 40 and 160 mmHg.</div>';
+    document.getElementById('resultCard').style.display = 'block';
+    return;
+  }
+  if (sys <= dia) {
+    document.getElementById('bpResult').innerHTML = '<div class="bp-result bp-high2" role="alert">Systolic (top number) should be higher than diastolic (bottom number). Please re-check your reading.</div>';
+    document.getElementById('resultCard').style.display = 'block';
+    return;
+  }
 
   const result = classify(sys, dia);
   const pulseNum = parseInt(pulse);
@@ -393,5 +457,6 @@ renderHistory();
 </script>
 <script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

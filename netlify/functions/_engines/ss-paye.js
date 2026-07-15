@@ -4,6 +4,12 @@ const { createEngine } = require('./_factory');
 module.exports = createEngine({
   country: 'SS', countryName: 'South Sudan', currency: 'SSP',
   source: 'National Revenue Authority (NRA)',
+  /* source-confidence-stamp:start */
+  lastUpdated: '2026-03-01',
+  sourceCheckedOn: '2026-04-06',
+  nextReviewDate: '2026-07-05',
+  /* source-confidence-stamp:end */
+
   isMonthly: true,
   bands: [[20000,0],[20000,0.10],[17000,0.15],[Infinity,0.20]],
   socialSecurity: [{ key: 'nsif', label: 'NSIF (8%)', rate: 0.08 }],

@@ -96,6 +96,33 @@ test('currency lookup distinguishes success, malformed data, empty data, and net
   await expect(page.locator('#fxRetry')).toBeVisible();
 });
 
+test('VAT calculator gives accessible validation and a non-zero localized result', async ({ page }) => {
+  await page.goto('/sw/zana/kikokotoo-vat/', { waitUntil: 'domcontentloaded' });
+  const amount = page.locator('#vatAmount');
+  await amount.fill('0');
+  await page.getByRole('button', { name: 'Kokotoa', exact: true }).click();
+  await expect(amount).toBeFocused();
+  await expect(page.locator('#vatStatus')).toContainText('kikubwa kuliko sifuri');
+
+  await page.locator('#vatCountry').selectOption('KE');
+  await amount.fill('1000');
+  await page.getByRole('button', { name: 'Kokotoa', exact: true }).click();
+  await expect(page.locator('#vatStatus')).toHaveText('');
+  await expect(page.locator('#resultTotal')).not.toHaveText('-');
+  await expect(page.locator('#formulaText')).toContainText('16%');
+});
+
+test('repeated calculator controls gain keyboard activation without changing their calculation behavior', async ({ page }) => {
+  await page.goto('/sw/angola/kikokotoo-kodi-mshahara/', { waitUntil: 'domcontentloaded' });
+  const contribution = page.locator('.tog[data-tog="inss"]');
+  await expect(contribution).toHaveAttribute('tabindex', '0');
+  await expect(contribution).toHaveAttribute('role', /button|checkbox/);
+  const before = await contribution.getAttribute('class');
+  await contribution.focus();
+  await page.keyboard.press('Space');
+  await expect(contribution).not.toHaveAttribute('class', before);
+});
+
 test('legal, help, pricing, and account bridges state their language contract', async ({ page }) => {
   for (const route of ['/sw/faragha/', '/sw/masharti/', '/sw/msaada/', '/sw/bei/']) {
     await page.goto(route, { waitUntil: 'domcontentloaded' });
@@ -134,6 +161,37 @@ test('mobile navigation remains native and does not conflate language with count
   await expect(navbar.getByRole('link', { name: /Ingia/i }).last()).toHaveAttribute('href', /\/sw\/auth\//);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test('representative Swahili discovery and calculator routes stay mobile-safe and console-clean', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const pageErrors = [];
+  page.on('pageerror', (error) => pageErrors.push(error.message));
+  for (const route of [
+    '/sw/', '/sw/zana-zote/', '/sw/nchi/',
+    '/sw/ai/', '/sw/biashara-ndogo/',
+    '/sw/kenya/kikokotoo-kodi-mshahara/',
+    '/sw/zana/kikokotoo-vat/', '/sw/zana/kibadilishaji-sarafu/',
+    '/sw/zana/kilinganisha-tv-na-streaming/',
+    '/sw/zana/kulinganisha-hosting/', '/sw/zana/orodha-vifaa/'
+  ]) {
+    await page.goto(route, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('h1')).toHaveCount(1);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow, `${route} must not create horizontal page scroll`).toBeLessThanOrEqual(1);
+  }
+  expect(pageErrors).toEqual([]);
+
+  await page.goto('/sw/ai/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#afrotools-localized-mobile-css')).toHaveAttribute('href', '/assets/css/localized-mobile.css');
+  const aiColumns = await page.locator('.ai-local-hero').evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(' ').length);
+  expect(aiColumns).toBe(1);
+
+  for (const selector of ['#vatAmount', '#vatCountry']) {
+    await page.goto('/sw/zana/kikokotoo-vat/', { waitUntil: 'domcontentloaded' });
+    const box = await page.locator(selector).boundingBox();
+    expect(box && box.height, `${selector} must be a usable mobile touch target`).toBeGreaterThanOrEqual(44);
+  }
 });
 
 test('core discovery and calculator journeys retain useful HTML without JavaScript', async ({ browser }) => {

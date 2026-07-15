@@ -1,0 +1,56 @@
+# Crypto Profit Calculator — Audit
+
+- Live: https://afrotools.com/crypto/profit-calculator/
+- Source: `crypto/profit-calculator/index.html` (inline IIFE) + `assets/js/lib/crypto-data.js` (CoinGecko client) + `assets/css/crypto.css`
+- Date: 2026-07-13
+
+## What it does
+Buy price + quantity + fees → gross/net profit, ROI, break-even price, a "what-if" price slider, and a P/L-vs-sell-price Chart.js line chart. Sell price can be manual or auto-filled from CoinGecko live market price (`CryptoData.getPrices`, 60s cache/refresh). Output in local currency (NGN default). 10 coins, 6 currencies.
+
+## Calculation review (correct, minor gaps)
+- Fee model: `(cost * f%) + (sellValue * f%)` — charges both legs. Break-even `buy*(1+f)/(1-f)` is consistent with this. **Both correct.**
+- Flat-fee break-even `buy + fees/qty` only recovers one flat fee — fine.
+- **Red flag (data):** buy price is entered manually in local currency, but the live sell price comes from CoinGecko converted at a *current* FX rate. Comparing a historical buy (old FX) against a live sell (new FX) silently blends crypto move + currency move; no note explains this. For soft-peg/volatile NGN this materially distorts "profit."
+- **Red flag (advice):** no crypto-specific "not financial advice / capital at risk / volatile" line near the calculator. Only a generic templated disclaimer ("educational planning workflow… not a guaranteed outcome") sits far below in the `df-upgrade`/`df-faq` blocks. No capital-gains **tax note** at all.
+
+## Competitors & feature gaps
+CoinGecko, CoinMarketCap, CoinStats, CoinCodex, CryptPine, TokenTax profit calculators.
+Expected features this tool LACKS:
+1. **Live buy-price / current-price autofill by coin search** — competitors auto-fill current price and search 500+ coins; here buy is manual and only 10 coins.
+2. **Tax / capital-gains note** — TokenTax etc. surface tax; absent here.
+3. **Share / save / permalink of a result** — none (the "Copy summary" button belongs to the unrelated generic `df-upgrade` panel, not the calculator).
+4. **Multi-currency depth** — `crypto-data.js` already ships 19 African currencies; the calculator only exposes 6.
+5. **FX-transparency + exchange fee presets** (Binance/Luno/Quidax P2P) — competitors preset exchange fees.
+
+## SEO audit
+- **Title weak:** `Crypto Profit Calculator | AfroTools` (~34 chars) — no local intent keyword (Naira/Africa). OG/Twitter titles are stronger than the real `<title>`.
+- Meta description: good length and localized. Canonical + hreflang (en/fr/x-default) present and correct. BreadcrumbList + FAQPage JSON-LD present; **no HowTo and no SoftwareApplication/WebApplication schema.**
+- **FAQPage JSON-LD is generic boilerplate** ("How should I use Crypto Profit Calculator?" with vague templated answers) — not crypto-relevant; risks low-quality/mismatched structured data. The visible `df-faq` is equally generic.
+- Content ~600 words, decent depth and locally framed; single H1; heading order fine. Internal links present (related-tools SSR).
+
+## UI/UX audit
+- Clear input→result; live badge, current-price panel, empty placeholder, and error states (invalid inputs, live-price unavailable) all handled. Mobile grid collapses to 1 col at 768px.
+- **No verification / assumptions panel** near results (which FX rate, which price source, timestamp). CoinGecko attribution/"as of" time missing.
+- **Uses hardcoded status greens/reds** (`#34C759`, `#FF3B30`) instead of tokens — acceptable for semantic P/L but off the token system.
+- `df-upgrade` "decision workspace" panel is generic filler unrelated to crypto and dilutes the page.
+
+## Prioritized fixes
+### A. Quick wins (`file → change`)
+1. `crypto/profit-calculator/index.html` (line 7) → stronger `<title>`, e.g. `Crypto Profit Calculator in Naira, Rand & Cedi | AfroTools`.
+2. `crypto/profit-calculator/index.html` (`#currencySelect`, lines 355-362) → expand from 6 to the 19 African currencies already in `crypto-data.js` `AFRICAN_CURRENCIES`.
+3. `crypto/profit-calculator/index.html` (FAQ JSON-LD lines 278-310 + `df-faq` 482-485) → replace boilerplate Q&A with real crypto questions (how P/L is figured, fees, break-even, FX effect). Add a **crypto-specific "Not financial advice / prices volatile / capital at risk"** line near the results panel.
+4. Add a `SoftwareApplication`/`WebApplication` JSON-LD block; add an "as of \<time\>, source CoinGecko, FX at current rate" note under `#currentPriceDisplay`.
+
+### B. Feature upgrades
+- Coin search/autofill with buy-price auto-populate; exchange fee presets; result **share/permalink + save**; optional capital-gains tax field; explicit FX-transparency toggle.
+
+### C. Watch-outs (generated files)
+- Do NOT hand-edit sitemap files (generated). `crypto.css`/tokens are shared — scope changes. Prefer existing SEO scripts for canonical/OG/internal-link changes per `.claude/rules/seo-pages.md`. The `df-upgrade`/`df-faq` blocks and their JSON-LD appear machine-generated by `assets/js/pages/english-df-app-upgrades.js` / the `english-df-app-upgrades` pipeline — fix at the generator, not just this page, or it will regress.
+
+## Fixes applied 2026-07-14
+- `<title>` → "Crypto Profit Calculator in Naira, Rand & Cedi | AfroTools" (local intent keyword). Meta description rewritten to ~157 chars.
+- Currency `#currencySelect` expanded from 6 to 20 options (all 19 African currencies in `crypto-data.js` `AFRICAN_CURRENCIES` + USD); local `SYMBOLS` map in the page IIFE expanded to match. No edits to shared `crypto-data.js`.
+- Added crypto-specific "Not financial advice — volatile, capital at risk" disclaimer below the results/what-if panel.
+- Added FX-blend caveat (buy in past local FX vs live sell at today's FX blends crypto + currency movement) near results, and a "Source: CoinGecko, converted at current FX rate" note under `#currentPriceDisplay`.
+- BreadcrumbList + FAQPage JSON-LD unchanged and re-validated (both parse OK). `df-upgrade`/`df-faq` untouched.
+- Deferred (not this task): SoftwareApplication/HowTo schema, coin search/autofill, tax field, share/permalink, exchange-fee presets.

@@ -17,11 +17,25 @@ const POST_PROCESSED_HTML = new Set([
   'fr/terms/index.html',
   'fr/blog/index.html'
 ]);
+const PRODUCT_ALTERNATES = {
+  'fr/privacy/index.html': '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/faragha/">',
+  'fr/terms-of-use/index.html': '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/masharti/">'
+};
 
 function read(rel) { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); }
+function alignOgUrlWithCanonical(html) {
+  const canonical = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
+  if (!canonical) return html;
+  return html.replace(
+    /<meta\b(?=[^>]*\bproperty=["']og:url["'])[^>]*>/i,
+    (tag) => tag.replace(/\bcontent=["'][^"']*["']/i, `content="${canonical[1]}"`)
+  );
+}
 function output(rel, value) {
   const file = path.join(ROOT, rel);
-  let normalized = value.normalize('NFC').replace(/\r\n/g, '\n');
+  let normalized = alignOgUrlWithCanonical(value.normalize('NFC').replace(/\r\n/g, '\n'));
+  const alternate = PRODUCT_ALTERNATES[rel];
+  if (alternate && !normalized.includes(alternate)) normalized = normalized.replace('</head>', `${alternate}</head>`);
   if (rel === 'fr/blog/index.html' && !/name="content-language"/i.test(normalized)) {
     normalized = normalized.replace('<meta charset="utf-8">', '<meta charset="utf-8"><meta name="content-language" content="fr">');
   }
@@ -50,6 +64,30 @@ function output(rel, value) {
 function repair(rel, transforms) {
   let html = read(rel);
   for (const [from, to] of transforms) html = html.split(from).join(to);
+  output(rel, html);
+}
+
+function repairVisibleLanguage(rel, transforms) {
+  const source = read(rel);
+  let cursor = 0;
+  let html = '';
+  const protectedBlock = /<(script|style|noscript|textarea|pre|code)\b[\s\S]*?<\/\1\s*>/gi;
+  const applyTransforms = (text) => transforms.reduce(
+    (current, [pattern, replacement]) => current.replace(pattern, replacement),
+    text
+  );
+  const translate = (fragment) => fragment
+    .replace(/(^|>)([^<]+)(?=<|$)/g, (whole, boundary, text) => `${boundary}${applyTransforms(text)}`)
+    .replace(/\b(placeholder|aria-label|title|alt|value)=(['"])(.*?)\2/gi, (whole, attribute, quote, text) => (
+      `${attribute}=${quote}${applyTransforms(text)}${quote}`
+    ));
+
+  for (const match of source.matchAll(protectedBlock)) {
+    html += translate(source.slice(cursor, match.index));
+    html += match[0];
+    cursor = match.index + match[0].length;
+  }
+  html += translate(source.slice(cursor));
   output(rel, html);
 }
 
@@ -228,6 +266,12 @@ repair('fr/tools/gh-wht/index.html', [
   ['<li>Maillage interne utile dans le cluster fiscalité.</li>', '<li>Confirmez le taux auprès de la GRA pour la période concernée.</li>']
 ]);
 
+for (const rel of ['fr/all-tools/index.html', 'fr/nigeria/ng-salary-tax.html']) {
+  repair(rel, [
+    ['<meta name="content-language" content="en">', '<meta name="content-language" content="fr">']
+  ]);
+}
+
 function homePage() {
   return `<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="content-language" content="fr">
@@ -318,6 +362,40 @@ const blog = JSON.parse(read('data/localization/fr-blog-manifest.json'));
 output('fr/blog/index.html', blogPage(blog));
 output('fr/blog/feed.xml', blogFeed(blog));
 
+const visibleLanguageTransforms = [
+  [/\bprivacy policy\b/gi, 'politique de confidentialité'],
+  [/\bterms of use\b/gi, 'conditions d’utilisation'],
+  [/\bcontact us\b/gi, 'nous contacter'],
+  [/\bcalculators\b/gi, 'calculateurs'],
+  [/\bcalculator\b/gi, 'calculateur'],
+  [/\bcalculate\b/gi, 'calculer'],
+  [/\benter\b/gi, 'saisissez'],
+  [/\bresults\b/gi, 'résultats'],
+  [/\bresult\b/gi, 'résultat'],
+  [/\breset\b/gi, 'réinitialiser'],
+  [/\bsave\b/gi, 'enregistrer'],
+  [/\bdownload\b/gi, 'télécharger'],
+  [/\bsearch\b/gi, 'rechercher'],
+  [/\bselect\b/gi, 'sélectionner'],
+  [/\bamount\b/gi, 'montant'],
+  [/\bmonthly\b/gi, 'mensuel'],
+  [/\bannual\b/gi, 'annuel'],
+  [/\bsubmit\b/gi, 'envoyer'],
+  [/\bloading\b/gi, 'chargement'],
+  [/\berror\b/gi, 'erreur'],
+  [/\brequired\b/gi, 'obligatoire'],
+  [/\bnext\b/gi, 'suivant'],
+  [/\bprevious\b/gi, 'précédent'],
+  [/\bprint\b/gi, 'imprimer'],
+  [/\bshare\b/gi, 'partager'],
+  [/\bcopy\b/gi, 'copier']
+];
+for (const file of allFrenchHtml(path.join(ROOT, 'fr'))) {
+  const rel = path.relative(ROOT, file).replace(/\\/g, '/');
+  if (POST_PROCESSED_HTML.has(rel)) continue;
+  repairVisibleLanguage(rel, visibleLanguageTransforms);
+}
+
 const prohibited = [
   /Version française premium/i,
   /Moteur source conservé/i,
@@ -359,7 +437,7 @@ const criticalFrenchFiles = [
   'fr/tools/compteur-prepaye/central-african-republic/index.html',
   'fr/tools/roi-solaire/madagascar/index.html'
 ];
-const unexplainedEnglishUi = /\b(?:All Articles|Read article|Loading articles|Privacy Policy|Terms of Use|Data We Collect|Your Rights|Contact us|Recharge Amount|Units Received|Estimated Days|What You Need to Know|Open Madagascar calculator|Search tools|Calculate now|Try again)\b/i;
+const unexplainedEnglishUi = /\b(?:All Articles|Read article|Loading articles|Privacy Policy|Terms of Use|Data We Collect|Your Rights|Contact us|Recharge Amount|Units Received|Estimated Days|What You Need to Know|Open Madagascar calculator|Search tools|Calculate now|Try again|Calculator|Calculate|Enter|Result|Results|Reset|Save|Download|Search|Select|Amount|Monthly|Annual|Submit|Loading|Error|Required|Next|Previous|Print|Share|Copy)\b/i;
 for (const rel of criticalFrenchFiles) {
   const textValue = visibleText(read(rel));
   const match = textValue.match(unexplainedEnglishUi);

@@ -6,6 +6,20 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
+const allHtml = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+  const target = path.join(dir, entry.name);
+  if (entry.isDirectory()) return allHtml(target);
+  return entry.isFile() && entry.name.endsWith('.html') ? [target] : [];
+});
+
+for (const file of allHtml(path.join(ROOT, 'fr'))) {
+  const html = fs.readFileSync(file, 'utf8');
+  const canonical = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
+  const ogUrl = html.match(/<meta\b(?=[^>]*\bproperty=["']og:url["'])[^>]*\bcontent=["']([^"']+)["'][^>]*>/i);
+  if (canonical && ogUrl) {
+    assert.strictEqual(ogUrl[1], canonical[1], `${path.relative(ROOT, file)} og:url must match its canonical URL`);
+  }
+}
 
 const gh = read('fr/tools/gh-wht/index.html');
 assert(!/<\/style>\s*\.gh-seo/.test(gh), 'Ghana WHT must not expose CSS after a prematurely closed style element');
@@ -22,12 +36,14 @@ for (const rel of ['fr/salary-tax/index.html', 'fr/salary-tax/francophone/index.
 const terms = read('fr/terms-of-use/index.html');
 assert(/<html\b[^>]*\blang="fr"/.test(terms) && /<h1>Conditions d’utilisation<\/h1>/.test(terms), 'French terms must be a native French page');
 assert(/rel="canonical" href="https:\/\/afrotools.com\/fr\/terms-of-use\/"/.test(terms), 'French terms canonical must be self-referencing');
+assert(/hreflang="sw" href="https:\/\/afrotools.com\/sw\/masharti\/"/.test(terms), 'French terms must reciprocate the native Swahili terms page');
 const legacyTerms = read('fr/terms/index.html');
 assert(/noindex,follow/.test(legacyTerms) && /url=\/fr\/terms-of-use\//.test(legacyTerms), 'Legacy French terms page must be a non-indexable direct handoff');
 
 const privacy = read('fr/privacy/index.html');
 assert(/<h1>Politique de confidentialité<\/h1>/.test(privacy), 'French privacy policy must be native French content');
 assert(!/<iframe/i.test(privacy), 'French privacy policy must not wrap the English policy in an iframe');
+assert(/hreflang="sw" href="https:\/\/afrotools.com\/sw\/faragha\/"/.test(privacy), 'French privacy must reciprocate the native Swahili privacy page');
 assert(/Calculateur local/.test(privacy) && /Assistant IA/.test(privacy) && /Compte et synchronisation/.test(privacy), 'French privacy policy must distinguish feature data flows');
 
 const policy = JSON.parse(read('data/registry/route-policy.json'));

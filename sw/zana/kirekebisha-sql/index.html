@@ -17,10 +17,9 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04"><script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#0ea5e9}
 .tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}
@@ -113,9 +112,9 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <afro-navbar></afro-navbar>
 <section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kirekebisha SQL kwa Kiswahili.</strong> Bandika query, chagua mtindo wa keywords, kisha nakili au pakua SQL iliyosafishwa. Formatting haithibitishi performance, permissions au usalama wa query.</div></section>
 <section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/sw/">AfroTools</a> / <a href="/sw/zana-za-developer/">Zana za Developer</a> / <span>Kirekebisha SQL</span></div>
+<div class="breadcrumb"><a href="/sw/">AfroTools</a> / <a href="/sw/zana-za-developer/">Zana za msanidi programu</a> / <span>Kirekebisha SQL</span></div>
 <h1>Kirekebisha SQL na mpangilio wa query</h1>
-<p class="hero-sub">Bandika SQL isiyo na mpangilio, ipange kwa indentation safi, badilisha mtindo wa keywords, kisha nakili au pakua output kwa review.</p>
+<p class="hero-sub">Bandika SQL isiyo na mpangilio, ipange kwa indentation safi, badilisha mtindo wa keywords, kisha nakili au pakua matokeo kwa review.</p>
 <div class="hero-badges"><span class="badge b-em">MySQL</span><span class="badge b-em">PostgreSQL</span><span class="badge b-em">SQLite</span><span class="badge b-em">Bure</span></div>
 </div></section>
 
@@ -127,7 +126,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <div class="options-row">
 <div><label for="keywordCase">Mtindo wa keywords</label><select id="keywordCase"><option value="upper" selected>Herufi kubwa</option><option value="lower">Herufi ndogo</option><option value="preserve">Acha kama ilivyo</option></select></div>
 <div><label>Nafasi ya mstari</label><select id="indent" aria-label="Nafasi ya mstari"><option value="2" selected>nafasi 2</option><option value="4">nafasi 4</option><option value="tab">Tab</option></select></div>
-<div><label>Mfano</label><select id="sample" onchange="loadSample()" aria-label="Mfano"><option value="">-- Chagua --</option><option value="select">SELECT query</option><option value="join">JOIN query</option><option value="insert">INSERT</option><option value="create">CREATE TABLE</option><option value="subquery">Subquery</option></select></div>
+<div><label>Mfano</label><select id="sample" onchange="loadSample()" aria-label="Mfano"><option value="">-- Chagua --</option><option value="chagua">chagua query</option><option value="join">JOIN query</option><option value="insert">INSERT</option><option value="create">CREATE TABLE</option><option value="subquery">Subquery</option></select></div>
 </div>
 <textarea class="sql-input" id="sqlInput" placeholder="Bandika SQL yako hapa..." aria-label="Bandika SQL yako hapa...">SELECT u.id, u.name, u.email, o.order_id, o.total FROM users u INNER JOIN orders o ON u.id = o.user_id WHERE o.status = 'completed' AND o.total > 100 ORDER BY o.total DESC LIMIT 50;</textarea>
 <div class="btn-row">
@@ -153,9 +152,9 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
 <p>Zana hutumia kanuni hizi:</p>
 <ul style="padding-left:16px;margin-top:6px">
-<li>Clauses kuu kama SELECT, FROM na WHERE huanza kwenye mistari mipya</li>
+<li>Clauses kuu kama chagua, FROM na WHERE huanza kwenye mistari mipya</li>
 <li>JOIN hupata mstari wake</li>
-<li>Orodha ya columns hupangwa chini ya SELECT</li>
+<li>Orodha ya columns hupangwa chini ya chagua</li>
 <li>Masharti ya AND/OR hupangwa chini ya WHERE</li>
 <li>Keywords hubadilishwa kulingana na chaguo lako</li>
 <li>Nafasi karibu na operators husawazishwa</li>
@@ -164,7 +163,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <div class="info-card">
 <h4>Njia za mkato</h4>
 <ul>
-<li><strong>Ctrl+Enter</strong> — Panga SQL</li>
+<li><strong>Ctrl+ingiza</strong> — Panga SQL</li>
 <li><strong>Tab</strong> — Ongeza indentation kwenye textarea</li>
 </ul>
 </div>
@@ -173,7 +172,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 <ul>
 <li>Tumia aliases kwa majina ya tables</li>
 <li>Weka SQL keywords kwa mtindo mmoja</li>
-<li>Weka column moja kwa mstari kwenye SELECT ndefu</li>
+<li>Weka column moja kwa mstari kwenye chagua ndefu</li>
 <li>Panga subqueries kwa indentation</li>
 <li>Weka comments kwenye logic ngumu</li>
 <li>Tumia alias names zinazoeleweka</li>
@@ -184,14 +183,14 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
 
 <section class="seo-section">
 <h2>SQL formatter ya haraka kwa Kiswahili</h2>
-<p>Tumia zana hii kusafisha query ndefu kabla ya code review, debugging au kushiriki mfano na timu. Bandika SQL, chagua mtindo wa keywords na indentation, kisha pata output inayosomeka vizuri bila kuituma kwa server.</p>
+<p>Tumia zana hii kusafisha query ndefu kabla ya code review, debugging au kushiriki mfano na timu. Bandika SQL, chagua mtindo wa keywords na indentation, kisha pata matokeo inayosomeka vizuri bila kuituma kwa seva.</p>
 <p>Mpangilio mmoja husaidia timu kuona JOIN, WHERE, GROUP BY na ORDER BY kwa haraka. Hii haibadilishi logic ya query; inabadilisha nafasi, mistari na mtindo wa keywords ili iwe rahisi kukagua.</p>
-<p>Inafaa kwa SELECT, INSERT, UPDATE, DELETE na DDL kama CREATE TABLE au ALTER TABLE. Kwa queries zinazogusa malipo, payroll, kodi au data nyeti, tumia output kama msaada wa review na uhakiki performance, indexes na permissions kwenye database yako.</p>
+<p>Inafaa kwa chagua, INSERT, UPDATE, DELETE na DDL kama CREATE TABLE au ALTER TABLE. Kwa queries zinazogusa malipo, payroll, kodi au data nyeti, tumia matokeo kama msaada wa review na uhakiki performance, indexes na permissions kwenye database yako.</p>
 
 <h2>Maswali ya mara kwa mara</h2>
 <details class="faq-item"><summary>Je, formatter hubadilisha logic ya SQL?</summary><p>Hapana. Inabadilisha whitespace, line breaks na mtindo wa keywords tu. Majina ya tables, columns na values hubaki kama ulivyoyaandika.</p></details>
-<details class="faq-item"><summary>Ni SQL dialects zipi zinafaa?</summary><p>Inasaidia syntax ya kawaida inayotumika kwenye MySQL, PostgreSQL, SQLite, SQL Server na Oracle. Keywords maalum za dialect fulani zinaweza kuhitaji review ya ziada.</p></details>
-<details class="faq-item"><summary>Je, SQL yangu hutumwa AfroTools?</summary><p>Hapana. Formatting hufanyika kwenye browser kwa JavaScript. Usibandike secrets, tokens au data nyeti kama mazingira yako hayako salama.</p></details>
+<details class="faq-item"><summary>Ni SQL dialects zipi zinafaa?</summary><p>Inasaidia syntax ya kawaida inayotumika kwenye MySQL, PostgreSQL, SQLite, SQL seva na Oracle. Keywords maalum za dialect fulani zinaweza kuhitaji review ya ziada.</p></details>
+<details class="faq-item"><summary>Je, SQL yangu hutumwa AfroTools?</summary><p>Hapana. Formatting hufanyika kwenye kivinjari kwa JavaScript. Usibandike secrets, tokens au data nyeti kama mazingira yako hayako salama.</p></details>
 </section>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
@@ -208,7 +207,7 @@ select{width:auto;padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:7px;
     </article>
     <article style="border:1px solid #dbe4ef;border-radius:8px;background:#fff;padding:18px;box-shadow:0 8px 22px rgba(15,23,42,.06);">
       <h2 style="font-size:1rem;margin:0 0 8px;color:#0f1419;">Chanzo na faragha</h2>
-      <p style="margin:0;color:#475569;line-height:1.65;">Chanzo cha output ni SQL unayoingiza kwenye browser. Tarehe ya ukaguzi: 2026. Hakiki chanzo, schema na execution plan kabla ya kuendesha query halisi.</p>
+      <p style="margin:0;color:#475569;line-height:1.65;">Chanzo cha matokeo ni SQL unayoingiza kwenye kivinjari. Tarehe ya ukaguzi: 2026. Hakiki chanzo, schema na execution plan kabla ya kuendesha query halisi.</p>
     </article>
   </div>
 </section>
@@ -576,5 +575,5 @@ document.getElementById('sqlInput').addEventListener('keydown',function(e){
   }).observe(document.documentElement, { childList: true, subtree: true });
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

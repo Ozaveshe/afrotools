@@ -43,9 +43,8 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"UUID Generator","item":"https://afrotools.com/tools/uuid-generator/"}]}</script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
   :root{
     --ink:#101828;
@@ -138,40 +137,14 @@
   }
 </style>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use UUID Generator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Choose UUID, ULID, or NanoID-style output, generate IDs locally, inspect tradeoffs, then copy or download the result."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on UUID Generator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Verify ID type, sort behavior, timestamp leakage, random bits, collision estimate, database format, and whether prefixes expose business data."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is UUID Generator an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is a local generator and estimator. Confirm the identifier strategy in your database, API, and security model."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/uuid-generator/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I use UUID v4 or UUID v7 for database primary keys?","acceptedAnswer":{"@type":"Answer","text":"UUID v4 is excellent for opaque random IDs. UUID v7 includes a Unix-millisecond timestamp prefix, so new IDs sort roughly by creation time and are usually friendlier to database indexes."}},{"@type":"Question","name":"Does UUID v7 leak information?","acceptedAnswer":{"@type":"Answer","text":"Yes, it leaks approximate creation time. That is usually fine for internal database keys, but may be undesirable for public identifiers where timing reveals business activity."}},{"@type":"Question","name":"Are NanoID-style IDs official UUIDs?","acceptedAnswer":{"@type":"Answer","text":"No. NanoID-style IDs are compact random strings. They are useful for public slugs and short references, but they do not carry UUID version or variant structure."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"UUID v7, v4, ULID and NanoID Generator","description":"Generate UUID v4, UUID v7, ULID and NanoID-style identifiers locally. Inspect anatomy, timestamp sorting, collision risk, database snippets and export bulk IDs.","url":"https://afrotools.com/tools/uuid-generator/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/uuid-generator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/uuid-generator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-uuid/">
@@ -423,7 +396,14 @@
 </section>
 </main>
 
-<afro-related-tools category="developer" current="uuid-generator"></afro-related-tools>
+<afro-related-tools category="developer" current="uuid-generator" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and API Tester snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Data Format Converter</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Code Simulator</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Tester (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encoder/Decoder</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Hash Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 
 <section class="faq">
   <details>
@@ -764,5 +744,6 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

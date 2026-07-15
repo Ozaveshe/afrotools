@@ -675,6 +675,7 @@
 
     connectedCallback() {
       this.classList.toggle('theme-dark', effectiveTheme() === 'dark');
+      this._ensureLocalizedMobileCss();
       // P4-03: Inject favicon if not already present
       if (!document.querySelector('link[rel="icon"]')) {
         var link = document.createElement('link');
@@ -703,6 +704,16 @@
       var first = segs[1];
       if (['fr','sw','yo','ha'].indexOf(first) !== -1) return first;
       return document.documentElement.lang || 'en';
+    }
+
+    _ensureLocalizedMobileCss() {
+      if (['ha', 'sw'].indexOf(this._getLang()) === -1) return;
+      if (document.getElementById('afrotools-localized-mobile-css')) return;
+      var link = document.createElement('link');
+      link.id = 'afrotools-localized-mobile-css';
+      link.rel = 'stylesheet';
+      link.href = '/assets/css/localized-mobile.css';
+      document.head.appendChild(link);
     }
 
     _ensureLocaleRouteResolver() {
@@ -1711,7 +1722,12 @@
 
       // Mobile hamburger
       burger?.addEventListener('click', () => {
-        prepareForOpen(() => setMenuOpen(!this._menuOpen));
+        // The drawer already contains useful server-rendered navigation. Open it
+        // immediately, then hydrate registry-backed search data in the background.
+        // Waiting for that optional data made the first mobile tap appear broken on
+        // slower devices and left aria-expanded unchanged until the promise settled.
+        if (!navbarDataLoaded) this._prepareNavData();
+        setMenuOpen(!this._menuOpen);
       });
 
       mob?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {

@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PayGo Solar Calculator | AfroTools</title>
-<meta name="description" content="Compare PayGo solar affordability with appliance loads, country currency, deposit, repayments, term length, current energy spend, savings, and risk flags.">
+<meta name="description" content="Compare PayGo solar affordability with appliance load, repayments, spend actually displaced, residual grid or generator cost, term savings, and deposit recovery.">
 <meta name="tool-id" content="paygo-solar">
 <meta property="og:title" content="PayGo Solar Calculator | AfroTools">
-<meta property="og:description" content="Estimate PayGo solar total paid, monthly affordability, load coverage, savings, payback, and risk flags before signing a plan.">
+<meta property="og:description" content="Estimate PayGo solar total paid, load coverage, displaced and residual energy spend, term savings, and deposit recovery before signing a plan.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/paygo-solar.webp">
 <meta property="og:url" content="https://afrotools.com/tools/paygo-solar/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
-<meta property="article:modified_time" content="2026-05-16">
+<meta property="article:modified_time" content="2026-07-14">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PayGo Solar Calculator | AfroTools">
 <meta name="twitter:description" content="Model appliance load, PayGo repayments, total ownership cost, savings, coverage, and risks in local currency.">
@@ -22,15 +22,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/energy.css?v=fc0de5cf">
+<link rel="stylesheet" href="/assets/css/energy.css?v=d1d794d4">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "PayGo Solar Calculator",
-  "description": "Compare PayGo solar affordability using appliance load, daily usage, deposit, repayment frequency, term length, current energy spend, maintenance buffer, coverage, savings, payback, and risk flags.",
+  "description": "Compare PayGo solar affordability using appliance load, repayments, spend actually displaced, residual energy cost, term savings, deposit recovery, and risk flags.",
   "url": "https://afrotools.com/tools/paygo-solar/",
   "inLanguage": "en",
   "applicationCategory": "UtilitiesApplication",
@@ -46,7 +46,7 @@
     "name": "AfroTools",
     "url": "https://afrotools.com/"
   },
-  "dateModified": "2026-05-16",
+  "dateModified": "2026-07-14",
   "image": "https://afrotools.com/assets/img/tools/paygo-solar.webp"
 }
 </script>
@@ -83,6 +83,10 @@ a{color:inherit;text-decoration:none}
 .pg-section{border:1px solid #d9e4df;border-radius:10px;background:#f8fbf9;overflow:hidden}
 .pg-section summary{cursor:pointer;padding:14px 16px;font-weight:900;color:#10201b}
 .pg-section-body{padding:0 16px 16px}
+.pg-displacement-note{display:flex;gap:11px;align-items:flex-start;margin-top:14px;border:1px solid #bae6fd;border-radius:10px;background:#f0f9ff;color:#164e63;padding:12px 13px;font-size:.82rem;line-height:1.55}
+.pg-displacement-note p{margin:0}
+.pg-displacement-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;border-radius:999px;background:#e0f2fe;color:#0369a1}
+.pg-displacement-icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .pg-appliances{display:grid;gap:10px}
 .pg-appliance{display:grid;grid-template-columns:1.15fr repeat(3,minmax(88px,1fr));gap:10px;align-items:end;border:1px solid #d9e4df;border-radius:10px;background:#fff;padding:12px}
 .pg-appliance strong{font-size:.9rem;color:#10201b}
@@ -132,7 +136,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:480px){.pg-appliance{grid-template-columns:1fr}}
 @media print{afro-navbar,afro-footer,.pg-actions,.pg-related,.pg-commercial,.pg-breadcrumb{display:none!important}.pg-hero{background:#fff;color:#10201b;padding:0 0 18px}.pg-hero p{color:#30483d}.pg-layout{display:block}.pg-panel,.pg-card{box-shadow:none;break-inside:avoid}}
 </style>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/paygo-solar/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/paygo-solar/">
@@ -301,11 +305,17 @@ a{color:inherit;text-decoration:none}
                     <span class="pg-help">Fuel, charging, grid units, candles, battery rental, and phone charging.</span>
                   </div>
                   <div class="pg-field">
+                    <label class="pg-label" for="spendReplacementPct">Current spend the kit will replace</label>
+                    <input class="pg-input" id="spendReplacementPct" name="spendReplacementPct" type="number" min="0" max="100" step="1" inputmode="numeric" value="70" required>
+                    <span class="pg-help">Percent of current energy spend tied to loads this quoted kit will actually replace. Confirm from bills, receipts, and the load test.</span>
+                  </div>
+                  <div class="pg-field">
                     <label class="pg-label" for="maintenancePct">Maintenance buffer percent</label>
                     <input class="pg-input" id="maintenancePct" name="maintenancePct" type="number" min="0" max="50" step="1" inputmode="numeric" value="8" required>
                     <span class="pg-help">Add for battery care, bulbs, wiring, callouts, theft protection, and payment fees.</span>
                   </div>
                 </div>
+                <div class="pg-displacement-note"><span class="pg-displacement-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h11"></path><path d="m12 4 3 3-3 3"></path><path d="M20 17H9"></path><path d="m12 14-3 3 3 3"></path></svg></span><p><strong>Keep coverage and savings separate.</strong> Energy coverage tests whether the kit can serve the entered load. Spend displacement records how much generator, grid, charging, candle, or battery-rental cost the kit will truly remove.</p></div>
               </div>
             </details>
 
@@ -321,12 +331,12 @@ a{color:inherit;text-decoration:none}
           <section class="pg-results" aria-labelledby="results-title">
             <h2 class="pg-kicker" id="results-title">PayGo decision output</h2>
             <div class="pg-metrics">
-              <div class="pg-metric pg-metric-main"><span>Total paid</span><strong id="totalPaid">-</strong><em id="totalPaidNote">Deposit plus repayments and maintenance buffer</em></div>
-              <div class="pg-metric"><span>Monthly affordability</span><strong id="monthlyAffordability">-</strong><em id="monthlyAffordabilityNote">Compared with current spend</em></div>
+              <div class="pg-metric pg-metric-main"><span>PayGo plan total</span><strong id="totalPaid">-</strong><em id="totalPaidNote">Deposit plus repayments and maintenance buffer</em></div>
+              <div class="pg-metric"><span>Combined monthly energy cost</span><strong id="monthlyAffordability">-</strong><em id="monthlyAffordabilityNote">PayGo plus residual current spend</em></div>
               <div class="pg-metric"><span>Energy coverage</span><strong id="energyCoverage">-</strong><em id="energyCoverageNote">Usable kit energy vs daily load</em></div>
               <div class="pg-metric"><span>Daily load</span><strong id="dailyLoad">-</strong><em id="dailyLoadNote">Appliance energy needed</em></div>
-              <div class="pg-metric"><span>Savings over term</span><strong id="termSavings">-</strong><em id="termSavingsNote">Current spend avoided minus total paid</em></div>
-              <div class="pg-metric"><span>Payback estimate</span><strong id="paybackEstimate">-</strong><em id="paybackNote">Months of current spend to cover total paid</em></div>
+              <div class="pg-metric"><span>Savings over term</span><strong id="termSavings">-</strong><em id="termSavingsNote">Displaced spend minus PayGo plan total</em></div>
+              <div class="pg-metric"><span>Deposit cash-flow recovery</span><strong id="paybackEstimate">-</strong><em id="paybackNote">Deposit divided by monthly cash-flow saving</em></div>
             </div>
             <table class="pg-breakdown" aria-label="PayGo solar cost breakdown">
               <thead><tr><th>Decision lane</th><th>Method</th><th>Result</th></tr></thead>
@@ -336,6 +346,8 @@ a{color:inherit;text-decoration:none}
                 <tr><td>Maintenance buffer</td><td id="maintenanceFormula">Monthly repayment x buffer percent</td><td id="maintenanceResult">-</td></tr>
                 <tr><td>Total plan cost</td><td id="totalFormula">Deposit plus term repayments plus maintenance buffer</td><td id="totalResult">-</td></tr>
                 <tr><td>Current energy baseline</td><td id="baselineFormula">Current monthly spend x term months</td><td id="baselineResult">-</td></tr>
+                <tr><td>Spend displaced</td><td id="displacedFormula">Current spend x verified replacement percent</td><td id="displacedResult">-</td></tr>
+                <tr><td>Residual energy spend</td><td id="residualFormula">Current spend not replaced x term months</td><td id="residualResult">-</td></tr>
               </tbody>
             </table>
             <div class="pg-recommendation" id="recommendation">Run a calculation to see the affordability recommendation.</div>
@@ -356,7 +368,7 @@ a{color:inherit;text-decoration:none}
       <aside class="pg-side" aria-label="Methodology and sources">
         <section class="pg-card pg-source" data-tool-verification-panel>
           <h2>Sources &amp; freshness</h2>
-          <p><strong>Last reviewed:</strong> <time datetime="2026-05-16">16 May 2026</time>. The calculator uses user-entered provider prices, appliance labels, and household or business spend, not a live PayGo tariff feed.</p>
+          <p><strong>Last reviewed:</strong> <time datetime="2026-07-14">14 July 2026</time>. The calculator uses user-entered provider prices, appliance labels, and household or business spend, not a live PayGo tariff feed.</p>
           <p><strong>Source note:</strong> Treat the provider quote, appliance nameplates, warranty booklet, utility bill, generator fuel receipts, and mobile-money payment history as the source documents for the final decision.</p>
           <p>Before signing, verify the quote with the solar provider contract, appliance watt labels, battery usable capacity, warranty terms, repossession rules, payment fees, and your latest generator, grid, or charging receipts.</p>
         </section>
@@ -367,7 +379,9 @@ a{color:inherit;text-decoration:none}
             <li>PayGo repayments are normalized to monthly cost using daily, weekly, or monthly frequency.</li>
             <li>Total paid equals deposit plus all repayments over the term plus the maintenance buffer.</li>
             <li>Coverage compares usable daily kit energy with the daily load and your critical-load target.</li>
-            <li>Savings compare the PayGo total paid with current generator, grid, candle, charging, or fuel spend over the same term.</li>
+            <li>Spend displacement is entered separately because energy coverage does not prove every current energy cost disappears.</li>
+            <li>Term savings compare PayGo cost plus residual current energy spend with the full current baseline over the same term.</li>
+            <li>Deposit recovery divides the deposit by positive monthly cash-flow savings during repayment; it is unavailable when the combined monthly cost does not fall.</li>
           </ol>
         </section>
         <section class="pg-card">
@@ -422,6 +436,14 @@ a{color:inherit;text-decoration:none}
 
   </div>
 </main>
+<afro-related-tools data-ssr="1" category="energy" current="paygo-solar">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/solar-roi/" data-related-tool data-id="solar-roi" data-name="Solar Panel ROI Calculator" data-category="energy" data-icon="SP" data-desc="Compare solar, battery, generator, outage loss, financing, maintenance, payback, and affordability risk.">Solar Panel ROI Calculator</a></li><li><a href="/tools/generator-fuel/" data-related-tool data-id="generator-fuel" data-name="Generator Fuel Cost Calculator" data-category="energy" data-icon="GF" data-desc="Calculate generator fuel cost across 15 African markets. Daily litres, monthly spend, maintenance, and cost per kWh.">Generator Fuel Cost Calculator</a></li><li><a href="/tools/electricity-tariff/" data-related-tool data-id="electricity-tariff" data-name="Electricity Tariff Calculator" data-category="energy" data-icon="ET" data-desc="Estimate electricity bills for supported African countries. Residential, commercial, industrial, and tiered tariff bands">Electricity Tariff Calculator</a></li><li><a href="/tools/solar-vs-generator/" data-related-tool data-id="solar-vs-generator" data-name="Solar vs Generator" data-category="energy" data-icon="SV" data-desc="Compare solar and generator total ownership across top African energy markets. Fuel, maintenance, battery, and payback.">Solar vs Generator</a></li><li><a href="/tools/prepaid-meter/" data-related-tool data-id="prepaid-meter" data-name="Prepaid Meter Calculator" data-category="energy" data-icon="PM" data-desc="Estimate prepaid electricity units in any African country. Token amount, service charges, account type, and days of supp">Prepaid Meter Calculator</a></li><li><a href="/tools/electricity-bill-verify/" data-related-tool data-id="electricity-bill-verify" data-name="Electricity Bill Verifier" data-category="energy" data-icon="EB" data-desc="Check meter readings against expected tariff charges. Spot overbilling, estimated readings, and unusual variance.">Electricity Bill Verifier</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script>
 (function(){
@@ -435,7 +457,7 @@ a{color:inherit;text-decoration:none}
     { name:"Fridge, POS, or router", watts:"fridgeWatts", qty:"fridgeQty", hours:"fridgeHours" },
     { name:"Other load", watts:"otherWatts", qty:"otherQty", hours:"otherHours" }
   ];
-  var inputIds = ["country","currency","kitWh","criticalLoadPct","deposit","repayment","frequency","termMonths","currentSpend","maintenancePct"];
+  var inputIds = ["country","currency","kitWh","criticalLoadPct","deposit","repayment","frequency","termMonths","currentSpend","spendReplacementPct","maintenancePct"];
   var el = {};
   var lastReport = null;
   inputIds.concat(loadRows.flatMap(function(row){ return [row.watts,row.qty,row.hours]; })).forEach(function(id){
@@ -449,7 +471,7 @@ a{color:inherit;text-decoration:none}
   }
   function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
   function round(value, places){
-    var p = Math.pow(10, places || 2);
+    var p = Math.pow(10, places == null ? 2 : places);
     return Math.round(value * p) / p;
   }
   function money(value, currency){
@@ -519,6 +541,7 @@ a{color:inherit;text-decoration:none}
     var frequency = el.frequency.value || "monthly";
     var termMonths = Math.max(1, Math.round(num("termMonths", 1)));
     var currentSpend = Math.max(0, num("currentSpend", 0));
+    var spendReplacementPct = clamp(num("spendReplacementPct", 0), 0, 100);
     var maintenancePct = clamp(num("maintenancePct", 0), 0, 50);
     var load = loadTotal();
     var dailyWh = load.totalWh;
@@ -529,21 +552,28 @@ a{color:inherit;text-decoration:none}
     var totalRepayments = monthlyRepayment * termMonths;
     var totalMaintenance = maintenanceMonthly * termMonths;
     var totalPaid = deposit + totalRepayments + totalMaintenance;
-    var baselineCost = currentSpend * termMonths;
-    var termSavings = baselineCost - totalPaid;
     var coveragePct = dailyWh > 0 ? (kitWh / dailyWh) * 100 : 0;
     var targetMet = coveragePct >= criticalLoadPct;
-    var affordabilityPct = currentSpend > 0 ? (monthlyCommitment / currentSpend) * 100 : 0;
-    var monthlySavings = currentSpend - monthlyCommitment;
-    var paybackMonths = currentSpend > 0 ? totalPaid / currentSpend : 0;
-    var afterTermSavings = Math.max(0, currentSpend - maintenanceMonthly);
+    var displacedSpendMonthly = currentSpend * (spendReplacementPct / 100);
+    var residualSpendMonthly = Math.max(0, currentSpend - displacedSpendMonthly);
+    var combinedMonthlyCost = monthlyCommitment + residualSpendMonthly;
+    var baselineCost = currentSpend * termMonths;
+    var displacedSpendTerm = displacedSpendMonthly * termMonths;
+    var residualSpendTerm = residualSpendMonthly * termMonths;
+    var combinedTermCost = totalPaid + residualSpendTerm;
+    var termSavings = baselineCost - combinedTermCost;
+    var affordabilityPct = currentSpend > 0 ? (combinedMonthlyCost / currentSpend) * 100 : 0;
+    var monthlySavings = currentSpend - combinedMonthlyCost;
+    var paybackMonths = deposit > 0 && monthlySavings > 0 ? deposit / monthlySavings : 0;
     var frequencyLabel = frequency.charAt(0).toUpperCase() + frequency.slice(1);
     var risks = [];
 
     if(dailyWh <= 0) risks.push("No appliance load entered. Add the devices you expect the kit to run.");
     if(!targetMet) risks.push("Coverage risk: usable kit energy covers " + round(coveragePct, 0) + "% of load, below your " + criticalLoadPct + "% target.");
-    if(monthlyCommitment > currentSpend && currentSpend > 0) risks.push("Affordability risk: PayGo commitment is higher than current monthly energy spend.");
+    if(combinedMonthlyCost > currentSpend && currentSpend > 0) risks.push("Affordability risk: PayGo commitment plus residual energy spend is higher than current monthly energy spend.");
     if(currentSpend === 0) risks.push("No current energy spend entered, so savings and payback are weak estimates.");
+    if(spendReplacementPct === 0) risks.push("No spend displacement entered, so the plan cannot produce modeled energy-cost savings.");
+    if(spendReplacementPct > Math.min(100, coveragePct)) risks.push("Evidence risk: the entered " + spendReplacementPct + "% spend replacement is higher than the kit's " + round(Math.min(100, coveragePct), 0) + "% energy coverage. Reconcile the quote with bills and the load test.");
     if(deposit > currentSpend * 2 && currentSpend > 0) risks.push("Deposit may strain cash flow because it is more than two months of current energy spend.");
     if(termMonths > 36) risks.push("Long-term obligation: confirm ownership transfer, warranty, and repossession rules.");
     if(maintenancePct < 5) risks.push("Maintenance buffer is low. Payment fees, bulbs, wiring, battery care, and callouts can add cost.");
@@ -560,16 +590,16 @@ a{color:inherit;text-decoration:none}
 
     text("totalPaid", money(totalPaid, currency));
     text("totalPaidNote", money(deposit, currency) + " deposit plus " + termMonths + " months");
-    text("monthlyAffordability", money(monthlyCommitment, currency));
-    text("monthlyAffordabilityNote", currentSpend > 0 ? round(affordabilityPct, 0) + "% of current monthly spend" : "Enter current spend for ratio");
+    text("monthlyAffordability", money(combinedMonthlyCost, currency));
+    text("monthlyAffordabilityNote", currentSpend > 0 ? round(affordabilityPct, 0) + "% of current spend; includes " + money(residualSpendMonthly, currency) + " residual" : "Enter current spend for ratio");
     text("energyCoverage", round(coveragePct, 0) + "%");
     text("energyCoverageNote", targetMet ? "Meets " + criticalLoadPct + "% critical-load target" : "Below " + criticalLoadPct + "% target");
     text("dailyLoad", round(dailyKwh, 2) + " kWh/day");
     text("dailyLoadNote", round(dailyWh, 0) + " Wh from appliance rows");
     text("termSavings", money(termSavings, currency));
     text("termSavingsNote", termSavings >= 0 ? "Estimated savings during term" : "Estimated extra cost during term");
-    text("paybackEstimate", currentSpend > 0 ? round(paybackMonths, 1) + " months" : "-");
-    text("paybackNote", currentSpend > 0 ? "Avoided current spend covers total paid" : "Needs current spend");
+    text("paybackEstimate", deposit === 0 && monthlySavings > 0 ? "Immediate" : (paybackMonths > 0 ? round(paybackMonths, 1) + " months" : "Not reached"));
+    text("paybackNote", monthlySavings > 0 ? money(deposit, currency) + " deposit / " + money(monthlySavings, currency) + " monthly saving" : "Combined monthly cost does not fall");
     text("loadFormula", load.details.length ? load.details.join("; ") : "No appliance load entered");
     text("loadResult", round(dailyWh, 0) + " Wh/day (" + round(dailyKwh, 2) + " kWh/day)");
     text("repaymentFormula", frequencyLabel + " repayment " + money(repayment, currency) + " converted to monthly");
@@ -580,6 +610,10 @@ a{color:inherit;text-decoration:none}
     text("totalResult", money(totalPaid, currency));
     text("baselineFormula", money(currentSpend, currency) + " current monthly spend x " + termMonths + " months");
     text("baselineResult", money(baselineCost, currency));
+    text("displacedFormula", money(currentSpend, currency) + " x " + spendReplacementPct + "% verified replacement");
+    text("displacedResult", money(displacedSpendMonthly, currency) + " per month; " + money(displacedSpendTerm, currency) + " over term");
+    text("residualFormula", money(residualSpendMonthly, currency) + " per month x " + termMonths + " months");
+    text("residualResult", money(residualSpendTerm, currency) + " over term");
 
     var recommendation = "";
     var warning = false;
@@ -587,7 +621,7 @@ a{color:inherit;text-decoration:none}
       recommendation = "Size warning: this kit does not cover the selected critical load target. Reduce appliances, choose a larger kit, or ask for a verified load test before paying the deposit.";
       warning = true;
     } else if(monthlySavings > 0 && termSavings >= 0){
-      recommendation = "Good affordability signal for " + country + ": the kit covers the target load and appears cheaper than current energy spend over the term. After ownership, potential monthly savings are about " + money(afterTermSavings, currency) + " before major repairs.";
+      recommendation = "Good affordability signal for " + country + ": the kit covers the target load and the entered " + spendReplacementPct + "% displacement leaves a combined monthly energy cost of " + money(combinedMonthlyCost, currency) + ". Verify that replacement share against bills and a load test before signing.";
     } else if(monthlySavings > 0){
       recommendation = "Mixed signal: monthly cash flow improves by about " + money(monthlySavings, currency) + ", but the deposit and full term still cost more than the current baseline. Negotiate deposit, term, or kit price.";
       warning = true;
@@ -617,9 +651,17 @@ a{color:inherit;text-decoration:none}
       termMonths:termMonths,
       totalPaid:round(totalPaid, 2),
       currentSpend:round(currentSpend, 2),
+      spendReplacementPct:round(spendReplacementPct, 1),
+      displacedSpendMonthly:round(displacedSpendMonthly, 2),
+      residualSpendMonthly:round(residualSpendMonthly, 2),
+      combinedMonthlyCost:round(combinedMonthlyCost, 2),
       baselineCost:round(baselineCost, 2),
+      displacedSpendTerm:round(displacedSpendTerm, 2),
+      residualSpendTerm:round(residualSpendTerm, 2),
+      combinedTermCost:round(combinedTermCost, 2),
+      monthlySavings:round(monthlySavings, 2),
       termSavings:round(termSavings, 2),
-      paybackMonths:currentSpend > 0 ? round(paybackMonths, 1) : "",
+      paybackMonths:paybackMonths > 0 ? round(paybackMonths, 1) : "",
       riskFlags:risks.join(" | "),
       recommendation:recommendation,
       generatedAt:new Date().toISOString()
@@ -641,10 +683,14 @@ a{color:inherit;text-decoration:none}
       "Monthly repayment: " + money(report.monthlyRepayment, report.currency),
       "Monthly maintenance buffer: " + money(report.maintenanceMonthly, report.currency),
       "Monthly commitment: " + money(report.monthlyCommitment, report.currency),
+      "Current spend replaced: " + report.spendReplacementPct + "% = " + money(report.displacedSpendMonthly, report.currency) + " per month",
+      "Residual current spend: " + money(report.residualSpendMonthly, report.currency) + " per month",
+      "Combined monthly energy cost: " + money(report.combinedMonthlyCost, report.currency),
       "Total paid: " + money(report.totalPaid, report.currency),
+      "Combined energy cost over term: " + money(report.combinedTermCost, report.currency),
       "Current baseline over term: " + money(report.baselineCost, report.currency),
       "Savings over term: " + money(report.termSavings, report.currency),
-      "Payback estimate: " + (report.paybackMonths || "not available") + " months",
+      "Deposit cash-flow recovery: " + (report.paybackMonths ? report.paybackMonths + " months" : "not reached under these assumptions"),
       "Risk flags: " + report.riskFlags,
       "Recommendation: " + report.recommendation,
       "Disclaimer: estimate only. Confirm provider contract, usable battery capacity, warranty, payment fees, taxes, ownership transfer, and installer sizing."
@@ -728,5 +774,6 @@ a{color:inherit;text-decoration:none}
   calculate();
 })();
 </script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

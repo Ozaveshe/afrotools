@@ -30,9 +30,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -407,7 +406,7 @@
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Mfumo wa PAYE wa Benin unasimamiwa na <strong>DGI</strong> (Direction Générale des Impôts) kwa kutumia mabanda saba ya mwaka ya hatua kutoka 0% hadi 25%. Kizingiti kisichotozwa kodi ni XOF 300,000 kwa mwaka (XOF 25,000 kwa mwezi). Benin hutumia faranga ya CFA ya Afrika Magharibi (XOF), inayoshirikiwa na nchi nyingine wanachama wa UEMOA kama Senegal na Côte d’Ivoire.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Employees contribute to <strong>CNPS</strong> (Caisse Nationale de Protection Sociale) at 2.5% ya mshahara ghafi, with employers contributing 9.5%. CNPS contributions are unakubaliwa kama punguzo kutoka mapato yanayotozwa kodi before DGI rates are applied. PAYE is remitted monthly to the DGI, while employer payroll filings can also include payroll items such as VPS that are not modeled in this employee halisi estimate.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Employees contribute to <strong>CNPS</strong> (Caisse Nationale de Protection Sociale) at 2.5% ya mshahara ghafi, with employers contributing 9.5%. CNPS contributions are unakubaliwa kama punguzo kutoka mapato yanayotozwa kodi before DGI rates are applied. PAYE is remitted kila mwezi to the DGI, while employer payroll filings can also include payroll items such as VPS that are not modeled in this employee halisi estimate.</p>
         </div>
       </div>
       <div class="ng-guide-col">
@@ -919,7 +918,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -932,7 +931,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
   const text = `Muhtasari wa PAYE wa Benin: Gross XOF ${Math.round(RESULT.annual).toLocaleString()}/mwaka → Halisi XOF ${Math.round(RESULT.netAnnual).toLocaleString()}/mwaka (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/benin/bj-paye`;
@@ -961,11 +960,11 @@ async function getAI() {
 - Ghafi ya mwaka: XOF ${Math.round(R.annual).toLocaleString()}
 - CNPS employee (${pct(R.cnpsRate)}): XOF ${Math.round(R.cnps).toLocaleString()}/mwaka
 - Mapato yanayotozwa kodi after CNPS: XOF ${Math.round(R.annual - R.cnps).toLocaleString()}/mwaka
-- Annual DGI: XOF ${Math.round(R.annualDGI).toLocaleString()}
+- kila mwaka DGI: XOF ${Math.round(R.annualDGI).toLocaleString()}
 - Halisi ya mwaka: XOF ${Math.round(R.netAnnual).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - CNPS ya Mwajiri (9.5%): XOF ${Math.round(R.empCNPSCost).toLocaleString()}/mwaka
-- Total employer cost: XOF ${Math.round(R.totalEmployerCostAnnual).toLocaleString()}/mwaka
+- jumla employer cost: XOF ${Math.round(R.totalEmployerCostAnnual).toLocaleString()}/mwaka
 
 Toa: 1) Muhtasari wa wazi kwa Kiswahili of Benin PAYE position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Jibu kwa Kiswahili. Bila markdown wala nyota.`;
 
@@ -977,7 +976,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of Benin PAYE position 2) Njia mbili maa
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new hitilafu('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1109,5 +1108,5 @@ window._grossToNet = function(g) {
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

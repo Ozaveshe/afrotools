@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="Kikokotoo cha Churn Rate | AfroTools">
   <meta name="twitter:description" content="Pima churn ya wateja au MRR, retention na athari ya kupunguza wateja wanaoondoka.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-  <link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
   <style>
     :root { color-scheme: light; }
     body { margin: 0; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f7faf8; color: #14241e; }
@@ -114,7 +114,7 @@
           <label>Wateja mwisho wa mwezi<input aria-label="EndCustomers" id="endCustomers" type="number" value="1250" ></label>
           <label>MRR mwanzoni<input aria-label="MrrStart" id="mrrStart" type="number" value="2400000" ></label>
           <label>MRR mwisho<input aria-label="MrrEnd" id="mrrEnd" type="number" value="2520000" ></label>
-          <label>Kipindi<select id="period"><option value="monthly">Mwezi</option><option value="quarterly">Robo mwaka</option></select></label>
+          <label>Kipindi<select id="period"><option value="kila mwezi">Mwezi</option><option value="quarterly">Robo mwaka</option></select></label>
 
         </div>
         <div class="actions">
@@ -164,7 +164,7 @@
   </main>
   <afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js?v=962eaf1b"></script>
-  <script src="/assets/js/components/footer.min.js?v=86b11637"></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911"></script>
   <script>
 const q = function(id){ return document.getElementById(id); };
 function num(id){ const el = q(id); return el ? Number(el.value || 0) : 0; }
@@ -196,5 +196,5 @@ if(q('copySummary')) q('copySummary').addEventListener('click', function(){ cons
 if(q('downloadSummary')) q('downloadSummary').addEventListener('click', function(){ const text=latestSummary||q('results').innerText; const blob=new Blob([text],{type:'text/plain;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='afrotools-churn-summary.txt'; a.click(); URL.revokeObjectURL(a.href); status('Faili ya TXT imepakuliwa.'); });
 if(q('saveSummary')) q('saveSummary').addEventListener('click', function(){ localStorage.setItem('afrotools_sw_churn_summary', latestSummary||q('results').innerText); status('Muhtasari umehifadhiwa kwenye kifaa hiki.'); });
   </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

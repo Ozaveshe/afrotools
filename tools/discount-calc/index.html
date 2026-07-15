@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--afro-red:#ef4444}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -68,7 +68,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
   "description": "Calculate price after discount. Supports single, double, triple discounts with multiple currencies.",
   "url": "https://afrotools.com/tools/discount-calc/",
   "inLanguage": "en",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
   "offers": {
@@ -100,11 +100,9 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
   "image": "https://afrotools.com/assets/img/tools/discount-calc.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"How do stacked discounts work?","acceptedAnswer":{"@type":"Answer","text":"Stacked (sequential) discounts are applied one after another. A 20% + 10% discount is NOT 30%. First 20% is taken off, then 10% off the reduced price. This gives an effective discount of 28%."}},
-{"@type":"Question","name":"What is the difference between discount and markup?","acceptedAnswer":{"@type":"Answer","text":"A discount reduces a selling price (e.g., 20% off ₦10,000 = ₦8,000). Markup increases a cost price to get a selling price (e.g., 50% markup on ₦6,000 cost = ₦9,000 selling price)."}},
-{"@type":"Question","name":"Can I calculate reverse discount (original price)?","acceptedAnswer":{"@type":"Answer","text":"Yes. If you know the final price after discount, enter it and use the tool to work backwards to find the original price before discount was applied."}}
-]}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do stacked discounts work?","acceptedAnswer":{"@type":"Answer","text":"They're applied sequentially. 20% + 10% = 28% effective (not 30%). Each discount applies to the already-reduced price."}},{"@type":"Question","name":"Discount vs markup?","acceptedAnswer":{"@type":"Answer","text":"Discount reduces selling price. Markup increases cost price to get selling price. Different base amounts."}},{"@type":"Question","name":"Can I find the original price from a discounted price?","acceptedAnswer":{"@type":"Answer","text":"To find original price: divide the final price by (1 - discount/100). For 20% off giving ₦8,000: original = 8000 / 0.8 = ₦10,000."}},{"@type":"Question","name":"How do I use the Punguzo Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Punguzo Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Punguzo Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Punguzo Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
+</script>
 <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -145,7 +143,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/discount-calc/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/discount-calc/">
@@ -316,18 +314,17 @@ document.getElementById('currency').addEventListener('change',calc);
 
 calc();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 
 <section class="df-upgrade" data-df-upgrade="discount-calc">
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Punguzo Calculator decision workspace</h2>
-      <p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. This panel is tuned for punguzo calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Punguzo Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, officialSource, download, businessCta.</li><li>Source note: local market, official, provider, and workflow references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting. Source/reference: local market, official, provider, and workflow references.</p>
+      <h2>Punguzo Calculator: quick guide</h2>
+      <p>Not sure how to get the most from the Punguzo Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Punguzo Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
     </div>
     <form class="df-form" data-df-form="discount-calc">
       <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
@@ -335,18 +332,26 @@ calc();
       <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
       <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
       <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="discount-calc" data-df-base="Punguzo Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes." aria-live="polite">Punguzo Calculator: planning summary ready with inputs, assumptions, caveats, and next-step notes.</output>
+      <output class="df-result" data-df-result="discount-calc" data-df-base="Punguzo Calculator — enter your details above to see your result." aria-live="polite">Punguzo Calculator — enter your details above to see your result.</output>
       <div class="df-actions"><button type="button" data-df-copy="discount-calc">Copy summary</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="discount-calc-faq-title">
   <h2 id="discount-calc-faq-title">Punguzo Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Turn the tool into a clearer decision with inputs, assumptions, result, and next-step checks. Use it to pressure-test discount calc numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Planning guidance only. Confirm live rules, prices, eligibility, and source documents before acting.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How do I use the Punguzo Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Punguzo Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Punguzo Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Punguzo Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
 </section>
+<afro-related-tools data-ssr="1" category="ecommerce" current="discount-calc">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="SARS VAT 15%, zero-rated, exempt. Inclusive/exclusive. Vendor registration threshold.">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="ETA VAT 14%. Standard + reduced rates. Table tax.">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard effective charge and zero-rated supplies.">Ghana VAT Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 </body>
 </html>

@@ -93,6 +93,8 @@
     legal: [
       { en: 'Privacy Policy', fr: 'Confidentialité', sw: 'Sera ya Faragha', yo: 'Ìlànà aṣírí - ojú ìwé Gẹẹsi',  ha: 'Manufar sirri - gadar Turanci', href: '/privacy/', hrefSw: '/sw/faragha/', hrefHa: '/ha/sirri/' },
       { en: 'Terms of Use', fr: 'Conditions', sw: 'Masharti ya Matumizi', yo: 'Òfin lílò - ojú ìwé Gẹẹsi', ha: 'Sharuɗɗan amfani - gadar Turanci', href: '/terms/', hrefFr: '/fr/terms-of-use/', hrefSw: '/sw/masharti/', hrefHa: '/ha/sharuddan-amfani/' },
+      { en: 'Cookie Policy', fr: 'Cookies', sw: 'Vidakuki', yo: 'Ìlànà Cookie', ha: 'Manufar Kuki', href: '/cookies/' },
+      { en: 'Data Request', fr: 'Demande de données', sw: 'Ombi la Data', yo: 'Ìbéèrè Datā', ha: 'Buƙatar Bayanai', href: '/privacy/data-request/' },
       { en: 'Sitemap',        fr: 'Plan du site',    sw: 'Ramani',          yo: 'Àtòjọ Ojú-ìwé', ha: 'Taswirar shafi',href: '/sitemap.xml' },
     ],
   };

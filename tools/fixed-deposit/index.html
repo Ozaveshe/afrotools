@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -85,6 +85,7 @@ td{padding:9px 12px;border-bottom:1px solid #f1f5f9;color:#374151}
 td:last-child{font-weight:600;text-align:right}
 tr:last-child td{border-bottom:none}
 .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+.fd-source{font-size:.78rem;color:#6b7280;line-height:1.55;margin:.85rem 0 0}
 .faq-section h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem}
 .faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
 .faq-q{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#f9fafb;list-style:none}
@@ -98,39 +99,9 @@ details[open] .faq-q::after{content:'\2212'}
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fixed-deposit.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use Fixed Deposit Rate Comparator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Compare fees, settlement speed, chargeback risk, and customer fit before choosing a payment route. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on Fixed Deposit Rate Comparator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Payment estimate only. Confirm provider pricing, settlement timing, reversal rules, taxes, and fraud controls before using."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Fixed Deposit Rate Comparator an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/fixed-deposit/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Fixed Deposit Rate Comparator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Fixed Deposit Rate Comparator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Fixed Deposit Rate Comparator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Fixed Deposit Rate Comparator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is a fixed deposit?","acceptedAnswer":{"@type":"Answer","text":"A fixed deposit (also called term deposit or time deposit) is a savings product where you lock in a lump sum with a bank for a fixed period at a guaranteed interest rate. Your money is not accessible until maturity (or subject to early withdrawal penalties)."}},{"@type":"Question","name":"Which African country offers the highest fixed deposit rates?","acceptedAnswer":{"@type":"Answer","text":"Nigeria (18-22%), Ghana (25-30%), and Egypt (18-24%) typically offer the highest nominal rates, reflecting their higher inflation environments. However, your real return (after inflation) may be lower than lower-inflation countries like Rwanda or Kenya."}},{"@type":"Question","name":"Is fixed deposit interest taxable in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, in most African countries a withholding tax of 10-15% is deducted on interest earned. Nigeria: 10%, Kenya: 15%, South Africa: 0% (but interest income included in tax return), Ghana: 8%, Egypt: 0% for personal accounts. Tax rates shown are indicative — consult a tax advisor for your situation."}},{"@type":"Question","name":"Simple vs compound interest — which do banks use?","acceptedAnswer":{"@type":"Answer","text":"Most African banks pay fixed deposit interest as simple interest (interest on the principal only), credited at maturity. Simple and compound match only when interest is paid once at maturity. This tool's compound option compounds monthly, so it earns slightly more even over 12 months — for example 12% on 500,000 pays 60,000 simple versus about 63,412 compounded monthly — and the gap widens over longer tenors. Confirm with your bank whether interest is simple, compounded, or paid out periodically."}},{"@type":"Question","name":"What happens if I break a fixed deposit early?","acceptedAnswer":{"@type":"Answer","text":"Early withdrawal typically attracts a penalty of 1-3% on the earned interest or a reduction to the savings rate (lower than the FD rate). Some banks require 30-day notice. Always confirm the early withdrawal policy before committing."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/fixed-deposit/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fixed-deposit/">
@@ -216,7 +187,9 @@ details[open] .faq-q::after{content:'\2212'}
     </div>
     <button type="button" class="btn-calc" onclick="calcFD()">Calculate Returns</button>
 
-    <div class="results" id="fd-results">
+    <p class="fd-source">Pre-filled rates are indicative 12-month term-deposit benchmarks drawn from central-bank policy rates and typical commercial-bank offers (reviewed Jul 2026). Rates are indicative and change often &mdash; confirm the current rate, tenor and fees with the bank before you commit. This is a planning estimate, not financial advice.</p>
+
+    <div class="results" id="fd-results" aria-live="polite">
       <div class="res-hero">
         <div class="res-label">Total Maturity Value</div>
         <div class="res-val" id="fd-total"></div>
@@ -244,10 +217,10 @@ details[open] .faq-q::after{content:'\2212'}
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Payment comparison workflow</span>
-      <h2>Fixed Deposit Rate Comparator decision workspace</h2>
-      <p>Compare fees, settlement speed, chargeback risk, and customer fit before choosing a payment route. This panel is tuned for fixed deposit rate comparator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Fixed Deposit Rate Comparator: payment comparison ready with fees, settlement, dispute, and customer-channel notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, saveExport, businessCta.</li><li>Source note: payment provider, regulator, bank, and merchant-term references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Payment estimate only. Confirm provider pricing, settlement timing, reversal rules, taxes, and fraud controls before using. Source/reference: payment provider, regulator, bank, and merchant-term references.</p>
+      <h2>Fixed Deposit Rate Comparator: quick guide</h2>
+      <p>Not sure how to get the most from the Fixed Deposit Rate Comparator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Fixed Deposit Rate Comparator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
     </div>
     <form class="df-form" data-df-form="fixed-deposit">
       <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
@@ -255,25 +228,32 @@ details[open] .faq-q::after{content:'\2212'}
       <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
       <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
       <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="fixed-deposit" data-df-base="Fixed Deposit Rate Comparator: payment comparison ready with fees, settlement, dispute, and customer-channel notes." aria-live="polite">Fixed Deposit Rate Comparator: payment comparison ready with fees, settlement, dispute, and customer-channel notes.</output>
+      <output class="df-result" data-df-result="fixed-deposit" data-df-base="Fixed Deposit Rate Comparator — enter your details above to see your result." aria-live="polite">Fixed Deposit Rate Comparator — enter your details above to see your result.</output>
       <div class="df-actions"><button type="button" data-df-copy="fixed-deposit">Copy summary</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="fixed-deposit-faq-title">
   <h2 id="fixed-deposit-faq-title">Fixed Deposit Rate Comparator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Compare fees, settlement speed, chargeback risk, and customer fit before choosing a payment route. Use it to pressure-test fixed deposit numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Payment estimate only. Confirm provider pricing, settlement timing, reversal rules, taxes, and fraud controls before using.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How do I use the Fixed Deposit Rate Comparator?</summary><p>Enter your amounts, rates and dates in the fields above. The Fixed Deposit Rate Comparator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Fixed Deposit Rate Comparator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Fixed Deposit Rate Comparator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
 </section>
   <div class="card faq-section">
     <h2>Frequently Asked Questions</h2>
     <details><summary class="faq-q">What is a fixed deposit?</summary><div class="faq-a">A fixed deposit (also called term deposit or time deposit) is a savings product where you lock in a lump sum with a bank for a fixed period at a guaranteed interest rate. Your money is not accessible until maturity (or subject to early withdrawal penalties).</div></details>
     <details><summary class="faq-q">Which African country offers the highest fixed deposit rates?</summary><div class="faq-a">Nigeria (18-22%), Ghana (25-30%), and Egypt (18-24%) typically offer the highest nominal rates, reflecting their higher inflation environments. However, your real return (after inflation) may be lower than lower-inflation countries like Rwanda or Kenya.</div></details>
     <details><summary class="faq-q">Is fixed deposit interest taxable in Africa?</summary><div class="faq-a">Yes, in most African countries a withholding tax of 10-15% is deducted on interest earned. Nigeria: 10%, Kenya: 15%, South Africa: 0% (but interest income included in tax return), Ghana: 8%, Egypt: 0% for personal accounts. Tax rates shown are indicative — consult a tax advisor for your situation.</div></details>
-    <details><summary class="faq-q">Simple vs compound interest — which do banks use?</summary><div class="faq-a">Most African banks calculate fixed deposit interest using simple interest (interest only on principal). Some offer compound options for longer tenors. For 12 months, simple and compound give the same result. Compound becomes advantageous for 24+ month deposits.</div></details>
+    <details><summary class="faq-q">Simple vs compound interest — which do banks use?</summary><div class="faq-a">Most African banks pay fixed deposit interest as simple interest (interest on the principal only), credited at maturity. Simple and compound match only when interest is paid once at maturity. This tool's compound option compounds monthly, so it earns slightly more even over 12 months — for example 12% on 500,000 pays 60,000 simple versus about 63,412 compounded monthly — and the gap widens over longer tenors. Confirm with your bank whether interest is simple, compounded, or paid out periodically.</div></details>
     <details><summary class="faq-q">What happens if I break a fixed deposit early?</summary><div class="faq-a">Early withdrawal typically attracts a penalty of 1-3% on the earned interest or a reduction to the savings rate (lower than the FD rate). Some banks require 30-day notice. Always confirm the early withdrawal policy before committing.</div></details>
   </div>
 </div>
-
+<afro-related-tools data-ssr="1" category="fintech" current="fixed-deposit">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/payment-gateway/" data-related-tool data-id="payment-gateway" data-name="Payment Gateway Fee Compare" data-category="fintech" data-icon="PG" data-desc="Compare Paystack, Flutterwave, Stripe, DPO, Peach Payments transaction fees for African merchants.">Payment Gateway Fee Compare</a></li><li><a href="/tools/sacco-calc/" data-related-tool data-id="sacco-calc" data-name="SACCO/Credit Union Calculator" data-category="fintech" data-icon="SC" data-desc="Calculate SACCO loan eligibility, dividend projections, and savings growth. Kenya, Uganda, Tanzania, Rwanda SACCOs.">SACCO/Credit Union Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script>
 function fillFDRate(){
@@ -328,6 +308,7 @@ function calcFD(){
   document.getElementById('fd-results').classList.add('on');
 }
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

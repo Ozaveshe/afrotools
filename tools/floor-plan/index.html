@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Building Cost Estimator - Construction Cost per m2</title>
-<meta name="description" content="Estimate building construction cost by city in Africa. Input rooms, finish quality, get cost breakdown for foundation, walls, roofing, finishes, M&E. Lagos, Nairobi, Joburg prices.">
+<title>Building Cost Estimator Africa - Construction Cost per m2</title>
+<meta name="description" content="Estimate building construction cost per m2 by African city. Set rooms and finish quality for a full cost breakdown. Lagos, Nairobi, Accra, Joburg prices.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Building Cost Estimator | AfroTools">
 <meta property="og:description" content="Estimate construction cost per m2 by African city. Rooms, finish quality, full cost breakdown.">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--accent:#0062CC;--accent-dark:#0059B3;--green:#008751;--dark:#0f1419;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--muted:#64748b}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 100%);padding:44px 0 36px}
@@ -109,7 +109,7 @@ h1 em{color:#4DA3FF;font-style:normal}
   "description": "Estimate building construction cost per square metre by African city. Rooms, finish quality, full cost breakdown.",
   "url": "https://afrotools.com/tools/floor-plan/",
   "inLanguage": "en",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "WebApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
   "offers": {
@@ -152,8 +152,12 @@ h1 em{color:#4DA3FF;font-style:normal}
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
   <link rel="stylesheet" href="/assets/css/engineering-tool-focus.css?v=04f93306">
   <script src="/assets/js/pages/engineering-tool-focus.js?v=adc5d213" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is this estimate?","acceptedAnswer":{"@type":"Answer","text":"The accuracy depends on the estimate stage you select. A concept budget should be treated as a wide range, while a tender-ready BOQ or contractor quote can carry a tighter range. For a precise contract budget, commission a detailed Bill of Quantities from a quantity surveyor using your architectural and engineering drawings."}},{"@type":"Question","name":"Does this include land cost?","acceptedAnswer":{"@type":"Answer","text":"No. This estimates construction cost only. Land prices vary dramatically even within the same city. In Lagos, land in Lekki costs 5-10x more than in Ikorodu. Add your actual land purchase cost separately."}},{"@type":"Question","name":"What's the difference between economy and luxury?","acceptedAnswer":{"@type":"Answer","text":"Economy uses basic materials (local tiles, simple paint, wooden doors). Standard uses mid-range materials. Premium uses imported tiles, aluminium windows, and good fittings. Luxury includes top-grade everything - imported marble, smart home systems, designer fixtures, and premium landscaping."}},{"@type":"Question","name":"How long does construction take?","acceptedAnswer":{"@type":"Answer","text":"A standard 3-bedroom bungalow takes 4-8 months with consistent funding and good weather. A duplex takes 8-14 months. These timelines assume no significant delays from rain, material shortages, or funding gaps - which in practice add 30-50% to the timeline across Africa."}},{"@type":"Question","name":"Why are building costs different across cities?","acceptedAnswer":{"@type":"Answer","text":"Material transport costs, labour rates, local regulations, and material availability drive price differences. Coastal cities like Lagos and Mombasa have higher transport costs for inland materials (granite, sand). Cities with booming construction (Abuja, Nairobi) have higher labour rates due to demand."}},{"@type":"Question","name":"Should I budget for professional fees?","acceptedAnswer":{"@type":"Answer","text":"Yes - always. Architect, structural engineer, quantity surveyor and project management fees are part of the real project budget. This tool lets you set the professional fee allowance at 8%, 12% or 15%, but actual fees vary by scope, approvals, complexity and negotiation."}}]}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/floor-plan/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/floor-plan/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/plan-etage/">
@@ -311,11 +315,12 @@ h1 em{color:#4DA3FF;font-style:normal}
 </div></div>
 
 <!-- Results -->
-<div id="results">
+<div id="results" aria-live="polite">
 <div class="total-card">
 <div class="total-label">Estimated Total Construction Cost</div>
 <div class="total-value" id="grandTotal">--</div>
 <div class="total-sub" id="costPerSqm">--</div>
+<div class="total-sub" style="margin-top:8px">Estimate only - local material and labour prices vary by supplier, season, and location.</div>
 </div>
 
 <div class="card"><div class="card-head"><span class="card-title">Budget Confidence & Assumptions</span></div>
@@ -398,7 +403,14 @@ h1 em{color:#4DA3FF;font-style:normal}
 <a href="/tools/roof-calculator/" class="related-card"><div class="rc-name">Roof Calculator</div><div class="rc-desc">Calculate roofing materials, pitch, and truss sizing.</div></a>
 </div>
 </section>
-
+<afro-related-tools data-ssr="1" category="engineering" current="floor-plan">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/engineering/afrodraft/" data-related-tool data-id="afrodraft" data-name="AfroDraft 2D CAD" data-category="engineering" data-icon="A2" data-desc="60+ AutoCAD-style features. Draw, dimension, annotate, trim, offset, fillet. SVG/DXF/PNG export. Touch-enabled mobile CA">AfroDraft 2D CAD</a></li><li><a href="/engineering/floor-planner/" data-related-tool data-id="afroplan-floor-planner" data-name="AfroPlan Floor Planner" data-category="engineering" data-icon="AF" data-desc="AI-assisted floor planner for African homes and small projects. Draw walls, doors, windows and furniture, estimate costs">AfroPlan Floor Planner</a></li><li><a href="/tools/solar-calculator/" data-related-tool data-id="solar-calculator" data-name="Solar Panel Calculator" data-category="engineering" data-icon="SP" data-desc="Size your solar system with African irradiance data. Battery bank, inverter sizing, and 10-year ROI vs generator.">Solar Panel Calculator</a></li><li><a href="/tools/boq-builder/" data-related-tool data-id="boq-generator" data-name="BOQ Builder" data-category="engineering" data-icon="BB" data-desc="11 QS categories, 5 pre-built templates, 9 currencies, contingency + VAT + markup. Branded PDF export for African constr">BOQ Builder</a></li><li><a href="/tools/electrical-load/" data-related-tool data-id="electrical-load" data-name="Electrical Load Calculator" data-category="engineering" data-icon="EL" data-desc="Household and commercial load calculation. Generator sizing. Per-country grid voltage.">Electrical Load Calculator</a></li><li><a href="/tools/rebar-calculator/" data-related-tool data-id="rebar-calc" data-name="Rebar Calculator" data-category="engineering" data-icon="RC" data-desc="Bar bending schedule, cutting lengths, lap lengths, weight and cost. Y8 to Y32 bars with African steel prices.">Rebar Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 
 <script>
@@ -665,6 +677,7 @@ function shareResult() {
 // Init with default bungalow
 suggestRooms();
 </script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
   <script src="/assets/js/engineering-toolkit.js?v=6a55083f" defer></script>
 </body>
 </html>

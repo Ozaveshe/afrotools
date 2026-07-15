@@ -67,7 +67,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
@@ -83,7 +83,7 @@
   }
   .grn { color: #16a34a !important; }
   .tool-hero::after { content: '\1F1F0\1F1EA'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
-  .tool-hero { background: #0A1628; }
+  .tool-hero { background: #0A1628; overflow: hidden; }
   .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
   .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
   .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
@@ -854,7 +854,7 @@ function generatePdf() {
   }
 }
 
-// Share
+// shiriki
 function shareCalc() {
   if (!RESULT) return;
   if (navigator.share) {
@@ -890,7 +890,7 @@ function whatsappShare() {
 // AI Advisor
 async function getAI() {
   if (!RESULT) return;
-  var r = RESULT;
+  var r = matokeo;
   var btn = document.getElementById('aiBtn');
   var respEl = document.getElementById('aiResp');
   btn.disabled = true;
@@ -918,8 +918,8 @@ async function getAI() {
         messages: [{ role: 'user', content: prompt }]
       })
     });
-    if (res.status === 429) throw new Error('Ombi moja kwa wakati mmoja. Jaribu tena hivi karibuni.');
-    if (!res.ok) throw new Error('Hitilafu ya API');
+    if (res.status === 429) throw new hitilafu('Ombi moja kwa wakati mmoja. Jaribu tena hivi karibuni.');
+    if (!res.ok) throw new hitilafu('Hitilafu ya API');
     var data = await res.json();
     var text = data.text || data.reply || 'Haiwezekani kuchambua.';
     respEl.className = 'ai-response on';
@@ -978,5 +978,5 @@ document.getElementById('chatIn').addEventListener('keydown', function(e) { if (
 </script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

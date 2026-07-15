@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" async></script>
-  <script src="/assets/js/components/footer.min.js?v=86b11637" async></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" async></script>
   <script src="/assets/js/ai/intent-analytics.js?v=30b7ff81"></script>
 
   <style>
@@ -1008,7 +1008,9 @@ var filterPanel   = document.getElementById('filter-panel');
 var filterToggle  = document.getElementById('filter-toggle');
 var moreFilters   = document.getElementById('more-filters');
 var isSearchReady = false;
+var isFullTextSearchReady = false;
 var requestSearchIndexLoad = function() {};
+var requestFullSearchIndexLoad = function() {};
 var aiRouteCache = Object.create(null);
 var aiRouteScriptPromise = null;
 var aiRoutePendingKey = '';
@@ -1637,6 +1639,7 @@ function pushURL() {
 // ════════════════════════════════════════════════════════════
 function setQuery(q) {
   if (!isSearchReady) requestSearchIndexLoad();
+  if (q && q.trim()) requestFullSearchIndexLoad();
   if (!q) privateSearchHandoffQuery = '';
   state.query = q;
   state.page = 1;
@@ -1680,6 +1683,7 @@ var debounceTimer;
 searchInput.addEventListener('input', function() {
   var val = this.value;
   if (!isSearchReady) requestSearchIndexLoad();
+  if (val.trim()) requestFullSearchIndexLoad();
   updateClearBtns(val);
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(function() {
@@ -1792,6 +1796,20 @@ document.addEventListener('keydown', function(e) {
 
   function normalizeSearchTool(tool) {
     if (Array.isArray(tool)) {
+      if (tool.length === 4 && typeof tool[1] === 'string' && tool[1].charAt(0) === '/') {
+        return {
+          id: tool[1],
+          name: tool[0] || tool[1],
+          desc: '',
+          category: tool[2] || 'uncategorized',
+          countries: [],
+          status: 'live',
+          href: tool[1],
+          icon: '',
+          priority: Number(tool[3] || 0),
+          searchText: [tool[0], tool[1], tool[2]].join(' ')
+        };
+      }
       return {
         id: tool[0],
         name: tool[1] || tool[0],
@@ -1820,24 +1838,47 @@ document.addEventListener('keydown', function(e) {
     };
   }
 
+  function applySearchRecords(records, fullText) {
+    if (!fullText && isFullTextSearchReady) return window.AFRO_TOOLS || [];
+    window.AFRO_TOOLS = Array.isArray(records) ? records.map(normalizeSearchTool) : [];
+    if (fullText) isFullTextSearchReady = true;
+    document.dispatchEvent(new CustomEvent('afrotools:registry-ready', {
+      detail: { tools: window.AFRO_TOOLS, categories: {}, fullText: !!fullText }
+    }));
+    return window.AFRO_TOOLS;
+  }
+
   function loadSearchIndex() {
     if (startSearch()) return Promise.resolve();
-    if (window.__afroSearchIndexPromise) return window.__afroSearchIndexPromise;
+    if (window.__afroSearchSlimPromise) return window.__afroSearchSlimPromise;
 
-    window.__afroSearchIndexPromise = fetch('/data/search-index.json', { credentials: 'same-origin' })
+    window.__afroSearchSlimPromise = fetch('/data/search-index.json', { credentials: 'same-origin' })
       .then(function(response) {
         if (!response.ok) throw new Error('Search index failed to load');
         return response.json();
       })
       .then(function(records) {
-        window.AFRO_TOOLS = Array.isArray(records) ? records.map(normalizeSearchTool) : [];
-        document.dispatchEvent(new CustomEvent('afrotools:registry-ready', {
-          detail: { tools: window.AFRO_TOOLS, categories: {} }
-        }));
-        return window.AFRO_TOOLS;
+        return applySearchRecords(records, false);
       });
 
-    return window.__afroSearchIndexPromise;
+    return window.__afroSearchSlimPromise;
+  }
+
+  function loadFullTextSearchIndex() {
+    if (isFullTextSearchReady) return Promise.resolve(window.AFRO_TOOLS || []);
+    if (window.__afroSearchFullPromise) return window.__afroSearchFullPromise;
+    window.__afroSearchFullPromise = fetch('/data/search-index-full.json', { credentials: 'same-origin' })
+      .then(function(response) {
+        if (!response.ok) throw new Error('Full-text search index failed to load');
+        return response.json();
+      })
+      .then(function(records) {
+        var tools = applySearchRecords(records, true);
+        startSearch();
+        doRender();
+        return tools;
+      });
+    return window.__afroSearchFullPromise;
   }
 
   requestSearchIndexLoad = function() {
@@ -1848,15 +1889,24 @@ document.addEventListener('keydown', function(e) {
       });
   };
 
+  requestFullSearchIndexLoad = function() {
+    loadFullTextSearchIndex().catch(function() {
+      if (!isSearchReady) requestSearchIndexLoad();
+    });
+  };
+
   function scheduleSearchIndexLoad() {
-    var shouldLoadNow = state.query.trim() || state.filter !== 'all';
+    var hasQuery = !!state.query.trim();
+    var shouldLoadNow = hasQuery || state.filter !== 'all';
     if (shouldLoadNow) {
       if (window.requestAnimationFrame) {
         window.requestAnimationFrame(function() {
           setTimeout(requestSearchIndexLoad, 0);
+          if (hasQuery) setTimeout(requestFullSearchIndexLoad, 0);
         });
       } else {
         setTimeout(requestSearchIndexLoad, 0);
+        if (hasQuery) setTimeout(requestFullSearchIndexLoad, 0);
       }
       return;
     }

@@ -84,6 +84,10 @@ exports.handler = async function(event) {
     headers: hdrs,
     body: JSON.stringify({
       timestamp: data.timestamp,
+      source: data.source || Array.from(new Set(countries.map(function(c) { return c.source; }).filter(Boolean))).join(', '),
+      source_state: data.source_state || 'live_data_store',
+      served_from: data.served_from,
+      as_of: data.as_of || data.timestamp || null,
       countries: countries,
       count: countries.length,
     }),

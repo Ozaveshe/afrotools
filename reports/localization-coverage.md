@@ -6,22 +6,22 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 
 | Metric | Count |
 |---|---:|
-| rawPages | 10280 |
-| native | 8100 |
-| localizedShell | 2121 |
+| rawPages | 10682 |
+| native | 8104 |
+| localizedShell | 2519 |
 | englishFallback | 38 |
 | unavailable | 21 |
 | deprecated | 0 |
-| indexableEligible | 9298 |
-| sitemapEligible | 9298 |
+| indexableEligible | 9699 |
+| sitemapEligible | 9699 |
 
 ## By locale
 
 | Locale | Launch | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable | Catalog keys |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| en | default | 5849 | 5849 | 0 | 0 | 0 | 0 | 5009 | 180 |
-| fr | launched | 3421 | 2087 | 1334 | 0 | 0 | 0 | 3341 | 180 |
-| sw | launched | 860 | 144 | 713 | 3 | 0 | 0 | 854 | 180 |
+| en | default | 5853 | 5853 | 0 | 0 | 0 | 0 | 5012 | 180 |
+| fr | launched | 3721 | 2087 | 1634 | 0 | 0 | 0 | 3641 | 180 |
+| sw | launched | 958 | 144 | 811 | 3 | 0 | 0 | 952 | 180 |
 | yo | partial | 45 | 8 | 13 | 3 | 21 | 0 | 21 | 180 |
 | ha | partial | 105 | 12 | 61 | 32 | 0 | 0 | 73 | 180 |
 | pt | planned | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -36,10 +36,10 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | article | 374 | 374 | 0 | 0 | 0 | 0 | 372 |
 | auth | 3 | 2 | 0 | 1 | 0 | 0 | 0 |
 | category | 694 | 694 | 0 | 0 | 0 | 0 | 690 |
-| country-tool | 497 | 107 | 390 | 0 | 0 | 0 | 463 |
-| legal | 3 | 3 | 0 | 0 | 0 | 0 | 3 |
-| page | 4697 | 4104 | 535 | 37 | 21 | 0 | 4064 |
-| tool | 3640 | 2588 | 1052 | 0 | 0 | 0 | 3557 |
+| country-tool | 499 | 107 | 392 | 0 | 0 | 0 | 465 |
+| legal | 4 | 4 | 0 | 0 | 0 | 0 | 4 |
+| page | 4795 | 4106 | 631 | 37 | 21 | 0 | 4161 |
+| tool | 3941 | 2589 | 1352 | 0 | 0 | 0 | 3858 |
 | widget | 369 | 225 | 144 | 0 | 0 | 0 | 146 |
 
 ## Definitions

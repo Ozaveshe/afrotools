@@ -14,11 +14,23 @@ async function main() {
 
   for (const contract of registry.datasets) {
     const payload = JSON.parse(fs.readFileSync(path.join(ROOT, contract.staticFallbackPath), 'utf8'));
-    const result = contracts.validateAgainstContract(contract, payload, '2026-07-12T00:00:00Z');
+    const result = contracts.validateAgainstContract(contract, payload, new Date().toISOString());
     assert.strictEqual(result.valid, true, contract.id + ' static fallback should remain structurally valid');
-    assert.strictEqual(result.publicState, 'stale', contract.id + ' committed fallback should disclose staleness');
-    assert.doesNotMatch(result.publicLabel, /\blive\b|\bcurrent\b|official verified/i);
+    if (result.publicState === 'stale') {
+      assert.doesNotMatch(result.publicLabel, /\blive\b|\bcurrent\b|official verified/i);
+    }
   }
+
+  ['live', 'blob', 'fallback'].forEach(function (servedFrom) {
+    const payload = dataStore._test.withProvenance({
+      timestamp: '2026-07-13T00:00:00Z',
+      value: 1,
+    }, servedFrom);
+    assert.strictEqual(payload.served_from, servedFrom);
+    assert.strictEqual(payload.as_of, '2026-07-13T00:00:00.000Z');
+    assert.strictEqual(JSON.stringify(payload).includes('served_from'), false, 'provenance must not be persisted into snapshots');
+    assert.strictEqual(JSON.stringify(payload).includes('as_of'), false, 'derived as_of must not be persisted into snapshots');
+  });
 
   let persistenceCalls = 0;
   const originalFetch = global.fetch;

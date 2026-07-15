@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -109,8 +109,8 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <div class="tool-hero"><div class="tool-hero-inner">
   <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/sw/zana-zote/">Zana</a> / <span>Alama za HTML</span></div>
   <h1>Alama za HTML: encode na decode entities</h1>
-  <p class="hero-sub">Badilisha characters kama &lt;, &gt;, &amp; na quotes kuwa HTML-safe entities, au rudisha entities kuwa maandishi yanayosomwa. Kazi inabaki kwenye browser.</p>
-  <div class="hero-badges"><span class="badge b-blue">Encode na decode</span><span class="badge b-blue">Named na numeric</span><span class="badge b-blue">Nakili output</span></div>
+  <p class="hero-sub">Badilisha characters kama &lt;, &gt;, &amp; na quotes kuwa HTML-safe entities, au rudisha entities kuwa maandishi yanayosomwa. Kazi inabaki kwenye kivinjari.</p>
+  <div class="hero-badges"><span class="badge b-blue">Encode na decode</span><span class="badge b-blue">Named na numeric</span><span class="badge b-blue">Nakili matokeo</span></div>
 </div></div>
 
 <div class="tool-main"><div class="tool-main-inner">
@@ -127,13 +127,13 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
           <textarea class="io-area" id="input" placeholder="Andika au bandika maandishi hapa..." aria-label="Andika au bandika maandishi hapa">&lt;div class="hello"&gt;Habari &amp; karibu!&lt;/div&gt;</textarea>
         </div>
         <div>
-          <div class="io-label" id="outputLabel">Output (HTML entities)</div>
+          <div class="io-label" id="outputLabel">matokeo (HTML entities)</div>
           <textarea class="io-area" id="output" readonly aria-label="Output ya HTML entities"></textarea>
         </div>
       </div>
       <div class="action-row">
         <button type="button" class="action-btn" onclick="convert()">Badilisha</button>
-        <button type="button" class="action-btn secondary" onclick="copyOutput()">Nakili Output</button>
+        <button type="button" class="action-btn secondary" onclick="copyOutput()">Nakili matokeo</button>
         <button type="button" class="action-btn secondary" onclick="swapIO()">Badili pande</button>
         <button type="button" class="action-btn secondary" onclick="clearAll()">Futa</button>
       </div>
@@ -158,7 +158,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
           <tr><td>"</td><td>&amp;quot;</td><td>&amp;#34;</td><td>Quote mbili</td></tr>
           <tr><td>'</td><td>&amp;apos;</td><td>&amp;#39;</td><td>Quote moja</td></tr>
           <tr><td>&nbsp;</td><td>&amp;nbsp;</td><td>&amp;#160;</td><td>Nafasi isiyokatika</td></tr>
-          <tr><td>&copy;</td><td>&amp;copy;</td><td>&amp;#169;</td><td>Hakimiliki</td></tr>
+          <tr><td>&nakili;</td><td>&amp;nakili;</td><td>&amp;#169;</td><td>Hakimiliki</td></tr>
           <tr><td>&reg;</td><td>&amp;reg;</td><td>&amp;#174;</td><td>Alama iliyosajiliwa</td></tr>
           <tr><td>&trade;</td><td>&amp;trade;</td><td>&amp;#8482;</td><td>Alama ya biashara</td></tr>
           <tr><td>&euro;</td><td>&amp;euro;</td><td>&amp;#8364;</td><td>Alama ya euro</td></tr>
@@ -174,18 +174,18 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     <div class="card-body">
       <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">HTML entities ni nini?</h2>
       <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-        HTML entities ni codes zinazowakilisha characters zenye maana maalum kwenye HTML. Kwa mfano, <code>&lt;</code> hufungua tag, hivyo ukiitaka ionekane kama maandishi unaandika <code>&amp;lt;</code>. Hii husaidia kuonyesha code snippets, symbols na content ya user bila browser kuichanganya na markup.
+        HTML entities ni codes zinazowakilisha characters zenye maana maalum kwenye HTML. Kwa mfano, <code>&lt;</code> hufungua tag, hivyo ukiitaka ionekane kama maandishi unaandika <code>&amp;lt;</code>. Hii husaidia kuonyesha code snippets, symbols na content ya user bila kivinjari kuichanganya na markup.
       </p>
       <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Njia ya kazi</h3>
       <ul style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
         <li><strong>Encode:</strong> geuza characters kama <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code> na quotes kuwa entities.</li>
         <li><strong>Decode:</strong> rudisha entities kama <code>&amp;amp;</code> kuwa character yake.</li>
         <li><strong>Production:</strong> tumia escaping ya framework yako kwa context sahihi, hasa attributes, URLs na scripts.</li>
-        <li><strong>Templates:</strong> hakiki output kabla ya kuiweka kwenye CMS, email au docs.</li>
+        <li><strong>Templates:</strong> hakiki matokeo kabla ya kuiweka kwenye CMS, email au docs.</li>
       </ul>
       <div class="sw-proof-grid">
-        <div class="sw-proof-card"><strong>Faragha</strong><p>Maandishi yako hubadilishwa kwenye browser. Hakuna upload ya lazima kwa encode/decode ya msingi.</p></div>
-        <div class="sw-proof-card"><strong>Mbinu</strong><p>Tunatumia kanuni rahisi: badilisha characters maalum kuwa entities zinazosomeka na browser, kisha decode kwa textarea ya browser.</p></div>
+        <div class="sw-proof-card"><strong>Faragha</strong><p>Maandishi yako hubadilishwa kwenye kivinjari. Hakuna upakiaji ya lazima kwa encode/decode ya msingi.</p></div>
+        <div class="sw-proof-card"><strong>Mbinu</strong><p>Tunatumia kanuni rahisi: badilisha characters maalum kuwa entities zinazosomeka na kivinjari, kisha decode kwa textarea ya kivinjari.</p></div>
         <div class="sw-proof-card"><strong>Kanusho</strong><p>Hii si taarifa rasmi wala sanitizer kamili ya XSS. Tumia escaping ya framework yako kwa HTML, attributes, URLs na JavaScript contexts.</p></div>
       </div>
       <div class="source-note" data-tool-verification-panel>Reference na hakiki chanzo: <a href="https://html.spec.whatwg.org/multipage/named-characters.html" target="_blank" rel="noopener">WHATWG HTML Living Standard named character references</a>. Pia angalia <a href="/tools/url-encoder/">URL Encoder/Decoder</a> na <a href="/tools/base64/">Base64 Encoder</a>.</div>
@@ -195,13 +195,13 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <section style="margin-top:18px">
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>Zana hii hubadilisha characters zenye maana maalum kwenye HTML kuwa entities, au hurudisha entities kuwa maandishi. Inafaa kwa code snippets, CMS content, email templates, docs na debugging ya output kabla ya kuchapisha.</p>
+    <p>Zana hii hubadilisha characters zenye maana maalum kwenye HTML kuwa entities, au hurudisha entities kuwa maandishi. Inafaa kwa code snippets, CMS content, email templates, docs na debugging ya matokeo kabla ya kuchapisha.</p>
   </div>
 </section>
     <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Maswali ya mara kwa mara</h2>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">HTML entities ni nini?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Ni codes zinazowakilisha characters maalum kwenye HTML, kama <code>&amp;lt;</code> kwa <code>&lt;</code> na <code>&amp;amp;</code> kwa <code>&amp;</code>.</div></details>
-    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Je, data yangu hutoka kwenye browser?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Hapana kwa encode/decode ya msingi. Kazi hufanyika kwenye JavaScript ya ukurasa, kwenye kifaa chako.</div></details>
-    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Named na numeric entities zinatofautiana vipi?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Named entities hutumia majina kama <code>&amp;amp;</code>. Numeric hutumia namba kama <code>&amp;#38;</code>. Tumia ile inayolingana na output yako.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Je, data yangu hutoka kwenye kivinjari?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Hapana kwa encode/decode ya msingi. Kazi hufanyika kwenye JavaScript ya ukurasa, kwenye kifaa chako.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Named na numeric entities zinatofautiana vipi?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Named entities hutumia majina kama <code>&amp;amp;</code>. Numeric hutumia namba kama <code>&amp;#38;</code>. Tumia ile inayolingana na matokeo yako.</div></details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Je, encoding hii inatosha kwa security?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Si peke yake. Kwa production, tumia escaping/sanitization ya framework yako kulingana na HTML, attribute, URL au script context.</div></details>
   </section>
 </div></div>
@@ -264,8 +264,7 @@ function clearAll(){
 document.getElementById('input').addEventListener('input',convert);
 convert();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
@@ -313,5 +312,5 @@ convert();
   }).observe(document.documentElement, { childList: true, subtree: true });
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

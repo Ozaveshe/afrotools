@@ -9,6 +9,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { rewriteSharedAssetReferences } = require('./lib/shared-asset-references');
 
 const ROOT = path.resolve(__dirname, '..');
 const MANIFEST_PATH = path.join(ROOT, 'assets', 'js', 'bundles', 'manifest.json');
@@ -124,6 +125,11 @@ for (const htmlPath of htmlFiles) {
   let html = fs.readFileSync(htmlPath, 'utf8');
   const original = html;
   const relativeHtmlPath = path.relative(ROOT, htmlPath).replace(/\\/g, '/');
+
+  // Shared shell assets are always served from their minified counterparts.
+  // The helper also refreshes their content hashes, so this remains safe when
+  // update-html-bundles.js is run independently of the final cachebust pass.
+  html = rewriteSharedAssetReferences(html).html;
 
   // Keep the registry on the lighter minified build across pages.
   html = html.replaceAll(LEGACY_REGISTRY_PATH, MINIFIED_REGISTRY_PATH);

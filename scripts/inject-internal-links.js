@@ -19,6 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const { ROOT, preferredRouteForFile } = require('./lib/canonical-aliases');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
@@ -62,6 +63,186 @@ function slugToName(slug) {
 }
 
 const SEO_NAV_MARKER = '<!-- seo-internal-links -->';
+const RELATED_START = '<!-- RELATED_TOOLS_SSR_START -->';
+const RELATED_END = '<!-- RELATED_TOOLS_SSR_END -->';
+const RELATED_BLOCK_RE = /<!-- RELATED_TOOLS_SSR_START -->[\s\S]*?<!-- RELATED_TOOLS_SSR_END -->/g;
+const RELATED_DATA_SCRIPT_RE = /\s*<script\b[^>]*src=["'][^"']*related-tools-data(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>\s*/gi;
+const RELATED_LAZY_SCRIPT_RE = /\s*<script\b[^>]*src=["'][^"']*lazy-related-tools\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>\s*/gi;
+const RELATED_INLINE_ASSET_LINE_RE = /^\s*["']\/assets\/js\/components\/related-tools(?:-data)?(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'],?\s*$/gmi;
+const RELATED_COMPONENT_SCRIPT_RE = /<script\b[^>]*src=["'][^"']*related-tools(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>/i;
+const TOOL_DIRECTORY_PATH = path.join(ROOT, 'data', 'tool-directory.json');
+const RELATED_COMPONENT_PATH = path.join(ROOT, 'assets', 'js', 'components', 'related-tools.min.js');
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function routeToRelativeFile(route) {
+  const pathname = String(route || '').split(/[?#]/)[0];
+  if (!pathname.startsWith('/') || pathname.startsWith('//')) return '';
+  const relative = pathname.replace(/^\/+/, '');
+  return (pathname.endsWith('/') ? path.posix.join(relative, 'index.html') : `${relative}.html`).replace(/\\/g, '/');
+}
+
+function initials(value) {
+  return String(value || 'AT')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join('') || 'AT';
+}
+
+function directoryTools() {
+  const rows = JSON.parse(fs.readFileSync(TOOL_DIRECTORY_PATH, 'utf8'));
+  if (!Array.isArray(rows)) throw new Error('data/tool-directory.json must contain an array');
+  return rows.filter((tool) => tool && tool.language === 'en' && String(tool.status).toLowerCase() === 'live' && routeToRelativeFile(tool.url));
+}
+
+function sortDirectoryTools(a, b) {
+  return Number(b.priority || 0) - Number(a.priority || 0) || String(a.name).localeCompare(String(b.name));
+}
+
+function relatedForTool(current, allTools) {
+  const sameCategory = allTools
+    .filter((tool) => tool.id !== current.id && tool.url !== current.url && tool.category_key === current.category_key)
+    .sort(sortDirectoryTools);
+  const selected = sameCategory.slice(0, 6);
+  if (selected.length < 4) {
+    const selectedIds = new Set(selected.map((tool) => tool.id));
+    const fallback = allTools
+      .filter((tool) => tool.id !== current.id && tool.url !== current.url && !selectedIds.has(tool.id))
+      .sort(sortDirectoryTools)
+      .slice(0, 4 - selected.length);
+    selected.push(...fallback);
+  }
+  return selected.slice(0, 6);
+}
+
+function relatedNav(tool, related) {
+  const links = related.map((item) => {
+    const description = String(item.description || '').replace(/\s+/g, ' ').trim().slice(0, 120);
+    return `<li><a href="${escapeHtml(item.url)}" data-related-tool data-id="${escapeHtml(item.id)}" data-name="${escapeHtml(item.name)}" data-category="${escapeHtml(item.category_key || '')}" data-icon="${escapeHtml(initials(item.name))}" data-desc="${escapeHtml(description)}">${escapeHtml(item.name)}</a></li>`;
+  }).join('');
+  return `${RELATED_START}
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list">${links}</ul>
+</nav>
+${RELATED_END}`;
+}
+
+function setAttribute(attributes, name, value) {
+  const pattern = new RegExp(`\\s${name}=(?:"[^"]*"|'[^']*')`, 'i');
+  const next = ` ${name}="${escapeHtml(value)}"`;
+  return pattern.test(attributes) ? attributes.replace(pattern, next) : `${attributes}${next}`;
+}
+
+function insertBeforeFirst(html, anchors, block) {
+  for (const anchor of anchors) {
+    // For the </body> fallback, target the LAST occurrence — the real page
+    // close — so we never inject inside an earlier `document.write('...</body>...')`
+    // string literal (which would break that inline script with a raw </script>).
+    const index = anchor === '</body>' ? html.lastIndexOf(anchor) : html.indexOf(anchor);
+    if (index !== -1) return `${html.slice(0, index).replace(/\s*$/, '\n')}${block}\n${html.slice(index)}`;
+  }
+  return html;
+}
+
+let relatedComponentTag = '';
+function getRelatedComponentTag() {
+  if (relatedComponentTag) return relatedComponentTag;
+  const content = fs.readFileSync(RELATED_COMPONENT_PATH, 'utf8').replace(/\r\n?/g, '\n');
+  const hash = crypto.createHash('md5').update(content).digest('hex').slice(0, 8);
+  relatedComponentTag = `<script src="/assets/js/components/related-tools.min.js?v=${hash}" defer></script>`;
+  return relatedComponentTag;
+}
+
+function transformRelatedTools(html, tool, related) {
+  const nav = relatedNav(tool, related);
+  let output = html.replace(RELATED_BLOCK_RE, '');
+  RELATED_BLOCK_RE.lastIndex = 0;
+  const hostPattern = /<afro-related-tools\b([^>]*)>([\s\S]*?)<\/afro-related-tools>/i;
+  const hostMatch = output.match(hostPattern);
+
+  if (hostMatch) {
+    let attributes = hostMatch[1];
+    attributes = setAttribute(attributes, 'data-ssr', '1');
+    attributes = setAttribute(attributes, 'category', tool.category_key || '');
+    attributes = setAttribute(attributes, 'current', tool.id);
+    const existingContent = hostMatch[2].trim();
+    const replacement = `<afro-related-tools${attributes}>${existingContent ? `\n${existingContent}` : ''}\n${nav}\n</afro-related-tools>`;
+    // Use a replacer function so dollar amounts in generated descriptions
+    // (for example "$165") are never interpreted as $1 capture tokens.
+    output = output.replace(hostPattern, () => replacement);
+  } else {
+    const host = `<afro-related-tools data-ssr="1" category="${escapeHtml(tool.category_key || '')}" current="${escapeHtml(tool.id)}">\n${nav}\n</afro-related-tools>`;
+    output = insertBeforeFirst(output, ['<afro-newsletter-cta', '<afro-footer', '</body>'], host);
+  }
+
+  output = output.replace(RELATED_DATA_SCRIPT_RE, '\n');
+  RELATED_DATA_SCRIPT_RE.lastIndex = 0;
+  output = output.replace(RELATED_LAZY_SCRIPT_RE, '\n');
+  RELATED_LAZY_SCRIPT_RE.lastIndex = 0;
+  output = output.replace(RELATED_INLINE_ASSET_LINE_RE, '');
+  RELATED_INLINE_ASSET_LINE_RE.lastIndex = 0;
+  if (!RELATED_COMPONENT_SCRIPT_RE.test(output)) {
+    output = insertBeforeFirst(output, ['</body>'], getRelatedComponentTag());
+  }
+  return output;
+}
+
+function processRelatedTools(options = {}) {
+  const write = options.write !== false;
+  const selectedFiles = options.files && options.files.length
+    ? new Set(options.files.map((file) => String(file).replace(/\\/g, '/').replace(/^\.\//, '')))
+    : null;
+  const allTools = directoryTools();
+  const stats = { targeted: 0, updated: 0, links: 0, dataScriptsRemoved: 0, componentScriptsAdded: 0, missing: [] };
+
+  for (const tool of allTools) {
+    const relative = routeToRelativeFile(tool.url);
+    if (selectedFiles && !selectedFiles.has(relative)) continue;
+    stats.targeted += 1;
+    const absolute = path.join(ROOT, relative);
+    if (!fs.existsSync(absolute)) {
+      stats.missing.push(relative);
+      continue;
+    }
+    const original = fs.readFileSync(absolute, 'utf8');
+    const related = relatedForTool(tool, allTools);
+    const updated = transformRelatedTools(original, tool, related);
+    stats.links += related.length;
+    const hadDataScript = RELATED_DATA_SCRIPT_RE.test(original);
+    RELATED_DATA_SCRIPT_RE.lastIndex = 0;
+    const hasDataScript = RELATED_DATA_SCRIPT_RE.test(updated);
+    RELATED_DATA_SCRIPT_RE.lastIndex = 0;
+    if (hadDataScript && !hasDataScript) stats.dataScriptsRemoved += 1;
+    if (!RELATED_COMPONENT_SCRIPT_RE.test(original) && RELATED_COMPONENT_SCRIPT_RE.test(updated)) stats.componentScriptsAdded += 1;
+    if (updated === original) continue;
+    stats.updated += 1;
+    if (write) {
+      writeFileSyncWithRetry(absolute, updated, 'utf8');
+      const idempotent = transformRelatedTools(updated, tool, related);
+      if (idempotent !== updated) throw new Error(`${relative}: related-tools injection is not idempotent`);
+    }
+  }
+
+  if (selectedFiles) {
+    for (const selected of selectedFiles) {
+      if (!allTools.some((tool) => routeToRelativeFile(tool.url) === selected)) stats.missing.push(`${selected} (not in data/tool-directory.json)`);
+    }
+  }
+  return stats;
+}
 
 const CATEGORY_CHILD_LINK_EXCLUSIONS = {
   health: new Set(['medical-aid', 'nhif'])
@@ -440,21 +621,39 @@ function processCategoryHubs() {
 // ══════════════════════════════════════════
 console.log('Injecting static internal links...\n');
 
-const agCount = processAgriculture();
-console.log(`  Agriculture: ${agCount} country links injected`);
+const relatedOnly = process.argv.includes('--related-only');
+const checkRelated = process.argv.includes('--check-related');
+const filesArg = process.argv.find((arg) => arg.startsWith('--files='));
+const selectedFiles = filesArg ? filesArg.slice('--files='.length).split(',').map((file) => file.trim()).filter(Boolean) : null;
 
-const hubCount = processCountryHubs();
-console.log(`  Country hubs: ${hubCount} sub-page links injected`);
+let legacyTotal = 0;
+if (!relatedOnly && !checkRelated && !selectedFiles) {
+  const agCount = processAgriculture();
+  console.log(`  Agriculture: ${agCount} country links injected`);
 
-const toolCount = processToolSubPages();
-console.log(`  Tools: ${toolCount} country links injected`);
+  const hubCount = processCountryHubs();
+  console.log(`  Country hubs: ${hubCount} sub-page links injected`);
 
-const frCount = processFrench();
-console.log(`  French: ${frCount} links injected`);
+  const toolCount = processToolSubPages();
+  console.log(`  Tools: ${toolCount} country links injected`);
 
-const catCount = processCategoryHubs();
-console.log(`  Category hubs: ${catCount} child links injected`);
+  const frCount = processFrench();
+  console.log(`  French: ${frCount} links injected`);
 
-const total = agCount + hubCount + toolCount + frCount + catCount;
-console.log(`\n  Total links injected: ${total}`);
+  const catCount = processCategoryHubs();
+  console.log(`  Category hubs: ${catCount} child links injected`);
+  legacyTotal = agCount + hubCount + toolCount + frCount + catCount;
+}
+
+const relatedStats = processRelatedTools({ write: !checkRelated, files: selectedFiles });
+console.log(`  Related tools: ${relatedStats.links} links across ${relatedStats.targeted} English directory pages`);
+console.log(`                 ${relatedStats.updated} pages ${checkRelated ? 'need regeneration' : 'updated'}`);
+console.log(`                 ${relatedStats.dataScriptsRemoved} full related-data scripts removed, ${relatedStats.componentScriptsAdded} lightweight component scripts added`);
+if (relatedStats.missing.length) {
+  console.warn(`  Missing related-tool targets (${relatedStats.missing.length}):\n  - ${relatedStats.missing.join('\n  - ')}`);
+}
+
+console.log(`\n  Total links injected: ${legacyTotal + relatedStats.links}`);
 console.log('  Done!');
+
+if (checkRelated && (relatedStats.updated || relatedStats.missing.length)) process.exitCode = 1;

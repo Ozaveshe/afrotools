@@ -30,7 +30,7 @@
 
 <!-- Components -->
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -490,8 +490,8 @@
 <section class="sw-career-limits-note" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Mipaka ya kazi na HR:</strong> CV, interview, offer, HR, payslip, overtime, leave na contract ni maneno ya soko la ajira. Zana hizi husaidia kupanga na kuandika rasimu; hazitoi haki rasmi, ushauri wa kisheria, matokeo ya ajira au tafsiri ya sheria ya kazi. Hakiki na mwajiri, HR, wakili au mamlaka husika.</div></section>
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.js?v=efb72dbe" type="module"></script>
-<script src="/assets/js/components/footer.js?v=c9514a92" type="module"></script>
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" type="module"></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" type="module"></script>
 
 <script>
 /* ════════════════════════════════════════════════════════
@@ -661,7 +661,7 @@ document.getElementById('pr-print').addEventListener('click', function(){
   w.document.close(); w.focus(); w.print();
 });
 
-/* ── PDF download ── */
+/* ── PDF pakua ── */
 document.getElementById('pr-pdf').addEventListener('click', function(){
   var el = document.getElementById('letter-content');
   if(!el){ alert(curLang === 'sw' ? 'Tengeneza barua kwanza.' : 'Generate a letter first.'); return; }
@@ -674,7 +674,7 @@ document.getElementById('pr-pdf').addEventListener('click', function(){
           var w = 210, h = (canvas.height * w) / canvas.width;
           if(h > 297){ h = 297; }
           pdf.addImage(imgData,'JPEG',0,0,w,h);
-          pdf.save('barua-ya-ombi.pdf');
+          pdf.hifadhi('barua-ya-ombi.pdf');
         });
       }
     }).catch(function(){ printFallback(el); });
@@ -766,5 +766,5 @@ window.loadPdfLibs = window.loadPdfLibs || function(){
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

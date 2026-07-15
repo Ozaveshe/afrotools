@@ -7,7 +7,10 @@ const ROOT = path.resolve(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'data', 'automation', 'automation-registry.json');
 const PUBLIC_CLAIM_REGISTRY_PATH = path.join(ROOT, 'data', 'audits', 'public-claim-registry.json');
 const REPORTS_DIR = path.join(ROOT, 'reports');
-const CODEX_AUTOMATIONS_DIR = 'C:/Users/Oza/.codex/automations';
+const DEFAULT_CODEX_AUTOMATIONS_DIR = 'C:/Users/Oza/.codex/automations';
+const CODEX_AUTOMATIONS_DIR = String(
+  process.env.CODEX_AUTOMATIONS_DIR || DEFAULT_CODEX_AUTOMATIONS_DIR
+).trim() || DEFAULT_CODEX_AUTOMATIONS_DIR;
 
 const REQUIRED_FIELDS = [
   'id',
@@ -353,6 +356,13 @@ function audit() {
   const registeredNetlifyFunctions = new Set();
   const registeredCodexAutomationIds = new Set();
 
+  if (!codexDefinitions.available) {
+    warnings.push(
+      `codex definitions unavailable at ${CODEX_AUTOMATIONS_DIR}; ` +
+      'set CODEX_AUTOMATIONS_DIR to enable local definition checks.'
+    );
+  }
+
   for (const record of records) {
     for (const field of REQUIRED_FIELDS) {
       if (!(field in record)) {
@@ -487,7 +497,8 @@ function audit() {
   console.log(`- Netlify scheduled functions parsed: ${netlifySchedules.size}`);
   console.log(`- package.json scripts parsed: ${packageScripts.size}`);
   console.log(`- GitHub workflow files parsed: ${workflows.size}`);
-  console.log(`- Codex definitions available: ${codexDefinitions.available ? codexDefinitions.definitions.size : 'no direct access'}`);
+  console.log(`- Codex definitions: ${codexDefinitions.available ? `${codexDefinitions.definitions.size} available` : 'unavailable'}`);
+  console.log(`- Codex definitions directory: ${CODEX_AUTOMATIONS_DIR}`);
   console.log(`- Recent Codex run evidence: ${runReport.available ? path.relative(ROOT, runReport.path) : 'missing'}`);
   console.log(`- Records by runner: ${Object.entries(runnerCounts).map(([runner, count]) => `${runner}=${count}`).join(', ')}`);
   console.log(`- Production-required by runner: ${Object.entries(productionCounts).map(([runner, count]) => `${runner}=${count}`).join(', ') || 'none'}`);

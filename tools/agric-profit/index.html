@@ -6,7 +6,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Crop Farming Profit Calculator — African Agriculture</title>
-<meta name="description" content="Calculate crop farming profitability in Africa. Estimate costs, revenue, and ROI for maize, cassava, rice, cocoa, and 12 more crops across Nigerian, Kenyan, and other African markets.">
+<meta name="description" content="Calculate crop farming profit per hectare in Africa. Estimate costs, yield, ROI and break-even for maize, cassava, rice, cocoa and 12 more crops.">
 <meta name="keywords" content="farming profit calculator, agriculture profit, crop farming Africa, maize farming profit, cassava farming, rice farming cost, agribusiness calculator">
 <meta property="og:title" content="Crop Farming Profit Calculator for Africa">
 <meta property="og:description" content="Calculate farming profitability per hectare. Input costs, expected yield, and market prices for 16 African crops.">
@@ -105,10 +105,19 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Crop Farming Profit Calculator — African Agriculture","description":"Calculate crop farming profitability in Africa. Estimate costs, revenue, and ROI for maize, cassava, rice, cocoa, and 12 more crops across Nigerian, Kenyan, and other African markets.","url":"https://afrotools.com/tools/agric-profit/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}
+</script>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate are the default cost estimates?","acceptedAnswer":{"@type":"Answer","text":"Default values represent typical costs for the 2025/2026 planting season based on agricultural extension data and farmer surveys. Actual costs vary significantly by specific location, input supplier, and market conditions. Always adjust the defaults to match your local prices for the most accurate results."}},{"@type":"Question","name":"Should I include family labour as a cost?","acceptedAnswer":{"@type":"Answer","text":"Yes. Even if you don't pay wages to family members, their time has value (opportunity cost). Including family labour at the local daily wage rate gives you a true picture of profitability. Without it, you might think a crop is profitable when you're actually paying yourself below minimum wage."}},{"@type":"Question","name":"How do I account for post-harvest losses?","acceptedAnswer":{"@type":"Answer","text":"African post-harvest losses average 20-40% for perishable crops and 10-20% for grains. Reduce your expected yield by the estimated loss percentage, or add post-harvest loss value to the \"Other Costs\" field. Investing in proper storage (hermetic bags for grains, cold chain for vegetables) can significantly reduce losses."}},{"@type":"Question","name":"What about land rental costs?","acceptedAnswer":{"@type":"Answer","text":"If you rent farmland, include the rental cost in \"Other Costs.\" If you own the land, you may still want to include an opportunity cost (what you could earn by renting it out) for a true economic analysis. Land costs vary enormously — from 5,000 NGN/ha in northern Nigeria to millions per hectare near cities."}},{"@type":"Question","name":"What is the break-even yield and why does it matter?","acceptedAnswer":{"@type":"Answer","text":"Break-even yield is the minimum kilograms per hectare you must harvest and sell (at the current price) to cover your total production costs. If your actual yield falls below this number, you make a loss. This is critical for risk assessment — if the break-even yield is close to typical yields for that crop in your region, the crop is risky. Compare it with the typical yield range from agricultural extension data before committing."}},{"@type":"Question","name":"How do multiple seasons per year affect profitability?","acceptedAnswer":{"@type":"Answer","text":"With 2+ seasons per year (possible with irrigation), land preparation costs are partially amortised but seed, fertilizer, chemicals, and labour costs repeat each season. Some crops like vegetables (tomato, pepper, onion) can yield 2-3 harvests per year under irrigation. Cash flow improves significantly with multiple seasons even if annual ROI stays the same. Use the \"Seasons per Year\" selector to see annual totals."}}]}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/agric-profit/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/agric-profit/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/faida-ya-kilimo/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/agric-profit/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -174,7 +183,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <button type="button" class="btn" onclick="calculate()">Calculate Profit</button>
 </div>
 
-<div id="results" style="display:none">
+<div id="results" style="display:none" aria-live="polite">
 <div class="card">
 <h2>Profit Summary</h2>
 <div class="results-grid" id="summaryCards"></div>
@@ -189,6 +198,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <save-result-button tool-slug="agric-profit" tool-name="Agric Profit"></save-result-button>
 <share-result-button tool-name="Agric Profit" tool-slug="agric-profit"></share-result-button>
 </div>
+<p style="max-width:900px;margin:0 auto 1.5rem;padding:0 4px;font-size:.8rem;color:#64748b">This is an estimate for planning only. Input prices, yields, and post-harvest losses vary by location, season, supplier, and market — adjust the defaults to your local figures before making decisions.</p>
 </div>
 </div>
 
@@ -212,13 +222,19 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <details><summary>What is the break-even yield and why does it matter?</summary><p>Break-even yield is the minimum kilograms per hectare you must harvest and sell (at the current price) to cover your total production costs. If your actual yield falls below this number, you make a loss. This is critical for risk assessment — if the break-even yield is close to typical yields for that crop in your region, the crop is risky. Compare it with the typical yield range from agricultural extension data before committing.</p></details>
 <details><summary>How do multiple seasons per year affect profitability?</summary><p>With 2+ seasons per year (possible with irrigation), land preparation costs are partially amortised but seed, fertilizer, chemicals, and labour costs repeat each season. Some crops like vegetables (tomato, pepper, onion) can yield 2-3 harvests per year under irrigation. Cash flow improves significantly with multiple seasons even if annual ROI stays the same. Use the "Seasons per Year" selector to see annual totals.</p></details>
 </section>
-<afro-related-tools></afro-related-tools>
+<afro-related-tools data-ssr="1" category="agriculture" current="agric-profit">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/agriculture/farm-profit/" data-related-tool data-id="farm-profit-calculator" data-name="Farm Profit/Loss Calculator" data-category="agriculture" data-icon="FP" data-desc="Complete farming profitability analysis — seeds, fertilizer, labor, transport, post-harvest losses. ROI, break-even yiel">Farm Profit/Loss Calculator</a></li><li><a href="/agriculture/cassava-processing/" data-related-tool data-id="cassava-processing-calculator" data-name="Cassava Processing Profit Calculator" data-category="agriculture" data-icon="CP" data-desc="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with loca">Cassava Processing Profit Calculator</a></li><li><a href="/agriculture/crop-yield/" data-related-tool data-id="crop-yield-estimator" data-name="Crop Yield Estimator" data-category="agriculture" data-icon="CY" data-desc="Estimate crop yields across Africa with region-specific data. 40+ crops, 54 countries, FAOSTAT-backed.">Crop Yield Estimator</a></li><li><a href="/agriculture/farm-budget/" data-related-tool data-id="farm-budget" data-name="Smallholder Farm Budget Planner" data-category="agriculture" data-icon="SF" data-desc="Plan your seasonal farming budget with cost breakdown and cash flow timeline. Know exactly how much you need before plan">Smallholder Farm Budget Planner</a></li><li><a href="/agriculture/fish-farming/" data-related-tool data-id="fish-farming-roi" data-name="Fish Farming ROI Calculator" data-category="agriculture" data-icon="FF" data-desc="Calculate aquaculture profitability for catfish, tilapia and trout. Full ROI with local feed prices, fingerling costs, p">Fish Farming ROI Calculator</a></li><li><a href="/agriculture/greenhouse/" data-related-tool data-id="greenhouse-cost-estimator" data-name="Greenhouse Cost Estimator" data-category="agriculture" data-icon="GC" data-desc="Estimate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops, local pri">Greenhouse Cost Estimator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-
-<script src="/assets/js/components/navbar.js?v=efb72dbe" defer></script>
-<script src="/assets/js/components/footer.js?v=c9514a92" defer></script>
-<script src="/assets/js/components/related-tools.js?v=dcd09493" defer></script>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
 <script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
 <script>
 var SYMS={NG:'\u20a6',KE:'KSh',GH:'GH\u20b5',TZ:'TSh',UG:'USh',ZA:'R',ET:'Br',EG:'E\u00a3'};

@@ -5,6 +5,12 @@ const { createEngine } = require('./_factory');
 module.exports = createEngine({
   country: 'LY', countryName: 'Libya', currency: 'LYD',
   source: 'Tax Authority of Libya / PwC',
+  /* source-confidence-stamp:start */
+  lastUpdated: '2026-03-01',
+  sourceCheckedOn: '2025-01-01',
+  nextReviewDate: '2025-04-01',
+  /* source-confidence-stamp:end */
+
   bands: [[12000,0.05],[Infinity,0.10]],
   socialSecurity: [
     { key: 'ssf', label: 'Social Security (5.125%)', rate: 0.05125 },

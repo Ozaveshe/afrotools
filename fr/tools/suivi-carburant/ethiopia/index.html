@@ -166,7 +166,7 @@ window.addEventListener('load', function() {
         </div>
         <div class="fuel-actions">
           <a class="fuel-btn primary" href="/fr/tools/suivi-carburant/?country=ET#fuel-compare">Compare Ethiopia with another African country</a>
-          <a class="fuel-btn" href="/fr/tools/suivi-carburant/?country=ET#generator-cost">Ouvrir generator calculator</a>
+          <a class="fuel-btn" href="/fr/tools/suivi-carburant/?country=ET#generator-cost">Ouvrir generator calculateur</a>
         </div>
       </aside>
     </div>
@@ -187,7 +187,7 @@ window.addEventListener('load', function() {
   </section>
 <section class="fuel-section" aria-labelledby="generator-estimate">
     <h2 id="generator-estimate">Generator cost estimate in Ethiopia</h2>
-    <p lang="en" data-explicit-language-fallback="true">A 5 KVA petrol generator running 8 hours per day for 26 days per month uses about 312 litres monthly in this simple planning model.</p>
+    <p lang="en" data-explicit-language-fallback="true">A 5 KVA petrol generator running 8 hours per day for 26 days per month uses about 312 litres mensuel in this simple planning model.</p>
     <div class="fuel-panels">
       <div class="fuel-panel"><strong>Mensuel estimate</strong><span>ETB 44,304</span><p>$282.67 for comparison.</p></div>
       <div class="fuel-panel"><strong>Fuel used</strong><span>312 litres/month</span><p>Assumes 1.5 litres per hour.</p></div>
@@ -203,11 +203,11 @@ window.addEventListener('load', function() {
   <section class="fuel-section" aria-labelledby="related-tools">
     <h2 id="related-tools">Plan fuel, transport, and backup power</h2>
     <div class="fuel-links">
-      <a class="fuel-link-card" href="/fr/tools/suivi-carburant/#generator-cost">Generator fuel calculator<span>Estimate monthly generator spend.</span></a>
+      <a class="fuel-link-card" href="/fr/tools/suivi-carburant/#generator-cost">Generator fuel calculateur<span>Estimate mensuel generator spend.</span></a>
       <a class="fuel-link-card" href="/fr/tools/tarifs-itineraire/">Route fares<span>Check transport costs affected by fuel.</span></a>
       <a class="fuel-link-card" href="/fr/tools/couts-secours-energie/">Backup power costs<span>Compare generator, LPG, inverter, and solar backups.</span></a>
-      <a class="fuel-link-card" href="/fr/tools/roi-solaire/">Solar ROI calculator<span>Compare solar payback against generator fuel spend.</span></a>
-      <a class="fuel-link-card" href="/tools/cost-of-living/">Cost of living comparison<span>Put fuel and transport into à wider budget.</span></a>
+      <a class="fuel-link-card" href="/fr/tools/roi-solaire/">Solar ROI calculateur<span>Compare solar payback against generator fuel spend.</span></a>
+      <a class="fuel-link-card" href="/fr/tools/cost-of-living/">Cost of living comparison<span>Put fuel and transport into à wider budget.</span></a>
     </div>
   </section>
   <section class="fuel-section" aria-labelledby="related-countries">
@@ -224,7 +224,7 @@ window.addEventListener('load', function() {
     <details><summary>Quel est le prix de l'essence en Ethiopia?</summary><p lang="en" data-explicit-language-fallback="true">The latest available AfroFuel snapshot shows petrol in Ethiopia at ETB 142/L, with a USD comparison of $0.91/L. Prices can vary between Addis Ababa, Dire Dawa, highways, dépôts, and individual stations.</p></details>
     <details><summary>Quel est le prix du diesel en Ethiopia?</summary><p lang="en" data-explicit-language-fallback="true">Diesel is shown at ETB 163.09/L in the latest available snapshot. Use the USD comparison of $1.04/L only for cross-country comparison, not as a pump quote.</p></details>
     <details><summary>How much is LPG in Ethiopia?</summary><p lang="en" data-explicit-language-fallback="true">LPG is listed at ETB 130/kg in the snapshot. AfroFuel displays LPG per kilogram so households and small businesses can compare cylinder refill costs more easily.</p></details>
-    <details><summary>Combien coûte l'utilisation d'un générateur 5 kVA en Ethiopia?</summary><p lang="en" data-explicit-language-fallback="true">Using a simple 5 KVA estimate of 1.5 litres per hour for 8 hours per day and 26 days per month, monthly petrol spend is about ETB 44,304, or $282.67 for comparison.</p></details>
+    <details><summary>Combien coûte l'utilisation d'un générateur 5 kVA en Ethiopia?</summary><p lang="en" data-explicit-language-fallback="true">Using a simple 5 KVA estimate of 1.5 litres per hour for 8 hours per day and 26 days per month, mensuel petrol spend is about ETB 44,304, or $282.67 for comparison.</p></details>
     <details><summary>When were these Ethiopia fuel prices updated?</summary><p lang="en" data-explicit-language-fallback="true">This country page uses the latest available AfroFuel row updated Apr 13, 2026. Treat it as a planning estimate and verify the local pump, dépôt, or supplier price before buying fuel or quoting transport.</p></details>
     <details><summary>Puis-je comparer Ethiopia avec un autre pays africain ?</summary><p lang="en" data-explicit-language-fallback="true">Yes. Use the comparison tool to compare Ethiopia against nearby East Africa markets or any other country in the AfroFuel table.</p></details>
   </section>
@@ -265,7 +265,7 @@ window.addEventListener('load', function() {
 })();
 </script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script data-fr-fuel-planner-script>
 (function(){document.querySelectorAll('[data-fr-fuel-planner]').forEach(function(panel){var currency=panel.getAttribute('data-currency')||'';var output=panel.querySelector('[data-fuel-planner-output]');var type=panel.querySelector('[name="fuel_type"]');var litres=panel.querySelector('[name="litres_per_day"]');var days=panel.querySelector('[name="days_per_month"]');function n(el,fallback){var value=el&&el.value?Number(String(el.value).replace(',', '.')):fallback;return Number.isFinite(value)&&value>0?value:fallback;}function price(){var option=type&&type.options[type.selectedIndex];return option?Number(option.getAttribute('data-price')||0):0;}function fuelLabel(){var option=type&&type.options[type.selectedIndex];return option?option.textContent:'carburant';}function fmt(value){try{return new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(value);}catch(err){return Math.round(value).toString();}}function render(){var daily=n(litres,10);var month=n(days,26);var p=price();if(!output||!p){return;}var total=daily*month*p;output.textContent='Estimation locale: '+fmt(total)+' '+currency+' par mois pour '+daily+' litres/jour de '+fuelLabel()+' pendant '+month+' jours. Verifiez le prix local avant achat ou devis.';}panel.addEventListener('input',render);panel.addEventListener('change',render);render();});})();
 </script>

@@ -5,7 +5,7 @@ const path = require("path");
 
 const SITE = "https://afrotools.com";
 
-const PAGES = [
+const CURATED_PAGES = [
   {
     enSlug: "50-30-20-budget",
     frSlug: "budget-50-30-20",
@@ -7536,6 +7536,23 @@ const PAGES = [
     ],
   },
 ];
+
+const COVERAGE_WAVE = require("../data/localization/coverage-wave-2026-07.json");
+const WAVE_PAGES = COVERAGE_WAVE.french.map((page) => ({
+  enSlug: page.enSlug,
+  frSlug: page.frSlug,
+  title: `${page.name} | AfroTools`,
+  name: page.name,
+  description: page.description,
+  eyebrow: "Outil pratique",
+  lead: `Préparez votre démarche avec l’outil « ${page.name} » dans une interface française claire.`,
+  useCase: "Utilisez cette page pour rassembler les informations utiles avant d’ouvrir le flux complet de l’outil.",
+  safety: "Vérifiez les règles, tarifs, sources et hypothèses qui s’appliquent à votre pays avant de prendre une décision.",
+  related: "Consultez aussi l’annuaire français pour trouver les calculateurs et guides associés.",
+  sourceNote: "Cette page localisée s’appuie sur l’outil anglais indiqué. La logique métier reste celle de la source déterministe; les données variables doivent être vérifiées à leur date d’utilisation.",
+  terms: page.originalName && page.originalName !== page.name ? [[page.originalName, page.name]] : [],
+}));
+const PAGES = [...CURATED_PAGES, ...WAVE_PAGES];
 
 const COMMON_TERMS = [
   ["Home", "Accueil"],

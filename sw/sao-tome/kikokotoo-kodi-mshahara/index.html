@@ -30,9 +30,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -415,7 +414,7 @@
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;"><strong>INSS (Instituto Nacional de Segurança Social)</strong> hukusanya michango ya hifadhi ya jamii: wafanyakazi hulipa 6% ya mshahara ghafi na waajiri huchangia 6%, ikigharamia pensheni na mafao ya ugonjwa.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Use the calculator above to estimate your monthly net salary in São Tomé and Príncipe. The tool models INSS deductions for both employee and employer, giving an accurate view of mshahara halisi and total payroll cost.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Use the kikokotoo above to estimate your kila mwezi net salary in São Tomé and Príncipe. The tool models INSS deductions for both employee and employer, giving an accurate view of mshahara halisi and jumla payroll cost.</p>
         </div>
       </div>
       <div class="ng-guide-col">
@@ -423,7 +422,7 @@
           <h3>São Tomé & Príncipe Mabanda ya Kodi</h3>
           <div class="ng-bands-table-wrap"><div>
       <table class="ng-bands-table">
-        <thead><tr><th>Annual Income (STN)</th><th>Kiwango</th></tr></thead>
+        <thead><tr><th>kila mwaka Income (STN)</th><th>Kiwango</th></tr></thead>
         <tbody>
           <tr><td>0 – 2,800,000</td><td>0%</td></tr>
           <tr><td>2,800,001 – 4,200,000</td><td>10%</td></tr>
@@ -908,7 +907,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 <script>window._grossToNet=function(g){var d=isOn('inss')?g*0.06:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);};<\/script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -921,7 +920,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
   const text = `My São Tomé & Príncipe PAYE: Gross STN ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi STN ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sao-tome/st-paye`;
@@ -950,11 +949,11 @@ async function getAI() {
 - Ghafi ya mwezi: STN ${Math.round(R.gross).toLocaleString()}
 - INSS employee (6%): STN ${Math.round(R.inss).toLocaleString()}/mwezi
 - Mapato yanayotozwa kodi after INSS: STN ${Math.round(R.gross - R.inss).toLocaleString()}/mwezi
-- Monthly DGTF tax: STN ${Math.round(R.monthlyPAYE).toLocaleString()}
+- kila mwezi DGTF tax: STN ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: STN ${Math.round(R.netMonthly).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - INSS ya Mwajiri (6%): STN ${Math.round(R.empINSS).toLocaleString()}/mwezi
-- Total employer cost: STN ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
+- jumla employer cost: STN ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
 
 Toa: 1) Muhtasari wa wazi kwa Kiswahili of São Tomé PAYE position 2) Two specific ways to reduce tax liability 3) Jambo moja muhimu la uzingatiaji to know. Chini ya maneno 150. Jibu kwa Kiswahili. Bila markdown wala nyota.`;
 
@@ -966,7 +965,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of São Tomé PAYE position 2) Two speci
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new hitilafu('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1003,7 +1002,7 @@ async function sendChat() {
         messages:CHAT_HISTORY
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new hitilafu('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kujibu.';
     aiEl.textContent = text;
@@ -1093,5 +1092,5 @@ async function sendChat() {
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

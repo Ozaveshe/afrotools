@@ -19,8 +19,57 @@ class AfroRelatedTools extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
   static get observedAttributes() { return ['category','current']; }
-  connectedCallback() { this._render(); }
-  attributeChangedCallback() { if (this.shadowRoot) this._render(); }
+  connectedCallback() {
+    if (this._getSsrTools().length || window.AFRO_RELATED_TOOLS) {
+      this._render();
+      return;
+    }
+    this._deferDataLoad();
+  }
+  disconnectedCallback() {
+    if (this._dataObserver) this._dataObserver.disconnect();
+  }
+  attributeChangedCallback() {
+    if (this.isConnected && (this._getSsrTools().length || window.AFRO_RELATED_TOOLS)) this._render();
+  }
+
+  _deferDataLoad() {
+    const load = () => {
+      if (this._dataObserver) this._dataObserver.disconnect();
+      AfroRelatedTools.loadData().then(() => {
+        if (this.isConnected) this._render();
+      }).catch(() => {
+        // Related links are supplementary. Leave the component empty if the
+        // deferred dataset is unavailable rather than delaying the page.
+      });
+    };
+    if (!('IntersectionObserver' in window)) {
+      window.setTimeout(load, 1200);
+      return;
+    }
+    this._dataObserver = new IntersectionObserver((entries) => {
+      if (entries.some(entry => entry.isIntersecting)) load();
+    }, { rootMargin: '400px 0px' });
+    this._dataObserver.observe(this);
+  }
+
+  static loadData() {
+    if (window.AFRO_RELATED_TOOLS) return Promise.resolve(window.AFRO_RELATED_TOOLS);
+    if (AfroRelatedTools._dataPromise) return AfroRelatedTools._dataPromise;
+    AfroRelatedTools._dataPromise = new Promise((resolve, reject) => {
+      const existing = document.querySelector('script[src*="related-tools-data"]');
+      const script = existing || document.createElement('script');
+      const finish = () => window.AFRO_RELATED_TOOLS ? resolve(window.AFRO_RELATED_TOOLS) : reject(new Error('Related tools data unavailable'));
+      script.addEventListener('load', finish, { once: true });
+      script.addEventListener('error', reject, { once: true });
+      if (!existing) {
+        script.src = '/assets/js/components/related-tools-data.min.js';
+        script.async = true;
+        document.head.appendChild(script);
+      }
+    });
+    return AfroRelatedTools._dataPromise;
+  }
 
   // Per-category visual identity (matches tool-registry.js category values)
   _cat(c) {
@@ -64,11 +113,28 @@ class AfroRelatedTools extends HTMLElement {
     return (extMap && imageKey && extMap[imageKey]) || '';
   }
 
+  _getSsrTools() {
+    if (this.getAttribute('data-ssr') !== '1') return [];
+    const category = this.getAttribute('category') || '';
+    return Array.from(this.querySelectorAll('[data-related-tools-ssr] a[data-related-tool]')).map(link => ({
+      id: link.getAttribute('data-id') || '',
+      name: link.getAttribute('data-name') || link.textContent.trim(),
+      icon: link.getAttribute('data-icon') || '',
+      desc: link.getAttribute('data-desc') || '',
+      href: link.getAttribute('href') || '#',
+      category: link.getAttribute('data-category') || category,
+      lang: document.documentElement.lang || 'en'
+    })).filter(tool => tool.name && tool.href !== '#').slice(0, 6);
+  }
+
   _getTools() {
+    const ssrTools = this._getSsrTools();
+    if (ssrTools.length) return ssrTools;
+
     const cat     = this.getAttribute('category') || '';
     const current = this.getAttribute('current')  || '';
     const pageLang = document.documentElement.lang || 'en';
-    const relatedData = (typeof AFRO_RELATED_TOOLS !== 'undefined') ? AFRO_RELATED_TOOLS : null;
+    const relatedData = window.AFRO_RELATED_TOOLS || null;
 
     if (pageLang.toLowerCase().startsWith('ha')) {
       const registry = (typeof AFRO_TOOLS !== 'undefined' && Array.isArray(AFRO_TOOLS)) ? AFRO_TOOLS : HA_RELATED_FALLBACK;

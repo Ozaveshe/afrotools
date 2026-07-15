@@ -27,10 +27,9 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -189,7 +188,7 @@ body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,#fff 44%,#f6f8fc 100%
     <div class="fr-rvb-loading">
       <div class="fr-rvb-loading-card">
         <h3>Chargement du comparateur…</h3>
-        <p>Nous préparons la version française de l'outil. Si le chargement prend trop de temps, <a href="/tools/rent-vs-buy/">ouvrez la version anglaise</a>.</p>
+        <p>Nous préparons la version française de l'outil. Si le chargement prend trop de temps, <a href="/fr/tools/rent-vs-buy/">ouvrez la version anglaise</a>.</p>
       </div>
     </div>
   </div>
@@ -439,7 +438,7 @@ body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,#fff 44%,#f6f8fc 100%
       const doc = new DOMParser().parseFromString(html, 'text/html');
       doc.querySelectorAll('style').forEach(style => document.head.appendChild(style.cloneNode(true)));
       const sourceMount = doc.querySelector('.tool-main') || doc.querySelector('main') || doc.body;
-      mount.innerHTML = sourceMount ? sourceMount.outerHTML : '<div class="fr-rvb-fallback"><div class="fr-rvb-fallback-card"><h3>Chargement impossible</h3><p><a href="/tools/rent-vs-buy/">Ouvrir la version anglaise</a></p></div></div>';
+      mount.innerHTML = sourceMount ? sourceMount.outerHTML : '<div class="fr-rvb-fallback"><div class="fr-rvb-fallback-card"><h3>Chargement impossible</h3><p><a href="/fr/tools/rent-vs-buy/">Ouvrir la version anglaise</a></p></div></div>';
       const externalScripts = Array.from(doc.querySelectorAll('script[src]')).map(script => script.getAttribute('src')).filter(src => src && !/googletagmanager/.test(src));
       for (const src of externalScripts) await loadScript(src);
       loadInlineScripts(doc);
@@ -449,7 +448,7 @@ body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,#fff 44%,#f6f8fc 100%
       observer.observe(mount, { subtree: true, childList: true, characterData: true });
       window.addEventListener('load', scheduleLocalization, { once: true });
     } catch (error) {
-      mount.innerHTML = '<div class="fr-rvb-fallback"><div class="fr-rvb-fallback-card"><h3>Chargement impossible</h3><p>La version française du comparateur n’a pas pu se charger. <a href="/tools/rent-vs-buy/">Ouvrir la version anglaise</a>.</p></div></div>';
+      mount.innerHTML = '<div class="fr-rvb-fallback"><div class="fr-rvb-fallback-card"><h3>Chargement impossible</h3><p>La version française du comparateur n’a pas pu se charger. <a href="/fr/tools/rent-vs-buy/">Ouvrir la version anglaise</a>.</p></div></div>';
     }
   }
   init();

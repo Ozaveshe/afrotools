@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <link rel="stylesheet" href="/assets/css/fintech-payment-focus.css?v=ec3defef">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -96,39 +96,9 @@ details[open] summary::after{content:'\2212'}
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/payment-gateway.webp">
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How should I use Payment Gateway Fee Compare?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Compare fees, settlement speed, chargeback risk, and customer fit before choosing a payment route. Use the visible inputs to create a planning summary, then verify the assumptions before acting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I verify before acting on Payment Gateway Fee Compare?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Payment estimate only. Confirm provider pricing, settlement timing, reversal rules, taxes, and fraud controls before using."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Payment Gateway Fee Compare an official result?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome."
-      }
-    }
-  ],
-  "url": "https://afrotools.com/tools/payment-gateway/"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Payment Gateway Fee Compare?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Payment Gateway Fee Compare then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Payment Gateway Fee Compare?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Payment Gateway Fee Compare free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"Which payment gateway is best for Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Paystack (acquired by Stripe) and Flutterwave are the most widely used in Nigeria. Paystack charges 1.5% + ₦100 (capped at ₦2,000) for local cards. Flutterwave charges similar rates. For high volumes, negotiate enterprise rates. Interswitch (Quickteller) is also popular for USSD and card payments targeting mass market."}},{"@type":"Question","name":"Which gateway is best for East Africa?","acceptedAnswer":{"@type":"Answer","text":"For Kenya, Pesapal and DPO Pay cover M-Pesa well. Flutterwave has expanded M-Pesa integration. Cellulant (Tingg) is strong across East Africa for mobile money. For Tanzania, Selcom and Azam Pay are popular. Pesapal covers Uganda, Rwanda, Tanzania, and Kenya with a single integration."}},{"@type":"Question","name":"What is MDR (Merchant Discount Rate)?","acceptedAnswer":{"@type":"Answer","text":"MDR is the fee the payment gateway or acquirer charges the merchant for processing card transactions. It's expressed as a % of the transaction value, often plus a flat fee. For example, 1.5% + ₦100 means on a ₦10,000 transaction the merchant pays ₦150 + ₦100 = ₦250. The MDR covers interchange fees paid to the card-issuing bank, scheme fees (Visa/Mastercard), and the acquirer's margin."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/payment-gateway/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/payment-gateway/">
@@ -189,7 +159,7 @@ details[open] summary::after{content:'\2212'}
       </div>
     </div>
     <button type="button" class="btn-calc" onclick="calcGateway()">Compare Gateways</button>
-    <div class="results" id="pg-results">
+    <div class="results" id="pg-results" role="region" aria-live="polite" aria-label="Gateway comparison results">
       <div class="winner-card" id="pg-winner">
         <div class="winner-icon">🏆</div>
         <div>
@@ -204,7 +174,7 @@ details[open] summary::after{content:'\2212'}
         <div class="metric"><div class="metric-val" id="pg-annual-saving"></div><div class="metric-label">Annual Saving (best vs worst)</div></div>
       </div>
       <table class="gw-table" id="pg-table"></table>
-      <div class="info-box">Rates shown are approximate standard published rates. Enterprise rates are typically lower at high volumes (>$50K/month). Always check the latest pricing on provider websites as rates change frequently.</div>
+      <div class="info-box"><strong>Source:</strong> Standard published rates from each provider's pricing pages (Paystack, Flutterwave, Peach Payments, DPO Pay, Pesapal, Cellulant Tingg, Interswitch, PayGate), reviewed July 2026. Enterprise rates are typically lower at high volumes (&gt;$50K/month). Fees are indicative and change — confirm on the provider's pricing page before you rely on them.</div>
     </div>
   </div>
   <div class="card">
@@ -214,10 +184,10 @@ details[open] summary::after{content:'\2212'}
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Payment comparison workflow</span>
-      <h2>Payment Gateway Fee Compare decision workspace</h2>
-      <p>Compare fees, settlement speed, chargeback risk, and customer fit before choosing a payment route. This panel is tuned for payment gateway fee compare so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Payment Gateway Fee Compare: payment comparison ready with fees, settlement, dispute, and customer-channel notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: methodology, disclaimer, sources, saveExport, businessCta.</li><li>Source note: payment provider, regulator, bank, and merchant-term references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Payment estimate only. Confirm provider pricing, settlement timing, reversal rules, taxes, and fraud controls before using. Source/reference: payment provider, regulator, bank, and merchant-term references.</p>
+      <h2>Payment Gateway Fee Compare: quick guide</h2>
+      <p>Not sure how to get the most from the Payment Gateway Fee Compare? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
+      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Payment Gateway Fee Compare takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
+      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
     </div>
     <form class="df-form" data-df-form="payment-gateway">
       <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
@@ -225,20 +195,28 @@ details[open] summary::after{content:'\2212'}
       <label>Fee percent<input name="fee" type="number" value="1.5" min="0" step="any" aria-label="Fee percent"></label>
       <label>Channel<select name="channel" aria-label="Channel"><option value="POS">POS</option><option value="bank transfer">bank transfer</option><option value="mobile money">mobile money</option><option value="card">card</option></select></label>
       <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="payment-gateway" data-df-base="Payment Gateway Fee Compare: payment comparison ready with fees, settlement, dispute, and customer-channel notes." aria-live="polite">Payment Gateway Fee Compare: payment comparison ready with fees, settlement, dispute, and customer-channel notes.</output>
+      <output class="df-result" data-df-result="payment-gateway" data-df-base="Payment Gateway Fee Compare — enter your details above to see your result." aria-live="polite">Payment Gateway Fee Compare — enter your details above to see your result.</output>
       <div class="df-actions"><button type="button" data-df-copy="payment-gateway">Copy summary</button></div>
     </form>
   </div>
 </section>
 <section class="df-faq" aria-labelledby="payment-gateway-faq-title">
   <h2 id="payment-gateway-faq-title">Payment Gateway Fee Compare FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How should I use this?</summary><p>Compare fees, settlement speed, chargeback risk, and customer fit before choosing a payment route. Use it to pressure-test payment gateway numbers before committing money, paperwork, or plans.</p></details><details><summary>What should I verify?</summary><p>Payment estimate only. Confirm provider pricing, settlement timing, reversal rules, taxes, and fraud controls before using.</p></details><details><summary>Is this official?</summary><p>No. It is an educational planning workflow, not an official filing, quote, legal decision, or guaranteed outcome.</p></details></div>
+  <div class="df-faq__grid"><details><summary>How do I use the Payment Gateway Fee Compare?</summary><p>Enter your amounts, rates and dates in the fields above. The Payment Gateway Fee Compare then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Payment Gateway Fee Compare?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Payment Gateway Fee Compare free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
 </section>
     <div class="faq-item"><details><summary>Which payment gateway is best for Nigeria?</summary><div class="faq-a">Paystack (acquired by Stripe) and Flutterwave are the most widely used in Nigeria. Paystack charges 1.5% + ₦100 (capped at ₦2,000) for local cards. Flutterwave charges similar rates. For high volumes, negotiate enterprise rates. Interswitch (Quickteller) is also popular for USSD and card payments targeting mass market.</div></details></div>
     <div class="faq-item"><details><summary>Which gateway is best for East Africa?</summary><div class="faq-a">For Kenya, Pesapal and DPO Pay cover M-Pesa well. Flutterwave has expanded M-Pesa integration. Cellulant (Tingg) is strong across East Africa for mobile money. For Tanzania, Selcom and Azam Pay are popular. Pesapal covers Uganda, Rwanda, Tanzania, and Kenya with a single integration.</div></details></div>
     <div class="faq-item"><details><summary>What is MDR (Merchant Discount Rate)?</summary><div class="faq-a">MDR is the fee the payment gateway or acquirer charges the merchant for processing card transactions. It's expressed as a % of the transaction value, often plus a flat fee. For example, 1.5% + ₦100 means on a ₦10,000 transaction the merchant pays ₦150 + ₦100 = ₦250. The MDR covers interchange fees paid to the card-issuing bank, scheme fees (Visa/Mastercard), and the acquirer's margin.</div></details></div>
   </div>
 </div>
+<afro-related-tools data-ssr="1" category="fintech" current="payment-gateway">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/loan-shark-compare/" data-related-tool data-id="loan-shark-compare" data-name="Loan Shark vs Bank Rate" data-category="fintech" data-icon="LS" data-desc="Compare informal moneylender rates vs bank loans vs fintech apps. True APR calculator showing hidden cost of predatory l">Loan Shark vs Bank Rate</a></li><li><a href="/tools/mobile-vs-bank/" data-related-tool data-id="mobile-vs-bank" data-name="Mobile Money vs Bank Transfer" data-category="fintech" data-icon="MM" data-desc="Compare M-Pesa, MTN MoMo, Airtel Money vs bank transfer fees for domestic and cross-border payments across Africa.">Mobile Money vs Bank Transfer</a></li><li><a href="/tools/digital-lending/" data-related-tool data-id="digital-lending" data-name="Digital Lending App Rates" data-category="fintech" data-icon="DL" data-desc="Compare digital lending apps (Fuliza, FairMoney, Carbon, PalmCredit) — true APR, fees, repayment periods.">Digital Lending App Rates</a></li><li><a href="/tools/fixed-deposit/" data-related-tool data-id="fixed-deposit" data-name="Fixed Deposit Rate Comparator" data-category="fintech" data-icon="FD" data-desc="Compare fixed deposit and savings account interest rates across African banks. 30/60/90/180/365-day tenors, 20+ banks.">Fixed Deposit Rate Comparator</a></li><li><a href="/tools/microfinance-loan/" data-related-tool data-id="microfinance-loan" data-name="Microfinance Loan Calculator" data-category="fintech" data-icon="ML" data-desc="Calculate microfinance loan repayments for African MFIs. Flat vs reducing balance, group vs individual loans.">Microfinance Loan Calculator</a></li><li><a href="/tools/sacco-calc/" data-related-tool data-id="sacco-calc" data-name="SACCO/Credit Union Calculator" data-category="fintech" data-icon="SC" data-desc="Calculate SACCO loan eligibility, dividend projections, and savings growth. Kenya, Uganda, Tanzania, Rwanda SACCOs.">SACCO/Credit Union Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script>
 var GATEWAYS=[
@@ -297,7 +275,8 @@ function calcGateway(){
   document.getElementById('pg-results').classList.add('on');
 }
 </script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=ac993f48" defer></script>
+<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/pages/fintech-payment-focus.js?v=a31b6f88" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

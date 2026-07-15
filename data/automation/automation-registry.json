@@ -1850,6 +1850,32 @@
       ]
     },
     {
+      "id": "github:automation-health",
+      "display_name": "Automation Health Alerting",
+      "runner": "github_actions",
+      "production_required": true,
+      "expected_schedule": "17 */6 * * *",
+      "netlify_function": null,
+      "github_workflow": "automation-health.yml",
+      "codex_automation_id": null,
+      "sla_hours": 12,
+      "product_surface": "workspace_ops",
+      "public_claims_supported": [],
+      "live_data_tables_or_blobs": [
+        "public.live_data_store",
+        "public.scraper_runs",
+        "public.market_data_source_runs",
+        "reports/live-automation-health-latest.json"
+      ],
+      "health_endpoint": null,
+      "owner_category": "Workspace automation operations",
+      "severity_if_stale": "p1",
+      "validation_commands": [
+        "npm run automation:live-health:strict",
+        "npm run audit:automation-registry"
+      ]
+    },
+    {
       "runner": "manual",
       "production_required": false,
       "expected_schedule": "manual release or incident review",

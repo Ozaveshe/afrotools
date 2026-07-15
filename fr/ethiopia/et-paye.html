@@ -32,9 +32,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -92,6 +91,7 @@
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js?v=8515a010" defer></script>
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/ethiopia/et-paye">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/ethiopia/et-paye">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/ethiopia/et-paye">
@@ -238,8 +238,8 @@ window.addEventListener('load', function() {
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">mensuel</button>
+            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">annuel</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
@@ -302,7 +302,7 @@ window.addEventListener('load', function() {
 <!-- ERCA TAX BANDS -->
       <div class="card bands-card">
         <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">ERCA 2025/26 Monthly Bands</span>
+          <span class="card-title">ERCA 2025/26 mensuel Bands</span>
           <span class="tog-arrow">▾</span>
         </div>
         <div class="bands-body">
@@ -522,6 +522,8 @@ window.addEventListener('load', function() {
 
 <!-- TOOL_VERIFICATION_PANEL_START -->
 <section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="et-paye-fr">
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="paye-et-source" data-source-meta-compact="true"></div>
   <div class="container">
     <div class="tool-verification-card">
       <div class="tool-verification-head">
@@ -1007,17 +1009,17 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   const url  = URL.createObjectURL(blob);
   const w    = window.open(url,'_blank');
   if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.print()}catch(e){}},1200);
+    w.addEventListener('load',()=>{setTimeout(()=>{w.imprimer();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.imprimer()}catch(e){}},1200);
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── partager ─────────────────────────────────────────────────────
 function shareResult() {
-  if (!RESULT) return;
-  const text = `Mon PAYE Éthiopie récapitulatif : Brut ETB ${Math.round(RESULT.gross).toLocaleString()}/mo → Net ETB ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/ethiopia/et-paye`;
-  if (navigator.share) {
-    navigator.share({title:'Mon PAYE Éthiopie',text,url:'https://afrotools.com/fr/ethiopia/et-paye'});
+  if (!résultat) return;
+  const text = `Mon PAYE Éthiopie récapitulatif : Brut ETB ${Math.round(résultat.gross).toLocaleString()}/mo → Net ETB ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/ethiopia/et-paye`;
+  if (navigator.partager) {
+    navigator.partager({title:'Mon PAYE Éthiopie',text,url:'https://afrotools.com/fr/ethiopia/et-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('etPartagerBtn');
@@ -1028,8 +1030,8 @@ function shareResult() {
 
 // ── AI ADVISOR ────────────────────────────────────────────────
 async function getAI() {
-  if (!RESULT) return;
-  const R   = RESULT;
+  if (!résultat) return;
+  const R   = résultat;
   const btn = document.getElementById('aiBtn');
   const respEl = document.getElementById('aiResp');
 
@@ -1058,7 +1060,7 @@ Donnez : 1) Résumé clair en français de la situation PAYE 2) Deux moyens lég
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new erreur('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Impossible de générer l’analyse.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1103,7 +1105,7 @@ async function sendChat() {
   } catch { aiEl.textContent='Erreur réseau. Please try again.'; }
 }
 
-document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='saisissez')calculer();});
 
 // Net-to-Brut : register forward function
 window._grossToNet = function(g) {

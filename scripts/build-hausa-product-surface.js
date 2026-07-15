@@ -60,11 +60,11 @@ function bridgePage(bridge) {
 <meta name="robots" content="noindex, follow">
 <title>${escapeHtml(bridge.title)} — gadar Hausa | AfroTools</title>
 <meta name="description" content="${escapeHtml(bridge.description)}">
-<link rel="stylesheet" href="/assets/css/design-system.css">
+<link rel="stylesheet" href="/assets/css/design-system.min.css">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css">
 <script src="/assets/js/data/african-countries.js" defer></script>
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
 <style>.ha-bridge{max-width:760px;margin:auto;padding:64px 20px 88px}.ha-bridge h1{font-size:clamp(2rem,7vw,3.5rem);line-height:1.05}.ha-bridge p{line-height:1.75}.ha-bridge-warning{padding:18px;border:1px solid #e7b84f;border-radius:14px;background:#fff8e6}.ha-bridge-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.ha-bridge-actions a{display:inline-flex;min-height:44px;align-items:center;padding:10px 16px;border-radius:10px;background:#0062cc;color:#fff;font-weight:800;text-decoration:none}.ha-bridge-actions a.alt{background:#fff;color:#075fb8;border:1px solid #9dc4ec}</style>
 <link rel="canonical" href="https://afrotools.com${bridge.route}">
 <meta name="afrotools-locale-coverage" content="english-fallback">

@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/data/legal/country-legal-index.js?v=02e28276"></script>
 <script src="/engines/legal-engine.js?v=cade292f"></script>
 <script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
@@ -42,6 +42,7 @@
 </style>
 <link rel="canonical" href="https://afrotools.com/sw/zana/mkataba-wa-wanahisa/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/shareholder-agreement/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-de-pacte-d-actionnaires/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mkataba-wa-wanahisa/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/shareholder-agreement/">
 </head>
@@ -84,7 +85,7 @@
   <div class="field"><label for="founderB">Mwanahisa 2</label><input class="input" id="founderB" placeholder="Jina"></div>
   <div class="field"><label for="sharesB">Hisa za mwanahisa 2</label><input class="input" id="sharesB" type="number" min="0" value="5000"></div>
   <div class="field"><label for="totalShares">Jumla ya hisa</label><input class="input" id="totalShares" type="number" min="1" value="10000"></div>
-  <div class="field"><label for="vesting">Vesting</label><select class="select" id="vesting"><option value="none">Hakuna vesting</option><option value="4 years with 1 year cliff">Miaka 4 na cliff ya mwaka 1</option><option value="3 years monthly vesting">Miaka 3, vesting kila mwezi</option></select></div>
+  <div class="field"><label for="vesting">Vesting</label><select class="select" id="vesting"><option value="none">Hakuna vesting</option><option value="4 years with 1 year cliff">Miaka 4 na cliff ya mwaka 1</option><option value="3 years kila mwezi vesting">Miaka 3, vesting kila mwezi</option></select></div>
   <div class="field"><label for="drag">Drag-along threshold</label><input class="input" id="drag" placeholder="Mfano: 75% ya wanahisa"></div>
   <div class="field full"><label for="reserved">Mambo yanayohitaji idhini maalum</label><textarea class="textarea" id="reserved" placeholder="Uuzaji wa hisa, mikopo mikubwa, mabadiliko ya articles, ajira za wakurugenzi, matumizi makubwa."></textarea></div>
 </div><button class="btn" type="button" onclick="generateShareholder()">Tengeneza mkataba wa wanahisa</button>
@@ -136,10 +137,10 @@ function n(id){var x=parseFloat(v(id));return isNaN(x)?0:x;}
 function radio(name){var el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:'';}
 function money(amount, currency){return currency+' '+Number(amount||0).toLocaleString('en-US',{maximumFractionDigits:0});}
 function today(){return new Date().toISOString().slice(0,10);}
-function requireFields(ids){for(var i=0;i<ids.length;i++){if(!v(ids[i])){alert('Jaza sehemu muhimu kabla ya kuunda matokeo.');return false;}}return true;}
+function requireFields(ids){for(var i=0;i<ids.length;i++){if(!v(ids[i])){alert('Jaza sehemu muhimu kabla ya kuunda RESULT.');return false;}}return true;}
 function setMetrics(items){var grid=document.getElementById('metricGrid');grid.innerHTML='';items.forEach(function(item){var d=document.createElement('div');d.className='metric';var s=document.createElement('span');s.textContent=item.label;var b=document.createElement('b');b.textContent=item.value;d.appendChild(s);d.appendChild(b);grid.appendChild(d);});}
 function showResult(title, text, metrics){document.getElementById('resultTitle').textContent=title;document.getElementById('resultOutput').textContent=text;setMetrics(metrics||[]);document.getElementById('resultBox').classList.add('on');document.getElementById('resultBox').scrollIntoView({behavior:'smooth',block:'start'});}
-function copyResult(){navigator.clipboard.writeText(document.getElementById('resultOutput').textContent).then(function(){alert('Matokeo yamenakiliwa.');}).catch(function(){alert('Nakili kwa mikono kutoka kwenye kisanduku cha matokeo.');});}
+function copyResult(){navigator.clipboard.writeText(document.getElementById('resultOutput').textContent).then(function(){alert('Matokeo yamenakiliwa.');}).catch(function(){alert('Nakili kwa mikono kutoka kwenye kisanduku cha RESULT.');});}
 function printResult(){window.print();}
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('input[type="date"]').forEach(function(el){if(!el.value)el.value=today();});});
 
@@ -172,5 +173,5 @@ v('reserved')||'Taja maamuzi yanayohitaji idhini maalum kabla ya saini.',
 'Katibu wa kampuni au wakili akague usajili wa kampuni kabla ya kutegemea rasimu hii.'
 ].join('\n');showResult('Mkataba wa wanahisa',text,[{label:v('founderA')||'Mwanahisa 1',value:pctA+'%'},{label:v('founderB')||'Mwanahisa 2',value:pctB+'%'},{label:'Vesting',value:v('vesting')}]);}
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

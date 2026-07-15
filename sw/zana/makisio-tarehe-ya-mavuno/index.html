@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script src="/data/agriculture/country-index.js?v=332e9259" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" defer></script>
 <style>
@@ -90,7 +90,7 @@ case 'farmLoans':var surplus=n('seasonRevenue')-n('seasonCosts')-n('existingDebt
 case 'farmPayroll':var gross=n('workers')*n('dailyWage')*n('days');var ded=gross*n('deductionsPct')/100;var emp=gross*n('employerPct')/100;setResult(money(gross+emp),'Gharama ya mishahara kwa mwezi',[['Gross wages',money(gross)],['Makato',money(ded)],['Net pay',money(gross-ded)],['Michango ya mwajiri',money(emp)]],'Thibitisha PAYE, minimum wage na hifadhi ya jamii kwa nchi yako.');break;
 case 'poultry':var survivors=n('birds')*(1-n('mortality')/100);revenue=survivors*n('salePrice');cost=n('birds')*(n('chickCost')+n('feedCostBird')+n('otherCostBird'));profit=revenue-cost;setResult(money(profit),'Faida ya makadirio ya kuku',[['Kuku wanaouzwa',Math.round(survivors)],['Mapato',money(revenue)],['Gharama',money(cost)],['ROI',pct(cost?profit/cost*100:0)]],'Bei ya chakula na vifo hubadilisha ROI haraka.');break;
 case 'livestockFeed':var roughKg=n('animals')*n('kgDay')*n('roughagePct')/100*n('days');var suppKg=n('animals')*n('kgDay')*(1-n('roughagePct')/100)*n('days');total=roughKg*n('roughagePrice')+suppKg*n('suppPrice');setResult(money(total),'Gharama ya chakula kwa kipindi',[['Roughage',roughKg.toFixed(0)+' kg'],['Supplement',suppKg.toFixed(0)+' kg'],['Gharama kwa siku',money(total/n('days'))],['Mifugo',n('animals').toFixed(0)]],'Ration ya afya inahitaji ushauri wa afisa mifugo.');break;
-case 'fish':var harvest=n('fingerlings')*(1-n('mortality')/100)*n('saleWeight');revenue=harvest*n('priceKg');cost=n('fingerlings')*n('fingerlingCost')+n('feedKg')*n('feedPrice')+n('pondCost');profit=revenue-cost;setResult(money(profit),'Faida ya makadirio ya samaki',[['Kg za kuuza',harvest.toFixed(0)+' kg'],['Mapato',money(revenue)],['Gharama',money(cost)],['ROI',pct(cost?profit/cost*100:0)]],'Ubora wa maji na uwiano wa chakula na uzito vinaweza kubadilisha matokeo.');break;
+case 'fish':var harvest=n('fingerlings')*(1-n('mortality')/100)*n('saleWeight');revenue=harvest*n('priceKg');cost=n('fingerlings')*n('fingerlingCost')+n('feedKg')*n('feedPrice')+n('pondCost');profit=revenue-cost;setResult(money(profit),'Faida ya makadirio ya samaki',[['Kg za kuuza',harvest.toFixed(0)+' kg'],['Mapato',money(revenue)],['Gharama',money(cost)],['ROI',pct(cost?profit/cost*100:0)]],'Ubora wa maji na uwiano wa chakula na uzito vinaweza kubadilisha RESULT.');break;
 case 'greenhouse':var setup=n('area')*n('setupM2');var annual=(n('revenueCycle')-n('runningCycle'))*n('cycles')-setup*n('maintenancePct')/100;var payback=annual>0?setup/annual:0;setResult(money(annual),'Faida ya mwaka ya makadirio',[['Gharama ya kuanzisha',money(setup)],['Mapato ya mwaka',money(n('revenueCycle')*n('cycles'))],['Gharama za uendeshaji',money(n('runningCycle')*n('cycles'))],['Muda wa kurudisha gharama',payback.toFixed(1)+' miaka']],'Kagua maji, soko na usimamizi kabla ya kuwekeza greenhouse.');break;
 case 'cassava':var product=n('freshKg')*n('conversion')/100;revenue=product*n('salePrice');cost=n('freshKg')*n('freshPrice')+n('processingCost')+n('packaging');profit=revenue-cost;setResult(money(profit),'Faida ya usindikaji wa mihogo',[['Bidhaa inayotoka',product.toFixed(0)+' kg'],['Mapato',money(revenue)],['Gharama',money(cost)],['Faida kwa asilimia',pct(revenue?profit/revenue*100:0)]],'Uwiano wa kubadili malighafi na ubora wa bidhaa ndio msingi wa faida.');break;
 case 'exportDocs':checked=0;totalItems=0;document.querySelectorAll('.swa-check input').forEach(function(el){totalItems++; if(el.checked) checked++});score=totalItems?checked/totalItems*100:0;setResult(Math.round(score)+'%','Utayari wa nyaraka',[['Vipengele vilivyokamilika',checked+'/'+totalItems],['Ada za nyaraka',money(n('docFees'))],['Thamani ya mzigo',money(n('shipmentValue'))],['Ada kama % ya mzigo',pct(n('shipmentValue')?n('docFees')/n('shipmentValue')*100:0)]],'Checklist hii si kibali cha kusafirisha nje. Thibitisha na mamlaka, wakala au msafirishaji wa mizigo.');break;
@@ -98,5 +98,5 @@ default:setResult('Tayari','Weka taarifa kisha kokotoa',[],'');
 }}
 </script>
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

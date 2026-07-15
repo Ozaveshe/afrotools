@@ -6,6 +6,14 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const REPORT_DIR = path.join(ROOT, 'reports');
+const includePrefixArg = process.argv.find((arg) => arg.startsWith('--include-prefix='));
+const INCLUDE_PREFIXES = includePrefixArg
+  ? includePrefixArg.slice('--include-prefix='.length).split(',').map((value) => value.trim().replace(/\\/g, '/').replace(/^\/+/, '')).filter(Boolean)
+  : [];
+const reportNameArg = process.argv.find((arg) => arg.startsWith('--report-name='));
+const REPORT_NAME = reportNameArg
+  ? reportNameArg.slice('--report-name='.length).replace(/[^a-z0-9-]/gi, '-').replace(/^-+|-+$/g, '')
+  : 'mobile-audit';
 
 const EXCLUDED_DIRS = new Set([
   'node_modules',
@@ -86,6 +94,7 @@ function main() {
     root: ROOT,
     scope: {
       htmlPagesAudited: pageResults.length,
+      includePrefixes: INCLUDE_PREFIXES,
       excludedDirs: Array.from(EXCLUDED_DIRS),
       excludedHtmlPatterns: EXCLUDED_HTML_PATTERNS.map((pattern) => pattern.toString()),
     },
@@ -101,14 +110,14 @@ function main() {
   };
 
   fs.mkdirSync(REPORT_DIR, { recursive: true });
-  writeTextFileWithRetry(path.join(REPORT_DIR, 'mobile-audit.json'), JSON.stringify(report, null, 2) + '\n');
-  writeTextFileWithRetry(path.join(REPORT_DIR, 'mobile-audit.md'), renderMarkdown(report));
+  writeTextFileWithRetry(path.join(REPORT_DIR, `${REPORT_NAME}.json`), JSON.stringify(report, null, 2) + '\n');
+  writeTextFileWithRetry(path.join(REPORT_DIR, `${REPORT_NAME}.md`), renderMarkdown(report));
 
   console.log(`Mobile audit complete for ${pageResults.length} HTML pages`);
   console.log(`  Issue-bearing pages: ${summary.pagesWithIssues}`);
   console.log(`  Top cluster: ${report.topIssueClusters[0] ? report.topIssueClusters[0].label : 'none'}`);
-  console.log('  Output JSON: reports/mobile-audit.json');
-  console.log('  Output Markdown: reports/mobile-audit.md');
+  console.log(`  Output JSON: reports/${REPORT_NAME}.json`);
+  console.log(`  Output Markdown: reports/${REPORT_NAME}.md`);
 }
 
 function writeTextFileWithRetry(filePath, contents) {
@@ -135,6 +144,7 @@ function collectHtmlPages() {
   walk(ROOT, (absPath, relPath) => {
     if (!/\.html$/i.test(relPath)) return;
     if (shouldExcludeHtml(relPath)) return;
+    if (INCLUDE_PREFIXES.length && !INCLUDE_PREFIXES.some((prefix) => relPath.startsWith(prefix))) return;
     const page = classifyPage(relPath);
     if (page.isInternal) return;
     pages.push(page);
@@ -173,7 +183,7 @@ function classifyPage(relPath) {
   const isOfflineFallback = /(^|\/)offline\.html$/i.test(relPath);
   const isAppLike = (isTool && parts.length > 2 && fileName !== 'index.html') || /(^|\/)app\.html$/i.test(relPath);
   const isProStandaloneShell = relPath.startsWith('pro/apps/') || /^pro\/(?:workspace|settings|team|vault)\//i.test(relPath);
-  const language = parts[0] === 'fr' ? 'fr' : parts[0] === 'sw' ? 'sw' : 'en';
+  const language = ['fr', 'sw', 'ha', 'yo'].includes(parts[0]) ? parts[0] : 'en';
   const route = toRoute(relPath);
   const family = getFamily(relPath, { isWidget, isAppLike });
 
@@ -265,6 +275,16 @@ function analyzePage(page) {
     ...linkedAssets.js.map(loadAsset),
     ...inlineScriptEntries.map((entry) => ({ path: entry.path, text: entry.text, sourcePath: entry.path })),
   ];
+
+  // afro-navbar loads this stylesheet at runtime for the two published locale
+  // families. Include it in the static audit so the report models the cascade
+  // users receive without requiring a browser pass for every localized route.
+  if (['ha', 'sw'].includes(page.language)
+      && (/<afro-navbar\b/i.test(html)
+        || linkedAssets.js.some((assetPath) => FOUNDATION_JS_PATTERNS.some((pattern) => pattern.test(assetPath))))
+      && fs.existsSync(path.join(ROOT, 'assets/css/localized-mobile.css'))) {
+    cssEntries.push(loadAsset('assets/css/localized-mobile.css'));
+  }
 
   const cssText = cssEntries.map((entry) => entry.text).join('\n');
   const jsText = jsEntries.map((entry) => entry.text).join('\n');

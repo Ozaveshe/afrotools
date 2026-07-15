@@ -17,10 +17,9 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-
+<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 100%);padding:44px 0 36px;overflow:hidden}
@@ -147,11 +146,14 @@ h1 em{color:#fca5a5;font-style:normal}
   ]
 }
 </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How this is calculated (Punnett method)","acceptedAnswer":{"@type":"Answer","text":"Each parent passes one of their two haemoglobin alleles (A, S, or C) to the child, at random. The 2x2 grid above crosses Partner 1's two alleles (rows) against Partner 2's two alleles (columns), giving four equally likely combinations (each 25%). Cells are grouped by genotype to produce the probability breakdown. Example: AS x AS gives AA, AS, AS, SS = 25% AA (normal), 50% AS (carrier), 25% SS (disease). These are per-pregnancy probabilities and are independent for each child; they do not predict any single pregnancy's outcome."}},{"@type":"Question","name":"Can two AS carriers have healthy children?","acceptedAnswer":{"@type":"Answer","text":"Yes, but each pregnancy has a 25% chance of producing a child with SS (sickle cell disease), 50% chance of AS (carrier), and 25% chance of AA (normal). There is no way to guarantee the outcome for any individual pregnancy without assisted reproductive techniques like PGD (preimplantation genetic diagnosis)."}},{"@type":"Question","name":"Should AS + AS couples avoid marriage?","acceptedAnswer":{"@type":"Answer","text":"This is a personal decision that should be made with full information and genetic counselling. While the risk is real (25% per pregnancy), some couples choose to proceed with awareness. Options include genetic counselling, PGD/IVF, prenatal testing, and newborn screening for early treatment."}},{"@type":"Question","name":"Is AA + AS safe?","acceptedAnswer":{"@type":"Answer","text":"Yes. When one partner is AA, no child can have sickle cell disease (SS). Children will either be AA (50%) or AS (50%). AS carriers live normal, healthy lives and typically have no symptoms."}},{"@type":"Question","name":"Can sickle cell disease be cured?","acceptedAnswer":{"@type":"Answer","text":"Bone marrow transplant can cure sickle cell disease but is expensive, risky, and requires a compatible donor. Gene therapy is showing promising results in clinical trials. Hydroxyurea medication significantly reduces complications. In Africa, access to treatment is improving but remains limited in many areas."}}]}
+</script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
 <meta name="tool-id" content="sickle-cell">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/sickle-cell/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/sickle-cell/">
@@ -182,8 +184,8 @@ h1 em{color:#fca5a5;font-style:normal}
 <option value="SC">SC (Haemoglobin SC Disease)</option>
 <option value="CC">CC (Haemoglobin C Disease)</option>
 </select></div>
-<div class="field"><label class="f-label">Partner 2 Genotype</label>
-<select id="parent2" class="f-select" aria-label="Parent2">
+<div class="field"><label class="f-label" for="parent2">Partner 2 Genotype</label>
+<select id="parent2" class="f-select" aria-label="Partner 2 genotype">
 <option value="AA">AA (Normal)</option>
 <option value="AS" selected>AS (Sickle Cell Carrier)</option>
 <option value="SS">SS (Sickle Cell Disease)</option>
@@ -201,6 +203,13 @@ h1 em{color:#fca5a5;font-style:normal}
 <div id="punnettSquare"></div>
 <div class="outcome-grid" id="outcomes"></div>
 <div class="advice" id="advice"></div>
+<details class="sc-method" style="margin-top:16px;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden">
+<summary style="padding:12px 16px;font-size:.8rem;font-weight:700;cursor:pointer;background:#f8fafc;color:var(--afro-dark)">How this is calculated (Punnett method)</summary>
+<div style="padding:14px 16px;font-size:.82rem;color:#475569;line-height:1.7">Each parent passes one of their two haemoglobin alleles (A, S, or C) to the child, at random. The 2x2 grid above crosses Partner 1's two alleles (rows) against Partner 2's two alleles (columns), giving four equally likely combinations (each 25%). Cells are grouped by genotype to produce the probability breakdown. Example: AS x AS gives AA, AS, AS, SS = 25% AA (normal), 50% AS (carrier), 25% SS (disease). These are per-pregnancy probabilities and are independent for each child; they do not predict any single pregnancy's outcome.</div>
+</details>
+<div class="sc-disclaimer" role="note" style="margin-top:16px;padding:14px 16px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:8px;font-size:.82rem;line-height:1.6;color:#991b1b">
+<strong>Educational only &mdash; NOT medical advice.</strong> This tool shows statistical inheritance probabilities and does not diagnose, confirm genotypes, or replace clinical testing. Always confirm your genotype with haemoglobin electrophoresis and consult a qualified doctor and a genetic counsellor before making marriage, pregnancy, or family-planning decisions.
+</div>
 </div></div>
 </div>
 
@@ -254,7 +263,14 @@ h1 em{color:#fca5a5;font-style:normal}
 </div>
 </section>
 
-<afro-related-tools></afro-related-tools>
+<afro-related-tools data-ssr="1" category="health" current="sickle-cell">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <!-- HEALTH-DEEP-IMPROVEMENT:START -->
 <section class="health-deep" aria-labelledby="health-deep-title">
@@ -333,6 +349,9 @@ const GENOTYPE_DATA={
   'CC+CC':{outcomes:{CC:100},compat:'caution',msg:'All children will have CC disease (mild to moderate anaemia). Medical monitoring recommended.'}
 };
 
+// Canonical haemoglobin allele order (A, then S, then C) so genotypes read AS/AC/SC, never SA/CA/CS.
+const ALLELE_ORDER={A:0,S:1,C:2};
+const sortGenotype=(x,y)=>[x,y].sort((a,b)=>ALLELE_ORDER[a]-ALLELE_ORDER[b]).join('');
 const COLORS={AA:'#16a34a',AS:'#d97706',SS:'#dc2626',AC:'#2563eb',SC:'#9333ea',CC:'#64748b'};
 const LABELS={AA:'Normal',AS:'Carrier (Sickle)',SS:'Sickle Cell Disease',AC:'Carrier (Hb C)',SC:'SC Disease',CC:'Hb C Disease'};
 const BG={AA:'#f0fdf4',AS:'#fffbeb',SS:'#fef2f2',AC:'#eff6ff',SC:'#faf5ff',CC:'#f8fafc'};
@@ -360,7 +379,7 @@ function calculate(){
   let cells=[];
   for(let i=0;i<2;i++){
     for(let j=0;j<2;j++){
-      const g=[alleles1[i],alleles2[j]].sort().join('');
+      const g=sortGenotype(alleles1[i],alleles2[j]);
       cells.push(g);
     }
   }
@@ -397,5 +416,6 @@ function calculate(){
 </script>
 <script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 </body>
 </html>

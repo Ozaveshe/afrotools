@@ -15,9 +15,9 @@ const REGISTRY_SCRIPT_RE = /\s*<script\b[^>]*src=["'][^"']*tool-registry(?:\.min
 const REGISTRY_USAGE_RE = /AFRO_TOOLS|AFRO_CATEGORIES|getTotalToolCount|onRegistryReady|afrotools:registry-ready|renderToolGrid|getToolsFor|country-tools(?:\.min)?\.js|agriculture-taxonomy-hub\.js|salary-tax-hub\.js|salary-tax-index\.js|tool-search(?:\.min)?\.js/;
 const LAZY_REGISTRY_RE = /afrotools:lazy-registry|document\.querySelector\(['"]script\[src\*=["']tool-registry["']\]/;
 const RELATED_TOOLS_RE = /related-tools(?:\.min)?\.js|<afro-related-tools\b/i;
+const SSR_RELATED_TOOLS_RE = /<afro-related-tools\b[^>]*\bdata-ssr=["']1["']/i;
 const REGISTRY_SCRIPT_TAG = '<script src="/assets/js/components/tool-registry.min.js" defer></script>';
-const RELATED_DATA_SCRIPT = '<script src="/assets/js/components/related-tools-data.min.js" defer></script>';
-const RELATED_DATA_RE = /<script\b[^>]*src=["'][^"']*related-tools-data\.min\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>/i;
+const RELATED_DATA_RE = /\s*<script\b[^>]*src=["'][^"']*related-tools-data(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>\s*/gi;
 const HEAD_INSERT_RE = /(<script\b[^>]*src=["'][^"']*\/assets\/js\/components\/navbar(?:\.min)?\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>)/i;
 const LIGHTWEIGHT_INDEX_PAGES = new Set([
   'search/index.html',
@@ -57,9 +57,11 @@ for (const htmlPath of htmlFiles) {
   const usesRegistryDirectly = !isLightweightIndexPage && REGISTRY_USAGE_RE.test(original);
   const hasLazyRegistryLoader = LAZY_REGISTRY_RE.test(original);
   const usesRelatedTools = RELATED_TOOLS_RE.test(original);
+  const usesSsrRelatedTools = SSR_RELATED_TOOLS_RE.test(original);
   const hasRegistryScript = REGISTRY_SCRIPT_RE.test(original);
   const hasRelatedDataScript = RELATED_DATA_RE.test(original);
   REGISTRY_SCRIPT_RE.lastIndex = 0;
+  RELATED_DATA_RE.lastIndex = 0;
 
   let updated = original;
   let localRemoved = 0;
@@ -78,16 +80,17 @@ for (const htmlPath of htmlFiles) {
     }
   } else if (hasRegistryScript) {
     updated = updated.replace(REGISTRY_SCRIPT_RE, () => {
-      if (usesRelatedTools) {
-        localReplaced += 1;
-        return hasRelatedDataScript ? '\n' : `\n${RELATED_DATA_SCRIPT}\n`;
-      }
       localRemoved += 1;
       return '\n';
     });
-  } else if (usesRelatedTools && !hasRelatedDataScript) {
-    updated = insertBeforeNavbarOrHead(updated, RELATED_DATA_SCRIPT);
-    localReplaced += 1;
+  }
+
+  // SSR pages render their small injected slice immediately. Legacy/localized
+  // pages let the component fetch this 477 KB dataset near the viewport.
+  if (hasRelatedDataScript) {
+    updated = updated.replace(RELATED_DATA_RE, '\n');
+    RELATED_DATA_RE.lastIndex = 0;
+    localRemoved += 1;
   }
 
   if (updated !== original) {

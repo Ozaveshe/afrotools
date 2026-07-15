@@ -161,7 +161,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <p>Master Nigerian Pidgin with flashcards, live translation, and 200+ real misemo used by 100 million+ speakers across West Africa.</p>
 <div class="hero-stats">
 <div class="hero-stat"><b>200+</b> Phrases</div>
-<div class="hero-stat"><b>10</b> Categories</div>
+<div class="hero-stat"><b>10</b> kategoria</div>
 <div class="hero-stat"><b>100M+</b> Speakers</div>
 </div>
 </section>
@@ -200,7 +200,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="fc-controls">
 <button type="button" class="fc-btn fc-btn-skip" onclick="nextCard(false)">Skip</button>
 <button type="button" class="fc-btn fc-btn-knew" onclick="nextCard(true)">I Knew It &#10003;</button>
-<button type="button" class="fc-btn fc-btn-next" onclick="nextCard(false)">Next &#8594;</button>
+<button type="button" class="fc-btn fc-btn-next" onclick="nextCard(false)">inayofuata &#8594;</button>
 </div>
 <div class="fc-score">
 <span class="correct" id="fcCorrect">&#10003; 0 umejua</span>
@@ -271,10 +271,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <afro-related-tools category="language"></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta>
 <section class="sw-language-limits-note" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #ddd6fe;background:#faf5ff;color:#4c1d95;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Mipaka ya lugha:</strong> Zana hizi husaidia kujifunza, kuandaa rasimu na kulinganisha maandishi. Hazitoi tafsiri iliyothibitishwa, ushauri wa kisheria au kitabibu, wala uthibitisho wa hati rasmi. Kwa lahaja, matamshi, hati za mahakama, visa, shule, afya au mikataba, hakiki na mtafsiri au mtaalamu aliyehitimu.</div></section>
 <afro-footer></afro-footer>
-<div class="toast" id="toast"></div><script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-
-
-<script src="/assets/js/components/navbar.js?v=efb72dbe" defer></script><script src="/assets/js/components/footer.js?v=c9514a92" defer></script><script src="/assets/js/components/related-tools.js?v=dcd09493" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
+<div class="toast" id="toast"></div>
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/related-tools.js?v=4123e336" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
 <script>
 /* ── Phrase Database ── */
 var PHRASES=[
@@ -620,5 +618,5 @@ initPB();
 <script data-language-workbench-script>
 (function(){document.querySelectorAll('[data-language-workbench]').forEach(function(panel){var output=panel.querySelector('[data-language-output]');var status=panel.querySelector('[data-language-status]');var title=panel.getAttribute('data-tool-title')||document.title;function val(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){return [title,'Matini: '+(val('text')||'weka sentensi au namba'),'Muktadha: '+(val('context')||'mazungumzo ya kila siku'),'Hitaji: '+(val('need')||'maana ya awali'),'Tahadhari: si tafsiri iliyothibitishwa; hakiki lahaja, toni, script na matumizi rasmi.'].join(String.fromCharCode(10));}function render(){if(output)output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-language-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Imenakiliwa.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var download=panel.querySelector('[data-language-download]');if(download)download.addEventListener('click',function(){var blob=new Blob([summary()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(title||'language-brief').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.txt';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);});render();});})();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

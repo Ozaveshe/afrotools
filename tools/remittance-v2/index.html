@@ -5,7 +5,7 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Remittance Comparator Pro - Compare Money Transfer Costs</title>
+<title>Remittance Comparator Pro - Compare Money Transfer Costs to Africa</title>
 <meta name="description" content="Compare estimated remittance costs across 10+ providers for African corridors. Review fees, rate margins, and delivery trade-offs before checking a live quote.">
 <meta name="keywords" content="remittance comparison, send money Africa, money transfer estimate, Western Union vs Wise, remittance fees, diaspora money transfer">
 <meta name="robots" content="index, follow">
@@ -28,7 +28,7 @@
   "description": "Compare estimated remittance costs across 10+ providers for 20+ African corridors before checking a live quote.",
   "url": "https://afrotools.com/tools/remittance-v2/",
   "inLanguage": "en",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
   "offers": {
@@ -92,6 +92,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;background:var(--green);color:#fff;transition:all .2s}
 .btn:hover{background:var(--green-dark)}
 .quote-note{max-width:220px;margin:.35rem 0 0;color:#92400e;font-size:.74rem;font-weight:700;line-height:1.35}
+.rate-disclaimer{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:8px;padding:.7rem .9rem;margin:0 0 1rem;color:#92400e;font-size:.82rem;line-height:1.5}
+.rate-disclaimer a{color:var(--green-dark);font-weight:700}
 .freshness-panel{background:#f8fafc;border:1px solid #cbd5e1;border-left:4px solid #f59e0b;border-radius:8px;padding:1rem;margin:0 0 1rem;color:#334155}
 .freshness-panel h3{margin:0 0 .35rem;font-size:.95rem;color:#0A1628}
 .freshness-panel p{margin:0;color:#475569;font-size:.84rem;line-height:1.55}
@@ -179,7 +181,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
 <script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/remittance-v2/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/remittance-v2/">
@@ -190,10 +192,11 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <afro-navbar></afro-navbar>
 <section class="hero">
 <nav class="hero-breadcrumb" aria-label="Breadcrumb"><a href="/">AfroTools</a> <span>/</span> <a href="/uniquely-african/">Uniquely African</a> <span>/</span> Remittance Comparator Pro</nav>
-<h1>Remittance Comparator Pro</h1><p>Compare estimated money transfer costs to Africa, then verify the live provider quote before sending.</p></section>
+<h1>Remittance Comparator Pro: Send Money to Africa Cost Comparison</h1><p>Compare estimated money transfer costs to Africa, then verify the live provider quote before sending.</p></section>
 <div class="container">
 <div class="card">
 <h2>Transfer Details</h2>
+<p class="rate-disclaimer" role="note">Fees, exchange rates and margins shown are indicative estimates, manually maintained (as of March 2026) and may be out of date. Confirm the current fee, rate and delivery time on the provider's site before sending. Corridor benchmark: <a href="https://remittanceprices.worldbank.org/" target="_blank" rel="noopener">World Bank Remittance Prices Worldwide</a>.</p>
 <div class="corridor-presets" aria-label="Common remittance corridors">
 <button type="button" data-corridor-preset="UK:NG:500:3.00:0.8:bank:12:cost">UK to Nigeria</button>
 <button type="button" data-corridor-preset="US:KE:500:2.00:1.2:mobile:12:balanced">US to Kenya</button>
@@ -240,7 +243,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-group"><label for="transferPriority">Priority</label><select id="transferPriority"><option value="cost">Lowest estimated annual cost</option><option value="speed">Fastest estimated delivery</option><option value="balanced">Balanced cost and speed</option></select></div>
 </div>
 </div>
-<div id="results" style="display:none">
+<div id="results" style="display:none" aria-live="polite">
 <div class="card"><h2>Results - Ranked by Estimated Cost</h2><div class="freshness-panel" id="providerFreshness"><h3>Provider freshness</h3><p><strong>Not a live quote.</strong> This comparison uses static provider fee and rate-margin estimates that are manually maintained in AfroTools. No live provider API is used on this page, so ranking is a planning shortlist, not a live provider ranking.</p><div class="freshness-grid"><div class="freshness-item"><span>Provider fees</span><strong>Static estimates</strong></div><div class="freshness-item"><span>Rate margins</span><strong>Manually maintained</strong></div><div class="freshness-item"><span>Quote status</span><strong>Not live verified</strong></div></div></div><div class="action-plan" id="decisionPlan"></div><div class="provider-cards" id="providerCards"></div><div class="savings-note" id="savingsNote"></div></div>
 </div>
 </div>
@@ -320,9 +323,15 @@ async function askAI(preset){
 }
 </script>
 
-<afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=efb72dbe" defer></script><script src="/assets/js/components/footer.js?v=c9514a92" defer></script><script src="/assets/js/components/related-tools.js?v=dcd09493" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
+<afro-related-tools data-ssr="1" category="african" current="remittance-v2">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/afropoints/" data-related-tool data-id="afropoints" data-name="AfroPoints — Earn Money Contributing Data" data-category="african" data-icon="AE" data-desc="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute, earn points, cash out via m">AfroPoints — Earn Money Contributing Data</a></li><li><a href="/tools/remittance-compare/" data-related-tool data-id="remittance-compare" data-name="Remittance Comparator" data-category="african" data-icon="RC" data-desc="Compare Wise, WorldRemit, Western Union and 8 more. Find cheapest way to send money to Africa.">Remittance Comparator</a></li><li><a href="/tools/afroatlas/" data-related-tool data-id="afroatlas" data-name="AfroAtlas — Africa Resource Explorer" data-category="african" data-icon="AA" data-desc="Interactive explorer for African country profiles, GDP, natural resources, trade data, rankings, and side-by-side compar">AfroAtlas — Africa Resource Explorer</a></li><li><a href="/tools/informal-fx-watch/" data-related-tool data-id="informal-fx-watch" data-name="Informal FX Watch" data-category="african" data-icon="IF" data-desc="Track street, BDC, and P2P informal FX spreads across African markets with contributor-backed quotes.">Informal FX Watch</a></li><li><a href="/tools/africa-conflict/" data-related-tool data-id="africa-conflict" data-name="AfroConflict — Conflict Intelligence" data-category="african" data-icon="AC" data-desc="Africa conflict intelligence dashboard — active conflicts, displacement tracker, economic impact, actor networks, scenar">AfroConflict — Conflict Intelligence</a></li><li><a href="/tools/japa-calculator/" data-related-tool data-id="japa-calculator" data-name="Japa Cost Calculator" data-category="african" data-icon="JC" data-desc="Total relocation cost from Africa. 38 origins, 22 destinations, 73 visa pathways. Cost of living, quality of life, Visa ">Japa Cost Calculator</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/related-tools.js?v=4123e336" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
 <script>
 /* Fallback rates (USD base) - manually maintained estimates, updated Mar 2026. */
 const RATES={NG:1535,KE:129,GH:15.5,ZA:18.2,TZ:2720,UG:3750,SN:610,ET:135,CM:610,CI:610,MA:9.9,RW:1380,ZM:27.5,MW:1740,MZ:63.9};

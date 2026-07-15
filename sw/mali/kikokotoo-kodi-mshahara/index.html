@@ -30,9 +30,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
 <script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
-<script src="/assets/js/components/footer.min.js?v=86b11637" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=a7efda9e" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=8a44d94f" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -303,7 +302,7 @@
           <div class="band-row"><span class="band-range">XOF 66,667 – 108,333</span><span class="band-rate">13% kwa kinachozidi 66,666</span></div>
           <div class="band-row"><span class="band-range">XOF 108,334 – 175,000</span><span class="band-rate">25% kwa kinachozidi 108,333</span></div>
           <div class="band-row"><span class="band-range">Zaidi ya XOF 175,000</span><span class="band-rate">36% kwa kinachozidi 175,000</span></div>
-          <p class="band-note">Imehesabiwa kwa mwezi kwa mapato yanayotozwa kodi (ghafi ukiondoa INPS). Annual Kizingiti kisichotozwa kodi: XOF 400,000. INPS mchango wa mfanyakazi (3.6%) deductible before ITS calculation.</p>
+          <p class="band-note">Imehesabiwa kwa mwezi kwa mapato yanayotozwa kodi (ghafi ukiondoa INPS). kila mwaka Kizingiti kisichotozwa kodi: XOF 400,000. INPS mchango wa mfanyakazi (3.6%) deductible before ITS calculation.</p>
         </div>
       </div>
 
@@ -434,7 +433,7 @@
     <div class="ng-guide-grid">
       <div class="ng-guide-col">
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Mali's payroll income tax, known as ITS (Impôt sur les Traitements et Salaires), is administered by DGI (Direction Générale des Impôts). The system uses five monthly progressive bands ranging from 0% to 36%, calculated on taxable income after the INPS mchango wa mfanyakazi (3.6%) is deducted. Employers withhold ITS each month and remit to DGI by the 7th of the following month.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Mali's payroll income tax, known as ITS (Impôt sur les Traitements et Salaires), is administered by DGI (Direction Générale des Impôts). The system uses five kila mwezi progressive bands ranging from 0% to 36%, calculated on taxable income after the INPS mchango wa mfanyakazi (3.6%) is deducted. Employers withhold ITS each month and remit to DGI by the 7th of the following month.</p>
         </div>
         <div class="ng-guide-card">
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Mali hutumia faranga ya CFA ya Afrika Magharibi (XOF), inayotumiwa pia na nchi nyingine saba wanachama wa WAEMU. XOF imefungwa kwa euro kwa kiwango cha 655.957 na inaungwa mkono na Hazina ya Ufaransa, jambo linalosaidia uthabiti wa kiwango cha ubadilishaji. Wafanyakazi wana kizingiti kisichotozwa kodi cha XOF 33,333 kwa mwezi (XOF 400,000 kwa mwaka). Kiwango cha juu cha 36% hutumika juu ya XOF 175,000 kwa mwezi, na ITS ya mwisho inaweza kupunguzwa kwa kutumia unafuu wa hali ya familia uliyochapishwa katika Code Général des Impôts.</p>
@@ -993,7 +992,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=71239a16"><\/script>
 
 </body></html>`;
 
@@ -1006,7 +1005,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   }
 }
 
-// ── SHARE ─────────────────────────────────────────────────────
+// ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
   const text = `Muhtasari wa PAYE wa Mali: Gross XOF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi XOF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/mali/ml-paye`;
@@ -1039,12 +1038,12 @@ async function getAI() {
 - Mapato yanayotozwa kodi after INPS deduction: XOF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
 - ITS before unafuu wa familia: XOF ${Math.round(R.baseMonthlyPAYE).toLocaleString()}
 - Unafuu wa familia (${pct(R.familyReliefRate)}): XOF ${Math.round(R.familyRelief).toLocaleString()}
-- Monthly ITS (PAYE): XOF ${Math.round(R.monthlyPAYE).toLocaleString()}
+- kila mwezi ITS (PAYE): XOF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: XOF ${Math.round(R.netMonthly).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - Secondary employment: ${R.isSecondary ? 'YES — flat 30% applied' : 'No'}
 - INPS ya mwajiri (12%): XOF ${Math.round(R.empSocial).toLocaleString()}/mwezi
-- Total employer cost: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
+- jumla employer cost: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
 
 Toa: 1) Muhtasari wa wazi kwa Kiswahili of ITS position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. No markdown, no asterisks, no bullet symbols.`;
 
@@ -1056,7 +1055,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of ITS position 2) Njia mbili maalum za 
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok) throw new hitilafu('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1192,5 +1191,5 @@ window._grossToNet = function(g) {
   window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

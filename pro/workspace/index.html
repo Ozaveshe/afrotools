@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pro Control Dashboard | AfroTools</title>
-  <meta name="description" content="Start AfroTools Pro work from one account control dashboard with app launcher, payroll status, work queues, usage, and data-vault entry points.">
+  <title>Pro Workspace | AfroTools</title>
+  <meta name="description" content="Your AfroTools Pro workspace: what needs attention today across payroll, sales, finance, events, and compliance, plus every Pro app in one place.">
   <meta name="robots" content="noindex, follow">
   <meta name="tool-id" content="pro-workspace">
   <meta name="tool-category" content="pro">
@@ -18,9 +18,11 @@
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
   <script src="/assets/js/pro-gate.js?v=e4aca7ef"></script>
   <script src="/assets/js/lib/analytics.js?v=776bf234"></script>
-  <script src="/assets/js/lib/pro-app-registry.js?v=ea9b223a"></script>
+  <script src="/assets/js/lib/pro-app-registry.js?v=2e71c13d"></script>
   <script src="/assets/js/lib/pro-daily-os-registry.js?v=b25cffa7"></script>
   <script src="/assets/js/lib/pro-architecture.js?v=921b3113"></script>
+  <script src="/assets/js/lib/pro-home-insights.js?v=dc3dbf48"></script>
+  <script src="/assets/js/components/pro-switcher.js?v=17095027" defer></script>
   <style>
     :root{
       --pc-bg:var(--color-bg,#F8FAFD);
@@ -170,6 +172,20 @@
     .pc-danger-note{border:1px solid #FDE68A;background:var(--pc-amber-soft);color:#78350F;border-radius:var(--pc-radius);padding:10px 11px;font-size:12px;line-height:1.48}
     .pc-note-spaced{margin-top:10px}
     .pc-last-updated{font-size:11px;color:var(--pc-muted);padding:4px 0 12px}
+    .pc-biz-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+    .pc-biz-label{font-size:11px;font-weight:900;color:var(--pc-muted);margin-right:2px}
+    .pc-biz-chip{display:inline-flex;align-items:center;justify-content:center;min-height:32px;border:1px solid var(--pc-line-strong);border-radius:999px;background:#fff;color:#334155;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer}
+    .pc-biz-chip:hover{border-color:var(--pc-blue);color:var(--pc-blue);background:var(--pc-blue-soft)}
+    .pc-biz-chip.active{background:var(--pc-blue);border-color:var(--pc-blue);color:#fff}
+    .pc-today-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .pc-today-card{background:var(--pc-surface);border:1px solid var(--pc-line);border-radius:var(--pc-radius);box-shadow:0 1px 0 rgba(15,23,42,.03);padding:12px;display:flex;flex-direction:column;gap:8px;min-height:132px}
+    .pc-today-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .pc-today-title{font-size:12px;font-weight:900;color:var(--pc-muted);margin:0;line-height:1.3}
+    .pc-today-value{font-size:21px;line-height:1.1;font-weight:900;margin:0}
+    .pc-today-meta{font-size:12px;line-height:1.45;color:var(--pc-muted);margin:0}
+    .pc-today-card a{margin-top:auto;align-self:flex-start}
+    @media(max-width:1280px){.pc-today-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.pc-today-grid{grid-template-columns:1fr}}
     @media(max-width:1280px){
       .pc-app-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
       .pc-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -199,7 +215,7 @@
 <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
 <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
 <script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/pro/workspace/">
 </head>
@@ -273,12 +289,13 @@
           <article class="pc-command">
             <div class="pc-title-row">
               <div>
-                <div class="pc-kicker">Needs attention</div>
-                <h1 class="pc-title">Pro Control Dashboard</h1>
-                <p class="pc-subtitle">A shared operations console for AfroTools Pro users. Payroll is the active account-backed product; control apps and daily operating system workspaces stay clearly labelled as local previews, review packets, or limited previews until their data layers are verified.</p>
+                <div class="pc-kicker">Your workspace</div>
+                <h1 class="pc-title">Your Pro workspace</h1>
+                <p class="pc-subtitle">Everything you run with AfroTools Pro, in one place. Payroll is fully connected to your account today. Other apps save your work on this device and always say so — no surprises about where your data lives.</p>
               </div>
-              <span class="pc-pill online" id="systemModePill">Suite loading</span>
+              <span class="pc-pill online" id="systemModePill">Loading</span>
             </div>
+            <div class="pc-biz-row" id="bizTypeRow" aria-label="What kind of business do you run?"></div>
             <div class="pc-attention-grid">
               <div class="pc-attention-tile">
                 <strong id="attentionCount">0</strong>
@@ -286,11 +303,11 @@
               </div>
               <div class="pc-attention-tile">
                 <strong id="activeWorkspaceCount">0</strong>
-                <span>Known workspaces</span>
+                <span>Businesses and clients</span>
               </div>
               <div class="pc-attention-tile">
                 <strong id="liveAppCount">0/20</strong>
-                <span>Workspaces ready</span>
+                <span>Apps you can open</span>
               </div>
             </div>
             <div class="pc-command-actions">
@@ -307,7 +324,7 @@
               <div>
                 <div class="pc-status-title">Pro status</div>
                 <div class="pc-status-main">Checking access...</div>
-                <p class="pc-status-note">The shared gate is loaded from assets/js/pro-gate.js.</p>
+                <p class="pc-status-note">Checking your plan against your account.</p>
               </div>
               <span class="pc-pill warn">Checking</span>
             </div>
@@ -317,6 +334,17 @@
               <div class="pc-status-line"><span>Last check</span><strong>Not yet</strong></div>
             </div>
           </article>
+        </section>
+
+        <section class="pc-section" id="today" aria-labelledby="today-title">
+          <div class="pc-section-head">
+            <div>
+              <div class="pc-kicker">Today</div>
+              <h2 class="pc-h2" id="today-title">What needs your attention</h2>
+              <p class="pc-section-note" id="todayNote">Live from the work you have saved across your Pro apps.</p>
+            </div>
+          </div>
+          <div class="pc-today-grid" id="todayGrid"></div>
         </section>
 
         <section class="pc-metrics" aria-label="Dashboard metrics">
@@ -342,10 +370,10 @@
           <div class="pc-section-head">
             <div>
               <div class="pc-kicker">App launcher</div>
-              <h2 class="pc-h2" id="apps-title">Pro app launcher</h2>
-              <p class="pc-section-note">Open the Pro workspaces from one place and see current availability labels. Payroll currently has the deepest account data integration; other apps are product previews with explicit data boundaries.</p>
+              <h2 class="pc-h2" id="apps-title">Your Pro apps</h2>
+              <p class="pc-section-note">Open any app from here. Payroll is connected to your account; apps marked "Early preview" keep your work on this device and say so inside the app.</p>
             </div>
-            <span class="pc-pill online" id="registrySummary">20 workspaces tracked</span>
+            <span class="pc-pill online" id="registrySummary">Loading apps</span>
           </div>
           <div class="pc-app-grid" id="appGrid"></div>
         </section>
@@ -354,8 +382,8 @@
           <div class="pc-section-head">
             <div>
               <div class="pc-kicker">Daily operating systems</div>
-              <h2 class="pc-h2" id="daily-os-title">Next ten Pro workspaces</h2>
-              <p class="pc-section-note">A second Pro layer for sellers, events, beauty, food, field service, schools, clinics, faith groups, farms, and family administration. Each workspace has customer segments, paid workflows, moats, and a launch plan.</p>
+              <h2 class="pc-h2" id="daily-os-title">More apps for daily operations</h2>
+              <p class="pc-section-note">Workspaces for sellers, events, beauty, food, field service, schools, clinics, faith groups, farms, and family administration. Early previews are open to explore now.</p>
             </div>
             <a class="pc-btn" href="/pro/apps/daily-os/">Open Daily OS Hub</a>
           </div>
@@ -383,9 +411,9 @@
             <section class="pc-panel" id="build-status" aria-labelledby="build-title">
               <div class="pc-panel-head">
                 <div>
-              <div class="pc-kicker">Availability</div>
-              <h2 class="pc-h2" id="build-title">Every Pro app workspace</h2>
-              <p class="pc-section-note">Availability is intentionally explicit so users can see what is connected, saved on this device, sync-pending, or planned.</p>
+              <div class="pc-kicker">The full picture</div>
+              <h2 class="pc-h2" id="build-title">Every Pro app, honestly labelled</h2>
+              <p class="pc-section-note">What each app can do today and where your data lives — connected to your account, saved on this device, or coming later.</p>
                 </div>
               </div>
               <div class="pc-panel-body">
@@ -394,10 +422,10 @@
                     <thead>
                       <tr>
                         <th>App</th>
-                        <th>Route</th>
-                        <th>State</th>
-                        <th>Availability note</th>
-                        <th>Data connection</th>
+                        <th>Open</th>
+                        <th>Status</th>
+                        <th>What it does today</th>
+                        <th>Where your data lives</th>
                       </tr>
                     </thead>
                     <tbody id="buildTableBody">
@@ -450,7 +478,7 @@
                 <div>
                   <div class="pc-kicker">Data vault</div>
                   <h2 class="pc-h2" id="vault-title">Data entry points</h2>
-                  <p class="pc-section-note">The shared Vault, Team, and Settings routes are live backbone routes. Only payroll has a live save-to-account data lane today.</p>
+                  <p class="pc-section-note">Vault, Team, and Settings are shared across all Pro apps. Only payroll saves to your account today.</p>
                 </div>
               </div>
               <div class="pc-panel-body">
@@ -600,11 +628,34 @@
       return window.AfroProAppRegistry || (window.AfroTools && window.AfroTools.proAppRegistry) || null;
     }
 
+    function insights() {
+      return window.AfroProHomeInsights || (window.AfroTools && window.AfroTools.proHomeInsights) || null;
+    }
+
+    function humanePill(routeStatus, shellState) {
+      var api = insights();
+      if (api && api.humaneStatus) return api.humaneStatus(routeStatus, shellState);
+      return { label: shellState || "Early preview", tone: "local" };
+    }
+
+    function currentBusinessType() {
+      var api = insights();
+      return api && api.getBusinessType ? api.getBusinessType(localStorage) : "";
+    }
+
+    function orderForBusiness(apps) {
+      var api = insights();
+      var type = currentBusinessType();
+      if (!api || !type || !api.orderAppsForBusiness) return apps;
+      return api.orderAppsForBusiness(apps, type);
+    }
+
     function getApps() {
       var api = registry();
-      return (api && api.getApps ? api.getApps() : []).map(function (app) {
+      var apps = (api && api.getApps ? api.getApps() : []).map(function (app) {
         return Object.assign({}, app, appNavOverrides[app.id] || {});
       });
+      return orderForBusiness(apps);
     }
 
     function dailyRegistry() {
@@ -617,7 +668,7 @@
 
     function getDailyApps() {
       var api = dailyRegistry();
-      return api && api.getApps ? api.getApps() : [];
+      return orderForBusiness(api && api.getApps ? api.getApps() : []);
     }
 
     function safeDailyRoute(app) {
@@ -776,7 +827,7 @@
         var mark = create("span", "pc-side-mark", app.mark);
         var copy = create("span", "");
         copy.appendChild(create("span", "pc-side-name", app.shortName || app.name));
-        copy.appendChild(create("span", "pc-side-state", app.routeExists === false ? "Missing route - " + app.shellState : app.shellState));
+        copy.appendChild(create("span", "pc-side-state", humanePill(app.routeStatus, app.shellState).label));
         item.appendChild(mark);
         item.appendChild(copy);
         els.sideAppList.appendChild(item);
@@ -803,12 +854,12 @@
       head.appendChild(pill(isPro ? "Pro active" : "Locked", isPro ? "pro" : "lock"));
       els.proStatusCard.appendChild(head);
 
+      var reasonLabel = insights() && insights().humaneReason ? insights().humaneReason(source) : source;
       var lines = create("div", "pc-status-lines");
       [
         ["Plan", tier],
-        ["Profile source", source],
-        ["Expiry", expires ? dateLabel(expires) : "No expiry returned"],
-        ["Gate file", "assets/js/pro-gate.js"]
+        ["Checked against", reasonLabel],
+        ["Renews or expires", expires ? dateLabel(expires) : "No end date on file"]
       ].forEach(function (row) {
         var line = create("div", "pc-status-line");
         line.appendChild(create("span", "", row[0]));
@@ -870,8 +921,8 @@
       els.usageLive.textContent = String(summary.live || 0);
       els.usageLocal.textContent = String(localRuns);
       els.usageCloud.textContent = String(cloudRuns);
-      els.registrySummary.textContent = String(totalApps) + " workspaces / " + String(archSummary ? archSummary.backboneRoutes : 4) + " backbone routes";
-      els.systemModePill.textContent = state.cloud.source === "api" ? "Payroll live data" : "Device workspace mode";
+      els.registrySummary.textContent = String(totalApps) + " apps";
+      els.systemModePill.textContent = state.cloud.source === "api" ? "Account connected" : "Working on this device";
       els.systemModePill.className = "pc-pill " + (state.cloud.source === "api" ? "real" : "online");
     }
 
@@ -926,7 +977,9 @@
         var card = create("article", "pc-app");
         var top = create("div", "pc-app-top");
         top.appendChild(create("div", "pc-app-mark", app.mark));
-        top.appendChild(pill(isPayroll && (asArray(state.cloud.runs).length || state.local.savedRuns.length) ? "Real data" : app.shellState, isPayroll && (asArray(state.cloud.runs).length || state.local.savedRuns.length) ? "real" : appTone(app)));
+        var hasPayrollData = isPayroll && (asArray(state.cloud.runs).length || state.local.savedRuns.length);
+        var appStatus = humanePill(app.routeStatus, app.shellState);
+        top.appendChild(pill(hasPayrollData ? "Your data is in" : appStatus.label, hasPayrollData ? "real" : appStatus.tone));
         card.appendChild(top);
 
         var titleWrap = create("div", "");
@@ -940,13 +993,6 @@
           tags.appendChild(pill(tag, ""));
         });
         card.appendChild(tags);
-
-        card.appendChild(create("code", "pc-route", app.route));
-        var progress = create("div", "pc-progress");
-        var bar = create("span", "");
-        bar.style.width = Math.max(4, Math.min(100, number(app.readiness))) + "%";
-        progress.appendChild(bar);
-        card.appendChild(progress);
 
         var actions = create("div", "pc-app-actions");
         var openAction = linkButton(appActionLabel(app), safeAppRoute(app), isPayroll && app.routeExists !== false);
@@ -971,7 +1017,8 @@
         var card = create("article", "pc-app");
         var top = create("div", "pc-app-top");
         top.appendChild(create("div", "pc-app-mark", app.mark));
-        top.appendChild(pill(app.priority <= 3 ? "Priority " + app.priority : app.shellState, app.priority <= 3 ? "ready" : appTone(app)));
+        var dailyStatus = humanePill("", app.shellState);
+        top.appendChild(pill(dailyStatus.label, dailyStatus.tone));
         card.appendChild(top);
 
         var titleWrap = create("div", "");
@@ -985,13 +1032,6 @@
           tags.appendChild(pill(tag, ""));
         });
         card.appendChild(tags);
-
-        card.appendChild(create("code", "pc-route", app.route));
-        var progress = create("div", "pc-progress");
-        var bar = create("span", "");
-        bar.style.width = app.priority <= 3 ? "62%" : "38%";
-        progress.appendChild(bar);
-        card.appendChild(progress);
 
         var actions = create("div", "pc-app-actions");
         var openDaily = linkButton("Open workspace", safeDailyRoute(app), app.priority <= 3);
@@ -1124,11 +1164,11 @@
     function renderVault() {
       clear(els.vaultList);
       var rows = [
-        ["Payroll device saves", state.local.savedRuns.length, "Device-only saved runs from afropayroll_pro_saved_runs.", "local"],
-        ["Employee records", state.local.employeeCount, "Device-saved employee records from the payroll workspace.", "local"],
-        ["Account payroll runs", asArray(state.cloud.runs).length, "Account-backed runs returned for the signed-in account.", "real"],
-        ["Account payroll clients", asArray(state.cloud.clients).length, "Payroll client records returned for the signed-in account.", "real"],
-        ["Shared Pro vault sync", "Pending", "Cross-app Pro vault sync is not connected yet.", "warn"]
+        ["Payroll saved in this browser", state.local.savedRuns.length, "Payroll runs you saved on this device.", "local"],
+        ["Employee records", state.local.employeeCount, "Employee records saved on this device from the payroll workspace.", "local"],
+        ["Payroll runs on your account", asArray(state.cloud.runs).length, "Runs saved to your signed-in account.", "real"],
+        ["Payroll clients on your account", asArray(state.cloud.clients).length, "Client records saved to your signed-in account.", "real"],
+        ["Shared vault across apps", "Coming later", "One vault for every app's documents is not connected yet.", "warn"]
       ];
       rows.forEach(function (row) {
         var item = create("article", "pc-vault-row");
@@ -1153,12 +1193,13 @@
         name.appendChild(create("strong", "", app.name));
         name.appendChild(create("div", "pc-row-meta", app.domain + " - " + app.owner));
         var route = document.createElement("td");
-        var routeLink = create("a", "", app.route);
+        var routeLink = create("a", "", "Open " + (app.shortName || app.name));
         routeLink.setAttribute("href", safeAppRoute(app));
         route.appendChild(routeLink);
-        if (app.routeExists === false) route.appendChild(create("div", "pc-row-meta", "Not available yet. Directory link used."));
+        if (app.routeExists === false) route.appendChild(create("div", "pc-row-meta", "Not available yet."));
         var stateCell = document.createElement("td");
-        stateCell.appendChild(pill(app.shellState, appTone(app)));
+        var rowStatus = humanePill(app.routeStatus, app.shellState);
+        stateCell.appendChild(pill(rowStatus.label, rowStatus.tone));
         var build = document.createElement("td");
         build.textContent = app.buildStatus;
         var data = document.createElement("td");
@@ -1168,6 +1209,72 @@
         });
         els.buildTableBody.appendChild(tr);
       });
+    }
+
+    function renderBizPicker() {
+      var api = insights();
+      if (!els.bizTypeRow || !api || !api.BUSINESS_TYPES) return;
+      clear(els.bizTypeRow);
+      var current = currentBusinessType();
+      els.bizTypeRow.appendChild(create("span", "pc-biz-label", current ? "Your business:" : "What do you run? Pick one to arrange your apps:"));
+      api.BUSINESS_TYPES.forEach(function (type) {
+        var chip = create("button", "pc-biz-chip" + (type.id === current ? " active" : ""), type.label);
+        chip.type = "button";
+        chip.addEventListener("click", function () {
+          api.setBusinessType(localStorage, type.id);
+          renderBizPicker();
+          renderSidebar(getApps());
+          renderApps();
+          renderDailyApps();
+          renderToday();
+        });
+        els.bizTypeRow.appendChild(chip);
+      });
+    }
+
+    function renderToday() {
+      var api = insights();
+      if (!els.todayGrid) return;
+      clear(els.todayGrid);
+      var cards = api && api.getTodayCards ? api.getTodayCards(localStorage) : [];
+      if (state.cloud.source === "api" && asArray(state.cloud.runs).length) {
+        var dashboard = state.cloud.dashboard || {};
+        var review = number(dashboard.needs_review_runs) + number(dashboard.warning_rows) + number(dashboard.approval_runs);
+        cards.unshift({
+          id: "payroll-account",
+          title: "Payroll on your account",
+          value: asArray(state.cloud.runs).length + " runs",
+          meta: review > 0 ? review + " review or approval signals need attention." : "No open review flags on account-saved runs.",
+          tone: review > 0 ? "warn" : "real",
+          href: "/tools/afropayroll-os/workspace",
+          cta: "Open payroll"
+        });
+      }
+      if (!cards.length) {
+        var type = currentBusinessType();
+        var api2 = insights();
+        var suggestion = create("div", "pc-empty");
+        suggestion.style.gridColumn = "1 / -1";
+        var typeEntry = api2 && api2.BUSINESS_TYPES ? api2.BUSINESS_TYPES.filter(function (entry) { return entry.id === type; })[0] : null;
+        suggestion.textContent = typeEntry
+          ? "Nothing needs attention yet. Start with " + typeEntry.label + " basics: open an app below and save your first records — they will show up here."
+          : "Nothing here yet. Pick your business type above, then open an app below — the work you save shows up here.";
+        els.todayGrid.appendChild(suggestion);
+        if (els.todayNote) els.todayNote.textContent = "This board fills up as you save work in your Pro apps.";
+        return;
+      }
+      cards.slice(0, 8).forEach(function (card) {
+        var node = create("article", "pc-today-card");
+        var head = create("div", "pc-today-head");
+        head.appendChild(create("h3", "pc-today-title", card.title));
+        head.appendChild(pill(card.tone === "warn" ? "Action" : card.tone === "real" ? "Account" : "On this device", card.tone === "real" ? "real" : card.tone));
+        node.appendChild(head);
+        node.appendChild(create("div", "pc-today-value", card.value));
+        node.appendChild(create("p", "pc-today-meta", card.meta));
+        node.appendChild(linkButton(card.cta || "Open", card.href, card.tone === "warn"));
+        els.todayGrid.appendChild(node);
+      });
+      if (els.todayNote) els.todayNote.textContent = "Live from the work you have saved across your Pro apps.";
     }
 
     function refreshLastUpdated() {
@@ -1194,6 +1301,8 @@
 
       renderProStatus();
       renderWorkspaceSelect();
+      renderBizPicker();
+      renderToday();
       renderApps();
       renderDailyApps();
       renderActivity();
@@ -1210,7 +1319,8 @@
         "proStatusCard", "systemModePill", "attentionCount", "activeWorkspaceCount", "liveAppCount",
         "metricApps", "metricClients", "metricRuns", "metricQueue", "metricVault", "registrySummary",
         "appGrid", "dailyAppGrid", "activityList", "reloadPayrollBtn", "buildTableBody", "queuePill", "queueList",
-        "usageRoutes", "usageLive", "usageLocal", "usageCloud", "vaultList", "lastUpdated", "whatsNewLine"
+        "usageRoutes", "usageLive", "usageLocal", "usageCloud", "vaultList", "lastUpdated", "whatsNewLine",
+        "todayGrid", "todayNote", "bizTypeRow"
       ].forEach(function (id) {
         els[id] = byId(id);
       });
@@ -1225,6 +1335,8 @@
       bindElements();
       var apps = getApps();
       renderSidebar(apps);
+      renderBizPicker();
+      renderToday();
       renderBuildStatus();
       renderApps();
       renderDailyApps();

@@ -6,6 +6,7 @@ const path = require('path');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 const registryApi = require('./lib/canonical-registry');
 const widgets = require('../widgets/WIDGET-REGISTRY.js');
+const toolDirectory = require('../data/tool-directory.json');
 
 const ROOT = path.resolve(__dirname, '..');
 const START = '<!-- PROGRESSIVE_DIRECTORY_FALLBACK_START -->';
@@ -116,6 +117,41 @@ function developerFallback(registry, locale) {
 }
 
 function allToolsFallback(registry, locale) {
+  if (locale === 'en') {
+    const tools = toolDirectory
+      .filter((tool) => tool && tool.language === 'en' && String(tool.status).toLowerCase() === 'live')
+      .slice()
+      .sort((a, b) => {
+        const categoryDelta = EN_CATEGORY_ORDER.indexOf(a.category_key) - EN_CATEGORY_ORDER.indexOf(b.category_key);
+        if (categoryDelta) return categoryDelta;
+        return Number(b.priority || 0) - Number(a.priority || 0) || a.name.localeCompare(b.name);
+      });
+    const groups = new Map();
+    tools.forEach((tool) => {
+      const key = tool.category_key || 'other';
+      if (!groups.has(key)) groups.set(key, { title: tool.category || key, tools: [] });
+      groups.get(key).tools.push(tool);
+    });
+    const orderedKeys = [
+      ...EN_CATEGORY_ORDER.filter((key) => groups.has(key)),
+      ...Array.from(groups.keys()).filter((key) => !EN_CATEGORY_ORDER.includes(key)).sort()
+    ];
+    const sections = orderedKeys.map((key) => {
+      const group = groups.get(key);
+      const links = group.tools.map((tool) => {
+        return `              <li><a href="${escapeHtml(tool.url)}" data-directory-record data-id="${escapeHtml(tool.id)}" data-category="${escapeHtml(key)}">${escapeHtml(tool.name)}</a></li>`;
+      }).join('\n');
+      return `          <section class="static-tool-category" data-static-tool-category="${escapeHtml(key)}" aria-labelledby="static-tool-category-${escapeHtml(key)}">
+            <h2 id="static-tool-category-${escapeHtml(key)}">${escapeHtml(group.title)}</h2>
+            <ul class="static-tool-links">
+${links}
+            </ul>
+          </section>`;
+    }).join('\n');
+    return `        <div class="static-tool-directory" data-static-tool-directory data-static-tool-count="${tools.length}">
+${sections}
+        </div>`;
+  }
   return priorityOrder(publishedTools(registry, locale)).slice(0, 36).map((tool) => {
     return `        <a href="${escapeHtml(tool.route)}" class="tool-card" data-directory-record data-id="${escapeHtml(tool.id)}"><div class="tc-body"><div class="tc-name">${escapeHtml(tool.title)}</div><div class="tc-desc">${escapeHtml(tool.description)}</div><div class="tc-meta"><span class="cat-pill">${escapeHtml(tool.categoryId)}</span><span class="tc-badge live">${locale === 'fr' ? 'Publié' : 'Live'}</span></div></div></a>`;
   }).join('\n');

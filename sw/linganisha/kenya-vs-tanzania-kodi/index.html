@@ -100,7 +100,7 @@ details[open] summary::after{content:'âˆ’';}
 <main class="container">
 <section class="sw-action-planner" data-sw-action-planner data-tool-name="Kenya vs Tanzania - Ulinganisho wa Kodi ya PAYE 2026">
 <h2>Panga hatua inayofuata</h2>
-<p>Jaza maelezo machache kwa Kiswahili cha kazi. Muhtasari huu unabaki kwenye browser na hukusaidia kufungua zana au chanzo sahihi bila kupoteza muktadha.</p>
+<p>Jaza maelezo machache kwa Kiswahili cha kazi. Muhtasari huu unabaki kwenye kivinjari na hukusaidia kufungua zana au chanzo sahihi bila kupoteza muktadha.</p>
 <div class="sw-action-grid">
 <label>Nchi au eneo<input name="scope" autocomplete="off" placeholder="Mfano: Kenya, Tanzania, mteja"></label>
 <label>Aina ya kazi<select name="task"><option value="estimate">Kadiria kwa mfano</option><option value="compare">Linganisha chaguo</option><option value="verify">Hakiki chanzo rasmi</option></select></label>
@@ -263,10 +263,10 @@ details[open] summary::after{content:'âˆ’';}
 </main>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=efb72dbe" defer></script>
-<script src="/assets/js/components/footer.js?v=c9514a92" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
 <script data-sw-action-planner-script>
 (function(){document.querySelectorAll('[data-sw-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Zana';var output=panel.querySelector('[data-sw-action-output]');var status=panel.querySelector('[data-sw-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Eneo: '+scope);if(task)parts.push('Kazi: '+task);if(details)parts.push('Maelezo: '+details);return parts.length?name+' - '+parts.join(' | '):'Ongeza nchi/eneo, aina ya kazi au maelezo ili kupata muhtasari.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-sw-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Muhtasari umenakiliwa.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
 </script>
-</body>
+<script src="/assets/js/lib/sw-accessibility.js" defer></script></body>
 </html>

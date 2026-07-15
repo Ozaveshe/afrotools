@@ -1,5 +1,13 @@
 # AfroTools Pro Changelog
 
+## 2026-07-13
+
+- New app: AfroSEO Studio — live single-page SEO audits with graded fixes, device-saved history with score deltas, Google preview editor, and schema generators. Free audits (3/day) on `/tools/seo-studio/`, unlimited in `/pro/apps/seo-studio/`.
+- Pro workspace home now opens with a "Today" board built from the work you saved across Pro apps (unpaid orders, low stock, RSVPs, vendor balances, payroll review flags, deadlines).
+- Pick your business type on the workspace to arrange the app shelf around what you run.
+- New app switcher: press Ctrl+K (or the grid button) on any Pro page to jump between apps.
+- Status labels across Pro now use plain words — Ready, Early preview, Limited preview, Coming soon.
+
 ## 2026-05-13
 
 - Pro activation now writes canonical `profiles` subscription fields from Paystack events.

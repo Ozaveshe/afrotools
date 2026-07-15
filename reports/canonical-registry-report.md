@@ -22,7 +22,7 @@ Counts with different membership rules intentionally use different labels.
 | Published site languages | 5 |
 | API plans | 4 |
 | Product subscription options | 10 |
-| Pro apps | 10 |
+| Pro apps | 11 |
 
 ## Definitions
 
@@ -103,7 +103,7 @@ Counts with different membership rules intentionally use different labels.
 | languages.site_published | Published site languages | 5 | Site locales marked published, including the default English locale and partial public locales. |
 | plans.api | API plans | 4 | Canonical API quota tiers after aliases such as starter are collapsed. |
 | plans.product_options | Product subscription options | 10 | Published currency and billing-interval options in the Pro product plan module. |
-| pro.apps | Pro apps | 10 | Published Pro application records with repository routes. |
+| pro.apps | Pro apps | 11 | Published Pro application records with repository routes. |
 | tools.canonical_published | Canonical published tool records | 3259 | Published non-deprecated tool records after explicit route aliases are excluded. |
 | tools.category.african.published | Uniquely African published tool records | 119 | Canonical published non-redirect tool records in category african. |
 | tools.category.agriculture.published | Agriculture published tool records | 507 | Canonical published non-redirect tool records in category agriculture. |

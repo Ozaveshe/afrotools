@@ -44,7 +44,17 @@ function renameSyncWithRetry(fromPath, toPath) {
   );
 }
 
+function unlinkSyncWithRetry(filePath) {
+  if (!fs.existsSync(filePath)) return;
+  return retrySync(
+    () => fs.unlinkSync(filePath),
+    isRetryableWriteError,
+    MAX_WRITE_ATTEMPTS
+  );
+}
+
 module.exports = {
   writeFileSyncWithRetry,
   renameSyncWithRetry,
+  unlinkSyncWithRetry,
 };

@@ -22,12 +22,11 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-  <link rel="stylesheet" href="/assets/css/global.css?v=db535147">
-  <link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d"><script src="/assets/js/components/related-tools-data.min.js?v=e540ea16" defer></script>
-
-  <script src="/assets/js/components/navbar.js?v=efb72dbe" defer></script>
-  <script src="/assets/js/components/footer.js?v=c9514a92" defer></script>
-  <script src="/assets/js/components/related-tools.js?v=dcd09493" defer></script>
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<script src="/assets/js/components/navbar.min.js?v=962eaf1b" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/components/related-tools.js?v=4123e336" defer></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -223,6 +222,11 @@
     .mw-country-table .ct-nomin{color:#64748b;font-style:italic}
     .mw-country-table .ct-date{color:#64748b;font-size:.78rem}
 
+    /* ── Data source / freshness note ── */
+    .mw-source-note{margin-top:12px;font-size:.78rem;line-height:1.65;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px}
+    .mw-source-note strong{color:#0f172a}
+    .mw-source-note a{color:#0056b3;font-weight:600}
+
     /* ── Crowdsource / Violation report ── */
     .mw-crowdsource-section{margin-top:20px}
     .mw-crowdsource-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:18px}
@@ -325,7 +329,7 @@
   <meta property="article:modified_time" content="2026-04-03">
   <script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=2db88cac">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=3722fa04">
 <link rel="canonical" href="https://afrotools.com/tools/minimum-wage/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/minimum-wage/">
@@ -341,7 +345,7 @@
       <a href="/">AfroTools</a> › <a href="/salary-tax/">Salary &amp; Tax</a> › Minimum Wage Checker
     </nav>
     <div class="tl-category-label">💰 SALARY &amp; TAX</div>
-    <h1 class="tl-title">Minimum Wage <span class="tl-accent">Checker</span></h1>
+    <h1 class="tl-title">African Minimum Wage <span class="tl-accent">Checker &amp; Rates by Country</span></h1>
     <p class="tl-desc">Check the current minimum wage for any African country — with compliance checker, living wage gap, inflation erosion tracker, sector rates, and country alerts. All 54 countries covered.</p>
     <div class="tl-badges">
       <span>🇳🇬 ₦70,000/mo</span><span>🇰🇪 KES 16,114</span><span>🇿🇦 R27.58/hr</span><span>🇬🇭 GHS 18.15/day</span><span>+ 50 more</span>
@@ -653,6 +657,13 @@
           </tbody>
         </table>
       </div>
+      <p class="mw-source-note" role="note">
+        <strong>Data source &amp; freshness:</strong> Rates are compiled from national labour ministries, gazetted wage orders, and the ILO's
+        <a href="https://natlex.ilo.org/?p_lang=en" target="_blank" rel="noopener">NATLEX</a> and
+        <a href="https://ilostat.ilo.org/methods/concepts-and-definitions/description-wages-and-working-time-statistics/" target="_blank" rel="noopener">ILOSTAT</a>
+        databases, last reviewed <strong>April 2026</strong>. Minimum-wage laws change frequently — always
+        <strong>verify the current figure with your national Ministry of Labour</strong> before relying on it for payroll, contracts, or legal decisions. Informational only, not legal advice.
+      </p>
     </div>
 
     <!-- ── Report a Violation ── -->
@@ -894,7 +905,14 @@ Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal a
   </aside>
 </div>
 
-<afro-related-tools category="financial" current="minimum-wage"></afro-related-tools>
+<afro-related-tools category="financial" current="minimum-wage" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 
 <!-- Engine must load before page script -->

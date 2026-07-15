@@ -38,6 +38,11 @@ module.exports = {
   currency: 'KES',
   regimes: ['STANDARD'],
   lastUpdated: '2026-04-06',
+  /* source-confidence-stamp:start */
+  sourceCheckedOn: '2026-04-01',
+  nextReviewDate: '2026-06-30',
+  /* source-confidence-stamp:end */
+
   source: 'Kenya Revenue Authority (KRA)',
 
   calculate(params) {
