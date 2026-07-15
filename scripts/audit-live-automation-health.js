@@ -801,7 +801,8 @@ function writeReports(report) {
     lines.push('- None.');
   } else {
     for (const item of problems) {
-      lines.push('- [' + String(item.severity || 'p2').toUpperCase() + '] `' + item.function_name + '` is `' + item.status + '` via `' + item.evidence_type + ':' + (item.evidence_id || 'n/a') + '`; latest=' + (item.latest_at || 'n/a') + ', next=' + (item.next_scheduled_at || 'n/a') + ', age=' + formatAge(item.age_hours) + ', SLA=' + formatAge(item.sla_hours) + '. ' + (item.note || ''));
+      const issueLine = '- [' + String(item.severity || 'p2').toUpperCase() + '] `' + item.function_name + '` is `' + item.status + '` via `' + item.evidence_type + ':' + (item.evidence_id || 'n/a') + '`; latest=' + (item.latest_at || 'n/a') + ', next=' + (item.next_scheduled_at || 'n/a') + ', age=' + formatAge(item.age_hours) + ', SLA=' + formatAge(item.sla_hours) + '.';
+      lines.push(item.note ? issueLine + ' ' + item.note : issueLine);
     }
   }
   lines.push('');

@@ -273,6 +273,8 @@
     });
     for (var i = 0; i < codes.length; i++) {
       var c = TELECOM_DATA.countries[codes[i]];
+      // Only offer countries we can actually compare on both sides.
+      if (!c.whatsappBusiness || !c.bulkSMS) continue;
       var opt = document.createElement('option');
       opt.value = codes[i];
       opt.textContent = c.name;
@@ -326,8 +328,11 @@
     var waSvcRate = waData.serviceRate || waCard.service || 0;
     var smsRate = smsData.costPerSMS || smsData.domesticRate || smsData.avgCostPerSMS || 0;
 
-    if (waMktRate === 0 && smsRate === 0) {
-      resultsEl.innerHTML = '<p style="text-align:center;color:#94a3b8;margin:2rem 0;">No WhatsApp Business or SMS pricing data available for ' + country.name + ' yet.</p>';
+    // A comparison needs both sides. Missing data must never fall through to a
+    // zero rate, or the absent side renders as free and always "wins".
+    if (waMktRate === 0 || smsRate === 0) {
+      var missing = waMktRate === 0 ? 'WhatsApp Business' : 'bulk SMS';
+      resultsEl.innerHTML = '<p role="status" style="text-align:center;color:#475569;margin:2rem 0;">We do not have ' + missing + ' pricing for ' + country.name + ' yet, so we cannot compare the two here. Pick another country, or check the operator’s current rates directly.</p>';
       return;
     }
 

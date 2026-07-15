@@ -282,14 +282,53 @@ details .faq-body{padding:1rem 1.25rem;font-size:.88rem;line-height:1.7;color:#4
   var breakdownBody = document.getElementById('breakdownBody');
   var tipsArea = document.getElementById('tipsArea');
 
-  // populate both dropdowns
+  // Live USD-based FX, shared site source. Cars uses the same pattern.
+  var FX = { rates: null, asOf: '' };
+
+  function fetchJson(url) {
+    return fetch(url, { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('Could not load ' + url);
+      return r.json();
+    });
+  }
+
+  function loadFx() {
+    var isLocal = /^(localhost|127\.0\.0\.1|\[?::1\]?)$/i.test(location.hostname);
+    var req = isLocal
+      ? fetchJson('/data/forex/latest.json')
+      : fetchJson('/api/forex?base=USD').catch(function () { return fetchJson('/data/forex/latest.json'); });
+    return req.then(function (d) {
+      FX.rates = d && d.rates ? d.rates : null;
+      FX.asOf = (d && (d.timestamp || d.date)) || '';
+    }).catch(function () { FX.rates = null; });
+  }
+
+  // Returns the multiplier to convert `from` currency into `to`, or null when
+  // either leg is unavailable.
+  function fxConvert(from, to) {
+    if (!FX.rates || !from || !to) return null;
+    if (from === to) return 1;
+    var f = FX.rates[from], t = FX.rates[to];
+    if (!f || !t) return null;
+    return t / f;
+  }
+
+  loadFx();
+
+  // Populate both dropdowns.
+  // Home drives the roaming rates, so it is restricted to countries we hold
+  // roaming data for — otherwise the rates fall through to 0 and the tool tells
+  // the traveller roaming is free. Destination only needs local bundles, which
+  // every country in the dataset has.
   var codes = Object.keys(TELECOM_DATA.countries);
   for (var i = 0; i < codes.length; i++) {
     var c = TELECOM_DATA.countries[codes[i]];
-    var opt1 = document.createElement('option');
-    opt1.value = codes[i];
-    opt1.textContent = c.name;
-    homeCountry.appendChild(opt1);
+    if (c.roaming) {
+      var opt1 = document.createElement('option');
+      opt1.value = codes[i];
+      opt1.textContent = c.name;
+      homeCountry.appendChild(opt1);
+    }
     var opt2 = document.createElement('option');
     opt2.value = codes[i];
     opt2.textContent = c.name;
@@ -348,31 +387,41 @@ details .faq-body{padding:1rem 1.25rem;font-size:.88rem;line-height:1.7;color:#4
       }
     }
 
-    // local cost in destination currency — we show in home currency for comparison
-    // Since we can't do real FX, we estimate using avgDataCostPerGB ratios
+    // Local cost is quoted in the destination's currency; convert to the home
+    // currency through USD using live FX. If we have no rate for either
+    // currency, fxRatio stays null and we decline to show a converted total
+    // rather than invent one.
     var localDataCost = bestBundle ? bestBundle.price : (dest.avgDataCostPerGB || 1) * (totalData / 1024);
-    // Very rough FX conversion using avgDataCostPerGB as proxy
-    var fxRatio = (home.avgDataCostPerGB || 1) / (dest.avgDataCostPerGB || 1);
-    var localTotalHome = (localDataCost + localSimCost) * fxRatio;
+    var fxRatio = fxConvert(dest.currency, home.currency);
+    var localTotalHome = fxRatio === null ? null : (localDataCost + localSimCost) * fxRatio;
 
     // display
     compareGrid.classList.add('show');
     document.getElementById('roamPrice').textContent = sym + Math.round(roamTotal).toLocaleString();
     document.getElementById('roamSub').textContent = days + ' days roaming on ' + home.name + ' SIM';
-    document.getElementById('localPrice').textContent = sym + Math.round(localTotalHome).toLocaleString() + '*';
-    document.getElementById('localSub').textContent = 'Local SIM in ' + dest.name + ' (*estimated conversion)';
-
-    // savings
-    var diff = roamTotal - localTotalHome;
-    if (diff > 0) {
-      savingsBanner.textContent = 'You could save approximately ' + sym + Math.round(diff).toLocaleString() + ' by buying a local SIM!';
-      savingsBanner.className = 'savings-banner show save';
-    } else if (diff < 0) {
-      savingsBanner.textContent = 'Roaming is about ' + sym + Math.round(Math.abs(diff)).toLocaleString() + ' cheaper for this trip. Light usage makes roaming worthwhile.';
-      savingsBanner.className = 'savings-banner show lose';
+    if (localTotalHome === null) {
+      // No FX for this pair — show the local cost in its own currency and say so.
+      var dSym = dest.symbol || (dest.currency ? dest.currency + ' ' : '');
+      document.getElementById('localPrice').textContent = dSym + Math.round(localDataCost + localSimCost).toLocaleString();
+      document.getElementById('localSub').textContent = 'Local SIM in ' + dest.name + ' (in ' + (dest.currency || 'local currency') + ')';
+      savingsBanner.textContent = 'We could not load an exchange rate for ' + (dest.currency || 'the local currency') + ' to ' + (home.currency || 'your currency') + ', so the two totals are in different currencies and cannot be compared directly here.';
+      savingsBanner.className = 'savings-banner show';
     } else {
-      savingsBanner.textContent = 'Costs are roughly the same. Consider convenience factors.';
-      savingsBanner.className = 'savings-banner show save';
+      document.getElementById('localPrice').textContent = sym + Math.round(localTotalHome).toLocaleString();
+      document.getElementById('localSub').textContent = 'Local SIM in ' + dest.name + ' (converted at today’s rate)';
+
+      // savings
+      var diff = roamTotal - localTotalHome;
+      if (diff > 0) {
+        savingsBanner.textContent = 'You could save approximately ' + sym + Math.round(diff).toLocaleString() + ' by buying a local SIM.';
+        savingsBanner.className = 'savings-banner show save';
+      } else if (diff < 0) {
+        savingsBanner.textContent = 'Roaming is about ' + sym + Math.round(Math.abs(diff)).toLocaleString() + ' cheaper for this trip. Light usage makes roaming worthwhile.';
+        savingsBanner.className = 'savings-banner show lose';
+      } else {
+        savingsBanner.textContent = 'Costs are roughly the same. Consider convenience factors.';
+        savingsBanner.className = 'savings-banner show save';
+      }
     }
 
     // breakdown table
@@ -380,8 +429,8 @@ details .faq-body{padding:1rem 1.25rem;font-size:.88rem;line-height:1.7;color:#4
     var bHtml = '<tr><td>Voice (' + totalMins + ' mins)</td><td>' + sym + Math.round(roamVoice).toLocaleString() + '</td><td>Included / VoIP</td></tr>' +
       '<tr><td>SMS (' + totalSMS + ' messages)</td><td>' + sym + Math.round(roamSMS).toLocaleString() + '</td><td>WhatsApp free</td></tr>' +
       '<tr><td>Data (' + (totalData / 1024).toFixed(1) + ' GB)</td><td>' + sym + Math.round(roamData).toLocaleString() + '</td><td>' + (bestBundle ? bestBundle.volume + ' bundle' : 'Est. cost') + '</td></tr>' +
-      '<tr><td>SIM card cost</td><td>-</td><td>' + sym + Math.round(localSimCost * fxRatio).toLocaleString() + '</td></tr>' +
-      '<tr style="font-weight:700;border-top:2px solid #e2e8f0"><td>Total</td><td>' + sym + Math.round(roamTotal).toLocaleString() + '</td><td>' + sym + Math.round(localTotalHome).toLocaleString() + '</td></tr>';
+      '<tr><td>SIM card cost</td><td>-</td><td>' + (fxRatio === null ? 'Rate unavailable' : sym + Math.round(localSimCost * fxRatio).toLocaleString()) + '</td></tr>' +
+      '<tr style="font-weight:700;border-top:2px solid #e2e8f0"><td>Total</td><td>' + sym + Math.round(roamTotal).toLocaleString() + '</td><td>' + (localTotalHome === null ? 'Rate unavailable' : sym + Math.round(localTotalHome).toLocaleString()) + '</td></tr>';
     breakdownBody.innerHTML = bHtml;
 
     // tips

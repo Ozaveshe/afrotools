@@ -3,7 +3,6 @@ const path = require('path');
 const SCRAPER_FILES = [
   'scheduled-detect-changes.js',
   'scheduled-fetch-agri-inputs.js',
-  'scheduled-fetch-bank-rates.js',
   'scheduled-fetch-central-bank-rates.js',
   'scheduled-fetch-commodity-prices.js',
   'scheduled-fetch-crypto.js',
