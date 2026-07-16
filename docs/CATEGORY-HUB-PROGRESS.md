@@ -39,10 +39,10 @@ Copy that shape. See also `.claude/rules/{government,telecom,transport}.md`.
 | 4 | Transport | `/transport/` | ✅ complete | ✅ | ✅ | ⬜ | — | source ledger + `transport:sources` |
 | 5 | Climate & Weather | `/climate/` | 🟡 partial | ⬜ | ⬜ | ? | — | calculators audited (flood/drought saturation bugs fixed); needs ledger + rule + FAQPage |
 | 6 | Salary & Income Tax | `/salary-tax/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-salary-tax-2026-07-17 | HIGH stakes: PAYE bands change per finance act; verify against gazetted Act |
-| 7 | HR & Payroll | `/hr-payroll/` | ⬜ pending | ⬜ | ⬜ | ? | — | statutory deduction ceilings (NSSF/NHIF/pension) are perishable |
+| 7 | HR & Payroll | `/hr-payroll/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-hr-payroll-2026-07-17 | statutory deduction ceilings (NSSF/NHIF/pension) are perishable |
 | 8 | VAT & Business Tax | `/vat-business-tax/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-vat-business-tax-2026-07-17 | HIGH stakes; vat-calculator is a reference impl |
-| 9 | Fintech | `/fintech/` | ⬜ pending | ⬜ | ⬜ | ? | — | 32 tools; fee/rate/FX lookups are the `\|\|0`-becomes-free risk zone |
-| 10 | Trade & Customs | `/trade/` | ⬜ pending | ⬜ | ⬜ | ? | — | HIGH stakes: import duty/tariff/AfCFTA; `data/trade/` exists |
+| 9 | Fintech | `/fintech/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-fintech-2026-07-17 | 32 tools; fee/rate/FX lookups are the `\|\|0`-becomes-free risk zone |
+| 10 | Trade & Customs | `/trade/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-trade-customs-2026-07-17 | HIGH stakes: import duty/tariff/AfCFTA; `data/trade/` exists |
 | 11 | Mining & Commodities | `/mining/` | ⬜ pending | ⬜ | ⬜ | ? | — | commodity prices + royalty rates perishable |
 | 12 | Insurance | `/insurance/` | ⬜ pending | ⬜ | ⬜ | ? | — | `data/insurance-data.json` exists; premium rates perishable |
 | 13 | Mortgage & Property | `/mortgage-property/` | ⬜ pending | ⬜ | ⬜ | ? | — | amortization math + stamp duty/interest rates |
