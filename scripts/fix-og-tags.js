@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { imageSizeFromUrl } = require('./lib/image-size.js');
 
 const FIX_MODE = process.argv.includes('--fix');
 const ROOT = path.resolve(__dirname, '..');
@@ -194,17 +195,26 @@ function processFile(relPath) {
       modified = true;
     }
 
-    /* Add og:image:width/height if missing */
+    /* Add og:image:width/height if missing — measured, never assumed.
+       This previously hardcoded 1200x630, which lied for every page whose og:image was a smaller
+       asset (e.g. the 600x400 tool thumbnails apply-og-fallbacks.js swaps in). If the image cannot
+       be measured, emit nothing: platforms then fetch and size it themselves, which is correct,
+       whereas a wrong hint mis-renders the card. */
     const widthNow = html.match(/<meta\s+property="og:image:width"/i);
     if (!widthNow) {
-      const imgTag = html.match(/<meta\s+property="og:image"\s+content="[^"]*">/i);
+      const imgTag = html.match(/<meta\s+property="og:image"\s+content="([^"]*)">/i);
       if (imgTag) {
-        html = html.replace(
-          imgTag[0],
-          imgTag[0] + '\n  <meta property="og:image:width" content="1200">\n  <meta property="og:image:height" content="630">'
-        );
-        modified = true;
-        console.log('  ✓  Added og:image:width + og:image:height');
+        const size = imageSizeFromUrl(imgTag[1], ROOT);
+        if (size) {
+          html = html.replace(
+            imgTag[0],
+            imgTag[0] + `\n  <meta property="og:image:width" content="${size.w}">\n  <meta property="og:image:height" content="${size.h}">`
+          );
+          modified = true;
+          console.log(`  ✓  Added og:image:width + og:image:height (${size.w}x${size.h})`);
+        } else {
+          console.log(`  •  Skipped og:image dimensions (cannot measure ${imgTag[1]})`);
+        }
       }
     }
 

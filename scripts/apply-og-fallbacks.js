@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { renameSyncWithRetry, writeFileSyncWithRetry } = require("./lib/safe-write");
+const { imageSizeFromUrl } = require("./lib/image-size");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE_ORIGIN = "https://afrotools.com";
@@ -25,6 +26,41 @@ const IGNORE_DIRS = new Set([
 
 function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Make any og:image:width/height a page *already declares* agree with the real image.
+ *
+ * These were historically stamped as a hardcoded 1200x630 (see scripts/fix-og-tags.js), which lied
+ * on every page whose og:image was a different size — e.g. the 600x400 tool thumbnails this script
+ * itself swaps in. Social platforms lay the card out from these hints before fetching the file, so
+ * a wrong hint mis-renders it.
+ *
+ * Deliberately only corrects declarations that already exist. Adding dimensions to the thousands of
+ * pages that omit them is not a correctness fix (platforms measure the image themselves) and would
+ * churn the whole site. If the image cannot be measured, the claim is dropped rather than guessed.
+ */
+function syncOgImageDimensions(html, imageUrl) {
+  const hasWidth = getMetaContent(html, "property", "og:image:width");
+  const hasHeight = getMetaContent(html, "property", "og:image:height");
+  if (hasWidth === null && hasHeight === null) return html;
+
+  const size = imageSizeFromUrl(imageUrl, ROOT);
+  let next = html;
+
+  if (!size) {
+    next = removeMeta(next, "property", "og:image:width");
+    next = removeMeta(next, "property", "og:image:height");
+    return next;
+  }
+
+  if (hasWidth !== String(size.w)) {
+    next = upsertMetaContent(next, "property", "og:image:width", String(size.w), "property", "og:image");
+  }
+  if (getMetaContent(next, "property", "og:image:height") !== String(size.h)) {
+    next = upsertMetaContent(next, "property", "og:image:height", String(size.h), "property", "og:image:width");
+  }
+  return next;
 }
 
 function writeFileAtomic(filePath, contents) {
@@ -441,15 +477,9 @@ function applyFallbacks(html, filePath) {
   }
 
   if (preferredToolImage) {
-    const withoutWidth = removeMeta(next, "property", "og:image:width");
-    if (withoutWidth !== next) {
-      next = withoutWidth;
-      changed = true;
-    }
-
-    const withoutHeight = removeMeta(next, "property", "og:image:height");
-    if (withoutHeight !== next) {
-      next = withoutHeight;
+    const dimsSync = syncOgImageDimensions(next, targetImage);
+    if (dimsSync !== next) {
+      next = dimsSync;
       changed = true;
     }
 
@@ -466,16 +496,26 @@ function applyFallbacks(html, filePath) {
     }
   } else {
     const usingDefaultImage = !existingOgImage || existingOgImage === DEFAULT_IMAGE;
-    const widthBefore = getMetaContent(next, "property", "og:image:width");
-    if (usingDefaultImage && widthBefore !== DEFAULT_WIDTH) {
-      next = upsertMetaContent(next, "property", "og:image:width", DEFAULT_WIDTH, "property", "og:image");
-      changed = true;
-    }
+    if (usingDefaultImage) {
+      const widthBefore = getMetaContent(next, "property", "og:image:width");
+      if (widthBefore !== DEFAULT_WIDTH) {
+        next = upsertMetaContent(next, "property", "og:image:width", DEFAULT_WIDTH, "property", "og:image");
+        changed = true;
+      }
 
-    const heightBefore = getMetaContent(next, "property", "og:image:height");
-    if (usingDefaultImage && heightBefore !== DEFAULT_HEIGHT) {
-      next = upsertMetaContent(next, "property", "og:image:height", DEFAULT_HEIGHT, "property", "og:image:width");
-      changed = true;
+      const heightBefore = getMetaContent(next, "property", "og:image:height");
+      if (heightBefore !== DEFAULT_HEIGHT) {
+        next = upsertMetaContent(next, "property", "og:image:height", DEFAULT_HEIGHT, "property", "og:image:width");
+        changed = true;
+      }
+    } else {
+      // Page carries its own og:image. Only correct dimensions it already declares; do not add
+      // them where absent (that would rewrite thousands of pages for no correctness gain).
+      const dimsSync = syncOgImageDimensions(next, existingOgImage);
+      if (dimsSync !== next) {
+        next = dimsSync;
+        changed = true;
+      }
     }
   }
 

@@ -5,9 +5,26 @@ const ROOT = path.resolve(__dirname, "..");
 const DATA_PATH = path.join(ROOT, "data", "ai", "vertical-landing-pages.json");
 const BASE_URL = "https://afrotools.com";
 const promptExamples = require(path.join(ROOT, "assets", "js", "ai", "example-registry.js"));
+const { imageSizeFromUrl } = require("./lib/image-size.js");
 
 function readData() {
   return JSON.parse(fs.readFileSync(DATA_PATH, "utf8"));
+}
+
+/**
+ * Real pixel dimensions of a site-root-relative image.
+ *
+ * og:image:width/height were previously hardcoded to 1200x630, which silently lied for any page
+ * whose image was not that size. Social platforms lay out the preview from these hints before
+ * fetching the file, so a wrong hint mis-renders the card. Throw rather than guess: a build that
+ * fails is recoverable, a card that quietly lies is not.
+ */
+function imageSize(relativePath) {
+  const size = imageSizeFromUrl(relativePath, ROOT);
+  if (!size) {
+    throw new Error(`generate-ai-landing-pages: cannot read image dimensions for ${relativePath}`);
+  }
+  return size;
 }
 
 function escapeHtml(value) {
@@ -134,8 +151,8 @@ function renderPage(page, data) {
   <meta property="og:title" content="${escapeHtml(page.metaTitle)}">
   <meta property="og:description" content="${escapeHtml(page.description)}">
   <meta property="og:image" content="${escapeHtml(BASE_URL + page.heroImage)}">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="${imageSize(page.heroImage).w}">
+  <meta property="og:image:height" content="${imageSize(page.heroImage).h}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(page.metaTitle)}">
   <meta name="twitter:description" content="${escapeHtml(page.description)}">
@@ -150,7 +167,7 @@ function renderPage(page, data) {
 <body>
   <afro-navbar></afro-navbar>
   <main>
-    <section class="ai-landing-hero" style="--hero-image:url('${escapeHtml(page.heroImage)}')">
+    <section class="ai-landing-hero" style="--hero-image:${page.heroBackground ? `url('${escapeHtml(page.heroBackground)}')` : "none"}">
       <div class="ai-landing-wrap">
         <span class="ai-kicker">${escapeHtml(page.kicker)}</span>
         <h1>${escapeHtml(page.title)}</h1>
