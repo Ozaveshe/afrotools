@@ -46,7 +46,7 @@ Copy that shape. See also `.claude/rules/{government,telecom,transport}.md`.
 | 11 | Mining & Commodities | `/mining/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-mining-2026-07-17 | commodity prices + royalty rates perishable; hub tool cards were all dead self-links (facade) |
 | 12 | Insurance | `/insurance/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-insurance-2026-07-17 | `data/insurance-data.json` exists; premium rates perishable |
 | 13 | Mortgage & Property | `/mortgage-property/` | ✅ complete | ✅ | ✅ | ✅ | opus-mortgage-property-2026-07-17 | 2026-07-17: ledger+validator+rule+FAQPage(6Q). Audit: **no zero-bugs** — all 28 selectors backed by data. Fixed stamp-duty ZA transfer-duty to SARS 1-Apr-2025 scale (was stale, disagreed w/ property-transfer-cost; live-verified R2M=R33,786); dev-feasibility ÷0 guard. mortgage-calculator amortization live-verified (₦308,662/mo). Deploy 4919634 |
-| 14 | Personal Finance | `/personal-finance/` | ⬜ pending | ⬜ | ⬜ | ? | — | financial math correctness (budget, savings, 50-30-20) |
+| 14 | Personal Finance | `/personal-finance/` | 🟡 partial | n/a | ⬜ | ✅ | opus-coordinator-2026-07-17 | 2026-07-17: added FAQ section + FAQPage schema (5 Q&A, verbatim), deployed `1bf1b00` from an isolated worktree. Hub CSS already clean; no data ledger needed (tools are currency-neutral, formula-only). Remaining: flagship math spot-checks (50-30-20, emergency-fund). |
 | 15 | Business ROI | `/business-roi/` | ⬜ pending | ⬜ | ⬜ | ? | — | break-even/cash-flow/ROI math |
 | 16 | Diaspora | `/diaspora/` | ⬜ pending | ⬜ | ⬜ | ? | — | remittance FX + fee perishability |
 | 17 | Agriculture | `/agriculture/` | ⬜ pending | ⬜ | ⬜ | ? | — | agronomic formulas + input prices |
