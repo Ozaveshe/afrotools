@@ -1791,7 +1791,17 @@ async function loadPDFBytes(bytes,name){
   try{
     await ensurePDFRuntime();
     pB=bytes instanceof Uint8Array?bytes:new Uint8Array(bytes);fn=name||"document.pdf";
-    var doc=await PDFLib.PDFDocument.load(pB.slice(),{ignoreEncryption:true});objs=[];objSel=null;objEditing=null;drawMode=false;redactDrawMode=false;undoStack=[];redoStack=[];pageSel={};pageUndoStack=[];pageRedoStack=[];textBlocks={};textEditMode=false;selectedTextBlock=null;
+    var doc;
+    // Do NOT pass ignoreEncryption here. This workspace cannot decrypt (see the
+    // disabled "Remove password" command), and opening an encrypted file anyway
+    // produced an export that could not be reopened even with the right password.
+    // Refuse at the door instead of silently destroying the document.
+    try{ doc=await PDFLib.PDFDocument.load(pB.slice()); }
+    catch(encErr){
+      if(/encrypt/i.test(encErr&&encErr.message||"")) throw new Error("This PDF is password-protected. AfroTools cannot open encrypted PDFs — remove the password in your PDF reader first, then upload it again.");
+      throw encErr;
+    }
+    objs=[];objSel=null;objEditing=null;drawMode=false;redactDrawMode=false;undoStack=[];redoStack=[];pageSel={};pageUndoStack=[];pageRedoStack=[];textBlocks={};textEditMode=false;selectedTextBlock=null;
     var n=doc.getPageCount();po=[];for(var i=0;i<n;i++)po.push(i);pr={};sel=0;th={};
     await genTh();$("upScreen").style.display="none";$("ws").classList.add("on");document.body.classList.add("pdf-workspace-active");$("tbFn").textContent=fn;if($("tbVault"))$("tbVault").setAttribute("file-name",fn);
     isMob=window.innerWidth<=768;

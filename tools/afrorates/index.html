@@ -2844,7 +2844,7 @@ body.afrorates-page {
     if (c.policy_rate === null || c.policy_rate === undefined) {
       return '<span class="rate-na">N/A</span>';
     }
-    var rr = c.policy_rate - (c.inflation ? c.inflation.headline || 0 : 0);
+    var rr = c.policy_rate - (c.inflation ? c.inflation.wb_headline || 0 : 0);
     var color = rr >= 0 ? '#16a34a' : '#dc2626';
     var sign = rr >= 0 ? '+' : '';
     return '<span class="rate-val" style="color:' + color + '">' + sign + rr.toFixed(2) + '%</span>';
@@ -2855,7 +2855,7 @@ body.afrorates-page {
    */
   function realRateNum(c) {
     if (c.policy_rate === null || c.policy_rate === undefined) return null;
-    return c.policy_rate - (c.inflation ? c.inflation.headline || 0 : 0);
+    return c.policy_rate - (c.inflation ? c.inflation.wb_headline || 0 : 0);
   }
 
   /**
@@ -2903,8 +2903,8 @@ body.afrorates-page {
       if (c.policy_rate !== null && c.policy_rate !== undefined) {
         rates.push(c.policy_rate);
       }
-      if (c.inflation && c.inflation.headline !== null && c.inflation.headline !== undefined) {
-        inflations.push(c.inflation.headline);
+      if (c.inflation && c.inflation.wb_headline !== null && c.inflation.wb_headline !== undefined) {
+        inflations.push(c.inflation.wb_headline);
       }
       if (getDirection(c) === 'hawk') {
         hawkCount++;
@@ -2937,8 +2937,8 @@ body.afrorates-page {
       .sort(function (a, b) { return b.policy_rate - a.policy_rate; });
 
     var inflationLeaders = data
-      .filter(function (c) { return c.inflation && c.inflation.headline !== null && c.inflation.headline !== undefined; })
-      .sort(function (a, b) { return a.inflation.headline - b.inflation.headline; });
+      .filter(function (c) { return c.inflation && c.inflation.wb_headline !== null && c.inflation.wb_headline !== undefined; })
+      .sort(function (a, b) { return a.inflation.wb_headline - b.inflation.wb_headline; });
 
     var realLeaders = data
       .filter(function (c) { return realRateNum(c) !== null; })
@@ -2980,7 +2980,7 @@ body.afrorates-page {
           '<div class="highlight-kicker">Best Real Rate</div>' +
           '<div class="highlight-value">+' + strongestReal.realRate.toFixed(2) + '%</div>' +
           '<div class="highlight-name">' + (FLAGS[strongestReal.country.code] || '') + ' ' + strongestReal.country.name + '</div>' +
-          '<div class="highlight-meta">Policy ' + strongestReal.country.policy_rate.toFixed(2) + '% vs inflation ' + strongestReal.country.inflation.headline.toFixed(2) + '%</div>' +
+          '<div class="highlight-meta">Policy ' + strongestReal.country.policy_rate.toFixed(2) + '% vs inflation ' + strongestReal.country.inflation.wb_headline.toFixed(2) + '%</div>' +
         '</article>'
       );
     }
@@ -2989,7 +2989,7 @@ body.afrorates-page {
       cards.push(
         '<article class="highlight-card">' +
           '<div class="highlight-kicker">Lowest Inflation</div>' +
-          '<div class="highlight-value">' + lowestInflation.inflation.headline.toFixed(2) + '%</div>' +
+          '<div class="highlight-value">' + lowestInflation.inflation.wb_headline.toFixed(2) + '%</div>' +
           '<div class="highlight-name">' + (FLAGS[lowestInflation.code] || '') + ' ' + lowestInflation.name + '</div>' +
           '<div class="highlight-meta">' + lowestInflation.central_bank + ' · Inflation release ' + (lowestInflation.inflation.date || 'latest') + '</div>' +
         '</article>'
@@ -3112,8 +3112,8 @@ body.afrorates-page {
           return (va - vb) * asc;
 
         case 'inflation':
-          va = (a.inflation && a.inflation.headline != null) ? a.inflation.headline : -999;
-          vb = (b.inflation && b.inflation.headline != null) ? b.inflation.headline : -999;
+          va = (a.inflation && a.inflation.wb_headline != null) ? a.inflation.wb_headline : -999;
+          vb = (b.inflation && b.inflation.wb_headline != null) ? b.inflation.wb_headline : -999;
           return (va - vb) * asc;
 
         case 'realrate':
@@ -3141,7 +3141,7 @@ body.afrorates-page {
 
     list.forEach(function (c) {
       var dir = getDirection(c);
-      var inflVal = c.inflation ? c.inflation.headline : null;
+      var inflVal = c.inflation ? c.inflation.wb_headline : null;
 
       rows.push(
         '<tr data-code="' + c.code + '">' +
@@ -3208,8 +3208,8 @@ body.afrorates-page {
     var country = allCountries.find(function (item) { return item.code === selectedMapCountryCode; });
     if (!country) return;
 
-    var inflationValue = country.inflation && country.inflation.headline !== null && country.inflation.headline !== undefined
-      ? country.inflation.headline.toFixed(2) + '%'
+    var inflationValue = country.inflation && country.inflation.wb_headline !== null && country.inflation.wb_headline !== undefined
+      ? country.inflation.wb_headline.toFixed(2) + '%'
       : 'N/A';
     var policyValue = country.policy_rate !== null && country.policy_rate !== undefined
       ? country.policy_rate.toFixed(2) + '%'
@@ -3329,7 +3329,7 @@ body.afrorates-page {
         c.name,
         c.central_bank,
         c.policy_rate !== null && c.policy_rate !== undefined ? c.policy_rate.toFixed(2) : '',
-        c.inflation && c.inflation.headline !== null && c.inflation.headline !== undefined ? c.inflation.headline.toFixed(2) : '',
+        c.inflation && c.inflation.wb_headline !== null && c.inflation.wb_headline !== undefined ? c.inflation.wb_headline.toFixed(2) : '',
         realRateNum(c) !== null ? realRateNum(c).toFixed(2) : '',
         directionLabel(getDirection(c)),
         c.region || '',
@@ -3430,7 +3430,7 @@ body.afrorates-page {
     }
 
     var mapData = data.map(function (c) {
-      var val = c.inflation ? c.inflation.headline : null;
+      var val = c.inflation ? c.inflation.wb_headline : null;
       return {
         code: c.code,
         value: val,
@@ -3562,8 +3562,8 @@ body.afrorates-page {
     comparisonBars.innerHTML = sorted.map(function (country, index) {
       var rate = country.policy_rate || 0;
       var real = realRateNum(country);
-      var inflationValue = country.inflation && country.inflation.headline !== null && country.inflation.headline !== undefined
-        ? country.inflation.headline.toFixed(2) + '%'
+      var inflationValue = country.inflation && country.inflation.wb_headline !== null && country.inflation.wb_headline !== undefined
+        ? country.inflation.wb_headline.toFixed(2) + '%'
         : 'N/A';
       var nextMeeting = country.next_mpc ? formatShortDate(country.next_mpc) : 'Not listed';
       var width = Math.max((rate / maxRate) * 100, 10);
@@ -3680,7 +3680,7 @@ body.afrorates-page {
           name: c.name,
           central_bank: c.central_bank,
           policy_rate: c.policy_rate,
-          inflation: c.inflation ? c.inflation.headline : null,
+          inflation: c.inflation ? c.inflation.wb_headline : null,
           realRate: realRateNum(c)
         };
       })
