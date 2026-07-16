@@ -40,7 +40,7 @@ Copy that shape. See also `.claude/rules/{government,telecom,transport}.md`.
 | 5 | Climate & Weather | `/climate/` | 🟡 partial | ⬜ | ⬜ | ? | — | calculators audited (flood/drought saturation bugs fixed); needs ledger + rule + FAQPage |
 | 6 | Salary & Income Tax | `/salary-tax/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-salary-tax-2026-07-17 | HIGH stakes: PAYE bands change per finance act; verify against gazetted Act |
 | 7 | HR & Payroll | `/hr-payroll/` | ⬜ pending | ⬜ | ⬜ | ? | — | statutory deduction ceilings (NSSF/NHIF/pension) are perishable |
-| 8 | VAT & Business Tax | `/vat-business-tax/` | ⬜ pending | ⬜ | ⬜ | ? | — | HIGH stakes; vat-calculator is a reference impl |
+| 8 | VAT & Business Tax | `/vat-business-tax/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-vat-business-tax-2026-07-17 | HIGH stakes; vat-calculator is a reference impl |
 | 9 | Fintech | `/fintech/` | ⬜ pending | ⬜ | ⬜ | ? | — | 32 tools; fee/rate/FX lookups are the `\|\|0`-becomes-free risk zone |
 | 10 | Trade & Customs | `/trade/` | ⬜ pending | ⬜ | ⬜ | ? | — | HIGH stakes: import duty/tariff/AfCFTA; `data/trade/` exists |
 | 11 | Mining & Commodities | `/mining/` | ⬜ pending | ⬜ | ⬜ | ? | — | commodity prices + royalty rates perishable |
