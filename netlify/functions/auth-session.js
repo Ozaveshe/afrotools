@@ -213,7 +213,8 @@ async function supaFetch(path, opts) {
     'Content-Type': 'application/json',
   }, opts.headers || {});
   var controller = typeof AbortController === 'function' ? new AbortController() : null;
-  var timeout = controller ? setTimeout(function () { controller.abort(); }, AUTH_UPSTREAM_TIMEOUT_MS) : null;
+  var requestTimeoutMs = Number(opts.timeoutMs) || AUTH_UPSTREAM_TIMEOUT_MS;
+  var timeout = controller ? setTimeout(function () { controller.abort(); }, requestTimeoutMs) : null;
 
   try {
     var res = await fetch(url, {
@@ -333,6 +334,21 @@ exports.handler = async function (event) {
       return jsonResponse(200, { user: null, authenticated: false }, cors);
     }
     return jsonResponse(500, { error: 'Server config error: missing auth key' }, cors);
+  }
+
+  // Bounded health gate used before OAuth navigation.
+  if (action === 'health' && event.httpMethod === 'GET') {
+    var healthResult = await supaFetch('/auth/v1/health', {
+      method: 'GET',
+      timeoutMs: 5000,
+    });
+    if (healthResult.status === 200) {
+      return jsonResponse(200, { ok: true }, Object.assign({}, cors, { 'Cache-Control': 'no-store' }));
+    }
+    return jsonResponse(503, {
+      ok: false,
+      error: AUTH_UNAVAILABLE_MESSAGE,
+    }, Object.assign({}, cors, { 'Cache-Control': 'no-store' }));
   }
 
   // ── LOGIN ──

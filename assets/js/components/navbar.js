@@ -2559,9 +2559,13 @@
     }
     _authLS('/assets/js/data/african-countries.js', function() {
       _authLS('/assets/js/afro-auth.js', function() {
-        _authLS('/assets/js/components/auth-modal.js', function() {
-          if (_canUseAuthCookieBridge()) _authLS('/assets/js/auth-cookie-upgrade.js?v=5');
-        });
+        var loadOAuthAndModal = function() {
+          _authLS('/assets/js/auth-oauth-guard.js?v=1', function() {
+            _authLS('/assets/js/components/auth-modal.js?v=2');
+          });
+        };
+        if (_canUseAuthCookieBridge()) _authLS('/assets/js/auth-cookie-upgrade.js?v=6', loadOAuthAndModal);
+        else loadOAuthAndModal();
       });
     });
   }, _hasLocalAuthHint() ? 800 : 12000);

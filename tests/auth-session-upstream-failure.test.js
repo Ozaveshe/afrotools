@@ -4,8 +4,17 @@ process.env.URL = 'https://afrotools.com';
 process.env.SUPABASE_ANON_KEY_AUTH = 'anon-test-key';
 
 let fetchCalls = 0;
+let fetchMode = 'outage';
 global.fetch = async function () {
   fetchCalls += 1;
+  if (fetchMode === 'healthy') {
+    return {
+      status: 200,
+      async json() {
+        return { version: 'test' };
+      },
+    };
+  }
   return {
     status: 504,
     async json() {
@@ -36,6 +45,23 @@ async function main() {
     'Sign-in service is temporarily unavailable. Please wait a moment and try again.'
   );
   assert.strictEqual(response.multiValueHeaders, undefined, 'failed login must not set session cookies');
+
+  const unavailableHealth = await handler({
+    httpMethod: 'GET',
+    path: '/api/auth/health',
+    headers: {},
+  });
+  assert.strictEqual(unavailableHealth.statusCode, 503, 'OAuth health must fail closed during an Auth outage');
+  assert.strictEqual(JSON.parse(unavailableHealth.body).error, body.error);
+
+  fetchMode = 'healthy';
+  const healthy = await handler({
+    httpMethod: 'GET',
+    path: '/api/auth/health',
+    headers: {},
+  });
+  assert.strictEqual(healthy.statusCode, 200, 'healthy Auth should allow OAuth initiation');
+  assert.deepStrictEqual(JSON.parse(healthy.body), { ok: true });
 }
 
 main().catch(function (error) {

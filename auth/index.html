@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
   <script src="/assets/js/data/african-countries.js?v=32a88a32" defer></script>
-  <script src="/assets/js/components/navbar.min.js?v=2f9da669" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=d8d640ef" defer></script>
   <script src="/assets/js/components/country-selector.js?v=c13ac60b" defer></script>
   <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
   <style>
@@ -219,7 +219,8 @@
 
   <afro-footer></afro-footer>
   <script src="/assets/js/afro-auth.js?v=4250956b"></script>
-  <script src="/assets/js/auth-cookie-upgrade.js?v=2d5ad4aa"></script>
+  <script src="/assets/js/auth-cookie-upgrade.js?v=be4eb169"></script>
+  <script src="/assets/js/auth-oauth-guard.js?v=f3091641"></script>
   <script>
   (function(){
     'use strict';
@@ -452,17 +453,16 @@
       }
       setStatus('Connecting to ' + label + '...');
       try {
-        var supa = await getSupabaseClient();
         var redirectTo = window.location.origin + '/dashboard/?auth=callback';
         if (next && next !== '/dashboard/') redirectTo += '&next=' + encodeURIComponent(next);
-        var result = await supa.auth.signInWithOAuth({
-          provider: provider,
-          options: { redirectTo: redirectTo }
-        });
-        if (result && result.error) throw result.error;
-        if (result && result.data && result.data.url) {
-          window.location.href = result.data.url;
+        if (!window.AfroAuth || typeof window.AfroAuth.socialLogin !== 'function') {
+          throw new Error('Authentication could not start. Please refresh and try again.');
         }
+        var result = await window.AfroAuth.socialLogin(provider, { redirectTo: redirectTo });
+        if (!result || result.ok !== true || !result.url) {
+          throw new Error(result && result.error ? result.error : (label + ' sign-in failed. Try again.'));
+        }
+        window.location.assign(result.url);
       } catch (err) {
         setStatus((err && err.message) || (label + ' sign-in failed. Try again.'), true);
         if (button) {
