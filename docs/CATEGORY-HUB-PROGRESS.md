@@ -38,7 +38,7 @@ Copy that shape. See also `.claude/rules/{government,telecom,transport}.md`.
 | 3 | Telecom & Mobile | `/telecom/` | ✅ complete | ✅ | ✅ | ⬜ | — | ledger added 2026-07-16; roaming/whatsapp zero-bugs fixed |
 | 4 | Transport | `/transport/` | ✅ complete | ✅ | ✅ | ⬜ | — | source ledger + `transport:sources` |
 | 5 | Climate & Weather | `/climate/` | 🟡 partial | ⬜ | ⬜ | ? | — | calculators audited (flood/drought saturation bugs fixed); needs ledger + rule + FAQPage |
-| 6 | Salary & Income Tax | `/salary-tax/` | ⬜ pending | ⬜ | ⬜ | ? | — | HIGH stakes: PAYE bands change per finance act; verify against gazetted Act |
+| 6 | Salary & Income Tax | `/salary-tax/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-salary-tax-2026-07-17 | HIGH stakes: PAYE bands change per finance act; verify against gazetted Act |
 | 7 | HR & Payroll | `/hr-payroll/` | ⬜ pending | ⬜ | ⬜ | ? | — | statutory deduction ceilings (NSSF/NHIF/pension) are perishable |
 | 8 | VAT & Business Tax | `/vat-business-tax/` | ⬜ pending | ⬜ | ⬜ | ? | — | HIGH stakes; vat-calculator is a reference impl |
 | 9 | Fintech | `/fintech/` | ⬜ pending | ⬜ | ⬜ | ? | — | 32 tools; fee/rate/FX lookups are the `\|\|0`-becomes-free risk zone |
