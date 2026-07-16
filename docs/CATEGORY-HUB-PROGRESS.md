@@ -44,8 +44,8 @@ Copy that shape. See also `.claude/rules/{government,telecom,transport}.md`.
 | 9 | Fintech | `/fintech/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-fintech-2026-07-17 | 32 tools; fee/rate/FX lookups are the `\|\|0`-becomes-free risk zone |
 | 10 | Trade & Customs | `/trade/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-trade-customs-2026-07-17 | HIGH stakes: import duty/tariff/AfCFTA; `data/trade/` exists |
 | 11 | Mining & Commodities | `/mining/` | ⬜ pending | ⬜ | ⬜ | ? | — | commodity prices + royalty rates perishable |
-| 12 | Insurance | `/insurance/` | ⬜ pending | ⬜ | ⬜ | ? | — | `data/insurance-data.json` exists; premium rates perishable |
-| 13 | Mortgage & Property | `/mortgage-property/` | ⬜ pending | ⬜ | ⬜ | ? | — | amortization math + stamp duty/interest rates |
+| 12 | Insurance | `/insurance/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-insurance-2026-07-17 | `data/insurance-data.json` exists; premium rates perishable |
+| 13 | Mortgage & Property | `/mortgage-property/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-mortgage-property-2026-07-17 | amortization math + stamp duty/interest rates |
 | 14 | Personal Finance | `/personal-finance/` | ⬜ pending | ⬜ | ⬜ | ? | — | financial math correctness (budget, savings, 50-30-20) |
 | 15 | Business ROI | `/business-roi/` | ⬜ pending | ⬜ | ⬜ | ? | — | break-even/cash-flow/ROI math |
 | 16 | Diaspora | `/diaspora/` | ⬜ pending | ⬜ | ⬜ | ? | — | remittance FX + fee perishability |
