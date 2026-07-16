@@ -43,7 +43,7 @@ Copy that shape. See also `.claude/rules/{government,telecom,transport}.md`.
 | 8 | VAT & Business Tax | `/vat-business-tax/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-vat-business-tax-2026-07-17 | HIGH stakes; vat-calculator is a reference impl |
 | 9 | Fintech | `/fintech/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-fintech-2026-07-17 | 32 tools; fee/rate/FX lookups are the `\|\|0`-becomes-free risk zone |
 | 10 | Trade & Customs | `/trade/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-trade-customs-2026-07-17 | HIGH stakes: import duty/tariff/AfCFTA; `data/trade/` exists |
-| 11 | Mining & Commodities | `/mining/` | ⬜ pending | ⬜ | ⬜ | ? | — | commodity prices + royalty rates perishable |
+| 11 | Mining & Commodities | `/mining/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-mining-2026-07-17 | commodity prices + royalty rates perishable; hub tool cards were all dead self-links (facade) |
 | 12 | Insurance | `/insurance/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-insurance-2026-07-17 | `data/insurance-data.json` exists; premium rates perishable |
 | 13 | Mortgage & Property | `/mortgage-property/` | 🔵 in-progress | ⬜ | ⬜ | ? | opus-mortgage-property-2026-07-17 | amortization math + stamp duty/interest rates |
 | 14 | Personal Finance | `/personal-finance/` | ⬜ pending | ⬜ | ⬜ | ? | — | financial math correctness (budget, savings, 50-30-20) |
