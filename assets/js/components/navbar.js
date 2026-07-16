@@ -2560,7 +2560,7 @@
     _authLS('/assets/js/data/african-countries.js', function() {
       _authLS('/assets/js/afro-auth.js', function() {
         _authLS('/assets/js/components/auth-modal.js', function() {
-          if (_canUseAuthCookieBridge()) _authLS('/assets/js/auth-cookie-upgrade.js?v=4');
+          if (_canUseAuthCookieBridge()) _authLS('/assets/js/auth-cookie-upgrade.js?v=5');
         });
       });
     });

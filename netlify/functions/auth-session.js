@@ -24,6 +24,8 @@ const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgzt
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
 const IS_PROD = process.env.URL && process.env.URL.includes('afrotools.com');
 const MARKETING_SUPABASE = getMarketingSupabaseConfig();
+const AUTH_UPSTREAM_TIMEOUT_MS = 12000;
+const AUTH_UNAVAILABLE_MESSAGE = 'Sign-in service is temporarily unavailable. Please wait a moment and try again.';
 
 // Cookie settings
 const COOKIE_OPTS = {
@@ -210,12 +212,46 @@ async function supaFetch(path, opts) {
     apikey: SUPABASE_ANON_KEY,
     'Content-Type': 'application/json',
   }, opts.headers || {});
-  var res = await fetch(url, {
-    method: opts.method || 'GET',
-    headers: headers,
-    body: opts.body ? JSON.stringify(opts.body) : undefined,
-  });
-  return { status: res.status, data: await res.json() };
+  var controller = typeof AbortController === 'function' ? new AbortController() : null;
+  var timeout = controller ? setTimeout(function () { controller.abort(); }, AUTH_UPSTREAM_TIMEOUT_MS) : null;
+
+  try {
+    var res = await fetch(url, {
+      method: opts.method || 'GET',
+      headers: headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      signal: controller ? controller.signal : undefined,
+    });
+    var data = null;
+    try { data = await res.json(); } catch (e) { data = {}; }
+    return { status: res.status, data: data || {} };
+  } catch (error) {
+    console.warn('[auth-session] Supabase Auth request unavailable:', error && error.name ? error.name : 'network-error');
+    return {
+      status: 503,
+      data: { error_code: 'auth_upstream_unavailable', msg: AUTH_UNAVAILABLE_MESSAGE },
+      unavailable: true,
+    };
+  } finally {
+    if (timeout) clearTimeout(timeout);
+  }
+}
+
+function authProviderError(result, fallbackStatus, fallbackMessage) {
+  var status = Number(result && result.status) || fallbackStatus;
+  var data = result && result.data ? result.data : {};
+
+  if (status >= 500 || result && result.unavailable) {
+    return { status: 503, message: AUTH_UNAVAILABLE_MESSAGE };
+  }
+  if (status === 429) {
+    return { status: 429, message: 'Too many sign-in attempts. Please wait a moment and try again.' };
+  }
+
+  return {
+    status: fallbackStatus,
+    message: data.error_description || data.msg || data.message || fallbackMessage,
+  };
 }
 
 async function profileEmailState(userId) {
@@ -317,8 +353,8 @@ exports.handler = async function (event) {
     });
 
     if (result.status !== 200 || !result.data.access_token) {
-      var errMsg = (result.data && result.data.error_description) || (result.data && result.data.msg) || 'Invalid credentials';
-      return authErrorResponse('login', 401, errMsg, cors, parsed.isForm, loginNext);
+      var loginError = authProviderError(result, 401, 'Invalid credentials');
+      return authErrorResponse('login', loginError.status, loginError.message, cors, parsed.isForm, loginNext);
     }
 
     var session = result.data;
@@ -354,8 +390,8 @@ exports.handler = async function (event) {
     });
 
     if (result.status >= 400 || (result.data && result.data.error)) {
-      var errMsg = (result.data && result.data.error_description) || (result.data && result.data.msg) || 'Signup failed';
-      return authErrorResponse('signup', result.status, errMsg, cors, parsed.isForm, signupNext);
+      var signupError = authProviderError(result, result.status || 400, 'Signup failed');
+      return authErrorResponse('signup', signupError.status, signupError.message, cors, parsed.isForm, signupNext);
     }
 
     var session = result.data;
