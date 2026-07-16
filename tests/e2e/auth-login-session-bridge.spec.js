@@ -17,6 +17,7 @@ async function stubPasswordLogin(page, options) {
   const loginResult = options && options.loginResult
     ? options.loginResult
     : { ok: true, user: testUser };
+  const loginPending = Boolean(options && options.loginPending);
 
   await page.route('**/*', async (route) => {
     const url = new URL(route.request().url());
@@ -48,6 +49,7 @@ async function stubPasswordLogin(page, options) {
               login: async function() {
                 var calls = Number(localStorage.getItem('__authDirectLoginCalls') || '0') + 1;
                 localStorage.setItem('__authDirectLoginCalls', String(calls));
+                if (${JSON.stringify(loginPending)}) return new Promise(function() {});
                 var result = ${JSON.stringify(loginResult)};
                 if (result.ok) {
                   token = 'verified-browser-token';
@@ -131,6 +133,26 @@ test('password sign-in turns provider database timeouts into a retryable status 
   await expect(page.locator('#authStatus')).toHaveText(
     'Sign-in service is temporarily unavailable. Please wait a moment and try again.'
   );
+  expect(state.cookieLoginHits).toBe(0);
+  expect(state.bearerBridgeHits).toBe(0);
+});
+
+test('password sign-in stops waiting when the provider request never settles', async ({ page }) => {
+  const state = await stubPasswordLogin(page, { loginPending: true });
+  await page.goto('/auth/?mode=login&next=/dashboard/', { waitUntil: 'domcontentloaded' });
+  await expect.poll(() => page.evaluate(() => window.AfroAuth && window.AfroAuth._cookiePatched)).toBe(true);
+
+  await page.locator('#loginEmail').fill('bridge@afrotools.test');
+  await page.locator('#loginPassword').fill('password123');
+  const submit = page.locator('#loginForm').getByRole('button', { name: /^sign in$/i });
+  await submit.click();
+
+  await expect(page.locator('#authStatus')).toHaveText(
+    'Sign-in service is temporarily unavailable. Please wait a moment and try again.',
+    { timeout: 15000 }
+  );
+  await expect(submit).toBeEnabled();
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('__authDirectLoginCalls'))).toBe('1');
   expect(state.cookieLoginHits).toBe(0);
   expect(state.bearerBridgeHits).toBe(0);
 });
