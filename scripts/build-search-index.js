@@ -12,6 +12,15 @@ const localizationApi = require('./lib/localization-platform');
 const ROOT = path.join(__dirname, '..');
 const SEARCH_INDEX_PATH = path.join(ROOT, 'data/search-index.json');
 const SEARCH_INDEX_FULL_PATH = path.join(ROOT, 'data/search-index-full.json');
+const SEARCH_INDEX_CATEGORIES_PATH = path.join(ROOT, 'data/search-index-categories.json');
+
+// Interned category lookup for the slim first-load index. Every localized tool
+// surface (fr/sw/ha/yo) repeats its full category id in every row, which pushed
+// the first-load payload past its 300KB budget. Storing a small integer index
+// into this shared dictionary keeps the slim rows compact while the full-text
+// shard keeps human-readable category ids. Assigned below once the published
+// tool set is known.
+let slimCategoryIndex = new Map();
 
 const CATEGORY_ALIASES = {
   financial: ['finance', 'money', 'salary', 'tax', 'paye', 'fx', 'forex', 'rates', 'market data', 'prices', 'fuel prices'],
@@ -110,7 +119,7 @@ function slimSearchRecord(tool) {
   return [
     localizationApi.normalizeDisplayString(tool.title),
     tool.route,
-    tool.categoryId,
+    slimCategoryIndex.get(tool.categoryId),
     Number(tool.source.priority || 0)
   ];
 }
@@ -134,11 +143,17 @@ const categoryById = new Map(registry.categories.map((category) => [category.id,
 const countryById = new Map(registry.countries.map((country) => [country.id, country]));
 const publishedTools = registry.tools
   .filter((tool) => tool.publicationStatus === 'published' && !tool.deprecated);
+
+const slimCategoryList = [...new Set(publishedTools.map((tool) => tool.categoryId))].sort();
+slimCategoryIndex = new Map(slimCategoryList.map((id, index) => [id, index]));
+
 const slimRecords = publishedTools.map(slimSearchRecord);
 const fullRecords = publishedTools.map((tool) => searchRecord(tool, categoryById, countryById));
 
 fs.mkdirSync(path.dirname(SEARCH_INDEX_PATH), { recursive: true });
 writeAtomically(SEARCH_INDEX_PATH, `${JSON.stringify(slimRecords)}\n`);
 writeAtomically(SEARCH_INDEX_FULL_PATH, `${JSON.stringify(fullRecords)}\n`);
+writeAtomically(SEARCH_INDEX_CATEGORIES_PATH, `${JSON.stringify(slimCategoryList)}\n`);
 console.log(`Built ${slimRecords.length} slim search rows (${Math.round(fs.statSync(SEARCH_INDEX_PATH).size / 1024)} KB)`);
+console.log(`Built ${slimCategoryList.length}-entry slim category dictionary.`);
 console.log(`Built ${fullRecords.length} full-text search rows (${Math.round(fs.statSync(SEARCH_INDEX_FULL_PATH).size / 1024)} KB)`);

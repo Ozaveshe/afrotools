@@ -154,7 +154,7 @@ for (const rel of payePages) {
   assert(!html.includes("window.location.href='/auth/?mode=login&next=/dashboard/';"), `${rel} silently switches to English auth`);
   assert(!/>Share as Image</i.test(html), `${rel} exposes English share UI`);
   assert(!/\b(?:matokeo\.kila mwaka|navigator\.shiriki|kokotoa\(\)|\.chapisha\(\)|(?:e|event)\.key\s*={2,3}\s*['"]ingiza['"])/.test(html), `${rel} contains translated JavaScript control tokens`);
-  assert(/<script src="\/assets\/js\/lib\/sw-accessibility\.js" defer><\/script><\/body>\s*<\/html>\s*$/i.test(html), `${rel} must inject accessibility at the final body close`);
+  assert(/<script src="\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]+)?" defer><\/script>\s*<\/body>\s*<\/html>\s*$/i.test(html), `${rel} must inject accessibility at the final body close`);
   let scriptIndex = 0;
   for (const match of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/gi)) {
     scriptIndex += 1;

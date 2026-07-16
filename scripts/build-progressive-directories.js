@@ -21,6 +21,44 @@ const EN_CATEGORY_ORDER = [
   'climate', 'sports', 'mining'
 ];
 
+// French labels for every category id in EN_CATEGORY_ORDER. Used for the
+// no-JavaScript directory card pills so the French surface never renders a raw
+// English category slug (e.g. "energy") before hydration.
+const FR_CATEGORY_LABELS = {
+  'financial': 'Finances',
+  'hr-payroll': 'Paie & RH',
+  'document-pdf': 'Documents & PDF',
+  'image-design': 'Image & Design',
+  'developer': 'Développeur',
+  'education': 'Éducation',
+  'health': 'Santé',
+  'insurance': 'Assurance',
+  'fintech': 'Fintech',
+  'agriculture': 'Agriculture',
+  'ecommerce': 'E-commerce',
+  'legal': 'Juridique',
+  'data-productivity': 'Données & productivité',
+  'language': 'Langues',
+  'african': 'Spécialités africaines',
+  'trade': 'Commerce',
+  'telecom': 'Télécom',
+  'energy': 'Énergie',
+  'engineering': 'Ingénierie',
+  'creative': 'Création',
+  'security': 'Sécurité',
+  'government': 'Administration',
+  'small-business': 'Petite entreprise',
+  'transport': 'Transport',
+  'travel-tourism': 'Voyage & tourisme',
+  'personal-finance': 'Finances personnelles',
+  'diaspora': 'Diaspora',
+  'career': 'Carrière',
+  'religious-cultural': 'Religion & culture',
+  'climate': 'Climat',
+  'sports': 'Sports',
+  'mining': 'Mines'
+};
+
 const FR_CATEGORIES = [
   ['financial', 'salary-tax', 'Salaire & Impôts'],
   ['document-pdf', 'document-pdf', 'Documents & PDF'],
@@ -153,7 +191,10 @@ ${sections}
         </div>`;
   }
   return priorityOrder(publishedTools(registry, locale)).slice(0, 36).map((tool) => {
-    return `        <a href="${escapeHtml(tool.route)}" class="tool-card" data-directory-record data-id="${escapeHtml(tool.id)}"><div class="tc-body"><div class="tc-name">${escapeHtml(tool.title)}</div><div class="tc-desc">${escapeHtml(tool.description)}</div><div class="tc-meta"><span class="cat-pill">${escapeHtml(tool.categoryId)}</span><span class="tc-badge live">${locale === 'fr' ? 'Publié' : 'Live'}</span></div></div></a>`;
+    const catLabel = locale === 'fr'
+      ? (FR_CATEGORY_LABELS[tool.categoryId] || tool.categoryId)
+      : tool.categoryId;
+    return `        <a href="${escapeHtml(tool.route)}" class="tool-card" data-directory-record data-id="${escapeHtml(tool.id)}"><div class="tc-body"><div class="tc-name">${escapeHtml(tool.title)}</div><div class="tc-desc">${escapeHtml(tool.description)}</div><div class="tc-meta"><span class="cat-pill">${escapeHtml(catLabel)}</span><span class="tc-badge live">${locale === 'fr' ? 'Publié' : 'Live'}</span></div></div></a>`;
   }).join('\n');
 }
 

@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" async></script>
+<script src="/assets/js/components/navbar.min.js?v=d8d640ef" async></script>
   <script src="/assets/js/components/footer.min.js?v=dfb30911" async></script>
   <script src="/assets/js/ai/intent-analytics.js?v=30b7ff81"></script>
 
@@ -1794,20 +1794,33 @@ document.addEventListener('keydown', function(e) {
     return true;
   }
 
+  var SLIM_CATEGORY_IDS = [];
+
+  function slimCategoryLabel(value) {
+    // Slim first-load rows store the category as a small integer index into the
+    // shared SLIM_CATEGORY_IDS dictionary to keep the payload compact. Older
+    // string-valued rows (or a missing dictionary) still resolve directly.
+    if (typeof value === 'number') {
+      return SLIM_CATEGORY_IDS[value] || 'uncategorized';
+    }
+    return value || 'uncategorized';
+  }
+
   function normalizeSearchTool(tool) {
     if (Array.isArray(tool)) {
       if (tool.length === 4 && typeof tool[1] === 'string' && tool[1].charAt(0) === '/') {
+        var slimCategory = slimCategoryLabel(tool[2]);
         return {
           id: tool[1],
           name: tool[0] || tool[1],
           desc: '',
-          category: tool[2] || 'uncategorized',
+          category: slimCategory,
           countries: [],
           status: 'live',
           href: tool[1],
           icon: '',
           priority: Number(tool[3] || 0),
-          searchText: [tool[0], tool[1], tool[2]].join(' ')
+          searchText: [tool[0], tool[1], slimCategory].join(' ')
         };
       }
       return {
@@ -1852,14 +1865,27 @@ document.addEventListener('keydown', function(e) {
     if (startSearch()) return Promise.resolve();
     if (window.__afroSearchSlimPromise) return window.__afroSearchSlimPromise;
 
-    window.__afroSearchSlimPromise = fetch('/data/search-index.json', { credentials: 'same-origin' })
+    var categoriesPromise = fetch('/data/search-index-categories.json', { credentials: 'same-origin' })
       .then(function(response) {
-        if (!response.ok) throw new Error('Search index failed to load');
-        return response.json();
+        return response.ok ? response.json() : [];
       })
-      .then(function(records) {
-        return applySearchRecords(records, false);
+      .then(function(ids) {
+        SLIM_CATEGORY_IDS = Array.isArray(ids) ? ids : [];
+      })
+      .catch(function() {
+        SLIM_CATEGORY_IDS = [];
       });
+
+    window.__afroSearchSlimPromise = Promise.all([
+      categoriesPromise,
+      fetch('/data/search-index.json', { credentials: 'same-origin' })
+        .then(function(response) {
+          if (!response.ok) throw new Error('Search index failed to load');
+          return response.json();
+        })
+    ]).then(function(results) {
+      return applySearchRecords(results[1], false);
+    });
 
     return window.__afroSearchSlimPromise;
   }

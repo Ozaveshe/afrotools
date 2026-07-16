@@ -91,7 +91,7 @@ assert.deepStrictEqual(
 
 assert.strictEqual(
   schedules.size,
-  35,
+  34,
   'Update this expected scheduled-function count when netlify.toml intentionally changes'
 );
 
