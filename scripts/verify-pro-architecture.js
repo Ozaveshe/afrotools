@@ -18,7 +18,8 @@ const expectedControlIds = [
   "grants-tenders",
   "creator-studio",
   "stream-intelligence",
-  "property-projects"
+  "property-projects",
+  "seo-studio"
 ];
 
 const expectedDailyIds = [
@@ -106,11 +107,11 @@ function assertIds(label, actual, expected) {
 assertIds("control app", controlApps, expectedControlIds);
 assertIds("daily app", dailyApps, expectedDailyIds);
 
-if (allApps.length !== 20) addFailure(`architecture expected 20 apps, got ${allApps.length}`);
-if (summary.totalApps !== 20) addFailure(`summary.totalApps expected 20, got ${summary.totalApps}`);
-if (summary.controlApps !== 10) addFailure(`summary.controlApps expected 10, got ${summary.controlApps}`);
+if (allApps.length !== 21) addFailure(`architecture expected 21 apps, got ${allApps.length}`);
+if (summary.totalApps !== 21) addFailure(`summary.totalApps expected 21, got ${summary.totalApps}`);
+if (summary.controlApps !== 11) addFailure(`summary.controlApps expected 11, got ${summary.controlApps}`);
 if (summary.dailyApps !== 10) addFailure(`summary.dailyApps expected 10, got ${summary.dailyApps}`);
-if (summary.appRoutesReady !== 20) addFailure(`summary.appRoutesReady expected 20, got ${summary.appRoutesReady}`);
+if (summary.appRoutesReady !== 21) addFailure(`summary.appRoutesReady expected 21, got ${summary.appRoutesReady}`);
 
 const idSet = new Set();
 allApps.forEach((app) => {
