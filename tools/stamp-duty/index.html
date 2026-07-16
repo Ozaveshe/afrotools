@@ -723,26 +723,27 @@ const COUNTRIES = {
       { id: 'lease', label: 'Lease Agreement', type: 'value' },
       { id: 'shares', label: 'Securities Transfer Tax', type: 'value' },
     ],
-    note: 'South Africa\'s Transfer Duty Act charges progressive rates on property purchases. SARS administers the duty. Natural persons pay 0% up to R1,100,000 then 3–13% on higher bands (2024/25 rates). Properties under R1.1M pay zero transfer duty.',
+    note: 'South Africa\'s Transfer Duty Act charges progressive rates on property purchases. SARS administers the duty. Natural persons pay 0% up to R1,210,000 then 3–13% on higher bands (SARS scale effective 1 April 2025). Properties under R1.21M pay zero transfer duty.',
     calc: function(docId, val) {
       var items = [];
       if (docId === 'property') {
-        // 2024/25 SARS Transfer Duty rates for natural persons
+        // SARS Transfer Duty scale for natural persons, effective 1 April 2025
+        // (source: sars.gov.za/tax-rates/transfer-duty — threshold raised from R1.1M to R1.21M)
         var duty = 0;
-        if (val <= 1100000) {
+        if (val <= 1210000) {
           duty = 0;
-        } else if (val <= 1512500) {
-          duty = (val - 1100000) * 0.03;
-        } else if (val <= 2117500) {
-          duty = 12375 + (val - 1512500) * 0.06;
-        } else if (val <= 2722500) {
-          duty = 48675 + (val - 2117500) * 0.08;
-        } else if (val <= 12100000) {
-          duty = 97075 + (val - 2722500) * 0.11;
+        } else if (val <= 1663800) {
+          duty = (val - 1210000) * 0.03;
+        } else if (val <= 2329300) {
+          duty = 13614 + (val - 1663800) * 0.06;
+        } else if (val <= 2994800) {
+          duty = 53544 + (val - 2329300) * 0.08;
+        } else if (val <= 13310000) {
+          duty = 106784 + (val - 2994800) * 0.11;
         } else {
-          duty = 1128600 + (val - 12100000) * 0.13;
+          duty = 1241456 + (val - 13310000) * 0.13;
         }
-        items.push({ name: 'Transfer Duty (SARS Progressive Scale)', amount: duty, note: '0% up to R1.1M, 3–13% above' });
+        items.push({ name: 'Transfer Duty (SARS Progressive Scale)', amount: duty, note: '0% up to R1.21M, 3–13% above (SARS, from 1 Apr 2025)' });
       } else if (docId === 'mortgage') {
         // Bond registration: deeds office fee + bond attorney
         var deedsFee = val <= 100000 ? 250 : val <= 300000 ? 570 : val <= 600000 ? 1140 : val <= 1000000 ? 1710 : val <= 2000000 ? 2250 : 3990;

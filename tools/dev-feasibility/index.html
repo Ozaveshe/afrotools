@@ -460,14 +460,14 @@ function calculate() {
   var margin = gdv > 0 ? gdp / gdv * 100 : 0;
   var roe = equity > 0 ? gdp / equity * 100 : 0;
   var profitPerUnit = gdp / units;
-  var breakevenUnits = totalCost / sellingPrice;
+  var breakevenUnits = sellingPrice > 0 ? totalCost / sellingPrice : null;
 
   document.getElementById('r-gdv').textContent = fmt(gdv, sym);
   document.getElementById('r-total-cost').textContent = fmt(totalCost, sym);
   document.getElementById('r-gdp').textContent = fmt(gdp, sym);
   document.getElementById('r-margin').textContent = margin.toFixed(1) + '%';
   document.getElementById('r-roe').textContent = roe.toFixed(1) + '%';
-  document.getElementById('r-breakeven').textContent = Math.ceil(breakevenUnits) + ' of ' + units;
+  document.getElementById('r-breakeven').textContent = breakevenUnits === null ? '—' : Math.ceil(breakevenUnits) + ' of ' + units;
   document.getElementById('r-finance').textContent = fmt(financeCost, sym);
   document.getElementById('r-equity').textContent = fmt(equity, sym);
   document.getElementById('r-profit-unit').textContent = fmt(profitPerUnit, sym);
