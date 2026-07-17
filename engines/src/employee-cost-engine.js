@@ -66,6 +66,10 @@
       s = r / 4.33 * o.weeksPerYear * a, i = o.weeksPerYear + " week(s) per year x " + a + " years";
     } else if (o.percentPerYear) {
       s = r * (o.percentPerYear / 100) * a, i = o.percentPerYear + "% of monthly salary per year x " + a + " years";
+    } else if (o.daysBase) {
+      var $d = a >= 1 ? o.daysBase + 10 * (a - 1) : o.daysBase * a;
+      if ($d > 360) $d = 360;
+      s = r / 30 * $d, i = Math.round($d) + " days (30 for first year + 10 per extra year, capped at 12 months)";
     } else if (o.tiered) {
       if (o.hoursBased) {
         for (var y = r / (o.hoursPerMonth || 191), l = 0, u = 1; u <= a; u++) {
@@ -109,7 +113,8 @@
       detail: i,
       law: o.law || "",
       notes: o.notes || "",
-      formatted: e(s, n)
+      computable: "" !== i,
+      formatted: "" !== i ? e(s, n) : "No fixed formula — see notes"
     };
   }
   window.AfroTools = window.AfroTools || {}, window.AfroTools.HREngine = {
@@ -123,7 +128,7 @@
         };
       }
       var o = ("undefined" != typeof EMPLOYER_COST_RULES ? EMPLOYER_COST_RULES[t] : {}).symbol || "", n = r / 22, s = a.maternity, i = s.weeks || parseInt(s.duration) || 12, y = 5 * i, l = (s.pay || "100%").toString(), u = 1;
-      l.indexOf("50%") >= 0 ? u = .5 : l.indexOf("67%") >= 0 ? u = .67 : l.indexOf("75%") >= 0 ? u = .75 : l.indexOf("38") >= 0 ? u = .5 : l.indexOf("85%") >= 0 ? u = .85 : l.indexOf("90%") >= 0 ? u = .9 : l.indexOf("0%") >= 0 && (u = 0);
+      l.indexOf("50%") >= 0 ? u = .5 : l.indexOf("67%") >= 0 ? u = .67 : l.indexOf("75%") >= 0 ? u = .75 : l.indexOf("38") >= 0 ? u = .5 : l.indexOf("85%") >= 0 ? u = .85 : l.indexOf("90%") >= 0 ? u = .9 : (/^\s*0%/.test(l) || l.toLowerCase().indexOf("unpaid") >= 0) && (u = 0);
       var d = n * y * u;
       return {
         maternityDuration: s.duration,
@@ -158,8 +163,9 @@
         unusedLeaveDays: n,
         leavePayout: Math.round(d),
         total: Math.round(f),
+        severanceComputable: !1 !== s.computable,
         formatted: {
-          severance: e(m, y),
+          severance: !1 === s.computable ? "Negotiated — see notes" : e(m, y),
           notice: e(u, y),
           leave: e(d, y),
           total: e(f, y)
